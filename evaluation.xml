@@ -1,0 +1,42 @@
+<evaluation>
+  <qa_pair>
+    <question>Export the workspace state twice to different output files in opencode-dotfiles/, then use opencode_sync_diff to compare them. If no changes were made between the two exports, how many differences should the diff report?</question>
+    <answer>0</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Export the workspace state. What top-level fields does the JSON contain? List them alphabetically, comma-separated.</question>
+    <answer>envVars, hostname, opencodeConfig, platform, skillSources, skills, submodules, timestamp</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Run opencode_sync_verify. How many verification checks does it perform? List the component names in order.</question>
+    <answer>7</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Export the workspace state, then run opencode_sync_status. Based on the export's submodules array and status output, are the number of submodules consistent between both outputs?</question>
+    <answer>Yes</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Use opencode_sync_diff to compare the current state with a state file that has one extra skill in it. What line format does diff use to indicate a missing skill?</question>
+    <answer>+ Skill (name) (missing locally)</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Export the workspace state. The timestamp field — what ISO format is it in? Is it UTC or local?</question>
+    <answer>ISO 8601 UTC</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Run opencode_sync_verify and examine the OpenCode config check. What condition determines whether this check passes?</question>
+    <answer>The file opencode.jsonc or opencode.json exists in ~/.config/opencode/</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Export the workspace state. Count how many entries in the envVars array contain the substring "API". What numeric answer do you get?</question>
+    <answer>7</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Run opencode_sync_log with action=read. What is the version field of the install log JSON structure?</question>
+    <answer>1.0</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Export the workspace state. The skillSources array lists installable skill packages. If this array is non-empty, what does each entry represent — a single skill name or a package source that may contain multiple skills?</question>
+    <answer>package source that may contain multiple skills</answer>
+  </qa_pair>
+</evaluation>
