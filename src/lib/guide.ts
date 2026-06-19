@@ -216,7 +216,219 @@ function generateMcpSetupSection(guide: McpGuide): string[] {
   return lines;
 }
 
-// ═══ 主函数 ═══
+// ═══ Know-How 文件生成 ═══
+
+export function generateKnowHowFiles(workspaceRoot: string): { created: string[]; updated: string[]; skipped: string[] } {
+  const knownMcps = loadKnownMcps(workspaceRoot);
+  const config = readOpenCodeConfig(workspaceRoot);
+  const mcpConfig = config.mcp as Record<string, Record<string, unknown>> | undefined;
+  const knowHowDir = path.join(workspaceRoot, "opencode-dotfiles", "know-how");
+  const created: string[] = [];
+  const updated: string[] = [];
+  const skipped: string[] = [];
+
+  if (!mcpConfig) return { created, updated, skipped };
+
+  // Ensure README exists
+  const readmePath = path.join(knowHowDir, "README.md");
+  if (!fs.existsSync(readmePath)) {
+    fs.mkdirSync(knowHowDir, { recursive: true });
+    fs.writeFileSync(readmePath, generateKnowHowReadme(knownMcps), "utf-8");
+    created.push("README.md");
+  } else {
+    skipped.push("README.md (exists)");
+  }
+
+  for (const [mcpName, mcpCfg] of Object.entries(mcpConfig)) {
+    if (mcpCfg?.enabled === false) continue;
+    const guide = analyzeMcpConfig(mcpName, mcpCfg, knownMcps);
+    const subDir = path.join(knowHowDir, mcpName);
+    fs.mkdirSync(subDir, { recursive: true });
+
+    // setup.md — from known-mcps.json data
+    const setupPath = path.join(subDir, "setup.md");
+    if (!fs.existsSync(setupPath)) {
+      fs.writeFileSync(setupPath, generateSetupMd(mcpName, guide, mcpCfg), "utf-8");
+      created.push(`${mcpName}/setup.md`);
+    } else {
+      skipped.push(`${mcpName}/setup.md (exists)`);
+    }
+
+    // pitfalls.md — template if not exists
+    const pitfallsPath = path.join(subDir, "pitfalls.md");
+    if (!fs.existsSync(pitfallsPath)) {
+      const pContent = guide.isKnown && guide.knownEntry?.pitfalls?.length
+        ? generatePitfallsMd(mcpName, guide)
+        : generatePitfallsMdTemplate(mcpName);
+      fs.writeFileSync(pitfallsPath, pContent, "utf-8");
+      created.push(`${mcpName}/pitfalls.md`);
+    } else {
+      skipped.push(`${mcpName}/pitfalls.md (exists)`);
+    }
+
+    // config-ref.md — from actual config
+    const configRefPath = path.join(subDir, "config-ref.md");
+    fs.writeFileSync(configRefPath, generateConfigRefMd(mcpName, mcpCfg, guide), "utf-8");
+    // Always update config-ref (it reflects current config)
+    if (fs.existsSync(configRefPath)) {
+      updated.push(`${mcpName}/config-ref.md`);
+    } else {
+      created.push(`${mcpName}/config-ref.md`);
+    }
+  }
+
+  return { created, updated, skipped };
+}
+
+function generateKnowHowReadme(knownMcps: KnownMcpData): string {
+  const lines = [
+    `# MCP & 插件 Know-How`,
+    ``,
+    `> **给 Agent 看的。** 本目录记录每个 MCP/插件在配置和使用过程中踩过的坑和学到的经验。`,
+    `> 在新设备配置时，请先阅读本文件，再按各插件子目录的指引操作。`,
+    `> 生成时间: ${new Date().toISOString()}`,
+    ``,
+    `## 目录结构`,
+    ``,
+    `每个插件/MCP 一个子目录，包含：`,
+    ``,
+    `| 文件 | 内容 | 维护方式 |`,
+    `|---|---|---|`,
+    `| setup.md | 安装步骤、前置条件、Token 获取 | 从 known-mcps.json 自动生成 |`,
+    `| pitfalls.md | 踩过的坑、排查思路、修复方案 | 人工维护（Agent 补充） |`,
+    `| config-ref.md | 当前配置参考、关键字段 | 从实际配置自动生成 |`,
+    ``,
+    `## 插件列表`,
+    ``,
+    `| 名称 | 类型 | 已知坑 |`,
+    `|---|---|---|`,
+  ];
+  for (const [name, entry] of Object.entries(knownMcps.mcpServers)) {
+    const hasPitfalls = (entry.pitfalls?.length ?? 0) > 0;
+    lines.push(`| [${entry.name}](./${name}/) | MCP 服务器 | ${hasPitfalls ? "✅" : "—"} |`);
+  }
+  lines.push(``, `## Agent 工作流`, ``,
+    `在新设备上配置 MCP 时：`,
+    ``,
+    `1. 先读本文件，了解有哪些插件`,
+    `2. 进入对应子目录，先读 pitfalls.md（避坑）`,
+    `3. 再读 setup.md（安装）`,
+    `4. 参考 config-ref.md（配置模板）`,
+    `5. 配置完成后有新的发现，补充回对应文件`,
+  );
+  return lines.join("\n") + "\n";
+}
+
+function generateSetupMd(mcpName: string, guide: McpGuide, mcpCfg: Record<string, unknown>): string {
+  const entry = guide.knownEntry;
+  const lines = [
+    `# ${entry?.name || mcpName} — 安装步骤`,
+    ``,
+    `> 由 opencode-sync 自动生成。`,
+    `> 生成时间: ${new Date().toISOString()}`,
+    ``,
+  ];
+
+  if (entry?.setup.steps.length) {
+    for (const step of entry.setup.steps) {
+      const autoLabel = step.auto ? "[自动]" : "[手动]";
+      lines.push(`## ${step.title} ${autoLabel}`, ``);
+      lines.push(step.description, ``);
+      if (step.url) lines.push(step.url, ``);
+    }
+  } else {
+    if (guide.isLocal) {
+      lines.push(`## 本地 MCP`, ``, `启动命令: \`${(mcpCfg.command as string[] || []).join(" ")}\``, ``);
+    } else if (guide.isRemote) {
+      lines.push(`## 远程 MCP`, ``, `端点: \`${mcpCfg.url || "未知"}\``, ``);
+    }
+  }
+
+  if (entry?.configNotes?.length) {
+    lines.push(`## 配置要点`, ``);
+    for (const note of entry.configNotes) lines.push(`- ${note}`);
+  }
+
+  return lines.join("\n") + "\n";
+}
+
+function generatePitfallsMd(mcpName: string, guide: McpGuide): string {
+  const entry = guide.knownEntry!;
+  const lines = [
+    `# ${entry.name} — 踩坑记录`,
+    ``,
+    `> 人工维护。Agent 遇到新坑时补充。`,
+    `> 生成时间: ${new Date().toISOString()}`,
+    ``,
+  ];
+  if (entry.pitfalls?.length) {
+    for (let i = 0; i < entry.pitfalls.length; i++) {
+      lines.push(`## 已知问题 ${i + 1}`, ``);
+      lines.push(entry.pitfalls[i], ``);
+    }
+  }
+  return lines.join("\n") + "\n";
+}
+
+function generatePitfallsMdTemplate(mcpName: string): string {
+  return [
+    `# ${mcpName} — 踩坑记录`,
+    ``,
+    `> 人工维护。Agent 遇到新坑时补充。`,
+    ``,
+    `## 暂无已知问题`,
+    ``,
+    `如果遇到问题，请记录在此文件中，格式如下：`,
+    ``,
+    `### 问题标题`,
+    `- **现象**: ...`,
+    `- **根因**: ...`,
+    `- **修复**: ...`,
+    ``,
+  ].join("\n");
+}
+
+function generateConfigRefMd(mcpName: string, mcpCfg: Record<string, unknown>, guide: McpGuide): string {
+  const sanitized = { ...mcpCfg };
+  // Redact sensitive values
+  if (sanitized.environment) {
+    const env = { ...(sanitized.environment as Record<string, string>) };
+    for (const k of Object.keys(env)) {
+      if (k.toUpperCase().includes("TOKEN") || k.toUpperCase().includes("SECRET") || k.toUpperCase().includes("KEY")) {
+        env[k] = "<hidden>";
+      }
+    }
+    sanitized.environment = env;
+  }
+  if (sanitized.headers) {
+    const headers = { ...(sanitized.headers as Record<string, string>) };
+    if (headers.Authorization) headers.Authorization = "Bearer <hidden>";
+    if (headers.authorization) headers.authorization = "Bearer <hidden>";
+    sanitized.headers = headers;
+  }
+
+  const lines = [
+    `# ${guide.displayName} — 配置参考`,
+    ``,
+    `> 由 opencode-sync 从实际配置自动生成。`,
+    `> 生成时间: ${new Date().toISOString()}`,
+    ``,
+    `## 当前配置`,
+    ``,
+    "```json",
+    JSON.stringify(sanitized, null, 2),
+    "```",
+    ``,
+  ];
+
+  if (guide.knownEntry?.configNotes?.length) {
+    lines.push(`## 关键说明`, ``);
+    for (const note of guide.knownEntry.configNotes) lines.push(`- ${note}`);
+    lines.push(``);
+  }
+
+  return lines.join("\n") + "\n";
+}
 
 export function generateSyncGuide(workspaceRoot: string, state: WorkspaceState): string {
   const guidePath = path.join(workspaceRoot, "opencode-dotfiles", "guide", "SYNC-GUIDE.md");
@@ -324,5 +536,9 @@ export function generateSyncGuide(workspaceRoot: string, state: WorkspaceState):
   }
 
   fs.writeFileSync(guidePath, lines.join("\n"));
+
+  // Also generate know-how files
+  generateKnowHowFiles(workspaceRoot);
+
   return guidePath;
 }
