@@ -224,6 +224,29 @@ export function setupWorkspace(workspaceRoot: string, options?: {
     } else { results.push({ step: "Copy opencode config", status: "warning", detail: `Source not found: ${sourceConfig}` }); }
   }
 
+  // Always auto-configure opencode-sync path in global config (safe: only touches one entry)
+  try {
+    const syncPath = detectSyncPath(workspaceRoot);
+    if (syncPath.source === "workspace" && syncPath.command.length > 0) {
+      const configDir = path.join(os.homedir(), ".config", "opencode");
+      const configFile = path.join(configDir, "opencode.jsonc");
+      if (fs.existsSync(configFile)) {
+        let content = fs.readFileSync(configFile, "utf-8");
+        const oldPattern = /"opencode-sync"\s*:\s*\{[^}]*"command"\s*:\s*\["node",\s*"[^"]*"\]/;
+        const newEntry = `"opencode-sync": { "type": "local", "command": ${JSON.stringify(syncPath.command)}`;
+        if (oldPattern.test(content)) {
+          content = content.replace(oldPattern, newEntry);
+          fs.writeFileSync(configFile, content);
+          results.push({ step: "Auto-configure sync path", status: "ok", detail: `Updated opencode-sync to: ${syncPath.command.join(" ")}` });
+        } else if (!content.includes('"opencode-sync"')) {
+          results.push({ step: "Auto-configure sync path", status: "warning", detail: "opencode-sync not found in config — add manually" });
+        } else {
+          results.push({ step: "Auto-configure sync path", status: "ok", detail: "Path already up to date" });
+        }
+      }
+    }
+  } catch { results.push({ step: "Auto-configure sync path", status: "warning", detail: "Could not update config" }); }
+
   if (installRalph) {
     const ralphCheck = run("ralph --version");
     if (ralphCheck.code !== 0) {
