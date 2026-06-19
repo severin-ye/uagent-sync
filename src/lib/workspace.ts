@@ -5,6 +5,7 @@ import { run } from "./run.js";
 import { getPlatform, detectWorkspaceInfo } from "./cache.js";
 import { appendInstallEntry } from "./log.js";
 import { stripJsonComments } from "./state.js";
+import { loadKnownMcps, analyzeMcpConfig } from "./guide.js";
 import type { SubmoduleStatusItem, SetupResult, VerifyResult } from "./types.js";
 
 export function getSubmoduleStatus(workspaceRoot: string): SubmoduleStatusItem[] {
@@ -69,53 +70,63 @@ export function verifyEnvironment(workspaceRoot: string): VerifyResult[] {
     results.push({ component: "Submodules", status: missing.length === 0 && uninitialized.length === 0 ? "ok" : "warning", detail });
   } catch { results.push({ component: "Submodules", status: "error", detail: "Could not read submodule status" }); }
 
-  // Playwright MCP extension check
+  // ═══ 数据驱动：所有已知 MCP 专项检测 ═══
   try {
+    const knownMcps = loadKnownMcps(workspaceRoot);
     const configPath = path.join(os.homedir(), ".config", "opencode", "opencode.jsonc");
     const altConfigPath = path.join(os.homedir(), ".config", "opencode", "opencode.json");
-    let hasPlaywright = false;
-    let usesExtension = false;
+    let config: Record<string, unknown> = {};
     for (const p of [configPath, altConfigPath]) {
       if (!fs.existsSync(p)) continue;
       try {
         const content = fs.readFileSync(p, "utf-8");
-        const clean = stripJsonComments(content);
-        const config = JSON.parse(clean);
-        const mcp = config.mcp as Record<string, Record<string, unknown>> | undefined;
-        if (mcp?.playwright) {
-          hasPlaywright = true;
-          const cmd = mcp.playwright.command as string[] | undefined;
-          if (cmd && cmd.includes("--extension")) usesExtension = true;
-          break;
-        }
+        config = JSON.parse(stripJsonComments(content)) as Record<string, unknown>;
+        break;
       } catch { continue; }
     }
-    if (hasPlaywright && usesExtension) {
-      // Check common extension install locations
-      const localAppData = process.env.LOCALAPPDATA || path.join(os.homedir(), "AppData", "Local");
-      const extPaths = [
-        path.join(localAppData, "Microsoft", "Edge", "User Data", "Default", "Extensions"),
-        path.join(localAppData, "Google", "Chrome", "User Data", "Default", "Extensions"),
-      ];
-      let extFound = false;
-      for (const extDir of extPaths) {
-        if (!fs.existsSync(extDir)) continue;
-        try {
-          // Playwright extension ID
-          const entries = fs.readdirSync(extDir);
-          if (entries.some(e => e.includes("mmlmfjhmonkocbjadbfplnigmagldckm"))) { extFound = true; break; }
-        } catch { continue; }
+    const mcp = config.mcp as Record<string, Record<string, unknown>> | undefined;
+    if (mcp) {
+      for (const [mcpName, mcpCfg] of Object.entries(mcp)) {
+        if (mcpCfg?.enabled === false) continue;
+        const guide = analyzeMcpConfig(mcpName, mcpCfg, knownMcps);
+        if (!guide.isKnown || !guide.knownEntry) continue;
+
+        // Check extension install for playwright-like MCPs
+        const extStep = guide.knownEntry.setup.steps.find(s => s.id === "extension");
+        if (guide.flags.extension && extStep) {
+          const localAppData = process.env.LOCALAPPDATA || path.join(os.homedir(), "AppData", "Local");
+          const extPaths = [
+            path.join(localAppData, "Microsoft", "Edge", "User Data", "Default", "Extensions"),
+            path.join(localAppData, "Google", "Chrome", "User Data", "Default", "Extensions"),
+          ];
+          let extFound = false;
+          for (const extDir of extPaths) {
+            if (!fs.existsSync(extDir)) continue;
+            try {
+              const entries = fs.readdirSync(extDir);
+              if (entries.some(e => e.includes("mmlmfjhmonkocbjadbfplnigmagldckm"))) { extFound = true; break; }
+            } catch { continue; }
+          }
+          results.push({
+            component: `${guide.displayName} 扩展`,
+            status: extFound ? "ok" : "warning",
+            detail: extFound
+              ? (guide.hasToken ? "已安装 + Token 已设" : "已安装 — Token 未设")
+              : `未检测到扩展 — ${extStep.url || "请手动安装"}`,
+          });
+        }
+
+        // Check known MCPs for required env vars or tokens
+        if (!guide.hasToken && guide.knownEntry.setup.steps.some(s => s.id === "token")) {
+          results.push({
+            component: `${guide.displayName} Token`,
+            status: "warning",
+            detail: "Token 未配置 — 需要手动设置",
+          });
+        }
       }
-      const tokenEnv = process.env.PLAYWRIGHT_MCP_EXTENSION_TOKEN;
-      results.push({
-        component: "Playwright Extension",
-        status: extFound ? "ok" : "warning",
-        detail: extFound
-          ? (tokenEnv ? "已安装 + Token 已设" : "已安装 — Token 未设（需在配置中填入 PLAYWRIGHT_MCP_EXTENSION_TOKEN）")
-          : "未检测到 Playwright 扩展 — 请安装: https://chromewebstore.google.com/detail/playwright-extension/mmlmfjhmonkocbjadbfplnigmagldckm",
-      });
     }
-  } catch { /* Playwright check is optional */ }
+  } catch { /* MCP checks are advisory */ }
 
   return results;
 }

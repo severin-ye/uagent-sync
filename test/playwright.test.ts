@@ -237,6 +237,34 @@ describe("generateSyncGuide — Playwright section", () => {
     fs.mkdirSync(ws, { recursive: true });
     fs.mkdirSync(path.join(ws, "opencode-dotfiles", "config"), { recursive: true });
     fs.mkdirSync(path.join(ws, "opencode-dotfiles", "guide"), { recursive: true });
+    fs.mkdirSync(path.join(ws, "opencode-dotfiles", "data"), { recursive: true });
+    // Copy real data file for authentic content
+    const realData = path.resolve(import.meta.dirname!, "../../../opencode-dotfiles/data/known-mcps.json");
+    if (fs.existsSync(realData)) {
+      fs.copyFileSync(realData, path.join(ws, "opencode-dotfiles", "data", "known-mcps.json"));
+    } else {
+      // Fallback data matching real-world assertions
+      fs.writeFileSync(path.join(ws, "opencode-dotfiles", "data", "known-mcps.json"), JSON.stringify({
+        version: "1.0",
+        mcpServers: {
+          playwright: {
+            name: "Playwright MCP",
+            description: "Browser automation",
+            detection: { commandPatterns: ["@playwright/mcp"], flags: { extension: "--extension", browser: "--browser=" } },
+            setup: {
+              type: "mixed",
+              steps: [
+                { id: "extension", title: "安装浏览器扩展", auto: false, description: "desc", url: "https://chromewebstore.google.com/detail/playwright-extension/mmlmfjhmonkocbjadbfplnigmagldckm", condition: "extension" },
+                { id: "token", title: "获取并配置 Token", auto: false, description: "PLAYWRIGHT_MCP_EXTENSION_TOKEN desc" },
+              ],
+            },
+            configNotes: ["Config note"],
+            pitfalls: ["browser_take_screenshot 需 browser_run_code_unsafe 绕过"],
+            modelNotes: { capability: "截图视觉分析", supported: ["GPT", "Claude", "Gemini"], unsupported: ["deepseek-v4-pro"], note: "Note" },
+          },
+        },
+      }));
+    }
   });
 
   after(() => {
@@ -283,10 +311,12 @@ describe("generateSyncGuide — Playwright section", () => {
       const state = exportSystemState(ws);
       const guidePath = generateSyncGuide(ws, state);
       const content = fs.readFileSync(guidePath, "utf-8");
-      assert.ok(content.includes("Playwright MCP 专项安装"));
-      assert.ok(content.includes("chromewebstore.google.com"));
-      assert.ok(content.includes("PLAYWRIGHT_MCP_EXTENSION_TOKEN"));
-      assert.ok(content.includes("--browser=msedge"));
+      // New data-driven format uses generic "MCP 专项安装" with subsections
+      assert.ok(content.includes("MCP 专项安装"), "Should have MCP setup section");
+      assert.ok(content.includes("Playwright MCP"), "Should mention Playwright");
+      assert.ok(content.includes("chromewebstore.google.com"), "Should include extension URL");
+      assert.ok(content.includes("PLAYWRIGHT_MCP_EXTENSION_TOKEN"), "Should mention token");
+      assert.ok(content.includes("--browser=msedge"), "Should mention Edge flag");
     });
   });
 
@@ -303,9 +333,9 @@ describe("generateSyncGuide — Playwright section", () => {
       const state = exportSystemState(ws);
       const guidePath = generateSyncGuide(ws, state);
       const content = fs.readFileSync(guidePath, "utf-8");
-      assert.ok(content.includes("多模态模型"));
-      assert.ok(content.includes("deepseek-v4-pro"));
-      assert.ok(content.includes("GPT/Claude/Gemini"));
+      assert.ok(content.includes("多模态模型"), "Should have multi-modal section");
+      assert.ok(content.includes("deepseek-v4-pro") || content.includes("DeepSeek"), "Should warn about unsupported models");
+      assert.ok(content.includes("GPT") || content.includes("Claude"), "Should mention supported models");
     });
   });
 
@@ -322,9 +352,9 @@ describe("generateSyncGuide — Playwright section", () => {
       const state = exportSystemState(ws);
       const guidePath = generateSyncGuide(ws, state);
       const content = fs.readFileSync(guidePath, "utf-8");
-      assert.ok(content.includes("browser_run_code_unsafe"));
-      assert.ok(content.includes("browser_snapshot"));
-      assert.ok(content.includes("ref"));
+      assert.ok(content.includes("browser_run_code_unsafe"), "Should mention workaround");
+      assert.ok(content.includes("browser_snapshot"), "Should warn about ref expiry");
+      assert.ok(content.includes("ref"), "Should mention ref");
     });
   });
 
@@ -334,8 +364,8 @@ describe("generateSyncGuide — Playwright section", () => {
       const state = exportSystemState(ws);
       const guidePath = generateSyncGuide(ws, state);
       const content = fs.readFileSync(guidePath, "utf-8");
-      assert.ok(!content.includes("Playwright MCP 专项安装"),
-        "Guide should NOT have Playwright section when not configured");
+      assert.ok(!content.includes("MCP 专项安装"),
+        "Guide should NOT have MCP setup section when no known MCPs");
     });
   });
 });

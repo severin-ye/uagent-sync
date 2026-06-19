@@ -130,3 +130,57 @@ export interface PlaywrightMcpConfig {
   isChrome: boolean;
   cdpEndpoint: boolean;
 }
+
+// ═══ 数据驱动 MCP 检测 ═══
+
+export interface KnownMcpSetupStep {
+  id: string;
+  title: string;
+  auto: boolean;
+  description: string;
+  url?: string;
+  condition?: string;
+}
+
+export interface KnownMcpEntry {
+  name: string;
+  homepage?: string;
+  description?: string;
+  detection: {
+    commandPatterns?: string[];
+    urlPatterns?: string[];
+    envVars?: string[];
+    headerPatterns?: string[];
+    flags?: Record<string, string>;
+  };
+  setup: {
+    type: "local" | "remote" | "mixed" | "manual";
+    steps: KnownMcpSetupStep[];
+  };
+  configNotes?: string[];
+  pitfalls?: string[];
+  modelNotes?: {
+    capability: string;
+    supported: string[];
+    unsupported: string[];
+    note: string;
+  };
+}
+
+export interface KnownMcpData {
+  version: string;
+  mcpServers: Record<string, KnownMcpEntry>;
+}
+
+export interface McpGuide {
+  name: string;
+  displayName: string;
+  detected: boolean;
+  isKnown: boolean;
+  knownEntry: KnownMcpEntry | null;
+  flags: Record<string, string | boolean>;
+  hasToken: boolean;
+  hasUrl: boolean;
+  isRemote: boolean;
+  isLocal: boolean;
+}
