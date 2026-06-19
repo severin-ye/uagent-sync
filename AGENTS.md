@@ -201,6 +201,16 @@ opencode_sync_verify
 
 ## 核心原则
 
+### 测试纪律（最高优先级）
+
+**任何新功能、Bug 修复、配置变更，必须在提交前通过 `npm test`。**
+
+- 新功能 → 必须新增对应测试用例
+- Bug 修复 → 必须先写能复现 Bug 的测试（红），再修（绿）
+- 配置变更 → 必须有测试验证新配置格式正确
+- `npm test` 不过不提交
+- 测试文件放在 `test/*.test.ts`，使用 Node 原生 test runner
+
 ### 只问一次
 - 工作区名称 → 存在 `state/init-state.json` 后不再问
 - GitHub URL → 同上
