@@ -4,8 +4,8 @@ import { readOpenCodeConfig, exportSystemState } from "./state.js";
 import { resolveSkillSources, SKILL_PACKAGES, KNOWN_SKILL_SOURCES } from "./skills.js";
 import type { WorkspaceState, McpBuildInfo, PlaywrightMcpConfig } from "./types.js";
 
-export function detectPlaywrightMcpConfig(workspaceRoot: string): PlaywrightMcpConfig | null {
-  const config = readOpenCodeConfig(workspaceRoot);
+export function detectPlaywrightMcpConfig(workspaceRoot: string, _config?: Record<string, unknown>): PlaywrightMcpConfig | null {
+  const config = _config || readOpenCodeConfig(workspaceRoot);
   const mcp = config.mcp as Record<string, { type?: string; command?: string[]; environment?: Record<string, string>; enabled?: boolean }> | undefined;
   if (!mcp) return null;
 
@@ -22,7 +22,7 @@ export function detectPlaywrightMcpConfig(workspaceRoot: string): PlaywrightMcpC
   const hasToken = !!(pw.environment?.["PLAYWRIGHT_MCP_EXTENSION_TOKEN"]);
   const hasTokenEnv = !!(pw.environment && Object.keys(pw.environment).some(k => k.toUpperCase().includes("PLAYWRIGHT") && k.toUpperCase().includes("TOKEN")));
   const browser = isEdge ? "Edge" : isChrome ? "Chrome" : "Chromium（默认）";
-  const cdpEndpoint = pw.command.includes("--cdp-endpoint");
+  const cdpEndpoint = pw.command.some(a => a.startsWith("--cdp-endpoint"));
 
   return {
     detected: true,
