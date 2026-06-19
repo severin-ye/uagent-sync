@@ -16,6 +16,7 @@ export interface WorkspaceState {
   skills: string[];
   skillSources: string[];
   windowsFixPaths: string[];
+  playwrightMcp?: Record<string, unknown>;
 }
 
 export interface ImportResult {
@@ -115,4 +116,17 @@ export interface McpBuildInfo {
   needsBuild: boolean;
   buildPath: string;
   buildCommands: string[];
+}
+
+export interface PlaywrightMcpConfig {
+  detected: boolean;
+  command: string;
+  usesExtension: boolean;
+  usesVision: boolean;
+  usesHeadless: boolean;
+  browser: string;
+  hasToken: boolean;
+  isEdge: boolean;
+  isChrome: boolean;
+  cdpEndpoint: boolean;
 }

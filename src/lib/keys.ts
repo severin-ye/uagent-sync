@@ -1,6 +1,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import * as os from "node:os";
+import { stripJsonComments } from "./state.js";
 import type { ApiKeyInfo } from "./types.js";
 
 export function detectApiKeys(workspaceRoot: string): ApiKeyInfo {
@@ -23,7 +24,7 @@ export function detectApiKeys(workspaceRoot: string): ApiKeyInfo {
   if (fs.existsSync(configPath)) {
     try {
       const content = fs.readFileSync(configPath, "utf-8");
-      const clean = content.replace(/\/\/.*$/gm, "").replace(/\/\*[\s\S]*?\*\//g, "");
+      const clean = stripJsonComments(content);
       const config = JSON.parse(clean) as Record<string, unknown>;
       const mcp = config.mcp as Record<string, { url?: string; environment?: Record<string, string> }> | undefined;
       if (mcp) {

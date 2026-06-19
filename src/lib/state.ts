@@ -6,6 +6,50 @@ import { getPlatform } from "./cache.js";
 import { resolveSkillSources } from "./skills.js";
 import type { WorkspaceState, SubmoduleState, ImportResult } from "./types.js";
 
+export function stripJsonComments(content: string): string {
+  let result = "";
+  let inString: false | "single" | "double" = false;
+  let i = 0;
+  while (i < content.length) {
+    const ch = content[i];
+    if (inString) {
+      result += ch;
+      if (ch === "\\" && i + 1 < content.length) {
+        result += content[++i];
+      } else if ((inString === "double" && ch === '"') || (inString === "single" && ch === "'")) {
+        inString = false;
+      }
+      i++;
+      continue;
+    }
+    if (ch === '"' || ch === "'") {
+      inString = ch === '"' ? "double" : "single";
+      result += ch;
+      i++;
+      continue;
+    }
+    if (ch === "/" && i + 1 < content.length) {
+      const next = content[i + 1];
+      if (next === "/") {
+        // Line comment - skip to end of line
+        i += 2;
+        while (i < content.length && content[i] !== "\n") i++;
+        continue;
+      }
+      if (next === "*") {
+        // Block comment - skip to */
+        i += 2;
+        while (i + 1 < content.length && !(content[i] === "*" && content[i + 1] === "/")) i++;
+        if (i + 1 < content.length) i += 2;
+        continue;
+      }
+    }
+    result += ch;
+    i++;
+  }
+  return result;
+}
+
 export function readOpenCodeConfig(workspaceRoot: string): Record<string, unknown> {
   const configPaths = [
     path.join(os.homedir(), ".config", "opencode", "opencode.jsonc"),
@@ -16,7 +60,7 @@ export function readOpenCodeConfig(workspaceRoot: string): Record<string, unknow
     if (!fs.existsSync(configPath)) continue;
     try {
       const content = fs.readFileSync(configPath, "utf-8");
-      const clean = content.replace(/\/\/.*$/gm, "").replace(/\/\*[\s\S]*?\*\//g, "");
+      const clean = stripJsonComments(content);
       return JSON.parse(clean) as Record<string, unknown>;
     } catch { continue; }
   }
@@ -64,16 +108,35 @@ function readSkills(): string[] {
 
 export function exportSystemState(workspaceRoot: string): WorkspaceState {
   const skills = readSkills();
+  const config = readOpenCodeConfig(workspaceRoot);
+  const pwConfig = detectPlaywrightInfo(config);
   return {
     timestamp: new Date().toISOString(),
     platform: getPlatform(),
     hostname: os.hostname(),
-    opencodeConfig: readOpenCodeConfig(workspaceRoot),
+    opencodeConfig: config,
     envVars: readEnvVarNames(workspaceRoot),
     submodules: readSubmodules(workspaceRoot),
     skills,
     skillSources: resolveSkillSources(skills),
     windowsFixPaths: detectWindowsProblematicPaths(workspaceRoot),
+    playwrightMcp: pwConfig,
+  };
+}
+
+function detectPlaywrightInfo(config: Record<string, unknown>): Record<string, unknown> | undefined {
+  const mcp = config.mcp as Record<string, Record<string, unknown>> | undefined;
+  if (!mcp) return undefined;
+  const pw = mcp.playwright as Record<string, unknown> | undefined;
+  if (!pw || pw.enabled === false) return undefined;
+  const cmd = pw.command as string[] | undefined;
+  if (!cmd) return undefined;
+  return {
+    command: cmd.join(" "),
+    usesExtension: cmd.includes("--extension"),
+    usesVision: cmd.includes("--caps=vision"),
+    isEdge: cmd.some(a => a === "--browser=msedge" || a === "--browser=msedge-beta" || a === "--browser=msedge-dev"),
+    hasToken: !!(pw.environment && typeof pw.environment === "object" && Object.keys(pw.environment as Record<string, unknown>).some(k => k.toUpperCase().includes("PLAYWRIGHT") && k.toUpperCase().includes("TOKEN"))),
   };
 }
 
@@ -154,7 +217,7 @@ export function importSystemState(workspaceRoot: string, state: WorkspaceState):
     if (fs.existsSync(configPath)) {
       try {
         const content = fs.readFileSync(configPath, "utf-8");
-        const clean = content.replace(/\/\/.*$/gm, "").replace(/\/\*[\s\S]*?\*\//g, "");
+        const clean = stripJsonComments(content);
         existing = JSON.parse(clean) as Record<string, unknown>;
       } catch { /* keep empty */ }
     }

@@ -4,6 +4,7 @@ import * as os from "node:os";
 import { run } from "./run.js";
 import { getPlatform, detectWorkspaceInfo } from "./cache.js";
 import { appendInstallEntry } from "./log.js";
+import { stripJsonComments } from "./state.js";
 import type { SubmoduleStatusItem, SetupResult, VerifyResult } from "./types.js";
 
 export function getSubmoduleStatus(workspaceRoot: string): SubmoduleStatusItem[] {
@@ -67,6 +68,55 @@ export function verifyEnvironment(workspaceRoot: string): VerifyResult[] {
     if (dirty_subs.length > 0) detail += `, ${dirty_subs.length} dirty`;
     results.push({ component: "Submodules", status: missing.length === 0 && uninitialized.length === 0 ? "ok" : "warning", detail });
   } catch { results.push({ component: "Submodules", status: "error", detail: "Could not read submodule status" }); }
+
+  // Playwright MCP extension check
+  try {
+    const configPath = path.join(os.homedir(), ".config", "opencode", "opencode.jsonc");
+    const altConfigPath = path.join(os.homedir(), ".config", "opencode", "opencode.json");
+    let hasPlaywright = false;
+    let usesExtension = false;
+    for (const p of [configPath, altConfigPath]) {
+      if (!fs.existsSync(p)) continue;
+      try {
+        const content = fs.readFileSync(p, "utf-8");
+        const clean = stripJsonComments(content);
+        const config = JSON.parse(clean);
+        const mcp = config.mcp as Record<string, Record<string, unknown>> | undefined;
+        if (mcp?.playwright) {
+          hasPlaywright = true;
+          const cmd = mcp.playwright.command as string[] | undefined;
+          if (cmd && cmd.includes("--extension")) usesExtension = true;
+          break;
+        }
+      } catch { continue; }
+    }
+    if (hasPlaywright && usesExtension) {
+      // Check common extension install locations
+      const localAppData = process.env.LOCALAPPDATA || path.join(os.homedir(), "AppData", "Local");
+      const extPaths = [
+        path.join(localAppData, "Microsoft", "Edge", "User Data", "Default", "Extensions"),
+        path.join(localAppData, "Google", "Chrome", "User Data", "Default", "Extensions"),
+      ];
+      let extFound = false;
+      for (const extDir of extPaths) {
+        if (!fs.existsSync(extDir)) continue;
+        try {
+          // Playwright extension ID
+          const entries = fs.readdirSync(extDir);
+          if (entries.some(e => e.includes("mmlmfjhmonkocbjadbfplnigmagldckm"))) { extFound = true; break; }
+        } catch { continue; }
+      }
+      const tokenEnv = process.env.PLAYWRIGHT_MCP_EXTENSION_TOKEN;
+      results.push({
+        component: "Playwright Extension",
+        status: extFound ? "ok" : "warning",
+        detail: extFound
+          ? (tokenEnv ? "已安装 + Token 已设" : "已安装 — Token 未设（需在配置中填入 PLAYWRIGHT_MCP_EXTENSION_TOKEN）")
+          : "未检测到 Playwright 扩展 — 请安装: https://chromewebstore.google.com/detail/playwright-extension/mmlmfjhmonkocbjadbfplnigmagldckm",
+      });
+    }
+  } catch { /* Playwright check is optional */ }
+
   return results;
 }
 
