@@ -4,6 +4,7 @@ import * as os from "node:os";
 import { run } from "./run.js";
 import { getPlatform } from "./cache.js";
 import { resolveSkillSources } from "./skills.js";
+import { generateSyncMcpConfig } from "./portable.js";
 import type { WorkspaceState, SubmoduleState, ImportResult } from "./types.js";
 
 export function stripJsonComments(content: string): string {
@@ -121,6 +122,7 @@ export function exportSystemState(workspaceRoot: string): WorkspaceState {
     skillSources: resolveSkillSources(skills),
     windowsFixPaths: detectWindowsProblematicPaths(workspaceRoot),
     playwrightMcp: pwConfig,
+    syncPortability: generateSyncMcpConfig(workspaceRoot),
   };
 }
 

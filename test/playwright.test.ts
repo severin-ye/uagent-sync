@@ -227,6 +227,8 @@ describe("generateSyncGuide — Playwright section", () => {
   let exportSystemState: (ws: string) => Record<string, unknown>;
   let ws: string;
   let savedConfig: Buffer | null = null;
+  let lockId = 0;
+  function testLock() { return `.pw-lock-${++lockId}`; }
   const realConfigPath = path.join(os.homedir(), ".config", "opencode", "opencode.jsonc");
 
   before(async () => {
@@ -272,6 +274,13 @@ describe("generateSyncGuide — Playwright section", () => {
     if (savedConfig) {
       try { fs.writeFileSync(realConfigPath, savedConfig); } catch { /* ok */ }
     }
+    // Clean up any leaked lock files
+    try {
+      const dir = path.dirname(realConfigPath);
+      for (const f of fs.readdirSync(dir)) {
+        if (f.includes(".pw-lock-")) fs.unlinkSync(path.join(dir, f));
+      }
+    } catch { /* ok */ }
     if (fs.existsSync(TMP)) fs.rmSync(TMP, { recursive: true, force: true });
   });
 
@@ -281,17 +290,16 @@ describe("generateSyncGuide — Playwright section", () => {
   }
 
   function withRealConfigDisabled<T>(fn: () => T): T {
-    // Real config has playwright — it takes priority over ws config.
-    // Temporarily rename so readOpenCodeConfig falls through to ws path.
+    const lockfile = realConfigPath + testLock();
     if (fs.existsSync(realConfigPath)) {
       savedConfig = fs.readFileSync(realConfigPath);
-      fs.renameSync(realConfigPath, realConfigPath + ".test-tmp");
+      fs.renameSync(realConfigPath, lockfile);
     }
     try {
       return fn();
     } finally {
-      if (fs.existsSync(realConfigPath + ".test-tmp")) {
-        fs.renameSync(realConfigPath + ".test-tmp", realConfigPath);
+      if (fs.existsSync(lockfile)) {
+        fs.renameSync(lockfile, realConfigPath);
       }
     }
   }

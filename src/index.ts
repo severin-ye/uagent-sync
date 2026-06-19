@@ -31,6 +31,7 @@ const server = new McpServer({
 
 const OutputPathSchema = z.object({
   output: z.string().optional().describe("Output file path (default: opencode-dotfiles/state/workspace-state.json)"),
+  trackState: z.boolean().optional().default(false).describe("Whether to keep workspace-state.json tracked by git (private repos: true, public: false)"),
 }).strict();
 
 const SourceSchema = z.object({
@@ -82,18 +83,43 @@ The resulting JSON file can be committed to Git and imported on another device.`
       openWorldHint: false,
     },
   },
-  async ({ output }: z.infer<typeof OutputPathSchema>) => {
+  async ({ output, trackState }: z.infer<typeof OutputPathSchema>) => {
     const workspaceRoot = resolveWorkspaceRoot();
-    const stateFile = output || path.join(workspaceRoot, "opencode-dotfiles/state/workspace-sync-state.json");
+    const stateFile = output || path.join(workspaceRoot, "opencode-dotfiles/state/workspace-state.json");
     const state = exportSystemState(workspaceRoot);
 
     const text = JSON.stringify(state, null, 2);
     fs.writeFileSync(stateFile, text);
 
+    // Manage git tracking
+    const gitignorePath = path.join(workspaceRoot, "opencode-dotfiles/.gitignore");
+    const statePattern = "state/workspace-state.json";
+    let gitignoreContent = "";
+    if (fs.existsSync(gitignorePath)) {
+      gitignoreContent = fs.readFileSync(gitignorePath, "utf-8");
+    }
+
+    if (trackState) {
+      // Remove from .gitignore so it's tracked
+      if (gitignoreContent.includes(statePattern)) {
+        const newContent = gitignoreContent
+          .split("\n")
+          .filter(l => l.trim() !== statePattern)
+          .join("\n");
+        fs.writeFileSync(gitignorePath, newContent);
+      }
+    } else {
+      // Add to .gitignore if not already there
+      if (!gitignoreContent.includes(statePattern)) {
+        fs.appendFileSync(gitignorePath, `\n${statePattern}\n`);
+      }
+    }
+
     const summary = [
       `Exported workspace state to: ${stateFile}`,
       `  Submodules: ${state.submodules.length}`, `  Skills: ${state.skills.length}`,
       `  Env vars (names only): ${state.envVars.length}`, `  Platform: ${state.platform}`, `  Hostname: ${state.hostname}`,
+      `  Git tracking: ${trackState ? "✅ tracked (private repo)" : "❌ untracked (.gitignore)"}`,
     ].join("\n");
 
     const truncated = text.length > CHARACTER_LIMIT ? text.slice(0, CHARACTER_LIMIT) + `\n... (truncated from ${text.length} chars)` : text;

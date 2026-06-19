@@ -6,6 +6,7 @@ import { getPlatform, detectWorkspaceInfo } from "./cache.js";
 import { appendInstallEntry } from "./log.js";
 import { stripJsonComments } from "./state.js";
 import { loadKnownMcps, analyzeMcpConfig } from "./guide.js";
+import { detectSyncPath, isMachineSpecificPath } from "./portable.js";
 import type { SubmoduleStatusItem, SetupResult, VerifyResult } from "./types.js";
 
 export function getSubmoduleStatus(workspaceRoot: string): SubmoduleStatusItem[] {
@@ -128,24 +129,26 @@ export function verifyEnvironment(workspaceRoot: string): VerifyResult[] {
     }
   } catch { /* MCP checks are advisory */ }
 
-  // Detect machine-specific paths in MCP config
+  // Detect machine-specific paths + portability
   try {
-    const mcp = config.mcp as Record<string, Record<string, unknown>> | undefined;
+    const syncPath = detectSyncPath(workspaceRoot);
+    if (syncPath.source !== "published") {
+      results.push({
+        component: "opencode-sync (portability)",
+        status: syncPath.source === "workspace" ? "ok" : "warning",
+        detail: syncPath.note,
+      });
+    }
+
+    // Also check other MCP commands for machine-specific paths
+    const mcp = (config as Record<string, unknown>).mcp as Record<string, Record<string, unknown>> | undefined;
     if (mcp) {
       for (const [name, cfg] of Object.entries(mcp)) {
+        if (name === "opencode-sync") continue; // already checked
         const cmd = cfg.command as string[] | undefined;
         if (!cmd) continue;
         const cmdStr = cmd.join(" ");
-        // Detect absolute Windows paths
-        if (/[A-Z]:[\\/]Users[\\/]/.test(cmdStr)) {
-          results.push({
-            component: `${name} (path)`,
-            status: "warning",
-            detail: `包含机器特定路径（${cmdStr.slice(0, 60)}...），跨设备可能不可用`,
-          });
-        }
-        // Detect Linux/Mac absolute paths
-        if (/\/home\//.test(cmdStr) || /\/Users\//.test(cmdStr)) {
+        if (isMachineSpecificPath(cmdStr)) {
           results.push({
             component: `${name} (path)`,
             status: "warning",
@@ -205,6 +208,17 @@ export function setupWorkspace(workspaceRoot: string, options?: {
       const configDir = path.join(os.homedir(), ".config", "opencode"); fs.mkdirSync(configDir, { recursive: true });
       const targetConfig = path.join(configDir, "opencode.jsonc");
       if (fs.existsSync(targetConfig)) { fs.copyFileSync(targetConfig, targetConfig + ".bak"); results.push({ step: "Backup existing config", status: "ok", detail: "Backed up" }); }
+      // Auto-fix opencode-sync path for portability
+      let configContent = fs.readFileSync(sourceConfig, "utf-8");
+      const syncPath = detectSyncPath(workspaceRoot);
+      if (syncPath.source === "workspace") {
+        // Replace machine-specific path with detected workspace path
+        configContent = configContent.replace(
+          /"command":\s*\["node",\s*"[^"]*opencode-sync[^"]*dist\/index\.js"[^\]]*\]/g,
+          `"command": ${JSON.stringify(syncPath.command)}`
+        );
+        results.push({ step: "Fix opencode-sync path", status: "ok", detail: `Updated to: ${syncPath.command.join(" ")}` });
+      }
       fs.copyFileSync(sourceConfig, targetConfig);
       results.push({ step: "Copy opencode config", status: "ok", detail: `Copied to ${targetConfig}` });
     } else { results.push({ step: "Copy opencode config", status: "warning", detail: `Source not found: ${sourceConfig}` }); }

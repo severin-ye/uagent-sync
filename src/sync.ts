@@ -15,3 +15,4 @@ export { createGitHubRepo } from "./lib/github.js";
 export { detectApiKeys, initApiKeyFile } from "./lib/keys.js";
 export { KNOWN_SKILL_SOURCES, SKILL_PACKAGES, resolveSkillSources } from "./lib/skills.js";
 export { detectMcpBuildInfo, generateSyncGuide, detectPlaywrightMcpConfig, loadKnownMcps, matchKnownMcp, analyzeMcpConfig, generateKnowHowFiles } from "./lib/guide.js";
+export { detectSyncPath, generateSyncMcpConfig, isMachineSpecificPath } from "./lib/portable.js";
