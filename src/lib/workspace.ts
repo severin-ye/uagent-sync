@@ -71,11 +71,11 @@ export function verifyEnvironment(workspaceRoot: string): VerifyResult[] {
   } catch { results.push({ component: "Submodules", status: "error", detail: "Could not read submodule status" }); }
 
   // ═══ 数据驱动：所有已知 MCP 专项检测 ═══
+  let config: Record<string, unknown> = {};
   try {
     const knownMcps = loadKnownMcps(workspaceRoot);
     const configPath = path.join(os.homedir(), ".config", "opencode", "opencode.jsonc");
     const altConfigPath = path.join(os.homedir(), ".config", "opencode", "opencode.json");
-    let config: Record<string, unknown> = {};
     for (const p of [configPath, altConfigPath]) {
       if (!fs.existsSync(p)) continue;
       try {
@@ -128,6 +128,34 @@ export function verifyEnvironment(workspaceRoot: string): VerifyResult[] {
     }
   } catch { /* MCP checks are advisory */ }
 
+  // Detect machine-specific paths in MCP config
+  try {
+    const mcp = config.mcp as Record<string, Record<string, unknown>> | undefined;
+    if (mcp) {
+      for (const [name, cfg] of Object.entries(mcp)) {
+        const cmd = cfg.command as string[] | undefined;
+        if (!cmd) continue;
+        const cmdStr = cmd.join(" ");
+        // Detect absolute Windows paths
+        if (/[A-Z]:[\\/]Users[\\/]/.test(cmdStr)) {
+          results.push({
+            component: `${name} (path)`,
+            status: "warning",
+            detail: `包含机器特定路径（${cmdStr.slice(0, 60)}...），跨设备可能不可用`,
+          });
+        }
+        // Detect Linux/Mac absolute paths
+        if (/\/home\//.test(cmdStr) || /\/Users\//.test(cmdStr)) {
+          results.push({
+            component: `${name} (path)`,
+            status: "warning",
+            detail: `包含机器特定路径，跨设备可能不可用`,
+          });
+        }
+      }
+    }
+  } catch { /* advisory */ }
+
   return results;
 }
 
@@ -138,7 +166,7 @@ export function setupWorkspace(workspaceRoot: string, options?: {
 }): SetupResult[] {
   const results: SetupResult[] = [];
   const platform = getPlatform();
-  const { fixWindowsPaths = true, copyConfig = true, installRalph = true, installSkillsCli = true, installGhCli = true, installSkills, windowsFixPaths } = options ?? {};
+  const { fixWindowsPaths = true, copyConfig = false, installRalph = true, installSkillsCli = true, installGhCli = true, installSkills, windowsFixPaths } = options ?? {};
 
   if (installGhCli) {
     const ghCheck = run("gh --version");
@@ -171,6 +199,7 @@ export function setupWorkspace(workspaceRoot: string, options?: {
   }
 
   if (copyConfig) {
+    results.push({ step: "config overwrite warning", status: "warning", detail: "copyConfig=true 将覆盖 ~/.config/opencode/opencode.jsonc。已存在的配置可能丢失。建议: 先 export 备份。", });
     const sourceConfig = path.join(workspaceRoot, "opencode-dotfiles", "config", "opencode.jsonc");
     if (fs.existsSync(sourceConfig)) {
       const configDir = path.join(os.homedir(), ".config", "opencode"); fs.mkdirSync(configDir, { recursive: true });

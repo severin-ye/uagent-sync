@@ -114,7 +114,7 @@ export function exportSystemState(workspaceRoot: string): WorkspaceState {
     timestamp: new Date().toISOString(),
     platform: getPlatform(),
     hostname: os.hostname(),
-    opencodeConfig: config,
+    opencodeConfig: sanitizeConfig(config),
     envVars: readEnvVarNames(workspaceRoot),
     submodules: readSubmodules(workspaceRoot),
     skills,
@@ -122,6 +122,54 @@ export function exportSystemState(workspaceRoot: string): WorkspaceState {
     windowsFixPaths: detectWindowsProblematicPaths(workspaceRoot),
     playwrightMcp: pwConfig,
   };
+}
+
+function sanitizeConfig(config: Record<string, unknown>): Record<string, unknown> {
+  const result: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(config)) {
+    if (key === "$schema") { result[key] = value; continue; }
+    if (key === "share") { result[key] = value; continue; }
+    if (key === "skills") { result[key] = value; continue; }
+
+    if (key === "plugin") {
+      result[key] = value; // plugin names are safe
+      continue;
+    }
+
+    if (key === "provider") {
+      // Only keep providers that use API keys (not OAuth)
+      const providers = value as Record<string, Record<string, unknown>>;
+      const safe: Record<string, Record<string, unknown>> = {};
+      for (const [name, cfg] of Object.entries(providers)) {
+        // Skip OAuth-based providers (no API keys, auth handled by plugins)
+        if (name === "openai") continue;
+        // Keep API key-based providers
+        safe[name] = cfg;
+      }
+      if (Object.keys(safe).length > 0) result[key] = safe;
+      continue;
+    }
+
+    if (key === "mcp") {
+      const mcp = value as Record<string, Record<string, unknown>>;
+      const safe: Record<string, Record<string, unknown>> = {};
+      for (const [name, cfg] of Object.entries(mcp)) {
+        const sanitized: Record<string, unknown> = {};
+        for (const [k, v] of Object.entries(cfg)) {
+          // Strip secrets
+          if (k === "environment") continue;   // tokens
+          if (k === "headers") continue;        // Authorization headers
+          sanitized[k] = v;
+        }
+        safe[name] = sanitized;
+      }
+      result[key] = safe;
+      continue;
+    }
+
+    // Unknown keys: skip to be safe
+  }
+  return result;
 }
 
 function detectPlaywrightInfo(config: Record<string, unknown>): Record<string, unknown> | undefined {

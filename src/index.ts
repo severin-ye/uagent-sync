@@ -451,7 +451,7 @@ This is a read-only operation.`,
 
 const SetupSchema = z.object({
   fixWindowsPaths: z.boolean().optional().default(true).describe("Fix Windows NTFS path issues (default: true)"),
-  copyConfig: z.boolean().optional().default(true).describe("Copy opencode config from dotfiles (default: true)"),
+  copyConfig: z.boolean().optional().default(false).describe("Copy opencode config from dotfiles (⚠️ destructive, default: false)"),
   installRalph: z.boolean().optional().default(true).describe("Install Ralph CLI if missing (default: true)"),
   installSkillsCli: z.boolean().optional().default(true).describe("Install Skills CLI if missing (default: true)"),
   installGhCli: z.boolean().optional().default(true).describe("Install GitHub CLI via package manager if missing (default: true)"),
