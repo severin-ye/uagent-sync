@@ -52,6 +52,16 @@ export function stripJsonComments(content: string): string {
 }
 
 export function readOpenCodeConfig(workspaceRoot: string): Record<string, unknown> {
+  // Environment override for testing — avoids touching the real config file
+  const testConfig = process.env.OPENCODE_CONFIG_TEST;
+  if (testConfig && fs.existsSync(testConfig)) {
+    try {
+      const content = fs.readFileSync(testConfig, "utf-8");
+      const clean = stripJsonComments(content);
+      return JSON.parse(clean) as Record<string, unknown>;
+    } catch { /* fall through */ }
+  }
+
   const configPaths = [
     path.join(os.homedir(), ".config", "opencode", "opencode.jsonc"),
     path.join(os.homedir(), ".config", "opencode", "opencode.json"),

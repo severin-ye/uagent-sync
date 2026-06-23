@@ -978,6 +978,115 @@ The log is stored at opencode-dotfiles/.install-log.json and synced with the wor
   }
 );
 
+// ─── Tool: crystallize (one-command provenance + guide + export + push) ───
+
+const CrystallizeSchema = z.object({
+  type: z.enum(["skill", "mcp", "plugin", "cli-tool", "dependency", "other"]).describe("What was installed"),
+  name: z.string().min(1).max(200).describe("Component name"),
+  source: z.string().min(1).max(2000).describe("Install source URL/package"),
+  installCommand: z.string().optional().describe("Exact install command used"),
+  notes: z.string().optional().describe("Installation notes"),
+  pitfalls: z.array(z.string()).optional().describe("Known issues or pitfalls encountered"),
+  message: z.string().max(500).optional().describe("Git commit message"),
+  skipPush: z.boolean().optional().default(false).describe("If true, skip git push (only log + guide + export)"),
+}).strict();
+
+server.registerTool(
+  "opencode_sync_crystallize",
+  {
+    title: "Crystallize — One-Command Provenance Archive",
+    description: `One command to crystallize your environment change.
+
+Combines 4 steps into 1:
+1. Record the install entry (provenance log)
+2. Generate SYNC-GUIDE.md + know-how files
+3. Export workspace state to JSON
+4. Git add + commit + push to GitHub
+
+Use when you've just installed a new MCP, plugin, or skill and want to
+archive the complete picture: what it is, how to restore it, and why.
+
+Trigger with natural language: "crystallize this install" / "结晶这个安装"`,
+    inputSchema: CrystallizeSchema,
+    annotations: {
+      readOnlyHint: false,
+      destructiveHint: true,
+      idempotentHint: false,
+      openWorldHint: true,
+    },
+  },
+  async (opts: z.infer<typeof CrystallizeSchema>) => {
+    const workspaceRoot = resolveWorkspaceRoot();
+    const results: string[] = [];
+
+    // Step 1: Record provenance
+    const entry = appendInstallEntry(workspaceRoot, {
+      type: opts.type,
+      name: opts.name,
+      source: opts.source,
+      installCommand: opts.installCommand || `(manual) ${opts.source}`,
+      status: "success",
+      notes: opts.notes || "",
+      pitfalls: opts.pitfalls || [],
+    });
+    results.push(`📝 Step 1: Recorded provenance — ${entry.type}/${entry.name}`);
+
+    // Step 2: Generate sync guide + know-how
+    const stateForGuide = exportSystemState(workspaceRoot);
+    const guidePath = generateSyncGuide(workspaceRoot, stateForGuide);
+    results.push(`📖 Step 2: Generated guide — ${guidePath}`);
+
+    // Step 3: Export state
+    const stateFile = path.join(workspaceRoot, "opencode-dotfiles", "state", "workspace-sync-state.json");
+    const state = exportSystemState(workspaceRoot);
+    fs.writeFileSync(stateFile, JSON.stringify(state, null, 2));
+    results.push(`📦 Step 3: Exported state — ${state.submodules.length} submodules, ${state.skills.length} skills`);
+
+    // Step 4: Git add + commit + push
+    const addResult = run("git add opencode-dotfiles/", workspaceRoot);
+    if (addResult.code !== 0) {
+      results.push(`⚠️ Step 4: git add failed — ${addResult.stderr}`);
+    } else {
+      const commitMsg = opts.message || `Crystallize: ${opts.name || "environment update"} ${new Date().toISOString().slice(0, 19)}`;
+      const tmpMsgFile = path.join(workspaceRoot, "opencode-dotfiles", "state", ".commit-msg.tmp");
+      fs.writeFileSync(tmpMsgFile, commitMsg, "utf-8");
+      const commitResult = run(`git commit -F ${shellEscape(tmpMsgFile)}`, workspaceRoot);
+      try { fs.unlinkSync(tmpMsgFile); } catch { /* ok */ }
+
+      if (commitResult.code !== 0) {
+        results.push(`⚠️ Step 4: git commit — ${commitResult.stderr}`);
+      } else {
+        results.push(`✅ Step 4: Committed — "${commitMsg}"`);
+
+        if (!opts.skipPush) {
+          const pushResult = run("git push", workspaceRoot);
+          if (pushResult.code !== 0) {
+            results.push(`⚠️ Step 4: git push failed — ${pushResult.stderr}`);
+          } else {
+            results.push(`🚀 Step 4: Pushed to remote`);
+          }
+        } else {
+          results.push(`⏭️ Step 4: Push skipped (skipPush=true)`);
+        }
+      }
+    }
+
+    return {
+      content: [{
+        type: "text",
+        text: [
+          "# ✨ Crystallized",
+          "",
+          ...results,
+          "",
+          `State: \`${stateFile}\``,
+          `Guide: \`${guidePath}\``,
+        ].join("\n"),
+      }],
+    };
+  }
+);
+
 // ─── Main ───
 
 async function main() {
