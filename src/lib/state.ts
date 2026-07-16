@@ -5,6 +5,7 @@ import { run } from "./run.js";
 import { getPlatform } from "./cache.js";
 import { resolveSkillSources } from "./skills.js";
 import { generateSyncMcpConfig } from "./portable.js";
+import { redactSecretsDeep, REDACTED } from "./redact.js";
 import type { WorkspaceState, SubmoduleState, ImportResult } from "./types.js";
 
 export function stripJsonComments(content: string): string {
@@ -155,8 +156,8 @@ function sanitizeConfig(config: Record<string, unknown>): Record<string, unknown
       for (const [name, cfg] of Object.entries(providers)) {
         // Skip OAuth-based providers (no API keys, auth handled by plugins)
         if (name === "openai") continue;
-        // Keep API key-based providers
-        safe[name] = cfg;
+        // Keep API key-based providers（内容级脱敏：内联 apiKey 等 → <hidden>）
+        safe[name] = redactSecretsDeep(cfg);
       }
       if (Object.keys(safe).length > 0) result[key] = safe;
       continue;
@@ -173,7 +174,8 @@ function sanitizeConfig(config: Record<string, unknown>): Record<string, unknown
           if (k === "headers") continue;        // Authorization headers
           sanitized[k] = v;
         }
-        safe[name] = sanitized;
+        // 内容级脱敏：url query 令牌等 → <hidden>（environment/headers 已在上面整体剥离）
+        safe[name] = redactSecretsDeep(sanitized);
       }
       result[key] = safe;
       continue;
@@ -299,6 +301,12 @@ function deepMerge(target: Record<string, unknown>, source: Record<string, unkno
     if (key.startsWith("_")) continue;
     const tv = target[key];
     const sv = source[key];
+    // 脱敏哨兵守卫：source 含 <hidden> 且本地有非空字符串 → 保留本地真实值，
+    // 避免拉取方把可用的本地密钥覆盖成脱敏标记。全新设备（本地无值）则写入 <hidden>。
+    if (typeof sv === "string" && sv.includes(REDACTED) && typeof tv === "string" && tv.length > 0) {
+      result[key] = tv;
+      continue;
+    }
     if (typeof tv === "object" && tv !== null && !Array.isArray(tv) && typeof sv === "object" && sv !== null && !Array.isArray(sv)) {
       result[key] = deepMerge(tv as Record<string, unknown>, sv as Record<string, unknown>);
     } else { result[key] = sv; }

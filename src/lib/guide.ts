@@ -1,6 +1,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { readOpenCodeConfig, exportSystemState } from "./state.js";
+import { redactSecretsDeep } from "./redact.js";
 import { resolveSkillSources, SKILL_PACKAGES, KNOWN_SKILL_SOURCES } from "./skills.js";
 import type { WorkspaceState, McpBuildInfo, McpGuide, KnownMcpEntry, KnownMcpData } from "./types.js";
 
@@ -388,9 +389,10 @@ function generatePitfallsMdTemplate(mcpName: string): string {
   ].join("\n");
 }
 
-function generateConfigRefMd(mcpName: string, mcpCfg: Record<string, unknown>, guide: McpGuide): string {
-  const sanitized = { ...mcpCfg };
-  // Redact sensitive values
+export function generateConfigRefMd(mcpName: string, mcpCfg: Record<string, unknown>, guide: McpGuide): string {
+  // 先做内容级脱敏（url query 令牌、Bearer、sk- 等密钥模式 → <hidden>）
+  const sanitized = redactSecretsDeep({ ...mcpCfg });
+  // 再做 key 名级掩码（防御纵深：值不像密钥但 key 名敏感的也盖住）
   if (sanitized.environment) {
     const env = { ...(sanitized.environment as Record<string, string>) };
     for (const k of Object.keys(env)) {

@@ -104,6 +104,44 @@ describe("config sanitization for export", () => {
     });
   });
 
+  it("should redact tokens inside MCP url query strings", () => {
+    withMockConfig({
+      mcp: {
+        zapier: {
+          type: "remote",
+          url: "https://mcp.zapier.com/api/mcp/s/abc123?token=FAKEZAPTOKEN789",
+          enabled: true,
+        },
+      },
+    }, () => {
+      const ws = path.join(TMP, "ws-url-redact");
+      fs.mkdirSync(ws, { recursive: true });
+      const state = exportSystemState(ws);
+      const mcp = (state.opencodeConfig as Record<string, unknown>)?.mcp as Record<string, Record<string, unknown>>;
+      const url = mcp?.zapier?.url as string;
+      assert.ok(url.includes("token=<hidden>"), `url should be redacted, got: ${url}`);
+      assert.ok(!url.includes("FAKEZAPTOKEN789"), "url must not leak the token");
+      assert.ok(url.startsWith("https://mcp.zapier.com/api/mcp/s/abc123"), "base url should be kept");
+    });
+  });
+
+  it("should redact inline apiKey in provider config", () => {
+    withMockConfig({
+      provider: {
+        deepseek: { options: { apiKey: "sk-FAKEKEY123456789" }, models: {} },
+      },
+    }, () => {
+      const ws = path.join(TMP, "ws-provider-redact");
+      fs.mkdirSync(ws, { recursive: true });
+      const state = exportSystemState(ws);
+      const prov = (state.opencodeConfig as Record<string, unknown>)?.provider as Record<string, { options?: { apiKey?: string } }>;
+      const key = prov?.deepseek?.options?.apiKey as string;
+      assert.ok(key, "provider apiKey should still be present (redacted)");
+      assert.ok(!key.includes("FAKEKEY123456789"), `apiKey must be redacted, got: ${key}`);
+      assert.ok(key.includes("<hidden>"), `apiKey should contain <hidden>, got: ${key}`);
+    });
+  });
+
   it("should NOT output empty config sections", () => {
     withMockConfig({
       provider: { openai: { models: {} } },
