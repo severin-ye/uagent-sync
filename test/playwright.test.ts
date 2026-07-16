@@ -226,10 +226,6 @@ describe("generateSyncGuide — Playwright section", () => {
   let generateSyncGuide: (ws: string, state: Record<string, unknown>) => string;
   let exportSystemState: (ws: string) => Record<string, unknown>;
   let ws: string;
-  let savedConfig: Buffer | null = null;
-  let lockId = 0;
-  function testLock() { return `.pw-lock-${++lockId}`; }
-  const realConfigPath = path.join(os.homedir(), ".config", "opencode", "opencode.jsonc");
 
   before(async () => {
     mod = await import("../dist/sync.js");
@@ -270,17 +266,7 @@ describe("generateSyncGuide — Playwright section", () => {
   });
 
   after(() => {
-    // Restore real config
-    if (savedConfig) {
-      try { fs.writeFileSync(realConfigPath, savedConfig); } catch { /* ok */ }
-    }
-    // Clean up any leaked lock files
-    try {
-      const dir = path.dirname(realConfigPath);
-      for (const f of fs.readdirSync(dir)) {
-        if (f.includes(".pw-lock-")) fs.unlinkSync(path.join(dir, f));
-      }
-    } catch { /* ok */ }
+    delete process.env.OPENCODE_CONFIG_TEST;
     if (fs.existsSync(TMP)) fs.rmSync(TMP, { recursive: true, force: true });
   });
 
@@ -289,23 +275,23 @@ describe("generateSyncGuide — Playwright section", () => {
     fs.writeFileSync(p, content, "utf-8");
   }
 
-  function withRealConfigDisabled<T>(fn: () => T): T {
-    const lockfile = realConfigPath + testLock();
-    if (fs.existsSync(realConfigPath)) {
-      savedConfig = fs.readFileSync(realConfigPath);
-      fs.renameSync(realConfigPath, lockfile);
-    }
+  // readOpenCodeConfig 的查找顺序是：home 的 opencode.jsonc → home 的 opencode.json → 工作区配置。
+  // 机器上若存在遗留的 opencode.json 会插队被读入，污染夹具。
+  // 用 OPENCODE_CONFIG_TEST 环境变量把配置源锁定到夹具文件，彻底隔离机器状态，
+  // 也不再需要改名/备份真实配置文件。
+  function withFixtureConfig<T>(fn: () => T): T {
+    const prev = process.env.OPENCODE_CONFIG_TEST;
+    process.env.OPENCODE_CONFIG_TEST = path.join(ws, "opencode-dotfiles", "config", "opencode.jsonc");
     try {
       return fn();
     } finally {
-      if (fs.existsSync(lockfile)) {
-        fs.renameSync(lockfile, realConfigPath);
-      }
+      if (prev === undefined) delete process.env.OPENCODE_CONFIG_TEST;
+      else process.env.OPENCODE_CONFIG_TEST = prev;
     }
   }
 
   it("should include Playwright install section", () => {
-    withRealConfigDisabled(() => {
+    withFixtureConfig(() => {
       writeWsConfig(`{
   "mcp": {
     "playwright": {
@@ -329,7 +315,7 @@ describe("generateSyncGuide — Playwright section", () => {
   });
 
   it("should include multi-model notes", () => {
-    withRealConfigDisabled(() => {
+    withFixtureConfig(() => {
       writeWsConfig(`{
   "mcp": {
     "playwright": {
@@ -348,7 +334,7 @@ describe("generateSyncGuide — Playwright section", () => {
   });
 
   it("should include known pitfalls", () => {
-    withRealConfigDisabled(() => {
+    withFixtureConfig(() => {
       writeWsConfig(`{
   "mcp": {
     "playwright": {
@@ -367,7 +353,7 @@ describe("generateSyncGuide — Playwright section", () => {
   });
 
   it("should NOT include Playwright section when not configured", () => {
-    withRealConfigDisabled(() => {
+    withFixtureConfig(() => {
       writeWsConfig(`{ "mcp": {} }`);
       const state = exportSystemState(ws);
       const guidePath = generateSyncGuide(ws, state);
