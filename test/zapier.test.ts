@@ -31,7 +31,7 @@ describe("MCP security audit", () => {
   });
 
   function readRealConfig(): Record<string, unknown> | null {
-    const realPath = path.join(os.homedir(), ".config", "opencode", "opencode.jsonc");
+    const realPath = path.join(os.homedir(), ".config", "opencode", "opencode.json");
     if (!fs.existsSync(realPath)) return null;
     const content = fs.readFileSync(realPath, "utf-8");
     const clean = mod.stripJsonComments(content);
@@ -102,7 +102,7 @@ describe("zapier-gmail config (ease-of-use exception)", () => {
   });
 
   it("should have a valid Zapier MCP endpoint URL", () => {
-    const realPath = path.join(os.homedir(), ".config", "opencode", "opencode.jsonc");
+    const realPath = path.join(os.homedir(), ".config", "opencode", "opencode.json");
     if (!fs.existsSync(realPath)) return;
 
     const content = fs.readFileSync(realPath, "utf-8");
@@ -121,7 +121,7 @@ describe("zapier-gmail config (ease-of-use exception)", () => {
   });
 
   it("should have oauth explicitly disabled", () => {
-    const realPath = path.join(os.homedir(), ".config", "opencode", "opencode.jsonc");
+    const realPath = path.join(os.homedir(), ".config", "opencode", "opencode.json");
     if (!fs.existsSync(realPath)) return;
 
     const content = fs.readFileSync(realPath, "utf-8");
@@ -145,7 +145,7 @@ describe("zapier-gmail endpoint", () => {
   before(async () => {
     mod = await import("../dist/sync.js");
     // Read token from actual config
-    const realPath = path.join(os.homedir(), ".config", "opencode", "opencode.jsonc");
+    const realPath = path.join(os.homedir(), ".config", "opencode", "opencode.json");
     if (fs.existsSync(realPath)) {
       const content = fs.readFileSync(realPath, "utf-8");
       const clean = mod.stripJsonComments(content);

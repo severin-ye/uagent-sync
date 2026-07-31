@@ -45,8 +45,8 @@ export function verifyEnvironment(workspaceRoot: string): VerifyResult[] {
   results.push({ component: "GitHub CLI", status: ghResult.code === 0 ? "ok" : "error", detail: ghResult.code === 0 ? "Authenticated" : "Not authenticated — run: gh auth login" });
   const gitResult = run("git --version");
   results.push({ component: "Git", status: gitResult.code === 0 ? "ok" : "error", detail: gitResult.code === 0 ? gitResult.stdout.trim() : "Not installed" });
-  const configPath = path.join(os.homedir(), ".config", "opencode", "opencode.jsonc");
-  const altConfigPath = path.join(os.homedir(), ".config", "opencode", "opencode.json");
+  const configPath = path.join(os.homedir(), ".config", "opencode", "opencode.json");
+  const altConfigPath = path.join(os.homedir(), ".config", "opencode", "opencode.jsonc");
   const configExists = fs.existsSync(configPath) || fs.existsSync(altConfigPath);
   results.push({ component: "OpenCode config", status: configExists ? "ok" : "error", detail: configExists ? configPath : "Missing — run setup" });
   const ralphResult = run("ralph --version");
@@ -75,8 +75,8 @@ export function verifyEnvironment(workspaceRoot: string): VerifyResult[] {
   let config: Record<string, unknown> = {};
   try {
     const knownMcps = loadKnownMcps(workspaceRoot);
-    const configPath = path.join(os.homedir(), ".config", "opencode", "opencode.jsonc");
-    const altConfigPath = path.join(os.homedir(), ".config", "opencode", "opencode.json");
+    const configPath = path.join(os.homedir(), ".config", "opencode", "opencode.json");
+    const altConfigPath = path.join(os.homedir(), ".config", "opencode", "opencode.jsonc");
     for (const p of [configPath, altConfigPath]) {
       if (!fs.existsSync(p)) continue;
       try {
@@ -202,11 +202,11 @@ export function setupWorkspace(workspaceRoot: string, options?: {
   }
 
   if (copyConfig) {
-    results.push({ step: "config overwrite warning", status: "warning", detail: "copyConfig=true 将覆盖 ~/.config/opencode/opencode.jsonc。已存在的配置可能丢失。建议: 先 export 备份。", });
-    const sourceConfig = path.join(workspaceRoot, "opencode-dotfiles", "config", "opencode.jsonc");
+    results.push({ step: "config overwrite warning", status: "warning", detail: "copyConfig=true 将覆盖 ~/.config/opencode/opencode.json。已存在的配置可能丢失。建议: 先 export 备份。", });
+    const sourceConfig = path.join(workspaceRoot, "opencode-dotfiles", "config", "opencode.json");
     if (fs.existsSync(sourceConfig)) {
       const configDir = path.join(os.homedir(), ".config", "opencode"); fs.mkdirSync(configDir, { recursive: true });
-      const targetConfig = path.join(configDir, "opencode.jsonc");
+      const targetConfig = path.join(configDir, "opencode.json");
       if (fs.existsSync(targetConfig)) { fs.copyFileSync(targetConfig, targetConfig + ".bak"); results.push({ step: "Backup existing config", status: "ok", detail: "Backed up" }); }
       // Auto-fix opencode-sync path for portability
       let configContent = fs.readFileSync(sourceConfig, "utf-8");
@@ -229,7 +229,7 @@ export function setupWorkspace(workspaceRoot: string, options?: {
     const syncPath = detectSyncPath(workspaceRoot);
     if (syncPath.source === "workspace" && syncPath.command.length > 0) {
       const configDir = path.join(os.homedir(), ".config", "opencode");
-      const configFile = path.join(configDir, "opencode.jsonc");
+      const configFile = path.join(configDir, "opencode.json");
       if (fs.existsSync(configFile)) {
         let content = fs.readFileSync(configFile, "utf-8");
         const oldPattern = /"opencode-sync"\s*:\s*\{[^}]*"command"\s*:\s*\["node",\s*"[^"]*"\]/;

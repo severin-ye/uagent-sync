@@ -89,7 +89,7 @@ export function detectWorkspaceInfo(cwd?: string): WorkspaceInfo | null {
       name: cache.workspaceName, root: cache.workspaceRoot, hasGitmodules: true, gitRemote: cache.gitRemote,
       defaultRepoName: `codelib-${os.userInfo().username}`,
       dotfilesExist: fs.existsSync(cache.dotfilesPath),
-      mcpConfigured: fs.existsSync(path.join(os.homedir(), ".config", "opencode", "opencode.jsonc")),
+      mcpConfigured: fs.existsSync(path.join(os.homedir(), ".config", "opencode", "opencode.json")),
     };
   }
 
@@ -109,7 +109,7 @@ export function detectWorkspaceInfo(cwd?: string): WorkspaceInfo | null {
     name: path.basename(wsRoot), root: wsRoot, hasGitmodules: true, gitRemote,
     defaultRepoName: `codelib-${os.userInfo().username || "user"}`,
     dotfilesExist: fs.existsSync(path.join(wsRoot, "opencode-dotfiles")),
-    mcpConfigured: fs.existsSync(path.join(os.homedir(), ".config", "opencode", "opencode.jsonc")),
+    mcpConfigured: fs.existsSync(path.join(os.homedir(), ".config", "opencode", "opencode.json")),
   };
 
   writeCache({

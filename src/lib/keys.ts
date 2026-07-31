@@ -20,7 +20,7 @@ export function detectApiKeys(workspaceRoot: string): ApiKeyInfo {
     }
   }
 
-  const configPath = path.join(os.homedir(), ".config", "opencode", "opencode.jsonc");
+  const configPath = path.join(os.homedir(), ".config", "opencode", "opencode.json");
   if (fs.existsSync(configPath)) {
     try {
       const content = fs.readFileSync(configPath, "utf-8");

@@ -271,17 +271,17 @@ describe("generateSyncGuide — Playwright section", () => {
   });
 
   function writeWsConfig(content: string) {
-    const p = path.join(ws, "opencode-dotfiles", "config", "opencode.jsonc");
+    const p = path.join(ws, "opencode-dotfiles", "config", "opencode.json");
     fs.writeFileSync(p, content, "utf-8");
   }
 
-  // readOpenCodeConfig 的查找顺序是：home 的 opencode.jsonc → home 的 opencode.json → 工作区配置。
+  // readOpenCodeConfig 的查找顺序是：home 的 opencode.json → home 的 opencode.jsonc（旧机器回退）→ 工作区配置。
   // 机器上若存在遗留的 opencode.json 会插队被读入，污染夹具。
   // 用 OPENCODE_CONFIG_TEST 环境变量把配置源锁定到夹具文件，彻底隔离机器状态，
   // 也不再需要改名/备份真实配置文件。
   function withFixtureConfig<T>(fn: () => T): T {
     const prev = process.env.OPENCODE_CONFIG_TEST;
-    process.env.OPENCODE_CONFIG_TEST = path.join(ws, "opencode-dotfiles", "config", "opencode.jsonc");
+    process.env.OPENCODE_CONFIG_TEST = path.join(ws, "opencode-dotfiles", "config", "opencode.json");
     try {
       return fn();
     } finally {

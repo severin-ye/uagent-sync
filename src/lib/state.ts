@@ -63,10 +63,11 @@ export function readOpenCodeConfig(workspaceRoot: string): Record<string, unknow
     } catch { /* fall through */ }
   }
 
+  // 标准配置文件名是 opencode.json（官方惯例）。opencode.jsonc 仅作旧机器回退读取。
   const configPaths = [
-    path.join(os.homedir(), ".config", "opencode", "opencode.jsonc"),
     path.join(os.homedir(), ".config", "opencode", "opencode.json"),
-    path.join(workspaceRoot, "opencode-dotfiles", "config", "opencode.jsonc"),
+    path.join(os.homedir(), ".config", "opencode", "opencode.jsonc"),
+    path.join(workspaceRoot, "opencode-dotfiles", "config", "opencode.json"),
   ];
   for (const configPath of configPaths) {
     if (!fs.existsSync(configPath)) continue;
@@ -274,7 +275,7 @@ export function importSystemState(workspaceRoot: string, state: WorkspaceState):
   if (state.opencodeConfig && Object.keys(state.opencodeConfig).length > 0) {
     const configDir = path.join(os.homedir(), ".config", "opencode");
     fs.mkdirSync(configDir, { recursive: true });
-    const configPath = path.join(configDir, "opencode.jsonc");
+    const configPath = path.join(configDir, "opencode.json");
     let existing: Record<string, unknown> = {};
     if (fs.existsSync(configPath)) {
       try {

@@ -6,7 +6,7 @@ import * as os from "node:os";
 import { importSystemState } from "../dist/lib/state.js";
 import type { WorkspaceState } from "../dist/lib/types.js";
 
-// ⚠️ 安全前提：importSystemState 会写 os.homedir()/.config/opencode/opencode.jsonc。
+// ⚠️ 安全前提：importSystemState 会写 os.homedir()/.config/opencode/opencode.json。
 // 本测试把 USERPROFILE/HOME 指向临时目录，并在 before() 里断言 os.homedir() 确实
 // 解析到临时 home —— 若断言失败立即中止，绝不触碰真实 home 配置。
 
@@ -39,7 +39,7 @@ describe("importSystemState redacted sentinel guard", () => {
   });
 
   function homeConfigPath(): string {
-    return path.join(os.homedir(), ".config", "opencode", "opencode.jsonc");
+    return path.join(os.homedir(), ".config", "opencode", "opencode.json");
   }
 
   function makeState(opencodeConfig: Record<string, unknown>): WorkspaceState {
