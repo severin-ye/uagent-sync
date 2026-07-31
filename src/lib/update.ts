@@ -250,14 +250,30 @@ export async function updateExtensions(options: {
       planned.push({ name: `plugins/${pkg}`, command: `bun add ${pkg}@latest --no-save`, cwd: path.join(PLUGIN_CACHE, pkg) });
     }
   }
-  if (selected.has("skills")) planned.push({ name: "skills", command: "skills update -g" });
+  if (selected.has("skills")) {
+    // skills CLI 1.5.9 在 Windows 上 update 子进程有 bug（手动等价命令正常），且部分失败时 exit code 仍为 0。
+    // 先跑 update 检查：成功（无 Failed）→ 记录单步；否则 → 从输出提取 source 列表，逐个 skills add 降级更新。
+    const check = await spawnCommand("skills update -g", { env: githubToken ? { GITHUB_TOKEN: githubToken } : undefined, timeoutMs: 120_000 });
+    const stripAnsi = (s: string) => s.replace(/\x1b\[[0-9;]*[A-Za-z]/g, "").replace(/\x1b\[K/g, "").trim();
+    const sources = [...new Set(
+      [...check.output.matchAll(/Checking skills from source:\s*([^\r\n]+)/g)].map((m) => stripAnsi(m[1])),
+    )].filter(Boolean);
+    const updateFailed = check.code !== 0 || /Failed to update/.test(check.output);
+    if (!updateFailed) {
+      planned.push({ name: "skills", command: "skills update -g" });
+    } else {
+      for (const src of sources) {
+        planned.push({ name: `skills/add:${src}`, command: `skills add "${src}" -g -y` });
+      }
+    }
+  }
   if (selected.has("mcp")) {
-    // 按工具拆分：已安装 → uv tool upgrade；未安装（uv tool run 临时模式）→ uv tool install
+    // 按工具拆分：已安装 → uv tool upgrade；未安装（uv tool run 临时模式）→ uv tool install --force（覆盖残留 exe）
     const installed = await readInstalledUvTools();
     for (const toolName of UV_MCP_TOOLS) {
       const cmd = installed.has(toolName)
         ? `uv tool upgrade ${toolName}`
-        : `uv tool install ${toolName}`;
+        : `uv tool install --force ${toolName}`;
       planned.push({ name: `mcp(uv)/${toolName}`, command: cmd });
     }
   }
