@@ -23,7 +23,7 @@ import {
   run, shellEscape, isPathSafe, CHARACTER_LIMIT,
   type WorkspaceState, type InitType,
 } from "./sync.js";
-import { updateExtensions, type UpdateComponent } from "./lib/update.js";
+import { updateExtensions, archiveUpdateReport, type UpdateComponent } from "./lib/update.js";
 
 const z = tool.schema;
 
@@ -575,7 +575,50 @@ Use dryRun=true to preview commands without executing. After updating, restart o
         },
         async execute(args) {
           const report = await updateExtensions({ components: args.components as UpdateComponent[] | undefined, dryRun: args.dryRun });
-          return { title: "opencode-sync update", output: report.text, metadata: { summary: report.summary } };
+          let reportFile: string | undefined;
+          try {
+            reportFile = archiveUpdateReport(resolveWorkspaceRoot(), report);
+          } catch { /* archive is best-effort */ }
+          return {
+            title: "opencode-sync update",
+            output: report.text + (reportFile ? `\n\n完整报告存档: \`${reportFile}\`` : ""),
+            metadata: { summary: report.summary },
+          };
+        },
+      }),
+
+      // ─── changelog（变更证据归档辅助）───
+      opencode_sync_changelog: tool({
+        description: `Print change evidence from the latest update report, for generating a categorized changelog.
+
+Reads opencode-dotfiles/state/update-reports/update-report.json and lists, per extension:
+- version transition (before → after)
+- change evidence (git log / GitHub release notes snippets)
+
+Use this after opencode_sync_update to draft the 4-category changelog:
+功能添加 (Added) / 功能优化 (Optimized) / Bug 修复 (Fixed) / 破坏性变更 (Breaking),
+then append to opencode-dotfiles/CHANGELOG-extensions.md.`,
+        args: {
+          reportPath: z.string().optional().describe("Path to an update report JSON (default: latest in state/update-reports/)"),
+        },
+        async execute(args) {
+          const workspaceRoot = resolveWorkspaceRoot();
+          const reportsDir = path.join(workspaceRoot, "opencode-dotfiles", "state", "update-reports");
+          const file = args.reportPath || path.join(reportsDir, "update-report.json");
+          if (!fs.existsSync(file)) return text(`No update report found: ${file}`);
+          const report = JSON.parse(fs.readFileSync(file, "utf-8")) as { timestamp: string; dryRun: boolean; steps: Array<{ name: string; status: string; versionBefore?: string; versionAfter?: string; evidence?: string[] }> };
+          const lines = [`# 变更证据 — ${report.timestamp}（dry-run: ${report.dryRun}）`];
+          for (const s of report.steps) {
+            const ver = s.versionBefore && s.versionAfter && s.versionBefore !== s.versionAfter
+              ? ` ${s.versionBefore} → ${s.versionAfter}` : "";
+            lines.push("", `## ${s.name}${ver} [${s.status}]`);
+            if (s.evidence && s.evidence.length > 0) {
+              for (const e of s.evidence) lines.push(`- ${e}`);
+            } else {
+              lines.push("（无变更证据）");
+            }
+          }
+          return text(lines.join("\n"));
         },
       }),
     },

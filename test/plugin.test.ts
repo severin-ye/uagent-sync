@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import * as assert from "node:assert";
-import { updateExtensions } from "../dist/lib/update.js";
+import { updateExtensions, type UpdateProgress } from "../dist/lib/update.js";
 import OpencodeSyncPlugin from "../dist/plugin.js";
 
 describe("updateExtensions", () => {
@@ -10,12 +10,22 @@ describe("updateExtensions", () => {
     assert.ok(report.steps.every((s) => s.status === "skipped"), "dry-run must not execute");
     assert.ok(report.steps.some((s) => s.name.startsWith("plugins/")), "plugins component present");
     assert.ok(report.steps.some((s) => s.name === "skills"), "skills component present");
-    assert.ok(report.steps.some((s) => s.name === "mcp(uv)"), "uv mcp component present");
+    assert.ok(report.steps.some((s) => s.name.startsWith("mcp(uv)/")), "uv mcp component present");
     assert.ok(report.steps.some((s) => s.name.startsWith("sync/")), "sync component present");
     assert.ok(report.steps.some((s) => s.name === "config-deps"), "config-deps component present");
     assert.equal(report.summary.skipped, report.steps.length);
     assert.equal(report.summary.error, 0);
     assert.equal(report.summary.warning, 0);
+  });
+
+  it("emits plan → step-start → step-end → done event flow", async () => {
+    const events: UpdateProgress[] = [];
+    await updateExtensions({ components: ["skills"], dryRun: true, onProgress: (ev) => events.push(ev) });
+    assert.ok(events.some((e) => e.type === "plan"), "plan event emitted");
+    assert.ok(events.some((e) => e.type === "step-start" && e.name === "skills"), "step-start emitted");
+    assert.ok(events.some((e) => e.type === "step-end" && e.name === "skills" && e.status === "skipped"), "step-end emitted");
+    assert.ok(events.some((e) => e.type === "done"), "done emitted");
+    assert.ok(!events.some((e) => e.type === "output"), "no output in dry-run");
   });
 
   it("respects explicit components filter", async () => {
@@ -45,6 +55,7 @@ describe("OpencodeSyncPlugin", () => {
       "opencode_sync_verify", "opencode_sync_setup", "opencode_sync_init",
       "opencode_sync_create_repo", "opencode_sync_api_keys", "opencode_sync_guide",
       "opencode_sync_log", "opencode_sync_crystallize", "opencode_sync_update",
+      "opencode_sync_changelog",
     ];
     for (const name of expected) {
       assert.ok(names.includes(name), `missing tool: ${name}`);
