@@ -1,3 +1,5 @@
+// 技能来源登记：仅 opencode 生态的 4 个源（gstack / anthropics/skills / open-design / science-skills）。
+// codex 生态的技能不在跟踪范围（见 lib/scope.ts 约定）。
 export const KNOWN_SKILL_SOURCES: Record<string, string> = {
   "gstack": "garrytan/gstack@gstack",
   "docx": "anthropics/skills@docx",

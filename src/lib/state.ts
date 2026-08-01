@@ -113,6 +113,7 @@ function readSubmodules(workspaceRoot: string): SubmoduleState[] {
   return submodules;
 }
 
+// 只扫描 opencode 生态的 skills 目录（~/.agents/skills）；codex 生态不在跟踪范围（见 lib/scope.ts 约定）。
 function readSkills(): string[] {
   const skillsDir = path.join(os.homedir(), ".agents", "skills");
   if (!fs.existsSync(skillsDir)) return [];
