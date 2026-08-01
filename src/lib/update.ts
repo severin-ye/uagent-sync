@@ -251,8 +251,15 @@ export async function updateExtensions(options: {
   const planned: { name: string; command: string; cwd?: string }[] = [];
 
   if (selected.has("plugins") && fs.existsSync(PLUGIN_CACHE)) {
-    for (const pkg of fs.readdirSync(PLUGIN_CACHE).filter((p) => isPluginPkgDir(p) && fs.statSync(path.join(PLUGIN_CACHE, p)).isDirectory())) {
-      planned.push({ name: `plugins/${pkg}`, command: `bun add ${pkg}@latest --no-save`, cwd: path.join(PLUGIN_CACHE, pkg) });
+    // opencode 对 npm 插件执行 bun add <pkg>@latest，安装目录是 packages/<pkg>@latest（源码 resolvePluginTarget 确认）。
+    // 扫描时目录名去掉 @latest 后缀得到包名；更新目标一律用 @latest 目录。
+    const dirs = fs.readdirSync(PLUGIN_CACHE)
+      .filter((d) => isPluginPkgDir(d) && fs.statSync(path.join(PLUGIN_CACHE, d)).isDirectory());
+    const pkgs = [...new Set(dirs.map((d) => d.replace(/@latest$/, "")))];
+    for (const pkg of pkgs) {
+      const latest = path.join(PLUGIN_CACHE, `${pkg}@latest`);
+      const target = fs.existsSync(latest) ? latest : path.join(PLUGIN_CACHE, pkg);
+      planned.push({ name: `plugins/${pkg}`, command: `bun add ${pkg}@latest --no-save`, cwd: target });
     }
   }
   if (selected.has("skills")) {
