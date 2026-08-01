@@ -119,9 +119,9 @@ export async function updateCodebaseMemory(opts: { dryRun?: boolean; onLine?: (l
     if (!exeName) return { status: "warning", versionBefore, versionAfter: tag, detail: "解压后未找到 exe" };
 
     if (fs.existsSync(BIN_PATH)) {
-      // Windows：运行中的 exe 可重命名、不可覆盖。先重命名旧文件（句柄随旧名保留），
-      // 原路径空出后即可写入新 exe——更新无需等待重启，重启只是新版本生效。
-      fs.renameSync(BIN_PATH, `${BIN_PATH}.bak-${Date.now()}`);
+      // 先备份旧版（读操作，运行中也可执行）；覆盖写入失败（EBUSY）由外层 catch 处理，
+      // 返回 warning 提示稍后重试——不采用重命名运行中 exe 的取巧手段。
+      fs.copyFileSync(BIN_PATH, `${BIN_PATH}.bak-${Date.now()}`);
     }
     fs.copyFileSync(path.join(tmpDir, exeName), BIN_PATH);
     fs.writeFileSync(VERSION_FILE, JSON.stringify({ version: tag, updatedAt: new Date().toISOString() }, null, 2));
