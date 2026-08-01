@@ -24,6 +24,7 @@ export type UpdateComponent =
   | "plugins"
   | "skills"
   | "mcp"
+  | "cli"
   | "sync"
   | "config-deps";
 
@@ -62,8 +63,10 @@ const PLUGIN_CACHE = path.join(os.homedir(), ".cache", "opencode", "packages");
 const CONFIG_DIR = path.join(os.homedir(), ".config", "opencode");
 const UV_MCP_TOOLS = ["paper-search-mcp", "semantic-scholar-fastmcp", "zotero-mcp", "arxiv-mcp-server", "office-word-mcp-server"];
 const NPMX_MCP_TOOLS = ["@notionhq/notion-mcp-server"];
+/** uv 管理的 CLI 工具（渠道唯一：agent-reach 为 git 源，其余 PyPI）。 */
+const UV_CLI_TOOLS = ["bilibili-cli", "agent-reach", "yt-dlp", "twitter-cli"];
 
-const DEFAULT_COMPONENTS: UpdateComponent[] = ["plugins", "skills", "mcp", "sync", "config-deps"];
+const DEFAULT_COMPONENTS: UpdateComponent[] = ["plugins", "skills", "mcp", "cli", "sync", "config-deps"];
 const COMMAND_TIMEOUT_MS = 180_000;
 
 /** 插件缓存目录名 → 包名：保留 scoped 包（@scope/pkg），跳过 `~` 与版本化目录（pkg@latest）。 */
@@ -285,6 +288,16 @@ export async function updateExtensions(options: {
     // 本地二进制系：GitHub Release 自动更新
     planned.push({ name: "mcp(bin)/codebase-memory-mcp", command: "GitHub release 自动更新（DeusData/codebase-memory-mcp）" });
   }
+  if (selected.has("cli")) {
+    // uv 管理的 CLI 工具：已安装 → upgrade；未安装 → install --force
+    const installed = await readInstalledUvTools();
+    for (const toolName of UV_CLI_TOOLS) {
+      const cmd = installed.has(toolName)
+        ? `uv tool upgrade ${toolName}`
+        : `uv tool install --force ${toolName}`;
+      planned.push({ name: `cli(uv)/${toolName}`, command: cmd });
+    }
+  }
   if (selected.has("sync")) {
     const syncDir = path.join(resolveWorkspaceRoot(), "2_Business", "mcp-opencode-sync");
     if (fs.existsSync(path.join(syncDir, "package.json"))) {
@@ -327,8 +340,8 @@ export async function updateExtensions(options: {
     let versionBefore: string | undefined;
     if (p.name.startsWith("plugins/")) {
       versionBefore = readPackageVersion(p.cwd!, p.name.slice("plugins/".length));
-    } else if (p.name.startsWith("mcp(uv)/")) {
-      const toolName = p.name.slice("mcp(uv)/".length);
+    } else if (p.name.startsWith("mcp(uv)/") || p.name.startsWith("cli(uv)/")) {
+      const toolName = p.name.slice(p.name.startsWith("mcp(uv)/") ? "mcp(uv)/".length : "cli(uv)/".length);
       const before = await readUvVersions();
       versionBefore = `${toolName}=${before[toolName] ?? "?"}`;
     } else if (p.name.startsWith("sync/")) {
@@ -348,8 +361,8 @@ export async function updateExtensions(options: {
     let versionAfter: string | undefined;
     if (p.name.startsWith("plugins/")) {
       versionAfter = readPackageVersion(p.cwd!, p.name.slice("plugins/".length));
-    } else if (p.name.startsWith("mcp(uv)/")) {
-      const toolName = p.name.slice("mcp(uv)/".length);
+    } else if (p.name.startsWith("mcp(uv)/") || p.name.startsWith("cli(uv)/")) {
+      const toolName = p.name.slice(p.name.startsWith("mcp(uv)/") ? "mcp(uv)/".length : "cli(uv)/".length);
       const after = await readUvVersions();
       versionAfter = `${toolName}=${after[toolName] ?? "?"}`;
     } else if (p.name.startsWith("sync/")) {
@@ -357,7 +370,7 @@ export async function updateExtensions(options: {
     }
 
     // 判定状态：命令失败且允许失败 → warning；否则 error；成功 → ok
-    const allowFail = p.name.startsWith("sync/") || p.name === "config-deps" || p.name === "opencode" || p.name.startsWith("mcp(uv)/") || p.name.startsWith("mcp(npx)/") || p.name.startsWith("mcp(bin)/");
+    const allowFail = p.name.startsWith("sync/") || p.name === "config-deps" || p.name === "opencode" || p.name.startsWith("mcp(uv)/") || p.name.startsWith("mcp(npx)/") || p.name.startsWith("mcp(bin)/") || p.name.startsWith("cli(uv)/");
     const status: UpdateStep["status"] = result.code === 0 ? "ok"
       : result.code === 124 ? "error"
       : allowFail ? "warning" : "error";

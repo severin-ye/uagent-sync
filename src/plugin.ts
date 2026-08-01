@@ -569,8 +569,8 @@ Components:
 Default (no components arg) runs: plugins, skills, mcp, sync, config-deps.
 Use dryRun=true to preview commands without executing. After updating, restart opencode/OpenChamber.`,
         args: {
-          components: z.array(z.enum(["opencode", "plugins", "skills", "mcp", "sync", "config-deps"])).optional()
-            .describe("Components to update (default: plugins, skills, mcp, sync, config-deps)"),
+          components: z.array(z.enum(["opencode", "plugins", "skills", "mcp", "cli", "sync", "config-deps"])).optional()
+            .describe("Components to update (default: plugins, skills, mcp, cli, sync, config-deps)"),
           dryRun: z.boolean().optional().default(false).describe("If true, only show what would be run"),
         },
         async execute(args) {
