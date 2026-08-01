@@ -17,6 +17,7 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import { resolveWorkspaceRoot } from "../sync.js";
+import { updateCodebaseMemory } from "./codebase-memory.js";
 
 export type UpdateComponent =
   | "opencode"
@@ -281,6 +282,8 @@ export async function updateExtensions(options: {
     for (const pkg of NPMX_MCP_TOOLS) {
       planned.push({ name: `mcp(npx)/${pkg}`, command: `npx -y ${pkg}@latest --help` });
     }
+    // 本地二进制系：GitHub Release 自动更新
+    planned.push({ name: "mcp(bin)/codebase-memory-mcp", command: "GitHub release 自动更新（DeusData/codebase-memory-mcp）" });
   }
   if (selected.has("sync")) {
     const syncDir = path.join(resolveWorkspaceRoot(), "2_Business", "mcp-opencode-sync");
@@ -310,6 +313,13 @@ export async function updateExtensions(options: {
 
     if (dryRun) {
       endStep(step, startedAt, "skipped", `[dry-run] would run in ${p.cwd || "cwd"}`);
+      continue;
+    }
+
+    // 本地二进制系：专用 GitHub Release 更新流程
+    if (p.name.startsWith("mcp(bin)/")) {
+      const r = await updateCodebaseMemory({ onLine: (line) => emit({ type: "output", name: p.name, line }) });
+      endStep(step, startedAt, r.status, r.detail, r.versionBefore, r.versionAfter);
       continue;
     }
 
@@ -347,7 +357,7 @@ export async function updateExtensions(options: {
     }
 
     // 判定状态：命令失败且允许失败 → warning；否则 error；成功 → ok
-    const allowFail = p.name.startsWith("sync/") || p.name === "config-deps" || p.name === "opencode" || p.name.startsWith("mcp(uv)/") || p.name.startsWith("mcp(npx)/");
+    const allowFail = p.name.startsWith("sync/") || p.name === "config-deps" || p.name === "opencode" || p.name.startsWith("mcp(uv)/") || p.name.startsWith("mcp(npx)/") || p.name.startsWith("mcp(bin)/");
     const status: UpdateStep["status"] = result.code === 0 ? "ok"
       : result.code === 124 ? "error"
       : allowFail ? "warning" : "error";
