@@ -59,7 +59,8 @@ export interface UpdateReport {
 
 const PLUGIN_CACHE = path.join(os.homedir(), ".cache", "opencode", "packages");
 const CONFIG_DIR = path.join(os.homedir(), ".config", "opencode");
-const UV_MCP_TOOLS = ["paper-search-mcp", "semantic-scholar-fastmcp", "zotero-mcp", "arxiv-mcp-server"];
+const UV_MCP_TOOLS = ["paper-search-mcp", "semantic-scholar-fastmcp", "zotero-mcp", "arxiv-mcp-server", "office-word-mcp-server"];
+const NPMX_MCP_TOOLS = ["@notionhq/notion-mcp-server"];
 
 const DEFAULT_COMPONENTS: UpdateComponent[] = ["plugins", "skills", "mcp", "sync", "config-deps"];
 const COMMAND_TIMEOUT_MS = 180_000;
@@ -268,13 +269,17 @@ export async function updateExtensions(options: {
     }
   }
   if (selected.has("mcp")) {
-    // 按工具拆分：已安装 → uv tool upgrade；未安装（uv tool run 临时模式）→ uv tool install --force（覆盖残留 exe）
+    // uv 系：按工具拆分——已安装 → uv tool upgrade；未安装（uv tool run / uvx 临时模式）→ uv tool install --force（覆盖残留 exe）
     const installed = await readInstalledUvTools();
     for (const toolName of UV_MCP_TOOLS) {
       const cmd = installed.has(toolName)
         ? `uv tool upgrade ${toolName}`
         : `uv tool install --force ${toolName}`;
       planned.push({ name: `mcp(uv)/${toolName}`, command: cmd });
+    }
+    // npx 系：@latest 强制走 registry 拉最新版（--help 仅为触发下载，包更新即达成）
+    for (const pkg of NPMX_MCP_TOOLS) {
+      planned.push({ name: `mcp(npx)/${pkg}`, command: `npx -y ${pkg}@latest --help` });
     }
   }
   if (selected.has("sync")) {
@@ -342,7 +347,7 @@ export async function updateExtensions(options: {
     }
 
     // 判定状态：命令失败且允许失败 → warning；否则 error；成功 → ok
-    const allowFail = p.name.startsWith("sync/") || p.name === "config-deps" || p.name === "opencode" || p.name.startsWith("mcp(uv)/");
+    const allowFail = p.name.startsWith("sync/") || p.name === "config-deps" || p.name === "opencode" || p.name.startsWith("mcp(uv)/") || p.name.startsWith("mcp(npx)/");
     const status: UpdateStep["status"] = result.code === 0 ? "ok"
       : result.code === 124 ? "error"
       : allowFail ? "warning" : "error";

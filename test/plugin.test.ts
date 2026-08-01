@@ -11,6 +11,7 @@ describe("updateExtensions", () => {
     assert.ok(report.steps.some((s) => s.name.startsWith("plugins/")), "plugins component present");
     assert.ok(report.steps.some((s) => s.name === "skills"), "skills component present");
     assert.ok(report.steps.some((s) => s.name.startsWith("mcp(uv)/")), "uv mcp component present");
+    assert.ok(report.steps.some((s) => s.name.startsWith("mcp(npx)/")), "npx mcp component present");
     assert.ok(report.steps.some((s) => s.name.startsWith("sync/")), "sync component present");
     assert.ok(report.steps.some((s) => s.name === "config-deps"), "config-deps component present");
     assert.equal(report.summary.skipped, report.steps.length);
