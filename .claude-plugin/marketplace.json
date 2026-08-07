@@ -1,0 +1,15 @@
+{
+  "name": "uagent-sync",
+  "description": "Cross-device workspace sync for coding agents: backup, restore, and ecosystem update via a single CLI.",
+  "plugins": [
+    {
+      "name": "uagent-sync",
+      "description": "Cross-device workspace backup, restore, and update (skills + hooks + CLI)",
+      "version": "2.0.0",
+      "source": "./",
+      "author": {
+        "name": "severin-ye"
+      }
+    }
+  ]
+}
