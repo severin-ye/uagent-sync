@@ -11,7 +11,7 @@
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "cli": "tsx src/cli.ts",
-    "test": "node --import tsx --test test/*.test.ts",
+    "test": "node scripts/run-tests.mjs",
     "clean": "rimraf dist",
     "pack": "npm run clean && npm run build && npm pack",
     "release:patch": "npm version patch && git push --follow-tags",

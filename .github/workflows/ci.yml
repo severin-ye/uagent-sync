@@ -14,7 +14,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [18, 20, 22]
+        # Node 18 的 test runner 不支持 glob 且无 --import 选项（测试命令需 Node 20.6+）
+        node: [20, 22]
     steps:
       - uses: actions/checkout@v4
 
