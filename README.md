@@ -116,7 +116,7 @@ opencode-sync-mcp-server/      # ← This repo (code only, never modified at run
 │   │   ├── skills.ts          #   Skill source map (30+ entries)
 │   │   └── guide.ts           #   SYNC-GUIDE.md generator
 │   ├── sync.ts                # Barrel export
-│   ├── index.ts               # MCP server (13 registerTool)
+│   ├── plugin.ts              # opencode plugin (16 opencode_sync_* tools)
 │   └── cli.ts                 # Standalone CLI
 ├── test/
 │   └── smoke.test.ts          # 3 smoke tests (npm test)
@@ -131,7 +131,7 @@ opencode-dotfiles/             # ← Runtime data (separate repo, synced via Git
 └── scripts/                   # Bootstrap scripts
 ```
 
-> **Code never touches data.** The MCP server lives in one directory. All generated files go to `opencode-dotfiles/`. Clean separation.
+> **Code never touches data.** The opencode plugin lives in one directory. All generated files go to `opencode-dotfiles/`. Clean separation.
 
 ---
 

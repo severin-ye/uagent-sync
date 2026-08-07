@@ -4,12 +4,16 @@ import { updateExtensions, type UpdateProgress } from "../dist/lib/update.js";
 import OpencodeSyncPlugin from "../dist/plugin.js";
 
 describe("updateExtensions", () => {
+  // skills 组件有两条路径：update 检查成功 → 单步 "skills"；失败（skills CLI 1.5.9 Windows 已知 bug）
+  // → 降级为逐个 "skills/add:<source>"。两个名字都算 skills 组件步骤。
+  const isSkillStep = (s: { name: string }) => s.name === "skills" || s.name.startsWith("skills/add:");
+
   it("dry-run returns skipped steps without executing any command", async () => {
     const report = await updateExtensions({ dryRun: true });
     assert.ok(report.steps.length >= 4, "should cover at least 4 default components");
     assert.ok(report.steps.every((s) => s.status === "skipped"), "dry-run must not execute");
     assert.ok(report.steps.some((s) => s.name.startsWith("plugins/")), "plugins component present");
-    assert.ok(report.steps.some((s) => s.name === "skills"), "skills component present");
+    assert.ok(report.steps.some((s) => isSkillStep(s)), "skills component present");
     assert.ok(report.steps.some((s) => s.name.startsWith("mcp(uv)/")), "uv mcp component present");
     assert.ok(report.steps.some((s) => s.name.startsWith("mcp(npx)/")), "npx mcp component present");
     assert.ok(report.steps.some((s) => s.name.startsWith("mcp(bin)/")), "binary mcp component present");
@@ -25,8 +29,8 @@ describe("updateExtensions", () => {
     const events: UpdateProgress[] = [];
     await updateExtensions({ components: ["skills"], dryRun: true, onProgress: (ev) => events.push(ev) });
     assert.ok(events.some((e) => e.type === "plan"), "plan event emitted");
-    assert.ok(events.some((e) => e.type === "step-start" && e.name === "skills"), "step-start emitted");
-    assert.ok(events.some((e) => e.type === "step-end" && e.name === "skills" && e.status === "skipped"), "step-end emitted");
+    assert.ok(events.some((e) => e.type === "step-start" && isSkillStep(e)), "step-start emitted");
+    assert.ok(events.some((e) => e.type === "step-end" && isSkillStep(e) && e.status === "skipped"), "step-end emitted");
     assert.ok(events.some((e) => e.type === "done"), "done emitted");
     assert.ok(!events.some((e) => e.type === "output"), "no output in dry-run");
   });
@@ -34,7 +38,7 @@ describe("updateExtensions", () => {
   it("respects explicit components filter", async () => {
     const report = await updateExtensions({ components: ["skills"], dryRun: true });
     assert.ok(report.steps.length >= 1);
-    assert.ok(report.steps.every((s) => s.name === "skills"), "only requested component");
+    assert.ok(report.steps.every((s) => isSkillStep(s)), "only requested component");
   });
 
   it("excludes opencode by default", async () => {
