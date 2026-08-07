@@ -236,8 +236,8 @@ describe("generateSyncGuide — Playwright section", () => {
     fs.mkdirSync(path.join(ws, "opencode-dotfiles", "config"), { recursive: true });
     fs.mkdirSync(path.join(ws, "opencode-dotfiles", "guide"), { recursive: true });
     fs.mkdirSync(path.join(ws, "opencode-dotfiles", "data"), { recursive: true });
-    // Copy real data file for authentic content
-    const realData = path.resolve(import.meta.dirname!, "../../../opencode-dotfiles/data/known-mcps.json");
+    // Copy real data file for authentic content（仓库内 data/，随代码分发，CI 可达）
+    const realData = path.resolve(import.meta.dirname!, "../data/known-mcps.json");
     if (fs.existsSync(realData)) {
       fs.copyFileSync(realData, path.join(ws, "opencode-dotfiles", "data", "known-mcps.json"));
     } else {

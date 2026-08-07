@@ -46,9 +46,11 @@ describe("data-driven MCP detection", () => {
     assert.ok(known.mcpServers.testMcp);
   });
 
-  it("should return empty data when no file exists", () => {
+  it("should fall back to built-in repo data when workspace has no data file", () => {
+    // 仓库内 data/known-mcps.json 随代码分发：workspace 无数据时回退到内置规则，而不是返回空
     const known = loadKnownMcps(path.join(TMP, "nonexistent")) as { mcpServers: Record<string, unknown> };
-    assert.deepStrictEqual(known.mcpServers, {});
+    assert.ok(Object.keys(known.mcpServers).length > 0, "built-in data should be non-empty");
+    assert.ok(known.mcpServers.playwright, "built-in data should include playwright rules");
   });
 
   it("should match by command pattern", () => {
@@ -187,11 +189,11 @@ describe("data-driven MCP detection", () => {
 
 describe("known-mcps.json data integrity", () => {
   it("should exist and be valid JSON", () => {
-    const dataPath = path.join(os.homedir(), "Codelib-severin", "opencode-dotfiles", "data", "known-mcps.json");
-    // Try workspace-relative path first
-    const altPath = path.resolve(import.meta.dirname!, "../../../../opencode-dotfiles/data/known-mcps.json");
+    // 仓库内 data/known-mcps.json（随代码分发）优先；回退 workspace 内 dotfiles 副本
+    const dataPath = path.resolve(import.meta.dirname!, "../data/known-mcps.json");
+    const wsDataPath = path.join(os.homedir(), "Codelib-severin", "opencode-dotfiles", "data", "known-mcps.json");
     const resolvedPath = fs.existsSync(dataPath) ? dataPath
-      : fs.existsSync(altPath) ? altPath : null;
+      : fs.existsSync(wsDataPath) ? wsDataPath : null;
 
     assert.ok(resolvedPath, "known-mcps.json should exist");
     const raw = JSON.parse(fs.readFileSync(resolvedPath!, "utf-8")) as Record<string, unknown>;

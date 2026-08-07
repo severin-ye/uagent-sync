@@ -1,0 +1,127 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "version": "1.0",
+  "description": "已知 MCP 服务器及其安装配置指引。本文件是数据（data），同步 MCP 代码从本文件读取规则，无需代码变更即可支持新的 MCP 类型。",
+  "mcpServers": {
+    "playwright": {
+      "name": "Playwright MCP",
+      "homepage": "https://playwright.dev/mcp/",
+      "description": "Microsoft Playwright 浏览器自动化 MCP",
+      "detection": {
+        "commandPatterns": ["@playwright/mcp"],
+        "flags": {
+          "extension": "--extension",
+          "browser": "--browser=",
+          "vision": "--caps=vision",
+          "headless": "--headless",
+          "cdpEndpoint": "--cdp-endpoint="
+        }
+      },
+      "setup": {
+        "type": "mixed",
+        "steps": [
+          {
+            "id": "extension",
+            "title": "安装浏览器扩展",
+            "auto": false,
+            "description": "安装 Playwright 扩展以复用现有浏览器登录态和标签页",
+            "url": "https://chromewebstore.google.com/detail/playwright-extension/mmlmfjhmonkocbjadbfplnigmagldckm",
+            "condition": "extension"
+          },
+          {
+            "id": "token",
+            "title": "获取并配置 Token",
+            "auto": false,
+            "description": "安装扩展后自动生成 PLAYWRIGHT_MCP_EXTENSION_TOKEN，填入配置的 environment 中",
+            "condition": "extension"
+          },
+          {
+            "id": "browser_config",
+            "title": "浏览器配置",
+            "auto": true,
+            "description": "如使用 Edge，必须同时指定 --browser=msedge 和 --extension",
+            "condition": "isEdge"
+          }
+        ]
+      },
+      "configNotes": [
+        "不需要 --caps=vision（截图是核心工具，默认就有）",
+        "不需要 --image-responses=allow（默认行为已足够）"
+      ],
+      "pitfalls": [
+        "browser_take_screenshot 在部分页面可能因字体加载超时（5s），可用 browser_run_code_unsafe 绕过",
+        "每次操作前需 browser_snapshot，ref 在页面变化后会过期",
+        "--extension 模式下页面不会自动关闭，复用现有浏览器标签页和登录态"
+      ],
+      "modelNotes": {
+        "capability": "截图视觉分析",
+        "supported": ["GPT", "Claude", "Gemini"],
+        "unsupported": ["deepseek-v4-pro"],
+        "note": "Playwright MCP 截图能力默认启用，但能否分析取决于模型"
+      }
+    },
+    "zapier": {
+      "name": "Zapier MCP",
+      "homepage": "https://zapier.com/mcp",
+      "description": "Zapier MCP — 连接 9000+ 应用",
+      "detection": {
+        "commandPatterns": [],
+        "urlPatterns": ["mcp.zapier.com"],
+        "headerPatterns": ["Authorization"]
+      },
+      "setup": {
+        "type": "manual",
+        "steps": [
+          {
+            "id": "mcp_server",
+            "title": "在 Zapier 创建 MCP 服务器",
+            "auto": false,
+            "description": "前往 mcp.zapier.com 创建 MCP 服务器，选择「Other」作为客户端，获取连接 URL",
+            "url": "https://mcp.zapier.com/"
+          },
+          {
+            "id": "url_fix",
+            "title": "URL 格式要求",
+            "auto": false,
+            "description": "使用 Bearer Header 认证而非 URL 查询参数（?token=）。URL 应为纯净的 https://mcp.zapier.com/api/v1/connect",
+            "condition": "always"
+          }
+        ]
+      },
+      "configNotes": [
+        "必须使用 Streamable HTTP 协议（POST），不支持旧 SSE 协议",
+        "Token 放在 headers.Authorization: Bearer xxx，不要放在 URL 查询参数中",
+        "必须设置 oauth: false"
+      ],
+      "pitfalls": [
+        "URL 查询参数会导致 OpenCode 拒绝连接（Invalid MCP URL）",
+        "Zapier 已不再支持 SSE 协议，需使用 Streamable HTTP"
+      ]
+    },
+    "notion": {
+      "name": "Notion MCP",
+      "homepage": "https://developers.notion.com/",
+      "description": "Notion API MCP 服务器",
+      "detection": {
+        "commandPatterns": ["@notionhq/notion-mcp-server"],
+        "envVars": ["NOTION_TOKEN"]
+      },
+      "setup": {
+        "type": "local",
+        "steps": [
+          {
+            "id": "token",
+            "title": "配置 Notion Token",
+            "auto": false,
+            "description": "在 Notion Integrations 页面创建集成，获取 Token 填入 environment.NOTION_TOKEN",
+            "url": "https://www.notion.so/my-integrations"
+          }
+        ]
+      },
+      "configNotes": [
+        "Token 通过 environment.NOTION_TOKEN 传入",
+        "需要在 Notion 页面中手动邀请集成"
+      ]
+    }
+  }
+}
