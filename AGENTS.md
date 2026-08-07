@@ -1,4 +1,4 @@
-# Agent Instructions — opencode-sync MCP Server
+# Agent Instructions — opencode-sync
 
 > **给 AI Agent 的自动化配置与同步指南。**
 > 将此文件交给 Agent，无需额外提示词即可完成全部配置、初始化、备份、恢复。
@@ -7,7 +7,7 @@
 
 ## 你的任务
 
-你是一个帮助用户管理 opencode 工作区配置的 Agent。你拥有 `opencode-sync` MCP 服务器的 13 个工具。你的目标是在**不依赖用户额外提示词**的情况下，自主判断当前场景（备份还是同步），完成全部配置，并引导用户走完整个流程。
+你是一个帮助用户管理 opencode 工作区配置的 Agent。你拥有 `opencode-sync` plugin 的 16 个工具（`opencode_sync_*`）。你的目标是在**不依赖用户额外提示词**的情况下，自主判断当前场景（备份还是同步），完成全部配置，并引导用户走完整个流程。
 
 ---
 
@@ -26,21 +26,17 @@
 ## 第二步：安装与配置
 
 ```bash
-# 1. 克隆 MCP 仓库
+# 1. 克隆仓库
 git clone https://github.com/<user>/opencode-sync-mcp-server.git <local-path>
 cd <local-path>
 npm install && npm run build
 
-# 2. 注册到 opencode
-# 编辑 ~/.config/opencode/opencode.jsonc，在 "mcp" 中添加：
-# "opencode-sync": {
-#   "type": "local",
-#   "command": ["node", "<local-path>/dist/index.js"],
-#   "enabled": true
-# }
+# 2. 注册到 opencode（plugin 形态）
+# 编辑 ~/.config/opencode/opencode.json，在 "plugin" 数组中添加：
+# "file:///<local-path>/dist/plugin.js"
 ```
 
-> **重要：** 注册后必须**重启 opencode** 才能使 MCP 生效。
+> **重要：** 注册后必须**重启 opencode** 才能使 plugin 生效。
 > 如果你的 opencode 不支持热加载，请提示用户重启。
 
 ---
@@ -218,9 +214,9 @@ opencode_sync_verify
 - 使用 `opencode_sync_init` 查看已缓存的状态
 
 ### 代码与数据分离
-- MCP 服务器代码在 `opencode-sync-mcp-server/`
+- plugin 源码在 `opencode-sync-mcp-server/`
 - 所有运行时数据写入 `opencode-dotfiles/state/`、`guide/`、`keys/`
-- **永远不要修改 MCP 源码目录中的文件**
+- **永远不要修改 plugin 源码目录中的文件**（但仓库内文档如 pitfalls/CHANGELOG 可按需维护）
 
 ### 状态文件位置（均在 `opencode-dotfiles/` 下）
 | 文件 | 用途 |
@@ -239,7 +235,7 @@ opencode_sync_verify
 
 ---
 
-## 13 个工具速查
+## 16 个工具速查
 
 | 工具 | 何时使用 |
 |------|---------|
@@ -256,3 +252,8 @@ opencode_sync_verify
 | `opencode_sync_api_keys` | 管理 API 密钥配置 |
 | `opencode_sync_guide` | 生成恢复引导文件 |
 | `opencode_sync_log` | 查看安装溯源日志 |
+| `opencode_sync_crystallize` | 记录安装 + 重生成文档 + 导出状态 + 一键提交 |
+| `opencode_sync_update` | 更新 opencode 生态（插件/skills/MCP/自研仓库/config 依赖） |
+| `opencode_sync_changelog` | 从最新更新报告起草分类 changelog |
+
+> workspace root 定位：优先 `OPENCODE_SYNC_WORKSPACE_ROOT` 环境变量 → 固定缓存 `~/.config/opencode/sync-cache.json` → 旧缓存迁移 → 向上找 `.gitmodules`。从任何目录启动都能解析。

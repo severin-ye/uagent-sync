@@ -1,7 +1,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Node.js-18%2B-brightgreen?style=flat-square" alt="Node.js 18+">
-  <img src="https://img.shields.io/npm/v/opencode-sync-mcp-server?style=flat-square&color=blue" alt="npm">
-  <img src="https://img.shields.io/badge/MCP-stdio-purple?style=flat-square" alt="MCP stdio">
+  <img src="https://img.shields.io/github/actions/workflow/status/severin-ye/opencode-sync-mcp-server/ci.yml?style=flat-square&label=CI" alt="CI">
+  <img src="https://img.shields.io/github/v/release/severin-ye/opencode-sync-mcp-server?style=flat-square&color=blue" alt="Release">
   <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="MIT">
 </p>
 
@@ -40,19 +40,15 @@ That's it. Submodules reset to exact commits. MCP servers rebuilt. Skills reinst
 
 ```bash
 # 1. Install
-git clone https://github.com/<you>/opencode-sync-mcp-server
+git clone https://github.com/severin-ye/opencode-sync-mcp-server
 cd opencode-sync-mcp-server
 npm install && npm run build
 
-# 2. Add to your opencode config (~/.config/opencode/opencode.jsonc)
+# 2. Add to your opencode config (config/opencode.json)
 # {
-#   "mcp": {
-#     "opencode-sync": {
-#       "type": "local",
-#       "command": ["node", "<path-to>/dist/index.js"],
-#       "enabled": true
-#     }
-#   }
+#   "plugin": [
+#     "file:///absolute/path/to/opencode-sync-mcp-server/dist/plugin.js"
+#   ]
 # }
 
 # 3. Restart opencode, then:
@@ -64,13 +60,26 @@ opencode_sync_push "init"   # first backup
 
 ---
 
+## Workspace Root 定位
+
+所有 `opencode_sync_*` 工具都需要知道 workspace 根（含 `.gitmodules` 的目录）。定位顺序：
+
+1. 环境变量 **`OPENCODE_SYNC_WORKSPACE_ROOT=<path>`**（显式指定，优先级最高）
+2. 固定缓存 `~/.config/opencode/sync-cache.json`（任何启动目录都可达）
+3. 旧位置缓存自动迁移（`opencode-dotfiles/state/sync-cache.json`，v1.0.0 写入）
+4. 从 opencode 进程启动目录向上找 `.gitmodules`
+
+> 从桌面 / 主目录 / OpenChamber 默认目录启动 opencode 也能正常解析——不需要在 workspace 内启动。若四个途径都失败，错误消息会给出操作引导。
+
+---
+
 ## What It Syncs
 
 | Category | What | How |
 |----------|------|-----|
-| **Submodules** | All 14+ repos, exact commit hash | `git clone` + `git reset --hard` |
+| **Submodules** | All repos, exact commit hash | `git clone` + `git reset --hard` |
 | **OpenCode Config** | plugins, MCP servers, providers | Deep-merge, never overwrite |
-| **Skills** | 40+ installed skills | `npx skills add <source> -g` from known source map |
+| **Skills** | Installed skills from git sources | `skills add <source> -g` |
 | **API Keys** | Names + descriptions (never values) | Template file at `keys/API.md` |
 | **Dependencies** | gh CLI, Ralph, Skills CLI | Auto-install via winget/brew/apt/npm |
 | **Windows Fixes** | NTFS path issues | Auto-detects problematic filenames, applies `git config core.protectNTFS` |
@@ -78,7 +87,7 @@ opencode_sync_push "init"   # first backup
 
 ---
 
-## Tools (13)
+## Tools (16)
 
 | Tool | What it does |
 |------|-------------|
@@ -95,6 +104,11 @@ opencode_sync_push "init"   # first backup
 | `opencode_sync_api_keys` | Detect, template, or add API keys |
 | `opencode_sync_guide` | Generate `guide/SYNC-GUIDE.md` — the restore playbook |
 | `opencode_sync_log` | Read/write install provenance log |
+| `opencode_sync_crystallize` | Record install + regenerate docs + export state + commit in one shot |
+| `opencode_sync_update` | Update opencode ecosystem: plugins, skills, MCP tools, sync repo, config deps |
+| `opencode_sync_changelog` | Draft categorized changelog from the latest update report |
+
+> MCP 形态（v1.0.0）已移除——从 v1.1.0 起仅提供 opencode plugin 形态与独立 CLI（`opencode-sync` 命令）。
 
 ---
 
@@ -103,23 +117,27 @@ opencode_sync_push "init"   # first backup
 ```
 opencode-sync-mcp-server/      # ← This repo (code only, never modified at runtime)
 ├── src/
-│   ├── lib/                   # 11 modules, each <200 lines
+│   ├── lib/                   # Modules, each <200 lines
 │   │   ├── types.ts           #   All interfaces
 │   │   ├── run.ts             #   Shell execution + safety (shellEscape, isPathSafe)
-│   │   ├── cache.ts           #   Path cache + workspace detection
+│   │   ├── cache.ts           #   Workspace root detection (fixed cache + env + migration)
 │   │   ├── init-state.ts      #   Init lifecycle tracker
 │   │   ├── log.ts             #   Install provenance log
 │   │   ├── state.ts           #   Export/import/diff core logic
 │   │   ├── workspace.ts       #   Verify/setup/submodule status
 │   │   ├── github.ts          #   Private repo creation
 │   │   ├── keys.ts            #   API key detection & templates
-│   │   ├── skills.ts          #   Skill source map (30+ entries)
+│   │   ├── skills.ts          #   Skill source map
+│   │   ├── update.ts          #   updateExtensions — ecosystem update orchestration
+│   │   ├── codebase-memory.ts #   codebase-memory-mcp release updater
 │   │   └── guide.ts           #   SYNC-GUIDE.md generator
 │   ├── sync.ts                # Barrel export
 │   ├── plugin.ts              # opencode plugin (16 opencode_sync_* tools)
-│   └── cli.ts                 # Standalone CLI
-├── test/
-│   └── smoke.test.ts          # 3 smoke tests (npm test)
+│   └── cli.ts                 # Standalone CLI (opencode-sync)
+├── test/                      # node:test suites (82 tests)
+├── .github/workflows/         # CI + Release automation
+├── CHANGELOG.md               # Keep a Changelog
+├── RELEASING.md               # Release playbook
 └── dist/                      # Compiled output
 
 opencode-dotfiles/             # ← Runtime data (separate repo, synced via Git)
@@ -135,6 +153,27 @@ opencode-dotfiles/             # ← Runtime data (separate repo, synced via Git
 
 ---
 
+## Development
+
+```bash
+git clone https://github.com/severin-ye/opencode-sync-mcp-server
+cd opencode-sync-mcp-server
+npm install
+npm run typecheck    # tsc --noEmit
+npm run build        # TypeScript → dist/
+npm test             # 82 tests (node:test)
+```
+
+CI 门禁（GitHub Actions，Windows，Node 18/20/22）：`npm run build` + `npm test` 全部通过才能合并。
+
+---
+
+## Release
+
+见 [`RELEASING.md`](./RELEASING.md)。流程：更新 CHANGELOG → `npm run release:patch|minor|major`（version + tag + push）→ GitHub Actions 自动构建、测试并创建 Release（附 tarball）。
+
+---
+
 ## Security
 
 - **Command injection hardened**: `shellEscape()` wraps all user input before shell execution. Git commits use `-F` file input instead of `-m` string interpolation.
@@ -147,15 +186,7 @@ opencode-dotfiles/             # ← Runtime data (separate repo, synced via Git
 
 ## Contributing
 
-```bash
-git clone https://github.com/<you>/opencode-sync-mcp-server
-cd opencode-sync-mcp-server
-npm install
-npm run build    # TypeScript → dist/
-npm test         # 3 smoke tests
-```
-
-PRs welcome. Check `evaluation.xml` for the test suite design.
+PRs welcome. Test-first: new features ship with tests, bug fixes ship with a failing-then-passing regression test. Check `evaluation.xml` for the test suite design.
 
 > **🤖 For AI Agents:** See [`AGENTS.md`](./AGENTS.md) — a complete step-by-step guide that enables any AI agent to install, configure, and run full backup/sync workflows with zero additional prompts. Just point the agent at this repo.
 

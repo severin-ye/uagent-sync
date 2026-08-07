@@ -218,16 +218,26 @@ async function collectChangeEvidence(stepName: string, cwd: string | undefined, 
   }
 }
 
-export async function updateExtensions(options: {
+export interface UpdateOptions {
   components?: UpdateComponent[];
   dryRun?: boolean;
   onProgress?: (event: UpdateProgress) => void;
-}): Promise<UpdateReport> {
+  /**
+   * 环境注入（测试用）：覆盖插件缓存目录与 config 目录。
+   * 默认取 ~/.cache/opencode/packages 与 ~/.config/opencode——在 CI/干净环境不可用，
+   * 测试通过注入临时目录获得确定性。
+   */
+  env?: { pluginCache?: string; configDir?: string };
+}
+
+export async function updateExtensions(options: UpdateOptions = {}): Promise<UpdateReport> {
   const dryRun = options.dryRun === true;
   const selected = options.components && options.components.length > 0
     ? new Set(options.components)
     : new Set<UpdateComponent>(DEFAULT_COMPONENTS);
   const onProgress = options.onProgress ?? (() => {});
+  const pluginCache = options.env?.pluginCache ?? PLUGIN_CACHE;
+  const configDir = options.env?.configDir ?? CONFIG_DIR;
   const timestamp = new Date().toISOString();
   const steps: UpdateStep[] = [];
   const githubToken = await resolveGithubToken();
@@ -250,15 +260,15 @@ export async function updateExtensions(options: {
   // ── 计划（先列出将执行的所有步骤）──
   const planned: { name: string; command: string; cwd?: string }[] = [];
 
-  if (selected.has("plugins") && fs.existsSync(PLUGIN_CACHE)) {
+  if (selected.has("plugins") && fs.existsSync(pluginCache)) {
     // opencode 对 npm 插件执行 bun add <pkg>@latest，安装目录是 packages/<pkg>@latest（源码 resolvePluginTarget 确认）。
     // 扫描时目录名去掉 @latest 后缀得到包名；更新目标一律用 @latest 目录。
-    const dirs = fs.readdirSync(PLUGIN_CACHE)
-      .filter((d) => isPluginPkgDir(d) && fs.statSync(path.join(PLUGIN_CACHE, d)).isDirectory());
+    const dirs = fs.readdirSync(pluginCache)
+      .filter((d) => isPluginPkgDir(d) && fs.statSync(path.join(pluginCache, d)).isDirectory());
     const pkgs = [...new Set(dirs.map((d) => d.replace(/@latest$/, "")))];
     for (const pkg of pkgs) {
-      const latest = path.join(PLUGIN_CACHE, `${pkg}@latest`);
-      const target = fs.existsSync(latest) ? latest : path.join(PLUGIN_CACHE, pkg);
+      const latest = path.join(pluginCache, `${pkg}@latest`);
+      const target = fs.existsSync(latest) ? latest : path.join(pluginCache, pkg);
       planned.push({ name: `plugins/${pkg}`, command: `bun add ${pkg}@latest --no-save`, cwd: target });
     }
   }
@@ -314,8 +324,8 @@ export async function updateExtensions(options: {
       planned.push({ name: "sync/build", command: "npm run build", cwd: syncDir });
     }
   }
-  if (selected.has("config-deps") && fs.existsSync(path.join(CONFIG_DIR, "package.json"))) {
-    planned.push({ name: "config-deps", command: "npm install --no-audit --no-fund", cwd: CONFIG_DIR });
+  if (selected.has("config-deps") && fs.existsSync(path.join(configDir, "package.json"))) {
+    planned.push({ name: "config-deps", command: "npm install --no-audit --no-fund", cwd: configDir });
   }
   if (selected.has("opencode")) planned.push({ name: "opencode", command: "npm update -g opencode-ai" });
 
