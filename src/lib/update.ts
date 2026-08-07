@@ -264,6 +264,7 @@ export async function updateExtensions(options: {
   }
   if (selected.has("skills")) {
     // skills CLI 1.5.9 在 Windows 上 update 子进程有 bug（手动等价命令正常），且部分失败时 exit code 仍为 0。
+    // 1.5.22 已修复（2026-08-07 实测 frontend-slides/slides 恢复正常更新）；降级分支仍保留作防御。
     // 先跑 update 检查：成功（无 Failed）→ 记录单步；否则 → 从输出提取 source 列表，逐个 skills add 降级更新。
     const check = await spawnCommand("skills update -g", { env: githubToken ? { GITHUB_TOKEN: githubToken } : undefined, timeoutMs: 120_000 });
     const stripAnsi = (s: string) => s.replace(/\x1b\[[0-9;]*[A-Za-z]/g, "").replace(/\x1b\[K/g, "").trim();
