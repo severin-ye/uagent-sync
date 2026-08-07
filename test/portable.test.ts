@@ -56,23 +56,23 @@ describe("detectSyncPath", () => {
     if (fs.existsSync(TMP)) fs.rmSync(TMP, { recursive: true, force: true });
   });
 
-  it("should detect workspace-relative sync MCP", () => {
-    // Create the expected path structure
+  it("should detect workspace-relative sync plugin", () => {
+    // Create the expected path structure (plugin 形态：dist/plugin.js)
     const syncDir = path.join(ws, "2_Business", "mcp-opencode-sync", "dist");
     fs.mkdirSync(syncDir, { recursive: true });
-    fs.writeFileSync(path.join(syncDir, "index.js"), "// stub");
+    fs.writeFileSync(path.join(syncDir, "plugin.js"), "// stub");
 
     const result = detectSyncPath(ws);
     assert.strictEqual(result.source, "workspace");
     assert.ok(result.note.includes("✅"));
   });
 
-  it("should report absolute when sync MCP not found", () => {
+  it("should report published-channel when sync plugin not found", () => {
     const emptyWs = path.join(TMP, "empty-ws");
     fs.mkdirSync(emptyWs, { recursive: true });
     const result = detectSyncPath(emptyWs);
-    assert.strictEqual(result.source, "absolute");
-    assert.ok(result.note.includes("❌"));
+    assert.strictEqual(result.source, "published");
+    assert.ok(result.note.includes("⚠️"));
   });
 });
 
