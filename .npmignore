@@ -3,6 +3,7 @@ src/
 test/
 *.md
 !README.md
+!README.zh-CN.md
 evaluation.xml
 tsconfig.json
 .gitignore

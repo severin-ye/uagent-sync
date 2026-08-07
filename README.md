@@ -3,6 +3,7 @@
   <img src="https://img.shields.io/github/actions/workflow/status/severin-ye/uagent-sync/ci.yml?style=flat-square&label=CI" alt="CI">
   <img src="https://img.shields.io/github/v/release/severin-ye/uagent-sync?style=flat-square&color=blue" alt="Release">
   <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="MIT">
+  <a href="./README.zh-CN.md"><img src="https://img.shields.io/badge/简体中文-切换语言-blue?style=flat-square" alt="中文"></a>
 </p>
 
 <h1 align="center">uagent-sync</h1>
@@ -12,7 +13,7 @@
 </p>
 
 <p align="center">
-  Export your opencode workspace — submodules, configs, skills, API keys — to a private GitHub repo.<br>
+  Export your agent workspace — submodules, configs, skills, API keys — to a private GitHub repo.<br>
   On a new machine, pull it back and everything installs itself.
 </p>
 
@@ -20,18 +21,16 @@
 
 ## Why?
 
-You have multiple machines. Each has opencode with different plugins, MCP servers, skills, and submodules checked out at different commits. Keeping them in sync is a nightmare of `git submodule update`, `npx skills add`, and copy-pasting config files.
+You have multiple machines. Each runs opencode and/or Codex with different plugins, MCP servers, skills, and submodules checked out at different commits. Keeping them in sync is a nightmare of `git submodule update`, `npx skills add`, and copy-pasting config files.
 
-**opencode-sync** makes it a single command:
+**uagent-sync** makes it a single command:
 
 ```bash
 # On your main machine
-
-ode dist/cli.js push "Friday backup"
+node uagent-sync/dist/cli.js push "Friday backup"
 
 # On your new laptop
-
-ode dist/cli.js pull
+node uagent-sync/dist/cli.js pull
 ```
 
 That's it. Submodules reset to exact commits. MCP servers rebuilt. Skills reinstalled. Config merged. API keys templated. Everything just works.
@@ -54,64 +53,59 @@ npm install && npm run build
 # }
 
 # 3. Restart opencode, then:
-
-ode dist/cli.js init          # detect your workspace
-
-ode dist/cli.js push "init"   # first backup
+node dist/cli.js init          # detect your workspace
+node dist/cli.js push "init"   # first backup
 ```
 
-> **New machine?** `
-ode dist/cli.js init initType=sync githubUrl=<url>` then `
-ode dist/cli.js pull`.
+> **New machine?** `node dist/cli.js init --init-type sync --github-url <url>` then `node dist/cli.js pull`.
 
 ---
 
-## Codex 支持
+## Codex Support
 
-uagent-sync 同时是一个 **Codex 插件**（`skills` + `hooks`，无 MCP）：同一份 CLI 和 skills 在两端共享。
+uagent-sync is also a **Codex plugin** (`skills` + `hooks`, no MCP): the same CLI and the same skills are shared across both agents.
 
-### 安装（Codex CLI）
+### Install (Codex CLI)
 
 ```bash
 codex plugin marketplace add severin-ye/uagent-sync
-# 然后 /plugins 打开浏览器，安装 uagent-sync，开新会话生效
+# Then open /plugins in the Codex CLI, install uagent-sync, and start a new session.
 ```
 
-### 安装（ChatGPT 桌面版 / Codex 桌面版）
+### Install (ChatGPT desktop app / Codex desktop app)
 
-1. 打开 **Plugins** 目录 → **Personal** → 添加 marketplace 源 `https://github.com/severin-ye/uagent-sync`
-2. 安装 uagent-sync，开新会话
+1. Open **Plugins** → **Personal** → add the marketplace source `https://github.com/severin-ye/uagent-sync`
+2. Install uagent-sync and start a new session
 
-### 安装后获得什么
+### What you get after installing
 
-- **3 个 skills**：`uagent-sync-backup`（备份流程）、`uagent-sync-restore`（新设备恢复）、`uagent-sync-update`（生态更新）——agent 按需加载，指导其调用 CLI
-- **SessionStart hook**：会话启动时注入 CLI 使用提示（`PLUGIN_ROOT` 环境变量解析插件根，Windows 经 Git bash 包装）
-- **CLI（唯一执行通道）**：`node <plugin>/dist/cli.js <command>`，16 个命令与 opencode 插件完全一致
+- **3 skills**: `uagent-sync-backup` (backup workflow), `uagent-sync-restore` (new-device restore), `uagent-sync-update` (ecosystem update) — loaded on demand, guiding the agent to use the CLI
+- **SessionStart hook**: injects CLI usage hints at session start (`PLUGIN_ROOT` resolves the plugin root; on Windows it goes through a Git-bash wrapper)
+- **CLI (the single execution channel)**: `node <plugin>/dist/cli.js <command>` — 16 commands identical to the opencode plugin
 
-### 原理
+### How it works
 
 ```
 uagent-sync/
-├── .codex-plugin/plugin.json   # Codex 插件清单（skills + hooks，预留 mcpServers 位）
+├── .codex-plugin/plugin.json   # Codex plugin manifest (skills + hooks, mcpServers slot reserved)
 ├── hooks/                      # hooks-codex.json + run-hook.cmd + session-start
-├── skills/                     # 3 个 SKILL.md —— opencode 与 Codex 共享同一份
-├── src/plugin.ts               # opencode 插件（config 钩子自动注册 skills 目录）
-└── src/cli.ts                  # 16 命令 CLI —— 两端唯一执行通道
+├── skills/                     # 3 SKILL.md files — shared by opencode and Codex
+├── src/plugin.ts               # opencode plugin (config hook auto-registers the skills dir)
+└── src/cli.ts                  # 16-command CLI — the single execution channel for both
 ```
 
 ---
 
-## Workspace Root 定位
+## Workspace Root Resolution
 
-所有 `
-ode dist/cli.js *` 工具都需要知道 workspace 根（含 `.gitmodules` 的目录）。定位顺序：
+Every `node dist/cli.js *` command needs to know the workspace root (the directory containing `.gitmodules`). Resolution order:
 
-1. 环境变量 **`OPENCODE_SYNC_WORKSPACE_ROOT=<path>`**（显式指定，优先级最高）
-2. 固定缓存 `~/.config/opencode/sync-cache.json`（任何启动目录都可达）
-3. 旧位置缓存自动迁移（`opencode-dotfiles/state/sync-cache.json`，v1.0.0 写入）
-4. 从 opencode 进程启动目录向上找 `.gitmodules`
+1. Env var **`OPENCODE_SYNC_WORKSPACE_ROOT=<path>`** (explicit, highest priority)
+2. Fixed cache `~/.config/opencode/sync-cache.json` (reachable from any working directory)
+3. Legacy cache auto-migration (`opencode-dotfiles/state/sync-cache.json`, written by v1.0.0)
+4. Walk up from the opencode process working directory looking for `.gitmodules`
 
-> 从桌面 / 主目录 / OpenChamber 默认目录启动 opencode 也能正常解析——不需要在 workspace 内启动。若四个途径都失败，错误消息会给出操作引导。
+> Launching opencode from the desktop, home directory, or the OpenChamber default directory works fine — no need to start inside the workspace. If all four paths fail, the error message includes actionable guidance.
 
 ---
 
@@ -131,42 +125,28 @@ ode dist/cli.js *` 工具都需要知道 workspace 根（含 `.gitmodules` 的�
 
 ## CLI (16 commands)
 
+Run any command as `node dist/cli.js <command>` (or `opencode-sync <command>` after `npm link`).
+
 | Command | What it does |
 |------|-------------|
-| `
-ode dist/cli.js init` | Detect workspace, guide first-time setup. Only asks once. |
-| `
-ode dist/cli.js push` | Export state → commit → push to GitHub. One command. |
-| `
-ode dist/cli.js pull` | Pull from GitHub → restore everything. One command. |
-| `
-ode dist/cli.js export` | Export full workspace state as JSON |
-| `
-ode dist/cli.js import` | Restore from JSON (with `dryRun` preview) |
-| `
-ode dist/cli.js diff` | Compare current state vs saved state |
-| `
-ode dist/cli.js status` | Show every submodule: commit, branch, dirty? |
-| `
-ode dist/cli.js verify` | Health check: gh, git, config, ralph, skills, submodules |
-| `
-ode dist/cli.js setup` | Install everything: gh, submodules, config, ralph, skills CLI, skill packages |
-| `
-ode dist/cli.js create_repo` | Create a **private** GitHub repo (warns if public) |
-| `
-ode dist/cli.js api_keys` | Detect, template, or add API keys |
-| `
-ode dist/cli.js guide` | Generate `guide/SYNC-GUIDE.md` — the restore playbook |
-| `
-ode dist/cli.js log` | Read/write install provenance log |
-| `
-ode dist/cli.js crystallize` | Record install + regenerate docs + export state + commit in one shot |
-| `
-ode dist/cli.js update` | Update opencode ecosystem: plugins, skills, MCP tools, sync repo, config deps |
-| `
-ode dist/cli.js changelog` | Draft categorized changelog from the latest update report |
+| `init` | Detect workspace, guide first-time setup. Only asks once. |
+| `push` | Export state → commit → push to GitHub. One command. |
+| `pull` | Pull from GitHub → restore everything. One command. |
+| `export` | Export full workspace state as JSON |
+| `import` | Restore from JSON (with `--dry-run` preview) |
+| `diff` | Compare current state vs saved state |
+| `status` | Show every submodule: commit, branch, dirty? |
+| `verify` | Health check: gh, git, config, ralph, skills, submodules |
+| `setup` | Install everything: gh, submodules, config, ralph, skills CLI, skill packages |
+| `create-repo` | Create a **private** GitHub repo (warns if public) |
+| `api-keys` | Detect, template, or add API keys |
+| `guide` | Generate `guide/SYNC-GUIDE.md` — the restore playbook |
+| `log` | Read/write install provenance log |
+| `crystallize` | Record install + regenerate docs + export state + commit in one shot |
+| `update` | Update the agent ecosystem: plugins, skills, MCP tools, sync repo, config deps |
+| `changelog` | Draft categorized changelog from the latest update report |
 
-> MCP 形态（v1.0.0）已移除——从 v1.1.0 起仅提供 opencode plugin 形态与独立 CLI（`opencode-sync` 命令）。
+> The MCP-server form (v1.0.0) was removed — since v1.1.0 only the opencode plugin form and the standalone CLI exist. Tool/command names keep the `opencode_sync_*` / `node dist/cli.js` prefixes for compatibility.
 
 ---
 
@@ -190,10 +170,12 @@ uagent-sync/                  # ← This repo (code only, never modified at runt
 │   │   ├── codebase-memory.ts #   codebase-memory-mcp release updater
 │   │   └── guide.ts           #   SYNC-GUIDE.md generator
 │   ├── sync.ts                # Barrel export
-│   ├── plugin.ts              # opencode plugin (16 
-ode dist/cli.js * tools)
-│   └── cli.ts                 # Standalone CLI (opencode-sync)
-├── test/                      # node:test suites (82 tests)
+│   ├── plugin.ts              # opencode plugin (16 opencode_sync_* tools)
+│   └── cli.ts                 # Standalone CLI (16 commands)
+├── skills/                    # 3 shared skills (opencode + Codex)
+├── hooks/                     # Codex SessionStart hook
+├── .codex-plugin/             # Codex plugin manifest + marketplace
+├── test/                      # node:test suites (95 tests)
 ├── .github/workflows/         # CI + Release automation
 ├── CHANGELOG.md               # Keep a Changelog
 ├── RELEASING.md               # Release playbook
@@ -208,7 +190,7 @@ opencode-dotfiles/             # ← Runtime data (separate repo, synced via Git
 └── scripts/                   # Bootstrap scripts
 ```
 
-> **Code never touches data.** The opencode plugin lives in one directory. All generated files go to `opencode-dotfiles/`. Clean separation.
+> **Code never touches data.** The plugin lives in one directory. All generated files go to `opencode-dotfiles/`. Clean separation.
 
 ---
 
@@ -220,16 +202,16 @@ cd uagent-sync
 npm install
 npm run typecheck    # tsc --noEmit
 npm run build        # TypeScript → dist/
-npm test             # 82 tests (node:test)
+npm test             # 95 tests (node:test)
 ```
 
-CI 门禁（GitHub Actions，Windows，Node 18/20/22）：`npm run build` + `npm test` 全部通过才能合并。
+CI gate (GitHub Actions, Windows, Node 20/22): `npm run build` + `npm test` must pass before merge.
 
 ---
 
 ## Release
 
-见 [`RELEASING.md`](./RELEASING.md)。流程：更新 CHANGELOG → `npm run release:patch|minor|major`（version + tag + push）→ GitHub Actions 自动构建、测试并创建 Release（附 tarball）。
+See [`RELEASING.md`](./RELEASING.md). Flow: update CHANGELOG → `npm run release:patch|minor|major` (version + tag + push) → GitHub Actions builds, tests, and creates a Release with the tarball attached.
 
 ---
 
@@ -253,4 +235,8 @@ PRs welcome. Test-first: new features ship with tests, bug fixes ship with a fai
 
 ## License
 
-MIT © 2026 opencode-sync contributors
+MIT © 2026 uagent-sync contributors
+
+---
+
+[**简体中文**](./README.zh-CN.md) | **English**
