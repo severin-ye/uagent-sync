@@ -18,9 +18,9 @@ export function detectSyncPath(workspaceRoot: string): {
   note: string;
 } {
   const workspaceCandidates = [
-    { path: path.join(workspaceRoot, "2_Business", "mcp-opencode-sync", "dist", "plugin.js"), label: "2_Business/mcp-opencode-sync" },
-    { path: path.join(workspaceRoot, "mcp-opencode-sync", "dist", "plugin.js"), label: "mcp-opencode-sync" },
-    { path: path.join(workspaceRoot, "opencode-sync-mcp-server", "dist", "plugin.js"), label: "opencode-sync-mcp-server" },
+    { path: path.join(workspaceRoot, "2_Business", "uagent-sync", "dist", "plugin.js"), label: "2_Business/uagent-sync" },
+    { path: path.join(workspaceRoot, "uagent-sync", "dist", "plugin.js"), label: "uagent-sync" },
+    { path: path.join(workspaceRoot, "uagent-sync", "dist", "plugin.js"), label: "uagent-sync" },
   ];
 
   for (const candidate of workspaceCandidates) {
@@ -37,7 +37,7 @@ export function detectSyncPath(workspaceRoot: string): {
   return {
     command: [],
     source: "published",
-    note: "⚠️ 仓库源码未克隆到 workspace（无 dist/plugin.js）。可通过 GitHub Release tarball 安装：https://github.com/severin-ye/opencode-sync-mcp-server/releases",
+    note: "⚠️ 仓库源码未克隆到 workspace（无 dist/plugin.js）。可通过 GitHub Release tarball 安装：https://github.com/severin-ye/uagent-sync/releases",
   };
 }
 

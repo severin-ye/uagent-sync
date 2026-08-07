@@ -562,7 +562,7 @@ Components:
 - plugins    : npm plugin cache in ~/.cache/opencode/packages/* (bun add <pkg>@latest)
 - skills     : skills update -g (user-level skill packages)
 - mcp        : uv tool upgrade for academic MCP servers (paper-search/semantic-scholar/zotero/arxiv)
-- sync       : self-built mcp-opencode-sync repo (git pull + npm install + npm run build)
+- sync       : self-built uagent-sync repo (git pull + npm install + npm run build)
 - config-deps: npm install in ~/.config/opencode (superpowers etc.)
 - opencode   : npm update -g opencode-ai (NOT run by default; opt in explicitly)
 

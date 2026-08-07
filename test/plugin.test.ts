@@ -29,8 +29,8 @@ describe("updateExtensions", () => {
     fs.mkdirSync(env.configDir, { recursive: true });
     fs.writeFileSync(path.join(env.configDir, "package.json"), JSON.stringify({ name: "fake-config" }));
     const ws = path.join(tmpRoot, "ws");
-    fs.mkdirSync(path.join(ws, "2_Business", "mcp-opencode-sync"), { recursive: true });
-    fs.writeFileSync(path.join(ws, "2_Business", "mcp-opencode-sync", "package.json"), JSON.stringify({ name: "sync" }));
+    fs.mkdirSync(path.join(ws, "2_Business", "uagent-sync"), { recursive: true });
+    fs.writeFileSync(path.join(ws, "2_Business", "uagent-sync", "package.json"), JSON.stringify({ name: "sync" }));
     fs.writeFileSync(path.join(ws, ".gitmodules"), "x");
     oldWorkspaceEnv = process.env.OPENCODE_SYNC_WORKSPACE_ROOT;
     process.env.OPENCODE_SYNC_WORKSPACE_ROOT = ws;

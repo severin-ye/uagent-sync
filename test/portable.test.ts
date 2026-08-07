@@ -29,7 +29,7 @@ describe("isMachineSpecificPath", () => {
   });
 
   it("should NOT flag workspace-relative paths", () => {
-    assert.ok(!isMachineSpecificPath("mcp-opencode-sync/dist/index.js"));
+    assert.ok(!isMachineSpecificPath("uagent-sync/dist/index.js"));
     assert.ok(!isMachineSpecificPath("./dist/index.js"));
     assert.ok(!isMachineSpecificPath("../dist/index.js"));
   });
@@ -58,7 +58,7 @@ describe("detectSyncPath", () => {
 
   it("should detect workspace-relative sync plugin", () => {
     // Create the expected path structure (plugin 形态：dist/plugin.js)
-    const syncDir = path.join(ws, "2_Business", "mcp-opencode-sync", "dist");
+    const syncDir = path.join(ws, "2_Business", "uagent-sync", "dist");
     fs.mkdirSync(syncDir, { recursive: true });
     fs.writeFileSync(path.join(syncDir, "plugin.js"), "// stub");
 

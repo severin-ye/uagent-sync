@@ -1,7 +1,7 @@
 {
-  "name": "opencode-sync-mcp-server",
+  "name": "uagent-sync",
   "version": "1.1.0",
-  "description": "opencode plugin for syncing opencode workspace configuration across devices",
+  "description": "opencode/Codex plugin for syncing agent workspace configuration across devices",
   "type": "module",
   "main": "dist/plugin.js",
   "bin": {

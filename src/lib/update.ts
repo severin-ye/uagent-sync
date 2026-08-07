@@ -5,7 +5,7 @@
  * - plugins   : opencode 自动安装的 npm 插件缓存 ~/.cache/opencode/packages/<name>，用 bun add <name>@latest 原位升级
  * - skills    : `skills update -g`（~/.agents/skills 用户级技能包）
  * - mcp       : uv tool 管理的学术 MCP（paper-search/semantic-scholar/zotero/arxiv）→ uv tool upgrade
- * - sync      : 自研 mcp-opencode-sync → git pull + npm install + npm run build
+ * - sync      : 自研 uagent-sync → git pull + npm install + npm run build
  * - config-deps: ~/.config/opencode 的 package.json 依赖（superpowers 等）→ npm install
  * - opencode  : npm 全局 opencode-ai → npm update -g（默认不跑，显式指定才更新）
  *
@@ -320,7 +320,7 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
     }
   }
   if (selected.has("sync")) {
-    const syncDir = path.join(resolveWorkspaceRoot(), "2_Business", "mcp-opencode-sync");
+    const syncDir = path.join(resolveWorkspaceRoot(), "2_Business", "uagent-sync");
     if (fs.existsSync(path.join(syncDir, "package.json"))) {
       planned.push({ name: "sync/pull", command: "git pull --rebase", cwd: syncDir });
       planned.push({ name: "sync/install", command: "npm install --no-audit --no-fund", cwd: syncDir });
