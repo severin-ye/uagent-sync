@@ -31,6 +31,15 @@ const text = (output: string) => ({ title: "opencode-sync", output });
 
 export const OpencodeSyncPlugin: Plugin = async (_ctx) => {
   return {
+    // 注册内置 skills 目录（skills/uagent-sync-*），双端共享：opencode 无需手动配置即可加载。
+    // 与 Codex 侧（.codex-plugin/plugin.json 的 skills 字段）指向同一份目录。
+    config: async (cfg) => {
+      const skillsDir = path.join(import.meta.dirname, "..", "skills");
+      const loose = cfg as unknown as { skills?: { paths?: string[] } };
+      loose.skills = loose.skills ?? {};
+      loose.skills.paths = loose.skills.paths ?? [];
+      if (!loose.skills.paths.includes(skillsDir)) loose.skills.paths.push(skillsDir);
+    },
     tool: {
       // ─── export ───
       opencode_sync_export: tool({

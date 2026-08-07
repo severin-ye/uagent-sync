@@ -1,0 +1,35 @@
+{
+  "name": "uagent-sync",
+  "version": "2.0.0",
+  "description": "Cross-device workspace sync for coding agents: backup, restore, and ecosystem update via a single CLI.",
+  "author": {
+    "name": "severin-ye"
+  },
+  "homepage": "https://github.com/severin-ye/uagent-sync",
+  "repository": "https://github.com/severin-ye/uagent-sync",
+  "license": "MIT",
+  "keywords": [
+    "sync",
+    "backup",
+    "restore",
+    "workspace",
+    "dev-environment"
+  ],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks-codex.json",
+  "interface": {
+    "displayName": "Uagent Sync",
+    "shortDescription": "Cross-device workspace backup, restore, and update",
+    "longDescription": "Uagent Sync keeps your agent workspace in sync across machines. Backup exports submodules, configs, skills, and API-key templates to a private GitHub repo; restore pulls and reapplies them on a new device; update refreshes the opencode/Codex ecosystem (plugins, skills, MCP tools).",
+    "developerName": "severin-ye",
+    "category": "Workflow",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/severin-ye/uagent-sync",
+    "privacyPolicyURL": "https://github.com/severin-ye/uagent-sync",
+    "termsOfServiceURL": "https://github.com/severin-ye/uagent-sync",
+    "brandColor": "#3B82F6"
+  }
+}

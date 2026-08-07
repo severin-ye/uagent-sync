@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# SessionStart hook for uagent-sync plugin.
+# Injects CLI usage context so agents know uagent-sync is available.
+# Output format: Codex / Copilot SDK standard (top-level additionalContext).
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
+CLI="${PLUGIN_ROOT}/dist/cli.js"
+
+if [ ! -f "${CLI}" ]; then
+  # Plugin not built yet — hint how to build instead of failing
+  session_context="You have uagent-sync installed (cross-device workspace sync). Build it first: run \`npm install && npm run build\` in ${PLUGIN_ROOT}. After that the CLI at ${CLI} enables backup/restore/update."
+else
+  session_context="You have uagent-sync (cross-device workspace sync). The CLI is: node ${CLI}
+
+Common operations (run from the workspace root, or set OPENCODE_SYNC_WORKSPACE_ROOT):
+- Backup:  node ${CLI} push -m \"<message>\"
+- Restore: node ${CLI} pull
+- Diff:    node ${CLI} diff
+- Status:  node ${CLI} status
+- Update ecosystem (plugins/skills/MCP tools): node ${CLI} update
+- Full workflow guidance: load the 'uagent-sync-*' skills (backup / restore / update)."
+fi
+
+escape_for_json() {
+    local s="$1"
+    s="${s//\\/\\\\}"
+    s="${s//\"/\\\"}"
+    s="${s//$'\n'/\\n}"
+    s="${s//$'\r'/\\r}"
+    s="${s//$'\t'/\\t}"
+    printf '%s' "$s"
+}
+
+escaped=$(escape_for_json "$session_context")
+printf '{\n  "additionalContext": "%s"\n}\n' "$escaped"
+
+exit 0
