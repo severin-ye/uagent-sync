@@ -284,10 +284,13 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
     const updateFailed = check.code !== 0 || /Failed to update/.test(check.output);
     if (!updateFailed) {
       planned.push({ name: "skills", command: "skills update -g" });
-    } else {
+    } else if (sources.length > 0) {
       for (const src of sources) {
         planned.push({ name: `skills/add:${src}`, command: `skills add "${src}" -g -y` });
       }
+    } else {
+      // skills CLI 不可用且无法提取源（如 CI 环境未安装）——保留原命令步骤，执行阶段会如实报错
+      planned.push({ name: "skills", command: "skills update -g" });
     }
   }
   if (selected.has("mcp")) {

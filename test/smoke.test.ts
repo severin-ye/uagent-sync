@@ -18,8 +18,14 @@ describe("CLI smoke tests", () => {
 
   it("should export state without errors", () => {
     const tmp = path.join(import.meta.dirname, "..", "test-output.json");
+    // CI/非 workspace 目录：注入 fake workspace root（env 分支不需要 .gitmodules）
+    const fakeWs = path.join(import.meta.dirname, "..", "test-fixture-ws");
+    fs.mkdirSync(fakeWs, { recursive: true });
     try {
-      execSync(`node "${CLI}" export "${tmp}"`, { encoding: "utf-8", timeout: 15000 });
+      execSync(`node "${CLI}" export "${tmp}"`, {
+        encoding: "utf-8", timeout: 15000,
+        env: { ...process.env, OPENCODE_SYNC_WORKSPACE_ROOT: fakeWs },
+      });
       assert.ok(fs.existsSync(tmp), "Output file should exist");
       const data = JSON.parse(fs.readFileSync(tmp, "utf-8"));
       assert.ok(data.timestamp, "Should have timestamp");
@@ -27,6 +33,7 @@ describe("CLI smoke tests", () => {
       assert.ok(Array.isArray(data.skills), "Should have skills array");
     } finally {
       if (fs.existsSync(tmp)) fs.unlinkSync(tmp);
+      fs.rmSync(fakeWs, { recursive: true, force: true });
     }
   });
 
