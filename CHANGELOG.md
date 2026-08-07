@@ -4,6 +4,25 @@
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-08-07
+
+### 新增
+
+- **Codex 插件形态**：`.codex-plugin/plugin.json`（skills + hooks，预留 mcpServers 扩展位）+ SessionStart hook（注入 CLI 使用提示，Windows 经 Git bash polyglot 包装）
+- **通用 skills（双端共享）**：`uagent-sync-backup` / `uagent-sync-restore` / `uagent-sync-update`——opencode 与 Codex 加载同一份目录（opencode 侧由 plugin 的 config 钩子自动注册）
+- **CLI 补全 16 命令**：新增 `status` / `verify` / `setup` / `init` / `create-repo` / `api-keys` / `guide` / `log` / `crystallize`，与 opencode 插件工具完全对齐；CLI 成为双端唯一执行通道
+- **GitHub marketplace 分发**：`codex plugin marketplace add severin-ye/uagent-sync` 即可安装
+
+### 变更
+
+- **更名**：`opencode-sync-mcp-server` → **`uagent-sync`**（GitHub 仓库、本地目录、package.json、代码路径、文档全部同步；旧仓库链接自动重定向）
+- 工具/命令前缀保持 `opencode_sync_*` 不变（兼容既有文档与使用习惯）
+- `detectWorkspaceInfo` 支持 `OPENCODE_SYNC_WORKSPACE_ROOT` 环境变量覆盖（与 `resolveWorkspaceRoot` 优先级一致）
+
+### 修复
+
+- `detectWorkspaceInfo` 在 env 指定 workspace 时不再读取本机固定缓存（测试/多工作区场景的正确性）
+
 ## [1.1.0] - 2026-08-07
 
 ### 新增

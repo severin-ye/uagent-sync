@@ -30,7 +30,7 @@
 
 GitHub Release 提供两种方式：
 
-- **tarball**：`opencode-sync-mcp-server-<version>.tgz` —— 解压后 `npm install` + `npm run build`
+- **tarball**：`uagent-sync-<version>.tgz` —— 解压后 `npm install` + `npm run build`
 - **源码**：`git clone`（或 `git submodule add`）+ `npm install && npm run build`
 
 opencode 配置引用 `dist/plugin.js`（plugin 形态）或 `dist/cli.js`（CLI 形态）。

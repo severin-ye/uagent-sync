@@ -1,11 +1,11 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Node.js-18%2B-brightgreen?style=flat-square" alt="Node.js 18+">
-  <img src="https://img.shields.io/github/actions/workflow/status/severin-ye/opencode-sync-mcp-server/ci.yml?style=flat-square&label=CI" alt="CI">
-  <img src="https://img.shields.io/github/v/release/severin-ye/opencode-sync-mcp-server?style=flat-square&color=blue" alt="Release">
+  <img src="https://img.shields.io/github/actions/workflow/status/severin-ye/uagent-sync/ci.yml?style=flat-square&label=CI" alt="CI">
+  <img src="https://img.shields.io/github/v/release/severin-ye/uagent-sync?style=flat-square&color=blue" alt="Release">
   <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="MIT">
 </p>
 
-<h1 align="center">opencode-sync</h1>
+<h1 align="center">uagent-sync</h1>
 
 <p align="center">
   <strong>One command to backup. One command to restore. Your entire dev environment, synced across machines.</strong>
@@ -26,10 +26,12 @@ You have multiple machines. Each has opencode with different plugins, MCP server
 
 ```bash
 # On your main machine
-opencode_sync_push "Friday backup"
+
+ode dist/cli.js push "Friday backup"
 
 # On your new laptop
-opencode_sync_pull
+
+ode dist/cli.js pull
 ```
 
 That's it. Submodules reset to exact commits. MCP servers rebuilt. Skills reinstalled. Config merged. API keys templated. Everything just works.
@@ -39,30 +41,70 @@ That's it. Submodules reset to exact commits. MCP servers rebuilt. Skills reinst
 ## Quick Start
 
 ```bash
-# 1. Install
-git clone https://github.com/severin-ye/opencode-sync-mcp-server
-cd opencode-sync-mcp-server
+# 1. Install (clone or GitHub Release tarball)
+git clone https://github.com/severin-ye/uagent-sync
+cd uagent-sync
 npm install && npm run build
 
 # 2. Add to your opencode config (config/opencode.json)
 # {
 #   "plugin": [
-#     "file:///absolute/path/to/opencode-sync-mcp-server/dist/plugin.js"
+#     "file:///absolute/path/to/uagent-sync/dist/plugin.js"
 #   ]
 # }
 
 # 3. Restart opencode, then:
-opencode_sync_init          # detect your workspace
-opencode_sync_push "init"   # first backup
+
+ode dist/cli.js init          # detect your workspace
+
+ode dist/cli.js push "init"   # first backup
 ```
 
-> **New machine?** `opencode_sync_init initType=sync githubUrl=<url>` then `opencode_sync_pull`.
+> **New machine?** `
+ode dist/cli.js init initType=sync githubUrl=<url>` then `
+ode dist/cli.js pull`.
+
+---
+
+## Codex 支持
+
+uagent-sync 同时是一个 **Codex 插件**（`skills` + `hooks`，无 MCP）：同一份 CLI 和 skills 在两端共享。
+
+### 安装（Codex CLI）
+
+```bash
+codex plugin marketplace add severin-ye/uagent-sync
+# 然后 /plugins 打开浏览器，安装 uagent-sync，开新会话生效
+```
+
+### 安装（ChatGPT 桌面版 / Codex 桌面版）
+
+1. 打开 **Plugins** 目录 → **Personal** → 添加 marketplace 源 `https://github.com/severin-ye/uagent-sync`
+2. 安装 uagent-sync，开新会话
+
+### 安装后获得什么
+
+- **3 个 skills**：`uagent-sync-backup`（备份流程）、`uagent-sync-restore`（新设备恢复）、`uagent-sync-update`（生态更新）——agent 按需加载，指导其调用 CLI
+- **SessionStart hook**：会话启动时注入 CLI 使用提示（`PLUGIN_ROOT` 环境变量解析插件根，Windows 经 Git bash 包装）
+- **CLI（唯一执行通道）**：`node <plugin>/dist/cli.js <command>`，16 个命令与 opencode 插件完全一致
+
+### 原理
+
+```
+uagent-sync/
+├── .codex-plugin/plugin.json   # Codex 插件清单（skills + hooks，预留 mcpServers 位）
+├── hooks/                      # hooks-codex.json + run-hook.cmd + session-start
+├── skills/                     # 3 个 SKILL.md —— opencode 与 Codex 共享同一份
+├── src/plugin.ts               # opencode 插件（config 钩子自动注册 skills 目录）
+└── src/cli.ts                  # 16 命令 CLI —— 两端唯一执行通道
+```
 
 ---
 
 ## Workspace Root 定位
 
-所有 `opencode_sync_*` 工具都需要知道 workspace 根（含 `.gitmodules` 的目录）。定位顺序：
+所有 `
+ode dist/cli.js *` 工具都需要知道 workspace 根（含 `.gitmodules` 的目录）。定位顺序：
 
 1. 环境变量 **`OPENCODE_SYNC_WORKSPACE_ROOT=<path>`**（显式指定，优先级最高）
 2. 固定缓存 `~/.config/opencode/sync-cache.json`（任何启动目录都可达）
@@ -87,26 +129,42 @@ opencode_sync_push "init"   # first backup
 
 ---
 
-## Tools (16)
+## CLI (16 commands)
 
-| Tool | What it does |
+| Command | What it does |
 |------|-------------|
-| `opencode_sync_init` | Detect workspace, guide first-time setup. Only asks once. |
-| `opencode_sync_push` | Export state → commit → push to GitHub. One command. |
-| `opencode_sync_pull` | Pull from GitHub → restore everything. One command. |
-| `opencode_sync_export` | Export full workspace state as JSON |
-| `opencode_sync_import` | Restore from JSON (with `dryRun` preview) |
-| `opencode_sync_diff` | Compare current state vs saved state |
-| `opencode_sync_status` | Show every submodule: commit, branch, dirty? |
-| `opencode_sync_verify` | Health check: gh, git, config, ralph, skills, submodules |
-| `opencode_sync_setup` | Install everything: gh, submodules, config, ralph, skills CLI, skill packages |
-| `opencode_sync_create_repo` | Create a **private** GitHub repo (warns if public) |
-| `opencode_sync_api_keys` | Detect, template, or add API keys |
-| `opencode_sync_guide` | Generate `guide/SYNC-GUIDE.md` — the restore playbook |
-| `opencode_sync_log` | Read/write install provenance log |
-| `opencode_sync_crystallize` | Record install + regenerate docs + export state + commit in one shot |
-| `opencode_sync_update` | Update opencode ecosystem: plugins, skills, MCP tools, sync repo, config deps |
-| `opencode_sync_changelog` | Draft categorized changelog from the latest update report |
+| `
+ode dist/cli.js init` | Detect workspace, guide first-time setup. Only asks once. |
+| `
+ode dist/cli.js push` | Export state → commit → push to GitHub. One command. |
+| `
+ode dist/cli.js pull` | Pull from GitHub → restore everything. One command. |
+| `
+ode dist/cli.js export` | Export full workspace state as JSON |
+| `
+ode dist/cli.js import` | Restore from JSON (with `dryRun` preview) |
+| `
+ode dist/cli.js diff` | Compare current state vs saved state |
+| `
+ode dist/cli.js status` | Show every submodule: commit, branch, dirty? |
+| `
+ode dist/cli.js verify` | Health check: gh, git, config, ralph, skills, submodules |
+| `
+ode dist/cli.js setup` | Install everything: gh, submodules, config, ralph, skills CLI, skill packages |
+| `
+ode dist/cli.js create_repo` | Create a **private** GitHub repo (warns if public) |
+| `
+ode dist/cli.js api_keys` | Detect, template, or add API keys |
+| `
+ode dist/cli.js guide` | Generate `guide/SYNC-GUIDE.md` — the restore playbook |
+| `
+ode dist/cli.js log` | Read/write install provenance log |
+| `
+ode dist/cli.js crystallize` | Record install + regenerate docs + export state + commit in one shot |
+| `
+ode dist/cli.js update` | Update opencode ecosystem: plugins, skills, MCP tools, sync repo, config deps |
+| `
+ode dist/cli.js changelog` | Draft categorized changelog from the latest update report |
 
 > MCP 形态（v1.0.0）已移除——从 v1.1.0 起仅提供 opencode plugin 形态与独立 CLI（`opencode-sync` 命令）。
 
@@ -115,7 +173,7 @@ opencode_sync_push "init"   # first backup
 ## Architecture
 
 ```
-opencode-sync-mcp-server/      # ← This repo (code only, never modified at runtime)
+uagent-sync/                  # ← This repo (code only, never modified at runtime)
 ├── src/
 │   ├── lib/                   # Modules, each <200 lines
 │   │   ├── types.ts           #   All interfaces
@@ -132,7 +190,8 @@ opencode-sync-mcp-server/      # ← This repo (code only, never modified at run
 │   │   ├── codebase-memory.ts #   codebase-memory-mcp release updater
 │   │   └── guide.ts           #   SYNC-GUIDE.md generator
 │   ├── sync.ts                # Barrel export
-│   ├── plugin.ts              # opencode plugin (16 opencode_sync_* tools)
+│   ├── plugin.ts              # opencode plugin (16 
+ode dist/cli.js * tools)
 │   └── cli.ts                 # Standalone CLI (opencode-sync)
 ├── test/                      # node:test suites (82 tests)
 ├── .github/workflows/         # CI + Release automation
@@ -156,8 +215,8 @@ opencode-dotfiles/             # ← Runtime data (separate repo, synced via Git
 ## Development
 
 ```bash
-git clone https://github.com/severin-ye/opencode-sync-mcp-server
-cd opencode-sync-mcp-server
+git clone https://github.com/severin-ye/uagent-sync
+cd uagent-sync
 npm install
 npm run typecheck    # tsc --noEmit
 npm run build        # TypeScript → dist/
