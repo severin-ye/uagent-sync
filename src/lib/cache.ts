@@ -142,6 +142,19 @@ export function getPlatform(): "windows" | "macos" | "linux" {
 }
 
 export function detectWorkspaceInfo(cwd?: string): WorkspaceInfo | null {
+  // 环境变量显式指定（与 resolveWorkspaceRoot 优先级一致）
+  const envRoot = process.env.OPENCODE_SYNC_WORKSPACE_ROOT;
+  if (envRoot && fs.existsSync(envRoot)) {
+    const remoteResult = run("git remote get-url origin", envRoot);
+    return {
+      name: path.basename(envRoot), root: envRoot, hasGitmodules: true,
+      gitRemote: remoteResult.code === 0 ? remoteResult.stdout.trim() : "",
+      defaultRepoName: `codelib-${os.userInfo().username}`,
+      dotfilesExist: fs.existsSync(path.join(envRoot, "opencode-dotfiles")),
+      mcpConfigured: fs.existsSync(path.join(os.homedir(), ".config", "opencode", "opencode.json")),
+    };
+  }
+
   const cache = readFixedCache() ?? readLegacyCache(cwd || process.cwd());
   if (isValidCache(cache)) {
     return {
