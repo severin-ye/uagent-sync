@@ -1,4 +1,6 @@
 import * as http from "node:http";
+import * as fs from "node:fs";
+import * as path from "node:path";
 import { createAgentPaths } from "./agent-paths.js";
 import { buildCapabilityMatrix, buildInventoryDiff, buildMigrationPlan, scanWorkspaceInventory } from "./agent-inventory.js";
 import type { AgentId } from "./agent-inventory-types.js";
@@ -22,6 +24,12 @@ function sendJson(response: http.ServerResponse, status: number, value: unknown)
   response.end(JSON.stringify(value));
 }
 
+const ASSETS: Record<string, { file: string; type: string }> = {
+  "/": { file: "index.html", type: "text/html; charset=utf-8" },
+  "/styles.css": { file: "styles.css", type: "text/css; charset=utf-8" },
+  "/app.js": { file: "app.js", type: "text/javascript; charset=utf-8" },
+};
+
 export async function startDashboardServer(options: DashboardServerOptions): Promise<DashboardServer> {
   const host = options.host ?? "127.0.0.1";
   const port = options.port ?? 0;
@@ -31,6 +39,14 @@ export async function startDashboardServer(options: DashboardServerOptions): Pro
     if (request.method !== "GET") return sendJson(response, 405, { error: { code: "method_not_allowed", message: "只读看板仅支持 GET 请求" } });
     const url = new URL(request.url ?? "/", `http://${host}`);
     try {
+      const asset = ASSETS[url.pathname];
+      if (asset) {
+        const dashboardRoot = path.resolve(import.meta.dirname, "..", "dashboard");
+        const file = path.resolve(dashboardRoot, asset.file);
+        if (!file.startsWith(dashboardRoot) || !fs.existsSync(file)) return sendJson(response, 404, { error: { code: "asset_missing", message: "看板静态资源尚未构建" } });
+        response.writeHead(200, { "Content-Type": asset.type, "Cache-Control": "no-cache", "X-Content-Type-Options": "nosniff" });
+        return response.end(fs.readFileSync(file));
+      }
       if (url.pathname === "/api/health") return sendJson(response, 200, { status: "ok", readOnly: true, timestamp: new Date().toISOString() });
       const current = inventory();
       if (url.pathname === "/api/inventory") return sendJson(response, 200, { ...current, matrix: buildCapabilityMatrix(current) });

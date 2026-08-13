@@ -8,7 +8,7 @@
     "opencode-sync": "dist/cli.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && node scripts/copy-dashboard.mjs",
     "typecheck": "tsc --noEmit",
     "cli": "tsx src/cli.ts",
     "test": "node scripts/run-tests.mjs",
