@@ -1,5 +1,7 @@
 # Multi-Agent Configuration Console Design
 
+> Superseded for migration-product decisions by [`docs/multi-agent-capability-migration-spec.zh-CN.md`](../../multi-agent-capability-migration-spec.zh-CN.md). This document remains the Phase 1 read-only console design record.
+
 Date: 2026-08-13
 
 ## 1. Outcome
