@@ -19,3 +19,5 @@ export { detectSyncPath, generateSyncMcpConfig, isMachineSpecificPath } from "./
 export type { AgentId, AgentStatus, Portability, CapabilityKind, AgentCapability, AgentInventory, WorkspaceInventory, CapabilityMatrixRow, InventoryDiff, MigrationAction, MigrationActionName } from "./lib/agent-inventory-types.js";
 export { createAgentPaths } from "./lib/agent-paths.js";
 export { scanWorkspaceInventory, buildCapabilityMatrix, buildInventoryDiff, buildMigrationPlan } from "./lib/agent-inventory.js";
+export type { DashboardServer, DashboardServerOptions } from "./lib/dashboard-server.js";
+export { startDashboardServer } from "./lib/dashboard-server.js";

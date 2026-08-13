@@ -1,0 +1,50 @@
+import * as http from "node:http";
+import { createAgentPaths } from "./agent-paths.js";
+import { buildCapabilityMatrix, buildInventoryDiff, buildMigrationPlan, scanWorkspaceInventory } from "./agent-inventory.js";
+import type { AgentId } from "./agent-inventory-types.js";
+
+export interface DashboardServer {
+  url: string;
+  host: string;
+  port: number;
+  close(): Promise<void>;
+}
+
+export interface DashboardServerOptions {
+  host?: string;
+  port?: number;
+  workspaceRoot: string;
+  homeDir?: string;
+}
+
+function sendJson(response: http.ServerResponse, status: number, value: unknown) {
+  response.writeHead(status, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" });
+  response.end(JSON.stringify(value));
+}
+
+export async function startDashboardServer(options: DashboardServerOptions): Promise<DashboardServer> {
+  const host = options.host ?? "127.0.0.1";
+  const port = options.port ?? 0;
+  const paths = createAgentPaths({ homeDir: options.homeDir, workspaceRoot: options.workspaceRoot });
+  const inventory = () => scanWorkspaceInventory({ paths });
+  const server = http.createServer((request, response) => {
+    if (request.method !== "GET") return sendJson(response, 405, { error: { code: "method_not_allowed", message: "只读看板仅支持 GET 请求" } });
+    const url = new URL(request.url ?? "/", `http://${host}`);
+    try {
+      if (url.pathname === "/api/health") return sendJson(response, 200, { status: "ok", readOnly: true, timestamp: new Date().toISOString() });
+      const current = inventory();
+      if (url.pathname === "/api/inventory") return sendJson(response, 200, { ...current, matrix: buildCapabilityMatrix(current) });
+      if (url.pathname === "/api/diff") return sendJson(response, 200, { scannedAt: current.scannedAt, differences: buildInventoryDiff(current) });
+      if (url.pathname === "/api/migration-plan") return sendJson(response, 200, { target: url.searchParams.get("target") ?? "deepseek", actions: buildMigrationPlan(current, (url.searchParams.get("target") ?? "deepseek") as AgentId) });
+      const agentMatch = url.pathname.match(/^\/api\/agents\/(codex|opencode|deepseek)$/);
+      if (agentMatch) return sendJson(response, 200, current.agents.find((agent) => agent.id === agentMatch[1]));
+      return sendJson(response, 404, { error: { code: "not_found", message: "未找到请求的看板资源" } });
+    } catch (error) {
+      return sendJson(response, 500, { error: { code: "scan_failed", message: error instanceof Error ? error.message : "配置扫描失败" } });
+    }
+  });
+  await new Promise<void>((resolve, reject) => { server.once("error", reject); server.listen(port, host, resolve); });
+  const address = server.address();
+  if (!address || typeof address === "string") throw new Error("Unable to determine dashboard port");
+  return { host, port: address.port, url: `http://${host}:${address.port}`, close: () => new Promise<void>((resolve, reject) => server.close((error) => error ? reject(error) : resolve())) };
+}
