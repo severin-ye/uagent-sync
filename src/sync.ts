@@ -16,3 +16,6 @@ export { detectApiKeys, initApiKeyFile } from "./lib/keys.js";
 export { KNOWN_SKILL_SOURCES, SKILL_PACKAGES, resolveSkillSources } from "./lib/skills.js";
 export { detectMcpBuildInfo, generateSyncGuide, detectPlaywrightMcpConfig, loadKnownMcps, matchKnownMcp, analyzeMcpConfig, generateKnowHowFiles } from "./lib/guide.js";
 export { detectSyncPath, generateSyncMcpConfig, isMachineSpecificPath } from "./lib/portable.js";
+export type { AgentId, AgentStatus, Portability, CapabilityKind, AgentCapability, AgentInventory, WorkspaceInventory, CapabilityMatrixRow, InventoryDiff, MigrationAction, MigrationActionName } from "./lib/agent-inventory-types.js";
+export { createAgentPaths } from "./lib/agent-paths.js";
+export { scanWorkspaceInventory, buildCapabilityMatrix, buildInventoryDiff, buildMigrationPlan } from "./lib/agent-inventory.js";
