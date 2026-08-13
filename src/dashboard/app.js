@@ -3,6 +3,7 @@ const $ = (selector) => document.querySelector(selector);
 const labels = { codex: "Codex", opencode: "OpenCode", deepseek: "DeepSeek Harness" };
 const kindLabels = { instructions: "Instructions", skills: "Skills", scripts: "Scripts", cli: "CLI", mcp: "MCP Servers", hooks: "Lifecycle Hooks", plugins: "Plugins", tools: "Custom Tools", subagents: "Subagents" };
 const actionLabels = { share: "直接共享", convert: "转换配置", wrap: "增加适配层", reconfigure: "重新配置", exclude: "不迁移", verify: "需要验证" };
+const viewLabels = { overview: "总览", agents: "Agent 配置", matrix: "差异", actions: "迁移建议", security: "安全边界" };
 
 function escapeHtml(value) { const node = document.createElement("span"); node.textContent = String(value ?? ""); return node.innerHTML; }
 function count(agent, kind) { return agent.capabilities.filter((item) => item.kind === kind).length; }
@@ -64,5 +65,25 @@ function initializeTheme() {
   $("#theme-toggle").addEventListener("click", () => { const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark"; document.documentElement.dataset.theme = next; localStorage.setItem("uagent-theme", next); });
 }
 
+function showView(view, updateHash = true) {
+  const next = viewLabels[view] ? view : "overview";
+  document.body.dataset.view = next;
+  document.querySelectorAll("[data-dashboard-section]").forEach((section) => { section.hidden = next !== "overview" && section.dataset.dashboardSection !== next; });
+  document.querySelectorAll(".nav-item[data-view]").forEach((item) => {
+    const active = item.dataset.view === next;
+    item.classList.toggle("active", active);
+    if (active) item.setAttribute("aria-current", "page"); else item.removeAttribute("aria-current");
+  });
+  $("#view-title").textContent = viewLabels[next];
+  if (updateHash && location.hash !== `#${next}`) history.pushState(null, "", `#${next}`);
+  document.querySelector("main").scrollTo?.({ top: 0, behavior: "smooth" });
+}
+
+function initializeNavigation() {
+  document.querySelectorAll(".nav-item[data-view]").forEach((item) => item.addEventListener("click", (event) => { event.preventDefault(); showView(item.dataset.view); }));
+  window.addEventListener("popstate", () => showView(location.hash.slice(1), false));
+  showView(location.hash.slice(1), false);
+}
+
 $("#refresh").addEventListener("click", refresh);
-initializeTheme(); refresh();
+initializeTheme(); initializeNavigation(); refresh();
