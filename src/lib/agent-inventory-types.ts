@@ -6,6 +6,14 @@ export type CapabilityKind = "instructions" | "skills" | "scripts" | "cli" | "mc
 export interface AgentCapability {
   kind: CapabilityKind;
   name: string;
+  /** Stable semantic identity used to compare providers with different names. */
+  capabilityId?: string;
+  provider?: "native" | "plugin" | "mcp" | "skill" | "tool" | "hook" | "script" | "cli";
+  officialTargets?: Partial<Record<AgentId, {
+    packageName: string;
+    repository?: string;
+    evidence?: string;
+  }>>;
   source?: string;
   scope?: "shared" | "user" | "project" | "native";
   portability: Portability;

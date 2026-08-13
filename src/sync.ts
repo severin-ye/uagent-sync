@@ -17,7 +17,9 @@ export { KNOWN_SKILL_SOURCES, SKILL_PACKAGES, resolveSkillSources } from "./lib/
 export { detectMcpBuildInfo, generateSyncGuide, detectPlaywrightMcpConfig, loadKnownMcps, matchKnownMcp, analyzeMcpConfig, generateKnowHowFiles } from "./lib/guide.js";
 export { detectSyncPath, generateSyncMcpConfig, isMachineSpecificPath } from "./lib/portable.js";
 export type { AgentId, AgentStatus, Portability, CapabilityKind, AgentCapability, AgentInventory, WorkspaceInventory, CapabilityMatrixRow, InventoryDiff, MigrationAction, MigrationActionName } from "./lib/agent-inventory-types.js";
+export type { RecommendationStrategy, CandidateStrategy, MigrationPolicy, ExecutionAction, CapabilityRouting, MigrationCandidate, MigrationRecommendation, MigrationConflict, MigrationExecution, MigrationDraftItem, MigrationDraft, BuildMigrationDraftOptions } from "./lib/migration-types.js";
 export { createAgentPaths } from "./lib/agent-paths.js";
 export { scanWorkspaceInventory, buildCapabilityMatrix, buildInventoryDiff, buildMigrationPlan } from "./lib/agent-inventory.js";
+export { buildMigrationDraft } from "./lib/migration-engine.js";
 export type { DashboardServer, DashboardServerOptions } from "./lib/dashboard-server.js";
 export { startDashboardServer } from "./lib/dashboard-server.js";
