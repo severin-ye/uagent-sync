@@ -17,7 +17,7 @@ export function createAgentPaths(input: { homeDir?: string; workspaceRoot: strin
     workspaceRoot: input.workspaceRoot,
     codexHome: path.join(homeDir, ".codex"),
     openCodeConfigDir: path.join(homeDir, ".config", "opencode"),
-    deepSeekConfigDir: path.join(homeDir, ".config", "deepseek"),
+    deepSeekConfigDir: path.join(homeDir, ".dsh"),
     sharedSkillsDir: path.join(homeDir, ".agents", "skills"),
   };
 }

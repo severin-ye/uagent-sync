@@ -19,13 +19,20 @@ function fixture() {
   const workspace = path.join(root, "workspace");
   fs.mkdirSync(path.join(home, ".codex"), { recursive: true });
   fs.mkdirSync(path.join(home, ".config", "opencode"), { recursive: true });
-  fs.mkdirSync(path.join(home, ".config", "deepseek"), { recursive: true });
+  fs.mkdirSync(path.join(home, ".dsh", "profiles", "web"), { recursive: true });
   fs.mkdirSync(path.join(home, ".agents", "skills", "shared-review"), { recursive: true });
   fs.mkdirSync(workspace, { recursive: true });
   fs.writeFileSync(path.join(home, ".agents", "skills", "shared-review", "SKILL.md"), "---\nname: shared-review\ndescription: Review code safely\n---\n");
-  fs.writeFileSync(path.join(home, ".codex", "config.toml"), '[mcp_servers.search]\ncommand = "npx"\nenv = { TOKEN = "SECRET_SENTINEL" }\n');
+  fs.writeFileSync(path.join(home, ".codex", "config.toml"), '[mcp_servers.search]\ncommand = "npx"\n[mcp_servers.search.env]\nTOKEN = "SECRET_SENTINEL"\n');
   fs.writeFileSync(path.join(home, ".config", "opencode", "opencode.json"), JSON.stringify({ plugin: ["uagent-sync"], mcp: { search: { command: "npx", token: "SECRET_SENTINEL" } } }));
-  fs.writeFileSync(path.join(home, ".config", "deepseek", "cordis.yml"), "plugins:\n  - skill\n  - hooks-codex\napiKey: SECRET_SENTINEL\n");
+  fs.writeFileSync(path.join(home, ".dsh", "settings.yaml"), "apiKey: SECRET_SENTINEL\n");
+  fs.writeFileSync(path.join(home, ".dsh", "profiles", "web", "cordis.yml"), "[]\n");
+  fs.writeFileSync(path.join(home, ".dsh", "profiles", "web", "cordis.patch.yml"), "[]\n");
+  fs.writeFileSync(path.join(home, ".dsh", "profiles", "web", "package.json"), JSON.stringify({
+    name: "dsh-profile-web",
+    dsh: { profile: { bundles: ["@deepseek-ai/dsh-base", "@deepseek-ai/dsh-web-app"] } },
+  }));
+  fs.writeFileSync(path.join(home, ".dsh", "version.json"), JSON.stringify({ version: "0.1.0-rc.6" }));
   return { root, home, workspace, paths: createAgentPaths({ homeDir: home, workspaceRoot: workspace }) };
 }
 
@@ -60,7 +67,10 @@ describe("agent adapters", () => {
     assert.deepEqual(agents.map((agent) => agent.status), ["detected", "detected", "detected"]);
     assert.ok(agents.every((agent) => agent.capabilities.some((item) => item.kind === "skills" && item.name === "shared-review")));
     assert.ok(!JSON.stringify(agents).includes("SECRET_SENTINEL"));
+    assert.deepEqual(agents[0].capabilities.filter((item) => item.kind === "mcp").map((item) => item.name), ["search"]);
     assert.equal(agents[2].capabilities.find((item) => item.kind === "mcp")?.portability, "unverified");
+    assert.equal(agents[2].version, "0.1.0-rc.6");
+    assert.ok(agents[2].capabilities.some((item) => item.kind === "plugins" && item.name === "@deepseek-ai/dsh-web-app"));
   });
 
   it("reports an absent DeepSeek Harness without failing the inventory", () => {
