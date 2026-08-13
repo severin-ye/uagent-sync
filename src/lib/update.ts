@@ -273,6 +273,9 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
     }
   }
   if (selected.has("skills")) {
+    if (dryRun) {
+      planned.push({ name: "skills", command: "skills update -g" });
+    } else {
     // skills CLI 1.5.9 在 Windows 上 update 子进程有 bug（手动等价命令正常），且部分失败时 exit code 仍为 0。
     // 1.5.22 已修复（2026-08-07 实测 frontend-slides/slides 恢复正常更新）；降级分支仍保留作防御。
     // 先跑 update 检查：成功（无 Failed）→ 记录单步；否则 → 从输出提取 source 列表，逐个 skills add 降级更新。
@@ -291,6 +294,7 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
     } else {
       // skills CLI 不可用且无法提取源（如 CI 环境未安装）——保留原命令步骤，执行阶段会如实报错
       planned.push({ name: "skills", command: "skills update -g" });
+    }
     }
   }
   if (selected.has("mcp")) {
