@@ -42,4 +42,18 @@ describe("dashboard server", () => {
     assert.equal((await fetch(`${server.url}/api/nope`)).status, 404);
     assert.equal((await fetch(`${server.url}/api/inventory`, { method: "POST" })).status, 405);
   });
+
+  it("requires an explicit migration route and returns a read-only policy draft", async () => {
+    const server = await fixtureServer();
+    const response = await fetch(`${server.url}/api/migration-draft?from=codex&to=opencode&policy=keep_both`);
+    assert.equal(response.status, 200);
+    const draft = await response.json() as { route: unknown; readOnly: boolean; policy: string; items: unknown[] };
+    assert.deepEqual(draft.route, { from: "codex", to: "opencode" });
+    assert.equal(draft.readOnly, true);
+    assert.equal(draft.policy, "keep_both");
+    assert.ok(Array.isArray(draft.items));
+    assert.equal((await fetch(`${server.url}/api/migration-draft?from=codex&to=codex`)).status, 400);
+    assert.equal((await fetch(`${server.url}/api/migration-draft?from=unknown&to=codex`)).status, 400);
+    assert.equal((await fetch(`${server.url}/api/migration-draft?from=codex&to=opencode&policy=unsafe`)).status, 400);
+  });
 });

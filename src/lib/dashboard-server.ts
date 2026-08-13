@@ -4,6 +4,8 @@ import * as path from "node:path";
 import { createAgentPaths } from "./agent-paths.js";
 import { buildCapabilityMatrix, buildInventoryDiff, buildMigrationPlan, scanWorkspaceInventory } from "./agent-inventory.js";
 import type { AgentId } from "./agent-inventory-types.js";
+import { buildMigrationDraft } from "./migration-engine.js";
+import type { MigrationPolicy } from "./migration-types.js";
 
 export interface DashboardServer {
   url: string;
@@ -30,6 +32,17 @@ const ASSETS: Record<string, { file: string; type: string }> = {
   "/app.js": { file: "app.js", type: "text/javascript; charset=utf-8" },
 };
 
+const AGENT_IDS = new Set<AgentId>(["codex", "opencode", "deepseek"]);
+const MIGRATION_POLICIES = new Set<MigrationPolicy>(["recommended", "prefer_target_native", "prefer_source_workflow", "keep_both", "ask_each"]);
+
+function isAgentId(value: string | null): value is AgentId {
+  return value !== null && AGENT_IDS.has(value as AgentId);
+}
+
+function isMigrationPolicy(value: string | null): value is MigrationPolicy {
+  return value !== null && MIGRATION_POLICIES.has(value as MigrationPolicy);
+}
+
 export async function startDashboardServer(options: DashboardServerOptions): Promise<DashboardServer> {
   const host = options.host ?? "127.0.0.1";
   const port = options.port ?? 0;
@@ -52,6 +65,15 @@ export async function startDashboardServer(options: DashboardServerOptions): Pro
       if (url.pathname === "/api/inventory") return sendJson(response, 200, { ...current, matrix: buildCapabilityMatrix(current) });
       if (url.pathname === "/api/diff") return sendJson(response, 200, { scannedAt: current.scannedAt, differences: buildInventoryDiff(current) });
       if (url.pathname === "/api/migration-plan") return sendJson(response, 200, { target: url.searchParams.get("target") ?? "deepseek", actions: buildMigrationPlan(current, (url.searchParams.get("target") ?? "deepseek") as AgentId) });
+      if (url.pathname === "/api/migration-draft") {
+        const from = url.searchParams.get("from");
+        const to = url.searchParams.get("to");
+        const policyValue = url.searchParams.get("policy");
+        if (!isAgentId(from) || !isAgentId(to) || from === to || (policyValue !== null && !isMigrationPolicy(policyValue))) {
+          return sendJson(response, 400, { error: { code: "invalid_migration_route", message: "from、to 必须是两个不同的受支持 Agent，policy 必须是已知策略。" } });
+        }
+        return sendJson(response, 200, buildMigrationDraft(current, { from, to, policy: policyValue ?? "recommended" }));
+      }
       const agentMatch = url.pathname.match(/^\/api\/agents\/(codex|opencode|deepseek)$/);
       if (agentMatch) return sendJson(response, 200, current.agents.find((agent) => agent.id === agentMatch[1]));
       return sendJson(response, 404, { error: { code: "not_found", message: "未找到请求的看板资源" } });
