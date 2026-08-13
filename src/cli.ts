@@ -2,6 +2,7 @@
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
+import { spawn } from "node:child_process";
 import {
   exportSystemState, importSystemState, diffState, resolveWorkspaceRoot, run,
   getSubmoduleStatus, verifyEnvironment, setupWorkspace, detectWorkspaceInfo,
@@ -9,6 +10,7 @@ import {
   readInstallLog, appendInstallEntry, exportInstallLogAsMarkdown,
   readInitState, writeInitState, markStepCompleted, pendingSteps, emptyInitState,
   shellEscape, isPathSafe,
+  scanWorkspaceInventory, startDashboardServer,
   type WorkspaceState, type InitType,
 } from "./sync.js";
 import { updateExtensions, archiveUpdateReport, type UpdateComponent, type UpdateProgress } from "./lib/update.js";
@@ -168,7 +170,9 @@ Commands:
   api-keys <detect|generate|add> [--key-name x] [--key-value x] [--github-token x]
   guide                   Generate SYNC-GUIDE.md
   log <read|add|export> [--type x] [--name x] [--source x]
-  crystallize --type x --name x --source x [--message x] [--skip-push]`);
+  crystallize --type x --name x --source x [--message x] [--skip-push]
+  inventory [--json]      Scan Codex/OpenCode/DeepSeek configuration (read-only)
+  dashboard [--host x] [--port n] [--no-open]  Start local configuration dashboard`);
     process.exit(1);
   }
 
@@ -177,6 +181,36 @@ Commands:
   const stateFile = path.join(workspaceRoot, stateRel);
 
   switch (command) {
+    case "inventory": {
+      const inventory = scanWorkspaceInventory({ workspaceRoot });
+      if (boolFlag(flags, "json")) {
+        console.log(JSON.stringify(inventory, null, 2));
+      } else {
+        console.log(["# Agent 配置清单", `扫描时间: ${inventory.scannedAt}`, "", ...inventory.agents.map((agent) => `- ${agent.label}: ${agent.status} · ${agent.capabilities.length} 项能力`), "", "只读模式；未包含密钥值。"].join("\n"));
+      }
+      break;
+    }
+    case "dashboard": {
+      const host = String(flags.get("host") || "127.0.0.1");
+      const rawPort = flags.get("port") ?? "0";
+      const port = Number(rawPort);
+      if (!Number.isInteger(port) || port < 0 || port > 65535) {
+        console.error(`Invalid dashboard port: ${rawPort}`);
+        process.exit(1);
+      }
+      const server = await startDashboardServer({ host, port, workspaceRoot });
+      console.log(`Uagent Sync 配置看板: ${server.url}`);
+      console.log("只读模式 · Ctrl+C 停止服务");
+      if (!boolFlag(flags, "no-open")) {
+        const opener = process.platform === "win32" ? ["cmd", ["/c", "start", "", server.url]] : process.platform === "darwin" ? ["open", [server.url]] : ["xdg-open", [server.url]];
+        const child = spawn(opener[0] as string, opener[1] as string[], { detached: true, stdio: "ignore", windowsHide: true });
+        child.unref();
+      }
+      const shutdown = async () => { await server.close(); process.exit(0); };
+      process.once("SIGINT", shutdown); process.once("SIGTERM", shutdown);
+      await new Promise(() => {});
+      break;
+    }
     case "export": {
       const out = positionals[0] || stateFile;
       const state = exportSystemState(workspaceRoot);

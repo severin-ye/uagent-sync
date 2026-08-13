@@ -123,7 +123,18 @@ Every `node dist/cli.js *` command needs to know the workspace root (the directo
 
 ---
 
-## CLI (16 commands)
+## Multi-agent configuration console
+
+Inspect Codex, OpenCode, and DeepSeek Harness configuration without changing it:
+
+```bash
+opencode-sync inventory --json
+opencode-sync dashboard
+```
+
+The dashboard binds to `127.0.0.1` by default and prints the actual local URL. Phase 1 is read-only: it visualizes Skills, instructions, MCP declarations, hooks, plugins/tools, portability, and migration gaps. Secret values, sessions, memories, provider credentials, permissions, themes, shortcuts, UI state, and caches are excluded. DeepSeek MCP remains marked **unverified** until local evidence proves support.
+
+## CLI (18 commands)
 
 Run any command as `node dist/cli.js <command>` (or `opencode-sync <command>` after `npm link`).
 

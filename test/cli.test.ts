@@ -39,7 +39,7 @@ after(() => {
 describe("CLI usage", () => {
   it("no command shows usage with all 16 commands", () => {
     const { stdout } = runCli([]);
-    for (const cmd of ["export", "import", "diff", "push", "pull", "update", "changelog", "status", "verify", "setup", "init", "create-repo", "api-keys", "guide", "log", "crystallize"]) {
+    for (const cmd of ["export", "import", "diff", "push", "pull", "update", "changelog", "status", "verify", "setup", "init", "create-repo", "api-keys", "guide", "log", "crystallize", "inventory", "dashboard"]) {
       assert.ok(stdout.includes(cmd), `usage should list ${cmd}`);
     }
   });
@@ -51,6 +51,20 @@ describe("CLI usage", () => {
 });
 
 describe("CLI read-only commands", () => {
+  it("inventory --json returns a safe three-agent payload", () => {
+    const { stdout, code } = runCli(["inventory", "--json"]);
+    assert.equal(code, 0);
+    const data = JSON.parse(stdout);
+    assert.deepEqual(data.agents.map((agent: { id: string }) => agent.id), ["codex", "opencode", "deepseek"]);
+    assert.equal(data.readOnly, true);
+    assert.equal(data.secretsIncluded, false);
+  });
+
+  it("dashboard rejects invalid ports", () => {
+    const { code } = runCli(["dashboard", "--port", "invalid", "--no-open"]);
+    assert.notEqual(code, 0);
+  });
+
   it("status lists submodules", () => {
     const { stdout, code } = runCli(["status"]);
     assert.equal(code, 0);

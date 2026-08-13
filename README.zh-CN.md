@@ -123,7 +123,18 @@ uagent-sync/
 
 ---
 
-## CLI（16 个命令）
+## 多 Agent 配置看板
+
+以只读方式检查 Codex、OpenCode 和 DeepSeek Harness 配置：
+
+```bash
+opencode-sync inventory --json
+opencode-sync dashboard
+```
+
+看板默认只监听 `127.0.0.1`，启动后会输出实际本地地址。第一阶段只做扫描和可视化：展示 Skills、规则、MCP 声明、Hooks、插件/工具、可迁移性与缺口，不在网页中修改配置。密钥值、Session、Memory、Provider 凭据、权限、主题、快捷键、UI 状态和缓存均不进入清单。DeepSeek MCP 在本机证据明确前始终标记为“未证实”。
+
+## CLI（18 个命令）
 
 所有命令以 `node dist/cli.js <命令>` 执行（`npm link` 后可简写为 `opencode-sync <命令>`）。
 
