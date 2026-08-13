@@ -38,4 +38,14 @@ describe("dashboard assets", () => {
     assert.match(js, /data-dashboard-section/);
     assert.match(css, /body\[data-view=/);
   });
+
+  it("renders a six-direction migration workbench with bulk rules and per-item overrides", () => {
+    const html = asset("index.html");
+    const js = asset("app.js");
+    for (const id of ["migration-from", "migration-to", "migration-policy", "migration-items"]) assert.match(html, new RegExp(`id="${id}"`));
+    assert.match(js, /\/api\/migration-draft\?from=/);
+    assert.match(js, /itemOverrides/);
+    assert.match(js, /renderMigrationDraft/);
+    assert.match(html, /只生成草案，不会安装、启用或改写配置/);
+  });
 });

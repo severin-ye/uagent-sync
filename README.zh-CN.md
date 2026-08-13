@@ -134,6 +134,16 @@ opencode-sync dashboard
 
 看板默认只监听 `127.0.0.1`，启动后会输出实际本地地址。第一阶段只做扫描和可视化：展示 Skills、规则、MCP 声明、Hooks、插件/工具、可迁移性与缺口，不在网页中修改配置。密钥值、Session、Memory、Provider 凭据、权限、主题、快捷键、UI 状态和缓存均不进入清单。DeepSeek MCP 在本机证据明确前始终标记为“未证实”。
 
+“迁移建议”页面支持 Codex、OpenCode、DeepSeek Harness 之间的六个迁移方向。它按能力而不是插件名称生成只读草案，并将系统建议与用户决定分开显示。用户可以先选择一套统一法则，再逐项覆盖冲突能力；目标平台官方版本、目标原生重复能力、待验证兼容性和最后兜底的自制适配器会被区别标记。本阶段不会下载扩展、启用插件或改写任何 Agent 配置。
+
+只读 API 也可以直接查看草案：
+
+```text
+GET /api/migration-draft?from=codex&to=opencode&policy=recommended
+```
+
+可用策略为 `recommended`、`prefer_target_native`、`prefer_source_workflow`、`keep_both` 和 `ask_each`。完整能力边界见 [`docs/multi-agent-capability-migration-spec.zh-CN.md`](docs/multi-agent-capability-migration-spec.zh-CN.md)。
+
 ## CLI（18 个命令）
 
 所有命令以 `node dist/cli.js <命令>` 执行（`npm link` 后可简写为 `opencode-sync <命令>`）。

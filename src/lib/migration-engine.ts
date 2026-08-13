@@ -117,6 +117,10 @@ export function buildMigrationDraft(inventory: WorkspaceInventory, options: Buil
     const key = semanticId(capability);
     if (seen.has(key)) continue;
     seen.add(key);
+    const sameSharedAsset = capability.scope === "shared" && target.capabilities.some((candidate) =>
+      candidate.scope === "shared" && semanticId(candidate) === key && candidate.source === capability.source,
+    );
+    if (sameSharedAsset) continue;
     const id = `${options.from}-${options.to}-${slug(key)}`;
     const result = classify(capability, target.capabilities, options.to);
     const override = options.itemOverrides?.[id];

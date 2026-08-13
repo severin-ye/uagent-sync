@@ -84,4 +84,11 @@ describe("bidirectional migration draft", () => {
     assert.equal(draft.items.find((item) => item.name === "word")?.recommendation.strategy, "verify_first");
     assert.equal(draft.items.find((item) => item.name === "word")?.execution.action, "defer");
   });
+
+  it("does not turn the same shared skill directory into hundreds of migration conflicts", () => {
+    const shared = capability({ kind: "skills", name: "review", scope: "shared", source: "C:/home/.agents/skills/review/SKILL.md" });
+    const draft = buildMigrationDraft(inventory("codex", "opencode", [shared], [shared]), { from: "codex", to: "opencode" });
+    assert.equal(draft.items.length, 0);
+    assert.equal(draft.summary.conflicts, 0);
+  });
 });
