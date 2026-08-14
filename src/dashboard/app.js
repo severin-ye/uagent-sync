@@ -90,22 +90,30 @@ function renderKindFilter(draft) {
 
 /** 摘要徽标点击 → 状态筛选（再点同一徽标取消筛选）。徽标计数不随徽标筛选自身变化。 */
 function renderSummaryChips(draft, counts, sharedCount, decidedCount) {
-  const chips = [
-    { key: "pending", label: "待迁移", count: counts.total },
-    { key: "conflicts", label: "冲突", count: counts.conflicts },
-    { key: "deferred", label: "待确认", count: counts.deferred },
-    { key: "shared", label: "已共享", count: sharedCount },
-    { key: "decided", label: "已决定", count: decidedCount },
-  ];
-  $("#migration-summary").innerHTML = chips.map((chip) =>
-    `<span class="summary-chip${state.summaryFilter === chip.key ? " active" : ""}" data-summary-filter="${chip.key}" role="button" tabindex="0" title="点击筛选；再点一次取消">${chip.label} <b>${chip.count}</b></span>`).join("");
-  document.querySelectorAll("[data-summary-filter]").forEach((chip) => {
+  const chip = (key, label, count, extraClass = "") =>
+    `<span class="summary-chip ${extraClass}${state.summaryFilter === key ? " active" : ""}" data-summary-filter="${key}" role="button" tabindex="0" title="点击筛选；再点一次取消">${label} <b>${count}</b></span>`;
+  // 冲突/待确认/已决定是"待迁移"的子类（用虚线徽标 + "其中"分隔表达包含关系）；
+  // 已共享是独立类别（无需迁移）。
+  $("#migration-summary").innerHTML = [
+    '<span class="chips-group">',
+    chip("pending", "待迁移", counts.total),
+    '<span class="chips-divider">其中</span>',
+    chip("conflicts", "冲突", counts.conflicts, "sub"),
+    chip("deferred", "待确认", counts.deferred, "sub"),
+    chip("decided", "已决定", decidedCount, "sub"),
+    '</span>',
+    '<span class="chips-group">',
+    chip("shared", "已共享", sharedCount),
+    '<span class="chips-note">无需迁移</span>',
+    '</span>',
+  ].join("");
+  document.querySelectorAll("[data-summary-filter]").forEach((chipEl) => {
     const toggle = () => {
-      state.summaryFilter = state.summaryFilter === chip.dataset.summaryFilter ? null : chip.dataset.summaryFilter;
+      state.summaryFilter = state.summaryFilter === chipEl.dataset.summaryFilter ? null : chipEl.dataset.summaryFilter;
       renderMigrationDraft(state.migrationDraft);
     };
-    chip.addEventListener("click", toggle);
-    chip.addEventListener("keydown", (event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); toggle(); } });
+    chipEl.addEventListener("click", toggle);
+    chipEl.addEventListener("keydown", (event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); toggle(); } });
   });
 }
 
