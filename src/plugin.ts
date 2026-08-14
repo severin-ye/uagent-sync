@@ -25,6 +25,7 @@ import {
 } from "./sync.js";
 import { updateExtensions, archiveUpdateReport, type UpdateComponent } from "./lib/update.js";
 import { DOTFILES_DIR } from "./lib/dotfiles.js";
+import { commitCrystallize } from "./lib/crystallize-commit.js";
 
 const z = tool.schema;
 
@@ -537,28 +538,13 @@ Trigger with natural language: "crystallize this install" / "结晶这个安装"
           fs.writeFileSync(stateFile, JSON.stringify(state, null, 2));
           results.push(`📦 Step 3: Exported state — ${state.submodules.length} submodules, ${state.skills.length} skills`);
 
-          const addResult = run(`git add ${DOTFILES_DIR}/`, workspaceRoot);
-          if (addResult.code !== 0) {
-            results.push(`⚠️ Step 4: git add failed — ${addResult.stderr}`);
-          } else {
-            const commitMsg = args.message || `Crystallize: ${args.name || "environment update"} ${new Date().toISOString().slice(0, 19)}`;
-            const tmpMsgFile = path.join(workspaceRoot, DOTFILES_DIR, "state", ".commit-msg.tmp");
-            fs.writeFileSync(tmpMsgFile, commitMsg, "utf-8");
-            const commitResult = run(`git commit -F ${shellEscape(tmpMsgFile)}`, workspaceRoot);
-            try { fs.unlinkSync(tmpMsgFile); } catch { /* ok */ }
-
-            if (commitResult.code !== 0) {
-              results.push(`⚠️ Step 4: git commit — ${commitResult.stderr}`);
-            } else {
-              results.push(`✅ Step 4: Committed — "${commitMsg}"`);
-              if (!args.skipPush) {
-                const pushResult = run("git push", workspaceRoot);
-                results.push(pushResult.code === 0 ? "🚀 Step 4: Pushed to remote" : `⚠️ Step 4: git push failed — ${pushResult.stderr}`);
-              } else {
-                results.push("⏭️ Step 4: Push skipped (skipPush=true)");
-              }
-            }
-          }
+          const commitMsg = args.message || `Crystallize: ${args.name || "environment update"} ${new Date().toISOString().slice(0, 19)}`;
+          results.push(...commitCrystallize({
+            workspaceRoot,
+            dotfilesDir: DOTFILES_DIR,
+            commitMsg,
+            skipPush: args.skipPush,
+          }));
 
           return text(["# ✨ Crystallized", "", ...results, "", `State: \`${stateFile}\``, `Guide: \`${guidePath}\``].join("\n"));
         },

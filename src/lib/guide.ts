@@ -538,6 +538,7 @@ export function generateSyncGuide(workspaceRoot: string, state: WorkspaceState):
     }
   }
 
+  fs.mkdirSync(path.dirname(guidePath), { recursive: true });
   fs.writeFileSync(guidePath, lines.join("\n"));
 
   // Also generate know-how files

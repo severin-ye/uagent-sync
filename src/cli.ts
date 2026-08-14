@@ -15,6 +15,7 @@ import {
 } from "./sync.js";
 import { updateExtensions, archiveUpdateReport, type UpdateComponent, type UpdateProgress } from "./lib/update.js";
 import { DOTFILES_DIR } from "./lib/dotfiles.js";
+import { commitCrystallize } from "./lib/crystallize-commit.js";
 
 function log(msg: string) { console.error(`[opencode-sync] ${msg}`); }
 
@@ -476,27 +477,13 @@ Commands:
       fs.writeFileSync(stateFile, JSON.stringify(stateOut, null, 2));
       results.push(`📦 Step 3: Exported state — ${stateOut.submodules.length} submodules, ${stateOut.skills.length} skills`);
 
-      const addResult = run(`git add ${DOTFILES_DIR}/`, workspaceRoot);
-      if (addResult.code !== 0) {
-        results.push(`⚠️ Step 4: git add failed — ${addResult.stderr}`);
-      } else {
-        const commitMsg = String(flags.get("message") || `Crystallize: ${name} ${new Date().toISOString().slice(0, 19)}`);
-        const tmpMsgFile = path.join(workspaceRoot, DOTFILES_DIR, "state", ".commit-msg.tmp");
-        fs.writeFileSync(tmpMsgFile, commitMsg, "utf-8");
-        const commitResult = run(`git commit -F ${shellEscape(tmpMsgFile)}`, workspaceRoot);
-        try { fs.unlinkSync(tmpMsgFile); } catch { /* ok */ }
-        if (commitResult.code !== 0) {
-          results.push(`⚠️ Step 4: git commit — ${commitResult.stderr}`);
-        } else {
-          results.push(`✅ Step 4: Committed — "${commitMsg}"`);
-          if (!boolFlag(flags, "skip-push")) {
-            const pushResult = run("git push", workspaceRoot);
-            results.push(pushResult.code === 0 ? "🚀 Step 4: Pushed to remote" : `⚠️ Step 4: git push failed — ${pushResult.stderr}`);
-          } else {
-            results.push("⏭️ Step 4: Push skipped (--skip-push)");
-          }
-        }
-      }
+      const commitMsg = String(flags.get("message") || `Crystallize: ${name} ${new Date().toISOString().slice(0, 19)}`);
+      results.push(...commitCrystallize({
+        workspaceRoot,
+        dotfilesDir: DOTFILES_DIR,
+        commitMsg,
+        skipPush: boolFlag(flags, "skip-push"),
+      }));
       console.log(["# ✨ Crystallized", "", ...results, "", `State: \`${stateFile}\``, `Guide: \`${guidePath}\``].join("\n"));
       break;
     }
