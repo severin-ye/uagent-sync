@@ -1,11 +1,30 @@
-const state = { lastInventory: null, migrationDraft: null, itemOverrides: {} };
+const state = { lastInventory: null, migrationDraft: null, itemOverrides: {}, decisions: loadDecisions() };
+const DECISIONS_KEY = "uagent-decisions";
 const $ = (selector) => document.querySelector(selector);
 const labels = { codex: "Codex", opencode: "OpenCode", deepseek: "DeepSeek Harness" };
 const kindLabels = { instructions: "Instructions", skills: "Skills", scripts: "Scripts", cli: "CLI", mcp: "MCP Servers", hooks: "Lifecycle Hooks", plugins: "Plugins", tools: "Custom Tools", subagents: "Subagents" };
 const actionLabels = { share: "直接共享", convert: "转换配置", wrap: "增加适配层", reconfigure: "重新配置", exclude: "不迁移", verify: "需要验证" };
-const recommendationLabels = { direct_share: "直接迁移", use_existing_target: "使用目标端现有能力", install_official_variant: "安装官方适配版本", find_mature_alternative: "寻找成熟替代品", verify_first: "先验证兼容性" };
+const recommendationLabels = { direct_share: "直接共享现有配置", use_existing_target: "保留目标端现有能力", install_official_variant: "安装官方适配版本", find_mature_alternative: "寻找成熟替代品", verify_first: "先验证兼容性" };
 const executionLabels = { direct_share: "直接共享", no_change: "无需变更", install_enabled: "安装并启用", install_disabled: "安装但暂不启用", use_target_native: "只用目标原生", keep_both: "两者都保留", defer: "暂缓决定" };
+const evidenceLabels = { verified_local: "本机已验证", declared_official: "官方声明", unverified: "尚未证实" };
+const strategyExplain = {
+  direct_share: "这项能力用的是跨 Agent 的通用格式（SKILL.md / MCP / CLI），目标端不需要改写就能直接用。共享后两个 Agent 维护同一份配置，改一处两边生效。",
+  use_existing_target: "目标端已经有同名能力了，重复迁移会造成两份配置互相打架。保持目标端现有的即可，省去维护两套的麻烦。",
+  install_official_variant: "原扩展的作者为目标平台发布了官方版本。装官方版既保留原有能力，又由作者持续维护，比自己写适配器更稳妥。",
+  find_mature_alternative: "目标端没有官方版本可用，需要找社区里成熟的替代品。选定替代品后建议先小范围试用，确认顺手再全面替换。",
+  verify_first: "目标端是否支持这项能力还没有被证实。先验证目标版本的接入方式，确认可行后再迁移，避免白忙一场。",
+};
+const conflictExplain = {
+  none: "目标端没有同名能力，迁移过去不会冲突。",
+  target_native_overlap: "目标端已经内置了类似能力，重复迁移会打架。",
+  target_provider_overlap: "目标端已有提供者覆盖同样的能力边界。",
+};
 const viewLabels = { overview: "总览", agents: "Agent 配置", matrix: "差异", actions: "迁移建议", security: "安全边界" };
+
+function loadDecisions() { try { return JSON.parse(localStorage.getItem(DECISIONS_KEY)) ?? {}; } catch { return {}; } }
+function saveDecisions() { localStorage.setItem(DECISIONS_KEY, JSON.stringify(state.decisions)); }
+function decisionsScope() { return `${$("#migration-from").value}→${$("#migration-to").value}`; }
+function decisionsFor(scope) { return state.decisions[scope] ?? {}; }
 
 function escapeHtml(value) { const node = document.createElement("span"); node.textContent = String(value ?? ""); return node.innerHTML; }
 function count(agent, kind) { return agent.capabilities.filter((item) => item.kind === kind).length; }
@@ -40,22 +59,57 @@ function executionOptions(selected) {
 
 function renderMigrationDraft(draft) {
   state.migrationDraft = draft;
+  const scope = decisionsScope();
+  const decisions = decisionsFor(scope);
+  const decidedCount = Object.keys(decisions).length;
   $("#action-count").textContent = `${draft.summary.total} 项`;
-  $("#migration-summary").innerHTML = `<span><b>${draft.summary.total}</b> 项能力</span><span><b>${draft.summary.conflicts}</b> 项冲突</span><span><b>${draft.summary.deferred}</b> 项待确认</span>`;
+  $("#migration-summary").innerHTML = `<span><b>${draft.summary.total}</b> 项能力</span><span><b>${draft.summary.conflicts}</b> 项冲突</span><span><b>${draft.summary.deferred}</b> 项待确认</span><span><b>${decidedCount}</b> 项已决定</span>`;
   $("#migration-items").innerHTML = draft.items.length ? draft.items.map((item) => {
     const conflict = item.conflict.type === "none" ? "无冲突" : `发现冲突：${item.conflict.targetProviders.join("、")}`;
+    const decided = decisions[item.id];
+    const decidedBadge = decided ? `<span class="decided-badge">✓ 已决定：${executionLabels[decided.action]}</span>` : "";
     const candidates = item.candidates.map((candidate) => `<li class="${candidate.recommended ? "recommended" : "fallback"}"><span>${escapeHtml(candidate.label)}</span><em>${candidate.recommended ? "建议" : "最后兜底"}</em></li>`).join("");
-    return `<article class="migration-item" data-migration-id="${escapeHtml(item.id)}">
-      <div class="migration-item-head"><div><span class="kind-chip">${kindLabels[item.kind] ?? item.kind}</span><h3>${escapeHtml(item.name)}</h3></div><span class="conflict ${item.conflict.type === "none" ? "clear" : "warn"}">${escapeHtml(conflict)}</span></div>
-      <div class="migration-reason"><strong>${recommendationLabels[item.recommendation.strategy]}</strong><p>${escapeHtml(item.recommendation.reason)}</p><small>证据：${escapeHtml(item.recommendation.evidenceLevel)}</small></div>
+    return `<article class="migration-item${decided ? " decided" : ""}" data-migration-id="${escapeHtml(item.id)}">
+      <div class="migration-item-head"><div><span class="kind-chip">${kindLabels[item.kind] ?? item.kind}</span><h3>${escapeHtml(item.name)}</h3>${decidedBadge}</div><span class="conflict ${item.conflict.type === "none" ? "clear" : "warn"}">${escapeHtml(conflict)}</span></div>
+      <div class="migration-advice">
+        <div class="advice-head"><span class="advice-tag">AI 建议</span><strong>${recommendationLabels[item.recommendation.strategy]}</strong><span class="evidence ${item.recommendation.evidenceLevel}">依据：${evidenceLabels[item.recommendation.evidenceLevel] ?? item.recommendation.evidenceLevel}</span></div>
+        <p class="advice-reason">${escapeHtml(item.recommendation.reason)}</p>
+        <p class="advice-explain">${strategyExplain[item.recommendation.strategy] ?? ""}</p>
+        <p class="advice-conflict">${conflictExplain[item.conflict.type] ?? ""}</p>
+      </div>
       <details><summary>查看候选方案与依据</summary><ul class="candidate-list">${candidates}</ul></details>
-      <label class="item-decision">本项决定<select data-item-override="${escapeHtml(item.id)}">${executionOptions(item.execution.action)}</select><small>当前来源：${item.execution.resolvedBy === "item" ? "单项覆盖" : item.execution.resolvedBy === "global" ? "统一法则" : "系统建议"}</small></label>
+      <label class="item-decision">本项决定<select data-item-override="${escapeHtml(item.id)}">${executionOptions(decided?.action ?? item.execution.action)}</select><small>${decided ? `已决定（${new Date(decided.at).toLocaleString([], { hour: "2-digit", minute: "2-digit", month: "numeric", day: "numeric" })}）` : `当前来源：${item.execution.resolvedBy === "item" ? "单项覆盖" : item.execution.resolvedBy === "global" ? "统一法则" : "系统建议"}`}</small></label>
     </article>`;
   }).join("") : '<div class="empty">来源 Agent 暂无可生成迁移草案的能力。</div>';
+  renderDecidedPanel(decisions);
   document.querySelectorAll("[data-item-override]").forEach((select) => select.addEventListener("change", () => {
-    state.itemOverrides[select.dataset.itemOverride] = select.value;
-    const item = state.migrationDraft.items.find((candidate) => candidate.id === select.dataset.itemOverride);
-    if (item) { item.execution.action = select.value; item.execution.resolvedBy = "item"; renderMigrationDraft(state.migrationDraft); }
+    const itemId = select.dataset.itemOverride;
+    const action = select.value;
+    const scopeNow = decisionsScope();
+    state.decisions[scopeNow] = state.decisions[scopeNow] ?? {};
+    state.decisions[scopeNow][itemId] = { action, at: Date.now() };
+    saveDecisions();
+    const item = state.migrationDraft.items.find((candidate) => candidate.id === itemId);
+    if (item) { item.execution.action = action; item.execution.resolvedBy = "item"; }
+    renderMigrationDraft(state.migrationDraft);
+  }));
+}
+
+function renderDecidedPanel(decisions) {
+  const entries = Object.entries(decisions).sort((a, b) => b[1].at - a[1].at);
+  const panel = $("#decided-panel");
+  if (!panel) return;
+  panel.hidden = entries.length === 0;
+  $("#decided-items").innerHTML = entries.map(([id, decision]) => {
+    const item = state.migrationDraft.items.find((candidate) => candidate.id === id);
+    const name = item ? item.name : id;
+    return `<li><span class="decided-name">${escapeHtml(name)}</span><span class="decided-action">${executionLabels[decision.action] ?? decision.action}</span><span class="decided-time">${new Date(decision.at).toLocaleString([], { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" })}</span><button data-clear-decision="${escapeHtml(id)}" title="撤销该决定">撤销</button></li>`;
+  }).join("");
+  document.querySelectorAll("[data-clear-decision]").forEach((button) => button.addEventListener("click", () => {
+    const scopeNow = decisionsScope();
+    delete (state.decisions[scopeNow] ?? {})[button.dataset.clearDecision];
+    saveDecisions();
+    renderMigrationDraft(state.migrationDraft);
   }));
 }
 
@@ -69,7 +123,6 @@ async function loadMigrationDraft() {
   const policy = $("#migration-policy").value;
   const response = await fetch(`/api/migration-draft?from=${encodeURIComponent(from)}&to=${encodeURIComponent($("#migration-to").value)}&policy=${encodeURIComponent(policy)}`, { cache: "no-store" });
   if (!response.ok) throw new Error("迁移草案读取失败");
-  state.itemOverrides = {};
   renderMigrationDraft(await response.json());
 }
 

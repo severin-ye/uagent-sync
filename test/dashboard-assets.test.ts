@@ -42,10 +42,32 @@ describe("dashboard assets", () => {
   it("renders a six-direction migration workbench with bulk rules and per-item overrides", () => {
     const html = asset("index.html");
     const js = asset("app.js");
-    for (const id of ["migration-from", "migration-to", "migration-policy", "migration-items"]) assert.match(html, new RegExp(`id="${id}"`));
+    for (const id of ["migration-from", "migration-to", "migration-policy", "migration-items", "decided-panel"]) assert.match(html, new RegExp(`id="${id}"`));
     assert.match(js, /\/api\/migration-draft\?from=/);
-    assert.match(js, /itemOverrides/);
     assert.match(js, /renderMigrationDraft/);
     assert.match(html, /只生成草案，不会安装、启用或改写配置/);
+  });
+
+  it("shows explicit advice with plain-language reasoning and evidence for every item", () => {
+    const js = asset("app.js");
+    assert.match(js, /advice-tag/);
+    assert.match(js, /AI 建议/);
+    assert.match(js, /strategyExplain/);
+    assert.match(js, /evidenceLabels/);
+    assert.match(js, /本机已验证/);
+    assert.match(js, /advice-explain/);
+    assert.match(js, /conflictExplain/);
+  });
+
+  it("persists per-item decisions locally and renders a decided panel", () => {
+    const js = asset("app.js");
+    const html = asset("index.html");
+    assert.match(js, /DECISIONS_KEY/);
+    assert.match(js, /localStorage/);
+    assert.match(js, /renderDecidedPanel/);
+    assert.match(js, /data-clear-decision/);
+    assert.match(js, /项已决定/);
+    assert.match(html, /已确认的决定/);
+    assert.match(html, /保存在本机浏览器/);
   });
 });
