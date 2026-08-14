@@ -4,6 +4,7 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import { resolveWorkspaceRoot, findWorkspaceRoot, getFixedCachePath, __overrideHomeDir, __resetCacheForTests } from "../src/lib/cache.js";
+import { DOTFILES_DIR } from "../src/lib/dotfiles.js";
 
 /**
  * workspace root 定位缺陷回归测试：
@@ -71,7 +72,7 @@ describe("resolveWorkspaceRoot — 非 workspace cwd", () => {
     setupOutsideCwd();
     // 旧缓存路径在 workspace 内，但 cwd 在 workspace 外——旧实现读不到，修复后通过 findWorkspaceRoot
     // 找到 workspace 后也应能复用旧缓存；这里直接验证：从 workspace 内启动时旧缓存被迁移。
-    const dotfilesDir = path.join(fakeWorkspace, "opencode-dotfiles", "state");
+    const dotfilesDir = path.join(fakeWorkspace, DOTFILES_DIR, "state");
     fs.mkdirSync(dotfilesDir, { recursive: true });
     fs.writeFileSync(path.join(dotfilesDir, "sync-cache.json"), JSON.stringify({ workspaceRoot: fakeWorkspace }));
     process.chdir(fakeWorkspace); // 从 workspace 内启动（旧路径可达）

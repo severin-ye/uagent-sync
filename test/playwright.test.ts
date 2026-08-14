@@ -3,6 +3,7 @@ import * as assert from "node:assert";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import * as os from "node:os";
+import { DOTFILES_DIR } from "../src/lib/dotfiles.js";
 
 const TMP = path.join(os.tmpdir(), `opencode-sync-test-${Date.now()}`);
 
@@ -233,16 +234,16 @@ describe("generateSyncGuide — Playwright section", () => {
     exportSystemState = mod.exportSystemState;
     ws = path.join(TMP, "workspace");
     fs.mkdirSync(ws, { recursive: true });
-    fs.mkdirSync(path.join(ws, "opencode-dotfiles", "config"), { recursive: true });
-    fs.mkdirSync(path.join(ws, "opencode-dotfiles", "guide"), { recursive: true });
-    fs.mkdirSync(path.join(ws, "opencode-dotfiles", "data"), { recursive: true });
+    fs.mkdirSync(path.join(ws, DOTFILES_DIR, "config"), { recursive: true });
+    fs.mkdirSync(path.join(ws, DOTFILES_DIR, "guide"), { recursive: true });
+    fs.mkdirSync(path.join(ws, DOTFILES_DIR, "data"), { recursive: true });
     // Copy real data file for authentic content（仓库内 data/，随代码分发，CI 可达）
     const realData = path.resolve(import.meta.dirname!, "../data/known-mcps.json");
     if (fs.existsSync(realData)) {
-      fs.copyFileSync(realData, path.join(ws, "opencode-dotfiles", "data", "known-mcps.json"));
+      fs.copyFileSync(realData, path.join(ws, DOTFILES_DIR, "data", "known-mcps.json"));
     } else {
       // Fallback data matching real-world assertions
-      fs.writeFileSync(path.join(ws, "opencode-dotfiles", "data", "known-mcps.json"), JSON.stringify({
+      fs.writeFileSync(path.join(ws, DOTFILES_DIR, "data", "known-mcps.json"), JSON.stringify({
         version: "1.0",
         mcpServers: {
           playwright: {
@@ -271,7 +272,7 @@ describe("generateSyncGuide — Playwright section", () => {
   });
 
   function writeWsConfig(content: string) {
-    const p = path.join(ws, "opencode-dotfiles", "config", "opencode.json");
+    const p = path.join(ws, DOTFILES_DIR, "config", "opencode.json");
     fs.writeFileSync(p, content, "utf-8");
   }
 
@@ -281,7 +282,7 @@ describe("generateSyncGuide — Playwright section", () => {
   // 也不再需要改名/备份真实配置文件。
   function withFixtureConfig<T>(fn: () => T): T {
     const prev = process.env.OPENCODE_CONFIG_TEST;
-    process.env.OPENCODE_CONFIG_TEST = path.join(ws, "opencode-dotfiles", "config", "opencode.json");
+    process.env.OPENCODE_CONFIG_TEST = path.join(ws, DOTFILES_DIR, "config", "opencode.json");
     try {
       return fn();
     } finally {

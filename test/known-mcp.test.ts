@@ -3,6 +3,7 @@ import * as assert from "node:assert";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import * as os from "node:os";
+import { DOTFILES_DIR } from "../src/lib/dotfiles.js";
 
 const TMP = path.join(os.tmpdir(), `known-mcp-test-${Date.now()}`);
 
@@ -20,7 +21,7 @@ describe("data-driven MCP detection", () => {
     analyzeMcpConfig = mod.analyzeMcpConfig;
     ws = path.join(TMP, "workspace");
     fs.mkdirSync(ws, { recursive: true });
-    fs.mkdirSync(path.join(ws, "opencode-dotfiles", "data"), { recursive: true });
+    fs.mkdirSync(path.join(ws, DOTFILES_DIR, "data"), { recursive: true });
   });
 
   after(() => {
@@ -29,7 +30,7 @@ describe("data-driven MCP detection", () => {
 
   it("should load known MCPs from data file", () => {
     // Write a test data file
-    const dataPath = path.join(ws, "opencode-dotfiles", "data", "known-mcps.json");
+    const dataPath = path.join(ws, DOTFILES_DIR, "data", "known-mcps.json");
     fs.writeFileSync(dataPath, JSON.stringify({
       version: "1.0",
       mcpServers: {
@@ -191,7 +192,7 @@ describe("known-mcps.json data integrity", () => {
   it("should exist and be valid JSON", () => {
     // 仓库内 data/known-mcps.json（随代码分发）优先；回退 workspace 内 dotfiles 副本
     const dataPath = path.resolve(import.meta.dirname!, "../data/known-mcps.json");
-    const wsDataPath = path.join(os.homedir(), "Codelib-severin", "opencode-dotfiles", "data", "known-mcps.json");
+    const wsDataPath = path.join(os.homedir(), "Codelib-severin", DOTFILES_DIR, "data", "known-mcps.json");
     const resolvedPath = fs.existsSync(dataPath) ? dataPath
       : fs.existsSync(wsDataPath) ? wsDataPath : null;
 

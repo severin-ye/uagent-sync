@@ -4,6 +4,7 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import { execSync } from "node:child_process";
+import { DOTFILES_DIR } from "../src/lib/dotfiles.js";
 
 /**
  * CLI 16 命令覆盖测试（v2.0.0 新增 8 命令：status/verify/setup/init/create-repo/api-keys/guide/log/crystallize）。
@@ -27,8 +28,8 @@ function runCli(args: string[]): { stdout: string; code: number } {
 }
 
 before(() => {
-  fs.mkdirSync(path.join(WS, "opencode-dotfiles", "state"), { recursive: true });
-  fs.mkdirSync(path.join(WS, "opencode-dotfiles", "guide"), { recursive: true });
+  fs.mkdirSync(path.join(WS, DOTFILES_DIR, "state"), { recursive: true });
+  fs.mkdirSync(path.join(WS, DOTFILES_DIR, "guide"), { recursive: true });
   fs.writeFileSync(path.join(WS, ".gitmodules"), "[submodule \"fake\"]\n\tpath = fake\n\turl = https://example.com/fake.git\n");
 });
 
@@ -82,7 +83,7 @@ describe("CLI read-only commands", () => {
   it("guide generates SYNC-GUIDE.md", () => {
     const { stdout, code } = runCli(["guide"]);
     assert.equal(code, 0);
-    const guidePath = path.join(WS, "opencode-dotfiles", "guide", "SYNC-GUIDE.md");
+    const guidePath = path.join(WS, DOTFILES_DIR, "guide", "SYNC-GUIDE.md");
     assert.ok(fs.existsSync(guidePath), "SYNC-GUIDE.md should exist");
     assert.ok(stdout.includes("SYNC-GUIDE.md"), "should mention generated file");
   });
@@ -105,7 +106,7 @@ describe("CLI stateful commands (safe paths)", () => {
     const { stdout, code } = runCli(["init", "--init-type", "backup", "--workspace-name", "test-ws", "--force"]);
     assert.equal(code, 0);
     assert.ok(stdout.includes("初始化完成"), "should confirm init");
-    const initState = path.join(WS, "opencode-dotfiles", "state", "init-state.json");
+    const initState = path.join(WS, DOTFILES_DIR, "state", "init-state.json");
     assert.ok(fs.existsSync(initState), "init-state.json should exist");
   });
 

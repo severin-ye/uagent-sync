@@ -3,6 +3,7 @@ import * as assert from "node:assert";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import * as os from "node:os";
+import { DOTFILES_DIR } from "../src/lib/dotfiles.js";
 
 const TMP = path.join(os.tmpdir(), `portable-test-${Date.now()}`);
 
@@ -82,9 +83,9 @@ describe("trackState toggle in export", () => {
 
   before(async () => {
     ws = path.join(TMP, "trackstate-ws");
-    fs.mkdirSync(path.join(ws, "opencode-dotfiles", "state"), { recursive: true });
-    fs.mkdirSync(path.join(ws, "opencode-dotfiles", "config"), { recursive: true });
-    gitignorePath = path.join(ws, "opencode-dotfiles", ".gitignore");
+    fs.mkdirSync(path.join(ws, DOTFILES_DIR, "state"), { recursive: true });
+    fs.mkdirSync(path.join(ws, DOTFILES_DIR, "config"), { recursive: true });
+    gitignorePath = path.join(ws, DOTFILES_DIR, ".gitignore");
   });
 
   after(() => {

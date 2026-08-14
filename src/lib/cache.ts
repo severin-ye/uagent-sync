@@ -3,7 +3,7 @@ import * as path from "node:path";
 import * as os from "node:os";
 import { run } from "./run.js";
 import type { WorkspaceCache, WorkspaceInfo } from "./types.js";
-import { DOTFILES_DIR } from "./dotfiles.js";
+import { DOTFILES_DIR, dotfilesExists } from "./dotfiles.js";
 
 const LEGACY_CACHE_RELATIVE = `${DOTFILES_DIR}/state/sync-cache.json`;
 
@@ -120,7 +120,7 @@ export function resolveWorkspaceRoot(): string {
   // 4. 兜底：从 cwd 向上找 .gitmodules
   const root = findWorkspaceRoot();
   const dotfilesPath = findDotfiles(process.cwd());
-  if (dotfilesPath || fs.existsSync(path.join(root, DOTFILES_DIR))) {
+  if (dotfilesPath || dotfilesExists(root)) {
     writeCache({
       workspaceRoot: root,
       workspaceName: path.basename(root),
@@ -151,7 +151,7 @@ export function detectWorkspaceInfo(cwd?: string): WorkspaceInfo | null {
       name: path.basename(envRoot), root: envRoot, hasGitmodules: true,
       gitRemote: remoteResult.code === 0 ? remoteResult.stdout.trim() : "",
       defaultRepoName: `codelib-${os.userInfo().username}`,
-      dotfilesExist: fs.existsSync(path.join(envRoot, DOTFILES_DIR)),
+      dotfilesExist: dotfilesExists(envRoot),
       mcpConfigured: fs.existsSync(path.join(os.homedir(), ".config", "opencode", "opencode.json")),
     };
   }
@@ -161,7 +161,7 @@ export function detectWorkspaceInfo(cwd?: string): WorkspaceInfo | null {
     return {
       name: cache.workspaceName, root: cache.workspaceRoot, hasGitmodules: true, gitRemote: cache.gitRemote,
       defaultRepoName: `codelib-${os.userInfo().username}`,
-      dotfilesExist: fs.existsSync(cache.dotfilesPath),
+      dotfilesExist: fs.existsSync(cache.dotfilesPath) || dotfilesExists(cache.workspaceRoot),
       mcpConfigured: fs.existsSync(path.join(os.homedir(), ".config", "opencode", "opencode.json")),
     };
   }
@@ -181,7 +181,7 @@ export function detectWorkspaceInfo(cwd?: string): WorkspaceInfo | null {
   const info: WorkspaceInfo = {
     name: path.basename(wsRoot), root: wsRoot, hasGitmodules: true, gitRemote,
     defaultRepoName: `codelib-${os.userInfo().username || "user"}`,
-    dotfilesExist: fs.existsSync(path.join(wsRoot, DOTFILES_DIR)),
+    dotfilesExist: dotfilesExists(wsRoot),
     mcpConfigured: fs.existsSync(path.join(os.homedir(), ".config", "opencode", "opencode.json")),
   };
 
