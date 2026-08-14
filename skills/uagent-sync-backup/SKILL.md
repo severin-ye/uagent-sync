@@ -1,9 +1,17 @@
 ---
 name: uagent-sync-backup
-description: Back up the current agent workspace (submodules, configs, skills, API-key templates) to a private GitHub repo using the uagent-sync CLI. Use when the user asks to 备份/导出/上传/push/sync to GitHub, or before switching machines.
+description: Back up the current agent workspace (submodules, configs, skills, API-key templates) to a private GitHub repo using the uagent-sync CLI. 中文名：U同步 / 优同步。Use when the user asks to 备份/导出/上传/push/sync to GitHub, or says "U同步，备份" / "U同步，上传" / "优同步，备份", or before switching machines.
 ---
 
 # uagent-sync: Backup
+
+## Voice commands (中文名: U同步 / 优同步)
+
+| 用户语音 | 执行 |
+|---------|------|
+| "U同步，备份" / "优同步，上传" | 完整备份流程（init → create-repo → api-keys → setup → export → guide → push） |
+| "U同步，先初始化" | `node <uagent-sync>/dist/cli.js init --init-type backup` |
+| "U同步，推送到 GitHub" | `node <uagent-sync>/dist/cli.js push` |
 
 ## Prerequisites
 

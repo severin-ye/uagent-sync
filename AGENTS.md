@@ -11,6 +11,22 @@
 
 ---
 
+## 中文名与语音命令
+
+本项目中文名为 **U同步**（别名 **优同步**），专为语音输入设计。用户说出以下任一命令，立即识别为 uagent-sync 操作并执行对应流程（优先用 `opencode_sync_*` 工具；工具不可用时用 `node dist/cli.js <cmd>`）：
+
+| 语音命令 | 含义 | 执行 |
+|---------|------|------|
+| "U同步，更新所有扩展" / "优同步，升级扩展" | 更新全部默认组件（plugins/skills/mcp/cli/sync/config-deps） | `opencode_sync_update` 或 `node dist/cli.js update` |
+| "U同步，先预览更新" | dry-run 预览更新计划 | `opencode_sync_update dryRun=true` |
+| "U同步，只更新 MCP" | 只更新 MCP（含 codebase-memory-mcp） | `opencode_sync_update components=mcp` |
+| "U同步，备份" / "U同步，上传" / "U同步，推送到 GitHub" | 备份流程 | `opencode_sync_init initType=backup` → … → `opencode_sync_push` |
+| "U同步，恢复" / "U同步，下载" / "U同步，拉取" | 新设备恢复流程 | `opencode_sync_init initType=sync` → `opencode_sync_pull` |
+| "U同步，检查环境" | 环境健康检查 | `opencode_sync_verify` |
+| "U同步，初始化" | 初始化检测 | `opencode_sync_init` |
+
+---
+
 ## 第一步：判断场景
 
 ### 场景 A：备份（旧设备 → GitHub）

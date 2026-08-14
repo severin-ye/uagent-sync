@@ -1,6 +1,6 @@
 ---
 name: uagent-sync-update
-description: Update the coding-agent ecosystem (opencode/Codex plugins, skills packages, uv MCP tools, self-built sync repo, config dependencies) to latest versions using the uagent-sync CLI. Use when the user asks to 更新/升级 all extensions or 扩展更新.
+description: Update the coding-agent ecosystem (opencode/Codex plugins, skills packages, uv MCP tools, self-built sync repo, config dependencies) to latest versions using the uagent-sync CLI. 中文名：U同步 / 优同步。Use when the user asks to 更新/升级 all extensions or 扩展更新, or says "U同步，更新所有扩展" / "U同步，升级扩展" / "U同步，只更新MCP".
 ---
 
 # uagent-sync: Update ecosystem
@@ -8,6 +8,15 @@ description: Update the coding-agent ecosystem (opencode/Codex plugins, skills p
 ## When to use
 
 User asks to update/upgrade opencode or Codex extensions, skills, MCP tools, or the sync repo itself.
+
+## Voice commands (中文名: U同步 / 优同步)
+
+| 用户语音 | 执行 |
+|---------|------|
+| "U同步，更新所有扩展" / "优同步，升级扩展" | `node <uagent-sync>/dist/cli.js update`（全部默认组件） |
+| "U同步，先预览更新" | `node <uagent-sync>/dist/cli.js update --dry-run` |
+| "U同步，只更新 MCP" | `node <uagent-sync>/dist/cli.js update --components mcp` |
+| "U同步，更新插件" / "更新技能" | `--components plugins` / `--components skills` |
 
 ## Workflow
 

@@ -1,9 +1,17 @@
 ---
 name: uagent-sync-restore
-description: Restore a workspace on a new machine (submodules, configs, skills, API-key templates) from a saved GitHub state using the uagent-sync CLI. Use when the user asks to 恢复/导入/下载/pull/sync from GitHub, or is setting up a new computer.
+description: Restore a workspace on a new machine (submodules, configs, skills, API-key templates) from a saved GitHub state using the uagent-sync CLI. 中文名：U同步 / 优同步。Use when the user asks to 恢复/导入/下载/pull/sync from GitHub, or says "U同步，恢复" / "U同步，下载" / "优同步，恢复", or is setting up a new computer.
 ---
 
 # uagent-sync: Restore (new machine)
+
+## Voice commands (中文名: U同步 / 优同步)
+
+| 用户语音 | 执行 |
+|---------|------|
+| "U同步，恢复" / "优同步，下载" | 完整恢复流程（init sync → pull → setup → api-keys detect → verify） |
+| "U同步，拉取" | `node <uagent-sync>/dist/cli.js pull` |
+| "U同步，检查环境" | `node <uagent-sync>/dist/cli.js verify` |
 
 ## Prerequisites
 
