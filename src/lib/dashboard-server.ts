@@ -57,7 +57,7 @@ export async function startDashboardServer(options: DashboardServerOptions): Pro
         const dashboardRoot = path.resolve(import.meta.dirname, "..", "dashboard");
         const file = path.resolve(dashboardRoot, asset.file);
         if (!file.startsWith(dashboardRoot) || !fs.existsSync(file)) return sendJson(response, 404, { error: { code: "asset_missing", message: "看板静态资源尚未构建" } });
-        response.writeHead(200, { "Content-Type": asset.type, "Cache-Control": "no-cache", "X-Content-Type-Options": "nosniff" });
+        response.writeHead(200, { "Content-Type": asset.type, "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" });
         return response.end(fs.readFileSync(file));
       }
       if (url.pathname === "/api/health") return sendJson(response, 200, { status: "ok", readOnly: true, timestamp: new Date().toISOString() });
