@@ -94,13 +94,12 @@ function renderKindFilter(draft) {
 function renderSummaryChips(draft, counts, sharedCount, dualCount, decidedCount) {
   const chip = (key, label, count, extraClass = "") =>
     `<span class="summary-chip ${extraClass}${state.summaryFilter === key ? " active" : ""}" data-summary-filter="${key}" role="button" tabindex="0" title="点击筛选；再点一次取消">${label} <b>${count}</b></span>`;
-  // 两个父类，结构对称：
-  // 1) 待迁移（需要动作；其中冲突/待确认/已决定是其子类）
-  // 2) 已迁移（无需动作；其中双端接入/已共享是其子类）
+  // 两个父类，结构对称；待迁移的四个子类互斥且完备（之和 = 待迁移）。
   $("#migration-summary").innerHTML = [
     '<span class="chips-group">',
     chip("pending", "待迁移", counts.total),
     '<span class="chips-divider">其中</span>',
+    chip("ready", "待执行", counts.ready, "sub"),
     chip("conflicts", "冲突", counts.conflicts, "sub"),
     chip("deferred", "待确认", counts.deferred, "sub"),
     chip("decided", "已决定", decidedCount, "sub"),
@@ -130,16 +129,30 @@ function kindBase(draft) {
   return draft.items.filter((item) => state.kindFilter.includes(item.kind));
 }
 
+/** 待迁移项按互斥优先级归类：已决定 > 冲突 > 待确认 > 待执行（其余）。双端接入不计入。 */
+function classifySub(items, decisions) {
+  const result = { decided: [], conflicts: [], deferred: [], ready: [] };
+  for (const item of items) {
+    if (item.conflict.type === "dual_registered") continue;
+    if (decisions[item.id]) { result.decided.push(item); continue; }
+    if (item.conflict.type !== "none") { result.conflicts.push(item); continue; }
+    if (item.execution.action === "defer") { result.deferred.push(item); continue; }
+    result.ready.push(item);
+  }
+  return result;
+}
+
 /** 徽标（状态）过滤：只作用于列表展示，不影响徽标计数。默认视图 = 待迁移（排除双端接入项）。 */
 function statusFilter(items, decisions) {
-  if (state.summaryFilter === "conflicts") return items.filter((item) => item.conflict.type !== "none" && item.conflict.type !== "dual_registered");
-  if (state.summaryFilter === "deferred") return items.filter((item) => item.execution.action === "defer" && item.conflict.type !== "dual_registered");
-  if (state.summaryFilter === "decided") return items.filter((item) => decisions[item.id] && item.conflict.type !== "dual_registered");
   if (state.summaryFilter === "shared") return [];
-  if (state.summaryFilter === "dual") return items.filter((item) => item.conflict.type === "dual_registered");
-  if (state.summaryFilter === "migrated") return items.filter((item) => item.conflict.type === "dual_registered");
-  // 默认与"待迁移"徽标一致：只列需要动作的项
-  return items.filter((item) => item.conflict.type !== "dual_registered");
+  if (state.summaryFilter === "dual" || state.summaryFilter === "migrated") return items.filter((item) => item.conflict.type === "dual_registered");
+  const sub = classifySub(items, decisions);
+  if (state.summaryFilter === "conflicts") return sub.conflicts;
+  if (state.summaryFilter === "deferred") return sub.deferred;
+  if (state.summaryFilter === "decided") return sub.decided;
+  if (state.summaryFilter === "ready") return sub.ready;
+  // 默认与"待迁移"徽标一致：全部待迁移项（子类之和）
+  return [...sub.decided, ...sub.conflicts, ...sub.deferred, ...sub.ready];
 }
 
 /** "已共享"或"已迁移"激活时列出共享 skills 清单（从证据数据展开名字）。 */
@@ -195,18 +208,19 @@ function renderMigrationDraft(draft) {
   state.migrationDraft = draft;
   const scope = decisionsScope();
   const decisions = decisionsFor(scope);
-  const decidedCount = Object.keys(decisions).length;
   renderKindFilter(draft);
   renderSkillsEvidence(state.lastInventory);
   const baseItems = kindBase(draft);
   const dualCount = baseItems.filter((item) => item.conflict.type === "dual_registered").length;
+  const sub = classifySub(baseItems, decisions);
   const visibleItems = statusFilter(baseItems, decisions);
   $("#action-count").textContent = `${draft.summary.total} 项`;
   renderSummaryChips(draft, {
     total: baseItems.length - dualCount,
-    conflicts: baseItems.filter((item) => item.conflict.type === "target_native_overlap" || item.conflict.type === "target_provider_overlap").length,
-    deferred: baseItems.filter((item) => item.execution.action === "defer").length,
-  }, draft.summary.shared ?? 0, dualCount, decidedCount);
+    ready: sub.ready.length,
+    conflicts: sub.conflicts.length,
+    deferred: sub.deferred.length,
+  }, draft.summary.shared ?? 0, dualCount, sub.decided.length);
   renderSharedList(state.lastInventory);
   const sharedNoteEl = $("#shared-note");
   if (sharedNoteEl) {
