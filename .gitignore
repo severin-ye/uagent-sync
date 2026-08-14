@@ -11,3 +11,8 @@ DeepSeek harness/
 .codebase-memory-bak/
 
 
+
+# 本地会话与工具状态
+.opencode/
+.superpowers/
+.openchamber/
