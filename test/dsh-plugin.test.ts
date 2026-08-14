@@ -5,7 +5,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import {
   resolveCliPath, cliPathError, findWorkspaceRoot, findDeep,
-  argsToFlags, runCli, renderResult,
+  argsToFlags, runCli, renderResult, parseSkillMd, resolveSkillsDir,
 } from "../packages/dsh/lib/cli.js";
 
 /**
@@ -141,6 +141,51 @@ describe("resolveCliPath", () => {
     const msg = cliPathError();
     assert.match(msg, /OPENCODE_SYNC_UAGENT_SYNC_CLI/);
     assert.match(msg, /cliPath/);
+  });
+});
+
+describe("skill bridging", () => {
+  it("parseSkillMd extracts name/description and strips frontmatter", () => {
+    const md = [
+      "---",
+      "name: uagent-sync-update",
+      "description: Update the coding-agent ecosystem. 中文名：U同步 / 优同步。",
+      "---",
+      "",
+      "# uagent-sync: Update ecosystem",
+      "",
+      "Run `node <uagent-sync>/dist/cli.js update`.",
+      "",
+    ].join("\n");
+    const parsed = parseSkillMd(md);
+    assert.ok(parsed);
+    assert.equal(parsed!.name, "uagent-sync-update");
+    assert.match(parsed!.description, /U同步/);
+    assert.match(parsed!.content, /# uagent-sync: Update ecosystem/);
+    assert.ok(!parsed!.content.includes("---"));
+  });
+
+  it("parseSkillMd returns null without frontmatter or missing fields", () => {
+    assert.equal(parseSkillMd("# just a heading"), null);
+    assert.equal(parseSkillMd("---\ndescription: no name\n---\nbody"), null);
+  });
+
+  it("resolveSkillsDir derives <checkout>/skills from the CLI path", () => {
+    const root = makeTmpDir();
+    const cli = path.join(root, "uagent-sync", "dist", "cli.js");
+    const skills = path.join(root, "uagent-sync", "skills");
+    fs.mkdirSync(path.dirname(cli), { recursive: true });
+    fs.mkdirSync(skills, { recursive: true });
+    fs.writeFileSync(cli, "");
+    assert.equal(resolveSkillsDir(cli), skills);
+  });
+
+  it("resolveSkillsDir returns undefined when skills dir missing", () => {
+    const root = makeTmpDir();
+    const cli = path.join(root, "uagent-sync", "dist", "cli.js");
+    fs.mkdirSync(path.dirname(cli), { recursive: true });
+    fs.writeFileSync(cli, "");
+    assert.equal(resolveSkillsDir(cli), undefined);
   });
 });
 

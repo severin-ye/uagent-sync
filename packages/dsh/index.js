@@ -10,10 +10,12 @@
  */
 import { defineTool } from '@deepseek-ai/dsh-tools'
 import Schema from '@deepseek-ai/schemastery'
-import { resolveCliPath, cliPathError, argsToFlags, runCli, renderResult } from './lib/cli.js'
+import * as fs from 'node:fs'
+import * as path from 'node:path'
+import { resolveCliPath, cliPathError, argsToFlags, runCli, renderResult, parseSkillMd, resolveSkillsDir } from './lib/cli.js'
 
 export const name = 'uagent-sync-dsh'
-export const inject = ['tools']
+export const inject = ['tools', 'skills']
 
 /**
  * 插件配置（cordis.yml config 键）。
@@ -52,6 +54,33 @@ function makeTool({ name: toolName, description, parameters, positionalKeys = []
 export function apply(ctx, config) {
   const pluginConfig = config ?? {}
   const register = (def) => ctx.tools.register(def)
+
+  // 共享 skills 注册：从 CLI 所在 checkout 的 skills/ 目录读取（与 opencode/Codex 同一份），
+  // 并把正文中的 <uagent-sync> 占位符替换为真实 checkout 路径，Agent 可直接执行。
+  // skills 目录缺失或解析失败时静默跳过——工具照常工作，skill 是可选增强。
+  const cliPathForSkills = resolveCliPath({
+    cliPath: pluginConfig?.cliPath || undefined,
+    moduleUrl: import.meta.url,
+  })
+  if (ctx.skills && cliPathForSkills) {
+    const skillsDir = resolveSkillsDir(cliPathForSkills)
+    if (skillsDir) {
+      const checkoutRoot = path.resolve(path.dirname(cliPathForSkills), '..')
+      for (const skillName of ['uagent-sync-backup', 'uagent-sync-restore', 'uagent-sync-update']) {
+        const mdPath = path.join(skillsDir, skillName, 'SKILL.md')
+        if (!fs.existsSync(mdPath)) continue
+        const parsed = parseSkillMd(fs.readFileSync(mdPath, 'utf-8'))
+        if (!parsed) continue
+        try {
+          ctx.skills.register({
+            name: parsed.name,
+            description: parsed.description,
+            content: parsed.content.replaceAll('<uagent-sync>', checkoutRoot),
+          })
+        } catch { /* 重名时 first-wins，注册方无操作 */ }
+      }
+    }
+  }
 
   register(makeTool({
     name: 'sync_export',

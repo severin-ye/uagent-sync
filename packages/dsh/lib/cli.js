@@ -182,6 +182,36 @@ export function renderResult(result) {
   return body || err || `[uagent-sync] exit code ${result.code}`;
 }
 
+/**
+ * 解析 SKILL.md：frontmatter 提取 name/description，返回去 frontmatter 的正文。
+ * 解析失败返回 null（调用方静默跳过该文件）。
+ * @param {string} md - SKILL.md 全文。
+ * @returns {{ name: string, description: string, content: string } | null}
+ */
+export function parseSkillMd(md) {
+  const m = /^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/.exec(md);
+  if (!m) return null;
+  const nameMatch = /^name:\s*(.+)$/m.exec(m[1]);
+  const descMatch = /^description:\s*(.+)$/m.exec(m[1]);
+  if (!nameMatch || !descMatch) return null;
+  return {
+    name: nameMatch[1].trim(),
+    description: descMatch[1].trim(),
+    content: m[2].trim(),
+  };
+}
+
+/**
+ * 从 CLI 路径推导共享 skills 目录：<checkout>/skills。
+ * CLI 与 skills 同属一个 uagent-sync checkout，保证单一来源。
+ * @param {string} cliPath - dist/cli.js 绝对路径。
+ * @returns {string | undefined}
+ */
+export function resolveSkillsDir(cliPath) {
+  const dir = path.resolve(path.dirname(cliPath), "..", "skills");
+  return fs.existsSync(dir) ? dir : undefined;
+}
+
 function fileURLToPathSafe(url) {
   const raw = decodeURIComponent(url.replace(/^file:\/\//, ""));
   if (process.platform === "win32") {

@@ -2,6 +2,8 @@
 
 uagent-sync 的 DeepSeek Harness bundle 形态。注册 16 个 `sync_*` 工具（与 opencode plugin 的 `opencode_sync_*`、CLI 的 16 命令一一对应），全部通过 **uagent-sync CLI 桥接执行**——与 Codex 形态（skills + hooks）保持同一"CLI 单一执行通道"架构。
 
+插件加载时还会把共享 skills（`uagent-sync-backup/restore/update`）注册为 DSH runtime skills——从 CLI 所在 checkout 的 `skills/` 目录读取，与 opencode/Codex 是同一份，正文中的 `<uagent-sync>` 占位符自动替换为真实路径，Agent 可直接执行。skills 目录缺失时静默跳过（工具不受影响）。
+
 中文名：**U同步**（别名 **优同步**）。语音命令：
 
 - "U同步，更新所有扩展" → `sync_update`
