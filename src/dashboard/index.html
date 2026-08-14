@@ -54,7 +54,10 @@
             <label class="policy-control">统一法则<select id="migration-policy"><option value="recommended">采用逐项建议</option><option value="prefer_target_native">冲突时使用目标原生</option><option value="prefer_source_workflow">冲突时保留原工作流</option><option value="keep_both">冲突时两者都保留</option><option value="ask_each">所有冲突逐项决定</option></select></label>
           </div>
           <p class="read-only-note">只生成草案，不会安装、启用或改写配置。统一法则可以覆盖，任何能力也可以单独选择。你做的每项决定都会保存在本机浏览器，刷新不丢失。</p>
+          <div id="kind-filter" class="kind-filter" aria-label="按层级筛选迁移项"></div>
+          <div id="skills-evidence" class="skills-evidence"></div>
           <div id="migration-summary" class="migration-summary" role="status"></div>
+          <div id="shared-list" class="shared-list"></div>
           <p id="shared-note" class="shared-note" role="status"></p>
           <div id="decided-panel" class="decided-panel" hidden>
             <h3>已确认的决定</h3>

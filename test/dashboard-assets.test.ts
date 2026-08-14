@@ -66,7 +66,7 @@ describe("dashboard assets", () => {
     assert.match(js, /localStorage/);
     assert.match(js, /renderDecidedPanel/);
     assert.match(js, /data-clear-decision/);
-    assert.match(js, /项已决定/);
+    assert.match(js, /已决定/);
     assert.match(html, /已确认的决定/);
     assert.match(html, /保存在本机浏览器/);
   });
@@ -82,5 +82,18 @@ describe("dashboard assets", () => {
     assert.match(js, /只看层级/);
     assert.match(js, /三端共享，无需迁移/);
     assert.match(js, /KIND_FILTER_KEY/);
+    assert.match(js, /KIND_FILTERS/);
+    assert.match(js, /"插件"/);
+  });
+
+  it("renders clickable summary chips that toggle status filters and a shared list", () => {
+    const js = asset("app.js");
+    const html = asset("index.html");
+    assert.match(html, /id="shared-list"/);
+    assert.match(js, /data-summary-filter/);
+    assert.match(js, /summaryFilter/);
+    assert.match(js, /summary-chip/);
+    assert.match(js, /renderSharedList/);
+    assert.match(js, /点击筛选；再点一次取消/);
   });
 });
