@@ -144,6 +144,22 @@ describe("resolveCliPath", () => {
   });
 });
 
+describe("DSH bundle manifest compatibility", () => {
+  const indexJs = fs.readFileSync(path.join("packages", "dsh", "index.js"), "utf-8");
+  const pkg = JSON.parse(fs.readFileSync(path.join("packages", "dsh", "package.json"), "utf-8"));
+
+  it("never declares required:false (DSH schema rejects it; optional params omit the field)", () => {
+    assert.ok(!/required:\s*false/.test(indexJs), "index.js must not contain required:false");
+  });
+
+  it("declares schemastery as a real dependency and host packages as peers", () => {
+    assert.ok(pkg.dependencies?.["@deepseek-ai/schemastery"], "schemastery must be in dependencies");
+    assert.ok(pkg.peerDependencies?.["@deepseek-ai/cordis"], "cordis must be a peer dependency");
+    assert.ok(pkg.peerDependencies?.["@deepseek-ai/dsh-tools"], "dsh-tools must be a peer dependency");
+    assert.ok(!pkg.peerDependenciesMeta?.["@deepseek-ai/dsh-tools"]?.optional, "dsh-tools must not be optional (unconditionally imported)");
+  });
+});
+
 describe("skill bridging", () => {
   it("parseSkillMd extracts name/description and strips frontmatter", () => {
     const md = [

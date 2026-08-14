@@ -89,8 +89,8 @@ export function apply(ctx, config) {
     flagMap: { trackState: { flag: '--track-state', type: 'boolean' } },
     description: 'Export current agent workspace state to a JSON file. Captures: config (without secrets), env var names, git submodule commits, installed skills, platform metadata. The JSON can be committed to Git and imported on another device.',
     parameters: {
-      output: { type: 'string', required: false, description: 'Output file path (default: opencode-dotfiles/state/workspace-state.json)' },
-      trackState: { type: 'boolean', required: false, description: 'Keep workspace-state.json tracked by git (private repos: true, public: false)' },
+      output: { type: 'string', description: 'Output file path (default: opencode-dotfiles/state/workspace-state.json)' },
+      trackState: { type: 'boolean', description: 'Keep workspace-state.json tracked by git (private repos: true, public: false)' },
     },
   }, pluginConfig))
 
@@ -102,7 +102,7 @@ export function apply(ctx, config) {
     description: 'Import workspace state from a JSON file or URL. Restores: submodule checkouts to exact commits, config (merged with existing, not overwritten), creates .env from template if needed. Use dryRun=true to preview changes without applying them.',
     parameters: {
       source: { type: 'string', required: true, description: 'Path to state JSON file or GitHub URL' },
-      dryRun: { type: 'boolean', required: false, description: 'Only show what would be changed' },
+      dryRun: { type: 'boolean', description: 'Only show what would be changed' },
     },
   }, pluginConfig))
 
@@ -122,7 +122,7 @@ export function apply(ctx, config) {
     flagMap: { message: { flag: '--message', type: 'string' } },
     description: 'Export workspace state and push the state file to GitHub. Steps: export state to opencode-dotfiles/state/workspace-state.json, git add + commit + push. Requires GitHub CLI (gh) authenticated.',
     parameters: {
-      message: { type: 'string', required: false, description: 'Git commit message' },
+      message: { type: 'string', description: 'Git commit message' },
     },
   }, pluginConfig))
 
@@ -132,7 +132,7 @@ export function apply(ctx, config) {
     flagMap: { dryRun: { flag: '--dry-run', type: 'boolean' } },
     description: 'Pull latest workspace state from GitHub and apply it. Steps: git pull, then import+apply the state (submodules, config, env vars). Use dryRun=true to preview without applying.',
     parameters: {
-      dryRun: { type: 'boolean', required: false, description: 'Only show what would be changed' },
+      dryRun: { type: 'boolean', description: 'Only show what would be changed' },
     },
   }, pluginConfig))
 
@@ -164,13 +164,13 @@ export function apply(ctx, config) {
     },
     description: 'Initialize and configure the development workspace. Steps (all optional via flags): install GitHub CLI if missing, git submodule update --init --recursive, fix Windows NTFS paths, copy opencode config, install Ralph CLI / Skills CLI, install skills packages. Idempotent — safe to run repeatedly.',
     parameters: {
-      fixWindowsPaths: { type: 'boolean', required: false, description: 'Fix Windows NTFS path issues (default: true)' },
-      copyConfig: { type: 'boolean', required: false, description: 'Copy opencode config from dotfiles (destructive, default: false)' },
-      installRalph: { type: 'boolean', required: false, description: 'Install Ralph CLI if missing (default: true)' },
-      installSkillsCli: { type: 'boolean', required: false, description: 'Install Skills CLI if missing (default: true)' },
-      installGhCli: { type: 'boolean', required: false, description: 'Install GitHub CLI via package manager if missing (default: true)' },
-      installSkills: { type: 'array', required: false, description: 'Skills packages to install (comma-separated). Slow — use sparingly.' },
-      windowsFixPaths: { type: 'array', required: false, description: 'Submodule paths with Windows-invalid filenames (from export state or SYNC-GUIDE)' },
+      fixWindowsPaths: { type: 'boolean', description: 'Fix Windows NTFS path issues (default: true)' },
+      copyConfig: { type: 'boolean', description: 'Copy opencode config from dotfiles (destructive, default: false)' },
+      installRalph: { type: 'boolean', description: 'Install Ralph CLI if missing (default: true)' },
+      installSkillsCli: { type: 'boolean', description: 'Install Skills CLI if missing (default: true)' },
+      installGhCli: { type: 'boolean', description: 'Install GitHub CLI via package manager if missing (default: true)' },
+      installSkills: { type: 'array', description: 'Skills packages to install (comma-separated). Slow — use sparingly.' },
+      windowsFixPaths: { type: 'array', description: 'Submodule paths with Windows-invalid filenames (from export state or SYNC-GUIDE)' },
     },
   }, pluginConfig))
 
@@ -185,10 +185,10 @@ export function apply(ctx, config) {
     },
     description: 'One-time initialization for workspace sync. Must be called first. Detects the current workspace (finds .gitmodules + opencode-dotfiles); for backup: records workspace name, caches metadata; for sync: accepts GitHub URL. Tracks progress via opencode-dotfiles/.init-state.json.',
     parameters: {
-      initType: { type: 'string', required: false, description: "'backup' (this device is the source) or 'sync' (this device is the target)" },
-      workspaceName: { type: 'string', required: false, description: 'Workspace name — only asked once, then cached' },
-      githubUrl: { type: 'string', required: false, description: 'GitHub URL for sync — only asked once, then cached' },
-      force: { type: 'boolean', required: false, description: 'Force re-initialization even if already initialized' },
+      initType: { type: 'string', description: "'backup' (this device is the source) or 'sync' (this device is the target)" },
+      workspaceName: { type: 'string', description: 'Workspace name — only asked once, then cached' },
+      githubUrl: { type: 'string', description: 'GitHub URL for sync — only asked once, then cached' },
+      force: { type: 'boolean', description: 'Force re-initialization even if already initialized' },
     },
   }, pluginConfig))
 
@@ -202,9 +202,9 @@ export function apply(ctx, config) {
     },
     description: 'Create a private GitHub repository for the workspace. Creates a private repo by default; warns if existing repo is PUBLIC; sets git remote origin if not configured. Use checkOnly=true to just check status.',
     parameters: {
-      name: { type: 'string', required: false, description: 'Repository name (default: codelib-{username})' },
-      description: { type: 'string', required: false, description: 'Repository description' },
-      checkOnly: { type: 'boolean', required: false, description: 'Only check repo status, do not create' },
+      name: { type: 'string', description: 'Repository name (default: codelib-{username})' },
+      description: { type: 'string', description: 'Repository description' },
+      checkOnly: { type: 'boolean', description: 'Only check repo status, do not create' },
     },
   }, pluginConfig))
 
@@ -220,9 +220,9 @@ export function apply(ctx, config) {
     description: 'Detect, generate, or update API key configuration. detect: scan .env and config for API key names; generate: create a pre-filled API key template in opencode-dotfiles/keys/; add: add a specific key to the API key file.',
     parameters: {
       action: { type: 'string', required: true, description: "Action: detect (list keys), generate (create template), add (add a key)" },
-      keyName: { type: 'string', required: false, description: 'Key name to add (required for add action)' },
-      keyValue: { type: 'string', required: false, description: 'Key value to add (for add action)' },
-      githubToken: { type: 'string', required: false, description: 'GitHub token to include in the file' },
+      keyName: { type: 'string', description: 'Key name to add (required for add action)' },
+      keyValue: { type: 'string', description: 'Key value to add (for add action)' },
+      githubToken: { type: 'string', description: 'GitHub token to include in the file' },
     },
   }, pluginConfig))
 
@@ -249,13 +249,13 @@ export function apply(ctx, config) {
     description: 'Read or record installation entries with source tracking and pitfall notes. read: view the full install log as structured JSON; add: record a new installation entry (skill, MCP, plugin, CLI tool, etc.); export: export the install log as readable Markdown.',
     parameters: {
       action: { type: 'string', required: true, description: 'read (view log), add (record entry), export (markdown)' },
-      type: { type: 'string', required: false, description: "Entry type (required for add): skill, mcp, plugin, cli-tool, dependency, other" },
-      name: { type: 'string', required: false, description: 'Component name (required for add)' },
-      source: { type: 'string', required: false, description: 'Install source URL/package (required for add)' },
-      installCommand: { type: 'string', required: false, description: 'Exact install command used' },
-      status: { type: 'string', required: false, description: 'success, failed, or warning' },
-      notes: { type: 'string', required: false, description: 'Installation notes, observations' },
-      pitfalls: { type: 'array', required: false, description: 'Known issues or pitfalls encountered (comma-separated)' },
+      type: { type: 'string', description: "Entry type (required for add): skill, mcp, plugin, cli-tool, dependency, other" },
+      name: { type: 'string', description: 'Component name (required for add)' },
+      source: { type: 'string', description: 'Install source URL/package (required for add)' },
+      installCommand: { type: 'string', description: 'Exact install command used' },
+      status: { type: 'string', description: 'success, failed, or warning' },
+      notes: { type: 'string', description: 'Installation notes, observations' },
+      pitfalls: { type: 'array', description: 'Known issues or pitfalls encountered (comma-separated)' },
     },
   }, pluginConfig))
 
@@ -277,11 +277,11 @@ export function apply(ctx, config) {
       type: { type: 'string', required: true, description: 'What was installed: skill, mcp, plugin, cli-tool, dependency, other' },
       name: { type: 'string', required: true, description: 'Component name' },
       source: { type: 'string', required: true, description: 'Install source URL/package' },
-      installCommand: { type: 'string', required: false, description: 'Exact install command used' },
-      notes: { type: 'string', required: false, description: 'Installation notes' },
-      pitfalls: { type: 'array', required: false, description: 'Known issues or pitfalls encountered (comma-separated)' },
-      message: { type: 'string', required: false, description: 'Git commit message' },
-      skipPush: { type: 'boolean', required: false, description: 'Skip git push (only log + guide + export)' },
+      installCommand: { type: 'string', description: 'Exact install command used' },
+      notes: { type: 'string', description: 'Installation notes' },
+      pitfalls: { type: 'array', description: 'Known issues or pitfalls encountered (comma-separated)' },
+      message: { type: 'string', description: 'Git commit message' },
+      skipPush: { type: 'boolean', description: 'Skip git push (only log + guide + export)' },
     },
   }, pluginConfig))
 
@@ -294,8 +294,8 @@ export function apply(ctx, config) {
     },
     description: 'Update the coding-agent ecosystem to latest versions. Components (default: plugins, skills, mcp, cli, sync, config-deps): plugins (npm plugin cache), skills (skills update -g), mcp (uv academic MCP servers + codebase-memory-mcp GitHub release), cli (uv CLI tools), sync (self-built uagent-sync repo: git pull + build), config-deps (opencode config deps). opencode itself is NOT updated by default — pass components=opencode explicitly. Use dryRun=true to preview commands without executing. After updating, restart opencode/OpenChamber/DSH.',
     parameters: {
-      components: { type: 'array', required: false, description: 'Comma-separated components: opencode, plugins, skills, mcp, cli, sync, config-deps' },
-      dryRun: { type: 'boolean', required: false, description: 'Only show what would be run' },
+      components: { type: 'array', description: 'Comma-separated components: opencode, plugins, skills, mcp, cli, sync, config-deps' },
+      dryRun: { type: 'boolean', description: 'Only show what would be run' },
     },
   }, pluginConfig))
 
@@ -305,7 +305,7 @@ export function apply(ctx, config) {
     flagMap: { reportPath: { flag: '--report-path', type: 'string' } },
     description: 'Print change evidence from the latest update report, for generating a categorized changelog. Reads opencode-dotfiles/state/update-reports/update-report.json and lists, per extension: version transition (before → after) and change evidence (git log / GitHub release notes snippets). Use after sync_update to draft the 4-category changelog: Added / Optimized / Fixed / Breaking, then append to opencode-dotfiles/CHANGELOG-extensions.md.',
     parameters: {
-      reportPath: { type: 'string', required: false, description: 'Path to an update report JSON (default: latest in state/update-reports/)' },
+      reportPath: { type: 'string', description: 'Path to an update report JSON (default: latest in state/update-reports/)' },
     },
   }, pluginConfig))
 }
