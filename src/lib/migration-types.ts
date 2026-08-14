@@ -9,8 +9,17 @@ export type RecommendationStrategy =
 
 export type CandidateStrategy = RecommendationStrategy | "custom_adapter";
 export type MigrationPolicy = "recommended" | "prefer_target_native" | "prefer_source_workflow" | "keep_both" | "ask_each";
-export type ExecutionAction = "direct_share" | "no_change" | "install_enabled" | "install_disabled" | "use_target_native" | "keep_both" | "defer";
+export type ExecutionAction = "direct_share" | "install_enabled" | "keep_current" | "defer";
 export type CapabilityRouting = "shared" | "target_native" | "source_extension" | "both" | "unresolved";
+
+/**
+ * 轴 1「目标端现状」（引擎只读判定）：
+ * - missing：目标端没有该能力，需要迁移动作
+ * - existing：目标端有同名能力（细分见 statusDetail：dual_registered / target_native）
+ * - shared：两边读同一份文件，无需动作
+ */
+export type TargetStatus = "missing" | "existing" | "shared";
+export type TargetStatusDetail = "dual_registered" | "target_native";
 
 export interface MigrationCandidate {
   strategy: CandidateStrategy;
@@ -27,12 +36,6 @@ export interface MigrationRecommendation {
   evidenceLevel: "verified_local" | "declared_official" | "needs_research" | "unverified";
 }
 
-export interface MigrationConflict {
-  type: "none" | "target_native_overlap" | "target_provider_overlap" | "dual_registered";
-  reason?: string;
-  targetProviders: string[];
-}
-
 export interface MigrationExecution {
   action: ExecutionAction;
   enabled: boolean | null;
@@ -46,8 +49,9 @@ export interface MigrationDraftItem {
   kind: CapabilityKind;
   name: string;
   sourceProvider: string;
+  status: TargetStatus;
+  statusDetail?: TargetStatusDetail;
   recommendation: MigrationRecommendation;
-  conflict: MigrationConflict;
   candidates: MigrationCandidate[];
   execution: MigrationExecution;
 }
@@ -57,7 +61,8 @@ export interface MigrationDraft {
   readOnly: true;
   policy: MigrationPolicy;
   generatedAt: string;
-  summary: { total: number; conflicts: number; deferred: number; shared: number; dualRegistered: number };
+  /** 轴 1 计数（引擎事实）；轴 2（undecided/decided）由前端按决定记录派生。 */
+  summary: { missing: number; existing: number; shared: number };
   items: MigrationDraftItem[];
 }
 

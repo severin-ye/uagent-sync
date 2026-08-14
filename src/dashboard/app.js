@@ -1,4 +1,4 @@
-const state = { lastInventory: null, migrationDraft: null, itemOverrides: {}, decisions: loadDecisions(), kindFilter: loadKindFilter(), summaryFilter: null };
+const state = { lastInventory: null, migrationDraft: null, decisions: loadDecisions(), kindFilter: loadKindFilter(), axis1Filter: null, axis2Filter: null };
 const DECISIONS_KEY = "uagent-decisions";
 const KIND_FILTER_KEY = "uagent-kind-filter";
 const KIND_FILTERS = [
@@ -9,27 +9,38 @@ const KIND_FILTERS = [
 const $ = (selector) => document.querySelector(selector);
 const labels = { codex: "Codex", opencode: "OpenCode", deepseek: "DeepSeek Harness" };
 const kindLabels = { instructions: "Instructions", skills: "Skills", scripts: "Scripts", cli: "CLI", mcp: "MCP Servers", hooks: "Lifecycle Hooks", plugins: "Plugins", tools: "Custom Tools", subagents: "Subagents" };
-const actionLabels = { share: "直接共享", convert: "转换配置", wrap: "增加适配层", reconfigure: "重新配置", exclude: "不迁移", verify: "需要验证" };
 const recommendationLabels = { direct_share: "直接共享现有配置", use_existing_target: "保留目标端现有能力", install_official_variant: "安装官方适配版本", find_mature_alternative: "寻找成熟替代品", verify_first: "先验证兼容性" };
-const executionLabels = { direct_share: "直接共享", no_change: "无需变更", install_enabled: "安装并启用", install_disabled: "安装但暂不启用", use_target_native: "只用目标原生", keep_both: "两者都保留", defer: "暂缓决定" };
-const evidenceLabels = { verified_local: "本机已验证", declared_official: "官方声明", unverified: "尚未证实" };
+const executionLabels = { direct_share: "直接共享", install_enabled: "安装并启用", keep_current: "保留现状", defer: "暂缓" };
+const evidenceLabels = { verified_local: "本机已验证", declared_official: "官方声明", unverified: "尚未证实", needs_research: "待调研" };
 const strategyExplain = {
   direct_share: "这项能力用的是跨 Agent 的通用格式（SKILL.md / MCP / CLI），目标端不需要改写就能直接用。共享后两个 Agent 维护同一份配置，改一处两边生效。",
-  use_existing_target: "目标端已经有同名能力了，重复迁移会造成两份配置互相打架。保持目标端现有的即可，省去维护两套的麻烦。",
+  use_existing_target: "目标端已经接入了这个服务，无需再装。保持现状即可；如果两端接入参数不一致（超时、环境变量等），可以对比后按需对齐。",
   install_official_variant: "原扩展的作者为目标平台发布了官方版本。装官方版既保留原有能力，又由作者持续维护，比自己写适配器更稳妥。",
   find_mature_alternative: "目标端没有官方版本可用，需要找社区里成熟的替代品。选定替代品后建议先小范围试用，确认顺手再全面替换。",
   verify_first: "目标端是否支持这项能力还没有被证实。先验证目标版本的接入方式，确认可行后再迁移，避免白忙一场。",
 };
-const conflictExplain = {
-  none: "目标端没有同名能力，迁移过去不会冲突。",
-  target_native_overlap: "目标端已经内置了类似能力，重复迁移会打架。",
-  target_provider_overlap: "目标端已有提供者覆盖同样的能力边界。",
-  dual_registered: "两端各自的配置文件都接入了同一个服务，这是正常用法，不是配置错误。",
+const statusExplain = {
+  missing: "目标端没有这个能力，需要你决定怎么迁移。",
+  existing: "目标端已经有同名能力了。",
+  shared: "两边读同一份文件，无需任何动作。",
 };
-const dualStrategyExplain = "目标端已经接入了这个服务，无需再装。保持现状即可；如果两端接入参数不一致（超时、环境变量等），可以对比后按需对齐。";
 const viewLabels = { overview: "总览", agents: "Agent 配置", matrix: "差异", actions: "迁移建议", security: "安全边界" };
 
-function loadDecisions() { try { return JSON.parse(localStorage.getItem(DECISIONS_KEY)) ?? {}; } catch { return {}; } }
+/** 旧版 7 动作 → 新版 4 动作映射（localStorage 兼容）。 */
+const LEGACY_ACTION_MAP = { no_change: "keep_current", install_disabled: "keep_current", use_target_native: "keep_current", keep_both: "keep_current", direct_share: "direct_share", install_enabled: "install_enabled", defer: "defer" };
+
+function loadDecisions() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(DECISIONS_KEY)) ?? {};
+    for (const scope of Object.keys(raw)) {
+      for (const id of Object.keys(raw[scope] ?? {})) {
+        const action = raw[scope][id]?.action;
+        if (action && LEGACY_ACTION_MAP[action]) raw[scope][id].action = LEGACY_ACTION_MAP[action];
+      }
+    }
+    return raw;
+  } catch { return {}; }
+}
 function saveDecisions() { localStorage.setItem(DECISIONS_KEY, JSON.stringify(state.decisions)); }
 function decisionsScope() { return `${$("#migration-from").value}→${$("#migration-to").value}`; }
 function decisionsFor(scope) { return state.decisions[scope] ?? {}; }
@@ -90,32 +101,25 @@ function renderKindFilter(draft) {
   }));
 }
 
-/** 摘要徽标点击 → 状态筛选（再点同一徽标取消筛选）。徽标计数不随徽标筛选自身变化。 */
-function renderSummaryChips(draft, counts, sharedCount, dualCount, decidedCount) {
-  const chip = (key, label, count, extraClass = "") =>
-    `<span class="summary-chip ${extraClass}${state.summaryFilter === key ? " active" : ""}" data-summary-filter="${key}" role="button" tabindex="0" title="点击筛选；再点一次取消">${label} <b>${count}</b></span>`;
-  // 两个父类，结构对称；待迁移的四个子类互斥且完备（之和 = 待迁移）。
+/** 双行正交轴徽标：轴1 目标端现状（引擎事实）+ 轴2 我的决定（用户状态）。 */
+function renderAxisChips(draft, counts, decidedCount) {
+  const chip = (axis, key, label, count, extraClass = "") =>
+    `<span class="summary-chip ${extraClass}${state[axis] === key ? " active" : ""}" data-axis-filter="${axis}:${key}" role="button" tabindex="0" title="点击筛选；再点一次取消">${label} <b>${count}</b></span>`;
   $("#migration-summary").innerHTML = [
-    '<span class="chips-group">',
-    chip("pending", "待迁移", counts.total),
-    '<span class="chips-divider">其中</span>',
-    chip("ready", "待执行", counts.ready, "sub"),
-    chip("conflicts", "冲突", counts.conflicts, "sub"),
-    chip("deferred", "待确认", counts.deferred, "sub"),
-    chip("decided", "已决定", decidedCount, "sub"),
-    '<span class="chips-note">需要动作</span>',
+    '<span class="chips-group"><span class="chips-label">目标端现状</span>',
+    chip("axis1Filter", "missing", "缺失", counts.missing),
+    chip("axis1Filter", "existing", "已有", counts.existing, "dual"),
+    chip("axis1Filter", "shared", "共享", counts.shared),
     '</span>',
-    '<span class="chips-group">',
-    chip("migrated", "已迁移", dualCount + sharedCount),
-    '<span class="chips-divider">其中</span>',
-    chip("dual", "双端接入", dualCount, "sub dual"),
-    chip("shared", "已共享", sharedCount, "sub"),
-    '<span class="chips-note">无需动作</span>',
+    '<span class="chips-group"><span class="chips-label">我的决定</span>',
+    chip("axis2Filter", "undecided", "未决定", counts.undecided),
+    chip("axis2Filter", "decided", "已决定", decidedCount),
     '</span>',
   ].join("");
-  document.querySelectorAll("[data-summary-filter]").forEach((chipEl) => {
+  document.querySelectorAll("[data-axis-filter]").forEach((chipEl) => {
     const toggle = () => {
-      state.summaryFilter = state.summaryFilter === chipEl.dataset.summaryFilter ? null : chipEl.dataset.summaryFilter;
+      const [axis, key] = chipEl.dataset.axisFilter.split(":");
+      state[axis] = state[axis] === key ? null : key;
       renderMigrationDraft(state.migrationDraft);
     };
     chipEl.addEventListener("click", toggle);
@@ -129,37 +133,29 @@ function kindBase(draft) {
   return draft.items.filter((item) => state.kindFilter.includes(item.kind));
 }
 
-/** 待迁移项按互斥优先级归类：已决定 > 冲突 > 待确认 > 待执行（其余）。双端接入不计入。 */
-function classifySub(items, decisions) {
-  const result = { decided: [], conflicts: [], deferred: [], ready: [] };
-  for (const item of items) {
-    if (item.conflict.type === "dual_registered") continue;
-    if (decisions[item.id]) { result.decided.push(item); continue; }
-    if (item.conflict.type !== "none") { result.conflicts.push(item); continue; }
-    if (item.execution.action === "defer") { result.deferred.push(item); continue; }
-    result.ready.push(item);
-  }
-  return result;
+/**
+ * 双轴交集筛选（只作用于列表展示，不影响徽标计数）。
+ * 默认（两轴均为 null）= 缺失 × 未决定（待处理视图）。
+ * shared 项不进列表，由 renderSharedList 单独展示。
+ */
+function axisFilter(items, decisions) {
+  let base = items;
+  const a1 = state.axis1Filter;
+  const a2 = state.axis2Filter;
+  if (a1 === "missing") base = base.filter((item) => item.status === "missing");
+  else if (a1 === "existing") base = base.filter((item) => item.status === "existing");
+  else if (a1 === "shared") return [];
+  if (a2 === "undecided") base = base.filter((item) => !decisions[item.id]);
+  else if (a2 === "decided") base = base.filter((item) => decisions[item.id]);
+  if (a1 === null && a2 === null) base = base.filter((item) => item.status === "missing" && !decisions[item.id]);
+  return base;
 }
 
-/** 徽标（状态）过滤：只作用于列表展示，不影响徽标计数。默认视图 = 待迁移（排除双端接入项）。 */
-function statusFilter(items, decisions) {
-  if (state.summaryFilter === "shared") return [];
-  if (state.summaryFilter === "dual" || state.summaryFilter === "migrated") return items.filter((item) => item.conflict.type === "dual_registered");
-  const sub = classifySub(items, decisions);
-  if (state.summaryFilter === "conflicts") return sub.conflicts;
-  if (state.summaryFilter === "deferred") return sub.deferred;
-  if (state.summaryFilter === "decided") return sub.decided;
-  if (state.summaryFilter === "ready") return sub.ready;
-  // 默认与"待迁移"徽标一致：全部待迁移项（子类之和）
-  return [...sub.decided, ...sub.conflicts, ...sub.deferred, ...sub.ready];
-}
-
-/** "已共享"或"已迁移"激活时列出共享 skills 清单（从证据数据展开名字）。 */
+/** "共享"轴激活时列出共享 skills 清单（从证据数据展开名字）。 */
 function renderSharedList(inventory) {
   const el = $("#shared-list");
   if (!el) return;
-  if (state.summaryFilter !== "shared" && state.summaryFilter !== "migrated") { el.innerHTML = ""; return; }
+  if (state.axis1Filter !== "shared") { el.innerHTML = ""; return; }
   const rows = buildSkillsEvidence(inventory);
   const sharedDirRows = rows.filter((row) => row.visibleIn.length >= 3);
   const names = new Set();
@@ -200,8 +196,23 @@ function renderMatrix(matrix) {
   ].join("");
 }
 
-function executionOptions(selected) {
-  return Object.entries(executionLabels).map(([value, label]) => `<option value="${value}"${value === selected ? " selected" : ""}>${label}</option>`).join("");
+/** 按现状返回可用的动作集。 */
+function actionsFor(item) {
+  if (item.status === "existing") return { keep_current: "保留现状", defer: "暂缓" };
+  return executionLabels;
+}
+
+function executionOptions(item, decided) {
+  const available = actionsFor(item);
+  const selected = decided?.action ?? item.execution.action;
+  const effective = available[selected] ? selected : Object.keys(available)[0];
+  return Object.entries(available).map(([value, label]) => `<option value="${value}"${value === effective ? " selected" : ""}>${label}</option>`).join("");
+}
+
+function statusLabel(item) {
+  if (item.status === "missing") return `<span class="conflict warn">缺失</span>`;
+  if (item.statusDetail === "target_native") return `<span class="conflict dual">目标内置</span>`;
+  return `<span class="conflict dual">双端接入</span>`;
 }
 
 function renderMigrationDraft(draft) {
@@ -211,43 +222,33 @@ function renderMigrationDraft(draft) {
   renderKindFilter(draft);
   renderSkillsEvidence(state.lastInventory);
   const baseItems = kindBase(draft);
-  const dualCount = baseItems.filter((item) => item.conflict.type === "dual_registered").length;
-  const sub = classifySub(baseItems, decisions);
-  const visibleItems = statusFilter(baseItems, decisions);
-  $("#action-count").textContent = `${draft.summary.total} 项`;
-  renderSummaryChips(draft, {
-    total: baseItems.length - dualCount,
-    ready: sub.ready.length,
-    conflicts: sub.conflicts.length,
-    deferred: sub.deferred.length,
-  }, draft.summary.shared ?? 0, dualCount, sub.decided.length);
+  const decidedCount = baseItems.filter((item) => decisions[item.id]).length;
+  const pendingCount = baseItems.filter((item) => item.status === "missing").length + baseItems.filter((item) => item.status === "existing").length;
+  renderAxisChips(draft, {
+    missing: baseItems.filter((item) => item.status === "missing").length,
+    existing: baseItems.filter((item) => item.status === "existing").length,
+    shared: draft.summary.shared ?? 0,
+    undecided: pendingCount - decidedCount,
+  }, decidedCount);
   renderSharedList(state.lastInventory);
-  const sharedNoteEl = $("#shared-note");
-  if (sharedNoteEl) {
-    sharedNoteEl.innerHTML = (draft.summary.shared ?? 0) > 0
-      ? `另有 <b>${draft.summary.shared}</b> 项能力（如 Skills）三端共享同一目录，两边读同一份文件，无需任何迁移动作。点击上方"已共享"徽标查看清单。`
-      : "";
-  }
+  const visibleItems = axisFilter(baseItems, decisions);
+  $("#action-count").textContent = `${draft.summary.missing} 项待迁移`;
   $("#migration-items").innerHTML = visibleItems.length ? visibleItems.map((item) => {
-    const conflict = item.conflict.type === "none" ? "无冲突"
-      : item.conflict.type === "dual_registered" ? "双端接入"
-      : `发现冲突：${item.conflict.targetProviders.join("、")}`;
-    const conflictClass = item.conflict.type === "none" ? "clear" : item.conflict.type === "dual_registered" ? "dual" : "warn";
     const decided = decisions[item.id];
-    const decidedBadge = decided ? `<span class="decided-badge">✓ 已决定：${executionLabels[decided.action]}</span>` : "";
+    const decidedBadge = decided ? `<span class="decided-badge">✓ 已决定：${executionLabels[decided.action] ?? decided.action}</span>` : "";
     const candidates = item.candidates.map((candidate) => `<li class="${candidate.recommended ? "recommended" : "fallback"}"><span>${escapeHtml(candidate.label)}</span><em>${candidate.recommended ? "建议" : "最后兜底"}</em></li>`).join("");
     return `<article class="migration-item${decided ? " decided" : ""}" data-migration-id="${escapeHtml(item.id)}">
-      <div class="migration-item-head"><div><span class="kind-chip">${kindLabels[item.kind] ?? item.kind}</span><h3>${escapeHtml(item.name)}</h3>${decidedBadge}</div><span class="conflict ${conflictClass}">${escapeHtml(conflict)}</span></div>
+      <div class="migration-item-head"><div><span class="kind-chip">${kindLabels[item.kind] ?? item.kind}</span><h3>${escapeHtml(item.name)}</h3>${decidedBadge}</div>${statusLabel(item)}</div>
       <div class="migration-advice">
         <div class="advice-head"><span class="advice-tag">AI 建议</span><strong>${recommendationLabels[item.recommendation.strategy]}</strong><span class="evidence ${item.recommendation.evidenceLevel}">依据：${evidenceLabels[item.recommendation.evidenceLevel] ?? item.recommendation.evidenceLevel}</span></div>
         <p class="advice-reason">${escapeHtml(item.recommendation.reason)}</p>
-        <p class="advice-explain">${item.conflict.type === "dual_registered" ? dualStrategyExplain : (strategyExplain[item.recommendation.strategy] ?? "")}</p>
-        <p class="advice-conflict">${conflictExplain[item.conflict.type] ?? ""}</p>
+        <p class="advice-explain">${strategyExplain[item.recommendation.strategy] ?? ""}</p>
+        <p class="advice-conflict">${statusExplain[item.status] ?? ""}</p>
       </div>
       <details><summary>查看候选方案与依据</summary><ul class="candidate-list">${candidates}</ul></details>
-      <label class="item-decision">本项决定<select data-item-override="${escapeHtml(item.id)}">${executionOptions(decided?.action ?? item.execution.action)}</select><small>${decided ? `已决定（${new Date(decided.at).toLocaleString([], { hour: "2-digit", minute: "2-digit", month: "numeric", day: "numeric" })}）` : `当前来源：${item.execution.resolvedBy === "item" ? "单项覆盖" : item.execution.resolvedBy === "global" ? "统一法则" : "系统建议"}`}</small></label>
+      <label class="item-decision">本项决定<select data-item-override="${escapeHtml(item.id)}">${executionOptions(item, decided)}</select><small>${decided ? `已决定（${new Date(decided.at).toLocaleString([], { hour: "2-digit", minute: "2-digit", month: "numeric", day: "numeric" })}）` : `当前来源：${item.execution.resolvedBy === "item" ? "单项覆盖" : item.execution.resolvedBy === "global" ? "统一法则" : "系统建议"}`}</small></label>
     </article>`;
-  }).join("") : `<div class="empty">${state.summaryFilter === "migrated" ? "双端接入项暂无；已共享清单见下方。" : state.summaryFilter || state.kindFilter !== null ? "当前筛选下没有匹配的项，调整筛选可恢复列表。" : "来源 Agent 暂无可生成迁移草案的能力。"}</div>`;
+  }).join("") : `<div class="empty">${state.axis1Filter || state.axis2Filter || state.kindFilter !== null ? "当前筛选下没有匹配的项，调整筛选可恢复列表。" : "来源 Agent 暂无可生成迁移草案的能力。"}</div>`;
   renderDecidedPanel(decisions);
   document.querySelectorAll("[data-item-override]").forEach((select) => select.addEventListener("change", () => {
     const itemId = select.dataset.itemOverride;
@@ -291,9 +292,10 @@ async function loadMigrationDraft(resetFilters = false) {
   const response = await fetch(`/api/migration-draft?from=${encodeURIComponent(from)}&to=${encodeURIComponent($("#migration-to").value)}&policy=${encodeURIComponent(policy)}`, { cache: "no-store" });
   if (!response.ok) throw new Error("迁移草案读取失败");
   if (resetFilters) {
-    // 方向/法则切换后，层级与状态筛选对新的草案没有意义，回到默认全显。
+    // 方向/法则切换后，层级与轴筛选对新的草案没有意义，回到默认全显。
     state.kindFilter = null;
-    state.summaryFilter = null;
+    state.axis1Filter = null;
+    state.axis2Filter = null;
     saveKindFilter(null);
   }
   renderMigrationDraft(await response.json());

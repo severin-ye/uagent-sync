@@ -56,7 +56,7 @@ describe("dashboard assets", () => {
     assert.match(js, /evidenceLabels/);
     assert.match(js, /本机已验证/);
     assert.match(js, /advice-explain/);
-    assert.match(js, /conflictExplain/);
+    assert.match(js, /statusExplain/);
   });
 
   it("persists per-item decisions locally and renders a decided panel", () => {
@@ -90,8 +90,7 @@ describe("dashboard assets", () => {
     const js = asset("app.js");
     const html = asset("index.html");
     assert.match(html, /id="shared-list"/);
-    assert.match(js, /data-summary-filter/);
-    assert.match(js, /summaryFilter/);
+    assert.match(js, /data-axis-filter/);
     assert.match(js, /summary-chip/);
     assert.match(js, /renderSharedList/);
     assert.match(js, /点击筛选；再点一次取消/);
@@ -105,15 +104,28 @@ describe("dashboard assets", () => {
     assert.match(js, /swap-route/);
   });
 
-  it("separates dual-registered items from pending and shared groups", () => {
+  it("renders the two orthogonal axes with status and decision chips", () => {
     const js = asset("app.js");
     const css = asset("styles.css");
-    assert.match(js, /双端接入/);
-    assert.match(js, /dual_registered/);
-    assert.match(js, /已迁移/);
-    assert.match(js, /需要动作/);
-    assert.match(js, /无需动作/);
-    assert.match(css, /summary-chip\.dual/);
-    assert.match(css, /conflict\.dual/);
+    assert.match(js, /目标端现状/);
+    assert.match(js, /我的决定/);
+    assert.match(js, /data-axis-filter/);
+    assert.match(js, /axis1Filter/);
+    assert.match(js, /axis2Filter/);
+    assert.match(js, /"缺失"/);
+    assert.match(js, /"已有"/);
+    assert.match(js, /"共享"/);
+    assert.match(js, /"未决定"/);
+    assert.match(js, /"已决定"/);
+    assert.match(js, /chips-label/);
+    assert.match(css, /chips-label/);
+  });
+
+  it("maps legacy decision actions to the four-action set", () => {
+    const js = asset("app.js");
+    assert.match(js, /LEGACY_ACTION_MAP/);
+    assert.match(js, /no_change: "keep_current"/);
+    assert.match(js, /keep_both: "keep_current"/);
+    assert.match(js, /install_enabled: "install_enabled"/);
   });
 });
