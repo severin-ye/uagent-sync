@@ -91,8 +91,29 @@ uagent-sync/
 ├── hooks/                      # hooks-codex.json + run-hook.cmd + session-start
 ├── skills/                     # 3 SKILL.md files — shared by opencode and Codex
 ├── src/plugin.ts               # opencode plugin (config hook auto-registers the skills dir)
-└── src/cli.ts                  # 16-command CLI — the single execution channel for both
+├── packages/dsh/               # DeepSeek Harness bundle (16 sync_* tools → CLI bridge)
+└── src/cli.ts                  # 16-command CLI — the single execution channel for all three
 ```
+
+---
+
+## DeepSeek Harness Support
+
+uagent-sync ships as a **DeepSeek Harness bundle** (`packages/dsh/`): 16 `sync_*` tools bridged to the same CLI. 中文名：**U同步 / 优同步**。
+
+### Install
+
+```sh
+# From GitHub (monorepo sub-package, pure JS — no build authorization needed):
+dsh plugin --profile <name> add "github:severin-ye/uagent-sync#main&path:packages/dsh"
+
+# Or from a local checkout (auto-discovers dist/cli.js):
+dsh plugin --profile <name> add ./packages/dsh
+```
+
+The plugin locates the CLI in this order: cordis.yml `config.cliPath` → env `OPENCODE_SYNC_UAGENT_SYNC_CLI` → local-checkout relative path → workspace recursion (walk up to `.gitmodules`, then find `uagent-sync/dist/cli.js`). Details: [packages/dsh/README.md](packages/dsh/README.md).
+
+> DeepSeek Harness is currently Developer Preview; see the [plugin docs](https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/develop/basic/index.md) for the current bundle/patch format.
 
 ---
 

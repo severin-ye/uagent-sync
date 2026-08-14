@@ -1,0 +1,3 @@
+- insert:
+    - id: uagent-sync
+      name: uagent-sync-dsh

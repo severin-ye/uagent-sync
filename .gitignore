@@ -3,3 +3,11 @@ dist/
 test-output.json
 .worktrees/
 
+# DeepSeek Harness 官方仓库 clone（仅用于阅读插件开发文档，非本项目代码）
+DeepSeek harness/
+
+# codebase-memory 索引产物（含清理时移出的备份），不入库
+.codebase-memory/
+.codebase-memory-bak/
+
+
