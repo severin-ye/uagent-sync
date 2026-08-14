@@ -42,6 +42,8 @@ opencode-sync pull
 ```bash
 # 1. 安装——从 npm（推荐）
 npm install -g uagent-sync        # 全局 CLI（命令名：opencode-sync）
+# 或免安装直接运行：
+npm exec --yes --package uagent-sync -- opencode-sync <命令>
 
 # 2. 加入 opencode 配置（config/opencode.json）
 # {
