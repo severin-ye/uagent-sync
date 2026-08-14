@@ -94,10 +94,9 @@ function renderKindFilter(draft) {
 function renderSummaryChips(draft, counts, sharedCount, dualCount, decidedCount) {
   const chip = (key, label, count, extraClass = "") =>
     `<span class="summary-chip ${extraClass}${state.summaryFilter === key ? " active" : ""}" data-summary-filter="${key}" role="button" tabindex="0" title="点击筛选；再点一次取消">${label} <b>${count}</b></span>`;
-  // 三组互斥状态：
+  // 两个父类，结构对称：
   // 1) 待迁移（需要动作；其中冲突/待确认/已决定是其子类）
-  // 2) 双端接入（目标端已接入同一服务，无需动作）
-  // 3) 已共享（两端读同一份文件，无需动作）
+  // 2) 已迁移（无需动作；其中双端接入/已共享是其子类）
   $("#migration-summary").innerHTML = [
     '<span class="chips-group">',
     chip("pending", "待迁移", counts.total),
@@ -105,14 +104,14 @@ function renderSummaryChips(draft, counts, sharedCount, dualCount, decidedCount)
     chip("conflicts", "冲突", counts.conflicts, "sub"),
     chip("deferred", "待确认", counts.deferred, "sub"),
     chip("decided", "已决定", decidedCount, "sub"),
+    '<span class="chips-note">需要动作</span>',
     '</span>',
     '<span class="chips-group">',
-    chip("dual", "双端接入", dualCount, "dual"),
-    '<span class="chips-note">各自接入同一服务</span>',
-    '</span>',
-    '<span class="chips-group">',
-    chip("shared", "已共享", sharedCount),
-    '<span class="chips-note">读同一文件</span>',
+    chip("migrated", "已迁移", dualCount + sharedCount),
+    '<span class="chips-divider">其中</span>',
+    chip("dual", "双端接入", dualCount, "sub dual"),
+    chip("shared", "已共享", sharedCount, "sub"),
+    '<span class="chips-note">无需动作</span>',
     '</span>',
   ].join("");
   document.querySelectorAll("[data-summary-filter]").forEach((chipEl) => {
@@ -138,14 +137,15 @@ function statusFilter(items, decisions) {
   if (state.summaryFilter === "decided") return items.filter((item) => decisions[item.id]);
   if (state.summaryFilter === "shared") return [];
   if (state.summaryFilter === "dual") return items.filter((item) => item.conflict.type === "dual_registered");
+  if (state.summaryFilter === "migrated") return items.filter((item) => item.conflict.type === "dual_registered");
   return items;
 }
 
-/** "已共享"激活时列出共享 skills 清单（从证据数据展开名字）。 */
+/** "已共享"或"已迁移"激活时列出共享 skills 清单（从证据数据展开名字）。 */
 function renderSharedList(inventory) {
   const el = $("#shared-list");
   if (!el) return;
-  if (state.summaryFilter !== "shared") { el.innerHTML = ""; return; }
+  if (state.summaryFilter !== "shared" && state.summaryFilter !== "migrated") { el.innerHTML = ""; return; }
   const rows = buildSkillsEvidence(inventory);
   const sharedDirRows = rows.filter((row) => row.visibleIn.length >= 3);
   const names = new Set();
@@ -232,7 +232,7 @@ function renderMigrationDraft(draft) {
       <details><summary>查看候选方案与依据</summary><ul class="candidate-list">${candidates}</ul></details>
       <label class="item-decision">本项决定<select data-item-override="${escapeHtml(item.id)}">${executionOptions(decided?.action ?? item.execution.action)}</select><small>${decided ? `已决定（${new Date(decided.at).toLocaleString([], { hour: "2-digit", minute: "2-digit", month: "numeric", day: "numeric" })}）` : `当前来源：${item.execution.resolvedBy === "item" ? "单项覆盖" : item.execution.resolvedBy === "global" ? "统一法则" : "系统建议"}`}</small></label>
     </article>`;
-  }).join("") : `<div class="empty">${state.summaryFilter || state.kindFilter !== null ? "当前筛选下没有匹配的项，调整筛选可恢复列表。" : "来源 Agent 暂无可生成迁移草案的能力。"}</div>`;
+  }).join("") : `<div class="empty">${state.summaryFilter === "migrated" ? "双端接入项暂无；已共享清单见下方。" : state.summaryFilter || state.kindFilter !== null ? "当前筛选下没有匹配的项，调整筛选可恢复列表。" : "来源 Agent 暂无可生成迁移草案的能力。"}</div>`;
   renderDecidedPanel(decisions);
   document.querySelectorAll("[data-item-override]").forEach((select) => select.addEventListener("change", () => {
     const itemId = select.dataset.itemOverride;

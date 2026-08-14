@@ -110,8 +110,9 @@ describe("dashboard assets", () => {
     const css = asset("styles.css");
     assert.match(js, /双端接入/);
     assert.match(js, /dual_registered/);
-    assert.match(js, /各自接入同一服务/);
-    assert.match(js, /读同一文件/);
+    assert.match(js, /已迁移/);
+    assert.match(js, /需要动作/);
+    assert.match(js, /无需动作/);
     assert.match(css, /summary-chip\.dual/);
     assert.match(css, /conflict\.dual/);
   });
