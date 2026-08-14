@@ -96,4 +96,12 @@ describe("dashboard assets", () => {
     assert.match(js, /renderSharedList/);
     assert.match(js, /点击筛选；再点一次取消/);
   });
+
+  it("provides a bidirectional swap button for the migration route", () => {
+    const js = asset("app.js");
+    const html = asset("index.html");
+    assert.match(html, /id="swap-route"/);
+    assert.match(html, /交换迁移方向/);
+    assert.match(js, /swap-route/);
+  });
 });

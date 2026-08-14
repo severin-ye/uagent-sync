@@ -310,4 +310,11 @@ function initializeNavigation() {
 
 $("#refresh").addEventListener("click", refresh);
 for (const selector of ["#migration-from", "#migration-to", "#migration-policy"]) $(selector).addEventListener("change", () => loadMigrationDraft(true));
+$("#swap-route").addEventListener("click", () => {
+  const from = $("#migration-from").value;
+  const to = $("#migration-to").value;
+  $("#migration-from").value = to;
+  $("#migration-to").value = from;
+  loadMigrationDraft(true);
+});
 initializeTheme(); initializeNavigation(); refresh();

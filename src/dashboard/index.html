@@ -49,7 +49,7 @@
           <header class="panel-head"><div><p class="kicker">MIGRATION WORKBENCH</p><h2>双向迁移草案</h2></div><span id="action-count" class="quiet">—</span></header>
           <div class="migration-controls" aria-label="迁移草案设置">
             <label>从<select id="migration-from"><option value="codex">Codex</option><option value="opencode">OpenCode</option><option value="deepseek">DeepSeek Harness</option></select></label>
-            <span class="route-arrow" aria-hidden="true">→</span>
+            <button id="swap-route" class="route-arrow" type="button" title="交换迁移方向" aria-label="交换迁移方向">⇄</button>
             <label>迁移到<select id="migration-to"><option value="opencode">OpenCode</option><option value="codex">Codex</option><option value="deepseek">DeepSeek Harness</option></select></label>
             <label class="policy-control">统一法则<select id="migration-policy"><option value="recommended">采用逐项建议</option><option value="prefer_target_native">冲突时使用目标原生</option><option value="prefer_source_workflow">冲突时保留原工作流</option><option value="keep_both">冲突时两者都保留</option><option value="ask_each">所有冲突逐项决定</option></select></label>
           </div>
