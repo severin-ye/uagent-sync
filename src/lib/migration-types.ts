@@ -57,7 +57,7 @@ export interface MigrationDraft {
   readOnly: true;
   policy: MigrationPolicy;
   generatedAt: string;
-  summary: { total: number; conflicts: number; deferred: number };
+  summary: { total: number; conflicts: number; deferred: number; shared: number };
   items: MigrationDraftItem[];
 }
 

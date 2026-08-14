@@ -63,7 +63,13 @@ function renderMigrationDraft(draft) {
   const decisions = decisionsFor(scope);
   const decidedCount = Object.keys(decisions).length;
   $("#action-count").textContent = `${draft.summary.total} 项`;
-  $("#migration-summary").innerHTML = `<span><b>${draft.summary.total}</b> 项能力</span><span><b>${draft.summary.conflicts}</b> 项冲突</span><span><b>${draft.summary.deferred}</b> 项待确认</span><span><b>${decidedCount}</b> 项已决定</span>`;
+  $("#migration-summary").innerHTML = `<span><b>${draft.summary.total}</b> 项待迁移</span><span><b>${draft.summary.conflicts}</b> 项冲突</span><span><b>${draft.summary.deferred}</b> 项待确认</span><span><b>${draft.summary.shared ?? 0}</b> 项已共享</span><span><b>${decidedCount}</b> 项已决定</span>`;
+  const sharedNoteEl = $("#shared-note");
+  if (sharedNoteEl) {
+    sharedNoteEl.innerHTML = (draft.summary.shared ?? 0) > 0
+      ? `另有 <b>${draft.summary.shared}</b> 项能力（如 Skills）三端共享同一目录（~/.agents/skills），两边用同一份文件，无需任何迁移动作。`
+      : "";
+  }
   $("#migration-items").innerHTML = draft.items.length ? draft.items.map((item) => {
     const conflict = item.conflict.type === "none" ? "无冲突" : `发现冲突：${item.conflict.targetProviders.join("、")}`;
     const decided = decisions[item.id];

@@ -113,6 +113,7 @@ export function buildMigrationDraft(inventory: WorkspaceInventory, options: Buil
   const policy = options.policy ?? "recommended";
   const seen = new Set<string>();
   const items: MigrationDraftItem[] = [];
+  let sharedSkipped = 0;
   for (const capability of source.capabilities) {
     const key = semanticId(capability);
     if (seen.has(key)) continue;
@@ -120,7 +121,7 @@ export function buildMigrationDraft(inventory: WorkspaceInventory, options: Buil
     const sameSharedAsset = capability.scope === "shared" && target.capabilities.some((candidate) =>
       candidate.scope === "shared" && semanticId(candidate) === key && candidate.source === capability.source,
     );
-    if (sameSharedAsset) continue;
+    if (sameSharedAsset) { sharedSkipped++; continue; }
     const id = `${options.from}-${options.to}-${slug(key)}`;
     const result = classify(capability, target.capabilities, options.to);
     const override = options.itemOverrides?.[id];
@@ -143,7 +144,7 @@ export function buildMigrationDraft(inventory: WorkspaceInventory, options: Buil
     readOnly: true,
     policy,
     generatedAt: new Date().toISOString(),
-    summary: { total: items.length, conflicts: items.filter((item) => item.conflict.type !== "none").length, deferred: items.filter((item) => item.execution.action === "defer").length },
+    summary: { total: items.length, conflicts: items.filter((item) => item.conflict.type !== "none").length, deferred: items.filter((item) => item.execution.action === "defer").length, shared: sharedSkipped },
     items,
   };
 }
