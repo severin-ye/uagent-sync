@@ -14,6 +14,7 @@ import {
   type WorkspaceState, type InitType,
 } from "./sync.js";
 import { updateExtensions, archiveUpdateReport, type UpdateComponent, type UpdateProgress } from "./lib/update.js";
+import { DOTFILES_DIR } from "./lib/dotfiles.js";
 
 function log(msg: string) { console.error(`[opencode-sync] ${msg}`); }
 
@@ -177,7 +178,7 @@ Commands:
   }
 
   const workspaceRoot = resolveWorkspaceRoot();
-  const stateRel = "opencode-dotfiles/state/workspace-state.json";
+  const stateRel = `${DOTFILES_DIR}/state/workspace-state.json`;
   const stateFile = path.join(workspaceRoot, stateRel);
 
   switch (command) {
@@ -245,7 +246,7 @@ Commands:
       fs.writeFileSync(stateFile, JSON.stringify(state, null, 2));
       log("Exported state");
       const msg = flags.get("message") || flags.get("m") || `Update workspace state ${new Date().toISOString().slice(0, 19)}`;
-      const tmpFile = path.join(workspaceRoot, "opencode-dotfiles", "state", ".commit-msg.tmp");
+      const tmpFile = path.join(workspaceRoot, DOTFILES_DIR, "state", ".commit-msg.tmp");
       fs.writeFileSync(tmpFile, String(msg), "utf-8");
       run(`git add ${stateRel}`, workspaceRoot);
       const commit = run(`git commit -F "${tmpFile}"`, workspaceRoot);
@@ -409,7 +410,7 @@ Commands:
       if (action === "add") {
         const keyName = flags.get("key-name");
         if (!keyName) { console.error("Error: --key-name is required for 'add' action"); process.exit(1); }
-        const apiKeyPath = path.join(workspaceRootLocal, "opencode-dotfiles", "keys", "API.md");
+        const apiKeyPath = path.join(workspaceRootLocal, DOTFILES_DIR, "keys", "API.md");
         if (!fs.existsSync(apiKeyPath)) initApiKeyFile(workspaceRootLocal);
         let content = fs.readFileSync(apiKeyPath, "utf-8");
         const newLine = `| \`${keyName}\` | \`${flags.get("key-value") || `<YOUR_${keyName}>`}\` | |`;
@@ -475,12 +476,12 @@ Commands:
       fs.writeFileSync(stateFile, JSON.stringify(stateOut, null, 2));
       results.push(`📦 Step 3: Exported state — ${stateOut.submodules.length} submodules, ${stateOut.skills.length} skills`);
 
-      const addResult = run("git add opencode-dotfiles/", workspaceRoot);
+      const addResult = run(`git add ${DOTFILES_DIR}/`, workspaceRoot);
       if (addResult.code !== 0) {
         results.push(`⚠️ Step 4: git add failed — ${addResult.stderr}`);
       } else {
         const commitMsg = String(flags.get("message") || `Crystallize: ${name} ${new Date().toISOString().slice(0, 19)}`);
-        const tmpMsgFile = path.join(workspaceRoot, "opencode-dotfiles", "state", ".commit-msg.tmp");
+        const tmpMsgFile = path.join(workspaceRoot, DOTFILES_DIR, "state", ".commit-msg.tmp");
         fs.writeFileSync(tmpMsgFile, commitMsg, "utf-8");
         const commitResult = run(`git commit -F ${shellEscape(tmpMsgFile)}`, workspaceRoot);
         try { fs.unlinkSync(tmpMsgFile); } catch { /* ok */ }
@@ -510,7 +511,7 @@ Commands:
       break;
     }
     case "changelog": {
-      const reportsDir = path.join(workspaceRoot, "opencode-dotfiles", "state", "update-reports");
+      const reportsDir = path.join(workspaceRoot, DOTFILES_DIR, "state", "update-reports");
       const file = String(flags.get("report-path") || path.join(reportsDir, "update-report.json"));
       if (!fs.existsSync(file)) { console.error(`No update report found: ${file}`); process.exit(1); }
       const report = JSON.parse(fs.readFileSync(file, "utf-8")) as { timestamp: string; dryRun: boolean; steps: Array<{ name: string; status: string; versionBefore?: string; versionAfter?: string; evidence?: string[] }> };

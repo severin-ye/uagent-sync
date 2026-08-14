@@ -8,6 +8,7 @@ import { stripJsonComments } from "./state.js";
 import { loadKnownMcps, analyzeMcpConfig } from "./guide.js";
 import { detectSyncPath, isMachineSpecificPath } from "./portable.js";
 import type { SubmoduleStatusItem, SetupResult, VerifyResult } from "./types.js";
+import { DOTFILES_DIR } from "./dotfiles.js";
 
 export function getSubmoduleStatus(workspaceRoot: string): SubmoduleStatusItem[] {
   const gitmodulesPath = path.join(workspaceRoot, ".gitmodules");
@@ -203,7 +204,7 @@ export function setupWorkspace(workspaceRoot: string, options?: {
 
   if (copyConfig) {
     results.push({ step: "config overwrite warning", status: "warning", detail: "copyConfig=true 将覆盖 ~/.config/opencode/opencode.json。已存在的配置可能丢失。建议: 先 export 备份。", });
-    const sourceConfig = path.join(workspaceRoot, "opencode-dotfiles", "config", "opencode.json");
+    const sourceConfig = path.join(workspaceRoot, DOTFILES_DIR, "config", "opencode.json");
     if (fs.existsSync(sourceConfig)) {
       const configDir = path.join(os.homedir(), ".config", "opencode"); fs.mkdirSync(configDir, { recursive: true });
       const targetConfig = path.join(configDir, "opencode.json");

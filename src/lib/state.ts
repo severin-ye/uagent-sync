@@ -7,6 +7,7 @@ import { resolveSkillSources } from "./skills.js";
 import { generateSyncMcpConfig } from "./portable.js";
 import { redactSecretsDeep, REDACTED } from "./redact.js";
 import type { WorkspaceState, SubmoduleState, ImportResult } from "./types.js";
+import { DOTFILES_DIR } from "./dotfiles.js";
 
 export function stripJsonComments(content: string): string {
   let result = "";
@@ -67,7 +68,7 @@ export function readOpenCodeConfig(workspaceRoot: string): Record<string, unknow
   const configPaths = [
     path.join(os.homedir(), ".config", "opencode", "opencode.json"),
     path.join(os.homedir(), ".config", "opencode", "opencode.jsonc"),
-    path.join(workspaceRoot, "opencode-dotfiles", "config", "opencode.json"),
+    path.join(workspaceRoot, DOTFILES_DIR, "config", "opencode.json"),
   ];
   for (const configPath of configPaths) {
     if (!fs.existsSync(configPath)) continue;
@@ -81,7 +82,7 @@ export function readOpenCodeConfig(workspaceRoot: string): Record<string, unknow
 }
 
 function readEnvVarNames(workspaceRoot: string): string[] {
-  const envPath = path.join(workspaceRoot, "opencode-dotfiles", ".env");
+  const envPath = path.join(workspaceRoot, DOTFILES_DIR, ".env");
   if (!fs.existsSync(envPath)) return [];
   const content = fs.readFileSync(envPath, "utf-8");
   return content.split("\n").map(l => l.trim()).filter(l => l && !l.startsWith("#")).map(l => l.split("=")[0]).filter(Boolean);
@@ -290,8 +291,8 @@ export function importSystemState(workspaceRoot: string, state: WorkspaceState):
     messages.push("Updated opencode config (merged with existing)");
   }
   if (state.envVars.length > 0) {
-    const envPath = path.join(workspaceRoot, "opencode-dotfiles", ".env");
-    const templatePath = path.join(workspaceRoot, "opencode-dotfiles", ".env.template");
+    const envPath = path.join(workspaceRoot, DOTFILES_DIR, ".env");
+    const templatePath = path.join(workspaceRoot, DOTFILES_DIR, ".env.template");
     if (!fs.existsSync(envPath) && fs.existsSync(templatePath)) { fs.copyFileSync(templatePath, envPath); messages.push("Created .env from template — fill in your secrets"); }
   }
   return { success: true, messages };

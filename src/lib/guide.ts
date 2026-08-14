@@ -4,12 +4,13 @@ import { readOpenCodeConfig, exportSystemState } from "./state.js";
 import { redactSecretsDeep } from "./redact.js";
 import { resolveSkillSources, SKILL_PACKAGES, KNOWN_SKILL_SOURCES } from "./skills.js";
 import type { WorkspaceState, McpBuildInfo, McpGuide, KnownMcpEntry, KnownMcpData } from "./types.js";
+import { DOTFILES_DIR } from "./dotfiles.js";
 
 // ═══ 数据驱动：读取已知 MCP 配置 ═══
 
 export function loadKnownMcps(workspaceRoot: string): KnownMcpData {
   const dataPaths = [
-    path.join(workspaceRoot, "opencode-dotfiles", "data", "known-mcps.json"),
+    path.join(workspaceRoot, DOTFILES_DIR, "data", "known-mcps.json"),
     path.join(import.meta.dirname, "..", "..", "data", "known-mcps.json"),
   ];
   for (const dp of dataPaths) {
@@ -223,7 +224,7 @@ export function generateKnowHowFiles(workspaceRoot: string): { created: string[]
   const knownMcps = loadKnownMcps(workspaceRoot);
   const config = readOpenCodeConfig(workspaceRoot);
   const mcpConfig = config.mcp as Record<string, Record<string, unknown>> | undefined;
-  const knowHowDir = path.join(workspaceRoot, "opencode-dotfiles", "know-how");
+  const knowHowDir = path.join(workspaceRoot, DOTFILES_DIR, "know-how");
   const created: string[] = [];
   const updated: string[] = [];
   const skipped: string[] = [];
@@ -433,7 +434,7 @@ export function generateConfigRefMd(mcpName: string, mcpCfg: Record<string, unkn
 }
 
 export function generateSyncGuide(workspaceRoot: string, state: WorkspaceState): string {
-  const guidePath = path.join(workspaceRoot, "opencode-dotfiles", "guide", "SYNC-GUIDE.md");
+  const guidePath = path.join(workspaceRoot, DOTFILES_DIR, "guide", "SYNC-GUIDE.md");
   const skillSources = resolveSkillSources(state.skills);
   const mcpBuildInfo = detectMcpBuildInfo(workspaceRoot);
   const knownMcps = loadKnownMcps(workspaceRoot);

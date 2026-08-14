@@ -1,8 +1,9 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import type { InitState, InitType } from "./types.js";
+import { DOTFILES_DIR } from "./dotfiles.js";
 
-const INIT_STATE_RELATIVE = "opencode-dotfiles/state/init-state.json";
+const INIT_STATE_RELATIVE = `${DOTFILES_DIR}/state/init-state.json`;
 
 export function emptyInitState(): InitState {
   return { initialized: false, initType: "backup", workspaceName: "", githubUrl: "", githubRepoPrivate: true, completedSteps: {}, firstInitAt: "", lastInitAt: "" };

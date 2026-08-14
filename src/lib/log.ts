@@ -2,8 +2,9 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { getPlatform } from "./cache.js";
 import type { InstallEntry, InstallLog } from "./types.js";
+import { DOTFILES_DIR } from "./dotfiles.js";
 
-const INSTALL_LOG_RELATIVE = "opencode-dotfiles/state/install-log.json";
+const INSTALL_LOG_RELATIVE = `${DOTFILES_DIR}/state/install-log.json`;
 
 function uuid4(): string {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {

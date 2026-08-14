@@ -24,6 +24,7 @@ import {
   type WorkspaceState, type InitType,
 } from "./sync.js";
 import { updateExtensions, archiveUpdateReport, type UpdateComponent } from "./lib/update.js";
+import { DOTFILES_DIR } from "./lib/dotfiles.js";
 
 const z = tool.schema;
 
@@ -53,11 +54,11 @@ The JSON file can be committed to Git and imported on another device.`,
         },
         async execute(args) {
           const workspaceRoot = resolveWorkspaceRoot();
-          const stateFile = args.output || path.join(workspaceRoot, "opencode-dotfiles/state/workspace-state.json");
+          const stateFile = args.output || path.join(workspaceRoot, `${DOTFILES_DIR}/state/workspace-state.json`);
           const state = exportSystemState(workspaceRoot);
           fs.writeFileSync(stateFile, JSON.stringify(state, null, 2));
 
-          const gitignorePath = path.join(workspaceRoot, "opencode-dotfiles/.gitignore");
+          const gitignorePath = path.join(workspaceRoot, `${DOTFILES_DIR}/.gitignore`);
           const statePattern = "state/workspace-state.json";
           let gitignoreContent = fs.existsSync(gitignorePath) ? fs.readFileSync(gitignorePath, "utf-8") : "";
 
@@ -142,15 +143,15 @@ Steps: export state to opencode-dotfiles/state/workspace-sync-state.json, git ad
         },
         async execute(args) {
           const workspaceRoot = resolveWorkspaceRoot();
-          const stateFile = path.join(workspaceRoot, "opencode-dotfiles/state/workspace-sync-state.json");
+          const stateFile = path.join(workspaceRoot, `${DOTFILES_DIR}/state/workspace-sync-state.json`);
           fs.writeFileSync(stateFile, JSON.stringify(exportSystemState(workspaceRoot), null, 2));
 
           const results: string[] = ["Exported workspace state"];
-          const add = run("git add opencode-dotfiles/state/workspace-sync-state.json", workspaceRoot);
+          const add = run(`git add ${DOTFILES_DIR}/state/workspace-sync-state.json`, workspaceRoot);
           if (add.code !== 0) results.push(`Warning: git add failed: ${add.stderr}`);
 
           const commitMsg = args.message || `Update workspace state ${new Date().toISOString().slice(0, 19)}`;
-          const tmpMsgFile = path.join(workspaceRoot, "opencode-dotfiles", "state", ".commit-msg.tmp");
+          const tmpMsgFile = path.join(workspaceRoot, DOTFILES_DIR, "state", ".commit-msg.tmp");
           fs.writeFileSync(tmpMsgFile, commitMsg, "utf-8");
           const commit = run(`git commit -F ${shellEscape(tmpMsgFile)}`, workspaceRoot);
           try { fs.unlinkSync(tmpMsgFile); } catch { /* ok */ }
@@ -178,7 +179,7 @@ Steps: git pull, then import+apply the state (submodules, config, env vars). Use
           const pull = run("git pull", workspaceRoot);
           if (pull.code !== 0) return text(`Failed to pull: ${pull.stderr}`);
 
-          const stateFile = path.join(workspaceRoot, "opencode-dotfiles/state/workspace-sync-state.json");
+          const stateFile = path.join(workspaceRoot, `${DOTFILES_DIR}/state/workspace-sync-state.json`);
           if (!fs.existsSync(stateFile)) return text("No workspace-state.json found in opencode-dotfiles/state/ after pull");
 
           const state = JSON.parse(fs.readFileSync(stateFile, "utf-8")) as WorkspaceState;
@@ -435,7 +436,7 @@ Creates a **private** repo by default; warns if existing repo is PUBLIC; sets gi
 
           if (args.action === "add") {
             if (!args.keyName) return text("Error: keyName is required for 'add' action");
-            const apiKeyPath = path.join(workspaceRoot, "opencode-dotfiles", "keys", "API.md");
+            const apiKeyPath = path.join(workspaceRoot, DOTFILES_DIR, "keys", "API.md");
             if (!fs.existsSync(apiKeyPath)) initApiKeyFile(workspaceRoot);
             let content = fs.readFileSync(apiKeyPath, "utf-8");
             const newLine = `| \`${args.keyName}\` | \`${args.keyValue || `<YOUR_${args.keyName}>`}\` | |`;
@@ -531,17 +532,17 @@ Trigger with natural language: "crystallize this install" / "结晶这个安装"
           const guidePath = generateSyncGuide(workspaceRoot, exportSystemState(workspaceRoot));
           results.push(`📖 Step 2: Generated guide — ${guidePath}`);
 
-          const stateFile = path.join(workspaceRoot, "opencode-dotfiles", "state", "workspace-sync-state.json");
+          const stateFile = path.join(workspaceRoot, DOTFILES_DIR, "state", "workspace-sync-state.json");
           const state = exportSystemState(workspaceRoot);
           fs.writeFileSync(stateFile, JSON.stringify(state, null, 2));
           results.push(`📦 Step 3: Exported state — ${state.submodules.length} submodules, ${state.skills.length} skills`);
 
-          const addResult = run("git add opencode-dotfiles/", workspaceRoot);
+          const addResult = run(`git add ${DOTFILES_DIR}/`, workspaceRoot);
           if (addResult.code !== 0) {
             results.push(`⚠️ Step 4: git add failed — ${addResult.stderr}`);
           } else {
             const commitMsg = args.message || `Crystallize: ${args.name || "environment update"} ${new Date().toISOString().slice(0, 19)}`;
-            const tmpMsgFile = path.join(workspaceRoot, "opencode-dotfiles", "state", ".commit-msg.tmp");
+            const tmpMsgFile = path.join(workspaceRoot, DOTFILES_DIR, "state", ".commit-msg.tmp");
             fs.writeFileSync(tmpMsgFile, commitMsg, "utf-8");
             const commitResult = run(`git commit -F ${shellEscape(tmpMsgFile)}`, workspaceRoot);
             try { fs.unlinkSync(tmpMsgFile); } catch { /* ok */ }
@@ -612,7 +613,7 @@ then append to opencode-dotfiles/CHANGELOG-extensions.md.`,
         },
         async execute(args) {
           const workspaceRoot = resolveWorkspaceRoot();
-          const reportsDir = path.join(workspaceRoot, "opencode-dotfiles", "state", "update-reports");
+          const reportsDir = path.join(workspaceRoot, DOTFILES_DIR, "state", "update-reports");
           const file = args.reportPath || path.join(reportsDir, "update-report.json");
           if (!fs.existsSync(file)) return text(`No update report found: ${file}`);
           const report = JSON.parse(fs.readFileSync(file, "utf-8")) as { timestamp: string; dryRun: boolean; steps: Array<{ name: string; status: string; versionBefore?: string; versionAfter?: string; evidence?: string[] }> };

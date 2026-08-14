@@ -3,9 +3,10 @@ import * as path from "node:path";
 import * as os from "node:os";
 import { stripJsonComments } from "./state.js";
 import type { ApiKeyInfo } from "./types.js";
+import { DOTFILES_DIR } from "./dotfiles.js";
 
 export function detectApiKeys(workspaceRoot: string): ApiKeyInfo {
-  const dotfilesDir = path.join(workspaceRoot, "opencode-dotfiles");
+  const dotfilesDir = path.join(workspaceRoot, DOTFILES_DIR);
   const apiKeyPath = path.join(dotfilesDir, "keys", "API.md");
   const envPath = path.join(dotfilesDir, ".env");
   const keys: string[] = [];
@@ -40,7 +41,7 @@ export function detectApiKeys(workspaceRoot: string): ApiKeyInfo {
 }
 
 export function initApiKeyFile(workspaceRoot: string, options?: { additionalKeys?: string[]; githubToken?: string }): { path: string; created: boolean; detail: string } {
-  const dotfilesDir = path.join(workspaceRoot, "opencode-dotfiles");
+  const dotfilesDir = path.join(workspaceRoot, DOTFILES_DIR);
   if (!fs.existsSync(dotfilesDir)) fs.mkdirSync(dotfilesDir, { recursive: true });
   const apiKeyPath = path.join(dotfilesDir, "keys", "API.md");
   const keyInfo = detectApiKeys(workspaceRoot);

@@ -18,6 +18,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { resolveWorkspaceRoot } from "../sync.js";
 import { updateCodebaseMemory } from "./codebase-memory.js";
+import { DOTFILES_DIR } from "./dotfiles.js";
 
 export type UpdateComponent =
   | "opencode"
@@ -441,7 +442,7 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
 
 /** 存档报告到 opencode-dotfiles/state/update-reports/（每次运行一份 + update-report.json 最新副本）。 */
 export function archiveUpdateReport(workspaceRoot: string, report: UpdateReport): string {
-  const dir = path.join(workspaceRoot, "opencode-dotfiles", "state", "update-reports");
+  const dir = path.join(workspaceRoot, DOTFILES_DIR, "state", "update-reports");
   fs.mkdirSync(dir, { recursive: true });
   const stamp = report.timestamp.replace(/[:.]/g, "-");
   const file = path.join(dir, `update-${stamp}.json`);

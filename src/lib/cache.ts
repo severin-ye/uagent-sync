@@ -3,8 +3,9 @@ import * as path from "node:path";
 import * as os from "node:os";
 import { run } from "./run.js";
 import type { WorkspaceCache, WorkspaceInfo } from "./types.js";
+import { DOTFILES_DIR } from "./dotfiles.js";
 
-const LEGACY_CACHE_RELATIVE = "opencode-dotfiles/state/sync-cache.json";
+const LEGACY_CACHE_RELATIVE = `${DOTFILES_DIR}/state/sync-cache.json`;
 
 let _cachedRoot: string | null = null;
 
@@ -38,7 +39,7 @@ export function getFixedCachePath(): string {
 function findDotfiles(cwd: string): string | null {
   let dir = cwd;
   while (dir !== path.dirname(dir)) {
-    const dotfilesPath = path.join(dir, "opencode-dotfiles");
+    const dotfilesPath = path.join(dir, DOTFILES_DIR);
     if (fs.existsSync(dotfilesPath) && fs.statSync(dotfilesPath).isDirectory()) return dotfilesPath;
     dir = path.dirname(dir);
   }
@@ -119,12 +120,12 @@ export function resolveWorkspaceRoot(): string {
   // 4. 兜底：从 cwd 向上找 .gitmodules
   const root = findWorkspaceRoot();
   const dotfilesPath = findDotfiles(process.cwd());
-  if (dotfilesPath || fs.existsSync(path.join(root, "opencode-dotfiles"))) {
+  if (dotfilesPath || fs.existsSync(path.join(root, DOTFILES_DIR))) {
     writeCache({
       workspaceRoot: root,
       workspaceName: path.basename(root),
       gitRemote: run("git remote get-url origin", root).stdout.trim() || "",
-      dotfilesPath: dotfilesPath || path.join(root, "opencode-dotfiles"),
+      dotfilesPath: dotfilesPath || path.join(root, DOTFILES_DIR),
       mcpInstalled: true,
       createdAt: new Date().toISOString(),
       lastVerified: new Date().toISOString(),
@@ -150,7 +151,7 @@ export function detectWorkspaceInfo(cwd?: string): WorkspaceInfo | null {
       name: path.basename(envRoot), root: envRoot, hasGitmodules: true,
       gitRemote: remoteResult.code === 0 ? remoteResult.stdout.trim() : "",
       defaultRepoName: `codelib-${os.userInfo().username}`,
-      dotfilesExist: fs.existsSync(path.join(envRoot, "opencode-dotfiles")),
+      dotfilesExist: fs.existsSync(path.join(envRoot, DOTFILES_DIR)),
       mcpConfigured: fs.existsSync(path.join(os.homedir(), ".config", "opencode", "opencode.json")),
     };
   }
@@ -180,13 +181,13 @@ export function detectWorkspaceInfo(cwd?: string): WorkspaceInfo | null {
   const info: WorkspaceInfo = {
     name: path.basename(wsRoot), root: wsRoot, hasGitmodules: true, gitRemote,
     defaultRepoName: `codelib-${os.userInfo().username || "user"}`,
-    dotfilesExist: fs.existsSync(path.join(wsRoot, "opencode-dotfiles")),
+    dotfilesExist: fs.existsSync(path.join(wsRoot, DOTFILES_DIR)),
     mcpConfigured: fs.existsSync(path.join(os.homedir(), ".config", "opencode", "opencode.json")),
   };
 
   writeCache({
     workspaceRoot: wsRoot, workspaceName: info.name, gitRemote,
-    dotfilesPath: path.join(wsRoot, "opencode-dotfiles"), mcpInstalled: true,
+    dotfilesPath: path.join(wsRoot, DOTFILES_DIR), mcpInstalled: true,
     createdAt: new Date().toISOString(), lastVerified: new Date().toISOString(),
   });
 
