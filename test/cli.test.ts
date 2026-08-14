@@ -49,6 +49,23 @@ describe("CLI usage", () => {
     const { code } = runCli(["nonexistent"]);
     assert.notEqual(code, 0);
   });
+
+  it("--help prints usage and exits 0", () => {
+    const { stdout, code } = runCli(["--help"]);
+    assert.equal(code, 0);
+    assert.ok(stdout.includes("Usage:"), "--help should print usage");
+  });
+
+  it("-h prints usage and exits 0", () => {
+    const { code } = runCli(["-h"]);
+    assert.equal(code, 0);
+  });
+
+  it("--version prints the package version and exits 0", () => {
+    const { stdout, code } = runCli(["--version"]);
+    assert.equal(code, 0);
+    assert.match(stdout.trim(), /^\d+\.\d+\.\d+$/, `version should be semver: ${stdout}`);
+  });
 });
 
 describe("CLI read-only commands", () => {

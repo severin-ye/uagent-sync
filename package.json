@@ -1,11 +1,12 @@
 {
   "name": "uagent-sync",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "opencode/Codex plugin for syncing agent workspace configuration across devices",
   "type": "module",
   "main": "dist/plugin.js",
   "bin": {
-    "opencode-sync": "dist/cli.js"
+    "opencode-sync": "dist/cli.js",
+    "uagent-sync": "dist/cli.js"
   },
   "files": [
     "dist",

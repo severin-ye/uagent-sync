@@ -148,13 +148,7 @@ function initLines(workspaceRoot: string, initState: InitStateLike, initType: In
 
 interface InitStateLike { initType?: string; workspaceName?: string; githubUrl?: string; initialized?: boolean; completedSteps?: Record<string, boolean>; firstInitAt?: string; lastInitAt?: string; }
 
-async function main() {
-  const command = process.argv[2];
-  const args = process.argv.slice(3);
-  const { flags, positionals } = parseArgs(args);
-
-  if (!command) {
-    console.log(`Usage: node dist/cli.js <command> [options]
+const USAGE = `Usage: node dist/cli.js <command> [options]
 
 Commands:
   export [path]           Export workspace state to JSON
@@ -174,7 +168,32 @@ Commands:
   log <read|add|export> [--type x] [--name x] [--source x]
   crystallize --type x --name x --source x [--message x] [--skip-push]
   inventory [--json]      Scan Codex/OpenCode/DeepSeek configuration (read-only)
-  dashboard [--host x] [--port n] [--no-open]  Start local configuration dashboard`);
+  dashboard [--host x] [--port n] [--no-open]  Start local configuration dashboard`;
+
+function readPackageVersion(): string {
+  try {
+    const manifest = JSON.parse(fs.readFileSync(new URL("../package.json", import.meta.url), "utf-8")) as { version?: string };
+    return manifest.version ?? "unknown";
+  } catch {
+    return "unknown";
+  }
+}
+
+async function main() {
+  const command = process.argv[2];
+  const args = process.argv.slice(3);
+  const { flags, positionals } = parseArgs(args);
+
+  if (command === "--help" || command === "-h" || command === "help") {
+    console.log(USAGE);
+    process.exit(0);
+  }
+  if (command === "--version" || command === "-V" || command === "version") {
+    console.log(readPackageVersion());
+    process.exit(0);
+  }
+  if (!command) {
+    console.log(USAGE);
     process.exit(1);
   }
 
