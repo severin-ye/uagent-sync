@@ -41,9 +41,9 @@ That's it. Submodules reset to exact commits. MCP servers rebuilt. Skills reinst
 
 ```bash
 # 1. Install — from npm (recommended)
-npm install -g uagent-sync        # global CLI (bin: opencode-sync)
+npm install -g uagent-sync        # global CLI (commands: uagent-sync / opencode-sync)
 # or run without installing:
-npm exec --yes --package uagent-sync -- opencode-sync <cmd>
+npx uagent-sync <cmd>
 
 # 2. Add to your opencode config (config/opencode.json)
 # {
