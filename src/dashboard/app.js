@@ -130,15 +130,16 @@ function kindBase(draft) {
   return draft.items.filter((item) => state.kindFilter.includes(item.kind));
 }
 
-/** 徽标（状态）过滤：只作用于列表展示，不影响徽标计数。 */
+/** 徽标（状态）过滤：只作用于列表展示，不影响徽标计数。默认视图 = 待迁移（排除双端接入项）。 */
 function statusFilter(items, decisions) {
   if (state.summaryFilter === "conflicts") return items.filter((item) => item.conflict.type !== "none" && item.conflict.type !== "dual_registered");
-  if (state.summaryFilter === "deferred") return items.filter((item) => item.execution.action === "defer");
-  if (state.summaryFilter === "decided") return items.filter((item) => decisions[item.id]);
+  if (state.summaryFilter === "deferred") return items.filter((item) => item.execution.action === "defer" && item.conflict.type !== "dual_registered");
+  if (state.summaryFilter === "decided") return items.filter((item) => decisions[item.id] && item.conflict.type !== "dual_registered");
   if (state.summaryFilter === "shared") return [];
   if (state.summaryFilter === "dual") return items.filter((item) => item.conflict.type === "dual_registered");
   if (state.summaryFilter === "migrated") return items.filter((item) => item.conflict.type === "dual_registered");
-  return items;
+  // 默认与"待迁移"徽标一致：只列需要动作的项
+  return items.filter((item) => item.conflict.type !== "dual_registered");
 }
 
 /** "已共享"或"已迁移"激活时列出共享 skills 清单（从证据数据展开名字）。 */
