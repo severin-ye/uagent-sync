@@ -27,10 +27,10 @@
 
 ```bash
 # 主机器上
-node uagent-sync/dist/cli.js push "周五备份"
+opencode-sync push "周五备份"
 
 # 新电脑上
-node uagent-sync/dist/cli.js pull
+opencode-sync pull
 ```
 
 就这样。子模块重置到精确提交，MCP 服务器重建，技能重装，配置合并，API 密钥模板化。一切自动完成。
@@ -40,10 +40,8 @@ node uagent-sync/dist/cli.js pull
 ## 快速开始
 
 ```bash
-# 1. 安装（克隆仓库或下载 GitHub Release tarball）
-git clone https://github.com/severin-ye/uagent-sync
-cd uagent-sync
-npm install && npm run build
+# 1. 安装——从 npm（推荐）
+npm install -g uagent-sync        # 全局 CLI（命令名：opencode-sync）
 
 # 2. 加入 opencode 配置（config/opencode.json）
 # {
@@ -53,11 +51,13 @@ npm install && npm run build
 # }
 
 # 3. 重启 opencode，然后：
-node dist/cli.js init          # 检测工作区
-node dist/cli.js push "init"   # 首次备份
+opencode-sync init          # 检测工作区
+opencode-sync push "init"   # 首次备份
 ```
 
-> **新设备？** 先 `node dist/cli.js init --init-type sync --github-url <地址>`，再 `node dist/cli.js pull`。
+> **改用源码？** `git clone https://github.com/severin-ye/uagent-sync && cd uagent-sync && npm install && npm run build`，之后用 `node dist/cli.js <命令>`。
+>
+> **新设备？** 先 `opencode-sync init --init-type sync --github-url <地址>`，再 `opencode-sync pull`。
 
 ---
 

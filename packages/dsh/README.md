@@ -36,7 +36,15 @@ uagent-sync 的 DeepSeek Harness bundle 形态。注册 16 个 `sync_*` 工具�
 
 > DeepSeek Harness 目前是 Developer Preview，以下命令以当前版本为准。
 
-**方式一：从 GitHub 安装（本仓库 monorepo 子包）**
+**方式一：从 npm 安装（推荐）**
+
+```sh
+dsh plugin --profile <name> add uagent-sync-dsh
+```
+
+> 需要 uagent-sync-dsh ≥ 2.0.2（已发布到 npm registry）。
+
+**方式二：从 GitHub 安装（本仓库 monorepo 子包）**
 
 ```sh
 dsh plugin --profile <name> add "github:severin-ye/uagent-sync#main&path:packages/dsh"
@@ -44,7 +52,7 @@ dsh plugin --profile <name> add "github:severin-ye/uagent-sync#main&path:package
 
 > 本包是纯 JavaScript，无需 `prepare` 构建授权（pnpm ≥10 的 allowBuilds 步骤不会出现）。
 
-**方式二：本地 checkout 安装**
+**方式三：本地 checkout 安装**
 
 ```sh
 # 在 uagent-sync 仓库内先构建 CLI：
@@ -54,12 +62,6 @@ dsh plugin --profile <name> add ./packages/dsh
 ```
 
 本地安装时插件自动通过相对路径发现 `dist/cli.js`，无需配置。
-
-**方式三：npm 发布后**
-
-```sh
-dsh plugin --profile <name> add uagent-sync-dsh
-```
 
 ## CLI 定位与配置
 

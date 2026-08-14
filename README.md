@@ -27,10 +27,10 @@ You have multiple machines. Each runs opencode and/or Codex with different plugi
 
 ```bash
 # On your main machine
-node uagent-sync/dist/cli.js push "Friday backup"
+opencode-sync push "Friday backup"
 
 # On your new laptop
-node uagent-sync/dist/cli.js pull
+opencode-sync pull
 ```
 
 That's it. Submodules reset to exact commits. MCP servers rebuilt. Skills reinstalled. Config merged. API keys templated. Everything just works.
@@ -40,10 +40,8 @@ That's it. Submodules reset to exact commits. MCP servers rebuilt. Skills reinst
 ## Quick Start
 
 ```bash
-# 1. Install (clone or GitHub Release tarball)
-git clone https://github.com/severin-ye/uagent-sync
-cd uagent-sync
-npm install && npm run build
+# 1. Install — from npm (recommended)
+npm install -g uagent-sync        # global CLI (bin: opencode-sync)
 
 # 2. Add to your opencode config (config/opencode.json)
 # {
@@ -53,11 +51,13 @@ npm install && npm run build
 # }
 
 # 3. Restart opencode, then:
-node dist/cli.js init          # detect your workspace
-node dist/cli.js push "init"   # first backup
+opencode-sync init          # detect your workspace
+opencode-sync push "init"   # first backup
 ```
 
-> **New machine?** `node dist/cli.js init --init-type sync --github-url <url>` then `node dist/cli.js pull`.
+> **From source instead?** `git clone https://github.com/severin-ye/uagent-sync && cd uagent-sync && npm install && npm run build`, then use `node dist/cli.js <cmd>`.
+>
+> **New machine?** `opencode-sync init --init-type sync --github-url <url>` then `opencode-sync pull`.
 
 ---
 
