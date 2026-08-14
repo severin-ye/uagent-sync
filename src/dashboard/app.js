@@ -70,27 +70,25 @@ function renderKindFilter(draft) {
   const el = $("#kind-filter");
   if (!el) return;
   const active = state.kindFilter;
-  const kindsPresent = new Set(draft.items.map((item) => item.kind));
   el.innerHTML = [
     '<span class="filter-label">只看层级</span>',
     ...KIND_FILTERS.map(({ key, label }) => {
-      const present = kindsPresent.has(key);
-      const checked = !active ? present : active.includes(key);
+      // 无筛选（null）时三个全部勾选；有筛选时按勾选集合。勾选是独立开关，互不清空。
+      const checked = active === null || active.includes(key);
       const count = draft.items.filter((item) => item.kind === key).length;
-      return `<label class="kind-check${present ? "" : " absent"}"><input type="checkbox" data-kind-filter="${key}" ${checked ? "checked" : ""}> ${label}${count > 0 ? ` <em>${count}</em>` : ""}</label>`;
+      return `<label class="kind-check"><input type="checkbox" data-kind-filter="${key}" ${checked ? "checked" : ""}> ${label}${count > 0 ? ` <em>${count}</em>` : ""}</label>`;
     }),
   ].join("");
   el.querySelectorAll("[data-kind-filter]").forEach((checkbox) => checkbox.addEventListener("change", () => {
-    const checked = el.querySelectorAll("[data-kind-filter]:checked");
-    if (checked.length === 0) { state.kindFilter = null; saveKindFilter(null); renderMigrationDraft(draft); return; }
-    const kinds = [...checked].map((input) => input.dataset.kindFilter);
-    state.kindFilter = kinds.length >= KIND_FILTERS.length ? null : kinds;
+    const checkedKinds = [...el.querySelectorAll("[data-kind-filter]:checked")].map((input) => input.dataset.kindFilter);
+    // 三个全勾 = 无层级过滤（null）；否则按勾选集合过滤（允许空集 = 列表为空）。
+    state.kindFilter = checkedKinds.length >= KIND_FILTERS.length ? null : checkedKinds;
     saveKindFilter(state.kindFilter);
     renderMigrationDraft(draft);
   }));
 }
 
-/** 摘要徽标点击 → 状态筛选（再点同一徽标取消筛选）。 */
+/** 摘要徽标点击 → 状态筛选（再点同一徽标取消筛选）。徽标计数不随徽标筛选自身变化。 */
 function renderSummaryChips(draft, counts, sharedCount, decidedCount) {
   const chips = [
     { key: "pending", label: "待迁移", count: counts.total },
@@ -111,13 +109,18 @@ function renderSummaryChips(draft, counts, sharedCount, decidedCount) {
   });
 }
 
-function applyFilters(draft, decisions) {
-  let items = draft.items;
-  if (state.kindFilter && state.kindFilter.length > 0) items = items.filter((item) => state.kindFilter.includes(item.kind));
-  if (state.summaryFilter === "conflicts") items = items.filter((item) => item.conflict.type !== "none");
-  else if (state.summaryFilter === "deferred") items = items.filter((item) => item.execution.action === "defer");
-  else if (state.summaryFilter === "decided") items = items.filter((item) => decisions[item.id]);
-  else if (state.summaryFilter === "shared") items = [];
+/** 层级（checkbox）过滤：null = 不过滤；[] = 空列表；部分 = 只保留勾选层级。 */
+function kindBase(draft) {
+  if (state.kindFilter === null) return draft.items;
+  return draft.items.filter((item) => state.kindFilter.includes(item.kind));
+}
+
+/** 徽标（状态）过滤：只作用于列表展示，不影响徽标计数。 */
+function statusFilter(items, decisions) {
+  if (state.summaryFilter === "conflicts") return items.filter((item) => item.conflict.type !== "none");
+  if (state.summaryFilter === "deferred") return items.filter((item) => item.execution.action === "defer");
+  if (state.summaryFilter === "decided") return items.filter((item) => decisions[item.id]);
+  if (state.summaryFilter === "shared") return [];
   return items;
 }
 
@@ -177,12 +180,13 @@ function renderMigrationDraft(draft) {
   const decidedCount = Object.keys(decisions).length;
   renderKindFilter(draft);
   renderSkillsEvidence(state.lastInventory);
-  const visibleItems = applyFilters(draft, decisions);
+  const baseItems = kindBase(draft);
+  const visibleItems = statusFilter(baseItems, decisions);
   $("#action-count").textContent = `${draft.summary.total} 项`;
   renderSummaryChips(draft, {
-    total: visibleItems.length,
-    conflicts: visibleItems.filter((item) => item.conflict.type !== "none").length,
-    deferred: visibleItems.filter((item) => item.execution.action === "defer").length,
+    total: baseItems.length,
+    conflicts: baseItems.filter((item) => item.conflict.type !== "none").length,
+    deferred: baseItems.filter((item) => item.execution.action === "defer").length,
   }, draft.summary.shared ?? 0, decidedCount);
   renderSharedList(state.lastInventory);
   const sharedNoteEl = $("#shared-note");
@@ -207,7 +211,7 @@ function renderMigrationDraft(draft) {
       <details><summary>查看候选方案与依据</summary><ul class="candidate-list">${candidates}</ul></details>
       <label class="item-decision">本项决定<select data-item-override="${escapeHtml(item.id)}">${executionOptions(decided?.action ?? item.execution.action)}</select><small>${decided ? `已决定（${new Date(decided.at).toLocaleString([], { hour: "2-digit", minute: "2-digit", month: "numeric", day: "numeric" })}）` : `当前来源：${item.execution.resolvedBy === "item" ? "单项覆盖" : item.execution.resolvedBy === "global" ? "统一法则" : "系统建议"}`}</small></label>
     </article>`;
-  }).join("") : `<div class="empty">${state.summaryFilter ? "当前筛选下没有匹配的项。" : "来源 Agent 暂无可生成迁移草案的能力。"}</div>`;
+  }).join("") : `<div class="empty">${state.summaryFilter || state.kindFilter !== null ? "当前筛选下没有匹配的项，调整筛选可恢复列表。" : "来源 Agent 暂无可生成迁移草案的能力。"}</div>`;
   renderDecidedPanel(decisions);
   document.querySelectorAll("[data-item-override]").forEach((select) => select.addEventListener("change", () => {
     const itemId = select.dataset.itemOverride;
@@ -240,7 +244,7 @@ function renderDecidedPanel(decisions) {
   }));
 }
 
-async function loadMigrationDraft() {
+async function loadMigrationDraft(resetFilters = false) {
   const from = $("#migration-from").value;
   const to = $("#migration-to").value;
   if (from === to) {
@@ -250,6 +254,12 @@ async function loadMigrationDraft() {
   const policy = $("#migration-policy").value;
   const response = await fetch(`/api/migration-draft?from=${encodeURIComponent(from)}&to=${encodeURIComponent($("#migration-to").value)}&policy=${encodeURIComponent(policy)}`, { cache: "no-store" });
   if (!response.ok) throw new Error("迁移草案读取失败");
+  if (resetFilters) {
+    // 方向/法则切换后，层级与状态筛选对新的草案没有意义，回到默认全显。
+    state.kindFilter = null;
+    state.summaryFilter = null;
+    saveKindFilter(null);
+  }
   renderMigrationDraft(await response.json());
 }
 
@@ -299,5 +309,5 @@ function initializeNavigation() {
 }
 
 $("#refresh").addEventListener("click", refresh);
-for (const selector of ["#migration-from", "#migration-to", "#migration-policy"]) $(selector).addEventListener("change", loadMigrationDraft);
+for (const selector of ["#migration-from", "#migration-to", "#migration-policy"]) $(selector).addEventListener("change", () => loadMigrationDraft(true));
 initializeTheme(); initializeNavigation(); refresh();
