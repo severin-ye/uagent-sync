@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Uagent Sync Console</title>
+<style>
+:root{--bg:#121315;--side:#191a1c;--panel:#1d1f22;--panel2:#24262a;--line:#303238;--text:#f0f1f3;--muted:#9297a1;--blue:#7697dd;--blue2:#405b96;--green:#69b78b;--amber:#d0a15f}*{box-sizing:border-box}body{margin:0;background:#0d0e10;color:var(--text);font:14px Inter,"Segoe UI",sans-serif}.app{min-height:100vh;display:grid;grid-template-columns:248px 1fr;border:1px solid #3c465b}.sidebar{background:var(--side);border-right:1px solid #27292d;padding:22px 15px;display:flex;flex-direction:column}.brand{font-size:20px;font-weight:700;letter-spacing:-.5px;padding:0 8px 25px}.brand span{font-size:10px;border:1px solid #858991;border-radius:4px;padding:2px 5px;margin-left:6px;vertical-align:3px}.workspace{border:1px solid var(--line);background:#222428;border-radius:11px;padding:11px 12px;margin-bottom:23px;color:#e8e9ec}.navlabel{font-size:12px;color:#7f848d;padding:0 10px 9px}.nav{display:grid;gap:4px}.nav div{padding:10px 12px;border-radius:8px;color:#aeb2ba}.nav .active{background:#34363b;color:#fff}.nav b{font-weight:500}.nav small{float:right;color:#737985}.settings{margin-top:auto;padding:10px;color:#b8bbc1}.main{background:radial-gradient(circle at 68% 30%,#191c24 0,#141518 31%,#121315 62%);padding:28px 34px 40px}.top{height:42px;display:flex;align-items:center;justify-content:space-between}.crumb{font-size:13px;color:#a5a9b0}.actions{display:flex;gap:8px}.btn{border:1px solid var(--line);background:#1e2023;color:#dedfe3;border-radius:9px;padding:9px 13px}.btn.primary{background:#dfe6f7;color:#202736;border-color:#dfe6f7}.hero{margin:40px auto 24px;max-width:1130px}.eyebrow{color:#7e8490;font-size:12px;margin-bottom:8px}.hero h1{font-size:31px;letter-spacing:-1.1px;margin:0 0 8px}.hero p{color:var(--muted);margin:0}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px}.agent{border:1px solid var(--line);background:rgba(29,31,34,.9);border-radius:14px;padding:18px;min-height:132px;position:relative}.agent:before{content:"";position:absolute;left:18px;top:0;width:42px;height:2px;background:#aeb3bc}.agent.openc:before{background:#779be5}.agent.deep:before{background:#5470ad}.agenthead{display:flex;justify-content:space-between;align-items:center}.agent h3{margin:0;font-size:17px}.tag{font-size:11px;padding:4px 7px;border-radius:7px;background:#262a2e;color:#aeb4be}.tag.ok{color:#9bd5b4}.tag.warn{color:#dfbd82}.stat{margin-top:22px;display:flex;gap:18px;color:#8f949d;font-size:12px}.stat b{display:block;color:#e4e6e9;font-size:17px;margin-bottom:3px}.grid{display:grid;grid-template-columns:minmax(560px,1.5fr) minmax(280px,.72fr);gap:12px;max-width:1130px;margin:auto}.box{border:1px solid var(--line);background:rgba(29,31,34,.94);border-radius:14px;padding:18px}.boxhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}.boxhead h2{font-size:14px;margin:0}.boxhead a{color:#8da9e6;font-size:12px}.matrix{display:grid;grid-template-columns:1.5fr repeat(3,1fr);font-size:12px}.matrix div{padding:11px 8px;border-bottom:1px solid #292b30;color:#b5b8bf}.matrix .head{color:#777d87;font-size:11px}.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:6px}.dot.partial{background:var(--amber)}.todo{display:grid;gap:9px}.task{border:1px solid #2d3035;background:#222428;border-radius:10px;padding:12px}.task strong{display:block;font-size:12px;margin-bottom:5px}.task p{margin:0;color:#858b95;font-size:11px;line-height:1.5}.task.action{border-color:#405170;background:#202531}.task.action strong{color:#b9caf0}.foot{max-width:1130px;margin:12px auto 0;color:#6f7580;font-size:11px;display:flex;justify-content:space-between}@media(max-width:900px){.app{grid-template-columns:72px 1fr}.sidebar{padding:20px 9px}.brand{font-size:0}.brand:before{content:"US";font-size:16px}.brand span,.workspace span,.nav b,.nav small,.navlabel,.settings span{display:none}.summary{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.main{padding:20px}.hero{margin-top:22px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">uagent <span>SYNC</span></div>
+    <div class="workspace">▣　<span>Codelib-severin　⌄</span></div>
+    <div class="navlabel">工作区</div>
+    <nav class="nav">
+      <div class="active">◫　<b>总览</b></div>
+      <div>⌘　<b>Agent 配置</b><small>3</small></div>
+      <div>≠　<b>差异</b><small>7</small></div>
+      <div>↥　<b>备份与恢复</b></div>
+      <div>↻　<b>更新</b></div>
+      <div>≡　<b>运行记录</b></div>
+    </nav>
+    <div class="settings">⚙　<span>设置</span></div>
+  </aside>
+  <main class="main">
+    <header class="top"><div class="crumb">工作区 / uagent-sync</div><div class="actions"><button class="btn">重新扫描</button><button class="btn primary">创建快照</button></div></header>
+    <section class="hero">
+      <div class="eyebrow">AGENT CONFIGURATION CONSOLE</div>
+      <h1>三个 Agent，一套清楚的配置。</h1>
+      <p>查看配置来源、能力覆盖和跨设备状态。密钥值不会进入看板或快照。</p>
+      <div class="summary">
+        <article class="agent"><div class="agenthead"><h3>Codex</h3><span class="tag ok">● 正常</span></div><div class="stat"><span><b>62</b>Skills</span><span><b>8</b>MCP</span><span><b>1</b>Hooks</span></div></article>
+        <article class="agent openc"><div class="agenthead"><h3>OpenCode</h3><span class="tag ok">● 正常</span></div><div class="stat"><span><b>共享</b>Skills</span><span><b>16</b>Tools</span><span><b>1</b>Plugin</span></div></article>
+        <article class="agent deep"><div class="agenthead"><h3>DeepSeek Harness</h3><span class="tag warn">● 接入中</span></div><div class="stat"><span><b>3</b>Skills</span><span><b>—</b>MCP</span><span><b>—</b>Plugins</span></div></article>
+      </div>
+    </section>
+    <section class="grid">
+      <div class="box">
+        <div class="boxhead"><h2>配置覆盖</h2><a>查看全部差异 →</a></div>
+        <div class="matrix">
+          <div class="head">能力</div><div class="head">Codex</div><div class="head">OpenCode</div><div class="head">DeepSeek</div>
+          <div>Skills</div><div><span class="dot"></span>已发现</div><div><span class="dot"></span>已发现</div><div><span class="dot"></span>已发现</div>
+          <div>MCP Servers</div><div><span class="dot"></span>8 项</div><div><span class="dot"></span>已配置</div><div><span class="dot partial"></span>待扫描</div>
+          <div>Lifecycle Hooks</div><div><span class="dot"></span>1 项</div><div><span class="dot"></span>已启用</div><div><span class="dot partial"></span>待映射</div>
+          <div>配置快照</div><div><span class="dot"></span>已覆盖</div><div><span class="dot"></span>已覆盖</div><div><span class="dot partial"></span>未覆盖</div>
+        </div>
+      </div>
+      <div class="box">
+        <div class="boxhead"><h2>下一步</h2><a>3 项</a></div>
+        <div class="todo">
+          <div class="task action"><strong>接入 DeepSeek 配置快照</strong><p>识别 Cordis、Skills、MCP 与插件，不读取密钥值。</p></div>
+          <div class="task"><strong>核对 7 项配置差异</strong><p>区分共享配置、Agent 专属配置和缺失项。</p></div>
+          <div class="task"><strong>验证恢复流程</strong><p>在临时目录运行 dry-run 和恢复冒烟测试。</p></div>
+        </div>
+      </div>
+    </section>
+    <div class="foot"><span>最后扫描：刚刚</span><span>只读模式　·　未发现密钥值</span></div>
+  </main>
+</div>
+</body>
+</html>

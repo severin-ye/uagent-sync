@@ -68,7 +68,7 @@ opencode_sync_init initType=backup
 **如果返回"未检测到工作区"：**
 - 当前目录不在 opencode 工作区中
 - 引导用户：建议工作区命名为 `codelib-{username}`
-- 步骤：`git init <name>` → 创建 `opencode-dotfiles/` 子模块 → 重新运行 init
+- 步骤：`git init <name>` → 创建 `usync-dotfiles/` 子模块 → 重新运行 init
 
 **如果已初始化：**
 - 显示已完成的步骤和待完成的步骤
@@ -89,7 +89,7 @@ opencode_sync_create_repo
 opencode_sync_api_keys action=generate
 ```
 
-- 生成 `opencode-dotfiles/keys/API.md`
+- 生成 `usync-dotfiles/keys/API.md`
 - 提示用户填入实际的 API 密钥值
 
 ### 3A.4 安装环境依赖
@@ -110,7 +110,7 @@ opencode_sync_setup
 opencode_sync_export
 ```
 
-- 生成 `opencode-dotfiles/state/workspace-state.json`
+- 生成 `usync-dotfiles/state/workspace-state.json`
 
 ### 3A.6 生成恢复引导
 
@@ -118,7 +118,7 @@ opencode_sync_export
 opencode_sync_guide
 ```
 
-- 生成 `opencode-dotfiles/guide/SYNC-GUIDE.md`
+- 生成 `usync-dotfiles/guide/SYNC-GUIDE.md`
 
 ### 3A.7 推送到 GitHub
 
@@ -130,9 +130,9 @@ opencode_sync_push message="描述信息（如'从台式机备份'）"
 
 告诉用户：
 - ✅ 已备份到 `<GitHub URL>`
-- 📄 状态文件：`opencode-dotfiles/state/workspace-state.json`
-- 📘 恢复引导：`opencode-dotfiles/guide/SYNC-GUIDE.md`
-- 🔑 API 密钥模板：`opencode-dotfiles/keys/API.md`
+- 📄 状态文件：`usync-dotfiles/state/workspace-state.json`
+- 📘 恢复引导：`usync-dotfiles/guide/SYNC-GUIDE.md`
+- 🔑 API 密钥模板：`usync-dotfiles/keys/API.md`
 - 💡 在新设备上：`opencode_sync_init initType=sync githubUrl=<url>` 然后 `opencode_sync_pull`
 
 ---
@@ -148,7 +148,7 @@ opencode_sync_push message="描述信息（如'从台式机备份'）"
 这个地址只会在首次初始化时询问一次，后续会自动记住。
 ```
 
-> **只问一次。** 得到 URL 后保存到 `opencode-dotfiles/state/init-state.json`，下次不再问。
+> **只问一次。** 得到 URL 后保存到 `usync-dotfiles/state/init-state.json`，下次不再问。
 
 ### 3B.2 初始化
 
@@ -164,7 +164,7 @@ opencode_sync_pull
 
 这一步会：
 1. `git pull` 获取最新状态
-2. 读取 `opencode-dotfiles/state/workspace-state.json`
+2. 读取 `usync-dotfiles/state/workspace-state.json`
 3. 自动导入子模块、合并 config、创建 .env 模板
 
 ### 3B.4 验证环境
@@ -185,7 +185,7 @@ opencode_sync_setup
 - 如果导出的状态中有 `windowsFixPaths`，传入 `windowsFixPaths` 数组
 
 **如何获取 skills 列表来传递给 setup：**
-1. 先读取 `opencode-dotfiles/state/workspace-state.json`
+1. 先读取 `usync-dotfiles/state/workspace-state.json`
 2. 从中提取 `skillSources` 字段
 3. 调用：`opencode_sync_setup installSkills=<skillSources数组>`
 
@@ -199,7 +199,7 @@ opencode_sync_setup
 opencode_sync_api_keys action=detect
 ```
 
-列出需要填入的密钥。然后让用户在 `opencode-dotfiles/keys/API.md` 中填写实际值。
+列出需要填入的密钥。然后让用户在 `usync-dotfiles/keys/API.md` 中填写实际值。
 
 ### 3B.7 最终验证
 
@@ -231,10 +231,10 @@ opencode_sync_verify
 
 ### 代码与数据分离
 - plugin 源码在 `opencode-sync-mcp-server/`
-- 所有运行时数据写入 `opencode-dotfiles/state/`、`guide/`、`keys/`
+- 所有运行时数据写入 `usync-dotfiles/state/`、`guide/`、`keys/`
 - **永远不要修改 plugin 源码目录中的文件**（但仓库内文档如 pitfalls/CHANGELOG 可按需维护）
 
-### 状态文件位置（均在 `opencode-dotfiles/` 下）
+### 状态文件位置（均在 `usync-dotfiles/` 下）
 | 文件 | 用途 |
 |------|------|
 | `state/workspace-state.json` | 完整工作区快照 |

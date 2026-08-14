@@ -123,7 +123,7 @@ Every `node dist/cli.js *` command needs to know the workspace root (the directo
 
 1. Env var **`OPENCODE_SYNC_WORKSPACE_ROOT=<path>`** (explicit, highest priority)
 2. Fixed cache `~/.config/opencode/sync-cache.json` (reachable from any working directory)
-3. Legacy cache auto-migration (`opencode-dotfiles/state/sync-cache.json`, written by v1.0.0)
+3. Legacy cache auto-migration (`usync-dotfiles/state/sync-cache.json`, written by v1.0.0)
 4. Walk up from the opencode process working directory looking for `.gitmodules`
 
 > Launching opencode from the desktop, home directory, or the OpenChamber default directory works fine — no need to start inside the workspace. If all four paths fail, the error message includes actionable guidance.
@@ -213,7 +213,7 @@ uagent-sync/                  # ← This repo (code only, never modified at runt
 ├── RELEASING.md               # Release playbook
 └── dist/                      # Compiled output
 
-opencode-dotfiles/             # ← Runtime data (separate repo, synced via Git)
+usync-dotfiles/             # ← Runtime data (separate repo, synced via Git)
 ├── state/                     # Runtime state files
 ├── guide/                     # Auto-generated docs
 ├── keys/                      # API key templates
@@ -222,7 +222,7 @@ opencode-dotfiles/             # ← Runtime data (separate repo, synced via Git
 └── scripts/                   # Bootstrap scripts
 ```
 
-> **Code never touches data.** The plugin lives in one directory. All generated files go to `opencode-dotfiles/`. Clean separation.
+> **Code never touches data.** The plugin lives in one directory. All generated files go to `usync-dotfiles/`. Clean separation.
 
 ---
 

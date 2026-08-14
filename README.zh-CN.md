@@ -102,7 +102,7 @@ uagent-sync/
 
 1. 环境变量 **`OPENCODE_SYNC_WORKSPACE_ROOT=<路径>`**（显式指定，优先级最高）
 2. 固定缓存 `~/.config/opencode/sync-cache.json`（任何启动目录都能读到）
-3. 旧位置缓存自动迁移（`opencode-dotfiles/state/sync-cache.json`，v1.0.0 写入）
+3. 旧位置缓存自动迁移（`usync-dotfiles/state/sync-cache.json`，v1.0.0 写入）
 4. 从 opencode 进程启动目录逐级向上找 `.gitmodules`
 
 > 从桌面、主目录或 OpenChamber 默认目录启动 opencode 也能正常解析——不需要在工作区内启动。四种途径全部失败时，错误信息会给出可操作的引导。
@@ -202,7 +202,7 @@ uagent-sync/                  # ← 本仓库（纯代码，运行时永不修�
 ├── RELEASING.md               # 发布手册
 └── dist/                      # 编译产物
 
-opencode-dotfiles/             # ← 运行时数据（独立仓库，随 Git 同步）
+usync-dotfiles/             # ← 运行时数据（独立仓库，随 Git 同步）
 ├── state/                     # 运行时状态文件
 ├── guide/                     # 自动生成的文档
 ├── keys/                      # API 密钥模板
@@ -211,7 +211,7 @@ opencode-dotfiles/             # ← 运行时数据（独立仓库，随 Git �
 └── scripts/                   # 引导脚本
 ```
 
-> **代码永不触碰数据。** 插件代码在一个目录，所有生成文件写入 `opencode-dotfiles/`。职责分离。
+> **代码永不触碰数据。** 插件代码在一个目录，所有生成文件写入 `usync-dotfiles/`。职责分离。
 
 ---
 

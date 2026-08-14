@@ -4,6 +4,19 @@
 
 ## [Unreleased]
 
+### 新增
+
+- **DeepSeek Harness bundle**（`packages/dsh/`）：16 个 `sync_*` 工具桥接 CLI + 共享 skills 注册为 DSH runtime skills；纯 JS 零构建（`dsh plugin add github:severin-ye/uagent-sync#main&path:packages/dsh`）
+- **中文名 U同步 / 优同步**：语音触发词注册于 AGENTS.md 与三个 SKILL.md
+- **看板双行正交轴**：迁移工作台重构为「目标端现状（缺失/已有/共享）× 我的决定（未决定/已决定）」正交筛选；动作精简为 4 项；旧决定自动映射
+- **usync-dotfiles 数据目录重构**：三端共享状态 + `agents/<id>/`（config/manifests/env/runtime）+ 结构化 JSON know-how（组件级汇聚、按端分节）
+
+### 变更
+
+- 数据目录 `opencode-dotfiles/` → `usync-dotfiles/`（GitHub 仓库同名 rename，旧 URL 保留重定向）
+- know-how 由 MD 三件套转为每组件一个 `know-how/<组件>.json`（general + agents.{opencode,codex,deepseek}）
+- 路径字面量收敛至 `src/lib/dotfiles.ts` 常量
+
 ## [2.0.0] - 2026-08-07
 
 ### 新增
