@@ -71,6 +71,18 @@ function classify(
   }
 
   if (matching.length) {
+    // 同名能力但来源文件不同且非目标原生：两端各自的配置文件都注册了同一个服务
+    // （如同一 MCP 分别在 config.toml 和 opencode.json 里）。这是 MCP 一服务多端的
+    // 正常用法，不是"读同一份文件"的真共享——单独归类为"双端接入"。
+    const sameSource = item.source && matching.some((candidate) => candidate.source && candidate.source === item.source);
+    if (!sameSource && !nativeOverlap) {
+      return {
+        recommendation: { strategy: "use_existing_target", reason: "目标端已接入同一服务（两端配置文件都注册了这个能力），无需迁移。如两端注册参数不一致（超时、环境变量等），可按需对齐。", evidenceLevel: "verified_local" },
+        conflict: { type: "dual_registered", reason: "两端配置文件各自注册了同名能力，来源文件不同。", targetProviders },
+        candidates: [{ strategy: "use_existing_target", label: matching[0].name, recommended: true }, custom],
+        defaultAction: "no_change",
+      };
+    }
     return {
       recommendation: { strategy: "use_existing_target", reason: "目标端已发现相同能力，默认不重复安装。", evidenceLevel: "verified_local" },
       conflict,
@@ -144,7 +156,13 @@ export function buildMigrationDraft(inventory: WorkspaceInventory, options: Buil
     readOnly: true,
     policy,
     generatedAt: new Date().toISOString(),
-    summary: { total: items.length, conflicts: items.filter((item) => item.conflict.type !== "none").length, deferred: items.filter((item) => item.execution.action === "defer").length, shared: sharedSkipped },
+    summary: {
+      total: items.length,
+      conflicts: items.filter((item) => item.conflict.type === "target_native_overlap" || item.conflict.type === "target_provider_overlap").length,
+      deferred: items.filter((item) => item.execution.action === "defer").length,
+      shared: sharedSkipped,
+      dualRegistered: items.filter((item) => item.conflict.type === "dual_registered").length,
+    },
     items,
   };
 }

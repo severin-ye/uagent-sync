@@ -28,7 +28,7 @@ export interface MigrationRecommendation {
 }
 
 export interface MigrationConflict {
-  type: "none" | "target_native_overlap" | "target_provider_overlap";
+  type: "none" | "target_native_overlap" | "target_provider_overlap" | "dual_registered";
   reason?: string;
   targetProviders: string[];
 }
@@ -57,7 +57,7 @@ export interface MigrationDraft {
   readOnly: true;
   policy: MigrationPolicy;
   generatedAt: string;
-  summary: { total: number; conflicts: number; deferred: number; shared: number };
+  summary: { total: number; conflicts: number; deferred: number; shared: number; dualRegistered: number };
   items: MigrationDraftItem[];
 }
 

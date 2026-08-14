@@ -104,4 +104,15 @@ describe("dashboard assets", () => {
     assert.match(html, /交换迁移方向/);
     assert.match(js, /swap-route/);
   });
+
+  it("separates dual-registered items from pending and shared groups", () => {
+    const js = asset("app.js");
+    const css = asset("styles.css");
+    assert.match(js, /双端接入/);
+    assert.match(js, /dual_registered/);
+    assert.match(js, /各自接入同一服务/);
+    assert.match(js, /读同一文件/);
+    assert.match(css, /summary-chip\.dual/);
+    assert.match(css, /conflict\.dual/);
+  });
 });

@@ -113,4 +113,15 @@ describe("bidirectional migration draft", () => {
     assert.equal(draft.items.length, 1);
     assert.equal(draft.items[0].name, "beta");
   });
+
+  it("classifies same-named capability in two different config files as dual-registered, not a conflict", () => {
+    const source = capability({ kind: "mcp", name: "codebase-memory-mcp", provider: "mcp", source: "C:/home/.codex/config.toml" });
+    const target = capability({ kind: "mcp", name: "codebase-memory-mcp", provider: "mcp", source: "C:/home/.config/opencode/opencode.json" });
+    const draft = buildMigrationDraft(inventory("codex", "opencode", [source], [target]), { from: "codex", to: "opencode" });
+    assert.equal(draft.items.length, 1);
+    assert.equal(draft.items[0].conflict.type, "dual_registered");
+    assert.equal(draft.summary.dualRegistered, 1);
+    assert.equal(draft.summary.conflicts, 0, "双端接入不计入冲突");
+    assert.equal(draft.items[0].execution.action, "no_change");
+  });
 });

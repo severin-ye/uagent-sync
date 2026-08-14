@@ -24,7 +24,9 @@ const conflictExplain = {
   none: "目标端没有同名能力，迁移过去不会冲突。",
   target_native_overlap: "目标端已经内置了类似能力，重复迁移会打架。",
   target_provider_overlap: "目标端已有提供者覆盖同样的能力边界。",
+  dual_registered: "两端各自的配置文件都接入了同一个服务，这是正常用法，不是配置错误。",
 };
+const dualStrategyExplain = "目标端已经接入了这个服务，无需再装。保持现状即可；如果两端接入参数不一致（超时、环境变量等），可以对比后按需对齐。";
 const viewLabels = { overview: "总览", agents: "Agent 配置", matrix: "差异", actions: "迁移建议", security: "安全边界" };
 
 function loadDecisions() { try { return JSON.parse(localStorage.getItem(DECISIONS_KEY)) ?? {}; } catch { return {}; } }
@@ -89,11 +91,13 @@ function renderKindFilter(draft) {
 }
 
 /** 摘要徽标点击 → 状态筛选（再点同一徽标取消筛选）。徽标计数不随徽标筛选自身变化。 */
-function renderSummaryChips(draft, counts, sharedCount, decidedCount) {
+function renderSummaryChips(draft, counts, sharedCount, dualCount, decidedCount) {
   const chip = (key, label, count, extraClass = "") =>
     `<span class="summary-chip ${extraClass}${state.summaryFilter === key ? " active" : ""}" data-summary-filter="${key}" role="button" tabindex="0" title="点击筛选；再点一次取消">${label} <b>${count}</b></span>`;
-  // 冲突/待确认/已决定是"待迁移"的子类（用虚线徽标 + "其中"分隔表达包含关系）；
-  // 已共享是独立类别（无需迁移）。
+  // 三组互斥状态：
+  // 1) 待迁移（需要动作；其中冲突/待确认/已决定是其子类）
+  // 2) 双端接入（目标端已接入同一服务，无需动作）
+  // 3) 已共享（两端读同一份文件，无需动作）
   $("#migration-summary").innerHTML = [
     '<span class="chips-group">',
     chip("pending", "待迁移", counts.total),
@@ -103,8 +107,12 @@ function renderSummaryChips(draft, counts, sharedCount, decidedCount) {
     chip("decided", "已决定", decidedCount, "sub"),
     '</span>',
     '<span class="chips-group">',
+    chip("dual", "双端接入", dualCount, "dual"),
+    '<span class="chips-note">各自接入同一服务</span>',
+    '</span>',
+    '<span class="chips-group">',
     chip("shared", "已共享", sharedCount),
-    '<span class="chips-note">无需迁移</span>',
+    '<span class="chips-note">读同一文件</span>',
     '</span>',
   ].join("");
   document.querySelectorAll("[data-summary-filter]").forEach((chipEl) => {
@@ -125,10 +133,11 @@ function kindBase(draft) {
 
 /** 徽标（状态）过滤：只作用于列表展示，不影响徽标计数。 */
 function statusFilter(items, decisions) {
-  if (state.summaryFilter === "conflicts") return items.filter((item) => item.conflict.type !== "none");
+  if (state.summaryFilter === "conflicts") return items.filter((item) => item.conflict.type !== "none" && item.conflict.type !== "dual_registered");
   if (state.summaryFilter === "deferred") return items.filter((item) => item.execution.action === "defer");
   if (state.summaryFilter === "decided") return items.filter((item) => decisions[item.id]);
   if (state.summaryFilter === "shared") return [];
+  if (state.summaryFilter === "dual") return items.filter((item) => item.conflict.type === "dual_registered");
   return items;
 }
 
@@ -189,13 +198,14 @@ function renderMigrationDraft(draft) {
   renderKindFilter(draft);
   renderSkillsEvidence(state.lastInventory);
   const baseItems = kindBase(draft);
+  const dualCount = baseItems.filter((item) => item.conflict.type === "dual_registered").length;
   const visibleItems = statusFilter(baseItems, decisions);
   $("#action-count").textContent = `${draft.summary.total} 项`;
   renderSummaryChips(draft, {
-    total: baseItems.length,
-    conflicts: baseItems.filter((item) => item.conflict.type !== "none").length,
+    total: baseItems.length - dualCount,
+    conflicts: baseItems.filter((item) => item.conflict.type === "target_native_overlap" || item.conflict.type === "target_provider_overlap").length,
     deferred: baseItems.filter((item) => item.execution.action === "defer").length,
-  }, draft.summary.shared ?? 0, decidedCount);
+  }, draft.summary.shared ?? 0, dualCount, decidedCount);
   renderSharedList(state.lastInventory);
   const sharedNoteEl = $("#shared-note");
   if (sharedNoteEl) {
@@ -204,16 +214,19 @@ function renderMigrationDraft(draft) {
       : "";
   }
   $("#migration-items").innerHTML = visibleItems.length ? visibleItems.map((item) => {
-    const conflict = item.conflict.type === "none" ? "无冲突" : `发现冲突：${item.conflict.targetProviders.join("、")}`;
+    const conflict = item.conflict.type === "none" ? "无冲突"
+      : item.conflict.type === "dual_registered" ? "双端接入"
+      : `发现冲突：${item.conflict.targetProviders.join("、")}`;
+    const conflictClass = item.conflict.type === "none" ? "clear" : item.conflict.type === "dual_registered" ? "dual" : "warn";
     const decided = decisions[item.id];
     const decidedBadge = decided ? `<span class="decided-badge">✓ 已决定：${executionLabels[decided.action]}</span>` : "";
     const candidates = item.candidates.map((candidate) => `<li class="${candidate.recommended ? "recommended" : "fallback"}"><span>${escapeHtml(candidate.label)}</span><em>${candidate.recommended ? "建议" : "最后兜底"}</em></li>`).join("");
     return `<article class="migration-item${decided ? " decided" : ""}" data-migration-id="${escapeHtml(item.id)}">
-      <div class="migration-item-head"><div><span class="kind-chip">${kindLabels[item.kind] ?? item.kind}</span><h3>${escapeHtml(item.name)}</h3>${decidedBadge}</div><span class="conflict ${item.conflict.type === "none" ? "clear" : "warn"}">${escapeHtml(conflict)}</span></div>
+      <div class="migration-item-head"><div><span class="kind-chip">${kindLabels[item.kind] ?? item.kind}</span><h3>${escapeHtml(item.name)}</h3>${decidedBadge}</div><span class="conflict ${conflictClass}">${escapeHtml(conflict)}</span></div>
       <div class="migration-advice">
         <div class="advice-head"><span class="advice-tag">AI 建议</span><strong>${recommendationLabels[item.recommendation.strategy]}</strong><span class="evidence ${item.recommendation.evidenceLevel}">依据：${evidenceLabels[item.recommendation.evidenceLevel] ?? item.recommendation.evidenceLevel}</span></div>
         <p class="advice-reason">${escapeHtml(item.recommendation.reason)}</p>
-        <p class="advice-explain">${strategyExplain[item.recommendation.strategy] ?? ""}</p>
+        <p class="advice-explain">${item.conflict.type === "dual_registered" ? dualStrategyExplain : (strategyExplain[item.recommendation.strategy] ?? "")}</p>
         <p class="advice-conflict">${conflictExplain[item.conflict.type] ?? ""}</p>
       </div>
       <details><summary>查看候选方案与依据</summary><ul class="candidate-list">${candidates}</ul></details>
