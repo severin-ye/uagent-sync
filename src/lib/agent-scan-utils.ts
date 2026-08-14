@@ -37,12 +37,27 @@ export function readJson(file: string): Record<string, unknown> | undefined {
 }
 
 export function scanSkills(skillsRoot: string): AgentCapability[] {
-  if (!fs.existsSync(skillsRoot)) return [];
+  return scanSkillsRoots([skillsRoot]);
+}
+
+/**
+ * 扫描多个 skills 根目录（按优先级排序，共享目录在前）。
+ * 同名 skill 只保留最先命中的一份，source 记录真实文件路径——
+ * 跨端是否真共享由 migration-engine 按 source 相同判定。
+ */
+export function scanSkillsRoots(roots: string[]): AgentCapability[] {
   const capabilities: AgentCapability[] = [];
-  for (const entry of fs.readdirSync(skillsRoot, { withFileTypes: true })) {
-    if (!entry.isDirectory()) continue;
-    const file = path.join(skillsRoot, entry.name, "SKILL.md");
-    if (fs.existsSync(file)) capabilities.push({ kind: "skills", name: entry.name, source: file, scope: "shared", portability: "portable" });
+  const seen = new Set<string>();
+  for (const skillsRoot of roots) {
+    if (!fs.existsSync(skillsRoot)) continue;
+    for (const entry of fs.readdirSync(skillsRoot, { withFileTypes: true })) {
+      if (!entry.isDirectory() || seen.has(entry.name)) continue;
+      const file = path.join(skillsRoot, entry.name, "SKILL.md");
+      if (fs.existsSync(file)) {
+        seen.add(entry.name);
+        capabilities.push({ kind: "skills", name: entry.name, source: file, scope: "shared", portability: "portable" });
+      }
+    }
   }
   return capabilities;
 }

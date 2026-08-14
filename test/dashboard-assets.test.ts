@@ -70,4 +70,17 @@ describe("dashboard assets", () => {
     assert.match(html, /已确认的决定/);
     assert.match(html, /保存在本机浏览器/);
   });
+
+  it("shows per-directory skills evidence and a kind-level checkbox filter", () => {
+    const js = asset("app.js");
+    const html = asset("index.html");
+    assert.match(html, /id="kind-filter"/);
+    assert.match(html, /id="skills-evidence"/);
+    assert.match(js, /buildSkillsEvidence/);
+    assert.match(js, /renderKindFilter/);
+    assert.match(js, /data-kind-filter/);
+    assert.match(js, /只看层级/);
+    assert.match(js, /三端共享，无需迁移/);
+    assert.match(js, /KIND_FILTER_KEY/);
+  });
 });

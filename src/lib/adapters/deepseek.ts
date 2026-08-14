@@ -2,7 +2,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import type { AgentInventory } from "../agent-inventory-types.js";
 import type { AgentPaths } from "../agent-paths.js";
-import { safeForDisplay, scanSkills } from "../agent-scan-utils.js";
+import { safeForDisplay, scanSkillsRoots } from "../agent-scan-utils.js";
 
 function readJson(file: string): Record<string, unknown> | undefined {
   try { return JSON.parse(fs.readFileSync(file, "utf8")) as Record<string, unknown>; } catch { return undefined; }
@@ -27,7 +27,7 @@ export function scanDeepSeek(paths: AgentPaths): AgentInventory {
   ];
   const sources = candidates.filter(fs.existsSync);
   const config = sources[0];
-  const capabilities = scanSkills(paths.sharedSkillsDir);
+  const capabilities = scanSkillsRoots(paths.skillsRoots.deepseek);
   capabilities.push({ kind: "mcp", name: "MCP compatibility", source: config, scope: "native", portability: "unverified", evidence: "No verified local DeepSeek MCP capability" });
   const profilePackage = path.join(profileDir, "package.json");
   const profile = readJson(profilePackage);

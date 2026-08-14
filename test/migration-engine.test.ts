@@ -90,5 +90,27 @@ describe("bidirectional migration draft", () => {
     const draft = buildMigrationDraft(inventory("codex", "opencode", [shared], [shared]), { from: "codex", to: "opencode" });
     assert.equal(draft.items.length, 0);
     assert.equal(draft.summary.conflicts, 0);
+    assert.equal(draft.summary.shared, 1);
+  });
+
+  it("treats same-named skills in different agent-specific directories as migration items", () => {
+    // Claude Code 位置与共享目录不同：opencode 能看到，codex 没有 → 应进入草案而不是被当作已共享。
+    const claudeOnly = capability({ kind: "skills", name: "review", scope: "shared", source: "C:/home/.claude/skills/review/SKILL.md" });
+    const draft = buildMigrationDraft(inventory("opencode", "codex", [claudeOnly], []), { from: "opencode", to: "codex" });
+    assert.equal(draft.items.length, 1);
+    assert.equal(draft.summary.shared, 0);
+    assert.equal(draft.items[0].execution.action, "direct_share");
+  });
+
+  it("counts shared assets only when both sides point at the same file", () => {
+    const sharedA = capability({ kind: "skills", name: "alpha", scope: "shared", source: "C:/home/.agents/skills/alpha/SKILL.md" });
+    const sharedB = capability({ kind: "skills", name: "beta", scope: "shared", source: "C:/home/.codex/skills/beta/SKILL.md" });
+    const draft = buildMigrationDraft(
+      inventory("codex", "opencode", [sharedA, sharedB], [sharedA]),
+      { from: "codex", to: "opencode" },
+    );
+    assert.equal(draft.summary.shared, 1, "alpha 同文件共享；beta 在 codex 专属目录，应作为迁移项");
+    assert.equal(draft.items.length, 1);
+    assert.equal(draft.items[0].name, "beta");
   });
 });
