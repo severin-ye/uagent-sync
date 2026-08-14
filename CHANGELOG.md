@@ -17,6 +17,12 @@
 - know-how 由 MD 三件套转为每组件一个 `know-how/<组件>.json`（general + agents.{opencode,codex,deepseek}）
 - 路径字面量收敛至 `src/lib/dotfiles.ts` 常量
 
+### 修复
+
+- **DSH 插件 schema 契约回归测试**（`test/dsh-plugin-schema.test.ts`）：直接加载 `packages/dsh/index.js` 对 `apply()` 注册全部 16 工具，用 pin 在根 devDependencies 的 `@deepseek-ai/dsh-tools@0.1.0-rc.6` 校验 author-schema 契约（`required must be true when present` 类破坏将直接红）。同时清除 `packages/dsh/node_modules` 下的过期 dsh-tools 遮蔽副本——它会让插件解析到与运行时 lockfile（`^0.1.0-rc.6`）不一致的旧版本，也会让全新机器 `npm install` 后插件找不到 dsh-tools（对应早期 `ERR_MODULE_NOT_FOUND` 崩溃隐患）
+- **CLI 旗标**：`--help` / `-h` / `--version` / `-V` 支持（此前被当作未知命令）；`uagent-sync` bin 别名与包名一致，`npx uagent-sync <cmd>` 可用（配合 npm 12 修复 Windows 上 npx 临时 bin 的 cmd PATH 查找问题）
+- **tarball 打包卫生**：根包加 `files` 白名单（dist/skills/hooks/data/agent 配置/文档），首发 tarball 由 422 文件/1.2MB 收敛到 140 文件/130kB（原 `.npmignore` 未排除会话状态、备份、嵌套 node_modules）
+
 ## [2.0.0] - 2026-08-07
 
 ### 新增

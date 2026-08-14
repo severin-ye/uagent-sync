@@ -63,6 +63,12 @@ dsh plugin --profile <name> add ./packages/dsh
 
 本地安装时插件自动通过相对路径发现 `dist/cli.js`，无需配置。
 
+## 测试与契约守卫
+
+- **桥接层测试**：`test/dsh-plugin.test.ts` 覆盖 CLI 定位/参数映射/spawn/渲染（`packages/dsh/lib/cli.js`，纯 JS 零依赖）。
+- **schema 契约守卫**：`test/dsh-plugin-schema.test.ts` 直接加载 `index.js` 执行 `apply()`，对根 devDependencies 锁定的 `@deepseek-ai/dsh-tools@0.1.0-rc.6` 注册全部 16 工具——dsh-tools 的 author-schema 校验（如 `required must be true when present`）破坏会在 CI 直接红。
+- **版本解析约定**：`packages/dsh/node_modules` 不应存在（gitignored 陈旧副本会遮蔽根 devDeps 的 dsh-tools 版本）。全新机器在仓库根 `npm install` 即可满足插件解析。
+
 ## CLI 定位与配置
 
 工具执行前按以下顺序定位 `dist/cli.js`：
