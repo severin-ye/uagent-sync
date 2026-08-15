@@ -14,7 +14,8 @@ import * as path from "node:path";
  * 1. cliPath（cordis.yml 显式配置）
  * 2. 环境变量（默认 OPENCODE_SYNC_UAGENT_SYNC_CLI）
  * 3. 插件包本地 checkout 相对路径（<pkg>/../../dist/cli.js）
- * 4. 从 cwd 向上找 .gitmodules 得 workspaceRoot，在其下递归找 uagent-sync/dist/cli.js（深度 ≤5）
+ * 4. npm dependency：node_modules/uagent-sync/dist/cli.js（npm 安装形态，独立可安装）
+ * 5. 从 cwd 向上找 .gitmodules 得 workspaceRoot，在其下递归找 uagent-sync/dist/cli.js（深度 ≤5）
  * 失败返回 undefined —— 调用方负责 fail loud。
  *
  * @param {{ cliPath?: string, envCliKey?: string, moduleUrl?: string, cwd?: string, env?: Record<string, string|undefined> }} [input]
@@ -34,6 +35,9 @@ export function resolveCliPath(input = {}) {
       const pluginDir = path.dirname(fileURLToPathSafe(input.moduleUrl));
       const sibling = path.resolve(pluginDir, "..", "..", "dist", "cli.js");
       if (fs.existsSync(sibling)) return sibling;
+      // npm dependency：uagent-sync-dsh 依赖 uagent-sync，安装后 node_modules/uagent-sync/dist/cli.js 必在
+      const depCli = findNpmDependencyCli(pluginDir);
+      if (depCli) return depCli;
     } catch { /* moduleUrl 不可解析时忽略 */ }
   }
 
@@ -41,6 +45,23 @@ export function resolveCliPath(input = {}) {
   if (workspaceRoot) {
     const found = findDeep(workspaceRoot, ["uagent-sync", "dist", "cli.js"], 5);
     if (found) return found;
+  }
+  return undefined;
+}
+
+/**
+ * 从插件包目录向上逐级查找 npm 依赖 uagent-sync 的 dist/cli.js（深度 ≤12，覆盖
+ * npm/pnpm/yarn 各类 node_modules 布局；pnpm 的 symlink 布局下真实文件在 .pnpm 内部，
+ * 此处同样能从 node_modules/uagent-sync/... 命中）。
+ */
+export function findNpmDependencyCli(startDir) {
+  let dir = path.resolve(startDir);
+  for (let i = 0; i < 12; i++) {
+    const candidate = path.join(dir, "node_modules", "uagent-sync", "dist", "cli.js");
+    if (fs.existsSync(candidate)) return candidate;
+    const parent = path.dirname(dir);
+    if (parent === dir) return undefined;
+    dir = parent;
   }
   return undefined;
 }

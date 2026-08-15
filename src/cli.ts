@@ -243,7 +243,14 @@ async function main() {
     }
     case "import": {
       const src = positionals[0] || stateFile;
-      const state = JSON.parse(fs.readFileSync(isPathSafe(src, workspaceRoot), "utf-8")) as WorkspaceState;
+      let state: WorkspaceState;
+      if (/^https?:\/\//.test(src)) {
+        const res = await fetch(src);
+        if (!res.ok) throw new Error(`Failed to fetch ${src}: HTTP ${res.status}`);
+        state = JSON.parse(await res.text()) as WorkspaceState;
+      } else {
+        state = JSON.parse(fs.readFileSync(isPathSafe(src, workspaceRoot), "utf-8")) as WorkspaceState;
+      }
       if (flags.has("dry-run")) {
         const diffs = diffState(exportSystemState(workspaceRoot), state);
         console.log(diffs.length > 0 ? ["Dry run — would make these changes:", ...diffs].join("\n") : "Dry run — no changes needed (already in sync)");

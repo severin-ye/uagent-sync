@@ -37,22 +37,44 @@ That's it. Submodules reset to exact commits. MCP servers rebuilt. Skills reinst
 
 ---
 
-## Quick Start
+## Installation
 
-```bash
-# 1. Install — from npm (recommended)
+uagent-sync ships one CLI and three agent entry points. Install the one you use:
+
+### DeepSeek Harness
+
+```sh
+# From npm (recommended — bundles the CLI as a dependency)
+dsh plugin --profile <name> add uagent-sync-dsh
+
+# Or from GitHub (monorepo sub-package, pure JS — no build authorization needed)
+dsh plugin --profile <name> add "github:severin-ye/uagent-sync#master&path:packages/dsh"
+```
+
+### OpenCode
+
+```sh
 npm install -g uagent-sync        # global CLI (commands: uagent-sync / opencode-sync)
 # or run without installing:
 npx uagent-sync <cmd>
+```
 
-# 2. Add to your opencode config (config/opencode.json)
-# {
-#   "plugin": [
-#     "file:///absolute/path/to/uagent-sync/dist/plugin.js"
-#   ]
-# }
+Then add to your opencode config (`config/opencode.json`) and restart:
 
-# 3. Restart opencode, then:
+```json
+{ "plugin": ["file:///absolute/path/to/uagent-sync/dist/plugin.js"] }
+```
+
+### Codex
+
+```sh
+codex plugin marketplace add severin-ye/uagent-sync
+# Then open /plugins in the Codex CLI, install uagent-sync, and start a new session.
+```
+
+### First backup
+
+```sh
 opencode-sync init          # detect your workspace
 opencode-sync push "init"   # first backup
 ```
@@ -106,14 +128,17 @@ uagent-sync ships as a **DeepSeek Harness bundle** (`packages/dsh/`): 16 `sync_*
 ### Install
 
 ```sh
+# From npm (recommended — uagent-sync-dsh depends on uagent-sync, so the CLI ships along)
+dsh plugin --profile <name> add uagent-sync-dsh
+
 # From GitHub (monorepo sub-package, pure JS — no build authorization needed):
-dsh plugin --profile <name> add "github:severin-ye/uagent-sync#main&path:packages/dsh"
+dsh plugin --profile <name> add "github:severin-ye/uagent-sync#master&path:packages/dsh"
 
 # Or from a local checkout (auto-discovers dist/cli.js):
 dsh plugin --profile <name> add ./packages/dsh
 ```
 
-The plugin locates the CLI in this order: cordis.yml `config.cliPath` → env `OPENCODE_SYNC_UAGENT_SYNC_CLI` → local-checkout relative path → workspace recursion (walk up to `.gitmodules`, then find `uagent-sync/dist/cli.js`). Details: [packages/dsh/README.md](packages/dsh/README.md).
+The plugin locates the CLI in this order: cordis.yml `config.cliPath` → env `OPENCODE_SYNC_UAGENT_SYNC_CLI` → local-checkout relative path → npm dependency `uagent-sync/dist/cli.js` → workspace recursion (walk up to `.gitmodules`, then find `uagent-sync/dist/cli.js`). Details: [packages/dsh/README.md](packages/dsh/README.md).
 
 > DeepSeek Harness is currently Developer Preview; see the [plugin docs](https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/develop/basic/index.md) for the current bundle/patch format.
 
@@ -139,7 +164,7 @@ Every `node dist/cli.js *` command needs to know the workspace root (the directo
 | **Submodules** | All repos, exact commit hash | `git clone` + `git reset --hard` |
 | **OpenCode Config** | plugins, MCP servers, providers | Deep-merge, never overwrite |
 | **Skills** | Installed skills from git sources | `skills add <source> -g` |
-| **API Keys** | Names + descriptions (never values) | Template file at `keys/API.md` |
+| **API Keys** | Names + descriptions (never values) | Template file at `keys/API.md` — the `keys/` directory is gitignored in `usync-dotfiles`, so real values only ever exist locally |
 | **Dependencies** | gh CLI, Ralph, Skills CLI | Auto-install via winget/brew/apt/npm |
 | **Windows Fixes** | NTFS path issues | Auto-detects problematic filenames, applies `git config core.protectNTFS` |
 | **Install Log** | Every install, its source, any pitfalls | `state/install-log.json` — provenance you can trust |
@@ -179,6 +204,8 @@ Run any command as `node dist/cli.js <command>` (or `opencode-sync <command>` af
 | `crystallize` | Record install + regenerate docs + export state + commit in one shot |
 | `update` | Update the agent ecosystem: plugins, skills, MCP tools, sync repo, config deps |
 | `changelog` | Draft categorized changelog from the latest update report |
+| `inventory` | Inspect Codex/OpenCode/DeepSeek Harness configuration (read-only, secrets excluded) |
+| `dashboard` | Start a local read-only configuration dashboard (`127.0.0.1` by default) |
 
 > The MCP-server form (v1.0.0) was removed — since v1.1.0 only the opencode plugin form and the standalone CLI exist. Tool/command names keep the `opencode_sync_*` / `node dist/cli.js` prefixes for compatibility.
 
@@ -209,7 +236,7 @@ uagent-sync/                  # ← This repo (code only, never modified at runt
 ├── skills/                    # 3 shared skills (opencode + Codex)
 ├── hooks/                     # Codex SessionStart hook
 ├── .codex-plugin/             # Codex plugin manifest + marketplace
-├── test/                      # node:test suites (95 tests)
+├── test/                      # node:test suites (run `npm test`)
 ├── .github/workflows/         # CI + Release automation
 ├── CHANGELOG.md               # Keep a Changelog
 ├── RELEASING.md               # Release playbook
@@ -236,7 +263,7 @@ cd uagent-sync
 npm install
 npm run typecheck    # tsc --noEmit
 npm run build        # TypeScript → dist/
-npm test             # 95 tests (node:test)
+npm test             # full node:test suite
 ```
 
 CI gate (GitHub Actions, Windows, Node 20/22): `npm run build` + `npm test` must pass before merge.

@@ -37,22 +37,44 @@ opencode-sync pull
 
 ---
 
-## 快速开始
+## 安装
 
-```bash
-# 1. 安装——从 npm（推荐）
+uagent-sync 提供一套 CLI 与三个智能体入口。按你使用的平台安装：
+
+### DeepSeek Harness
+
+```sh
+# 从 npm 安装（推荐——随依赖自动带入 CLI）
+dsh plugin --profile <name> add uagent-sync-dsh
+
+# 或从 GitHub 安装（monorepo 子包，纯 JS，无需构建授权）
+dsh plugin --profile <name> add "github:severin-ye/uagent-sync#master&path:packages/dsh"
+```
+
+### OpenCode
+
+```sh
 npm install -g uagent-sync        # 全局 CLI（命令名：uagent-sync / opencode-sync）
 # 或免安装直接运行：
 npx uagent-sync <命令>
+```
 
-# 2. 加入 opencode 配置（config/opencode.json）
-# {
-#   "plugin": [
-#     "file:///绝对路径/uagent-sync/dist/plugin.js"
-#   ]
-# }
+然后把它加进 opencode 配置（`config/opencode.json`）并重启：
 
-# 3. 重启 opencode，然后：
+```json
+{ "plugin": ["file:///绝对路径/uagent-sync/dist/plugin.js"] }
+```
+
+### Codex
+
+```sh
+codex plugin marketplace add severin-ye/uagent-sync
+# 然后在 Codex CLI 中打开 /plugins，安装 uagent-sync，新会话生效
+```
+
+### 首次备份
+
+```sh
 opencode-sync init          # 检测工作区
 opencode-sync push "init"   # 首次备份
 ```
@@ -83,7 +105,7 @@ codex plugin marketplace add severin-ye/uagent-sync
 
 - **3 个技能**：`uagent-sync-backup`（备份流程）、`uagent-sync-restore`（新设备恢复）、`uagent-sync-update`（生态更新）——按需加载，指导智能体调用 CLI
 - **会话启动钩子**：会话开始时注入 CLI 使用提示（`PLUGIN_ROOT` 环境变量定位插件根，Windows 经 Git bash 包装）
-- **CLI（唯一执行通道）**：`node <插件目录>/dist/cli.js <命令>`，16 个命令与 opencode 插件完全一致
+- **CLI（唯一执行通道）**：`node <插件目录>/dist/cli.js <命令>`，18 个命令与 opencode 插件共享同一套 CLI
 
 ### 原理
 
@@ -93,8 +115,31 @@ uagent-sync/
 ├── hooks/                      # hooks-codex.json + run-hook.cmd + session-start
 ├── skills/                     # 3 个 SKILL.md —— opencode 与 Codex 共享同一份
 ├── src/plugin.ts               # opencode 插件（config 钩子自动注册技能目录）
-└── src/cli.ts                  # 16 命令 CLI —— 两端唯一执行通道
+└── src/cli.ts                  # 18 命令 CLI —— 三端唯一执行通道
 ```
+
+---
+
+## DeepSeek Harness 支持
+
+uagent-sync 同时以 **DeepSeek Harness bundle** 形态分发（`packages/dsh/`）：注册 16 个 `sync_*` 工具（与 opencode 插件的 `opencode_sync_*` 一一对应），全部通过 CLI 桥接执行。中文名：**U同步 / 优同步**。
+
+### 安装
+
+```sh
+# 从 npm（推荐——uagent-sync-dsh 依赖 uagent-sync，CLI 随依赖带入）
+dsh plugin --profile <name> add uagent-sync-dsh
+
+# 从 GitHub（monorepo 子包，纯 JS，无需构建授权）
+dsh plugin --profile <name> add "github:severin-ye/uagent-sync#master&path:packages/dsh"
+
+# 或本地 checkout（自动发现 dist/cli.js）
+dsh plugin --profile <name> add ./packages/dsh
+```
+
+插件按以下顺序定位 CLI：cordis.yml `config.cliPath` → 环境变量 `OPENCODE_SYNC_UAGENT_SYNC_CLI` → 本地 checkout 相对路径 → npm 依赖 `uagent-sync/dist/cli.js` → 工作区递归（向上找 `.gitmodules` 再找 `uagent-sync/dist/cli.js`）。详见 [packages/dsh/README.md](packages/dsh/README.md)。
+
+DSH 插件加载时还会把共享技能（`uagent-sync-backup/restore/update`）注册为 DSH runtime skills——从 CLI 所在 checkout 的 `skills/` 目录读取，与 opencode/Codex 是同一份。
 
 ---
 
@@ -118,7 +163,7 @@ uagent-sync/
 | **子模块** | 所有仓库，精确提交号 | `git clone` + `git reset --hard` |
 | **OpenCode 配置** | 插件、MCP 服务器、模型供应商 | 深度合并，绝不覆盖 |
 | **技能** | 从 git 源安装的技能包 | `skills add <源> -g` |
-| **API 密钥** | 名称 + 说明（绝不包含值） | 模板文件 `keys/API.md` |
+| **API 密钥** | 名称 + 说明（绝不包含值） | 模板文件 `keys/API.md` —— `keys/` 目录在 `usync-dotfiles` 中已 gitignore，真实值只存在于本机 |
 | **依赖** | gh CLI、Ralph、Skills CLI | winget/brew/apt/npm 自动安装 |
 | **Windows 修复** | NTFS 路径问题 | 自动检测问题文件名，应用 `git config core.protectNTFS` |
 | **安装日志** | 每次安装的来源与踩坑 | `state/install-log.json` —— 可追溯 |
@@ -156,7 +201,7 @@ GET /api/migration-draft?from=codex&to=opencode&policy=recommended
 | `push` | 导出状态 → 提交 → 推送到 GitHub。一条命令。 |
 | `pull` | 从 GitHub 拉取 → 恢复一切。一条命令。 |
 | `export` | 导出完整工作区状态为 JSON |
-| `import` | 从 JSON 恢复（支持 `--dry-run` 预览） |
+| `import` | 从 JSON/URL 恢复（支持 `--dry-run` 预览） |
 | `diff` | 对比当前状态与已保存状态 |
 | `status` | 查看每个子模块：提交、分支、是否脏 |
 | `verify` | 环境健康检查：gh、git、配置、ralph、技能、子模块 |
@@ -168,6 +213,8 @@ GET /api/migration-draft?from=codex&to=opencode&policy=recommended
 | `crystallize` | 记录安装 + 重生成文档 + 导出状态 + 一键提交 |
 | `update` | 更新智能体生态：插件、技能、MCP 工具、同步仓库、配置依赖 |
 | `changelog` | 从最新更新报告起草分类变更日志 |
+| `inventory` | 只读扫描 Codex/OpenCode/DeepSeek Harness 配置（不含密钥值） |
+| `dashboard` | 启动本地只读配置看板（默认监听 `127.0.0.1`） |
 
 > MCP 服务器形态（v1.0.0）已移除——自 v1.1.0 起仅提供 opencode 插件形态与独立 CLI。工具/命令前缀保留 `opencode_sync_*` / `node dist/cli.js` 以兼容既有习惯。
 
@@ -194,11 +241,12 @@ uagent-sync/                  # ← 本仓库（纯代码，运行时永不修�
 │   │   └── guide.ts           #   SYNC-GUIDE.md 生成器
 │   ├── sync.ts                # 汇总导出
 │   ├── plugin.ts              # opencode 插件（16 个 opencode_sync_* 工具）
-│   └── cli.ts                 # 独立 CLI（16 个命令）
-├── skills/                    # 3 个共享技能（opencode + Codex）
+│   └── cli.ts                 # 独立 CLI（18 个命令）
+├── skills/                    # 3 个共享技能（opencode + Codex + DSH）
 ├── hooks/                     # Codex 会话启动钩子
 ├── .codex-plugin/             # Codex 插件清单 + marketplace
-├── test/                      # node:test 测试套件（95 个用例）
+├── packages/dsh/              # DeepSeek Harness bundle（16 个 sync_* 工具）
+├── test/                      # node:test 测试套件（npm test 全量）
 ├── .github/workflows/         # CI + 发布自动化
 ├── CHANGELOG.md               # 变更日志
 ├── RELEASING.md               # 发布手册
@@ -225,7 +273,7 @@ cd uagent-sync
 npm install
 npm run typecheck    # tsc --noEmit
 npm run build        # TypeScript → dist/
-npm test             # 95 个测试（node:test）
+npm test             # 全量测试（node:test）
 ```
 
 CI 门禁（GitHub Actions，Windows，Node 20/22）：`npm run build` + `npm test` 全部通过才能合并。
@@ -243,7 +291,7 @@ CI 门禁（GitHub Actions，Windows，Node 20/22）：`npm run build` + `npm te
 - **命令注入加固**：`shellEscape()` 包裹所有进入 Shell 的用户输入；Git 提交用 `-F` 文件输入而非 `-m` 字符串拼接。
 - **路径穿越防护**：`isPathSafe()` 校验所有文件路径都落在工作区根内。
 - **Zod 模式校验**：每个输入都经 `.min()`/`.max()`/`.strict()` 校验后才触碰文件系统。
-- **密钥绝不导出**：只记录环境变量_名称_，值永远留在本机。
+- **密钥绝不导出**：只记录环境变量_名称_，值永远留在本机。`usync-dotfiles/keys/` 目录已 gitignore，即使 `api-keys add --key-value` 写入的真实值也只存在于本地、永不进入 Git 历史。
 - **默认私有仓库**：`create_repo` 创建 `--private`；发现公开仓库会警告。
 
 ---

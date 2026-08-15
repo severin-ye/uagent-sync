@@ -131,6 +131,30 @@ describe("resolveCliPath", () => {
     assert.equal(resolveCliPath({ cwd: path.join(root, "2_Business", "uagent-sync"), env: {} }), cli);
   });
 
+  it("finds the CLI via npm dependency (node_modules/uagent-sync/dist/cli.js) before workspace recursion", () => {
+    const root = makeTmpDir();
+    const cli = path.join(root, "node_modules", "uagent-sync", "dist", "cli.js");
+    fs.mkdirSync(path.dirname(cli), { recursive: true });
+    fs.writeFileSync(cli, "");
+    // 模拟 npm 安装后的 uagent-sync-dsh 包位置（node_modules/uagent-sync-dsh/index.js）
+    const pluginDir = path.join(root, "node_modules", "uagent-sync-dsh");
+    fs.mkdirSync(pluginDir, { recursive: true });
+    const moduleUrl = `file:///${pluginDir.replaceAll(path.sep, "/")}/index.js`;
+    assert.equal(resolveCliPath({ moduleUrl, cwd: root, env: {} }), cli);
+  });
+
+  it("npm dependency lookup climbs out of nested installs (pnpm-style layout)", () => {
+    const root = makeTmpDir();
+    const cli = path.join(root, "node_modules", "uagent-sync", "dist", "cli.js");
+    fs.mkdirSync(path.dirname(cli), { recursive: true });
+    fs.writeFileSync(cli, "");
+    // pnpm 虚拟存储式：插件被软链到 node_modules/.pnpm/uagent-sync-dsh@2.0.2/node_modules/uagent-sync-dsh
+    const nested = path.join(root, "node_modules", ".pnpm", "uagent-sync-dsh@2.0.2", "node_modules", "uagent-sync-dsh");
+    fs.mkdirSync(nested, { recursive: true });
+    const moduleUrl = `file:///${nested.replaceAll(path.sep, "/")}/index.js`;
+    assert.equal(resolveCliPath({ moduleUrl, cwd: root, env: {} }), cli);
+  });
+
   it("returns undefined when CLI is nowhere to be found", () => {
     const root = makeTmpDir();
     fs.writeFileSync(path.join(root, ".gitmodules"), "");
@@ -157,6 +181,10 @@ describe("DSH bundle manifest compatibility", () => {
     assert.ok(pkg.peerDependencies?.["@deepseek-ai/cordis"], "cordis must be a peer dependency");
     assert.ok(pkg.peerDependencies?.["@deepseek-ai/dsh-tools"], "dsh-tools must be a peer dependency");
     assert.ok(!pkg.peerDependenciesMeta?.["@deepseek-ai/dsh-tools"]?.optional, "dsh-tools must not be optional (unconditionally imported)");
+  });
+
+  it("declares uagent-sync as a dependency so the CLI ships with the npm-installed plugin", () => {
+    assert.ok(pkg.dependencies?.["uagent-sync"], "uagent-sync must be in dependencies (independent installability)");
   });
 });
 

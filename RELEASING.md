@@ -11,7 +11,7 @@
 ## 发布流程
 
 1. **确认工作区干净**：`git status` 无未提交改动（CI 门禁依赖此状态）
-2. **跑全量测试**：`npm run build && npm test`（82 个测试必须全绿）
+2. **跑全量测试**：`npm run build && npm test`（node:test 全量必须全绿）
 3. **更新 CHANGELOG.md**：把 `[Unreleased]` 内容移到新版本段，补日期
 4. **打版本**（自动 commit + tag + push）：
 

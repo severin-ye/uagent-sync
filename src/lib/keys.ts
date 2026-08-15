@@ -54,6 +54,9 @@ export function initApiKeyFile(workspaceRoot: string, options?: { additionalKeys
     sections.push(`| \`${key}\` | \`<YOUR_${key}>\` | ${desc} |`);
   }
 
+  // 真实 token 仅写入本地文件：usync-dotfiles/keys/ 已在 .gitignore 中（2026-07-17 安全清理），
+  // crystallize/push 的 git add -A 不会带上它，保证真实值永不进入 Git 历史。
+  // README 承诺 "names + descriptions (never values)" 依赖此忽略规则。
   if (options?.githubToken) { sections.push(``, `## GitHub Token`, ``, `\`\`\``, options.githubToken, `\`\`\``); }
 
   fs.writeFileSync(apiKeyPath, sections.join("\n") + "\n");

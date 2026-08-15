@@ -42,12 +42,12 @@ uagent-sync 的 DeepSeek Harness bundle 形态。注册 16 个 `sync_*` 工具�
 dsh plugin --profile <name> add uagent-sync-dsh
 ```
 
-> 需要 uagent-sync-dsh ≥ 2.0.2（已发布到 npm registry）。
+> 需要 uagent-sync-dsh ≥ 2.0.2（已发布到 npm registry）。插件声明依赖 `uagent-sync`（npm 包内含 `dist/cli.js` 与 `skills/`），安装后 CLI 自动随依赖带入，独立可安装。
 
 **方式二：从 GitHub 安装（本仓库 monorepo 子包）**
 
 ```sh
-dsh plugin --profile <name> add "github:severin-ye/uagent-sync#main&path:packages/dsh"
+dsh plugin --profile <name> add "github:severin-ye/uagent-sync#master&path:packages/dsh"
 ```
 
 > 本包是纯 JavaScript，无需 `prepare` 构建授权（pnpm ≥10 的 allowBuilds 步骤不会出现）。
@@ -76,7 +76,8 @@ dsh plugin --profile <name> add ./packages/dsh
 1. cordis.yml 配置：`config: { cliPath: '/abs/path/to/uagent-sync/dist/cli.js' }`
 2. 环境变量：`OPENCODE_SYNC_UAGENT_SYNC_CLI`
 3. 本地 checkout 相对路径（方式二自动命中）
-4. 工作区递归：从 cwd 向上找 `.gitmodules`，在其下找 `uagent-sync/dist/cli.js`
+4. npm dependency：`node_modules/uagent-sync/dist/cli.js`（方式一自动命中，无需配置）
+5. 工作区递归：从 cwd 向上找 `.gitmodules`，在其下找 `uagent-sync/dist/cli.js`
 
 全部失败时工具返回可操作的错误指引（fail loud）。
 
