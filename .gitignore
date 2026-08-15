@@ -16,3 +16,6 @@ DeepSeek harness/
 .opencode/
 .superpowers/
 .openchamber/
+
+# dsh-vision-toolkit 运行时临时产物（粘贴图/缓存），不入库
+.dsh-vision-toolkit/
