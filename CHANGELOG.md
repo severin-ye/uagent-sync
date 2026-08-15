@@ -13,12 +13,15 @@
 
 ### 变更
 
+- **版本对齐 2.0.3**：根包与 `uagent-sync-dsh` 同步升版，`packages/dsh` 的 `dependencies.uagent-sync` 指向同号；根包 description 同步为「Cross-device agent workspace sync for OpenCode, Codex, and DeepSeek Harness」
 - 数据目录 `opencode-dotfiles/` → `usync-dotfiles/`（GitHub 仓库同名 rename，旧 URL 保留重定向）
 - know-how 由 MD 三件套转为每组件一个 `know-how/<组件>.json`（general + agents.{opencode,codex,deepseek}）
 - 路径字面量收敛至 `src/lib/dotfiles.ts` 常量
 
 ### 修复
 
+- **crystallize git identity 继承（CI 修复）**：dotfiles 作为 submodule 的副本没有 local user.name/email、且环境无全局 identity 时，`git commit` 报 "Author identity unknown"（GitHub Actions runner 复现）。现从 workspace（parent）继承 identity 到 dotfiles 的 local config；两者都缺失则明确报错并给出配置指引
+- **密钥安全代码层保证**：新增 `ensureSecretGitignore()`——写 API.md 前自动确保 `usync-dotfiles/.gitignore` 覆盖 `keys/`、`.env`（幂等，不依赖用户预配置）；crystallize 提交 dotfiles 前先 `git check-ignore keys/`，未 ignore 则拒绝提交。README "never values" 承诺由代码强制执行
 - **uagent-sync-dsh 独立可安装（P0）**：`packages/dsh` 声明依赖 `uagent-sync`（npm 包自带 `dist/cli.js` + `skills/`），`resolveCliPath()` 新增 npm dependency 定位级（`node_modules/uagent-sync/dist/cli.js`，向上爬升兼容 pnpm 布局）——npm 安装形态不再依赖本机 checkout 即可直接调用 16 个 `sync_*` 工具
 - **CLI `import` 支持 URL 源**：Node ≥18 全局 fetch，与 DSH/opencode 工具描述中的 "JSON/URL" 一致（此前 CLI 只读本地文件，三端描述不一致）
 - **安装文档 `#main` → `#master`**：默认分支为 master，README / packages/dsh/README / CHANGELOG 统一修正

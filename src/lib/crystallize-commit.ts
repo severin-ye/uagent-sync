@@ -43,6 +43,73 @@ function isGitRepo(dir: string): boolean {
   return fs.existsSync(path.join(dir, ".git"));
 }
 
+/**
+ * 确保 git 仓库具备提交所需的 user.name / user.email。
+ *
+ * 场景：dotfiles 作为 submodule 被 clone 时，副本没有 local git identity；
+ * CI runner / 全新机器也没有全局 identity，直接 commit 会报
+ * "Author identity unknown"。此时从 parent（workspace）继承 identity 到
+ * 该仓库的 local config；两者都缺失则返回 false，由调用方明确报错。
+ */
+function ensureGitIdentity(repoDir: string, parentDir: string): boolean {
+  const read = (dir: string, key: string): string => {
+    const r = run(`git -C ${shellEscape(dir)} config ${key}`, parentDir);
+    return r.stdout.trim();
+  };
+  const name = read(repoDir, "user.name");
+  const email = read(repoDir, "user.email");
+  if (name && email) return true;
+
+  const parentName = read(parentDir, "user.name");
+  const parentEmail = read(parentDir, "user.email");
+  let ok = true;
+  if (!name) {
+    if (!parentName) ok = false;
+    else run(`git -C ${shellEscape(repoDir)} config user.name ${shellEscape(parentName)}`, parentDir);
+  }
+  if (!email) {
+    if (!parentEmail) ok = false;
+    else run(`git -C ${shellEscape(repoDir)} config user.email ${shellEscape(parentEmail)}`, parentDir);
+  }
+  return ok;
+}
+
+/**
+ * 确保 dotfiles 仓库的 .gitignore 覆盖密钥/环境文件（keys/、.env）。
+ * 真实 secret 只允许存在于被 ignore 的本地文件——即使新用户未预先配置
+ * .gitignore，这里也会补齐，保证 crystallize 的 `git add -A` 永不把
+ * API.md 真实值带入 Git 历史。幂等：已包含的规则不重复追加。
+ */
+export function ensureSecretGitignore(dotfilesDir: string): { changed: boolean; path: string } {
+  const gitignorePath = path.join(dotfilesDir, ".gitignore");
+  let content = "";
+  if (fs.existsSync(gitignorePath)) {
+    content = fs.readFileSync(gitignorePath, "utf-8");
+  }
+  const rules = ["keys/", ".env"];
+  const missing = rules.filter((rule) => !new RegExp(`(^|\\r?\\n)${escapeRegExp(rule)}(\\r?\\n|$)`).test(content));
+  if (missing.length === 0) return { changed: false, path: gitignorePath };
+  const appendix = (content.endsWith("\n") || content === "" ? "" : "\n") + missing.map((r) => `# uagent-sync: secrets never enter git\n${r}`).join("\n") + "\n";
+  fs.mkdirSync(dotfilesDir, { recursive: true });
+  fs.writeFileSync(gitignorePath, content + appendix, "utf-8");
+  return { changed: true, path: gitignorePath };
+}
+
+function escapeRegExp(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/**
+ * 提交前安全门：dotfiles 仓库里若已存在 keys/ 却未被 ignore，拒绝继续。
+ * （ensureSecretGitignore 会补齐规则；这里是双保险，直接基于 git 判定。）
+ */
+function isSecretsIgnored(dotfilesAbs: string, workspaceRoot: string): boolean {
+  const keysPath = path.join(dotfilesAbs, "keys");
+  if (!fs.existsSync(keysPath)) return true;
+  const check = run(`git -C ${shellEscape(dotfilesAbs)} check-ignore keys/`, workspaceRoot);
+  return check.code === 0;
+}
+
 export function commitCrystallize(input: CrystallizeCommitInput): string[] {
   const results: string[] = [];
   const { workspaceRoot, dotfilesDir, commitMsg, skipPush } = input;
@@ -55,6 +122,17 @@ export function commitCrystallize(input: CrystallizeCommitInput): string[] {
   fs.writeFileSync(tmpMsgFile, commitMsg, "utf-8");
   try {
     if (dotfilesIsRepo) {
+      // 安全门 1：确保 keys/、.env 一定被 .gitignore 覆盖（真实 secret 永不入 Git）
+      ensureSecretGitignore(dotfilesAbs);
+      if (!isSecretsIgnored(dotfilesAbs, workspaceRoot)) {
+        results.push("⚠️ Step 4: refused to commit — usync-dotfiles/keys/ is NOT gitignored. Add `keys/` (and `.env`) to usync-dotfiles/.gitignore first.");
+        return results;
+      }
+      // 安全门 2：git identity —— submodule 副本可能没有 user.name/email（CI/新机器无全局配置），从 workspace 继承
+      if (!ensureGitIdentity(dotfilesAbs, workspaceRoot)) {
+        results.push("⚠️ Step 4: cannot commit dotfiles — git user.name/user.email missing in both dotfiles and workspace. Configure once: git config user.name \"<name>\" && git config user.email \"<email>\"");
+        return results;
+      }
       const addIn = run(`git -C ${shellEscape(dotfilesAbs)} add -A`, workspaceRoot);
       if (addIn.code !== 0) {
         results.push(`⚠️ Step 4: dotfiles git add failed — ${detail(addIn)}`);

@@ -10,21 +10,44 @@
 
 ## 发布流程
 
+> ⚠️ 本项目维护 **两个 npm 包**：根包 `uagent-sync`（CLI + opencode 插件）与 `packages/dsh`（`uagent-sync-dsh`，DSH bundle）。**版本必须同步递增**——`uagent-sync-dsh` 的 `dependencies.uagent-sync` 永远指向与自身同号的根包版本，否则会出现「源码 2.0.2 ≠ registry 2.0.2」的漂移。
+
 1. **确认工作区干净**：`git status` 无未提交改动（CI 门禁依赖此状态）
 2. **跑全量测试**：`npm run build && npm test`（node:test 全量必须全绿）
-3. **更新 CHANGELOG.md**：把 `[Unreleased]` 内容移到新版本段，补日期
-4. **打版本**（自动 commit + tag + push）：
+3. **同步版本号（两处）**：
+   - 根 `package.json` 的 `version`
+   - `packages/dsh/package.json` 的 `version` **以及** `dependencies.uagent-sync`（指向同号）
+   - 检查其他版本引用（README / packages/dsh/README / CHANGELOG）
+4. **更新 CHANGELOG.md**：把 `[Unreleased]` 内容移到新版本段，补日期
+5. **提交 + 打 tag**（tag 覆盖两个包）：
 
    ```bash
-   npm run release:patch   # 或 release:minor / release:major
+   git add -A
+   git commit -m "release: v<新版本>"
+   git tag v<新版本>
+   git push origin master --follow-tags
    ```
 
-   等价于：`npm version patch && git push --follow-tags`
-
-5. **等 GitHub Actions**：tag 推送触发 `Release` workflow（Windows runner）：
+6. **等 GitHub Actions**：tag 推送触发 `Release` workflow（Windows runner）：
    - `npm ci` → `npm run build` → `npm test`（门禁，失败则不发版）
    - `npm pack` 生成 tarball
    - `gh release create <tag> --generate-notes` 创建 Release 并附加 tarball
+7. **发布 npm（顺序固定）**：
+
+   ```bash
+   # 先发布根包（uagent-sync-dsh 的依赖需要它已存在于 registry）
+   npm publish            # uagent-sync@<新版本>
+   cd packages/dsh
+   npm publish            # uagent-sync-dsh@<新版本>
+   cd ../..
+   ```
+
+8. **干净环境 smoke test**：在无本地 checkout 的临时目录验证 DSH 插件独立可安装：
+
+   ```bash
+   npm pack uagent-sync-dsh   # 或直接指向 registry
+   # 在测试 profile 安装并验证：插件加载 → sync_verify → sync_status → 3 个 skills 注册
+   ```
 
 ## 消费方如何安装
 

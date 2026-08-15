@@ -2,11 +2,13 @@
  * uagent-sync DeepSeek Harness 插件 — "U同步 / 优同步"。
  *
  * 以 DSH bundle 形态注册 16 个 sync_* 工具（与 opencode plugin 的
- * opencode_sync_* / CLI 的 16 命令一一对应）。所有工具通过 CLI 桥接执行，
- * 与 Codex 形态（skills + CLI）保持同一"CLI 单一执行通道"架构。
+ * opencode_sync_* 一一对应，分别桥接 CLI 中对应的同步命令；CLI 本身共
+ * 18 个命令，其中 inventory / dashboard 不作为 DSH tool 暴露）。所有工具
+ * 通过 CLI 桥接执行，与 Codex 形态（skills + CLI）保持同一
+ * "CLI 单一执行通道"架构。
  *
  * 安装（Developer Preview，见 packages/dsh/README.md）：
- *   dsh plugin --profile <name> add github:severin-ye/uagent-sync#main&path:packages/dsh
+ *   dsh plugin --profile <name> add github:severin-ye/uagent-sync#master&path:packages/dsh
  */
 import { defineTool } from '@deepseek-ai/dsh-tools'
 import Schema from '@deepseek-ai/schemastery'

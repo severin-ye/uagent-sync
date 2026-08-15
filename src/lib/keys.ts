@@ -4,6 +4,7 @@ import * as os from "node:os";
 import { stripJsonComments } from "./state.js";
 import type { ApiKeyInfo } from "./types.js";
 import { DOTFILES_DIR } from "./dotfiles.js";
+import { ensureSecretGitignore } from "./crystallize-commit.js";
 
 export function detectApiKeys(workspaceRoot: string): ApiKeyInfo {
   const dotfilesDir = path.join(workspaceRoot, DOTFILES_DIR);
@@ -43,6 +44,9 @@ export function detectApiKeys(workspaceRoot: string): ApiKeyInfo {
 export function initApiKeyFile(workspaceRoot: string, options?: { additionalKeys?: string[]; githubToken?: string }): { path: string; created: boolean; detail: string } {
   const dotfilesDir = path.join(workspaceRoot, DOTFILES_DIR);
   if (!fs.existsSync(dotfilesDir)) fs.mkdirSync(dotfilesDir, { recursive: true });
+  // 代码层保证：写真实值前确保 keys/、.env 一定被 dotfiles 仓库 ignore，
+  // 不依赖用户预先配置 .gitignore（README "never values" 承诺由此强制执行）。
+  ensureSecretGitignore(dotfilesDir);
   const apiKeyPath = path.join(dotfilesDir, "keys", "API.md");
   const keyInfo = detectApiKeys(workspaceRoot);
   const allKeys = [...new Set([...keyInfo.keys, ...(options?.additionalKeys || [])])];

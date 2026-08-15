@@ -1,6 +1,6 @@
 # uagent-sync-dsh — U同步 / 优同步（DeepSeek Harness 插件）
 
-uagent-sync 的 DeepSeek Harness bundle 形态。注册 16 个 `sync_*` 工具（与 opencode plugin 的 `opencode_sync_*`、CLI 的 16 命令一一对应），全部通过 **uagent-sync CLI 桥接执行**——与 Codex 形态（skills + hooks）保持同一"CLI 单一执行通道"架构。
+uagent-sync 的 DeepSeek Harness bundle 形态。注册 16 个 `sync_*` 工具（与 opencode plugin 的 `opencode_sync_*` 一一对应，分别桥接 CLI 中对应的同步命令；uagent-sync CLI 当前共 18 个命令，其中 `inventory` / `dashboard` 不作为 DSH tool 暴露），全部通过 **uagent-sync CLI 桥接执行**——与 Codex 形态（skills + hooks）保持同一"CLI 单一执行通道"架构。
 
 插件加载时还会把共享 skills（`uagent-sync-backup/restore/update`）注册为 DSH runtime skills——从 CLI 所在 checkout 的 `skills/` 目录读取，与 opencode/Codex 是同一份，正文中的 `<uagent-sync>` 占位符自动替换为真实路径，Agent 可直接执行。skills 目录缺失时静默跳过（工具不受影响）。
 
@@ -42,7 +42,7 @@ uagent-sync 的 DeepSeek Harness bundle 形态。注册 16 个 `sync_*` 工具�
 dsh plugin --profile <name> add uagent-sync-dsh
 ```
 
-> 需要 uagent-sync-dsh ≥ 2.0.2（已发布到 npm registry）。插件声明依赖 `uagent-sync`（npm 包内含 `dist/cli.js` 与 `skills/`），安装后 CLI 自动随依赖带入，独立可安装。
+> 需要 uagent-sync-dsh ≥ 2.0.3（已发布到 npm registry）。插件声明依赖 `uagent-sync`（npm 包内含 `dist/cli.js` 与 `skills/`），安装后 CLI 自动随依赖带入，独立可安装。
 
 **方式二：从 GitHub 安装（本仓库 monorepo 子包）**
 

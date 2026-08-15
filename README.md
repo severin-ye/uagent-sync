@@ -105,7 +105,7 @@ codex plugin marketplace add severin-ye/uagent-sync
 
 - **3 skills**: `uagent-sync-backup` (backup workflow), `uagent-sync-restore` (new-device restore), `uagent-sync-update` (ecosystem update) — loaded on demand, guiding the agent to use the CLI
 - **SessionStart hook**: injects CLI usage hints at session start (`PLUGIN_ROOT` resolves the plugin root; on Windows it goes through a Git-bash wrapper)
-- **CLI (the single execution channel)**: `node <plugin>/dist/cli.js <command>` — 16 commands identical to the opencode plugin
+- **CLI (the single execution channel)**: `node <plugin>/dist/cli.js <command>` — 18 commands shared with the opencode plugin
 
 ### How it works
 
@@ -116,7 +116,7 @@ uagent-sync/
 ├── skills/                     # 3 SKILL.md files — shared by opencode and Codex
 ├── src/plugin.ts               # opencode plugin (config hook auto-registers the skills dir)
 ├── packages/dsh/               # DeepSeek Harness bundle (16 sync_* tools → CLI bridge)
-└── src/cli.ts                  # 16-command CLI — the single execution channel for all three
+└── src/cli.ts                  # 18-command CLI — the single execution channel for all three
 ```
 
 ---
