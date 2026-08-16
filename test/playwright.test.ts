@@ -216,7 +216,7 @@ describe("detectPlaywrightMcpConfig", () => {
     assert.ok(r);
     assert.strictEqual(r.usesExtension, false);
     assert.strictEqual(r.usesVision, false);
-    assert.strictEqual(r.browser, "Chromium（默认）");
+    assert.match(r.browser, /Chromium(（默认）| \(default\))/);
   });
 });
 
@@ -306,8 +306,8 @@ describe("generateSyncGuide — Playwright section", () => {
       const state = exportSystemState(ws);
       const guidePath = generateSyncGuide(ws, state);
       const content = fs.readFileSync(guidePath, "utf-8");
-      // New data-driven format uses generic "MCP 专项安装" with subsections
-      assert.ok(content.includes("MCP 专项安装"), "Should have MCP setup section");
+      // New data-driven format uses generic "MCP 专项安装"/"MCP special install" with subsections
+      assert.ok(/MCP (专项安装|special install)/.test(content), "Should have MCP setup section");
       assert.ok(content.includes("Playwright MCP"), "Should mention Playwright");
       assert.ok(content.includes("chromewebstore.google.com"), "Should include extension URL");
       assert.ok(content.includes("PLAYWRIGHT_MCP_EXTENSION_TOKEN"), "Should mention token");
@@ -328,7 +328,7 @@ describe("generateSyncGuide — Playwright section", () => {
       const state = exportSystemState(ws);
       const guidePath = generateSyncGuide(ws, state);
       const content = fs.readFileSync(guidePath, "utf-8");
-      assert.ok(content.includes("多模态模型"), "Should have multi-modal section");
+      assert.ok(/多模态模型|Multimodal model/.test(content), "Should have multi-modal section");
       assert.ok(content.includes("deepseek-v4-pro") || content.includes("DeepSeek"), "Should warn about unsupported models");
       assert.ok(content.includes("GPT") || content.includes("Claude"), "Should mention supported models");
     });
@@ -359,7 +359,7 @@ describe("generateSyncGuide — Playwright section", () => {
       const state = exportSystemState(ws);
       const guidePath = generateSyncGuide(ws, state);
       const content = fs.readFileSync(guidePath, "utf-8");
-      assert.ok(!content.includes("MCP 专项安装"),
+      assert.ok(!/MCP (专项安装|special install)/.test(content),
         "Guide should NOT have MCP setup section when no known MCPs");
     });
   });

@@ -7,14 +7,27 @@ const root = path.join(import.meta.dirname, "..");
 const asset = (name: string) => fs.readFileSync(path.join(root, "dist", "dashboard", name), "utf-8");
 
 describe("dashboard assets", () => {
-  it("builds accessible Chinese dashboard assets", () => {
+  it("builds accessible English-by-default dashboard assets with i18n support", () => {
     const html = asset("index.html");
-    assert.match(html, /lang="zh-CN"/);
+    assert.match(html, /lang="en"/, "default document language should be English");
     assert.match(html, /<main/);
-    assert.match(html, /aria-label="主导航"/);
+    assert.match(html, /data-i18n-attr="aria-label:dash.navAria"/);
     assert.match(html, /id="theme-toggle"/);
     assert.ok(fs.existsSync(path.join(root, "dist", "dashboard", "styles.css")));
     assert.ok(fs.existsSync(path.join(root, "dist", "dashboard", "app.js")));
+    assert.ok(fs.existsSync(path.join(root, "dist", "dashboard", "i18n.js")));
+  });
+
+  it("provides a language toggle and bilingual dictionaries in the frontend", () => {
+    const html = asset("index.html");
+    const i18n = asset("i18n.js");
+    assert.match(html, /id="lang-toggle"/);
+    assert.match(i18n, /uagent-lang/);
+    assert.match(i18n, /dash\.viewOverview/);
+    assert.match(i18n, /en:/);
+    assert.match(i18n, /zh:/);
+    assert.match(i18n, /window\.DSH_I18N/);
+    assert.match(i18n, /location\.reload/);
   });
 
   it("loads live inventory and preserves the last valid data on refresh errors", () => {
@@ -45,16 +58,16 @@ describe("dashboard assets", () => {
     for (const id of ["migration-from", "migration-to", "migration-policy", "migration-items", "decided-panel"]) assert.match(html, new RegExp(`id="${id}"`));
     assert.match(js, /\/api\/migration-draft\?from=/);
     assert.match(js, /renderMigrationDraft/);
-    assert.match(html, /只生成草案，不会安装、启用或改写配置/);
+    assert.match(html, /data-i18n="dash\.readOnlyNote"/);
   });
 
   it("shows explicit advice with plain-language reasoning and evidence for every item", () => {
     const js = asset("app.js");
     assert.match(js, /advice-tag/);
-    assert.match(js, /AI 建议/);
+    assert.match(js, /dash\.aiAdvice/);
     assert.match(js, /strategyExplain/);
     assert.match(js, /evidenceLabels/);
-    assert.match(js, /本机已验证/);
+    assert.match(js, /dash\.evidenceVerified/);
     assert.match(js, /advice-explain/);
     assert.match(js, /statusExplain/);
   });
@@ -66,9 +79,9 @@ describe("dashboard assets", () => {
     assert.match(js, /localStorage/);
     assert.match(js, /renderDecidedPanel/);
     assert.match(js, /data-clear-decision/);
-    assert.match(js, /已决定/);
-    assert.match(html, /已确认的决定/);
-    assert.match(html, /保存在本机浏览器/);
+    assert.match(js, /dash\.decidedBadge/);
+    assert.match(html, /data-i18n="dash\.decidedTitle"/);
+    assert.match(html, /data-i18n="dash\.decidedHint"/);
   });
 
   it("shows per-directory skills evidence and a kind-level checkbox filter", () => {
@@ -79,11 +92,11 @@ describe("dashboard assets", () => {
     assert.match(js, /buildSkillsEvidence/);
     assert.match(js, /renderKindFilter/);
     assert.match(js, /data-kind-filter/);
-    assert.match(js, /只看层级/);
-    assert.match(js, /三端共享，无需迁移/);
+    assert.match(js, /dash\.filterLabel/);
+    assert.match(js, /dash\.evidenceShared/);
     assert.match(js, /KIND_FILTER_KEY/);
     assert.match(js, /KIND_FILTERS/);
-    assert.match(js, /"插件"/);
+    assert.match(js, /dash\.filterPlugins/);
   });
 
   it("renders clickable summary chips that toggle status filters and a shared list", () => {
@@ -93,30 +106,30 @@ describe("dashboard assets", () => {
     assert.match(js, /data-axis-filter/);
     assert.match(js, /summary-chip/);
     assert.match(js, /renderSharedList/);
-    assert.match(js, /点击筛选；再点一次取消/);
+    assert.match(js, /dash\.chipTitle/);
   });
 
   it("provides a bidirectional swap button for the migration route", () => {
     const js = asset("app.js");
     const html = asset("index.html");
     assert.match(html, /id="swap-route"/);
-    assert.match(html, /交换迁移方向/);
+    assert.match(html, /dash\.swapRoute/);
     assert.match(js, /swap-route/);
   });
 
   it("renders the two orthogonal axes with status and decision chips", () => {
     const js = asset("app.js");
     const css = asset("styles.css");
-    assert.match(js, /目标端现状/);
-    assert.match(js, /我的决定/);
+    assert.match(js, /dash\.axisTarget/);
+    assert.match(js, /dash\.axisMyDecisions/);
     assert.match(js, /data-axis-filter/);
     assert.match(js, /axis1Filter/);
     assert.match(js, /axis2Filter/);
-    assert.match(js, /"缺失"/);
-    assert.match(js, /"已有"/);
-    assert.match(js, /"共享"/);
-    assert.match(js, /"未决定"/);
-    assert.match(js, /"已决定"/);
+    assert.match(js, /dash\.axisMissing/);
+    assert.match(js, /dash\.axisExisting/);
+    assert.match(js, /dash\.axisShared/);
+    assert.match(js, /dash\.axisUndecided/);
+    assert.match(js, /dash\.axisDecided/);
     assert.match(js, /chips-label/);
     assert.match(css, /chips-label/);
   });

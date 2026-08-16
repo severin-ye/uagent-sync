@@ -1,75 +1,81 @@
 <!doctype html>
-<html lang="zh-CN" data-theme="dark">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="color-scheme" content="dark light">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%237898dc'/%3E%3Cpath d='M9 9v8c0 4 2.5 6 7 6s7-2 7-6V9h-4v8c0 1.8-.9 2.7-3 2.7s-3-.9-3-2.7V9z' fill='white'/%3E%3C/svg%3E">
-  <title>Uagent Sync 配置看板</title>
+  <title data-i18n="dash.title">Uagent Sync Configuration Console</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body data-view="overview">
   <div class="app-shell">
     <aside class="sidebar">
-      <a class="brand" href="/" aria-label="Uagent Sync 首页"><span class="brand-mark">U</span><span class="brand-name">uagent</span><span class="brand-chip">SYNC</span></a>
-      <div class="workspace-picker"><span class="icon">⌑</span><span class="workspace-name">正在扫描…</span><span class="chevron">⌄</span></div>
-      <p class="nav-label">工作区</p>
-      <nav aria-label="主导航">
-        <a class="nav-item active" href="#overview" data-view="overview" aria-current="page"><span>◫</span><strong>总览</strong></a>
-        <a class="nav-item" href="#agents" data-view="agents"><span>⌘</span><strong>Agent 配置</strong><em id="agent-count">3</em></a>
-        <a class="nav-item" href="#matrix" data-view="matrix"><span>≠</span><strong>差异</strong><em id="diff-count">—</em></a>
-        <a class="nav-item" href="#actions" data-view="actions"><span>↥</span><strong>迁移建议</strong></a>
-        <a class="nav-item" href="#security" data-view="security"><span>◇</span><strong>安全边界</strong></a>
+      <a class="brand" href="/" data-i18n-attr="aria-label:dash.brandAria" aria-label="Uagent Sync home"><span class="brand-mark">U</span><span class="brand-name">uagent</span><span class="brand-chip">SYNC</span></a>
+      <div class="workspace-picker"><span class="icon">⌑</span><span class="workspace-name" data-i18n="dash.scanning">Scanning…</span><span class="chevron">⌄</span></div>
+      <p class="nav-label" data-i18n="dash.navLabel">Workspace</p>
+      <nav data-i18n-attr="aria-label:dash.navAria" aria-label="Main navigation">
+        <a class="nav-item active" href="#overview" data-view="overview" aria-current="page"><span>◫</span><strong data-i18n="dash.viewOverview">Overview</strong></a>
+        <a class="nav-item" href="#agents" data-view="agents"><span>⌘</span><strong data-i18n="dash.viewAgents">Agent Config</strong><em id="agent-count">3</em></a>
+        <a class="nav-item" href="#matrix" data-view="matrix"><span>≠</span><strong data-i18n="dash.viewMatrix">Coverage</strong><em id="diff-count">—</em></a>
+        <a class="nav-item" href="#actions" data-view="actions"><span>↥</span><strong data-i18n="dash.viewActions">Migration</strong></a>
+        <a class="nav-item" href="#security" data-view="security"><span>◇</span><strong data-i18n="dash.viewSecurity">Security</strong></a>
       </nav>
       <div class="sidebar-foot">
-        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="切换明暗主题">◐ <span>切换主题</span></button>
+        <button id="theme-toggle" class="theme-toggle" type="button" data-i18n-attr="aria-label:dash.themeToggle" aria-label="Toggle theme">◐ <span data-i18n="dash.themeToggle">Toggle theme</span></button>
       </div>
     </aside>
 
     <main id="overview">
       <header class="topbar">
-        <div class="breadcrumb">工作区 / <span id="workspace-short">配置总览</span> / <strong id="view-title">总览</strong></div>
-        <div class="top-actions"><span id="scan-status" class="scan-status" role="status">正在读取配置</span><button id="refresh" class="button" type="button">重新扫描</button><button class="button primary" type="button" disabled title="第一阶段为只读模式">创建快照</button></div>
+        <div class="breadcrumb"><span data-i18n="dash.navLabel">Workspace</span> / <span id="workspace-short">Overview</span> / <strong id="view-title" data-i18n="dash.viewOverview">Overview</strong></div>
+        <div class="top-actions">
+          <span id="scan-status" class="scan-status" role="status" data-i18n="dash.scanningStatus">Reading configuration</span>
+          <button id="lang-toggle" class="lang-toggle" type="button" title="Language">中文</button>
+          <button id="refresh" class="button" type="button" data-i18n="dash.rescan">Rescan</button>
+          <button class="button primary" type="button" disabled data-i18n-attr="title:dash.createSnapshotTitle" data-i18n="dash.createSnapshot" title="Phase 1 is read-only">Create snapshot</button>
+        </div>
       </header>
 
       <section class="hero" data-dashboard-section="overview">
         <p class="eyebrow">AGENT CONFIGURATION CONSOLE</p>
-        <h1>三个 Agent，一套清楚的配置。</h1>
-        <p>识别公共能力、平台差异和迁移缺口。配置扫描只读，密钥值不会进入页面或 API。</p>
+        <h1 data-i18n="dash.heroTitle">Three agents, one clear configuration.</h1>
+        <p data-i18n="dash.heroBody">Finds shared capabilities, platform differences, and migration gaps. Configuration scanning is read-only; secret values never enter the page or API.</p>
       </section>
 
-      <section id="agents" class="agent-grid" data-dashboard-section="agents" aria-label="Agent 状态"><div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div></section>
+      <section id="agents" class="agent-grid" data-dashboard-section="agents" data-i18n-attr="aria-label:dash.agentsAria" aria-label="Agent status"><div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div></section>
 
       <section class="content-grid">
         <article id="matrix" class="panel" data-dashboard-section="matrix">
-          <header class="panel-head"><div><p class="kicker">COVERAGE</p><h2>配置覆盖</h2></div><span class="quiet">实时扫描</span></header>
+          <header class="panel-head"><div><p class="kicker">COVERAGE</p><h2 data-i18n="dash.coverageTitle">Configuration coverage</h2></div><span class="quiet" data-i18n="dash.liveScan">Live scan</span></header>
           <div id="matrix-content" class="matrix" aria-live="polite"></div>
         </article>
         <article id="actions" class="panel" data-dashboard-section="actions">
-          <header class="panel-head"><div><p class="kicker">MIGRATION WORKBENCH</p><h2>双向迁移草案</h2></div><span id="action-count" class="quiet">—</span></header>
-          <div class="migration-controls" aria-label="迁移草案设置">
-            <label>从<select id="migration-from"><option value="codex">Codex</option><option value="opencode">OpenCode</option><option value="deepseek">DeepSeek Harness</option></select></label>
-            <button id="swap-route" class="route-arrow" type="button" title="交换迁移方向" aria-label="交换迁移方向">⇄</button>
-            <label>迁移到<select id="migration-to"><option value="opencode">OpenCode</option><option value="codex">Codex</option><option value="deepseek">DeepSeek Harness</option></select></label>
-            <label class="policy-control">统一法则<select id="migration-policy"><option value="recommended">采用逐项建议</option><option value="prefer_target_native">冲突时使用目标原生</option><option value="prefer_source_workflow">冲突时保留原工作流</option><option value="keep_both">冲突时两者都保留</option><option value="ask_each">所有冲突逐项决定</option></select></label>
+          <header class="panel-head"><div><p class="kicker">MIGRATION WORKBENCH</p><h2 data-i18n="dash.migrationTitle">Bidirectional migration draft</h2></div><span id="action-count" class="quiet">—</span></header>
+          <div class="migration-controls" data-i18n-attr="aria-label:dash.migrationAria" aria-label="Migration draft settings">
+            <label><span data-i18n="dash.from">From</span><select id="migration-from"><option value="codex">Codex</option><option value="opencode">OpenCode</option><option value="deepseek">DeepSeek Harness</option></select></label>
+            <button id="swap-route" class="route-arrow" type="button" data-i18n-attr="title:dash.swapRoute,aria-label:dash.swapRoute" title="Swap migration direction" aria-label="Swap migration direction">⇄</button>
+            <label><span data-i18n="dash.to">To</span><select id="migration-to"><option value="opencode">OpenCode</option><option value="codex">Codex</option><option value="deepseek">DeepSeek Harness</option></select></label>
+            <label class="policy-control"><span data-i18n="dash.policy">Policy</span><select id="migration-policy"><option value="recommended" data-i18n="dash.policyRecommended">Follow per-item recommendations</option><option value="prefer_target_native" data-i18n="dash.policyTargetNative">Use target-native on conflict</option><option value="prefer_source_workflow" data-i18n="dash.policySourceWorkflow">Keep source workflow on conflict</option><option value="keep_both" data-i18n="dash.policyKeepBoth">Keep both on conflict</option><option value="ask_each" data-i18n="dash.policyAskEach">Decide every conflict individually</option></select></label>
           </div>
-          <p class="read-only-note">只生成草案，不会安装、启用或改写配置。统一法则可以覆盖，任何能力也可以单独选择。你做的每项决定都会保存在本机浏览器，刷新不丢失。</p>
-          <div id="kind-filter" class="kind-filter" aria-label="按层级筛选迁移项"></div>
+          <p class="read-only-note" data-i18n="dash.readOnlyNote">Only drafts are generated — nothing is installed, enabled, or rewritten. The global policy can be overridden, and every capability can be decided individually. Your decisions are saved in this browser and survive refreshes.</p>
+          <div id="kind-filter" class="kind-filter" data-i18n-attr="aria-label:dash.kindFilterAria" aria-label="Filter migration items by tier"></div>
           <div id="skills-evidence" class="skills-evidence"></div>
           <div id="migration-summary" class="migration-summary" role="status"></div>
           <div id="shared-list" class="shared-list"></div>
           <div id="decided-panel" class="decided-panel" hidden>
-            <h3>已确认的决定</h3>
-            <p class="decided-hint">这些是你手动拍板的迁移结论（存在本机浏览器）。系统不会自动执行——拿去照着做即可。</p>
+            <h3 data-i18n="dash.decidedTitle">Confirmed decisions</h3>
+            <p class="decided-hint" data-i18n="dash.decidedHint">These are the migration conclusions you made manually (stored in this browser). The system does not execute them — follow them yourself.</p>
             <ul id="decided-items" class="decided-items"></ul>
           </div>
           <div id="migration-items" class="migration-items" aria-live="polite"></div>
         </article>
       </section>
 
-      <section id="security" class="security-strip" data-dashboard-section="security"><span class="security-icon">◇</span><div><strong>只读模式</strong><p>不迁移 Session、Memory、Provider 凭据、权限、主题或 UI 状态。DeepSeek MCP 在获得本机证据前标记为“未证实”。</p></div><span id="last-scan" class="last-scan">尚未扫描</span></section>
+      <section id="security" class="security-strip" data-dashboard-section="security"><span class="security-icon">◇</span><div><strong data-i18n="dash.securityTitle">Read-only mode</strong><p data-i18n="dash.securityBody">Sessions, Memory, provider credentials, permissions, themes, and UI state are never migrated. DeepSeek MCP stays marked “unverified” until local evidence proves support.</p></div><span id="last-scan" class="last-scan" data-i18n="dash.notScanned">Not scanned yet</span></section>
     </main>
   </div>
+  <script src="/i18n.js" defer></script>
   <script src="/app.js" defer></script>
 </body>
 </html>

@@ -4,6 +4,7 @@ import * as os from "node:os";
 import { run } from "./run.js";
 import type { WorkspaceCache, WorkspaceInfo } from "./types.js";
 import { DOTFILES_DIR, dotfilesExists } from "./dotfiles.js";
+import { t } from "../i18n/index.js";
 
 const LEGACY_CACHE_RELATIVE = `${DOTFILES_DIR}/state/sync-cache.json`;
 
@@ -85,11 +86,7 @@ export function findWorkspaceRoot(): string {
     if (fs.existsSync(path.join(dir, ".gitmodules"))) return dir;
     dir = path.dirname(dir);
   }
-  throw new Error(
-    "Could not find workspace root (no .gitmodules found). " +
-    "请从 workspace 根目录或其子目录启动 opencode，或设置环境变量 " +
-    "OPENCODE_SYNC_WORKSPACE_ROOT=<workspace 根路径> 后重试。",
-  );
+  throw new Error(t("lib.workspaceNotFound"));
 }
 
 export function resolveWorkspaceRoot(): string {

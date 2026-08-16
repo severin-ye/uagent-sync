@@ -14,11 +14,11 @@ const CLI = path.join(import.meta.dirname, "..", "dist", "cli.js");
 const TMP = path.join(os.tmpdir(), `cli-test-${Date.now()}`);
 const WS = path.join(TMP, "workspace");
 
-function runCli(args: string[]): { stdout: string; code: number } {
+function runCli(args: string[], env: Record<string, string> = {}): { stdout: string; code: number } {
   try {
     const stdout = execSync(`node "${CLI}" ${args.join(" ")}`, {
       encoding: "utf-8", timeout: 30000,
-      env: { ...process.env, OPENCODE_SYNC_WORKSPACE_ROOT: WS },
+      env: { ...process.env, OPENCODE_SYNC_WORKSPACE_ROOT: WS, UAGENT_SYNC_LANG: "en", ...env },
     });
     return { stdout, code: 0 };
   } catch (e: unknown) {
@@ -108,13 +108,47 @@ describe("CLI read-only commands", () => {
   it("api-keys detect lists keys", () => {
     const { stdout, code } = runCli(["api-keys", "detect"]);
     assert.equal(code, 0);
-    assert.ok(stdout.includes("API Key 检测"), "should print detect header");
+    assert.ok(stdout.includes("API Key Detection"), "should print detect header");
   });
 
   it("log read shows empty log", () => {
     const { stdout, code } = runCli(["log", "read"]);
     assert.equal(code, 0);
-    assert.ok(stdout.includes("安装日志"), "should print log header");
+    assert.ok(stdout.includes("Install log"), "should print log header");
+  });
+});
+
+describe("CLI bilingual output", () => {
+  it("defaults to English (UAGENT_SYNC_LANG unset → en)", () => {
+    const { stdout, code } = runCli(["api-keys", "detect"]);
+    assert.equal(code, 0);
+    assert.ok(stdout.includes("API Key Detection"), "default output should be English");
+  });
+
+  it("--lang zh switches CLI output to Chinese", () => {
+    const { stdout, code } = runCli(["api-keys", "detect", "--lang", "zh"]);
+    assert.equal(code, 0);
+    assert.ok(stdout.includes("API Key 检测"), "--lang zh should print Chinese header");
+  });
+
+  it("UAGENT_SYNC_LANG=zh switches CLI output to Chinese", () => {
+    const { stdout, code } = runCli(["api-keys", "detect"], { UAGENT_SYNC_LANG: "zh" });
+    assert.equal(code, 0);
+    assert.ok(stdout.includes("API Key 检测"), "env var should select Chinese");
+  });
+
+  it("--lang en overrides UAGENT_SYNC_LANG=zh", () => {
+    const { stdout, code } = runCli(["api-keys", "detect", "--lang", "en"], { UAGENT_SYNC_LANG: "zh" });
+    assert.equal(code, 0);
+    assert.ok(stdout.includes("API Key Detection"), "--lang flag should win over env");
+  });
+
+  it("help shows bilingual usage with --lang hint", () => {
+    const en = runCli(["--help"]);
+    assert.ok(en.stdout.includes("Usage:"));
+    assert.ok(en.stdout.includes("--lang <en|zh>"));
+    const zh = runCli(["--help", "--lang", "zh"]);
+    assert.ok(zh.stdout.includes("用法:"));
   });
 });
 
@@ -122,7 +156,7 @@ describe("CLI stateful commands (safe paths)", () => {
   it("init --force writes init state and prints next steps", () => {
     const { stdout, code } = runCli(["init", "--init-type", "backup", "--workspace-name", "test-ws", "--force"]);
     assert.equal(code, 0);
-    assert.ok(stdout.includes("初始化完成"), "should confirm init");
+    assert.ok(stdout.includes("Initialized"), "should confirm init");
     const initState = path.join(WS, DOTFILES_DIR, "state", "init-state.json");
     assert.ok(fs.existsSync(initState), "init-state.json should exist");
   });
@@ -139,7 +173,7 @@ describe("CLI stateful commands (safe paths)", () => {
   it("log export produces markdown", () => {
     const { stdout, code } = runCli(["log", "export"]);
     assert.equal(code, 0);
-    assert.ok(stdout.includes("安装溯源日志"), "should export markdown header");
+    assert.ok(stdout.includes("Install provenance log"), "should export markdown header");
   });
 
   it("crystallize without required flags errors", () => {

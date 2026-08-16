@@ -3,6 +3,7 @@ import * as path from "node:path";
 import { getPlatform } from "./cache.js";
 import type { InstallEntry, InstallLog } from "./types.js";
 import { DOTFILES_DIR } from "./dotfiles.js";
+import { t } from "../i18n/index.js";
 
 const INSTALL_LOG_RELATIVE = `${DOTFILES_DIR}/state/install-log.json`;
 
@@ -38,9 +39,9 @@ export function appendInstallEntry(workspaceRoot: string, entry: Omit<InstallEnt
 
 export function exportInstallLogAsMarkdown(workspaceRoot: string): string {
   const log = readInstallLog(workspaceRoot);
-  if (log.entries.length === 0) return "# 安装日志\n\n（暂无记录）\n";
+  if (log.entries.length === 0) return t("lib.logEmpty");
 
-  const lines = ["# 安装溯源日志", "", "> 自动记录所有通过 MCP 安装的组件及其来源。", `> 最后更新: ${log.lastUpdated}`, `> 共 ${log.entries.length} 条记录`, "", "| 日期 | 类型 | 名称 | 来源 | 状态 |", "|------|------|------|------|------|"];
+  const lines = [t("lib.logTitle"), "", t("lib.logIntro"), t("lib.logLastUpdated", { time: log.lastUpdated }), t("lib.logEntryCount", { count: log.entries.length }), "", t("lib.logTableHead"), t("lib.logTableSep")];
 
   for (const e of log.entries) {
     const date = e.timestamp.slice(0, 10);
@@ -51,9 +52,9 @@ export function exportInstallLogAsMarkdown(workspaceRoot: string): string {
   lines.push("", "---", "");
   for (const e of log.entries) {
     if (!e.notes && !e.pitfalls.length) continue;
-    lines.push(`### ${e.type}: ${e.name}`, "", `- **安装命令**: \`${e.installCommand}\``, `- **来源**: \`${e.source}\``, `- **时间**: ${e.timestamp}`, `- **平台**: ${e.platform}`, `- **状态**: ${e.status}`);
-    if (e.notes) lines.push(`- **笔记**: ${e.notes}`);
-    if (e.pitfalls.length > 0) { lines.push("- **避坑记录**:"); for (const p of e.pitfalls) lines.push(`  - ${p}`); }
+    lines.push(`### ${e.type}: ${e.name}`, "", t("lib.logInstallCmd", { cmd: e.installCommand }), t("lib.logSource", { src: e.source }), t("lib.logTime", { time: e.timestamp }), t("lib.logPlatform", { platform: e.platform }), t("lib.logStatus", { status: e.status }));
+    if (e.notes) lines.push(t("lib.logNotes", { notes: e.notes }));
+    if (e.pitfalls.length > 0) { lines.push(t("lib.logPitfalls")); for (const p of e.pitfalls) lines.push(`  - ${p}`); }
     lines.push("");
   }
 

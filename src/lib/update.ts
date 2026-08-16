@@ -19,6 +19,7 @@ import * as path from "node:path";
 import { resolveWorkspaceRoot } from "../sync.js";
 import { updateCodebaseMemory } from "./codebase-memory.js";
 import { DOTFILES_DIR } from "./dotfiles.js";
+import { t } from "../i18n/index.js";
 
 export type UpdateComponent =
   | "opencode"
@@ -312,7 +313,7 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
       planned.push({ name: `mcp(npx)/${pkg}`, command: `npx -y ${pkg}@latest --help` });
     }
     // 本地二进制系：GitHub Release 自动更新
-    planned.push({ name: "mcp(bin)/codebase-memory-mcp", command: "GitHub release 自动更新（DeusData/codebase-memory-mcp）" });
+    planned.push({ name: "mcp(bin)/codebase-memory-mcp", command: t("lib.cbmAutoUpdate") });
   }
   if (selected.has("cli")) {
     // uv 管理的 CLI 工具：已安装 → upgrade；未安装 → install --force
@@ -419,20 +420,20 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
   };
 
   const lines = [
-    `# 扩展更新报告${dryRun ? "（dry-run，未执行任何命令）" : ""}`,
-    `时间: ${timestamp}`,
-    `结果: ${summary.ok} ok / ${summary.warning} warning / ${summary.error} error / ${summary.skipped} skipped`,
+    t("lib.updateReportTitle", { dryRun: dryRun ? t("lib.updateReportDryRun") : "" }),
+    t("lib.updateReportTime", { time: timestamp }),
+    t("lib.updateReportResult", { ok: summary.ok, warning: summary.warning, error: summary.error, skipped: summary.skipped }),
     "",
     ...steps.map((s) => {
       const icon = s.status === "ok" ? "✅" : s.status === "warning" ? "⚠️" : s.status === "error" ? "❌" : "⏭️";
       const ver = s.versionBefore && s.versionAfter && s.versionBefore !== s.versionAfter
         ? `\n  ${s.versionBefore} → ${s.versionAfter}` : "";
       const evidence = s.evidence && s.evidence.length > 0
-        ? `\n  变更证据:\n${s.evidence.map((e) => `    - ${e}`).join("\n")}` : "";
+        ? t("lib.updateReportEvidence", { evidence: s.evidence.map((e) => `    - ${e}`).join("\n") }) : "";
       return [`### ${icon} ${s.name} (${Math.round(s.durationMs / 1000)}s)`, `  \`${s.command}\``, `  ${s.detail}${ver}${evidence}`].join("\n");
     }),
     "",
-    "> 更新后请重启 opencode / OpenChamber 使插件与 MCP 变更生效；如版本有变化，同步更新 INVENTORY.md。",
+    t("lib.updateReportFooter"),
   ];
 
   const report: UpdateReport = { timestamp, dryRun, components: [...selected], steps, summary, text: lines.join("\n") };

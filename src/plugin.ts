@@ -26,6 +26,7 @@ import {
 import { updateExtensions, archiveUpdateReport, type UpdateComponent } from "./lib/update.js";
 import { DOTFILES_DIR } from "./lib/dotfiles.js";
 import { commitCrystallize } from "./lib/crystallize-commit.js";
+import { t } from "./i18n/index.js";
 
 const z = tool.schema;
 
@@ -283,14 +284,14 @@ Detects the current workspace (finds .gitmodules + opencode-dotfiles); for backu
             const username = os.userInfo().username || "user";
             const suggested = args.workspaceName || `codelib-${username}`;
             return text([
-              "## ⚠️ 未检测到工作区", "",
-              "当前目录未找到 `.gitmodules`，需要创建 opencode 工作区。", "",
-              "### 备份模式（旧设备）",
-              `在工作区根目录运行: \`git init ${suggested}\``,
-              "然后创建 `opencode-dotfiles/` 子模块，再运行 `opencode_sync_init initType=backup`", "",
-              "### 同步模式（新设备）",
-              "提供 GitHub URL: `opencode_sync_init initType=sync githubUrl=<url>`", "",
-              `建议工作区名称: \`${suggested}\``,
+              t("plugin.initNoWorkspace"), "",
+              t("plugin.initNoWorkspaceDetail"), "",
+              t("plugin.initBackupMode"),
+              t("plugin.initBackupCmd", { name: suggested }),
+              t("plugin.initBackupThen"), "",
+              t("plugin.initSyncMode"),
+              t("plugin.initSyncCmd"), "",
+              t("plugin.initSuggestedName", { name: suggested }),
             ].join("\n"));
           }
 
@@ -299,23 +300,23 @@ Detects the current workspace (finds .gitmodules + opencode-dotfiles); for backu
 
           if (initState.initialized && !args.force) {
             const remaining = pendingSteps(initState);
-            const lines = ["## ✅ 已初始化", "",
-              `- **模式**: ${initState.initType === "backup" ? "📤 备份" : "📥 同步"}`,
-              `- **工作区**: ${initState.workspaceName}`,
-              `- **GitHub**: ${initState.githubUrl || "(未设置)"}`,
-              `- **首次初始化**: ${initState.firstInitAt.slice(0, 19)}`, "",
-              `已完成 ${Object.keys(initState.completedSteps).length} 个步骤:`,
+            const lines = [t("plugin.initAlready"), "",
+              t("plugin.mode", { mode: initState.initType === "backup" ? t("plugin.modeBackup") : t("plugin.modeSync") }),
+              t("plugin.workspace", { name: initState.workspaceName }),
+              t("plugin.github", { url: initState.githubUrl || t("plugin.githubPending") }),
+              t("plugin.firstInit", { time: initState.firstInitAt.slice(0, 19) }), "",
+              t("plugin.completedSteps", { count: Object.keys(initState.completedSteps).length }),
               ...Object.entries(initState.completedSteps).filter(([, done]) => done).map(([step]) => `  ✅ ${step}`),
             ];
             if (remaining.length > 0) {
-              lines.push("", "### 待完成步骤:");
+              lines.push("", t("plugin.pendingSteps"));
               for (const step of remaining) {
-                const hint = step === "repo_created" ? " → 运行 opencode_sync_create_repo" :
-                  step === "api_keys_generated" ? " → 运行 opencode_sync_api_keys action=generate" :
-                  step === "dependencies_installed" ? " → 运行 opencode_sync_setup" :
-                  step === "state_exported" ? " → 运行 opencode_sync_export" :
-                  step === "guide_generated" ? " → 运行 opencode_sync_guide" :
-                  step === "state_pushed" ? " → 运行 opencode_sync_push" : "";
+                const hint = step === "repo_created" ? t("plugin.stepHintRepo") :
+                  step === "api_keys_generated" ? t("plugin.stepHintApiKeys") :
+                  step === "dependencies_installed" ? t("plugin.stepHintSetup") :
+                  step === "state_exported" ? t("plugin.stepHintExport") :
+                  step === "guide_generated" ? t("plugin.stepHintGuide") :
+                  step === "state_pushed" ? t("plugin.stepHintPush") : "";
                 lines.push(`  ⬜ ${step}${hint}`);
               }
             }
@@ -339,29 +340,19 @@ Detects the current workspace (finds .gitmodules + opencode-dotfiles); for backu
           };
           writeInitState(workspaceRoot, initState);
 
-          const lines = ["## ✅ 初始化完成", "",
-            `- **模式**: ${initType === "backup" ? "📤 备份（此设备是源）" : "📥 同步（此设备是目标）"}`,
-            `- **工作区**: ${initState.workspaceName}`,
-            `- **GitHub**: ${initState.githubUrl || "(待设置)"}`,
+          const lines = [t("plugin.initComplete"), "",
+            t("plugin.mode", { mode: initType === "backup" ? t("plugin.modeBackup") : t("plugin.modeSync") }),
+            t("plugin.workspace", { name: initState.workspaceName }),
+            t("plugin.github", { url: initState.githubUrl || t("plugin.githubPending") }),
           ];
           if (initType === "backup") {
-            lines.push("", "### 下一步（备份流程）：", "",
-              "| 步骤 | 工具 |", "|------|------|",
-              "| 1 | `opencode_sync_create_repo` — 创建私人 GitHub 仓库 |",
-              "| 2 | `opencode_sync_api_keys action=generate` — 生成密钥模板 |",
-              "| 3 | `opencode_sync_setup` — 安装依赖 |",
-              "| 4 | `opencode_sync_export` — 导出状态 |",
-              "| 5 | `opencode_sync_guide` — 生成恢复引导 |",
-              "| 6 | `opencode_sync_push` — 推送到 GitHub |");
+            lines.push("", t("plugin.nextBackup"), "",
+              t("plugin.stepTableHead"), t("plugin.stepTableSep"),
+              t("plugin.step1CreateRepo"), t("plugin.step2ApiKeys"), t("plugin.step3Setup"), t("plugin.step4Export"), t("plugin.step5Guide"), t("plugin.step6Push"));
           } else {
-            lines.push("", "### 下一步（同步流程）：", "",
-              "| 步骤 | 工具 |", "|------|------|",
-              "| 1 | `opencode_sync_pull` — 从 GitHub 拉取状态 |",
-              "| 2 | `opencode_sync_verify` — 检查环境 |",
-              "| 3 | `opencode_sync_setup` — 安装依赖 |",
-              "| 4 | `opencode_sync_api_keys action=detect` — 查看需要的密钥 |",
-              "| 5 | `opencode_sync_import` — 恢复状态 |",
-              "| 6 | `opencode_sync_verify` — 最终验证 |");
+            lines.push("", t("plugin.nextSync"), "",
+              t("plugin.stepTableHead"), t("plugin.stepTableSep"),
+              t("plugin.step1Pull"), t("plugin.step2Verify"), t("plugin.step3Setup"), t("plugin.step4Detect"), t("plugin.step5Import"), t("plugin.step6Verify"));
           }
           return text(lines.join("\n"));
         },
@@ -392,13 +383,13 @@ Creates a **private** repo by default; warns if existing repo is PUBLIC; sets gi
             markStepCompleted(workspaceRoot, "repo_created", { githubUrl: result.url, githubRepoPrivate: true });
           }
 
-          const lines = [result.success ? "## ✅ 仓库就绪" : "## ❌ 创建失败", "", result.detail];
+          const lines = [result.success ? t("plugin.repoReady") : t("plugin.repoFailed"), "", result.detail];
           if (result.url) {
-            lines.push(`- **URL**: ${result.url}`, `- **类型**: ${result.isPrivate ? "🔒 私人" : "⚠️ 公开——需要改为私人！"}`);
+            lines.push(t("plugin.repoUrl", { url: result.url }), t("plugin.repoType", { type: result.isPrivate ? t("plugin.repoPrivate") : t("plugin.repoPublicWarn") }));
           }
           if (!result.isPrivate && result.success) {
             const repoName = args.name || "";
-            lines.push("", "### 改为私人仓库：", `\`gh repo edit ${repoName} --visibility private\``);
+            lines.push("", t("plugin.makePrivate"), `\`gh repo edit ${repoName} --visibility private\``);
           }
           return text(lines.join("\n"));
         },
@@ -422,17 +413,17 @@ Creates a **private** repo by default; warns if existing repo is PUBLIC; sets gi
           if (args.action === "detect") {
             const info = detectApiKeys(workspaceRoot);
             return text([
-              "# API Key 检测", "",
-              `文件: \`${info.path}\` — ${info.exists ? "已存在" : "不存在"}`,
-              `检测到 ${info.keys.length} 个密钥:`, "",
+              t("plugin.apiKeyDetect"), "",
+              t("plugin.apiKeyFile", { path: info.path, exists: info.exists ? t("plugin.apiKeyExists") : t("plugin.apiKeyMissing") }),
+              t("plugin.apiKeyFound", { count: info.keys.length }), "",
               ...info.keys.map(k => `- \`${k}\``), "",
-              info.exists ? "" : "运行 `action=generate` 生成模板文件",
+              info.exists ? "" : t("plugin.apiKeyGenerateHint"),
             ].filter(Boolean).join("\n"));
           }
 
           if (args.action === "generate") {
             const result = initApiKeyFile(workspaceRoot, { additionalKeys: args.keyName ? [args.keyName] : undefined, githubToken: args.githubToken });
-            return text([`## ${result.created ? "✅ 已创建" : "📝 已更新"} API key 模板`, "", `文件: \`${result.path}\``, result.detail].join("\n"));
+            return text([`## ${result.created ? t("plugin.apiKeyCreated").replace(/^## /, "") : t("plugin.apiKeyUpdated").replace(/^## /, "")}`, "", t("plugin.apiKeyFileAt", { path: result.path }), result.detail].join("\n"));
           }
 
           if (args.action === "add") {
@@ -486,7 +477,7 @@ Stored at opencode-dotfiles/.install-log.json.`,
           if (args.action === "read") {
             const log = readInstallLog(workspaceRoot);
             return text(log.entries.length === 0
-              ? "# 安装日志\n\n（暂无记录）\n\n运行 `opencode_sync_setup` 安装组件后会自动填充。"
+              ? t("plugin.logEmpty")
               : JSON.stringify(log, null, 2));
           }
           if (args.action === "add") {
@@ -577,7 +568,7 @@ Use dryRun=true to preview commands without executing. After updating, restart o
           } catch { /* archive is best-effort */ }
           return {
             title: "opencode-sync update",
-            output: report.text + (reportFile ? `\n\n完整报告存档: \`${reportFile}\`` : ""),
+            output: report.text + (reportFile ? t("plugin.updateReportArchived", { path: reportFile }) : ""),
             metadata: { summary: report.summary },
           };
         },
@@ -603,7 +594,7 @@ then append to opencode-dotfiles/CHANGELOG-extensions.md.`,
           const file = args.reportPath || path.join(reportsDir, "update-report.json");
           if (!fs.existsSync(file)) return text(`No update report found: ${file}`);
           const report = JSON.parse(fs.readFileSync(file, "utf-8")) as { timestamp: string; dryRun: boolean; steps: Array<{ name: string; status: string; versionBefore?: string; versionAfter?: string; evidence?: string[] }> };
-          const lines = [`# 变更证据 — ${report.timestamp}（dry-run: ${report.dryRun}）`];
+          const lines = [t("plugin.changelogTitle", { time: report.timestamp, dryRun: report.dryRun })];
           for (const s of report.steps) {
             const ver = s.versionBefore && s.versionAfter && s.versionBefore !== s.versionAfter
               ? ` ${s.versionBefore} → ${s.versionAfter}` : "";
@@ -611,7 +602,7 @@ then append to opencode-dotfiles/CHANGELOG-extensions.md.`,
             if (s.evidence && s.evidence.length > 0) {
               for (const e of s.evidence) lines.push(`- ${e}`);
             } else {
-              lines.push("（无变更证据）");
+              lines.push(t("plugin.noChangeEvidence"));
             }
           }
           return text(lines.join("\n"));

@@ -6,6 +6,7 @@ import { buildCapabilityMatrix, buildInventoryDiff, buildMigrationPlan, scanWork
 import type { AgentId } from "./agent-inventory-types.js";
 import { buildMigrationDraft } from "./migration-engine.js";
 import type { MigrationPolicy } from "./migration-types.js";
+import { normalizeLang, translate, withLang, type Lang } from "../i18n/index.js";
 
 export interface DashboardServer {
   url: string;
@@ -24,6 +25,14 @@ export interface DashboardServerOptions {
 function sendJson(response: http.ServerResponse, status: number, value: unknown) {
   response.writeHead(status, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" });
   response.end(JSON.stringify(value));
+}
+
+function langOf(url: URL): Lang {
+  return normalizeLang(url.searchParams.get("lang"));
+}
+
+function errorMessage(lang: Lang, key: string, params?: Record<string, string>): string {
+  return translate(lang, key, params);
 }
 
 const ASSETS: Record<string, { file: string; type: string }> = {
@@ -49,14 +58,15 @@ export async function startDashboardServer(options: DashboardServerOptions): Pro
   const paths = createAgentPaths({ homeDir: options.homeDir, workspaceRoot: options.workspaceRoot });
   const inventory = () => scanWorkspaceInventory({ paths });
   const server = http.createServer((request, response) => {
-    if (request.method !== "GET") return sendJson(response, 405, { error: { code: "method_not_allowed", message: "只读看板仅支持 GET 请求" } });
+    if (request.method !== "GET") return sendJson(response, 405, { error: { code: "method_not_allowed", message: errorMessage("en", "server.methodNotAllowed") } });
     const url = new URL(request.url ?? "/", `http://${host}`);
+    const lang = langOf(url);
     try {
       const asset = ASSETS[url.pathname];
       if (asset) {
         const dashboardRoot = path.resolve(import.meta.dirname, "..", "dashboard");
         const file = path.resolve(dashboardRoot, asset.file);
-        if (!file.startsWith(dashboardRoot) || !fs.existsSync(file)) return sendJson(response, 404, { error: { code: "asset_missing", message: "看板静态资源尚未构建" } });
+        if (!file.startsWith(dashboardRoot) || !fs.existsSync(file)) return sendJson(response, 404, { error: { code: "asset_missing", message: errorMessage(lang, "server.assetMissing") } });
         response.writeHead(200, { "Content-Type": asset.type, "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" });
         return response.end(fs.readFileSync(file));
       }
@@ -70,15 +80,15 @@ export async function startDashboardServer(options: DashboardServerOptions): Pro
         const to = url.searchParams.get("to");
         const policyValue = url.searchParams.get("policy");
         if (!isAgentId(from) || !isAgentId(to) || from === to || (policyValue !== null && !isMigrationPolicy(policyValue))) {
-          return sendJson(response, 400, { error: { code: "invalid_migration_route", message: "from、to 必须是两个不同的受支持 Agent，policy 必须是已知策略。" } });
+          return sendJson(response, 400, { error: { code: "invalid_migration_route", message: errorMessage(lang, "server.invalidMigrationRoute") } });
         }
-        return sendJson(response, 200, buildMigrationDraft(current, { from, to, policy: policyValue ?? "recommended" }));
+        return sendJson(response, 200, withLang(lang, () => buildMigrationDraft(current, { from, to, policy: policyValue ?? "recommended" })));
       }
       const agentMatch = url.pathname.match(/^\/api\/agents\/(codex|opencode|deepseek)$/);
       if (agentMatch) return sendJson(response, 200, current.agents.find((agent) => agent.id === agentMatch[1]));
-      return sendJson(response, 404, { error: { code: "not_found", message: "未找到请求的看板资源" } });
+      return sendJson(response, 404, { error: { code: "not_found", message: errorMessage(lang, "server.notFound") } });
     } catch (error) {
-      return sendJson(response, 500, { error: { code: "scan_failed", message: error instanceof Error ? error.message : "配置扫描失败" } });
+      return sendJson(response, 500, { error: { code: "scan_failed", message: errorMessage(lang, "server.scanFailed") } });
     }
   });
   await new Promise<void>((resolve, reject) => { server.once("error", reject); server.listen(port, host, resolve); });

@@ -1,30 +1,45 @@
 const state = { lastInventory: null, migrationDraft: null, decisions: loadDecisions(), kindFilter: loadKindFilter(), axis1Filter: null, axis2Filter: null };
 const DECISIONS_KEY = "uagent-decisions";
 const KIND_FILTER_KEY = "uagent-kind-filter";
+const t = (key, params) => window.DSH_I18N.t(key, params);
+const langQuery = () => `lang=${window.DSH_I18N.getLang()}`;
 const KIND_FILTERS = [
-  { key: "plugins", label: "插件" },
-  { key: "mcp", label: "MCP" },
-  { key: "skills", label: "Skill" },
+  { key: "plugins", labelKey: "dash.filterPlugins" },
+  { key: "mcp", labelKey: "dash.filterMcp" },
+  { key: "skills", labelKey: "dash.filterSkills" },
 ];
 const $ = (selector) => document.querySelector(selector);
 const labels = { codex: "Codex", opencode: "OpenCode", deepseek: "DeepSeek Harness" };
 const kindLabels = { instructions: "Instructions", skills: "Skills", scripts: "Scripts", cli: "CLI", mcp: "MCP Servers", hooks: "Lifecycle Hooks", plugins: "Plugins", tools: "Custom Tools", subagents: "Subagents" };
-const recommendationLabels = { direct_share: "直接共享现有配置", use_existing_target: "保留目标端现有能力", install_official_variant: "安装官方适配版本", find_mature_alternative: "寻找成熟替代品", verify_first: "先验证兼容性" };
-const executionLabels = { direct_share: "直接共享", install_enabled: "安装并启用", keep_current: "保留现状", defer: "暂缓" };
-const evidenceLabels = { verified_local: "本机已验证", declared_official: "官方声明", unverified: "尚未证实", needs_research: "待调研" };
+const recommendationLabels = {
+  direct_share: t("dash.recoDirectShare"), use_existing_target: t("dash.recoUseExisting"),
+  install_official_variant: t("dash.recoInstallOfficial"), find_mature_alternative: t("dash.recoFindAlternative"),
+  verify_first: t("dash.recoVerifyFirst"),
+};
+const executionLabels = {
+  direct_share: t("dash.execDirectShare"), install_enabled: t("dash.execInstallEnabled"),
+  keep_current: t("dash.execKeepCurrent"), defer: t("dash.execDefer"),
+};
+const evidenceLabels = {
+  verified_local: t("dash.evidenceVerified"), declared_official: t("dash.evidenceDeclared"),
+  unverified: t("dash.evidenceUnverified"), needs_research: t("dash.evidenceNeedsResearch"),
+};
 const strategyExplain = {
-  direct_share: "这项能力用的是跨 Agent 的通用格式（SKILL.md / MCP / CLI），目标端不需要改写就能直接用。共享后两个 Agent 维护同一份配置，改一处两边生效。",
-  use_existing_target: "目标端已经接入了这个服务，无需再装。保持现状即可；如果两端接入参数不一致（超时、环境变量等），可以对比后按需对齐。",
-  install_official_variant: "原扩展的作者为目标平台发布了官方版本。装官方版既保留原有能力，又由作者持续维护，比自己写适配器更稳妥。",
-  find_mature_alternative: "目标端没有官方版本可用，需要找社区里成熟的替代品。选定替代品后建议先小范围试用，确认顺手再全面替换。",
-  verify_first: "目标端是否支持这项能力还没有被证实。先验证目标版本的接入方式，确认可行后再迁移，避免白忙一场。",
+  direct_share: t("dash.strategyDirectShare"),
+  use_existing_target: t("dash.strategyUseExisting"),
+  install_official_variant: t("dash.strategyInstallOfficial"),
+  find_mature_alternative: t("dash.strategyFindAlternative"),
+  verify_first: t("dash.strategyVerifyFirst"),
 };
 const statusExplain = {
-  missing: "目标端没有这个能力，需要你决定怎么迁移。",
-  existing: "目标端已经有同名能力了。",
-  shared: "两边读同一份文件，无需任何动作。",
+  missing: t("dash.statusMissingExplain"),
+  existing: t("dash.statusExistingExplain"),
+  shared: t("dash.statusSharedExplain"),
 };
-const viewLabels = { overview: "总览", agents: "Agent 配置", matrix: "差异", actions: "迁移建议", security: "安全边界" };
+const viewLabels = {
+  overview: t("dash.viewOverview"), agents: t("dash.viewAgents"), matrix: t("dash.viewMatrix"),
+  actions: t("dash.viewActions"), security: t("dash.viewSecurity"),
+};
 
 /** 旧版 7 动作 → 新版 4 动作映射（localStorage 兼容）。 */
 const LEGACY_ACTION_MAP = { no_change: "keep_current", install_disabled: "keep_current", use_target_native: "keep_current", keep_both: "keep_current", direct_share: "direct_share", install_enabled: "install_enabled", defer: "defer" };
@@ -71,10 +86,10 @@ function renderSkillsEvidence(inventory) {
   if (!rows.length) { el.innerHTML = ""; return; }
   const agentName = (id) => labels[id] ?? id;
   el.innerHTML = [
-    '<p class="evidence-title">Skills 存放证据（按目录）：</p>',
+    `<p class="evidence-title">${t("dash.evidenceTitle")}</p>`,
     ...rows.map((row) => {
       const all = row.visibleIn.length >= 3;
-      return `<p class="evidence-row"><span class="evidence-dir">${escapeHtml(row.dir)}</span><span class="evidence-count">${row.count} 项</span><span class="evidence-visible ${all ? "all" : "partial"}">${row.visibleIn.map(agentName).join("、")} 可见${all ? " — 三端共享，无需迁移" : ""}</span></p>`;
+      return `<p class="evidence-row"><span class="evidence-dir">${escapeHtml(row.dir)}</span><span class="evidence-count">${t("dash.evidenceCount", { count: row.count })}</span><span class="evidence-visible ${all ? "all" : "partial"}">${t("dash.evidenceVisible", { agents: row.visibleIn.map(agentName).join("、"), shared: all ? t("dash.evidenceShared") : "" })}</span></p>`;
     }),
   ].join("");
 }
@@ -84,12 +99,12 @@ function renderKindFilter(draft) {
   if (!el) return;
   const active = state.kindFilter;
   el.innerHTML = [
-    '<span class="filter-label">只看层级</span>',
-    ...KIND_FILTERS.map(({ key, label }) => {
+    `<span class="filter-label">${t("dash.filterLabel")}</span>`,
+    ...KIND_FILTERS.map(({ key, labelKey }) => {
       // 无筛选（null）时三个全部勾选；有筛选时按勾选集合。勾选是独立开关，互不清空。
       const checked = active === null || active.includes(key);
       const count = draft.items.filter((item) => item.kind === key).length;
-      return `<label class="kind-check"><input type="checkbox" data-kind-filter="${key}" ${checked ? "checked" : ""}> ${label}${count > 0 ? ` <em>${count}</em>` : ""}</label>`;
+      return `<label class="kind-check"><input type="checkbox" data-kind-filter="${key}" ${checked ? "checked" : ""}> ${t(labelKey)}${count > 0 ? ` <em>${count}</em>` : ""}</label>`;
     }),
   ].join("");
   el.querySelectorAll("[data-kind-filter]").forEach((checkbox) => checkbox.addEventListener("change", () => {
@@ -104,16 +119,16 @@ function renderKindFilter(draft) {
 /** 双行正交轴徽标：轴1 目标端现状（引擎事实）+ 轴2 我的决定（用户状态）。 */
 function renderAxisChips(draft, counts, decidedCount) {
   const chip = (axis, key, label, count, extraClass = "") =>
-    `<span class="summary-chip ${extraClass}${state[axis] === key ? " active" : ""}" data-axis-filter="${axis}:${key}" role="button" tabindex="0" title="点击筛选；再点一次取消">${label} <b>${count}</b></span>`;
+    `<span class="summary-chip ${extraClass}${state[axis] === key ? " active" : ""}" data-axis-filter="${axis}:${key}" role="button" tabindex="0" title="${t("dash.chipTitle")}">${label} <b>${count}</b></span>`;
   $("#migration-summary").innerHTML = [
-    '<span class="chips-group"><span class="chips-label">目标端现状</span>',
-    chip("axis1Filter", "missing", "缺失", counts.missing),
-    chip("axis1Filter", "existing", "已有", counts.existing, "dual"),
-    chip("axis1Filter", "shared", "共享", counts.shared),
+    `<span class="chips-group"><span class="chips-label">${t("dash.axisTarget")}</span>`,
+    chip("axis1Filter", "missing", t("dash.axisMissing"), counts.missing),
+    chip("axis1Filter", "existing", t("dash.axisExisting"), counts.existing, "dual"),
+    chip("axis1Filter", "shared", t("dash.axisShared"), counts.shared),
     '</span>',
-    '<span class="chips-group"><span class="chips-label">我的决定</span>',
-    chip("axis2Filter", "undecided", "未决定", counts.undecided),
-    chip("axis2Filter", "decided", "已决定", decidedCount),
+    `<span class="chips-group"><span class="chips-label">${t("dash.axisMyDecisions")}</span>`,
+    chip("axis2Filter", "undecided", t("dash.axisUndecided"), counts.undecided),
+    chip("axis2Filter", "decided", t("dash.axisDecided"), decidedCount),
     '</span>',
   ].join("");
   document.querySelectorAll("[data-axis-filter]").forEach((chipEl) => {
@@ -166,12 +181,12 @@ function renderSharedList(inventory) {
       if (sharedDirRows.some((row) => row.dir === dir)) names.add(cap.name);
     }
   }
-  el.innerHTML = `<div class="shared-list-head">三端共享的 Skills（${names.size} 项，来自 ${sharedDirRows.map((row) => row.dir).join("、") || "—"}）</div><div class="shared-list-names">${[...names].sort().map((name) => `<span class="shared-name">${escapeHtml(name)}</span>`).join("")}</div>`;
+  el.innerHTML = `<div class="shared-list-head">${t("dash.sharedListHead", { count: names.size, dirs: sharedDirRows.map((row) => row.dir).join("、") || "—" })}</div><div class="shared-list-names">${[...names].sort().map((name) => `<span class="shared-name">${escapeHtml(name)}</span>`).join("")}</div>`;
 }
 
 function escapeHtml(value) { const node = document.createElement("span"); node.textContent = String(value ?? ""); return node.innerHTML; }
 function count(agent, kind) { return agent.capabilities.filter((item) => item.kind === kind).length; }
-function statusText(agent) { return agent.status === "detected" ? "正常" : agent.status === "missing" ? "未发现" : "需检查"; }
+function statusText(agent) { return agent.status === "detected" ? t("dash.statusDetected") : agent.status === "missing" ? t("dash.statusMissing") : t("dash.statusCheck"); }
 
 function renderAgents(inventory) {
   $("#agents").innerHTML = inventory.agents.map((agent, index) => `
@@ -180,25 +195,25 @@ function renderAgents(inventory) {
       <div class="agent-stats">
         <span class="agent-stat"><b>${count(agent, "skills")}</b>Skills</span>
         <span class="agent-stat"><b>${agent.id === "deepseek" && agent.capabilities.some((x) => x.kind === "mcp" && x.portability === "unverified") ? "—" : count(agent, "mcp")}</b>MCP</span>
-        <span class="agent-stat"><b>${count(agent, "hooks") + count(agent, "plugins") + count(agent, "tools")}</b>扩展</span>
+        <span class="agent-stat"><b>${count(agent, "hooks") + count(agent, "plugins") + count(agent, "tools")}</b>${t("dash.extensions")}</span>
       </div>
-      <div class="agent-source" title="${escapeHtml(agent.sources[0] ?? "未发现配置路径")}">${escapeHtml(agent.sources[0] ?? "未发现配置路径")}</div>
+      <div class="agent-source" title="${escapeHtml(agent.sources[0] ?? t("dash.noSource"))}">${escapeHtml(agent.sources[0] ?? t("dash.noSource"))}</div>
     </article>`).join("");
 }
 
 function renderMatrix(matrix) {
   $("#matrix-content").innerHTML = [
-    '<div class="matrix-head">能力</div>', ...["Codex", "OpenCode", "DeepSeek"].map((x) => `<div class="matrix-head">${x}</div>`),
+    `<div class="matrix-head">${t("dash.matrixCapability")}</div>`, ...["Codex", "OpenCode", "DeepSeek"].map((x) => `<div class="matrix-head">${x}</div>`),
     ...matrix.flatMap((row) => [
       `<div>${kindLabels[row.kind] ?? row.kind}</div>`,
-      ...["codex", "opencode", "deepseek"].map((id) => { const cell = row.agents[id]; return `<div><span class="matrix-state ${cell.status}">${cell.status === "unverified" ? "未证实" : cell.status === "missing" ? "未发现" : `${cell.count} 项`}</span></div>`; }),
+      ...["codex", "opencode", "deepseek"].map((id) => { const cell = row.agents[id]; return `<div><span class="matrix-state ${cell.status}">${cell.status === "unverified" ? t("dash.matrixUnverified") : cell.status === "missing" ? t("dash.statusMissing") : t("dash.matrixCount", { count: cell.count })}</span></div>`; }),
     ]),
   ].join("");
 }
 
 /** 按现状返回可用的动作集。 */
 function actionsFor(item) {
-  if (item.status === "existing") return { keep_current: "保留现状", defer: "暂缓" };
+  if (item.status === "existing") return { keep_current: t("dash.execKeepCurrent"), defer: t("dash.execDefer") };
   return executionLabels;
 }
 
@@ -210,9 +225,9 @@ function executionOptions(item, decided) {
 }
 
 function statusLabel(item) {
-  if (item.status === "missing") return `<span class="conflict warn">缺失</span>`;
-  if (item.statusDetail === "target_native") return `<span class="conflict dual">目标内置</span>`;
-  return `<span class="conflict dual">双端接入</span>`;
+  if (item.status === "missing") return `<span class="conflict warn">${t("dash.axisMissing")}</span>`;
+  if (item.statusDetail === "target_native") return `<span class="conflict dual">${t("dash.statusTargetNative")}</span>`;
+  return `<span class="conflict dual">${t("dash.statusDualRegistered")}</span>`;
 }
 
 function renderMigrationDraft(draft) {
@@ -232,23 +247,23 @@ function renderMigrationDraft(draft) {
   }, decidedCount);
   renderSharedList(state.lastInventory);
   const visibleItems = axisFilter(baseItems, decisions);
-  $("#action-count").textContent = `${draft.summary.missing} 项待迁移`;
+  $("#action-count").textContent = t("dash.pendingMigration", { count: draft.summary.missing });
   $("#migration-items").innerHTML = visibleItems.length ? visibleItems.map((item) => {
     const decided = decisions[item.id];
-    const decidedBadge = decided ? `<span class="decided-badge">✓ 已决定：${executionLabels[decided.action] ?? decided.action}</span>` : "";
-    const candidates = item.candidates.map((candidate) => `<li class="${candidate.recommended ? "recommended" : "fallback"}"><span>${escapeHtml(candidate.label)}</span><em>${candidate.recommended ? "建议" : "最后兜底"}</em></li>`).join("");
+    const decidedBadge = decided ? `<span class="decided-badge">${t("dash.decidedBadge", { action: executionLabels[decided.action] ?? decided.action })}</span>` : "";
+    const candidates = item.candidates.map((candidate) => `<li class="${candidate.recommended ? "recommended" : "fallback"}"><span>${escapeHtml(candidate.label)}</span><em>${candidate.recommended ? t("dash.recommended") : t("dash.fallback")}</em></li>`).join("");
     return `<article class="migration-item${decided ? " decided" : ""}" data-migration-id="${escapeHtml(item.id)}">
       <div class="migration-item-head"><div><span class="kind-chip">${kindLabels[item.kind] ?? item.kind}</span><h3>${escapeHtml(item.name)}</h3>${decidedBadge}</div>${statusLabel(item)}</div>
       <div class="migration-advice">
-        <div class="advice-head"><span class="advice-tag">AI 建议</span><strong>${recommendationLabels[item.recommendation.strategy]}</strong><span class="evidence ${item.recommendation.evidenceLevel}">依据：${evidenceLabels[item.recommendation.evidenceLevel] ?? item.recommendation.evidenceLevel}</span></div>
+        <div class="advice-head"><span class="advice-tag">${t("dash.aiAdvice")}</span><strong>${recommendationLabels[item.recommendation.strategy]}</strong><span class="evidence ${item.recommendation.evidenceLevel}">${t("dash.evidence", { level: evidenceLabels[item.recommendation.evidenceLevel] ?? item.recommendation.evidenceLevel })}</span></div>
         <p class="advice-reason">${escapeHtml(item.recommendation.reason)}</p>
         <p class="advice-explain">${strategyExplain[item.recommendation.strategy] ?? ""}</p>
         <p class="advice-conflict">${statusExplain[item.status] ?? ""}</p>
       </div>
-      <details><summary>查看候选方案与依据</summary><ul class="candidate-list">${candidates}</ul></details>
-      <label class="item-decision">本项决定<select data-item-override="${escapeHtml(item.id)}">${executionOptions(item, decided)}</select><small>${decided ? `已决定（${new Date(decided.at).toLocaleString([], { hour: "2-digit", minute: "2-digit", month: "numeric", day: "numeric" })}）` : `当前来源：${item.execution.resolvedBy === "item" ? "单项覆盖" : item.execution.resolvedBy === "global" ? "统一法则" : "系统建议"}`}</small></label>
+      <details><summary>${t("dash.viewCandidates")}</summary><ul class="candidate-list">${candidates}</ul></details>
+      <label class="item-decision">${t("dash.itemDecision")}<select data-item-override="${escapeHtml(item.id)}">${executionOptions(item, decided)}</select><small>${decided ? t("dash.decidedAt", { time: new Date(decided.at).toLocaleString([], { hour: "2-digit", minute: "2-digit", month: "numeric", day: "numeric" }) }) : t("dash.currentSource", { source: item.execution.resolvedBy === "item" ? t("dash.sourceOverride") : item.execution.resolvedBy === "global" ? t("dash.sourceGlobal") : t("dash.sourceSystem") })}</small></label>
     </article>`;
-  }).join("") : `<div class="empty">${state.axis1Filter || state.axis2Filter || state.kindFilter !== null ? "当前筛选下没有匹配的项，调整筛选可恢复列表。" : "来源 Agent 暂无可生成迁移草案的能力。"}</div>`;
+  }).join("") : `<div class="empty">${state.axis1Filter || state.axis2Filter || state.kindFilter !== null ? t("dash.emptyFiltered") : t("dash.emptySource")}</div>`;
   renderDecidedPanel(decisions);
   document.querySelectorAll("[data-item-override]").forEach((select) => select.addEventListener("change", () => {
     const itemId = select.dataset.itemOverride;
@@ -271,7 +286,7 @@ function renderDecidedPanel(decisions) {
   $("#decided-items").innerHTML = entries.map(([id, decision]) => {
     const item = state.migrationDraft.items.find((candidate) => candidate.id === id);
     const name = item ? item.name : id;
-    return `<li><span class="decided-name">${escapeHtml(name)}</span><span class="decided-action">${executionLabels[decision.action] ?? decision.action}</span><span class="decided-time">${new Date(decision.at).toLocaleString([], { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" })}</span><button data-clear-decision="${escapeHtml(id)}" title="撤销该决定">撤销</button></li>`;
+    return `<li><span class="decided-name">${escapeHtml(name)}</span><span class="decided-action">${executionLabels[decision.action] ?? decision.action}</span><span class="decided-time">${new Date(decision.at).toLocaleString([], { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" })}</span><button data-clear-decision="${escapeHtml(id)}" title="${t("dash.undoDecision")}">${t("dash.undoDecision")}</button></li>`;
   }).join("");
   document.querySelectorAll("[data-clear-decision]").forEach((button) => button.addEventListener("click", () => {
     const scopeNow = decisionsScope();
@@ -289,8 +304,8 @@ async function loadMigrationDraft(resetFilters = false) {
     $("#migration-to").value = replacement;
   }
   const policy = $("#migration-policy").value;
-  const response = await fetch(`/api/migration-draft?from=${encodeURIComponent(from)}&to=${encodeURIComponent($("#migration-to").value)}&policy=${encodeURIComponent(policy)}`, { cache: "no-store" });
-  if (!response.ok) throw new Error("迁移草案读取失败");
+  const response = await fetch(`/api/migration-draft?from=${encodeURIComponent(from)}&to=${encodeURIComponent($("#migration-to").value)}&policy=${encodeURIComponent(policy)}&${langQuery()}`, { cache: "no-store" });
+  if (!response.ok) throw new Error(t("dash.draftFailed"));
   if (resetFilters) {
     // 方向/法则切换后，层级与轴筛选对新的草案没有意义，回到默认全显。
     state.kindFilter = null;
@@ -302,21 +317,21 @@ async function loadMigrationDraft(resetFilters = false) {
 }
 
 async function refresh() {
-  const button = $("#refresh"); button.disabled = true; $("#scan-status").classList.remove("error"); $("#scan-status").textContent = "正在读取配置";
+  const button = $("#refresh"); button.disabled = true; $("#scan-status").classList.remove("error"); $("#scan-status").textContent = t("dash.scanningStatus");
   try {
     const response = await fetch("/api/inventory", { cache: "no-store" });
-    if (!response.ok) throw new Error("配置扫描失败");
+    if (!response.ok) throw new Error(t("dash.scanFailed"));
     const inventory = await response.json(); state.lastInventory = inventory;
     renderAgents(inventory); renderMatrix(inventory.matrix); await loadMigrationDraft();
-    $(".workspace-name").textContent = inventory.workspaceRoot.split(/[\\/]/).filter(Boolean).at(-1) || "工作区";
+    $(".workspace-name").textContent = inventory.workspaceRoot.split(/[\\/]/).filter(Boolean).at(-1) || t("common.workspace");
     $("#workspace-short").textContent = $(".workspace-name").textContent;
-    $("#diff-count").textContent = "查看";
-    $("#last-scan").textContent = `最后扫描：${new Date(inventory.scannedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
-    $("#scan-status").textContent = "扫描完成";
+    $("#diff-count").textContent = t("dash.viewCandidatesShort");
+    $("#last-scan").textContent = t("dash.lastScan", { time: new Date(inventory.scannedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) });
+    $("#scan-status").textContent = t("dash.scanComplete");
   } catch (error) {
     $("#scan-status").classList.add("error");
-    $("#scan-status").textContent = state.lastInventory ? "刷新失败，保留上次结果" : "扫描失败";
-    if (!state.lastInventory) { $("#agents").innerHTML = '<div class="empty">无法读取 Agent 配置。请确认本地服务仍在运行。</div>'; $("#matrix-content").innerHTML = '<div class="empty">暂无数据</div>'; }
+    $("#scan-status").textContent = state.lastInventory ? t("dash.refreshFailed") : t("dash.scanFailed");
+    if (!state.lastInventory) { $("#agents").innerHTML = `<div class="empty">${t("dash.emptyAgents")}</div>`; $("#matrix-content").innerHTML = `<div class="empty">${t("dash.emptyData")}</div>`; }
   } finally { button.disabled = false; }
 }
 

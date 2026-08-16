@@ -16,6 +16,7 @@ import {
 import { updateExtensions, archiveUpdateReport, type UpdateComponent, type UpdateProgress } from "./lib/update.js";
 import { DOTFILES_DIR } from "./lib/dotfiles.js";
 import { commitCrystallize } from "./lib/crystallize-commit.js";
+import { setLang, t } from "./i18n/index.js";
 
 function log(msg: string) { console.error(`[opencode-sync] ${msg}`); }
 
@@ -60,18 +61,18 @@ function listFlag(flags: Map<string, string | boolean>, name: string): string[] 
 function formatProgress(ev: UpdateProgress): string {
   switch (ev.type) {
     case "plan":
-      return `计划更新 ${ev.steps.length} 步:\n${ev.steps.map((s, i) => `  ${i + 1}. ${s.name} — ${s.command}${s.cwd ? ` (in ${s.cwd})` : ""}`).join("\n")}`;
+      return `${t("cli.updatePlan", { count: ev.steps.length })}\n${ev.steps.map((s, i) => t("cli.updateStep", { index: i + 1, name: s.name, command: s.command, cwd: s.cwd ? t("cli.updateCwd", { cwd: s.cwd }) : "" })).join("\n")}`;
     case "step-start":
-      return `▶ [${ev.index}/${ev.total}] ${ev.name} — ${ev.command}${ev.cwd ? ` (in ${ev.cwd})` : ""}`;
+      return t("cli.updateStepStart", { index: ev.index, total: ev.total, name: ev.name, command: ev.command, cwd: ev.cwd ? t("cli.updateCwd", { cwd: ev.cwd }) : "" });
     case "output":
       return `    ${ev.line}`;
     case "step-end": {
       const ver = ev.versionBefore && ev.versionAfter && ev.versionBefore !== ev.versionAfter
-        ? `\n    ${ev.versionBefore} → ${ev.versionAfter}` : "";
-      return `${ICON[ev.status]} ${ev.name} (${Math.round(ev.durationMs / 1000)}s)${ver}`;
+        ? t("cli.updateVersion", { before: ev.versionBefore, after: ev.versionAfter }) : "";
+      return t("cli.updateStepEnd", { icon: ICON[ev.status], name: ev.name, secs: Math.round(ev.durationMs / 1000), ver });
     }
     case "done":
-      return `完成: ${ev.summary.ok} ok / ${ev.summary.warning} warning / ${ev.summary.error} error / ${ev.summary.skipped} skipped`;
+      return t("cli.updateDone", { ok: ev.summary.ok, warning: ev.summary.warning, error: ev.summary.error, skipped: ev.summary.skipped });
   }
 }
 
@@ -119,56 +120,24 @@ function verifyLines(workspaceRoot: string): string[] {
 }
 
 function initLines(workspaceRoot: string, initState: InitStateLike, initType: InitType): string[] {
-  const lines = ["## ✅ 初始化完成", "",
-    `- **模式**: ${initType === "backup" ? "📤 备份（此设备是源）" : "📥 同步（此设备是目标）"}`,
-    `- **工作区**: ${initState.workspaceName}`,
-    `- **GitHub**: ${initState.githubUrl || "(待设置)"}`,
+  const lines = [t("cli.initComplete"), "",
+    t("cli.mode", { mode: initType === "backup" ? t("cli.modeBackup") : t("cli.modeSync") }),
+    t("cli.workspace", { name: initState.workspaceName ?? "" }),
+    t("cli.github", { url: initState.githubUrl || t("cli.githubPending") }),
   ];
   if (initType === "backup") {
-    lines.push("", "### 下一步（备份流程）：", "",
-      "| 步骤 | 工具 |", "|------|------|",
-      "| 1 | `opencode_sync_create_repo` — 创建私人 GitHub 仓库 |",
-      "| 2 | `opencode_sync_api_keys action=generate` — 生成密钥模板 |",
-      "| 3 | `opencode_sync_setup` — 安装依赖 |",
-      "| 4 | `opencode_sync_export` — 导出状态 |",
-      "| 5 | `opencode_sync_guide` — 生成恢复引导 |",
-      "| 6 | `opencode_sync_push` — 推送到 GitHub |");
+    lines.push("", t("cli.nextBackup"), "",
+      t("cli.stepTableHead"), t("cli.stepTableSep"),
+      t("cli.step1CreateRepo"), t("cli.step2ApiKeys"), t("cli.step3Setup"), t("cli.step4Export"), t("cli.step5Guide"), t("cli.step6Push"));
   } else {
-    lines.push("", "### 下一步（同步流程）：", "",
-      "| 步骤 | 工具 |", "|------|------|",
-      "| 1 | `opencode_sync_pull` — 从 GitHub 拉取状态 |",
-      "| 2 | `opencode_sync_verify` — 检查环境 |",
-      "| 3 | `opencode_sync_setup` — 安装依赖 |",
-      "| 4 | `opencode_sync_api_keys action=detect` — 查看需要的密钥 |",
-      "| 5 | `opencode_sync_import` — 恢复状态 |",
-      "| 6 | `opencode_sync_verify` — 最终验证 |");
+    lines.push("", t("cli.nextSync"), "",
+      t("cli.stepTableHead"), t("cli.stepTableSep"),
+      t("cli.step1Pull"), t("cli.step2Verify"), t("cli.step3Setup"), t("cli.step4Detect"), t("cli.step5Import"), t("cli.step6Verify"));
   }
   return lines;
 }
 
 interface InitStateLike { initType?: string; workspaceName?: string; githubUrl?: string; initialized?: boolean; completedSteps?: Record<string, boolean>; firstInitAt?: string; lastInitAt?: string; }
-
-const USAGE = `Usage: node dist/cli.js <command> [options]
-
-Commands:
-  export [path]           Export workspace state to JSON
-  import <path> [--dry-run]  Restore from JSON (or URL)
-  diff <path>             Compare current vs saved state
-  push [-m message]       Export + commit + push to GitHub
-  pull [--dry-run]        Pull + apply workspace state
-  update [--components a,b] [--dry-run]  Update opencode ecosystem
-  changelog [--report-path x]  Print change evidence from latest update report
-  status                  Show submodule status
-  verify                  Environment health check
-  setup                   Install workspace dependencies
-  init --init-type backup|sync [--workspace-name x] [--github-url x] [--force]
-  create-repo [--name x] [--description x] [--check-only]
-  api-keys <detect|generate|add> [--key-name x] [--key-value x] [--github-token x]
-  guide                   Generate SYNC-GUIDE.md
-  log <read|add|export> [--type x] [--name x] [--source x]
-  crystallize --type x --name x --source x [--message x] [--skip-push]
-  inventory [--json]      Scan Codex/OpenCode/DeepSeek configuration (read-only)
-  dashboard [--host x] [--port n] [--no-open]  Start local configuration dashboard`;
 
 function readPackageVersion(): string {
   try {
@@ -184,8 +153,11 @@ async function main() {
   const args = process.argv.slice(3);
   const { flags, positionals } = parseArgs(args);
 
+  // --lang 显式指定（最高优先级），其次环境变量/系统 locale，默认 en。
+  if (typeof flags.get("lang") === "string") setLang(String(flags.get("lang")));
+
   if (command === "--help" || command === "-h" || command === "help") {
-    console.log(USAGE);
+    console.log(t("cli.usage"));
     process.exit(0);
   }
   if (command === "--version" || command === "-V" || command === "version") {
@@ -193,7 +165,7 @@ async function main() {
     process.exit(0);
   }
   if (!command) {
-    console.log(USAGE);
+    console.log(t("cli.usage"));
     process.exit(1);
   }
 
@@ -207,7 +179,7 @@ async function main() {
       if (boolFlag(flags, "json")) {
         console.log(JSON.stringify(inventory, null, 2));
       } else {
-        console.log(["# Agent 配置清单", `扫描时间: ${inventory.scannedAt}`, "", ...inventory.agents.map((agent) => `- ${agent.label}: ${agent.status} · ${agent.capabilities.length} 项能力`), "", "只读模式；未包含密钥值。"].join("\n"));
+        console.log([t("cli.inventoryTitle"), t("cli.inventoryScannedAt", { time: inventory.scannedAt }), "", ...inventory.agents.map((agent) => t("cli.inventoryAgent", { label: agent.label, status: agent.status, count: agent.capabilities.length })), "", t("cli.inventoryReadOnly")].join("\n"));
       }
       break;
     }
@@ -216,12 +188,12 @@ async function main() {
       const rawPort = flags.get("port") ?? "0";
       const port = Number(rawPort);
       if (!Number.isInteger(port) || port < 0 || port > 65535) {
-        console.error(`Invalid dashboard port: ${rawPort}`);
+        console.error(t("cli.invalidDashboardPort", { port: rawPort }));
         process.exit(1);
       }
       const server = await startDashboardServer({ host, port, workspaceRoot });
-      console.log(`Uagent Sync 配置看板: ${server.url}`);
-      console.log("只读模式 · Ctrl+C 停止服务");
+      console.log(t("cli.dashboardStarted", { url: server.url }));
+      console.log(t("cli.dashboardReadOnly"));
       if (!boolFlag(flags, "no-open")) {
         const opener = process.platform === "win32" ? ["cmd", ["/c", "start", "", server.url]] : process.platform === "darwin" ? ["open", [server.url]] : ["xdg-open", [server.url]];
         const child = spawn(opener[0] as string, opener[1] as string[], { detached: true, stdio: "ignore", windowsHide: true });
@@ -236,9 +208,9 @@ async function main() {
       const out = positionals[0] || stateFile;
       const state = exportSystemState(workspaceRoot);
       fs.writeFileSync(out, JSON.stringify(state, null, 2));
-      log(`Exported: ${out}`);
-      log(`  Submodules: ${state.submodules.length}`);
-      log(`  Skills: ${state.skills.length}`);
+      log(t("cli.exported", { path: out }));
+      log(t("cli.exportedSubmodules", { count: state.submodules.length }));
+      log(t("cli.exportedSkills", { count: state.skills.length }));
       break;
     }
     case "import": {
@@ -246,14 +218,14 @@ async function main() {
       let state: WorkspaceState;
       if (/^https?:\/\//.test(src)) {
         const res = await fetch(src);
-        if (!res.ok) throw new Error(`Failed to fetch ${src}: HTTP ${res.status}`);
+        if (!res.ok) throw new Error(t("cli.failedToFetch", { src, status: res.status }));
         state = JSON.parse(await res.text()) as WorkspaceState;
       } else {
         state = JSON.parse(fs.readFileSync(isPathSafe(src, workspaceRoot), "utf-8")) as WorkspaceState;
       }
       if (flags.has("dry-run")) {
         const diffs = diffState(exportSystemState(workspaceRoot), state);
-        console.log(diffs.length > 0 ? ["Dry run — would make these changes:", ...diffs].join("\n") : "Dry run — no changes needed (already in sync)");
+        console.log(diffs.length > 0 ? [t("cli.dryRunChanges"), ...diffs].join("\n") : t("cli.dryRunNoChanges"));
         break;
       }
       const result = importSystemState(workspaceRoot, state);
@@ -265,33 +237,33 @@ async function main() {
       const current = exportSystemState(workspaceRoot);
       const saved = JSON.parse(fs.readFileSync(src, "utf-8")) as WorkspaceState;
       const diffs = diffState(current, saved);
-      diffs.length === 0 ? log("No differences") : diffs.forEach(d => log(d));
+      diffs.length === 0 ? log(t("cli.noDifferences")) : diffs.forEach(d => log(d));
       break;
     }
     case "push": {
       const state = exportSystemState(workspaceRoot);
       fs.writeFileSync(stateFile, JSON.stringify(state, null, 2));
-      log("Exported state");
+      log(t("cli.exportedState"));
       const msg = flags.get("message") || flags.get("m") || `Update workspace state ${new Date().toISOString().slice(0, 19)}`;
       const tmpFile = path.join(workspaceRoot, DOTFILES_DIR, "state", ".commit-msg.tmp");
       fs.writeFileSync(tmpFile, String(msg), "utf-8");
       run(`git add ${stateRel}`, workspaceRoot);
       const commit = run(`git commit -F "${tmpFile}"`, workspaceRoot);
-      if (commit.code !== 0) log(`Commit: ${commit.stderr || "nothing to commit"}`);
+      if (commit.code !== 0) log(t("cli.commitNothing", { detail: commit.stderr || "nothing to commit" }));
       try { fs.unlinkSync(tmpFile); } catch { /* ok */ }
       run("git push", workspaceRoot);
-      log("Pushed to remote");
+      log(t("cli.pushedRemote"));
       break;
     }
     case "pull": {
       run("git pull", workspaceRoot);
-      if (!fs.existsSync(stateFile)) { log(`No ${stateRel} found after pull`); process.exit(0); }
+      if (!fs.existsSync(stateFile)) { log(t("cli.noStateAfterPull", { rel: stateRel })); process.exit(0); }
       const state = JSON.parse(fs.readFileSync(stateFile, "utf-8")) as WorkspaceState;
       if (flags.has("dry-run")) {
         console.log([
-          "Dry run — state to be applied:",
-          `  Timestamp: ${state.timestamp}`, `  Platform: ${state.platform}`, `  Hostname: ${state.hostname}`,
-          `  Submodules: ${state.submodules.length}`, `  Skills: ${state.skills.length}`,
+          t("cli.dryRunStateApplied"),
+          t("cli.dryRunTimestamp", { value: state.timestamp }), t("cli.dryRunPlatform", { value: state.platform }), t("cli.dryRunHostname", { value: state.hostname }),
+          t("cli.dryRunSubmodules", { count: state.submodules.length }), t("cli.dryRunSkills", { count: state.skills.length }),
         ].join("\n"));
         break;
       }
@@ -329,14 +301,14 @@ async function main() {
         const username = os.userInfo().username || "user";
         const suggested = String(flags.get("workspace-name") || `codelib-${username}`);
         console.log([
-          "## ⚠️ 未检测到工作区", "",
-          "当前目录未找到 `.gitmodules`，需要创建 opencode 工作区。", "",
-          "### 备份模式（旧设备）",
-          `在工作区根目录运行: \`git init ${suggested}\``,
-          "然后创建 `opencode-dotfiles/` 子模块，再运行 `opencode_sync_init initType=backup`", "",
-          "### 同步模式（新设备）",
-          "提供 GitHub URL: `opencode_sync_init initType=sync githubUrl=<url>`", "",
-          `建议工作区名称: \`${suggested}\``,
+          t("cli.initNoWorkspace"), "",
+          t("cli.initNoWorkspaceDetail"), "",
+          t("cli.initBackupMode"),
+          t("cli.initBackupCmd", { name: suggested }),
+          t("cli.initBackupThen"), "",
+          t("cli.initSyncMode"),
+          t("cli.initSyncCmd"), "",
+          t("cli.initSuggestedName", { name: suggested }),
         ].join("\n"));
         break;
       }
@@ -346,23 +318,23 @@ async function main() {
 
       if (initState.initialized && !force) {
         const remaining = pendingSteps(initState as never);
-        const lines = ["## ✅ 已初始化", "",
-          `- **模式**: ${initState.initType === "backup" ? "📤 备份" : "📥 同步"}`,
-          `- **工作区**: ${initState.workspaceName}`,
-          `- **GitHub**: ${initState.githubUrl || "(未设置)"}`,
-          `- **首次初始化**: ${(initState.firstInitAt || "").slice(0, 19)}`, "",
-          `已完成 ${Object.keys(initState.completedSteps || {}).length} 个步骤:`,
+        const lines = [t("cli.initAlready"), "",
+          t("cli.mode", { mode: initState.initType === "backup" ? t("cli.modeBackupShort") : t("cli.modeSyncShort") }),
+          t("cli.workspace", { name: initState.workspaceName ?? "" }),
+          t("cli.github", { url: initState.githubUrl || t("cli.githubPending") }),
+          t("cli.firstInit", { time: (initState.firstInitAt || "").slice(0, 19) }), "",
+          t("cli.completedSteps", { count: Object.keys(initState.completedSteps || {}).length }),
           ...Object.entries(initState.completedSteps || {}).filter(([, done]) => done).map(([step]) => `  ✅ ${step}`),
         ];
         if (remaining.length > 0) {
-          lines.push("", "### 待完成步骤:");
+          lines.push("", t("cli.pendingSteps"));
           for (const step of remaining) {
-            const hint = step === "repo_created" ? " → 运行 opencode_sync_create_repo" :
-              step === "api_keys_generated" ? " → 运行 opencode_sync_api_keys action=generate" :
-              step === "dependencies_installed" ? " → 运行 opencode_sync_setup" :
-              step === "state_exported" ? " → 运行 opencode_sync_export" :
-              step === "guide_generated" ? " → 运行 opencode_sync_guide" :
-              step === "state_pushed" ? " → 运行 opencode_sync_push" : "";
+            const hint = step === "repo_created" ? t("cli.stepHintRepo") :
+              step === "api_keys_generated" ? t("cli.stepHintApiKeys") :
+              step === "dependencies_installed" ? t("cli.stepHintSetup") :
+              step === "state_exported" ? t("cli.stepHintExport") :
+              step === "guide_generated" ? t("cli.stepHintGuide") :
+              step === "state_pushed" ? t("cli.stepHintPush") : "";
             lines.push(`  ⬜ ${step}${hint}`);
           }
         }
@@ -388,10 +360,10 @@ async function main() {
       const workspaceRootLocal = resolveWorkspaceRoot();
       if (boolFlag(flags, "check-only")) {
         const info = detectWorkspaceInfo(workspaceRootLocal);
-        if (!info?.gitRemote) { console.log("No GitHub remote configured. Run without --check-only to create one."); break; }
+        if (!info?.gitRemote) { console.log(t("cli.checkOnlyNoRemote")); break; }
         const repoName = info.gitRemote.replace(/.*github\.com[:\/](.+?)(\.git)?$/, "$1");
         const visResult = run(`gh repo view ${shellEscape(repoName)} --json isPrivate,url --jq '"private: \(.isPrivate)\nurl: \(.url)"'`);
-        console.log(visResult.code === 0 ? `Repository: ${repoName}\n${visResult.stdout.trim()}` : `Could not check repo: ${visResult.stderr}`);
+        console.log(visResult.code === 0 ? `${t("cli.repoCheck", { name: repoName })}\n${visResult.stdout.trim()}` : t("cli.repoCheckFailed", { detail: visResult.stderr }));
         break;
       }
       const result = createGitHubRepo(workspaceRootLocal, {
@@ -401,13 +373,13 @@ async function main() {
       if (result.success && result.isPrivate) {
         markStepCompleted(workspaceRootLocal, "repo_created", { githubUrl: result.url, githubRepoPrivate: true });
       }
-      const lines = [result.success ? "## ✅ 仓库就绪" : "## ❌ 创建失败", "", result.detail];
+      const lines = [result.success ? t("cli.repoReady") : t("cli.repoFailed"), "", result.detail];
       if (result.url) {
-        lines.push(`- **URL**: ${result.url}`, `- **类型**: ${result.isPrivate ? "🔒 私人" : "⚠️ 公开——需要改为私人！"}`);
+        lines.push(t("cli.repoUrl", { url: result.url }), t("cli.repoType", { type: result.isPrivate ? t("cli.repoPrivate") : t("cli.repoPublicWarn") }));
       }
       if (!result.isPrivate && result.success) {
         const repoName = result.url?.replace(/.*github\.com[:\/](.+?)(\.git)?$/, "$1") || "";
-        lines.push("", "### 改为私人仓库：", `\`gh repo edit ${repoName} --visibility private\``);
+        lines.push("", t("cli.makePrivate"), `\`gh repo edit ${repoName} --visibility private\``);
       }
       console.log(lines.join("\n"));
       break;
@@ -418,11 +390,11 @@ async function main() {
       if (action === "detect") {
         const info = detectApiKeys(workspaceRootLocal);
         console.log([
-          "# API Key 检测", "",
-          `文件: \`${info.path}\` — ${info.exists ? "已存在" : "不存在"}`,
-          `检测到 ${info.keys.length} 个密钥:`, "",
+          t("cli.apiKeyDetect"), "",
+          t("cli.apiKeyFile", { path: info.path, exists: info.exists ? t("cli.apiKeyExists") : t("cli.apiKeyMissing") }),
+          t("cli.apiKeyFound", { count: info.keys.length }), "",
           ...info.keys.map(k => `- \`${k}\``), "",
-          info.exists ? "" : "运行 `api-keys generate` 生成模板文件",
+          info.exists ? "" : t("cli.apiKeyGenerateHint"),
         ].filter(Boolean).join("\n"));
         break;
       }
@@ -431,18 +403,18 @@ async function main() {
           additionalKeys: flags.get("key-name") ? [String(flags.get("key-name"))] : undefined,
           githubToken: flags.get("github-token") as string | undefined,
         });
-        console.log([`## ${result.created ? "✅ 已创建" : "📝 已更新"} API key 模板`, "", `文件: \`${result.path}\``, result.detail].join("\n"));
+        console.log([`## ${result.created ? t("cli.apiKeyCreated").replace(/^## /, "") : t("cli.apiKeyUpdated").replace(/^## /, "")}`, "", t("cli.apiKeyFileAt", { path: result.path }), result.detail].join("\n"));
         break;
       }
       if (action === "add") {
         const keyName = flags.get("key-name");
-        if (!keyName) { console.error("Error: --key-name is required for 'add' action"); process.exit(1); }
+        if (!keyName) { console.error(t("cli.apiKeyNameRequired")); process.exit(1); }
         const apiKeyPath = path.join(workspaceRootLocal, DOTFILES_DIR, "keys", "API.md");
         if (!fs.existsSync(apiKeyPath)) initApiKeyFile(workspaceRootLocal);
         let content = fs.readFileSync(apiKeyPath, "utf-8");
         const newLine = `| \`${keyName}\` | \`${flags.get("key-value") || `<YOUR_${keyName}>`}\` | |`;
         fs.writeFileSync(apiKeyPath, content.replace(/\n$/, `\n${newLine}\n`));
-        console.log(`Added \`${keyName}\` to API key file`);
+        console.log(t("cli.apiKeyAdded", { name: keyName }));
         break;
       }
       console.error(`Unknown action: ${action}`);
@@ -451,7 +423,7 @@ async function main() {
     }
     case "guide": {
       const guidePath = generateSyncGuide(workspaceRoot, exportSystemState(workspaceRoot));
-      console.log(`Generated sync guide at: \`${guidePath}\``);
+      console.log(t("cli.guideGenerated", { path: guidePath }));
       break;
     }
     case "log": {
@@ -460,13 +432,13 @@ async function main() {
       if (action === "read") {
         const entryLog = readInstallLog(workspaceRootLocal);
         console.log(entryLog.entries.length === 0
-          ? "# 安装日志\n\n（暂无记录）\n\n运行 `setup` 安装组件后会自动填充。"
+          ? t("cli.logEmpty")
           : JSON.stringify(entryLog, null, 2));
         break;
       }
       if (action === "add") {
         const type = flags.get("type"), name = flags.get("name"), source = flags.get("source");
-        if (!type || !name || !source) { console.error("Error: --type, --name, and --source are required for 'add' action"); process.exit(1); }
+        if (!type || !name || !source) { console.error(t("cli.logAddRequired")); process.exit(1); }
         const entry = appendInstallEntry(workspaceRootLocal, {
           type: String(type), name: String(name), source: String(source),
           installCommand: String(flags.get("install-command") || `(manual) ${source}`),
@@ -474,7 +446,7 @@ async function main() {
           notes: String(flags.get("notes") || ""),
           pitfalls: listFlag(flags, "pitfalls") || [],
         } as never);
-        console.log(`Recorded: ${entry.type}/${entry.name} (${entry.id.slice(0, 8)})`);
+        console.log(t("cli.logRecorded", { type: entry.type, name: entry.name, id: entry.id.slice(0, 8) }));
         break;
       }
       if (action === "export") { console.log(exportInstallLogAsMarkdown(workspaceRootLocal)); break; }
@@ -485,7 +457,7 @@ async function main() {
     case "crystallize": {
       const type = flags.get("type"), name = flags.get("name"), source = flags.get("source");
       if (!type || !name || !source) {
-        console.error("Error: --type, --name, and --source are required for crystallize");
+        console.error(t("cli.crystallizeRequired"));
         process.exit(1);
       }
       const results: string[] = [];
@@ -494,14 +466,14 @@ async function main() {
         installCommand: String(flags.get("install-command") || `(manual) ${source}`),
         status: "success", notes: String(flags.get("notes") || ""), pitfalls: listFlag(flags, "pitfalls") || [],
       } as never);
-      results.push(`📝 Step 1: Recorded provenance — ${entry.type}/${entry.name}`);
+      results.push(t("cli.crystallizeStep1", { entry: `${entry.type}/${entry.name}` }));
 
       const guidePath = generateSyncGuide(workspaceRoot, exportSystemState(workspaceRoot));
-      results.push(`📖 Step 2: Generated guide — ${guidePath}`);
+      results.push(t("cli.crystallizeStep2", { path: guidePath }));
 
       const stateOut = exportSystemState(workspaceRoot);
       fs.writeFileSync(stateFile, JSON.stringify(stateOut, null, 2));
-      results.push(`📦 Step 3: Exported state — ${stateOut.submodules.length} submodules, ${stateOut.skills.length} skills`);
+      results.push(t("cli.crystallizeStep3", { submodules: stateOut.submodules.length, skills: stateOut.skills.length }));
 
       const commitMsg = String(flags.get("message") || `Crystallize: ${name} ${new Date().toISOString().slice(0, 19)}`);
       results.push(...commitCrystallize({
@@ -510,25 +482,25 @@ async function main() {
         commitMsg,
         skipPush: boolFlag(flags, "skip-push"),
       }));
-      console.log(["# ✨ Crystallized", "", ...results, "", `State: \`${stateFile}\``, `Guide: \`${guidePath}\``].join("\n"));
+      console.log(["# ✨ Crystallized", "", ...results, "", t("cli.crystallizeState", { path: stateFile }), t("cli.crystallizeGuide", { path: guidePath })].join("\n"));
       break;
     }
     case "update": {
       const components = parseComponents(flags.get("components") as string | undefined);
       const dryRun = boolFlag(flags, "dry-run");
-      console.log(dryRun ? "[dry-run] 仅预览，不执行任何命令" : "开始更新 opencode 生态组件…");
+      console.log(dryRun ? t("cli.updateDryRun") : t("cli.updateStart"));
       const report = await updateExtensions({ components, dryRun, onProgress: (ev) => console.log(formatProgress(ev)) });
       const reportFile = archiveUpdateReport(workspaceRoot, report);
-      console.log(`\n完整报告已存档: ${reportFile}`);
+      console.log(t("cli.updateReportArchived", { path: reportFile }));
       process.exit(report.summary.error > 0 ? 1 : 0);
       break;
     }
     case "changelog": {
       const reportsDir = path.join(workspaceRoot, DOTFILES_DIR, "state", "update-reports");
       const file = String(flags.get("report-path") || path.join(reportsDir, "update-report.json"));
-      if (!fs.existsSync(file)) { console.error(`No update report found: ${file}`); process.exit(1); }
+      if (!fs.existsSync(file)) { console.error(t("cli.noUpdateReport", { file })); process.exit(1); }
       const report = JSON.parse(fs.readFileSync(file, "utf-8")) as { timestamp: string; dryRun: boolean; steps: Array<{ name: string; status: string; versionBefore?: string; versionAfter?: string; evidence?: string[] }> };
-      console.log(`报告时间: ${report.timestamp}（dry-run: ${report.dryRun}）`);
+      console.log(t("cli.reportTime", { time: report.timestamp, dryRun: report.dryRun }));
       for (const s of report.steps) {
         const ver = s.versionBefore && s.versionAfter && s.versionBefore !== s.versionAfter
           ? ` ${s.versionBefore} → ${s.versionAfter}` : "";
@@ -536,12 +508,12 @@ async function main() {
         if (s.evidence && s.evidence.length > 0) {
           for (const e of s.evidence) console.log(`  - ${e}`);
         } else {
-          console.log("  （无变更证据）");
+          console.log(t("cli.noChangeEvidence"));
         }
       }
       break;
     }
-    default: console.error(`Unknown command: ${command}`); process.exit(1);
+    default: console.error(t("cli.unknownCommand", { cmd: command })); process.exit(1);
   }
 }
 

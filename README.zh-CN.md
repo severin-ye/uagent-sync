@@ -195,6 +195,20 @@ GET /api/migration-draft?from=codex&to=opencode&policy=recommended
 
 可用策略为 `recommended`、`prefer_target_native`、`prefer_source_workflow`、`keep_both` 和 `ask_each`。完整能力边界见 [`docs/multi-agent-capability-migration-spec.zh-CN.md`](docs/multi-agent-capability-migration-spec.zh-CN.md)。
 
+### 🌐 语言（English / 中文）
+
+输出**默认英文**，可随时切换为中文：
+
+- **CLI**：`--lang zh` 参数，或环境变量 `UAGENT_SYNC_LANG=zh`（兜底依次为系统 locale、英文）。
+- **看板**：顶栏 **中文 / EN** 一键切换，选择保存在 `localStorage`（键 `uagent-lang`）。
+- 生成的文档（SYNC-GUIDE.md、know-how 文件）跟随当前语言。
+
+```bash
+opencode-sync api-keys detect            # 默认英文
+opencode-sync api-keys detect --lang zh  # 中文
+UAGENT_SYNC_LANG=zh opencode-sync guide  # 中文引导文档
+```
+
 ## CLI（18 个命令）
 
 所有命令以 `node dist/cli.js <命令>` 执行（`npm link` 后可简写为 `opencode-sync <命令>`）。

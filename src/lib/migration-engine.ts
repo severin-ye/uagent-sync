@@ -4,6 +4,7 @@ import type {
   MigrationDraftItem, MigrationExecution, MigrationPolicy, MigrationRecommendation,
   TargetStatusDetail,
 } from "./migration-types.js";
+import { t } from "../i18n/index.js";
 
 function semanticId(item: AgentCapability): string {
   return item.capabilityId ?? `${item.kind}:${item.name}`;
@@ -48,7 +49,7 @@ function classify(
   const targetProviders = matching.map((candidate) => provider(candidate));
   const nativeOverlap = matching.some((candidate) => provider(candidate) === "native");
   const official = item.officialTargets?.[to];
-  const custom: MigrationCandidate = { strategy: "custom_adapter", label: "自行编写适配器（最后兜底）", recommended: false };
+  const custom: MigrationCandidate = { strategy: "custom_adapter", label: t("migr.customAdapter"), recommended: false };
 
   if (matching.length) {
     // 同名能力但来源文件不同：目标端已有（双端接入或目标内置）。
@@ -57,7 +58,7 @@ function classify(
       return {
         status: "existing",
         statusDetail: "dual_registered",
-        recommendation: { strategy: "use_existing_target", reason: "目标端已接入同一服务（两端配置文件都注册了这个能力），无需迁移。如两端注册参数不一致（超时、环境变量等），可按需对齐。", evidenceLevel: "verified_local" },
+        recommendation: { strategy: "use_existing_target", reason: t("migr.reasonExistingDual"), evidenceLevel: "verified_local" },
         candidates: [{ strategy: "use_existing_target", label: matching[0].name, recommended: true }, custom],
         defaultAction: "keep_current",
       };
@@ -65,7 +66,7 @@ function classify(
     return {
       status: "existing",
       statusDetail: nativeOverlap ? "target_native" : "dual_registered",
-      recommendation: { strategy: "use_existing_target", reason: "目标端已发现相同能力，默认不重复安装。", evidenceLevel: "verified_local" },
+      recommendation: { strategy: "use_existing_target", reason: t("migr.reasonExisting"), evidenceLevel: "verified_local" },
       candidates: [{ strategy: "use_existing_target", label: matching[0].name, recommended: true }, custom],
       defaultAction: "keep_current",
     };
@@ -74,8 +75,8 @@ function classify(
   if (item.kind === "mcp" && to === "deepseek") {
     return {
       status: "missing",
-      recommendation: { strategy: "verify_first", reason: "尚未在本机证实 DeepSeek Harness 可直接承载该 MCP。", evidenceLevel: "unverified" },
-      candidates: [{ strategy: "verify_first", label: "先验证目标版本和连接方式", recommended: true }, custom],
+      recommendation: { strategy: "verify_first", reason: t("migr.reasonVerifyFirst"), evidenceLevel: "unverified" },
+      candidates: [{ strategy: "verify_first", label: t("migr.candidateVerifyFirst"), recommended: true }, custom],
       defaultAction: "defer",
     };
   }
@@ -85,7 +86,7 @@ function classify(
       status: "missing",
       recommendation: {
         strategy: "install_official_variant",
-        reason: "原扩展提供目标平台官方版本，优先保持原有能力边界。",
+        reason: t("migr.reasonOfficial"),
         evidenceLevel: "declared_official",
       },
       candidates: [{ strategy: "install_official_variant", label: official.packageName, packageName: official.packageName, repository: official.repository, evidence: official.evidence, recommended: true }, custom],
@@ -96,16 +97,16 @@ function classify(
   if (item.portability === "portable") {
     return {
       status: "missing",
-      recommendation: { strategy: "direct_share", reason: "配置格式可共享，迁移草案默认直接复用。", evidenceLevel: "verified_local" },
-      candidates: [{ strategy: "direct_share", label: "直接共享现有配置", recommended: true }, custom],
+      recommendation: { strategy: "direct_share", reason: t("migr.reasonDirectShare"), evidenceLevel: "verified_local" },
+      candidates: [{ strategy: "direct_share", label: t("migr.candidateDirectShare"), recommended: true }, custom],
       defaultAction: "direct_share",
     };
   }
 
   return {
     status: "missing",
-    recommendation: { strategy: "find_mature_alternative", reason: "接口不能直接迁移，应先寻找目标平台的成熟替代品。", evidenceLevel: "needs_research" },
-    candidates: [{ strategy: "find_mature_alternative", label: "寻找成熟替代品", recommended: true }, custom],
+    recommendation: { strategy: "find_mature_alternative", reason: t("migr.reasonFindAlternative"), evidenceLevel: "needs_research" },
+    candidates: [{ strategy: "find_mature_alternative", label: t("migr.candidateFindAlternative"), recommended: true }, custom],
     defaultAction: "defer",
   };
 }

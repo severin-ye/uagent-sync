@@ -13,6 +13,7 @@ import { spawn } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
+import { t } from "../i18n/index.js";
 
 export const CODEBASE_MEMORY_REPO = "DeusData/codebase-memory-mcp";
 export const CODEBASE_MEMORY_ASSET = "codebase-memory-mcp-windows-amd64.zip";
@@ -88,35 +89,35 @@ export async function updateCodebaseMemory(opts: { dryRun?: boolean; onLine?: (l
   try {
     release = (await fetchJson(`https://api.github.com/repos/${CODEBASE_MEMORY_REPO}/releases/latest`)) as typeof release;
   } catch (err) {
-    return { status: "warning", versionBefore, detail: `查询最新 release 失败: ${String(err).slice(0, 120)}` };
+    return { status: "warning", versionBefore, detail: t("lib.cbmQueryFailed", { detail: String(err).slice(0, 120) }) };
   }
   const tag = release.tag_name;
-  if (!tag) return { status: "warning", versionBefore, detail: "latest release 无 tag" };
+  if (!tag) return { status: "warning", versionBefore, detail: t("lib.cbmNoTag") };
 
   const asset = (release.assets ?? []).find((a) => a.name === CODEBASE_MEMORY_ASSET);
-  if (!asset?.browser_download_url) return { status: "warning", versionBefore, detail: `未找到资产 ${CODEBASE_MEMORY_ASSET}` };
+  if (!asset?.browser_download_url) return { status: "warning", versionBefore, detail: t("lib.cbmAssetMissing", { asset: CODEBASE_MEMORY_ASSET }) };
 
   if (versionBefore === tag) {
-    return { status: "skipped", versionBefore, versionAfter: tag, detail: `已是最新 ${tag}` };
+    return { status: "skipped", versionBefore, versionAfter: tag, detail: t("lib.cbmUpToDate", { tag }) };
   }
   if (opts.dryRun) {
-    return { status: "skipped", versionBefore, versionAfter: tag, detail: `[dry-run] 将更新 ${versionBefore ?? "无记录"} → ${tag}` };
+    return { status: "skipped", versionBefore, versionAfter: tag, detail: t("lib.cbmDryRun", { before: versionBefore ?? "—", tag }) };
   }
 
   const tmpDir = path.join(os.tmpdir(), `codebase-memory-update-${Date.now()}`);
   const zipFile = path.join(tmpDir, "cm.zip");
   try {
     fs.mkdirSync(tmpDir, { recursive: true });
-    onLine(`下载 ${asset.browser_download_url}（${(asset.browser_download_url ?? "").length > 0 ? "…" : ""}）`);
+    onLine(t("lib.cbmDownloading", { url: asset.browser_download_url }));
     const dl = await spawnCommand(`curl -sL -o "${zipFile}" "${asset.browser_download_url}"`, { onLine, timeoutMs: 600_000 });
-    if (dl.code !== 0) return { status: "warning", versionBefore, versionAfter: tag, detail: `下载失败: ${dl.output.slice(0, 200)}` };
+    if (dl.code !== 0) return { status: "warning", versionBefore, versionAfter: tag, detail: t("lib.cbmDownloadFailed", { detail: dl.output.slice(0, 200) }) };
 
     const ex = await spawnCommand(`tar -xf "${zipFile}" -C "${tmpDir}"`, { onLine });
-    if (ex.code !== 0) return { status: "warning", versionBefore, versionAfter: tag, detail: `解压失败: ${ex.output.slice(0, 200)}` };
+    if (ex.code !== 0) return { status: "warning", versionBefore, versionAfter: tag, detail: t("lib.cbmExtractFailed", { detail: ex.output.slice(0, 200) }) };
 
     const files = fs.readdirSync(tmpDir, { recursive: true }) as string[];
     const exeName = files.find((f) => /codebase-memory-mcp[^/\\]*\.exe$/i.test(f)) || files.find((f) => f.toLowerCase().endsWith(".exe"));
-    if (!exeName) return { status: "warning", versionBefore, versionAfter: tag, detail: "解压后未找到 exe" };
+    if (!exeName) return { status: "warning", versionBefore, versionAfter: tag, detail: t("lib.cbmExeNotFound") };
 
     if (fs.existsSync(BIN_PATH)) {
       // 先备份旧版（读操作，运行中也可执行）；覆盖写入失败（EBUSY）由外层 catch 处理，
@@ -125,11 +126,11 @@ export async function updateCodebaseMemory(opts: { dryRun?: boolean; onLine?: (l
     }
     fs.copyFileSync(path.join(tmpDir, exeName), BIN_PATH);
     fs.writeFileSync(VERSION_FILE, JSON.stringify({ version: tag, updatedAt: new Date().toISOString() }, null, 2));
-    return { status: "ok", versionBefore, versionAfter: tag, detail: `已更新到 ${tag}（旧版本 ${versionBefore ?? "无记录"}，已备份旧 exe）` };
+    return { status: "ok", versionBefore, versionAfter: tag, detail: t("lib.cbmUpdated", { tag, before: versionBefore ?? "—" }) };
   } catch (err) {
     return {
       status: "warning", versionBefore, versionAfter: tag,
-      detail: `替换失败（exe 可能被运行中的 MCP server 占用，请重启 opencode/OpenChamber 后重试）: ${String(err).slice(0, 150)}`,
+      detail: t("lib.cbmReplaceFailed", { detail: String(err).slice(0, 150) }),
     };
   } finally {
     try { fs.rmSync(tmpDir, { recursive: true, force: true }); } catch { /* ok */ }

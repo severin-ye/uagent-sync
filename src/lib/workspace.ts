@@ -9,6 +9,7 @@ import { loadKnownMcps, analyzeMcpConfig } from "./guide.js";
 import { detectSyncPath, isMachineSpecificPath } from "./portable.js";
 import type { SubmoduleStatusItem, SetupResult, VerifyResult } from "./types.js";
 import { DOTFILES_DIR } from "./dotfiles.js";
+import { t } from "../i18n/index.js";
 
 export function getSubmoduleStatus(workspaceRoot: string): SubmoduleStatusItem[] {
   const gitmodulesPath = path.join(workspaceRoot, ".gitmodules");
@@ -110,11 +111,11 @@ export function verifyEnvironment(workspaceRoot: string): VerifyResult[] {
             } catch { continue; }
           }
           results.push({
-            component: `${guide.displayName} 扩展`,
+            component: t("lib.workspaceExtension", { name: guide.displayName }),
             status: extFound ? "ok" : "warning",
             detail: extFound
-              ? (guide.hasToken ? "已安装 + Token 已设" : "已安装 — Token 未设")
-              : `未检测到扩展 — ${extStep.url || "请手动安装"}`,
+              ? (guide.hasToken ? t("lib.workspaceInstalledToken") : t("lib.workspaceInstalledNoToken"))
+              : t("lib.workspaceNotDetected", { url: extStep.url || t("lib.workspaceManualInstall") }),
           });
         }
 
@@ -123,7 +124,7 @@ export function verifyEnvironment(workspaceRoot: string): VerifyResult[] {
           results.push({
             component: `${guide.displayName} Token`,
             status: "warning",
-            detail: "Token 未配置 — 需要手动设置",
+            detail: t("lib.workspaceTokenMissing"),
           });
         }
       }
@@ -153,7 +154,7 @@ export function verifyEnvironment(workspaceRoot: string): VerifyResult[] {
           results.push({
             component: `${name} (path)`,
             status: "warning",
-            detail: `包含机器特定路径，跨设备可能不可用`,
+            detail: t("lib.workspaceMachineSpecific"),
           });
         }
       }
@@ -182,10 +183,10 @@ export function setupWorkspace(workspaceRoot: string, options?: {
       else { source = "apt/dnf:gh"; installResult = run("sudo apt-get install -y gh || sudo dnf install -y gh"); }
       if (installResult.code === 0) {
         results[results.length - 1] = { step: "Install GitHub CLI", status: "ok", detail: "Installed — run: gh auth login" };
-        appendInstallEntry(workspaceRoot, { type: "cli-tool", name: "gh", source, installCommand: source.split(":")[1] || "gh", status: "success", notes: "安装后需执行 gh auth login", pitfalls: [] });
+        appendInstallEntry(workspaceRoot, { type: "cli-tool", name: "gh", source, installCommand: source.split(":")[1] || "gh", status: "success", notes: t("lib.workspaceGhAuth"), pitfalls: [] });
       } else {
         results[results.length - 1] = { step: "Install GitHub CLI", status: "warning", detail: `Install failed. Manual: https://cli.github.com/` };
-        appendInstallEntry(workspaceRoot, { type: "cli-tool", name: "gh", source, installCommand: source.split(":")[1] || "gh", status: "failed", notes: installResult.stderr.slice(0, 200), pitfalls: ["去 https://cli.github.com/ 手动下载"] });
+        appendInstallEntry(workspaceRoot, { type: "cli-tool", name: "gh", source, installCommand: source.split(":")[1] || "gh", status: "failed", notes: installResult.stderr.slice(0, 200), pitfalls: [t("lib.workspaceGhManual")] });
       }
     } else { results.push({ step: "GitHub CLI", status: "skipped", detail: `Already installed: ${ghCheck.stdout.split("\n")[0]}` }); }
   }
@@ -203,7 +204,7 @@ export function setupWorkspace(workspaceRoot: string, options?: {
   }
 
   if (copyConfig) {
-    results.push({ step: "config overwrite warning", status: "warning", detail: "copyConfig=true 将覆盖 ~/.config/opencode/opencode.json。已存在的配置可能丢失。建议: 先 export 备份。", });
+    results.push({ step: "config overwrite warning", status: "warning", detail: t("lib.workspaceCopyConfigWarn"), });
     const sourceConfig = path.join(workspaceRoot, DOTFILES_DIR, "config", "opencode.json");
     if (fs.existsSync(sourceConfig)) {
       const configDir = path.join(os.homedir(), ".config", "opencode"); fs.mkdirSync(configDir, { recursive: true });
@@ -253,7 +254,7 @@ export function setupWorkspace(workspaceRoot: string, options?: {
     if (ralphCheck.code !== 0) {
       const r = run("npm install -g @wiggumdev/ralph");
       if (r.code === 0) { results.push({ step: "Install Ralph CLI", status: "ok", detail: "Installed" }); appendInstallEntry(workspaceRoot, { type: "cli-tool", name: "ralph", source: "npm:@wiggumdev/ralph", installCommand: "npm install -g @wiggumdev/ralph", status: "success", notes: "", pitfalls: [] }); }
-      else { results.push({ step: "Install Ralph CLI", status: "warning", detail: r.stderr || "Failed" }); appendInstallEntry(workspaceRoot, { type: "cli-tool", name: "ralph", source: "npm:@wiggumdev/ralph", installCommand: "npm install -g @wiggumdev/ralph", status: "failed", notes: r.stderr.slice(0, 200), pitfalls: ["检查 Node.js >= 18"] }); }
+      else { results.push({ step: "Install Ralph CLI", status: "warning", detail: r.stderr || "Failed" }); appendInstallEntry(workspaceRoot, { type: "cli-tool", name: "ralph", source: "npm:@wiggumdev/ralph", installCommand: "npm install -g @wiggumdev/ralph", status: "failed", notes: r.stderr.slice(0, 200), pitfalls: [t("lib.workspaceRalphNode")] }); }
     } else { results.push({ step: "Install Ralph CLI", status: "skipped", detail: ralphCheck.stdout.trim() }); }
   }
 
@@ -262,7 +263,7 @@ export function setupWorkspace(workspaceRoot: string, options?: {
     if (sk.code !== 0) {
       const r = run("npm install -g skills");
       if (r.code === 0) { results.push({ step: "Install Skills CLI", status: "ok", detail: "Installed" }); appendInstallEntry(workspaceRoot, { type: "cli-tool", name: "skills", source: "npm:skills", installCommand: "npm install -g skills", status: "success", notes: "", pitfalls: [] }); }
-      else { results.push({ step: "Install Skills CLI", status: "warning", detail: r.stderr || "Failed" }); appendInstallEntry(workspaceRoot, { type: "cli-tool", name: "skills", source: "npm:skills", installCommand: "npm install -g skills", status: "failed", notes: r.stderr.slice(0, 200), pitfalls: ["检查 npm 全局路径"] }); }
+      else { results.push({ step: "Install Skills CLI", status: "warning", detail: r.stderr || "Failed" }); appendInstallEntry(workspaceRoot, { type: "cli-tool", name: "skills", source: "npm:skills", installCommand: "npm install -g skills", status: "failed", notes: r.stderr.slice(0, 200), pitfalls: [t("lib.workspaceSkillsNpmPath")] }); }
     } else { results.push({ step: "Install Skills CLI", status: "skipped", detail: sk.stdout.trim() }); }
   }
 
@@ -272,7 +273,7 @@ export function setupWorkspace(workspaceRoot: string, options?: {
       const cmd = `npx skills add ${src} -g -y`;
       const r = run(cmd);
       if (r.code === 0) { results[results.length - 1] = { step: `Install skill: ${src}`, status: "ok", detail: "Installed" }; appendInstallEntry(workspaceRoot, { type: "skill", name: src, source: src, installCommand: cmd, status: "success", notes: "", pitfalls: [] }); }
-      else { results[results.length - 1] = { step: `Install skill: ${src}`, status: "warning", detail: r.stderr.slice(0, 200) || "Failed" }; appendInstallEntry(workspaceRoot, { type: "skill", name: src, source: src, installCommand: cmd, status: "failed", notes: r.stderr.slice(0, 200), pitfalls: ["检查 skills CLI 是否已安装"] }); }
+      else { results[results.length - 1] = { step: `Install skill: ${src}`, status: "warning", detail: r.stderr.slice(0, 200) || "Failed" }; appendInstallEntry(workspaceRoot, { type: "skill", name: src, source: src, installCommand: cmd, status: "failed", notes: r.stderr.slice(0, 200), pitfalls: [t("lib.workspaceSkillsCliInstalled")] }); }
     }
   }
 

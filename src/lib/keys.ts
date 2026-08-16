@@ -5,6 +5,7 @@ import { stripJsonComments } from "./state.js";
 import type { ApiKeyInfo } from "./types.js";
 import { DOTFILES_DIR } from "./dotfiles.js";
 import { ensureSecretGitignore } from "./crystallize-commit.js";
+import { t } from "../i18n/index.js";
 
 export function detectApiKeys(workspaceRoot: string): ApiKeyInfo {
   const dotfilesDir = path.join(workspaceRoot, DOTFILES_DIR);
@@ -51,7 +52,7 @@ export function initApiKeyFile(workspaceRoot: string, options?: { additionalKeys
   const keyInfo = detectApiKeys(workspaceRoot);
   const allKeys = [...new Set([...keyInfo.keys, ...(options?.additionalKeys || [])])];
 
-  const sections = [`# API Key 配置`, ``, `> ⚠️ 此文件包含 API 密钥配置模板，仅上传到**私有仓库**。`, `> 生成日期: ${new Date().toISOString().slice(0, 19)}`, `> 主机名: ${os.hostname()}`, ``, `## 环境变量 (${allKeys.length} 个)`, ``, `| 变量名 | 值 | 说明 |`, `|--------|----|------|`];
+  const sections = [t("lib.apiKeyHeader"), ``, t("lib.apiKeyWarning"), t("lib.apiKeyGeneratedAt", { time: new Date().toISOString().slice(0, 19) }), t("lib.apiKeyHostname", { hostname: os.hostname() }), ``, t("lib.apiKeyEnvSection", { count: allKeys.length }), ``, t("lib.apiKeyTableHead"), t("lib.apiKeyTableSep")];
 
   for (const key of allKeys) {
     const desc = key.includes("GITHUB") ? "GitHub Personal Access Token" : key.includes("NOTION") ? "Notion Integration Token" : key.includes("ZAPIER") ? "Zapier MCP Connect URL" : key.includes("DEEPSEEK") ? "DeepSeek API Key" : key.includes("DASHSCOPE") ? "DashScope (Qwen) API Key" : key.includes("KIMI") ? "Kimi/Moonshot API Key" : key.includes("ANTHROPIC") ? "Anthropic API Key" : key.includes("OPENAI") ? "OpenAI API Key" : key.includes("WAKATIME") ? "WakaTime API Key" : key.includes("SUPERMEMORY") ? "Supermemory API Key" : key.includes("TOKEN_PLAN") ? "Token Plan API Key" : "";

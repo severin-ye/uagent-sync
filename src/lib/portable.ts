@@ -1,5 +1,6 @@
 import * as path from "node:path";
 import * as fs from "node:fs";
+import { t } from "../i18n/index.js";
 
 /**
  * Detect the path to the opencode-sync plugin entry point.
@@ -28,7 +29,7 @@ export function detectSyncPath(workspaceRoot: string): {
       return {
         command: [candidate.path],
         source: "workspace",
-        note: `✅ Workspace-relative: ${candidate.label}. Works on this machine. Cross-device: 通过 GitHub Release 分发（tarball 或 git clone + npm run build）。`,
+        note: t("lib.portableWorkspaceRel", { label: candidate.label }),
       };
     }
   }
@@ -37,7 +38,7 @@ export function detectSyncPath(workspaceRoot: string): {
   return {
     command: [],
     source: "published",
-    note: "⚠️ 仓库源码未克隆到 workspace（无 dist/plugin.js）。可通过 GitHub Release tarball 安装：https://github.com/severin-ye/uagent-sync/releases",
+    note: t("lib.portableNotCloned"),
   };
 }
 

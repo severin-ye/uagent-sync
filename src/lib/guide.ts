@@ -5,6 +5,7 @@ import { redactSecretsDeep } from "./redact.js";
 import { resolveSkillSources, SKILL_PACKAGES, KNOWN_SKILL_SOURCES } from "./skills.js";
 import type { WorkspaceState, McpBuildInfo, McpGuide, KnownMcpEntry, KnownMcpData } from "./types.js";
 import { DOTFILES_DIR } from "./dotfiles.js";
+import { t } from "../i18n/index.js";
 
 // ═══ 数据驱动：读取已知 MCP 配置 ═══
 
@@ -130,7 +131,7 @@ export function detectPlaywrightMcpConfig(
     usesHeadless: cmd.includes("--headless"),
     browser: cmd.some((a: string) => a === "--browser=msedge" || a.includes("msedge")) ? "Edge"
       : cmd.some((a: string) => a === "--browser=chrome" || a.includes("chrome")) ? "Chrome"
-      : "Chromium（默认）",
+      : t("guide.playwrightDefault"),
     hasToken: !!(pw.environment && Object.keys(pw.environment as Record<string, unknown>).some(k =>
       k.toUpperCase().includes("PLAYWRIGHT") && k.toUpperCase().includes("TOKEN"))),
     isEdge: cmd.some((a: string) => a === "--browser=msedge" || a.includes("msedge")),
@@ -171,7 +172,7 @@ function generateMcpSetupSection(guide: McpGuide): string[] {
   const entry = guide.knownEntry;
   if (!entry) return lines;
 
-  lines.push(`### ${entry.name} 专项配置`, ``);
+  lines.push(t("guide.mcpSection", { name: entry.name }), ``);
   if (entry.description) lines.push(`> ${entry.description}`, ``);
 
   // Setup steps
@@ -185,7 +186,7 @@ function generateMcpSetupSection(guide: McpGuide): string[] {
       if (condition === "isEdge" && !(guide.flags.isEdge)) continue;
       if (condition === "always") { /* always show */ }
 
-      const autoLabel = step.auto ? "[自动]" : "[手动]";
+      const autoLabel = step.auto ? t("guide.auto") : t("guide.manual");
       lines.push(`#### ${i + 1}. ${step.title} ${autoLabel}`, ``);
       lines.push(step.description, ``);
       if (step.url) lines.push(step.url, ``);
@@ -194,23 +195,23 @@ function generateMcpSetupSection(guide: McpGuide): string[] {
 
   // Config notes
   if (entry.configNotes && entry.configNotes.length > 0) {
-    lines.push(`#### 配置要点`, ``);
+    lines.push(t("guide.configPoints"), ``);
     for (const note of entry.configNotes) lines.push(`- ${note}`);
     lines.push(``);
   }
 
   // Multi-model notes
   if (entry.modelNotes) {
-    lines.push(`#### 多模态模型`, ``);
+    lines.push(t("guide.multimodal"), ``);
     lines.push(entry.modelNotes.note, ``);
-    if (entry.modelNotes.supported.length > 0) lines.push(`- 支持: ${entry.modelNotes.supported.join(", ")}`);
-    if (entry.modelNotes.unsupported.length > 0) lines.push(`- 不支持: ${entry.modelNotes.unsupported.join(", ")}`);
+    if (entry.modelNotes.supported.length > 0) lines.push(t("guide.supported", { models: entry.modelNotes.supported.join(", ") }));
+    if (entry.modelNotes.unsupported.length > 0) lines.push(t("guide.unsupported", { models: entry.modelNotes.unsupported.join(", ") }));
     lines.push(``);
   }
 
   // Pitfalls
   if (entry.pitfalls && entry.pitfalls.length > 0) {
-    lines.push(`#### 已知注意事项`, ``);
+    lines.push(t("guide.knownCaveats"), ``);
     for (const p of entry.pitfalls) lines.push(`- ${p}`);
     lines.push(``);
   }
@@ -284,39 +285,39 @@ export function generateKnowHowFiles(workspaceRoot: string): { created: string[]
 
 function generateKnowHowReadme(knownMcps: KnownMcpData): string {
   const lines = [
-    `# MCP & 插件 Know-How`,
+    t("guide.knowHowTitle"),
     ``,
-    `> **给 Agent 看的。** 本目录记录每个 MCP/插件在配置和使用过程中踩过的坑和学到的经验。`,
-    `> 在新设备配置时，请先阅读本文件，再按各插件子目录的指引操作。`,
-    `> 生成时间: ${new Date().toISOString()}`,
+    t("guide.knowHowIntro"),
+    t("guide.knowHowReadFirst"),
+    t("guide.generatedAt", { time: new Date().toISOString() }),
     ``,
-    `## 目录结构`,
+    t("guide.dirStructure"),
     ``,
-    `每个插件/MCP 一个子目录，包含：`,
+    t("guide.oneSubdir"),
     ``,
-    `| 文件 | 内容 | 维护方式 |`,
+    t("guide.fileTableHead"),
     `|---|---|---|`,
-    `| setup.md | 安装步骤、前置条件、Token 获取 | 从 known-mcps.json 自动生成 |`,
-    `| pitfalls.md | 踩过的坑、排查思路、修复方案 | 人工维护（Agent 补充） |`,
-    `| config-ref.md | 当前配置参考、关键字段 | 从实际配置自动生成 |`,
+    t("guide.fileSetup"),
+    t("guide.filePitfalls"),
+    t("guide.fileConfigRef"),
     ``,
-    `## 插件列表`,
+    t("guide.pluginList"),
     ``,
-    `| 名称 | 类型 | 已知坑 |`,
+    t("guide.pluginTableHead"),
     `|---|---|---|`,
   ];
   for (const [name, entry] of Object.entries(knownMcps.mcpServers)) {
     const hasPitfalls = (entry.pitfalls?.length ?? 0) > 0;
-    lines.push(`| [${entry.name}](./${name}/) | MCP 服务器 | ${hasPitfalls ? "✅" : "—"} |`);
+    lines.push(`| [${entry.name}](./${name}/) | ${t("guide.mcpServerType")} | ${hasPitfalls ? "✅" : "—"} |`);
   }
-  lines.push(``, `## Agent 工作流`, ``,
-    `在新设备上配置 MCP 时：`,
+  lines.push(``, t("guide.agentWorkflow"), ``,
+    t("guide.workflowIntro"),
     ``,
-    `1. 先读本文件，了解有哪些插件`,
-    `2. 进入对应子目录，先读 pitfalls.md（避坑）`,
-    `3. 再读 setup.md（安装）`,
-    `4. 参考 config-ref.md（配置模板）`,
-    `5. 配置完成后有新的发现，补充回对应文件`,
+    t("guide.workflow1"),
+    t("guide.workflow2"),
+    t("guide.workflow3"),
+    t("guide.workflow4"),
+    t("guide.workflow5"),
   );
   return lines.join("\n") + "\n";
 }
@@ -324,30 +325,31 @@ function generateKnowHowReadme(knownMcps: KnownMcpData): string {
 function generateSetupMd(mcpName: string, guide: McpGuide, mcpCfg: Record<string, unknown>): string {
   const entry = guide.knownEntry;
   const lines = [
-    `# ${entry?.name || mcpName} — 安装步骤`,
+    t("guide.setupTitle", { name: entry?.name || mcpName }),
     ``,
-    `> 由 opencode-sync 自动生成。`,
-    `> 生成时间: ${new Date().toISOString()}`,
+    t("guide.autoGenerated"),
+    t("guide.generatedAt", { time: new Date().toISOString() }),
     ``,
   ];
 
   if (entry?.setup.steps.length) {
     for (const step of entry.setup.steps) {
-      const autoLabel = step.auto ? "[自动]" : "[手动]";
+      const autoLabel = step.auto ? t("guide.auto") : t("guide.manual");
       lines.push(`## ${step.title} ${autoLabel}`, ``);
       lines.push(step.description, ``);
       if (step.url) lines.push(step.url, ``);
     }
   } else {
     if (guide.isLocal) {
-      lines.push(`## 本地 MCP`, ``, `启动命令: \`${(mcpCfg.command as string[] || []).join(" ")}\``, ``);
+      lines.push(t("guide.localMcp"), ``, t("guide.launchCommand", { cmd: (mcpCfg.command as string[] || []).join(" ") }), ``);
     } else if (guide.isRemote) {
-      lines.push(`## 远程 MCP`, ``, `端点: \`${mcpCfg.url || "未知"}\``, ``);
+      const endpoint = typeof mcpCfg.url === "string" ? mcpCfg.url : t("guide.unknownEndpoint");
+      lines.push(t("guide.remoteMcp"), ``, t("guide.endpoint", { endpoint }), ``);
     }
   }
 
   if (entry?.configNotes?.length) {
-    lines.push(`## 配置要点`, ``);
+    lines.push(t("guide.configPoints"), ``);
     for (const note of entry.configNotes) lines.push(`- ${note}`);
   }
 
@@ -357,15 +359,15 @@ function generateSetupMd(mcpName: string, guide: McpGuide, mcpCfg: Record<string
 function generatePitfallsMd(mcpName: string, guide: McpGuide): string {
   const entry = guide.knownEntry!;
   const lines = [
-    `# ${entry.name} — 踩坑记录`,
+    t("guide.pitfallsTitle", { name: entry.name }),
     ``,
-    `> 人工维护。Agent 遇到新坑时补充。`,
-    `> 生成时间: ${new Date().toISOString()}`,
+    t("guide.manualMaintained"),
+    t("guide.generatedAt", { time: new Date().toISOString() }),
     ``,
   ];
   if (entry.pitfalls?.length) {
     for (let i = 0; i < entry.pitfalls.length; i++) {
-      lines.push(`## 已知问题 ${i + 1}`, ``);
+      lines.push(t("guide.knownIssue", { index: i + 1 }), ``);
       lines.push(entry.pitfalls[i], ``);
     }
   }
@@ -374,18 +376,18 @@ function generatePitfallsMd(mcpName: string, guide: McpGuide): string {
 
 function generatePitfallsMdTemplate(mcpName: string): string {
   return [
-    `# ${mcpName} — 踩坑记录`,
+    t("guide.pitfallsTitle", { name: mcpName }),
     ``,
-    `> 人工维护。Agent 遇到新坑时补充。`,
+    t("guide.manualMaintained"),
     ``,
-    `## 暂无已知问题`,
+    t("guide.noPitfalls"),
     ``,
-    `如果遇到问题，请记录在此文件中，格式如下：`,
+    t("guide.pitfallsFormat"),
     ``,
-    `### 问题标题`,
-    `- **现象**: ...`,
-    `- **根因**: ...`,
-    `- **修复**: ...`,
+    t("guide.issueTitle"),
+    t("guide.symptom"),
+    t("guide.rootCause"),
+    t("guide.fix"),
     ``,
   ].join("\n");
 }
@@ -411,12 +413,12 @@ export function generateConfigRefMd(mcpName: string, mcpCfg: Record<string, unkn
   }
 
   const lines = [
-    `# ${guide.displayName} — 配置参考`,
+    t("guide.configRefTitle", { name: guide.displayName }),
     ``,
-    `> 由 opencode-sync 从实际配置自动生成。`,
-    `> 生成时间: ${new Date().toISOString()}`,
+    t("guide.fromLiveConfig"),
+    t("guide.generatedAt", { time: new Date().toISOString() }),
     ``,
-    `## 当前配置`,
+    t("guide.currentConfig"),
     ``,
     "```json",
     JSON.stringify(sanitized, null, 2),
@@ -425,7 +427,7 @@ export function generateConfigRefMd(mcpName: string, mcpCfg: Record<string, unkn
   ];
 
   if (guide.knownEntry?.configNotes?.length) {
-    lines.push(`## 关键说明`, ``);
+    lines.push(t("guide.keyNotes"), ``);
     for (const note of guide.knownEntry.configNotes) lines.push(`- ${note}`);
     lines.push(``);
   }
@@ -442,21 +444,21 @@ export function generateSyncGuide(workspaceRoot: string, state: WorkspaceState):
   const plugins = (state.opencodeConfig?.plugin as string[]) || [];
 
   const lines: string[] = [
-    `# 工作区同步引导 (@generated)`, ``,
-    `> 由 opencode-sync MCP 自动生成。`,
-    `> 生成时间: ${state.timestamp}`,
-    `> 源主机: ${state.hostname} (${state.platform})`, ``,
-    `> 已知 MCP 规则库版本: ${knownMcps.version} (${Object.keys(knownMcps.mcpServers).length} 个)`, ``,
+    t("guide.syncGuideTitle"), ``,
+    t("guide.generatedByMcp"),
+    t("guide.generatedAt", { time: state.timestamp }),
+    t("guide.sourceHost", { hostname: state.hostname, platform: state.platform }), ``,
+    t("guide.knownMcpsVersion", { version: knownMcps.version, count: Object.keys(knownMcps.mcpServers).length }), ``,
     `---`, ``,
-    `## 1. 插件 (${plugins.length} 个)`, ``,
+    t("guide.pluginsSection", { count: plugins.length }), ``,
   ];
   if (plugins.length > 0) {
-    lines.push("opencode 启动时自动安装，无需手动操作。", "");
+    lines.push(t("guide.pluginsAuto"), "");
     for (const p of plugins) lines.push(`- \`${p}\``);
-  } else lines.push("（无额外插件）");
+  } else lines.push(t("guide.noExtraPlugins"));
 
   // ═══ MCP 服务器 + 专项引导 ═══
-  lines.push(``, `---`, ``, `## 2. MCP 服务器`, ``);
+  lines.push(``, `---`, ``, t("guide.mcpSectionTitle"), ``);
 
   const allGuides: McpGuide[] = [];
   if (mcpConfig) {
@@ -465,21 +467,21 @@ export function generateSyncGuide(workspaceRoot: string, state: WorkspaceState):
       const cmd = mcpCfg?.command as string[] | undefined;
       const url = mcpCfg?.url as string | undefined;
       if (mcpCfg?.enabled === false) {
-        lines.push(`### ${mcpName}`, `- 状态: 已禁用`, ``);
+        lines.push(t("guide.mcpDisabled", { name: mcpName }), `- ${t("guide.mcpDisabledStatus")}`, ``);
         continue;
       }
-      lines.push(`### ${mcpName}`);
+      lines.push(t("guide.mcpDisabled", { name: mcpName }));
       if (type === "local" && cmd) {
-        lines.push(`- **类型**: 本地`, `- **启动**: \`${cmd.join(" ")}\``);
+        lines.push(t("guide.mcpTypeLocal"), t("guide.mcpLaunch", { cmd: cmd.join(" ") }));
         const buildInfo = mcpBuildInfo.find(b => b.name === mcpName);
         if (buildInfo?.needsBuild) {
-          lines.push(`- **需要构建**: ✅`, `- **路径**: \`${buildInfo.buildPath}\``, `- **命令**:`);
+          lines.push(t("guide.mcpNeedsBuild"), t("guide.mcpBuildPath", { path: buildInfo.buildPath }), t("guide.mcpBuildCmd"));
           for (const bc of buildInfo.buildCommands) lines.push(`  \`cd ${buildInfo.buildPath} && ${bc}\``);
         } else {
-          lines.push(`- **需要构建**: ❌（自动下载）`);
+          lines.push(t("guide.mcpAutoDownload"));
         }
       } else if (type === "remote" && url) {
-        lines.push(`- **类型**: 远程`, `- **URL 已配置**`);
+        lines.push(t("guide.mcpTypeRemote"), t("guide.mcpUrlConfigured"));
       }
       lines.push(``);
 
@@ -492,48 +494,48 @@ export function generateSyncGuide(workspaceRoot: string, state: WorkspaceState):
   // Output MCP 专项引导
   const knownGuides = allGuides.filter(g => g.isKnown);
   if (knownGuides.length > 0) {
-    lines.push(`---`, ``, `## ⚡ MCP 专项安装 (${knownGuides.length} 个)`, ``);
-    lines.push(`> ⚠️ 以下 MCP 需要额外手动操作，无法自动完成。`, ``);
+    lines.push(`---`, ``, t("guide.mcpSpecialInstall", { count: knownGuides.length }), ``);
+    lines.push(t("guide.mcpSpecialWarning"), ``);
     for (const guide of knownGuides) {
       lines.push(...generateMcpSetupSection(guide));
     }
   }
 
   // ═══ Skills ═══
-  lines.push(`---`, ``, `## 3. Skills (${state.skills.length} 个)`, ``);
+  lines.push(`---`, ``, t("guide.skillsSection", { count: state.skills.length }), ``);
   if (skillSources.length > 0) {
-    lines.push("安装命令：", "");
+    lines.push(t("guide.skillsInstallCmd"), "");
     for (const src of skillSources) lines.push(`\`\`\`bash`, `npx skills add ${src} -g -y`, `\`\`\``, "");
     const covered = new Set<string>();
     for (const pkg of SKILL_PACKAGES) { if (skillSources.includes(pkg.source)) for (const s of pkg.skills) covered.add(s); }
     for (const [name, src] of Object.entries(KNOWN_SKILL_SOURCES)) { if (skillSources.includes(src)) covered.add(name); }
     const uncovered = state.skills.filter(s => !covered.has(s));
     if (uncovered.length > 0) {
-      lines.push(`> ⚠️ ${uncovered.length} 个 skill 未找到安装源，需手动安装:`);
+      lines.push(t("guide.skillsUncovered", { count: uncovered.length }));
       for (const s of uncovered.slice(0, 20)) lines.push(`> - \`${s}\``);
-      if (uncovered.length > 20) lines.push(`> - ... 共 ${uncovered.length} 个`);
+      if (uncovered.length > 20) lines.push(t("guide.skillsUncoveredMore", { count: uncovered.length }));
       lines.push("");
     }
-  } else { lines.push("未找到已知安装源。", ""); }
+  } else { lines.push(t("guide.skillsNoSource"), ""); }
 
   // ═══ Submodules ═══
-  lines.push(`---`, ``, `## 4. 子模块 (${state.submodules.length} 个)`, ``,
-    `| 名称 | URL | Commit |`, `|------|-----|--------|`);
+  lines.push(`---`, ``, t("guide.submodulesSection", { count: state.submodules.length }), ``,
+    t("guide.submoduleTableHead"), t("guide.submoduleTableSep"));
   for (const sub of state.submodules) lines.push(`| ${sub.name} | \`${sub.url}\` | \`${sub.commit.slice(0, 7)}\` |`);
 
   // ═══ 恢复步骤 ═══
-  lines.push(``, `---`, ``, `## 5. 恢复步骤`, ``);
-  lines.push("| 步骤 | 工具 | 说明 |", "|------|------|------|",
-    "| 1 | `opencode_sync_verify` | 检查环境（含 MCP 专项检测） |",
-    "| 2 | `opencode_sync_setup` | 安装依赖 |",
-    "| 3 | `opencode_sync_api_keys detect` | 查看需要的密钥 |",
-    "| 4 | `opencode_sync_import` | 恢复状态 |",
-    "| 5 | 重启 opencode | 使配置生效 |");
+  lines.push(``, `---`, ``, t("guide.restoreSteps"), ``);
+  lines.push(t("guide.restoreTableHead"), t("guide.restoreTableSep"),
+    t("guide.restore1"),
+    t("guide.restore2"),
+    t("guide.restore3"),
+    t("guide.restore4"),
+    t("guide.restore5"));
 
   for (const guide of knownGuides) {
     const manualSteps = guide.knownEntry?.setup.steps.filter(s => !s.auto) || [];
     if (manualSteps.length > 0) {
-      lines.push(`| 6 | **手动配置 ${guide.displayName}** | ${manualSteps.length} 个步骤 |`);
+      lines.push(t("guide.restore6Manual", { name: guide.displayName, count: manualSteps.length }));
       break;
     }
   }

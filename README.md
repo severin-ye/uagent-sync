@@ -186,6 +186,20 @@ opencode-sync dashboard
 
 The dashboard binds to `127.0.0.1` by default and prints the actual local URL. Phase 1 is read-only: it visualizes Skills, instructions, MCP declarations, hooks, plugins/tools, portability, and migration gaps. Secret values, sessions, memories, provider credentials, permissions, themes, shortcuts, UI state, and caches are excluded. DeepSeek MCP remains marked **unverified** until local evidence proves support.
 
+### 🌐 Language (English / 中文)
+
+Output defaults to **English** and can be switched to Chinese per run or persistently:
+
+- **CLI**: `--lang zh` flag, or `UAGENT_SYNC_LANG=zh` environment variable (system locale is the fallback, then English).
+- **Dashboard**: use the **中文 / EN** toggle in the top bar — the choice is remembered in `localStorage` (`uagent-lang`).
+- Generated documents (SYNC-GUIDE.md, know-how files) follow the active language.
+
+```bash
+opencode-sync api-keys detect            # English by default
+opencode-sync api-keys detect --lang zh  # Chinese
+UAGENT_SYNC_LANG=zh opencode-sync guide  # Chinese guide
+```
+
 ## CLI (18 commands)
 
 Run any command as `node dist/cli.js <command>` (or `opencode-sync <command>` after `npm link`).
