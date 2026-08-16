@@ -4,8 +4,11 @@
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-08-16
+
 ### 新增
 
+- **全项目中英双语**：统一自研 i18n 机制（`src/i18n/`，零依赖，`t()` + 语言解析）——CLI 支持 `--lang en|zh` flag / `UAGENT_SYNC_LANG` 环境变量 / 系统 locale 检测，**默认英文**；dashboard 前端顶栏「中文 / EN」一键切换（localStorage `uagent-lang` 记忆）；dashboard-server API 错误与迁移草案理由按 `?lang=` 返回对应语言；CLI 输出/help/进度、lib 错误消息、生成文档（SYNC-GUIDE.md / know-how 文件）、opencode 插件运行时输出全部双语；工具描述保留中英触发词（"U同步，备份" 等）
 - **DeepSeek Harness bundle**（`packages/dsh/`）：16 个 `sync_*` 工具桥接 CLI + 共享 skills 注册为 DSH runtime skills；纯 JS 零构建（`dsh plugin add github:severin-ye/uagent-sync#master&path:packages/dsh`）
 - **中文名 U同步 / 优同步**：语音触发词注册于 AGENTS.md 与三个 SKILL.md
 - **看板双行正交轴**：迁移工作台重构为「目标端现状（缺失/已有/共享）× 我的决定（未决定/已决定）」正交筛选；动作精简为 4 项；旧决定自动映射
