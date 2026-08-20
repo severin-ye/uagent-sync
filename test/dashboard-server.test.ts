@@ -37,6 +37,14 @@ describe("dashboard server", () => {
     }
   });
 
+  it("serves the i18n asset required before app initialization", async () => {
+    const server = await fixtureServer();
+    const response = await fetch(`${server.url}/i18n.js`);
+    assert.equal(response.status, 200);
+    assert.match(response.headers.get("content-type") ?? "", /javascript/);
+    assert.match(await response.text(), /window\.DSH_I18N/);
+  });
+
   it("rejects unknown routes and write methods", async () => {
     const server = await fixtureServer();
     assert.equal((await fetch(`${server.url}/api/nope`)).status, 404);

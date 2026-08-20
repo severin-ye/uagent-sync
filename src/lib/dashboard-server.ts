@@ -38,6 +38,7 @@ function errorMessage(lang: Lang, key: string, params?: Record<string, string>):
 const ASSETS: Record<string, { file: string; type: string }> = {
   "/": { file: "index.html", type: "text/html; charset=utf-8" },
   "/styles.css": { file: "styles.css", type: "text/css; charset=utf-8" },
+  "/i18n.js": { file: "i18n.js", type: "text/javascript; charset=utf-8" },
   "/app.js": { file: "app.js", type: "text/javascript; charset=utf-8" },
 };
 
