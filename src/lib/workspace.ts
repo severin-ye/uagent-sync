@@ -10,6 +10,7 @@ import { detectSyncPath, isMachineSpecificPath } from "./portable.js";
 import type { SubmoduleStatusItem, SetupResult, VerifyResult } from "./types.js";
 import { DOTFILES_DIR } from "./dotfiles.js";
 import { t } from "../i18n/index.js";
+import { extensionConflictVerification } from "./extension-conflicts/index.js";
 
 export function getSubmoduleStatus(workspaceRoot: string): SubmoduleStatusItem[] {
   const gitmodulesPath = path.join(workspaceRoot, ".gitmodules");
@@ -43,6 +44,12 @@ export function getSubmoduleStatus(workspaceRoot: string): SubmoduleStatusItem[]
 
 export function verifyEnvironment(workspaceRoot: string): VerifyResult[] {
   const results: VerifyResult[] = [];
+  try {
+    const governance = extensionConflictVerification({ homeDir: os.homedir(), workspaceRoot });
+    results.push({ component: "Codex extension governance", status: governance.status, detail: governance.detail });
+  } catch (error) {
+    results.push({ component: "Codex extension governance", status: "error", detail: String(error) });
+  }
   const ghResult = run("gh auth status");
   results.push({ component: "GitHub CLI", status: ghResult.code === 0 ? "ok" : "error", detail: ghResult.code === 0 ? "Authenticated" : "Not authenticated — run: gh auth login" });
   const gitResult = run("git --version");

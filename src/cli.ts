@@ -192,10 +192,12 @@ async function main() {
         process.exit(1);
       }
       const server = await startDashboardServer({ host, port, workspaceRoot });
-      console.log(t("cli.dashboardStarted", { url: server.url }));
-      console.log(t("cli.dashboardReadOnly"));
+      const page = String(flags.get("page") || "").trim();
+      const pageUrl = page === "extension-conflicts" ? `${server.url}/extension-conflicts` : server.url;
+      console.log(t("cli.dashboardStarted", { url: pageUrl }));
+      console.log(page === "extension-conflicts" ? "Extension deduplication requires preview and second confirmation; no extension is deleted." : t("cli.dashboardReadOnly"));
       if (!boolFlag(flags, "no-open")) {
-        const opener = process.platform === "win32" ? ["cmd", ["/c", "start", "", server.url]] : process.platform === "darwin" ? ["open", [server.url]] : ["xdg-open", [server.url]];
+        const opener = process.platform === "win32" ? ["cmd", ["/c", "start", "", pageUrl]] : process.platform === "darwin" ? ["open", [pageUrl]] : ["xdg-open", [pageUrl]];
         const child = spawn(opener[0] as string, opener[1] as string[], { detached: true, stdio: "ignore", windowsHide: true });
         child.unref();
       }

@@ -5,9 +5,10 @@ import type {
   TargetStatusDetail,
 } from "./migration-types.js";
 import { t } from "../i18n/index.js";
+import { semanticCapabilityId } from "./capability-id.js";
 
 function semanticId(item: AgentCapability): string {
-  return item.capabilityId ?? `${item.kind}:${item.name}`;
+  return semanticCapabilityId(item);
 }
 
 function provider(item: AgentCapability): string {

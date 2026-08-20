@@ -76,6 +76,12 @@ codex plugin marketplace add severin-ye/uagent-sync
 # 然后在 Codex CLI 中打开 /plugins，安装 uagent-sync，新会话生效
 ```
 
+### Codex 扩展去重
+
+Skill、MCP 服务器和 Plugin 按同级能力统一扫描与审核。运行 `uagent-sync dashboard --page extension-conflicts` 查看双方描述、来源、指纹和重叠证据，再暂存决定。置信度分为 `verified`（内置映射或相同 capability ID）、`high`（规范化同名且描述一致）和 `low`（关键词相似；禁止批量选择）。`agent-browser → browser/chrome` 只排在首位待人工判断，不会自动禁用。
+
+决策账本固定为 `usync-dotfiles/agents/codex/policies/extension-conflicts.json`。应用前会展示保留注释、顺序、BOM、换行格式的 `~/.codex/config.toml` 精确差异和账本变化，并要求二次确认；同时建立带时间戳的备份。应用后需重启 Codex 或新建任务。`update` 只在完成相关更新后做一次只读扫描，有待审时仅提示聚焦命令；不修改 OpenCode/DeepSeek，不卸载或删除任何扩展。
+
 ### 首次备份
 
 ```sh
