@@ -45,6 +45,14 @@ describe("dashboard server", () => {
     assert.match(await response.text(), /window\.DSH_I18N/);
   });
 
+  it("serves extension deduplication from the same dashboard origin", async () => {
+    const server = await fixtureServer();
+    const response = await fetch(`${server.url}/extension-conflicts`);
+    assert.equal(response.status, 200);
+    assert.match(response.headers.get("content-type") ?? "", /text\/html/);
+    assert.match(await response.text(), /Extension deduplication/);
+  });
+
   it("rejects unknown routes and write methods", async () => {
     const server = await fixtureServer();
     assert.equal((await fetch(`${server.url}/api/nope`)).status, 404);

@@ -76,6 +76,12 @@ codex plugin marketplace add severin-ye/uagent-sync
 # Then open /plugins in the Codex CLI, install uagent-sync, and start a new session.
 ```
 
+### Codex extension deduplication
+
+Skills, MCP servers, and plugins are reviewed as peer capabilities. Run `uagent-sync dashboard --page extension-conflicts` to inspect evidence and stage decisions. Confidence is `verified` (built-in/equal capability ID), `high` (normalized name plus matching description), or `low` (keyword similarity; never bulk-selected). The `agent-browser → browser/chrome` mapping is a first, pending review item and is never auto-disabled.
+
+The portable decision ledger is `usync-dotfiles/agents/codex/policies/extension-conflicts.json`. Applying a decision shows an exact byte-preserving `~/.codex/config.toml` diff and ledger changes, then requires a second confirmation. Timestamped backups are created; Codex must be restarted (or a new task started) after applying. `update` performs one read-only post-update scan and only reports the focused command when review is needed. OpenCode and DeepSeek are not changed, and no extension is uninstalled or deleted.
+
 ### First backup
 
 ```sh

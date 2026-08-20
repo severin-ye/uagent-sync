@@ -43,13 +43,19 @@ describe("dashboard assets", () => {
     const html = asset("index.html");
     const js = asset("app.js");
     const css = asset("styles.css");
-    for (const view of ["overview", "agents", "matrix", "actions", "security"]) {
+    for (const view of ["overview", "agents", "matrix", "compatibility", "actions", "execution", "security"]) {
       assert.match(html, new RegExp(`data-view="${view}"`));
     }
+    assert.match(html, /href="\/extension-conflicts"/);
+    assert.match(html, /dash\.viewOverlap/);
+    assert.match(html, /id="compatibility-content"/);
+    assert.match(html, /id="execution"/);
     assert.match(js, /initializeNavigation/);
     assert.match(js, /aria-current/);
     assert.match(js, /data-dashboard-section/);
     assert.match(css, /body\[data-view=/);
+    assert.match(css, /compatibility-card/);
+    assert.match(js, /renderCompatibility/);
   });
 
   it("renders a six-direction migration workbench with bulk rules and per-item overrides", () => {

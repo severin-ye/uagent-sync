@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Extension deduplication · Uagent Sync</title>
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    .extension-page{max-width:1180px;margin:0 auto;padding:32px}.extension-page header{display:flex;justify-content:space-between;gap:24px;align-items:flex-start}.extension-page h1{margin:.2rem 0}.extension-page .muted{color:var(--muted,#8a93a3)}
+    .extension-summary{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:28px 0}.extension-stat{border:1px solid var(--border,#303846);border-radius:12px;padding:14px;background:var(--panel,#171b22)}.extension-stat b{display:block;font-size:1.7rem}.extension-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:18px 0}.extension-toolbar button,.extension-card button{border:1px solid var(--border,#303846);border-radius:8px;padding:8px 12px;background:var(--panel,#171b22);color:inherit;cursor:pointer}.extension-toolbar button.primary,.extension-card button.primary{background:#7898dc;color:#08111f;border-color:#7898dc}.extension-toolbar button:disabled{opacity:.45;cursor:not-allowed}.extension-list{display:grid;gap:14px}.extension-card{border:1px solid var(--border,#303846);border-radius:14px;background:var(--panel,#171b22);padding:18px}.extension-card.pending{border-color:#5873ad}.extension-card.low{opacity:.88}.extension-card h2{margin:0;font-size:1.05rem}.extension-card .card-head{display:flex;justify-content:space-between;gap:14px}.extension-card .meta{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}.extension-badge{border-radius:999px;padding:3px 8px;font-size:.75rem;background:#273246}.extension-badge.verified{background:#244d42}.extension-badge.high{background:#354a78}.extension-badge.low{background:#5a4430}.extension-card dl{display:grid;grid-template-columns:145px 1fr;gap:6px;margin:14px 0}.extension-card dt{color:var(--muted,#8a93a3)}.extension-card dd{margin:0}.extension-evidence{margin:0;padding-left:20px}.extension-choice{display:flex;gap:10px;align-items:center;margin-top:14px}.extension-choice select{background:var(--panel,#171b22);color:inherit;border:1px solid var(--border,#303846);padding:7px;border-radius:7px}.extension-low{margin-top:26px}.extension-low summary{cursor:pointer;color:var(--muted,#8a93a3)}.extension-preview{white-space:pre-wrap;background:#0b0f14;border-radius:8px;padding:14px;max-height:320px;overflow:auto;font:12px/1.5 ui-monospace,monospace}.extension-status{min-height:24px;margin:14px 0}.extension-status.error{color:#ff9e9e}.extension-status.ok{color:#9ce0bd}@media(max-width:760px){.extension-page{padding:18px}.extension-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.extension-page header{display:block}.extension-card dl{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <main class="extension-page">
+    <header><div><p class="eyebrow">CODEX · EXTENSION GOVERNANCE</p><h1>Extension deduplication</h1><p class="muted">Skills, MCP servers and plugins are reviewed as peers. Nothing is deleted; only Codex enabled flags can change after confirmation.</p></div><div><a class="button" href="/">← Configuration console</a></div></header>
+    <section class="extension-summary" aria-label="Conflict summary">
+      <div class="extension-stat"><span>Pending</span><b id="count-pending">—</b></div><div class="extension-stat"><span>High confidence</span><b id="count-high">—</b></div><div class="extension-stat"><span>Low confidence</span><b id="count-low">—</b></div><div class="extension-stat"><span>Decided</span><b id="count-decided">—</b></div><div class="extension-stat"><span>Drift</span><b id="count-drift">—</b></div>
+    </section>
+    <div class="extension-toolbar"><button id="refresh" type="button">Rescan</button><button id="select-recommended" class="primary" type="button">Stage high-confidence recommendations</button><button id="preview" type="button" disabled>Preview exact changes</button><span id="status" class="extension-status muted" role="status"></span></div>
+    <section id="high-list" class="extension-list" aria-live="polite"></section>
+    <details class="extension-low"><summary>Low-confidence evidence (never bulk-selected)</summary><section id="low-list" class="extension-list"></section></details>
+    <section id="preview-panel" hidden><h2>Exact configuration and ledger preview</h2><p class="muted">Review this diff. A second confirmation is required; the first preview does not modify files.</p><pre id="preview-text" class="extension-preview"></pre><div class="extension-toolbar"><button id="confirm" class="primary" type="button">Confirm and apply</button><button id="cancel-preview" type="button">Cancel</button></div></section>
+  </main>
+  <script src="/extension-conflicts.js" defer></script>
+</body>
+</html>

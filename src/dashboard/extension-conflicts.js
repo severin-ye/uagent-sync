@@ -1,0 +1,35 @@
+const state = { snapshot: null, token: null, staged: {}, confirmation: null };
+const $ = (s) => document.querySelector(s);
+const esc = (v) => { const el = document.createElement("span"); el.textContent = String(v ?? ""); return el.innerHTML; };
+const setStatus = (message, kind = "muted") => { const el = $("#status"); el.textContent = message; el.className = `extension-status ${kind}`; };
+function decisionFor(candidate) { return state.staged[candidate.id] ?? "defer"; }
+function card(candidate, low = false) {
+  const personal = candidate.personal ?? candidate.personalCapability ?? {};
+  const official = candidate.official ?? candidate.officialReplacement ?? {};
+  const evidence = (candidate.overlapEvidence ?? candidate.evidence ?? []).map((x) => `<li>${esc(typeof x === "string" ? x : x.text ?? JSON.stringify(x))}</li>`).join("");
+  const confidence = candidate.confidence ?? "low";
+  const recommendation = candidate.recommendation ?? "defer";
+  return `<article class="extension-card ${low ? "low" : "pending"}" data-candidate-id="${esc(candidate.id)}"><div class="card-head"><div><h2>${esc(personal.name ?? candidate.personalName ?? "Unknown extension")}</h2><div class="meta"><span class="extension-badge">${esc(personal.kind ?? candidate.personalKind ?? "extension")}</span><span class="extension-badge ${esc(confidence)}">${esc(confidence)}</span>${candidate.drift ? '<span class="extension-badge low">drift / review</span>' : ""}</div></div><span class="muted">Codex only</span></div><dl><dt>Official replacement</dt><dd>${esc(official.name ?? candidate.officialName ?? "No verified replacement")}${official.kind ? ` · ${esc(official.kind)}` : ""}</dd><dt>Overlap evidence</dt><dd><ul class="extension-evidence">${evidence || "<li>No automatic decision; inspect both descriptions.</li>"}</ul></dd><dt>Difference</dt><dd>${esc(candidate.difference ?? candidate.differences ?? "Review scope and provenance before choosing.")}</dd></dl><div class="extension-choice"><label>Decision <select data-choice="${esc(candidate.id)}"><option value="disable_personal_codex" ${recommendation === "disable_personal_codex" ? "selected" : ""}>Disable personal in Codex</option><option value="keep_both" ${recommendation === "keep_both" ? "selected" : ""}>Keep both</option><option value="defer" ${recommendation === "defer" ? "selected" : ""}>Defer</option></select></label>${confidence !== "low" ? `<button type="button" data-stage="${esc(candidate.id)}">Stage</button>` : ""}</div></article>`;
+}
+function render() {
+  const snapshot = state.snapshot;
+  if (!snapshot) return;
+  const candidates = snapshot.candidates ?? [];
+  const high = candidates.filter((c) => (c.confidence ?? "low") !== "low");
+  const low = candidates.filter((c) => (c.confidence ?? "low") === "low");
+  $("#high-list").innerHTML = high.length ? high.map((c) => card(c)).join("") : '<p class="muted">No high-confidence pending candidates.</p>';
+  $("#low-list").innerHTML = low.length ? low.map((c) => card(c, true)).join("") : '<p class="muted">No low-confidence candidates.</p>';
+  const counts = snapshot.summary ?? {};
+  $("#count-pending").textContent = counts.pending ?? candidates.filter((c) => !c.decision).length;
+  $("#count-high").textContent = counts.high ?? high.length;
+  $("#count-low").textContent = counts.low ?? low.length;
+  $("#count-decided").textContent = counts.decided ?? candidates.filter((c) => c.decision).length;
+  $("#count-drift").textContent = counts.drift ?? candidates.filter((c) => c.drift).length;
+  document.querySelectorAll("[data-choice]").forEach((el) => el.addEventListener("change", () => { state.staged[el.dataset.choice] = el.value; $("#preview").disabled = Object.keys(state.staged).length === 0; }));
+  document.querySelectorAll("[data-stage]").forEach((el) => el.addEventListener("click", () => { const c = candidates.find((x) => x.id === el.dataset.stage); if (c) { state.staged[c.id] = c.recommendation ?? "defer"; render(); $("#preview").disabled = false; } }));
+}
+async function session() { const res = await fetch("/api/session", { cache: "no-store" }); if (!res.ok) throw new Error("Session token unavailable"); state.token = (await res.json()).token; }
+async function refresh() { $("#refresh").disabled = true; setStatus("Scanning current Codex configuration…"); try { await session(); const res = await fetch("/api/extension-conflicts", { cache: "no-store" }); if (!res.ok) throw new Error(`Scan failed (${res.status})`); state.snapshot = await res.json(); render(); setStatus("Current state loaded.", "ok"); } catch (error) { setStatus(error.message, "error"); } finally { $("#refresh").disabled = false; } }
+async function preview() { if (!state.snapshot || !Object.keys(state.staged).length) return; setStatus("Building exact preview…"); const decisions = Object.entries(state.staged).map(([candidateId, decision]) => ({ candidateId, decision })); try { const res = await fetch("/api/extension-conflicts/apply", { method: "POST", headers: { "Content-Type": "application/json", "Origin": location.origin, "X-Uagent-Token": state.token }, body: JSON.stringify({ dryRun: true, decisions, configHash: state.snapshot.configHash }) }); const body = await res.json(); if (!res.ok) throw new Error(body.error?.message ?? `Preview failed (${res.status})`); state.confirmation = body.confirmationToken; $("#preview-text").textContent = `${body.configDiff ?? "(no config byte changes)"}\n\nLedger changes:\n${JSON.stringify(body.ledgerChanges ?? {}, null, 2)}\n\nWarnings:\n${(body.warnings ?? []).join("\n")}`; $("#preview-panel").hidden = false; setStatus("Preview ready. Nothing has been modified.", "ok"); } catch (error) { setStatus(error.message, "error"); } }
+async function confirm() { if (!state.confirmation) return; setStatus("Applying confirmed changes…"); try { const res = await fetch("/api/extension-conflicts/apply", { method: "POST", headers: { "Content-Type": "application/json", "Origin": location.origin, "X-Uagent-Token": state.token }, body: JSON.stringify({ dryRun: false, confirmationToken: state.confirmation }) }); const body = await res.json(); if (!res.ok) throw new Error(body.error?.message ?? `Apply failed (${res.status})`); $("#preview-panel").hidden = true; state.confirmation = null; state.staged = {}; setStatus("Applied. Nothing was deleted. Restart Codex or start a new task to reload extensions.", "ok"); await refresh(); } catch (error) { setStatus(error.message, "error"); } }
+$("#refresh").addEventListener("click", refresh); $("#select-recommended").addEventListener("click", () => { for (const c of state.snapshot?.candidates ?? []) if ((c.confidence ?? "low") !== "low" && !c.decision) state.staged[c.id] = c.recommendation ?? "defer"; render(); $("#preview").disabled = Object.keys(state.staged).length === 0; setStatus("Recommendations staged only; review and preview before applying."); }); $("#preview").addEventListener("click", preview); $("#confirm").addEventListener("click", confirm); $("#cancel-preview").addEventListener("click", () => { state.confirmation = null; $("#preview-panel").hidden = true; }); refresh();

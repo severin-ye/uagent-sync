@@ -38,7 +38,8 @@ const statusExplain = {
 };
 const viewLabels = {
   overview: t("dash.viewOverview"), agents: t("dash.viewAgents"), matrix: t("dash.viewMatrix"),
-  actions: t("dash.viewActions"), security: t("dash.viewSecurity"),
+  compatibility: t("dash.viewCompatibility"), actions: t("dash.viewActions"),
+  execution: t("dash.viewExecution"), security: t("dash.viewSecurity"),
 };
 
 /** 旧版 7 动作 → 新版 4 动作映射（localStorage 兼容）。 */
@@ -211,6 +212,26 @@ function renderMatrix(matrix) {
   ].join("");
 }
 
+function renderCompatibility(inventory) {
+  const el = $("#compatibility-content");
+  if (!el) return;
+  const groups = [
+    { key: "portable", label: t("dash.compatPortable") },
+    { key: "adaptable", label: t("dash.compatAdaptable") },
+    { key: "native_only", label: t("dash.compatNative") },
+    { key: "unverified", label: t("dash.compatUnverified") },
+  ];
+  el.innerHTML = inventory.agents.map((agent) => {
+    const total = agent.capabilities.length;
+    const rows = groups.map((group) => {
+      const value = agent.capabilities.filter((item) => item.portability === group.key).length;
+      const width = total ? Math.round((value / total) * 100) : 0;
+      return `<div class="compatibility-row"><span>${escapeHtml(group.label)}</span><span class="compatibility-track"><span class="compatibility-fill" style="width:${width}%"></span></span><b class="compatibility-count">${value}</b></div>`;
+    }).join("");
+    return `<article class="compatibility-card"><div class="compatibility-card-head"><h3>${escapeHtml(labels[agent.id] ?? agent.id)}</h3><span class="compatibility-total">${t("dash.compatItems", { count: total })}</span></div>${rows}</article>`;
+  }).join("");
+}
+
 /** 按现状返回可用的动作集。 */
 function actionsFor(item) {
   if (item.status === "existing") return { keep_current: t("dash.execKeepCurrent"), defer: t("dash.execDefer") };
@@ -322,7 +343,7 @@ async function refresh() {
     const response = await fetch("/api/inventory", { cache: "no-store" });
     if (!response.ok) throw new Error(t("dash.scanFailed"));
     const inventory = await response.json(); state.lastInventory = inventory;
-    renderAgents(inventory); renderMatrix(inventory.matrix); await loadMigrationDraft();
+    renderAgents(inventory); renderMatrix(inventory.matrix); renderCompatibility(inventory); await loadMigrationDraft();
     $(".workspace-name").textContent = inventory.workspaceRoot.split(/[\\/]/).filter(Boolean).at(-1) || t("common.workspace");
     $("#workspace-short").textContent = $(".workspace-name").textContent;
     $("#diff-count").textContent = t("dash.viewCandidatesShort");

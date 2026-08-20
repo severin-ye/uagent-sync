@@ -16,10 +16,13 @@
       <p class="nav-label" data-i18n="dash.navLabel">Workspace</p>
       <nav data-i18n-attr="aria-label:dash.navAria" aria-label="Main navigation">
         <a class="nav-item active" href="#overview" data-view="overview" aria-current="page"><span>◫</span><strong data-i18n="dash.viewOverview">Overview</strong></a>
-        <a class="nav-item" href="#agents" data-view="agents"><span>⌘</span><strong data-i18n="dash.viewAgents">Agent Config</strong><em id="agent-count">3</em></a>
-        <a class="nav-item" href="#matrix" data-view="matrix"><span>≠</span><strong data-i18n="dash.viewMatrix">Coverage</strong><em id="diff-count">—</em></a>
-        <a class="nav-item" href="#actions" data-view="actions"><span>↥</span><strong data-i18n="dash.viewActions">Migration</strong></a>
-        <a class="nav-item" href="#security" data-view="security"><span>◇</span><strong data-i18n="dash.viewSecurity">Security</strong></a>
+        <a class="nav-item" href="#agents" data-view="agents"><span>⌘</span><strong data-i18n="dash.viewAgents">Asset inventory</strong><em id="agent-count">3</em></a>
+        <a class="nav-item" href="#matrix" data-view="matrix"><span>≠</span><strong data-i18n="dash.viewMatrix">Coverage &amp; differences</strong><em id="diff-count">—</em></a>
+        <a class="nav-item" href="/extension-conflicts"><span>◇</span><strong data-i18n="dash.viewOverlap">Overlap &amp; dedup</strong><em id="dedup-count">Codex</em></a>
+        <a class="nav-item" href="#compatibility" data-view="compatibility"><span>≈</span><strong data-i18n="dash.viewCompatibility">Compatibility</strong></a>
+        <a class="nav-item" href="#actions" data-view="actions"><span>↥</span><strong data-i18n="dash.viewActions">Migration plan</strong></a>
+        <a class="nav-item" href="#execution" data-view="execution"><span>✓</span><strong data-i18n="dash.viewExecution">Execution &amp; verify</strong></a>
+        <a class="nav-item" href="#security" data-view="security"><span>◇</span><strong data-i18n="dash.viewSecurity">Security boundary</strong></a>
       </nav>
       <div class="sidebar-foot">
         <button id="theme-toggle" class="theme-toggle" type="button" data-i18n-attr="aria-label:dash.themeToggle" aria-label="Toggle theme">◐ <span data-i18n="dash.themeToggle">Toggle theme</span></button>
@@ -70,6 +73,22 @@
           </div>
           <div id="migration-items" class="migration-items" aria-live="polite"></div>
         </article>
+      </section>
+
+      <section id="compatibility" class="panel module-panel" data-dashboard-section="compatibility">
+        <header class="panel-head"><div><p class="kicker" data-i18n="dash.kickerCompatibility">COMPATIBILITY</p><h2 data-i18n="dash.compatibilityTitle">Compatibility assessment</h2></div><span class="quiet" data-i18n="dash.liveScan">Live scan</span></header>
+        <p class="module-intro" data-i18n="dash.compatibilityIntro">Classifies whether a capability can be shared directly, adapted, kept native, or still needs verification.</p>
+        <div id="compatibility-content" class="compatibility-grid" aria-live="polite"></div>
+      </section>
+
+      <section id="execution" class="panel module-panel" data-dashboard-section="execution">
+        <header class="panel-head"><div><p class="kicker" data-i18n="dash.kickerExecution">EXECUTION &amp; VERIFY</p><h2 data-i18n="dash.executionTitle">Decisions, execution and verification</h2></div><span class="quiet" data-i18n="dash.readOnlyMode">Read-only by default</span></header>
+        <p class="module-intro" data-i18n="dash.executionIntro">Migration drafts are not applied automatically. Review the proposed action, confirm it explicitly, then verify the resulting configuration.</p>
+        <div class="execution-grid">
+          <article class="execution-card"><strong data-i18n="dash.executionDraftTitle">Draft first</strong><p data-i18n="dash.executionDraftBody">Every migration route starts as a read-only draft with per-item decisions.</p></article>
+          <article class="execution-card"><strong data-i18n="dash.executionConfirmTitle">Confirm changes</strong><p data-i18n="dash.executionConfirmBody">Codex extension deduplication shows an exact diff and requires a second confirmation.</p><a class="button" href="/extension-conflicts" data-i18n="dash.openDedup">Open extension dedup</a></article>
+          <article class="execution-card"><strong data-i18n="dash.executionVerifyTitle">Verify after change</strong><p data-i18n="dash.executionVerifyBody">Run verification after a change and restart the affected Agent when required.</p><code>uagent-sync verify</code></article>
+        </div>
       </section>
 
       <section id="security" class="security-strip" data-dashboard-section="security"><span class="security-icon">◇</span><div><strong data-i18n="dash.securityTitle">Read-only mode</strong><p data-i18n="dash.securityBody">Sessions, Memory, provider credentials, permissions, themes, and UI state are never migrated. DeepSeek MCP stays marked “unverified” until local evidence proves support.</p></div><span id="last-scan" class="last-scan" data-i18n="dash.notScanned">Not scanned yet</span></section>

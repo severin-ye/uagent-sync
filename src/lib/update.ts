@@ -20,6 +20,7 @@ import { resolveWorkspaceRoot } from "../sync.js";
 import { updateCodebaseMemory } from "./codebase-memory.js";
 import { DOTFILES_DIR } from "./dotfiles.js";
 import { t } from "../i18n/index.js";
+import { scanExtensionConflicts } from "./extension-conflicts/index.js";
 
 export type UpdateComponent =
   | "opencode"
@@ -59,6 +60,7 @@ export interface UpdateReport {
   steps: UpdateStep[];
   summary: { ok: number; warning: number; error: number; skipped: number };
   text: string;
+  extensionConflicts?: { status: "ok" | "warning" | "error"; pending: number; drift: number; message?: string };
 }
 
 const PLUGIN_CACHE = path.join(os.homedir(), ".cache", "opencode", "packages");
@@ -419,6 +421,19 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
     skipped: steps.filter((s) => s.status === "skipped").length,
   };
 
+  // One read-only Codex scan observes the state after a real update (or current state for dry-run).
+  // It never predicts the result of commands that were not executed and never changes Codex config.
+  let extensionConflicts: UpdateReport["extensionConflicts"];
+  try {
+    if (!["plugins", "skills", "mcp"].some((component) => selected.has(component as UpdateComponent))) {
+      extensionConflicts = undefined;
+    } else {
+    const snapshot = scanExtensionConflicts({ homeDir: os.homedir(), workspaceRoot: resolveWorkspaceRoot() });
+    extensionConflicts = { status: snapshot.status, pending: snapshot.summary.pending, drift: snapshot.summary.drift,
+      message: snapshot.summary.pending || snapshot.summary.drift ? `${dryRun ? "Current" : "Post-update"} Codex review: ${snapshot.summary.pending} pending, ${snapshot.summary.drift} drift — uagent-sync dashboard --page extension-conflicts` : undefined };
+    }
+  } catch (error) { extensionConflicts = { status: "error", pending: 0, drift: 0, message: String(error) }; }
+
   const lines = [
     t("lib.updateReportTitle", { dryRun: dryRun ? t("lib.updateReportDryRun") : "" }),
     t("lib.updateReportTime", { time: timestamp }),
@@ -435,8 +450,9 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
     "",
     t("lib.updateReportFooter"),
   ];
+  if (extensionConflicts?.message) lines.push("", `### Codex extension governance`, `  ${extensionConflicts.message}`);
 
-  const report: UpdateReport = { timestamp, dryRun, components: [...selected], steps, summary, text: lines.join("\n") };
+  const report: UpdateReport = { timestamp, dryRun, components: [...selected], steps, summary, text: lines.join("\n"), extensionConflicts };
   emit({ type: "done", summary });
   return report;
 }
