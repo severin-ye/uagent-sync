@@ -20,11 +20,18 @@ describe("dashboard assets", () => {
 
   it("uses the same dashboard shell for extension deduplication", () => {
     const html = asset("extension-conflicts.html");
+    const i18n = asset("i18n.js");
+    const js = asset("extension-conflicts.js");
     assert.match(html, /class="app-shell"/);
     assert.match(html, /class="sidebar"/);
     assert.match(html, /href="\/styles\.css"/);
     assert.match(html, /href="\/extension-conflicts"/);
     assert.doesNotMatch(html, /<style>/);
+    assert.match(html, /data-i18n="ext\.title"/);
+    assert.match(i18n, /ext\.title/);
+    assert.match(i18n, /扩展去重/);
+    assert.match(js, /localizeEvidence/);
+    assert.match(html, /data-i18n="ext\.stageRecommendations"/);
   });
 
   it("provides a language toggle and bilingual dictionaries in the frontend", () => {
