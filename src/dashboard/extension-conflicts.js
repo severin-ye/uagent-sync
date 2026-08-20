@@ -1,6 +1,9 @@
 const state = { snapshot: null, token: null, staged: {}, confirmation: null };
 const $ = (s) => document.querySelector(s);
 const esc = (v) => { const el = document.createElement("span"); el.textContent = String(v ?? ""); return el.innerHTML; };
+const savedTheme = localStorage.getItem("uagent-theme");
+if (savedTheme) document.documentElement.dataset.theme = savedTheme;
+$("#theme-toggle")?.addEventListener("click", () => { const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark"; document.documentElement.dataset.theme = next; localStorage.setItem("uagent-theme", next); });
 const setStatus = (message, kind = "muted") => { const el = $("#status"); el.textContent = message; el.className = `extension-status ${kind}`; };
 function decisionFor(candidate) { return state.staged[candidate.id] ?? "defer"; }
 function card(candidate, low = false) {

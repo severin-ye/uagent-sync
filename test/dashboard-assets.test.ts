@@ -18,6 +18,15 @@ describe("dashboard assets", () => {
     assert.ok(fs.existsSync(path.join(root, "dist", "dashboard", "i18n.js")));
   });
 
+  it("uses the same dashboard shell for extension deduplication", () => {
+    const html = asset("extension-conflicts.html");
+    assert.match(html, /class="app-shell"/);
+    assert.match(html, /class="sidebar"/);
+    assert.match(html, /href="\/styles\.css"/);
+    assert.match(html, /href="\/extension-conflicts"/);
+    assert.doesNotMatch(html, /<style>/);
+  });
+
   it("provides a language toggle and bilingual dictionaries in the frontend", () => {
     const html = asset("index.html");
     const i18n = asset("i18n.js");
