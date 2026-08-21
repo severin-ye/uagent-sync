@@ -23,3 +23,8 @@ export { scanWorkspaceInventory, buildCapabilityMatrix, buildInventoryDiff, buil
 export { buildMigrationDraft } from "./lib/migration-engine.js";
 export type { DashboardServer, DashboardServerOptions } from "./lib/dashboard-server.js";
 export { startDashboardServer } from "./lib/dashboard-server.js";
+export { parseAnalysisContext, contextKey, contextHash, implementationId, actionForContext, groupRelations, scanMigrationAnalysis, buildFunctionalRelations, publicAnalysisResult } from "./lib/migration-analysis/index.js";
+export { createCapabilityImplementation, sanitizeForPublic } from "./lib/migration-analysis/types.js";
+export { createFunctionalRelation } from "./lib/migration-analysis/relations.js";
+export { previewMigrationAnalysis, applyMigrationAnalysis } from "./lib/migration-analysis/transaction.js";
+export type { AnalysisContext, CapabilityImplementation, FunctionalRelation, DuplicateGroup, ImplementationAction, ActionValue, SourceClass } from "./lib/migration-analysis/index.js";
