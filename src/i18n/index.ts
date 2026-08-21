@@ -7,7 +7,7 @@
  *   3. 系统 locale（LANG/LC_ALL，zh* → zh）
  *   4. 默认 en（用户明确要求：下载/安装后默认英文）
  *
- * dashboard 前端不使用本模块（浏览器环境，见 src/dashboard/i18n.js）。
+ * Dashboard 浏览器字典由同一 messages.ts 在构建时生成。
  */
 
 import { lookup, type Lang, type Messages } from "./messages.js";

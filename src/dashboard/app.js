@@ -1,394 +1,255 @@
-const state = { lastInventory: null, migrationDraft: null, decisions: loadDecisions(), kindFilter: loadKindFilter(), axis1Filter: null, axis2Filter: null };
-const DECISIONS_KEY = "uagent-decisions";
-const KIND_FILTER_KEY = "uagent-kind-filter";
-const t = (key, params) => window.DSH_I18N.t(key, params);
-const langQuery = () => `lang=${window.DSH_I18N.getLang()}`;
-const KIND_FILTERS = [
-  { key: "plugins", labelKey: "dash.filterPlugins" },
-  { key: "mcp", labelKey: "dash.filterMcp" },
-  { key: "skills", labelKey: "dash.filterSkills" },
-];
+import { ANALYSIS_TABS, actionLabel, contextFromControls, queryFor, swapCrossAgentSelection } from "./migration-analysis.js";
+
+export const ROUTES = ["overview", "inventory", "migration-analysis", "safety"];
+export function createDashboardStore() {
+  return { route: "overview", migrationTab: "overlap", inventory: null, analysisScope: null, analysisResult: null, phase: "scope_required", drafts: {}, staged: {}, committed: {}, preview: null, verification: null, confirmationToken: null, diffHash: null, theme: "dark", requestGeneration: 0, scopeControls: null };
+}
+export function createDashboardRouter({ onChange, initial = null } = {}) {
+  const parse = () => {
+    const parts = (location.hash.replace(/^#\/?/, "") || initial || "overview").split("/");
+    const route = ROUTES.includes(parts[0]) ? parts[0] : "overview";
+    const tab = route === "migration-analysis" && ANALYSIS_TABS.includes(parts[1]) ? parts[1] : "overlap";
+    return { route, tab };
+  };
+  let current = parse();
+  const notify = () => { current = parse(); onChange?.(current); };
+  const go = (route, tab = "overlap", replace = false) => {
+    const target = route === "migration-analysis" ? `#${route}/${tab}` : `#${route}`;
+    if (location.hash !== target) (replace ? history.replaceState : history.pushState).call(history, null, "", target);
+    notify();
+  };
+  window.addEventListener("hashchange", notify);
+  window.addEventListener("popstate", notify);
+  return { current: () => current, go, notify };
+}
+
 const $ = (selector) => document.querySelector(selector);
+const t = (key, params) => window.DSH_I18N?.t(key, params) ?? key;
 const labels = { codex: "Codex", opencode: "OpenCode", deepseek: "DeepSeek Harness" };
-const kindLabels = { instructions: "Instructions", skills: "Skills", scripts: "Scripts", cli: "CLI", mcp: "MCP Servers", hooks: "Lifecycle Hooks", plugins: "Plugins", tools: "Custom Tools", subagents: "Subagents" };
-const recommendationLabels = {
-  direct_share: t("dash.recoDirectShare"), use_existing_target: t("dash.recoUseExisting"),
-  install_official_variant: t("dash.recoInstallOfficial"), find_mature_alternative: t("dash.recoFindAlternative"),
-  verify_first: t("dash.recoVerifyFirst"),
-};
-const executionLabels = {
-  direct_share: t("dash.execDirectShare"), install_enabled: t("dash.execInstallEnabled"),
-  keep_current: t("dash.execKeepCurrent"), defer: t("dash.execDefer"),
-};
-const evidenceLabels = {
-  verified_local: t("dash.evidenceVerified"), declared_official: t("dash.evidenceDeclared"),
-  unverified: t("dash.evidenceUnverified"), needs_research: t("dash.evidenceNeedsResearch"),
-};
-const strategyExplain = {
-  direct_share: t("dash.strategyDirectShare"),
-  use_existing_target: t("dash.strategyUseExisting"),
-  install_official_variant: t("dash.strategyInstallOfficial"),
-  find_mature_alternative: t("dash.strategyFindAlternative"),
-  verify_first: t("dash.strategyVerifyFirst"),
-};
-const statusExplain = {
-  missing: t("dash.statusMissingExplain"),
-  existing: t("dash.statusExistingExplain"),
-  shared: t("dash.statusSharedExplain"),
-};
-const viewLabels = {
-  overview: t("dash.viewOverview"), agents: t("dash.viewAgents"), matrix: t("dash.viewMatrix"),
-  compatibility: t("dash.viewCompatibility"), actions: t("dash.viewActions"),
-  execution: t("dash.viewExecution"), security: t("dash.viewSecurity"),
-};
-
-/** 旧版 7 动作 → 新版 4 动作映射（localStorage 兼容）。 */
-const LEGACY_ACTION_MAP = { no_change: "keep_current", install_disabled: "keep_current", use_target_native: "keep_current", keep_both: "keep_current", direct_share: "direct_share", install_enabled: "install_enabled", defer: "defer" };
-
-function loadDecisions() {
-  try {
-    const raw = JSON.parse(localStorage.getItem(DECISIONS_KEY)) ?? {};
-    for (const scope of Object.keys(raw)) {
-      for (const id of Object.keys(raw[scope] ?? {})) {
-        const action = raw[scope][id]?.action;
-        if (action && LEGACY_ACTION_MAP[action]) raw[scope][id].action = LEGACY_ACTION_MAP[action];
-      }
-    }
-    return raw;
-  } catch { return {}; }
+const esc = (value) => { const node = document.createElement("span"); node.textContent = String(value ?? ""); return node.innerHTML; };
+async function fetchWithTimeout(input, init = {}, timeoutMs = 15000) {
+  const controller = new AbortController(); const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try { return await fetch(input, { ...init, signal: controller.signal }); } finally { clearTimeout(timer); }
 }
-function saveDecisions() { localStorage.setItem(DECISIONS_KEY, JSON.stringify(state.decisions)); }
-function decisionsScope() { return `${$("#migration-from").value}→${$("#migration-to").value}`; }
-function decisionsFor(scope) { return state.decisions[scope] ?? {}; }
-function loadKindFilter() { try { const value = JSON.parse(localStorage.getItem(KIND_FILTER_KEY)); return Array.isArray(value) ? value : null; } catch { return null; } }
-function saveKindFilter(value) { localStorage.setItem(KIND_FILTER_KEY, JSON.stringify(value)); }
+const getControls = () => ({ mode: $("#analysis-mode")?.value, agent: $("#analysis-agent")?.value, source: $("#analysis-source")?.value, target: $("#analysis-target")?.value });
+const setControls = (values) => { if (!values) return; for (const [key, value] of Object.entries(values)) { const element = $(`#analysis-${key}`); if (element) element.value = value ?? ""; } };
+const hasTransientAnalysis = (state) => Object.keys(state.drafts).length || Object.keys(state.staged).length || state.confirmationToken;
 
-/** 按 source 目录汇总 skills 证据：每个目录 → { skills: Map<名字, 可见Agent[]> }。 */
-function buildSkillsEvidence(inventory) {
-  const dirs = new Map();
-  for (const agent of inventory.agents) {
-    for (const cap of agent.capabilities) {
-      if (cap.kind !== "skills" || !cap.source) continue;
-      const dir = cap.source.replace(/[/\\][^/\\]+[/\\]SKILL\.md$/i, "").replace(/\\/g, "/");
-      const entry = dirs.get(dir) ?? { skills: new Map() };
-      const visible = entry.skills.get(cap.name) ?? [];
-      if (!visible.includes(agent.id)) visible.push(agent.id);
-      entry.skills.set(cap.name, visible);
-      dirs.set(dir, entry);
-    }
-  }
-  return [...dirs.entries()].map(([dir, entry]) => ({ dir, count: entry.skills.size, visibleIn: [...new Set([...entry.skills.values()].flat())] })).sort((a, b) => b.count - a.count);
+function setText(selector, value) { const element = $(selector); if (element) element.textContent = value; }
+function showRoute(state, route, tab) {
+  state.route = route; state.migrationTab = tab;
+  document.body.dataset.route = route;
+  document.querySelectorAll("[data-route-view]").forEach((element) => { element.hidden = element.dataset.routeView !== route; });
+  document.querySelectorAll("[data-route-link]").forEach((element) => {
+    const active = element.dataset.routeLink === route; element.classList.toggle("active", active);
+    if (active) element.setAttribute("aria-current", "page"); else element.removeAttribute("aria-current");
+  });
+  const titleKey = { overview: "dash.navOverview", inventory: "dash.navInventory", "migration-analysis": "dash.navMigration", safety: "dash.navSafety" }[route];
+  const title = $("#route-title"); if (title) { title.dataset.i18n = titleKey; title.textContent = t(titleKey); }
+  if (route === "migration-analysis") showTab(state, tab);
 }
-
-function renderSkillsEvidence(inventory) {
-  const el = $("#skills-evidence");
-  if (!el) return;
-  const rows = buildSkillsEvidence(inventory);
-  if (!rows.length) { el.innerHTML = ""; return; }
-  const agentName = (id) => labels[id] ?? id;
-  el.innerHTML = [
-    `<p class="evidence-title">${t("dash.evidenceTitle")}</p>`,
-    ...rows.map((row) => {
-      const all = row.visibleIn.length >= 3;
-      return `<p class="evidence-row"><span class="evidence-dir">${escapeHtml(row.dir)}</span><span class="evidence-count">${t("dash.evidenceCount", { count: row.count })}</span><span class="evidence-visible ${all ? "all" : "partial"}">${t("dash.evidenceVisible", { agents: row.visibleIn.map(agentName).join("、"), shared: all ? t("dash.evidenceShared") : "" })}</span></p>`;
-    }),
-  ].join("");
+function showTab(state, tab) {
+  state.migrationTab = ANALYSIS_TABS.includes(tab) ? tab : "overlap";
+  document.querySelectorAll("[data-migration-tab]").forEach((element) => {
+    const active = element.dataset.migrationTab === state.migrationTab; element.classList.toggle("active", active); element.setAttribute("aria-selected", String(active));
+  });
+  document.querySelectorAll("[data-analysis-panel]").forEach((element) => { element.hidden = element.dataset.analysisPanel !== state.migrationTab; });
 }
-
-function renderKindFilter(draft) {
-  const el = $("#kind-filter");
-  if (!el) return;
-  const active = state.kindFilter;
-  el.innerHTML = [
-    `<span class="filter-label">${t("dash.filterLabel")}</span>`,
-    ...KIND_FILTERS.map(({ key, labelKey }) => {
-      // 无筛选（null）时三个全部勾选；有筛选时按勾选集合。勾选是独立开关，互不清空。
-      const checked = active === null || active.includes(key);
-      const count = draft.items.filter((item) => item.kind === key).length;
-      return `<label class="kind-check"><input type="checkbox" data-kind-filter="${key}" ${checked ? "checked" : ""}> ${t(labelKey)}${count > 0 ? ` <em>${count}</em>` : ""}</label>`;
-    }),
-  ].join("");
-  el.querySelectorAll("[data-kind-filter]").forEach((checkbox) => checkbox.addEventListener("change", () => {
-    const checkedKinds = [...el.querySelectorAll("[data-kind-filter]:checked")].map((input) => input.dataset.kindFilter);
-    // 三个全勾 = 无层级过滤（null）；否则按勾选集合过滤（允许空集 = 列表为空）。
-    state.kindFilter = checkedKinds.length >= KIND_FILTERS.length ? null : checkedKinds;
-    saveKindFilter(state.kindFilter);
-    renderMigrationDraft(draft);
-  }));
-}
-
-/** 双行正交轴徽标：轴1 目标端现状（引擎事实）+ 轴2 我的决定（用户状态）。 */
-function renderAxisChips(draft, counts, decidedCount) {
-  const chip = (axis, key, label, count, extraClass = "") =>
-    `<span class="summary-chip ${extraClass}${state[axis] === key ? " active" : ""}" data-axis-filter="${axis}:${key}" role="button" tabindex="0" title="${t("dash.chipTitle")}">${label} <b>${count}</b></span>`;
-  $("#migration-summary").innerHTML = [
-    `<span class="chips-group"><span class="chips-label">${t("dash.axisTarget")}</span>`,
-    chip("axis1Filter", "missing", t("dash.axisMissing"), counts.missing),
-    chip("axis1Filter", "existing", t("dash.axisExisting"), counts.existing, "dual"),
-    chip("axis1Filter", "shared", t("dash.axisShared"), counts.shared),
-    '</span>',
-    `<span class="chips-group"><span class="chips-label">${t("dash.axisMyDecisions")}</span>`,
-    chip("axis2Filter", "undecided", t("dash.axisUndecided"), counts.undecided),
-    chip("axis2Filter", "decided", t("dash.axisDecided"), decidedCount),
-    '</span>',
-  ].join("");
-  document.querySelectorAll("[data-axis-filter]").forEach((chipEl) => {
-    const toggle = () => {
-      const [axis, key] = chipEl.dataset.axisFilter.split(":");
-      state[axis] = state[axis] === key ? null : key;
-      renderMigrationDraft(state.migrationDraft);
-    };
-    chipEl.addEventListener("click", toggle);
-    chipEl.addEventListener("keydown", (event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); toggle(); } });
+function updateTabAvailability(state) {
+  const selectedMode = getControls().mode;
+  const mode = state.analysisResult?.context?.mode ?? (selectedMode === "single-agent" ? "single_agent" : selectedMode === "cross-agent" ? "cross_agent" : undefined);
+  const single = mode === "single_agent";
+  document.querySelectorAll("[data-migration-tab]").forEach((element) => {
+    const id = element.dataset.migrationTab;
+    const available = !single || id === "overlap" || id === "execution";
+    element.hidden = !available;
+    element.disabled = !available;
+    element.setAttribute("aria-disabled", String(!available));
   });
 }
-
-/** 层级（checkbox）过滤：null = 不过滤；[] = 空列表；部分 = 只保留勾选层级。 */
-function kindBase(draft) {
-  if (state.kindFilter === null) return draft.items;
-  return draft.items.filter((item) => state.kindFilter.includes(item.kind));
+function renderScope(state) {
+  const controls = getControls(); const mode = controls.mode;
+  $("#analysis-agent-wrap").hidden = mode !== "single-agent";
+  $("#analysis-source-wrap").hidden = mode !== "cross-agent";
+  $("#analysis-swap").hidden = mode !== "cross-agent";
+  $("#analysis-target-wrap").hidden = mode !== "cross-agent";
+  const scope = contextFromControls(controls); const start = $("#start-analysis");
+  if (start) start.disabled = !scope || state.phase === "loading";
+  if (mode === "cross-agent" && controls.source && controls.source === controls.target) $("#analysis-target").value = "";
+  state.analysisScope = null;
+  state.analysisResult = null;
+  state.requestGeneration++;
+  state.phase = "scope_required";
+  state.drafts = {};
+  state.staged = {};
+  state.preview = null;
+  state.verification = null;
+  state.confirmationToken = null;
+  state.diffHash = null;
+  state.scopeControls = getControls();
+  renderAnalysis(state);
+}
+function actionValues(item, descriptor) {
+  const allowed = descriptor.allowed?.length ? descriptor.allowed : item.agent === "codex" ? ["keep_enabled", "disable_in_agent", "defer"] : ["reuse_target", "keep_both", "defer"];
+  return allowed.map((value) => `<option value="${esc(value)}">${esc(actionLabel(value, t))}</option>`).join("");
+}
+function renderGroup(state, group, result, allowActions = true) {
+  const byId = new Map(result.implementations.map((item) => [item.implementationId, item]));
+  const unique = [...new Set(group.implementationIds)];
+  return `<article class="analysis-group"><header><strong>${esc(group.capabilityId)}</strong><span>${esc(t("dash.relationEvidence", { count: group.relationIds.length }))}</span></header><div class="analysis-implementations">${unique.map((id) => {
+    const item = byId.get(id); if (!item) return "";
+    const descriptor = group.actions?.find((entry) => entry.implementationId === id) ?? {};
+    const staged = state.staged[id]; const draft = state.drafts[id]; const committed = state.committed[id]; const chosen = draft ?? staged ?? committed ?? descriptor.decision ?? descriptor.recommendation ?? descriptor.allowed?.[0] ?? "defer";
+    const editable = allowActions && (result.context?.mode === "cross_agent" || (result.context?.mode === "single_agent" && result.context?.agent === "codex" && item.agent === "codex" && item.sourceClass !== "official"));
+    const stateLabel = staged ? t("dash.stateStaged") : draft ? t("dash.stateDraft") : committed ? t("dash.stateCommitted") : t("dash.stateRecommendation");
+    return `<div class="analysis-implementation"><div><strong>${esc(item.name)}</strong><span class="source-badge">${esc(t(`dash.source.${item.sourceClass ?? "unknown"}`))}</span><small>${esc(t(`dash.kind.${item.kind}`))} · ${esc(t(`dash.active.${item.activeState ?? "unknown"}`))}</small><em class="decision-state-badge">${esc(stateLabel)}</em></div><div class="implementation-action">${editable ? `<select data-analysis-action="${esc(id)}" aria-label="${esc(t("dash.implementation"))}">${actionValues(item, descriptor).replace(`value="${esc(chosen)}"`, `value="${esc(chosen)}" selected`)}</select><button class="button" type="button" data-analysis-stage="${esc(id)}">${staged ? esc(t("dash.staged")) : esc(t("dash.stage"))}</button>` : `<span class="analysis-readonly">${esc(t("dash.readOnlyAnalysis"))}</span>`}</div></div>`;
+  }).join("")}</div></article>`;
 }
 
-/**
- * 双轴交集筛选（只作用于列表展示，不影响徽标计数）。
- * 默认（两轴均为 null）= 缺失 × 未决定（待处理视图）。
- * shared 项不进列表，由 renderSharedList 单独展示。
- */
-function axisFilter(items, decisions) {
-  let base = items;
-  const a1 = state.axis1Filter;
-  const a2 = state.axis2Filter;
-  if (a1 === "missing") base = base.filter((item) => item.status === "missing");
-  else if (a1 === "existing") base = base.filter((item) => item.status === "existing");
-  else if (a1 === "shared") return [];
-  if (a2 === "undecided") base = base.filter((item) => !decisions[item.id]);
-  else if (a2 === "decided") base = base.filter((item) => decisions[item.id]);
-  if (a1 === null && a2 === null) base = base.filter((item) => item.status === "missing" && !decisions[item.id]);
-  return base;
+function renderCountCards(counts, prefix) {
+  return `<div class="analysis-counts">${Object.entries(counts ?? {}).map(([key, count]) => `<article><span>${esc(t(`${prefix}.${key}`))}</span><strong>${esc(count)}</strong></article>`).join("")}</div>`;
 }
 
-/** "共享"轴激活时列出共享 skills 清单（从证据数据展开名字）。 */
-function renderSharedList(inventory) {
-  const el = $("#shared-list");
-  if (!el) return;
-  if (state.axis1Filter !== "shared") { el.innerHTML = ""; return; }
-  const rows = buildSkillsEvidence(inventory);
-  const sharedDirRows = rows.filter((row) => row.visibleIn.length >= 3);
-  const names = new Set();
-  for (const agent of inventory.agents) {
-    for (const cap of agent.capabilities) {
-      if (cap.kind !== "skills" || !cap.source) continue;
-      const dir = cap.source.replace(/[/\\][^/\\]+[/\\]SKILL\.md$/i, "").replace(/\\/g, "/");
-      if (sharedDirRows.some((row) => row.dir === dir)) names.add(cap.name);
-    }
+function implementationLabel(result, ids) {
+  const byId = new Map(result.implementations.map((item) => [item.implementationId, item]));
+  return ids.map((id) => byId.get(id)?.name).filter(Boolean).join("、") || t("dash.none");
+}
+
+function renderCoverage(result) {
+  const section = result.sections?.coverage;
+  if (!section?.items?.length) return `<div class="analysis-empty">${esc(t("dash.analysisEmpty"))}</div>`;
+  return `${renderCountCards(section.counts, "dash.coverage")}<div class="analysis-result-list">${section.items.map((item) => `<article class="analysis-result-row"><header><strong>${esc(item.capabilityId)}</strong><span class="status-badge">${esc(t(`dash.coverage.${item.status}`))}</span></header><div class="comparison-columns"><p><b>${esc(labels[result.context.from])}</b><span>${esc(implementationLabel(result, item.sourceImplementationIds))}</span></p><p><b>${esc(labels[result.context.to])}</b><span>${esc(implementationLabel(result, item.targetImplementationIds))}</span></p></div></article>`).join("")}</div>`;
+}
+
+function renderCompatibility(result) {
+  const section = result.sections?.compatibility;
+  if (!section?.items?.length) return `<div class="analysis-empty">${esc(t("dash.analysisEmpty"))}</div>`;
+  return `${renderCountCards(section.counts, "dash.compatibility")}<div class="analysis-result-list">${section.items.map((item) => `<article class="analysis-result-row"><header><strong>${esc(item.capabilityId)}</strong><span class="status-badge">${esc(t(`dash.compatibility.${item.classification}`))}</span></header><p class="result-detail">${esc(t("dash.compatibilityEvidence", { count: item.relationIds?.length ?? 0 }))}</p></article>`).join("")}</div>`;
+}
+
+function renderDecisionItem(state, decision, result) {
+  const implementation = result.implementations.find((item) => item.implementationId === decision.implementationId);
+  if (!implementation) return "";
+  const staged = state.staged[decision.implementationId];
+  const draft = state.drafts[decision.implementationId];
+  const committed = state.committed[decision.implementationId];
+  const chosen = draft ?? staged ?? committed ?? decision.recommendation ?? "defer";
+  const options = (decision.allowed ?? ["keep_both", "defer"]).map((value) => `<option value="${esc(value)}"${value === chosen ? " selected" : ""}>${esc(actionLabel(value, t))}</option>`).join("");
+  const stateLabel = staged ? t("dash.stateStaged") : draft ? t("dash.stateDraft") : committed ? t("dash.stateCommitted") : t("dash.stateRecommendation");
+  return `<article class="analysis-implementation"><div><strong>${esc(implementation.name)}</strong><span class="agent-badge">${esc(labels[decision.ownerAgent] ?? decision.ownerAgent)}</span><small>${esc(t(`dash.kind.${implementation.kind}`))} · ${esc(t(`dash.source.${implementation.sourceClass ?? "unknown"}`))}</small><em class="decision-state-badge">${esc(stateLabel)}</em></div><div class="implementation-action"><select data-analysis-action="${esc(decision.implementationId)}" aria-label="${esc(t("dash.implementation"))}">${options}</select><button class="button" type="button" data-analysis-stage="${esc(decision.implementationId)}">${staged ? esc(t("dash.staged")) : esc(t("dash.stage"))}</button></div></article>`;
+}
+
+function renderExecution(state, result) {
+  const staged = Object.entries(state.staged);
+  const permission = result.permissions?.canMutateAgentConfig ? t("dash.executionCodexWrite") : t("dash.executionLedgerOnly");
+  const stagedRows = staged.length ? staged.map(([id, value]) => {
+    const implementation = result.implementations.find((item) => item.implementationId === id);
+    return `<div class="decision-row"><strong>${esc(implementation?.name ?? id)}</strong><span>${esc(actionLabel(value, t))}</span></div>`;
+  }).join("") : `<div class="analysis-empty">${esc(t("dash.noStaged"))}</div>`;
+  const verification = state.verification ? `<section class="verification-results"><h4>${esc(t("dash.verifyResult"))}</h4>${state.verification.checks.map((check) => `<div class="verification-row ${esc(check.status)}"><strong>${esc(check.checkId)}</strong><span>${esc(t(check.message?.messageKey ?? "dash.verifyUnknown"))}</span></div>`).join("")}</section>` : "";
+  return `<div class="execution-summary"><h3>${esc(t("dash.executionTitle"))}</h3><p>${esc(permission)}</p><h4>${esc(t("dash.stagedSummary"))}</h4>${stagedRows}${verification}</div>`;
+}
+function renderAnalysis(state) {
+  const empty = $("#analysis-empty"); const summary = $("#analysis-summary");
+  if (!state.analysisResult) {
+    if (empty) { empty.hidden = false; empty.textContent = t("dash.analysisWaiting"); }
+    if (summary) summary.hidden = true;
+    for (const id of ["overlap", "coverage", "compatibility", "decisions", "execution"]) { const panel = $(`#analysis-${id}`); if (panel) panel.innerHTML = `<div class="analysis-empty">${esc(t("dash.tabNeedsScope"))}</div>`; }
+    $("#analysis-preview").disabled = true; $("#analysis-apply").disabled = true; $("#analysis-diff").hidden = true; updateTabAvailability(state); setText("#analysis-status", t("dash.analysisNoScope")); return;
   }
-  el.innerHTML = `<div class="shared-list-head">${t("dash.sharedListHead", { count: names.size, dirs: sharedDirRows.map((row) => row.dir).join("、") || "—" })}</div><div class="shared-list-names">${[...names].sort().map((name) => `<span class="shared-name">${escapeHtml(name)}</span>`).join("")}</div>`;
+  const result = state.analysisResult; if (!["loading", "previewing", "preview_ready", "applying", "stale", "error"].includes(state.phase)) state.phase = Object.keys(state.staged).length ? "staged" : "ready"; if (empty) empty.hidden = true; if (summary) { summary.hidden = false; summary.textContent = t("dash.analysisSummary", { groups: result.groups?.length ?? 0, implementations: result.implementations?.length ?? 0 }); }
+  const start = $("#start-analysis"); if (start) start.disabled = state.phase === "loading" || !contextFromControls(getControls());
+  setText("#analysis-status", t("dash.analysisSummary", { groups: result.groups?.length ?? 0, implementations: result.implementations?.length ?? 0 }));
+  const groups = result.groups ?? [];
+  const overlap = $("#analysis-overlap"); if (overlap) overlap.innerHTML = groups.length ? groups.map((group) => renderGroup(state, group, result, result.context.mode !== "cross_agent")).join("") : `<div class="analysis-empty">${esc(t("dash.analysisEmpty"))}</div>`;
+  const unavailable = (key) => `<div class="analysis-empty">${esc(t(key))}</div>`;
+  const coverage = $("#analysis-coverage"); if (coverage) coverage.innerHTML = result.context.mode === "cross_agent" ? renderCoverage(result) : unavailable("dash.moduleNotApplicableSingle");
+  const compatibility = $("#analysis-compatibility"); if (compatibility) compatibility.innerHTML = result.context.mode === "cross_agent" ? renderCompatibility(result) : unavailable("dash.moduleNotApplicableSingle");
+  const decisions = $("#analysis-decisions"); if (decisions) decisions.innerHTML = result.context.mode === "cross_agent" ? ((result.sections?.decisions?.items ?? []).map((decision) => renderDecisionItem(state, decision, result)).join("") || `<div class="analysis-empty">${esc(t("dash.analysisEmpty"))}</div>`) : (Object.keys(state.staged).length ? Object.entries(state.staged).map(([id, value]) => `<div class="decision-row"><strong>${esc(result.implementations.find((item) => item.implementationId === id)?.name ?? id)}</strong><span>${esc(actionLabel(value, t))}</span></div>`).join("") : `<div class="analysis-empty">${esc(t("dash.noStaged"))}</div>`);
+  const execution = $("#analysis-execution"); if (execution) execution.innerHTML = renderExecution(state, result);
+  $("#analysis-preview").disabled = !Object.keys(state.staged).length || ["previewing", "applying"].includes(state.phase);
+  $("#analysis-apply").disabled = state.phase === "applying" || !state.confirmationToken || !state.diffHash;
+  updateTabAvailability(state); showTab(state, state.migrationTab);
+  document.querySelectorAll("[data-analysis-action]").forEach((element) => element.addEventListener("change", () => { const id = element.dataset.analysisAction; if (!id) return; state.drafts[id] = element.value; delete state.staged[id]; state.preview = null; state.confirmationToken = null; state.diffHash = null; state.phase = "editing"; $("#analysis-diff").hidden = true; renderAnalysis(state); }));
+  document.querySelectorAll("[data-analysis-stage]").forEach((element) => element.addEventListener("click", () => { const id = element.dataset.analysisStage; const select = document.querySelector(`[data-analysis-action="${CSS.escape(id)}"]`); if (id && select) { state.staged[id] = state.drafts[id] ?? select.value; delete state.drafts[id]; state.preview = null; state.confirmationToken = null; state.diffHash = null; state.phase = "staged"; $("#analysis-diff").hidden = true; renderAnalysis(state); } }));
 }
-
-function escapeHtml(value) { const node = document.createElement("span"); node.textContent = String(value ?? ""); return node.innerHTML; }
-function count(agent, kind) { return agent.capabilities.filter((item) => item.kind === kind).length; }
-function statusText(agent) { return agent.status === "detected" ? t("dash.statusDetected") : agent.status === "missing" ? t("dash.statusMissing") : t("dash.statusCheck"); }
-
-function renderAgents(inventory) {
-  $("#agents").innerHTML = inventory.agents.map((agent, index) => `
-    <article class="agent-card" style="--agent-accent:${["#aeb3bc", "#7898dc", "#5873ad"][index]}">
-      <div class="agent-title"><h2>${labels[agent.id]}</h2><span class="status ${agent.status}">● ${statusText(agent)}</span></div>
-      <div class="agent-stats">
-        <span class="agent-stat"><b>${count(agent, "skills")}</b>Skills</span>
-        <span class="agent-stat"><b>${agent.id === "deepseek" && agent.capabilities.some((x) => x.kind === "mcp" && x.portability === "unverified") ? "—" : count(agent, "mcp")}</b>MCP</span>
-        <span class="agent-stat"><b>${count(agent, "hooks") + count(agent, "plugins") + count(agent, "tools")}</b>${t("dash.extensions")}</span>
-      </div>
-      <div class="agent-source" title="${escapeHtml(agent.sources[0] ?? t("dash.noSource"))}">${escapeHtml(agent.sources[0] ?? t("dash.noSource"))}</div>
-    </article>`).join("");
-}
-
-function renderMatrix(matrix) {
-  $("#matrix-content").innerHTML = [
-    `<div class="matrix-head">${t("dash.matrixCapability")}</div>`, ...["Codex", "OpenCode", "DeepSeek"].map((x) => `<div class="matrix-head">${x}</div>`),
-    ...matrix.flatMap((row) => [
-      `<div>${kindLabels[row.kind] ?? row.kind}</div>`,
-      ...["codex", "opencode", "deepseek"].map((id) => { const cell = row.agents[id]; return `<div><span class="matrix-state ${cell.status}">${cell.status === "unverified" ? t("dash.matrixUnverified") : cell.status === "missing" ? t("dash.statusMissing") : t("dash.matrixCount", { count: cell.count })}</span></div>`; }),
-    ]),
+function renderInventory(state, inventory) {
+  state.inventory = inventory;
+  setText("#overview-agent-count", String(inventory.agents?.length ?? 0));
+  setText("#overview-capability-count", String(inventory.agents?.reduce((sum, agent) => sum + agent.capabilities.length, 0) ?? 0));
+  const agents = $("#agents"); if (agents) agents.innerHTML = (inventory.agents ?? []).map((agent) => `<article class="agent-card"><div class="agent-title"><h3>${esc(labels[agent.id] ?? agent.id)}</h3><span class="status ${esc(agent.status)}">● ${esc(agent.status === "detected" ? t("dash.statusDetected") : agent.status === "missing" ? t("dash.statusMissing") : t("dash.statusCheck"))}</span></div><div class="agent-stats"><span><b>${agent.capabilities.filter((item) => item.kind === "skills" || item.kind === "skill").length}</b>${esc(t("dash.skills"))}</span><span><b>${agent.capabilities.filter((item) => item.kind === "mcp").length}</b>${esc(t("dash.mcp"))}</span><span><b>${agent.capabilities.length}</b>${esc(t("dash.implementations"))}</span></div><small>${esc(agent.sources?.[0] ?? t("dash.noSource"))}</small></article>`).join("") || `<div class="empty">${esc(t("dash.emptyAgents"))}</div>`;
+  const matrix = $("#matrix-content"); if (matrix) matrix.innerHTML = [
+    `<div class="matrix-head">${esc(t("dash.matrixCapability"))}</div>`, ...["codex", "opencode", "deepseek"].map((id) => `<div class="matrix-head">${esc(labels[id])}</div>`),
+    ...(inventory.matrix ?? []).flatMap((row) => [`<div>${esc(row.kind)}</div>`, ...["codex", "opencode", "deepseek"].map((id) => { const cell = row.agents[id]; const value = cell?.status === "unverified" ? t("dash.statusUnverified") : cell?.status === "missing" ? t("dash.statusMissingCell") : t("dash.matrixCount", { count: cell?.count ?? 0 }); return `<div><span class="matrix-state ${esc(cell?.status ?? "missing")}">${esc(value)}</span></div>`; })]),
   ].join("");
+  const compatibility = $("#compatibility-content"); if (compatibility) compatibility.innerHTML = (inventory.agents ?? []).map((agent) => `<article class="compatibility-card"><div class="compatibility-card-head"><h3>${esc(labels[agent.id] ?? agent.id)}</h3><span>${esc(t("dash.compatItems", { count: agent.capabilities.length }))}</span></div>${["portable", "adaptable", "native_only", "unverified"].map((kind) => `<div class="compatibility-row"><span>${esc(t({ portable: "dash.compatPortable", adaptable: "dash.compatAdaptable", native_only: "dash.compatNative", unverified: "dash.compatUnverified" }[kind]))}</span><b>${agent.capabilities.filter((item) => item.portability === kind).length}</b></div>`).join("")}</article>`).join("");
+}
+async function refresh(state) {
+  if ((Object.keys(state.drafts).length || Object.keys(state.staged).length || state.confirmationToken) && !window.confirm(t("dash.scopeResetConfirm"))) return;
+  const activeScope = state.analysisScope;
+  const button = $("#refresh"); if (button) button.disabled = true; setText("#scan-status", t("dash.scanningStatus"));
+  try { const response = await fetchWithTimeout("/api/inventory/rescan", { method: "POST", headers: { "Content-Type": "application/json" }, cache: "no-store" }); if (!response.ok) throw new Error("scan_failed"); const snapshot = await response.json(); const inventory = snapshot.inventory ?? snapshot; renderInventory(state, inventory); state.analysisResult = null; state.drafts = {}; state.staged = {}; state.preview = null; state.verification = null; state.confirmationToken = null; state.diffHash = null; $("#analysis-diff").hidden = true; if (activeScope) await startAnalysis(state, true); else renderAnalysis(state); setText("#scan-status", t("dash.scanComplete")); setText("#last-scan", t("dash.lastScan", { time: new Date(snapshot.scannedAt).toLocaleTimeString() })); }
+  catch { setText("#scan-status", state.inventory ? t("dash.refreshFailed") : t("dash.scanFailed")); if (!state.inventory) { const agents = $("#agents"); if (agents) agents.innerHTML = `<div class="empty">${esc(t("dash.emptyAgents"))}</div>`; } }
+  finally { if (button) button.disabled = false; }
+}
+async function startAnalysis(state, refresh = false) {
+  const context = contextFromControls(getControls()); if (!context) return;
+  state.analysisScope = context; state.phase = "loading"; state.confirmationToken = null; state.diffHash = null; const generation = ++state.requestGeneration; renderAnalysis(state); setText("#analysis-status", t("dash.analysisScanning"));
+  try { const response = await fetchWithTimeout(`/api/migration-analysis?${queryFor(context)}&lang=${encodeURIComponent(window.DSH_I18N?.getLang?.() ?? "en")}${refresh ? "&refresh=1" : ""}`, { cache: "no-store" }); if (!response.ok) throw new Error("analysis_failed"); const result = await response.json(); if (generation !== state.requestGeneration) return; state.analysisResult = result; state.committed = Object.fromEntries((result.committedDecisions ?? []).map((item) => [item.implementationId, item.action])); state.phase = "ready"; renderAnalysis(state); }
+  catch { if (generation !== state.requestGeneration) return; state.phase = "error"; renderAnalysis(state); setText("#analysis-status", t("dash.analysisFailed")); }
+}
+async function preview(state) {
+  state.phase = "previewing";
+  if (!state.analysisResult || !Object.keys(state.staged).length) { state.phase = state.analysisResult ? "ready" : "scope_required"; setText("#analysis-status", t("dash.previewEmpty")); renderAnalysis(state); return; }
+  const generation = state.requestGeneration; const analysisId = state.analysisResult.analysisId;
+  try { const session = await fetchWithTimeout("/api/session").then((response) => response.json()); const body = { analysisId, context: state.analysisResult.context, contextHash: state.analysisResult.contextHash, snapshotHash: state.analysisResult.snapshotHash, ledgerHash: state.analysisResult.ledgerHash, stagedDecisions: Object.entries(state.staged).map(([implementationId, action]) => ({ implementationId, action })) }; const response = await fetchWithTimeout("/api/migration-analysis/preview", { method: "POST", headers: { "Content-Type": "application/json", Origin: location.origin, "X-Uagent-Token": session.token }, body: JSON.stringify(body) }); const data = await response.json(); if (generation !== state.requestGeneration || state.analysisResult?.analysisId !== analysisId) return; if (!response.ok) throw new Error(data.error?.code ?? "preview_failed"); state.confirmationToken = data.confirmationToken; state.diffHash = data.diffHash; state.preview = data; state.phase = "preview_ready"; renderAnalysis(state); $("#analysis-diff").hidden = false; $("#analysis-diff").textContent = `${data.configDiff || t("dash.noConfigDiff")}\n\n${data.ledgerDiff || t("dash.noLedgerDiff")}`; }
+  catch { if (generation !== state.requestGeneration || state.analysisResult?.analysisId !== analysisId) return; state.confirmationToken = null; state.diffHash = null; state.preview = null; state.phase = "stale"; renderAnalysis(state); setText("#analysis-status", t("dash.previewFailed")); }
+}
+async function apply(state) {
+  if (state.phase === "applying" || !state.confirmationToken || !state.diffHash || !window.confirm(t("dash.confirmApply"))) return;
+  const confirmationToken = state.confirmationToken; const diffHash = state.diffHash;
+  state.confirmationToken = null; state.diffHash = null; state.phase = "applying"; renderAnalysis(state);
+  try { const session = await fetchWithTimeout("/api/session").then((response) => response.json()); const response = await fetchWithTimeout("/api/migration-analysis/apply", { method: "POST", headers: { "Content-Type": "application/json", Origin: location.origin, "X-Uagent-Token": session.token }, body: JSON.stringify({ confirm: true, confirmationToken, diffHash }) }); if (!response.ok) throw new Error("apply_failed"); await response.json(); state.preview = null; state.drafts = {}; state.staged = {}; await startAnalysis(state, true); setText("#analysis-status", t("dash.applied")); }
+  catch { state.confirmationToken = null; state.diffHash = null; state.preview = null; state.phase = "stale"; renderAnalysis(state); setText("#analysis-status", t("dash.applyFailed")); }
 }
 
-function renderCompatibility(inventory) {
-  const el = $("#compatibility-content");
-  if (!el) return;
-  const groups = [
-    { key: "portable", label: t("dash.compatPortable") },
-    { key: "adaptable", label: t("dash.compatAdaptable") },
-    { key: "native_only", label: t("dash.compatNative") },
-    { key: "unverified", label: t("dash.compatUnverified") },
-  ];
-  el.innerHTML = inventory.agents.map((agent) => {
-    const total = agent.capabilities.length;
-    const rows = groups.map((group) => {
-      const value = agent.capabilities.filter((item) => item.portability === group.key).length;
-      const width = total ? Math.round((value / total) * 100) : 0;
-      return `<div class="compatibility-row"><span>${escapeHtml(group.label)}</span><span class="compatibility-track"><span class="compatibility-fill" style="width:${width}%"></span></span><b class="compatibility-count">${value}</b></div>`;
-    }).join("");
-    return `<article class="compatibility-card"><div class="compatibility-card-head"><h3>${escapeHtml(labels[agent.id] ?? agent.id)}</h3><span class="compatibility-total">${t("dash.compatItems", { count: total })}</span></div>${rows}</article>`;
-  }).join("");
-}
-
-/** 按现状返回可用的动作集。 */
-function actionsFor(item) {
-  if (item.status === "existing") return { keep_current: t("dash.execKeepCurrent"), defer: t("dash.execDefer") };
-  return executionLabels;
-}
-
-function executionOptions(item, decided) {
-  const available = actionsFor(item);
-  const selected = decided?.action ?? item.execution.action;
-  const effective = available[selected] ? selected : Object.keys(available)[0];
-  return Object.entries(available).map(([value, label]) => `<option value="${value}"${value === effective ? " selected" : ""}>${label}</option>`).join("");
-}
-
-function statusLabel(item) {
-  if (item.status === "missing") return `<span class="conflict warn">${t("dash.axisMissing")}</span>`;
-  if (item.statusDetail === "target_native") return `<span class="conflict dual">${t("dash.statusTargetNative")}</span>`;
-  return `<span class="conflict dual">${t("dash.statusDualRegistered")}</span>`;
-}
-
-function renderMigrationDraft(draft) {
-  state.migrationDraft = draft;
-  const scope = decisionsScope();
-  const decisions = decisionsFor(scope);
-  renderKindFilter(draft);
-  renderSkillsEvidence(state.lastInventory);
-  const baseItems = kindBase(draft);
-  const decidedCount = baseItems.filter((item) => decisions[item.id]).length;
-  const pendingCount = baseItems.filter((item) => item.status === "missing").length + baseItems.filter((item) => item.status === "existing").length;
-  renderAxisChips(draft, {
-    missing: baseItems.filter((item) => item.status === "missing").length,
-    existing: baseItems.filter((item) => item.status === "existing").length,
-    shared: draft.summary.shared ?? 0,
-    undecided: pendingCount - decidedCount,
-  }, decidedCount);
-  renderSharedList(state.lastInventory);
-  const visibleItems = axisFilter(baseItems, decisions);
-  $("#action-count").textContent = t("dash.pendingMigration", { count: draft.summary.missing });
-  $("#migration-items").innerHTML = visibleItems.length ? visibleItems.map((item) => {
-    const decided = decisions[item.id];
-    const decidedBadge = decided ? `<span class="decided-badge">${t("dash.decidedBadge", { action: executionLabels[decided.action] ?? decided.action })}</span>` : "";
-    const candidates = item.candidates.map((candidate) => `<li class="${candidate.recommended ? "recommended" : "fallback"}"><span>${escapeHtml(candidate.label)}</span><em>${candidate.recommended ? t("dash.recommended") : t("dash.fallback")}</em></li>`).join("");
-    return `<article class="migration-item${decided ? " decided" : ""}" data-migration-id="${escapeHtml(item.id)}">
-      <div class="migration-item-head"><div><span class="kind-chip">${kindLabels[item.kind] ?? item.kind}</span><h3>${escapeHtml(item.name)}</h3>${decidedBadge}</div>${statusLabel(item)}</div>
-      <div class="migration-advice">
-        <div class="advice-head"><span class="advice-tag">${t("dash.aiAdvice")}</span><strong>${recommendationLabels[item.recommendation.strategy]}</strong><span class="evidence ${item.recommendation.evidenceLevel}">${t("dash.evidence", { level: evidenceLabels[item.recommendation.evidenceLevel] ?? item.recommendation.evidenceLevel })}</span></div>
-        <p class="advice-reason">${escapeHtml(item.recommendation.reason)}</p>
-        <p class="advice-explain">${strategyExplain[item.recommendation.strategy] ?? ""}</p>
-        <p class="advice-conflict">${statusExplain[item.status] ?? ""}</p>
-      </div>
-      <details><summary>${t("dash.viewCandidates")}</summary><ul class="candidate-list">${candidates}</ul></details>
-      <label class="item-decision">${t("dash.itemDecision")}<select data-item-override="${escapeHtml(item.id)}">${executionOptions(item, decided)}</select><small>${decided ? t("dash.decidedAt", { time: new Date(decided.at).toLocaleString([], { hour: "2-digit", minute: "2-digit", month: "numeric", day: "numeric" }) }) : t("dash.currentSource", { source: item.execution.resolvedBy === "item" ? t("dash.sourceOverride") : item.execution.resolvedBy === "global" ? t("dash.sourceGlobal") : t("dash.sourceSystem") })}</small></label>
-    </article>`;
-  }).join("") : `<div class="empty">${state.axis1Filter || state.axis2Filter || state.kindFilter !== null ? t("dash.emptyFiltered") : t("dash.emptySource")}</div>`;
-  renderDecidedPanel(decisions);
-  document.querySelectorAll("[data-item-override]").forEach((select) => select.addEventListener("change", () => {
-    const itemId = select.dataset.itemOverride;
-    const action = select.value;
-    const scopeNow = decisionsScope();
-    state.decisions[scopeNow] = state.decisions[scopeNow] ?? {};
-    state.decisions[scopeNow][itemId] = { action, at: Date.now() };
-    saveDecisions();
-    const item = state.migrationDraft.items.find((candidate) => candidate.id === itemId);
-    if (item) { item.execution.action = action; item.execution.resolvedBy = "item"; }
-    renderMigrationDraft(state.migrationDraft);
-  }));
-}
-
-function renderDecidedPanel(decisions) {
-  const entries = Object.entries(decisions).sort((a, b) => b[1].at - a[1].at);
-  const panel = $("#decided-panel");
-  if (!panel) return;
-  panel.hidden = entries.length === 0;
-  $("#decided-items").innerHTML = entries.map(([id, decision]) => {
-    const item = state.migrationDraft.items.find((candidate) => candidate.id === id);
-    const name = item ? item.name : id;
-    return `<li><span class="decided-name">${escapeHtml(name)}</span><span class="decided-action">${executionLabels[decision.action] ?? decision.action}</span><span class="decided-time">${new Date(decision.at).toLocaleString([], { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" })}</span><button data-clear-decision="${escapeHtml(id)}" title="${t("dash.undoDecision")}">${t("dash.undoDecision")}</button></li>`;
-  }).join("");
-  document.querySelectorAll("[data-clear-decision]").forEach((button) => button.addEventListener("click", () => {
-    const scopeNow = decisionsScope();
-    delete (state.decisions[scopeNow] ?? {})[button.dataset.clearDecision];
-    saveDecisions();
-    renderMigrationDraft(state.migrationDraft);
-  }));
-}
-
-async function loadMigrationDraft(resetFilters = false) {
-  const from = $("#migration-from").value;
-  const to = $("#migration-to").value;
-  if (from === to) {
-    const replacement = ["codex", "opencode", "deepseek"].find((id) => id !== from);
-    $("#migration-to").value = replacement;
-  }
-  const policy = $("#migration-policy").value;
-  const response = await fetch(`/api/migration-draft?from=${encodeURIComponent(from)}&to=${encodeURIComponent($("#migration-to").value)}&policy=${encodeURIComponent(policy)}&${langQuery()}`, { cache: "no-store" });
-  if (!response.ok) throw new Error(t("dash.draftFailed"));
-  if (resetFilters) {
-    // 方向/法则切换后，层级与轴筛选对新的草案没有意义，回到默认全显。
-    state.kindFilter = null;
-    state.axis1Filter = null;
-    state.axis2Filter = null;
-    saveKindFilter(null);
-  }
-  renderMigrationDraft(await response.json());
-}
-
-async function refresh() {
-  const button = $("#refresh"); button.disabled = true; $("#scan-status").classList.remove("error"); $("#scan-status").textContent = t("dash.scanningStatus");
+async function verify(state) {
+  if (!state.analysisResult) return;
+  const generation = state.requestGeneration; const analysisId = state.analysisResult.analysisId;
   try {
-    const response = await fetch("/api/inventory", { cache: "no-store" });
-    if (!response.ok) throw new Error(t("dash.scanFailed"));
-    const inventory = await response.json(); state.lastInventory = inventory;
-    renderAgents(inventory); renderMatrix(inventory.matrix); renderCompatibility(inventory); await loadMigrationDraft();
-    $(".workspace-name").textContent = inventory.workspaceRoot.split(/[\\/]/).filter(Boolean).at(-1) || t("common.workspace");
-    $("#workspace-short").textContent = $(".workspace-name").textContent;
-    $("#diff-count").textContent = t("dash.viewCandidatesShort");
-    $("#last-scan").textContent = t("dash.lastScan", { time: new Date(inventory.scannedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) });
-    $("#scan-status").textContent = t("dash.scanComplete");
-  } catch (error) {
-    $("#scan-status").classList.add("error");
-    $("#scan-status").textContent = state.lastInventory ? t("dash.refreshFailed") : t("dash.scanFailed");
-    if (!state.lastInventory) { $("#agents").innerHTML = `<div class="empty">${t("dash.emptyAgents")}</div>`; $("#matrix-content").innerHTML = `<div class="empty">${t("dash.emptyData")}</div>`; }
-  } finally { button.disabled = false; }
+    const response = await fetchWithTimeout("/api/migration-analysis/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ context: state.analysisResult.context, snapshotHash: state.analysisResult.snapshotHash, ledgerHash: state.analysisResult.ledgerHash }) });
+    const data = await response.json();
+    if (generation !== state.requestGeneration || state.analysisResult?.analysisId !== analysisId) return;
+    if (!response.ok) throw new Error("verify_failed");
+    state.verification = data;
+    renderAnalysis(state);
+  } catch { if (generation === state.requestGeneration && state.analysisResult?.analysisId === analysisId) setText("#analysis-status", t("dash.verifyFailed")); }
 }
 
-function initializeTheme() {
-  const saved = localStorage.getItem("uagent-theme");
-  if (saved) document.documentElement.dataset.theme = saved;
-  $("#theme-toggle").addEventListener("click", () => { const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark"; document.documentElement.dataset.theme = next; localStorage.setItem("uagent-theme", next); });
-}
-
-function showView(view, updateHash = true) {
-  const next = viewLabels[view] ? view : "overview";
-  document.body.dataset.view = next;
-  document.querySelectorAll("[data-dashboard-section]").forEach((section) => { section.hidden = next !== "overview" && section.dataset.dashboardSection !== next; });
-  document.querySelectorAll(".nav-item[data-view]").forEach((item) => {
-    const active = item.dataset.view === next;
-    item.classList.toggle("active", active);
-    if (active) item.setAttribute("aria-current", "page"); else item.removeAttribute("aria-current");
+export function startDashboard() {
+  const state = createDashboardStore();
+  const router = createDashboardRouter({ onChange: ({ route, tab }) => showRoute(state, route, tab) });
+  showRoute(state, router.current().route, router.current().tab);
+  document.querySelectorAll("[data-route-link]").forEach((element) => element.addEventListener("click", (event) => { event.preventDefault(); router.go(element.dataset.routeLink, element.dataset.routeLink === "migration-analysis" ? state.migrationTab : "overlap"); }));
+  document.querySelectorAll("[data-migration-tab]").forEach((element) => element.addEventListener("click", () => router.go("migration-analysis", element.dataset.migrationTab)));
+  ["#analysis-mode", "#analysis-agent", "#analysis-source", "#analysis-target"].forEach((selector) => $(selector)?.addEventListener("change", () => {
+    if (hasTransientAnalysis(state) && !window.confirm(t("dash.scopeResetConfirm"))) { setControls(state.scopeControls); return; }
+    renderScope(state);
+  }));
+  $("#analysis-swap")?.addEventListener("click", () => {
+    if ((Object.keys(state.drafts).length || Object.keys(state.staged).length || state.confirmationToken) && !window.confirm(t("dash.scopeResetConfirm"))) return;
+    const swapped = swapCrossAgentSelection({ source: $("#analysis-source").value, target: $("#analysis-target").value });
+    $("#analysis-source").value = swapped.source;
+    $("#analysis-target").value = swapped.target;
+    renderScope(state);
   });
-  $("#view-title").textContent = viewLabels[next];
-  if (updateHash && location.hash !== `#${next}`) history.pushState(null, "", `#${next}`);
-  document.querySelector("main").scrollTo?.({ top: 0, behavior: "smooth" });
+  $("#start-analysis")?.addEventListener("click", () => startAnalysis(state));
+  $("#analysis-preview")?.addEventListener("click", () => preview(state)); $("#analysis-apply")?.addEventListener("click", () => apply(state));
+  $("#analysis-verify")?.addEventListener("click", () => verify(state));
+  $("#refresh")?.addEventListener("click", () => refresh(state));
+  $("#theme-toggle")?.addEventListener("click", () => { state.theme = state.theme === "dark" ? "light" : "dark"; document.documentElement.dataset.theme = state.theme; });
+  window.addEventListener("uagent:language-change", () => { showRoute(state, state.route, state.migrationTab); if (state.inventory) renderInventory(state, state.inventory); renderAnalysis(state); });
+  renderScope(state); refresh(state);
+  return { state, router, refresh: () => refresh(state), startAnalysis: () => startAnalysis(state) };
 }
-
-function initializeNavigation() {
-  document.querySelectorAll(".nav-item[data-view]").forEach((item) => item.addEventListener("click", (event) => { event.preventDefault(); showView(item.dataset.view); }));
-  window.addEventListener("popstate", () => showView(location.hash.slice(1), false));
-  showView(location.hash.slice(1), false);
-}
-
-$("#refresh").addEventListener("click", refresh);
-for (const selector of ["#migration-from", "#migration-to", "#migration-policy"]) $(selector).addEventListener("change", () => loadMigrationDraft(true));
-$("#swap-route").addEventListener("click", () => {
-  const from = $("#migration-from").value;
-  const to = $("#migration-to").value;
-  $("#migration-from").value = to;
-  $("#migration-to").value = from;
-  loadMigrationDraft(true);
-});
-initializeTheme(); initializeNavigation(); refresh();
+if (typeof document !== "undefined") { if (document.readyState === "loading") window.addEventListener("DOMContentLoaded", startDashboard); else startDashboard(); }

@@ -20,8 +20,9 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc && node scripts/copy-dashboard.mjs",
+    "build": "tsc && node scripts/generate-dashboard-i18n.mjs && node scripts/copy-dashboard.mjs",
     "typecheck": "tsc --noEmit",
+    "test:e2e": "node --import tsx --test test/dashboard-browser.e2e.ts",
     "cli": "tsx src/cli.ts",
     "test": "node scripts/run-tests.mjs",
     "clean": "rimraf dist",
@@ -42,6 +43,7 @@
     "@deepseek-ai/schemastery": "3.18.1",
     "@opencode-ai/plugin": "^1.18.15",
     "@types/node": "^22.0.0",
+    "playwright": "^1.62.1",
     "rimraf": "^5.0.0",
     "tsx": "^4.19.0",
     "typescript": "^5.7.0"
