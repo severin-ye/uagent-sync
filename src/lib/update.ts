@@ -20,7 +20,7 @@ import { resolveWorkspaceRoot } from "../sync.js";
 import { updateCodebaseMemory } from "./codebase-memory.js";
 import { DOTFILES_DIR } from "./dotfiles.js";
 import { t } from "../i18n/index.js";
-import { scanExtensionConflicts } from "./extension-conflicts/index.js";
+import { scanMigrationAnalysis } from "./migration-analysis/index.js";
 
 export type UpdateComponent =
   | "opencode"
@@ -428,9 +428,10 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
     if (!["plugins", "skills", "mcp"].some((component) => selected.has(component as UpdateComponent))) {
       extensionConflicts = undefined;
     } else {
-    const snapshot = scanExtensionConflicts({ homeDir: os.homedir(), workspaceRoot: resolveWorkspaceRoot() });
-    extensionConflicts = { status: snapshot.status, pending: snapshot.summary.pending, drift: snapshot.summary.drift,
-      message: snapshot.summary.pending || snapshot.summary.drift ? `${dryRun ? "Current" : "Post-update"} Codex review: ${snapshot.summary.pending} pending, ${snapshot.summary.drift} drift — uagent-sync dashboard --page extension-conflicts` : undefined };
+    const analysis = scanMigrationAnalysis({ homeDir: os.homedir(), workspaceRoot: resolveWorkspaceRoot(), context: { mode: "single_agent", agent: "codex" } });
+    const pending = analysis.groups.length;
+    extensionConflicts = { status: pending ? "warning" : "ok", pending, drift: 0,
+      message: pending ? `${dryRun ? "Current" : "Post-update"} Codex review: ${pending} functional group(s) — uagent-sync dashboard --page migration-analysis` : undefined };
     }
   } catch (error) { extensionConflicts = { status: "error", pending: 0, drift: 0, message: String(error) }; }
 

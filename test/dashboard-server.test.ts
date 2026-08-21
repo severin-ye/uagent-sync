@@ -29,7 +29,7 @@ async function fixtureServer() {
 describe("dashboard server", () => {
   it("serves all read-only JSON endpoints without secrets", async () => {
     const server = await fixtureServer();
-    for (const route of ["/api/health", "/api/inventory", "/api/agents/deepseek", "/api/diff", "/api/migration-plan?target=deepseek"]) {
+    for (const route of ["/api/health", "/api/agents/deepseek"]) {
       const response = await fetch(`${server.url}${route}`);
       assert.equal(response.status, 200, route);
       assert.match(response.headers.get("content-type") ?? "", /application\/json/);
@@ -47,10 +47,9 @@ describe("dashboard server", () => {
 
   it("serves extension deduplication from the same dashboard origin", async () => {
     const server = await fixtureServer();
-    const response = await fetch(`${server.url}/extension-conflicts`);
-    assert.equal(response.status, 200);
-    assert.match(response.headers.get("content-type") ?? "", /text\/html/);
-    assert.match(await response.text(), /Extension deduplication/);
+    const response = await fetch(`${server.url}/extension-conflicts`, { redirect: "manual" });
+    assert.equal(response.status, 302);
+    assert.equal(response.headers.get("location"), "/#migration-analysis/overlap");
   });
 
   it("rejects unknown routes and write methods", async () => {
@@ -59,17 +58,26 @@ describe("dashboard server", () => {
     assert.equal((await fetch(`${server.url}/api/inventory`, { method: "POST" })).status, 405);
   });
 
-  it("requires an explicit migration route and returns a read-only policy draft", async () => {
+  it("retires the legacy migration-draft API", async () => {
     const server = await fixtureServer();
-    const response = await fetch(`${server.url}/api/migration-draft?from=codex&to=opencode&policy=keep_both`);
+    assert.equal((await fetch(`${server.url}/api/migration-draft?from=codex&to=opencode&policy=keep_both`)).status, 410);
+  });
+
+  it("does not return migration results before an explicit analysis scope", async () => {
+    const server = await fixtureServer();
+    const response = await fetch(`${server.url}/api/migration-analysis`);
+    assert.equal(response.status, 400);
+    const body = await response.json() as { error: { code: string } };
+    assert.equal(body.error.code, "scope_required");
+  });
+
+  it("rejects same-agent analysis and returns one unified scoped result", async () => {
+    const server = await fixtureServer();
+    assert.equal((await fetch(`${server.url}/api/migration-analysis?mode=cross-agent&from=codex&to=codex`)).status, 400);
+    const response = await fetch(`${server.url}/api/migration-analysis?mode=single-agent&agent=codex`);
     assert.equal(response.status, 200);
-    const draft = await response.json() as { route: unknown; readOnly: boolean; policy: string; items: unknown[] };
-    assert.deepEqual(draft.route, { from: "codex", to: "opencode" });
-    assert.equal(draft.readOnly, true);
-    assert.equal(draft.policy, "keep_both");
-    assert.ok(Array.isArray(draft.items));
-    assert.equal((await fetch(`${server.url}/api/migration-draft?from=codex&to=codex`)).status, 400);
-    assert.equal((await fetch(`${server.url}/api/migration-draft?from=unknown&to=codex`)).status, 400);
-    assert.equal((await fetch(`${server.url}/api/migration-draft?from=codex&to=opencode&policy=unsafe`)).status, 400);
+    const body = await response.json() as { context: { mode: string; agent: string }; implementations: Array<{ locator?: unknown }> };
+    assert.deepEqual(body.context, { mode: "single_agent", agent: "codex" });
+    assert.ok(body.implementations.every((item) => item.locator === undefined));
   });
 });

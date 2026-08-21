@@ -10,7 +10,7 @@ import { detectSyncPath, isMachineSpecificPath } from "./portable.js";
 import type { SubmoduleStatusItem, SetupResult, VerifyResult } from "./types.js";
 import { DOTFILES_DIR } from "./dotfiles.js";
 import { t } from "../i18n/index.js";
-import { extensionConflictVerification } from "./extension-conflicts/index.js";
+import { scanMigrationAnalysis } from "./migration-analysis/index.js";
 
 export function getSubmoduleStatus(workspaceRoot: string): SubmoduleStatusItem[] {
   const gitmodulesPath = path.join(workspaceRoot, ".gitmodules");
@@ -45,8 +45,8 @@ export function getSubmoduleStatus(workspaceRoot: string): SubmoduleStatusItem[]
 export function verifyEnvironment(workspaceRoot: string): VerifyResult[] {
   const results: VerifyResult[] = [];
   try {
-    const governance = extensionConflictVerification({ homeDir: os.homedir(), workspaceRoot });
-    results.push({ component: "Codex extension governance", status: governance.status, detail: governance.detail });
+    const analysis = scanMigrationAnalysis({ homeDir: os.homedir(), workspaceRoot, context: { mode: "single_agent", agent: "codex" } });
+    results.push({ component: "Codex migration analysis", status: analysis.groups.length ? "warning" : "ok", detail: analysis.groups.length ? `${analysis.groups.length} functional group(s) require review — uagent-sync dashboard --page migration-analysis` : "No functional duplicate groups detected." });
   } catch (error) {
     results.push({ component: "Codex extension governance", status: "error", detail: String(error) });
   }

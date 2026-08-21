@@ -193,9 +193,9 @@ async function main() {
       }
       const server = await startDashboardServer({ host, port, workspaceRoot });
       const page = String(flags.get("page") || "").trim();
-      const pageUrl = page === "extension-conflicts" ? `${server.url}/extension-conflicts` : server.url;
+      const pageUrl = page === "extension-conflicts" || page === "migration-analysis" ? `${server.url}/#migration-analysis` : server.url;
       console.log(t("cli.dashboardStarted", { url: pageUrl }));
-      console.log(page === "extension-conflicts" ? "Extension deduplication requires preview and second confirmation; no extension is deleted." : t("cli.dashboardReadOnly"));
+      console.log(page === "extension-conflicts" || page === "migration-analysis" ? "Migration analysis is scoped; Codex writes require staged preview and second confirmation. No extension is deleted." : t("cli.dashboardReadOnly"));
       if (!boolFlag(flags, "no-open")) {
         const opener = process.platform === "win32" ? ["cmd", ["/c", "start", "", pageUrl]] : process.platform === "darwin" ? ["open", [pageUrl]] : ["xdg-open", [pageUrl]];
         const child = spawn(opener[0] as string, opener[1] as string[], { detached: true, stdio: "ignore", windowsHide: true });
