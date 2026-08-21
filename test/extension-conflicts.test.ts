@@ -97,4 +97,24 @@ describe("Codex extension governance", () => {
     assert.throws(() => editCodexExtensionEnabled("[plugins.demo]\nenabled = maybe\n", { kind: "plugin", name: "demo", enabled: true }));
     assert.throws(() => editCodexExtensionEnabled("[plugins.demo]\nenabled = true\nenabled = false\n", { kind: "plugin", name: "demo", enabled: true }));
   });
+
+  it("stops an extension block at the next unrelated TOML table", () => {
+    const text = [
+      "[plugins.demo]",
+      "enabled = false",
+      "",
+      "[features]",
+      "enabled = true",
+      "",
+    ].join("\n");
+
+    assert.equal(editCodexExtensionEnabled(text, { kind: "plugin", name: "demo", enabled: true }), [
+      "[plugins.demo]",
+      "enabled = true",
+      "",
+      "[features]",
+      "enabled = true",
+      "",
+    ].join("\n"));
+  });
 });

@@ -102,6 +102,10 @@ export function resolveWorkspaceRoot(): string {
   // 2. 固定位置缓存（任何 cwd 都可达）
   const fixed = readFixedCache();
   if (isValidCache(fixed)) {
+    const canonicalDotfilesPath = path.join(fixed.workspaceRoot, DOTFILES_DIR);
+    if (fixed.dotfilesPath !== canonicalDotfilesPath) {
+      writeCache({ ...fixed, dotfilesPath: canonicalDotfilesPath });
+    }
     _cachedRoot = fixed.workspaceRoot;
     return fixed.workspaceRoot;
   }

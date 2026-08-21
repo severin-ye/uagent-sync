@@ -83,11 +83,12 @@ function sourceOf(raw: string): ExtensionSource { return raw.toLowerCase().repla
 function officialSource(source: string): boolean { return OFFICIAL.has(source); }
 function enabledValue(text: string, start: number, end: number): boolean { const m = /(?:^|\n)\s*enabled\s*=\s*(true|false)\b/i.exec(text.slice(start, end)); return m ? m[1].toLowerCase() === "true" : true; }
 function tableRecords(text: string): Array<{ kind: ExtensionKind; name: string; registrationId: string; start: number; end: number; enabled: boolean }> {
-  const headers = [...text.matchAll(/^(?:\uFEFF)?(\[\[skills\.config\]\]|\[mcp_servers\.([^\]]+)\]|\[plugins\.(?:"([^"]+)"|([^\]]+))\])\s*$/gm)];
+  const allHeaders = [...text.matchAll(/^(?:\uFEFF)?(\[\[[^\n]+\]\]|\[[^\n]+\])\s*$/gm)];
+  const headers = allHeaders.filter((header) => /^(?:\uFEFF)?(\[\[skills\.config\]\]|\[mcp_servers\.[^\]]+\]|\[plugins\.(?:"[^"]+"|[^\]]+)\])\s*$/i.test(header[0]));
   return headers.map((header, i) => {
-    const raw = header[1] ?? header[0]; const start = header.index ?? 0; const end = headers[i + 1]?.index ?? text.length;
+    const raw = (header[1] ?? header[0]).trim(); const start = header.index ?? 0; const next = allHeaders.find((candidate) => (candidate.index ?? 0) > start); const end = next?.index ?? text.length;
     if (raw.startsWith("[[skills")) { const block = text.slice(start, end); const pm = /(?:^|\n)\s*path\s*=\s*["']([^"']+)["']/i.exec(block); const name = pm ? path.basename(path.dirname(pm[1])) : `skill-${i}`; return { kind: "skill", name, registrationId: pm?.[1] ?? name, start, end, enabled: enabledValue(text, start, end) }; }
-    const name = header[2] ?? header[3] ?? header[4] ?? `extension-${i}`; const kind = raw.startsWith("[mcp") ? "mcp" : "plugin"; return { kind, name, registrationId: name, start, end, enabled: enabledValue(text, start, end) };
+    const match = raw.match(/^\[mcp_servers\.([^\]]+)\]$/i) ?? raw.match(/^\[plugins\.(?:"([^"]+)"|([^\]]+))\]$/i); const name = match?.[1] ?? match?.[2] ?? `extension-${i}`; const kind = raw.startsWith("[mcp") ? "mcp" : "plugin"; return { kind, name, registrationId: name, start, end, enabled: enabledValue(text, start, end) };
   });
 }
 

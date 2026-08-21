@@ -27,9 +27,9 @@ function setupOutsideCwd(): string {
   return outside;
 }
 
-function readFixedCache(): { workspaceRoot?: string } | null {
+function readFixedCache(): { workspaceRoot?: string; dotfilesPath?: string } | null {
   try {
-    return JSON.parse(fs.readFileSync(getFixedCachePath(), "utf-8")) as { workspaceRoot?: string };
+    return JSON.parse(fs.readFileSync(getFixedCachePath(), "utf-8")) as { workspaceRoot?: string; dotfilesPath?: string };
   } catch {
     return null;
   }
@@ -58,6 +58,19 @@ describe("resolveWorkspaceRoot — 非 workspace cwd", () => {
     fs.mkdirSync(path.dirname(getFixedCachePath()), { recursive: true });
     fs.writeFileSync(getFixedCachePath(), JSON.stringify({ workspaceRoot: fakeWorkspace }));
     assert.equal(resolveWorkspaceRoot(), fakeWorkspace);
+  });
+
+  it("固定缓存仍指向旧 opencode-dotfiles → 自动改写为 workspace/usync-dotfiles", () => {
+    setupOutsideCwd();
+    fs.mkdirSync(path.dirname(getFixedCachePath()), { recursive: true });
+    fs.writeFileSync(getFixedCachePath(), JSON.stringify({
+      workspaceRoot: fakeWorkspace,
+      workspaceName: path.basename(fakeWorkspace),
+      dotfilesPath: path.join(fakeWorkspace, "opencode-dotfiles"),
+    }));
+
+    assert.equal(resolveWorkspaceRoot(), fakeWorkspace);
+    assert.equal(readFixedCache()?.dotfilesPath, path.join(fakeWorkspace, DOTFILES_DIR));
   });
 
   it("OPENCODE_SYNC_WORKSPACE_ROOT 环境变量优先于缓存", () => {

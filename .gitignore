@@ -3,6 +3,9 @@ dist/
 test-output.json
 .worktrees/
 
+# 同步数据属于 workspace 根目录下的独立 usync-dotfiles 仓库，禁止误写进源码仓库
+usync-dotfiles/
+
 # DeepSeek Harness 官方仓库 clone（仅用于阅读插件开发文档，非本项目代码）
 DeepSeek harness/
 
