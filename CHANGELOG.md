@@ -6,8 +6,8 @@
 
 ### 新增
 
-- **Codex 扩展能力统一去重治理**：Skill、MCP、Plugin 统一扫描、跨类型证据与人工决策；账本固定保存于 `usync-dotfiles/agents/codex/policies/extension-conflicts.json`。默认仅展示高置信待审项，`agent-browser → browser/chrome` 仅作为首位待判断映射，不自动禁用。
-- Dashboard 聚焦入口 `uagent-sync dashboard --page extension-conflicts`，采用预览 + 二次确认、一次性令牌、配置/账本备份与回滚；不卸载、不删除扩展，不修改 OpenCode/DeepSeek。
+- **迁移分析统一入口**：资产盘点、覆盖与缺口、功能重叠与去重、兼容性、迁移决策、执行与验证共用同一 Dashboard 服务和显式分析范围；未选范围不扫描、不显示比较计数。旧扩展写入接口已冻结为 `410 upgrade_required`。
+- 新增 V2 决策账本 `usync-dotfiles/policies/capability-decisions.json`（首次确认写入时才创建）；V1 `usync-dotfiles/agents/codex/policies/extension-conflicts.json` 保持原样。Codex 写入只接受暂存决定、精确 diff 和一次性二次确认；OpenCode/DeepSeek 始终只读。
 
 ## [2.1.0] - 2026-08-16
 

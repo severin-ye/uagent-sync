@@ -76,11 +76,11 @@ codex plugin marketplace add severin-ye/uagent-sync
 # 然后在 Codex CLI 中打开 /plugins，安装 uagent-sync，新会话生效
 ```
 
-### Codex 扩展去重
+### 迁移分析与功能去重
 
-Skill、MCP 服务器和 Plugin 按同级能力统一扫描与审核。运行 `uagent-sync dashboard --page extension-conflicts` 查看双方描述、来源、指纹和重叠证据，再暂存决定。置信度分为 `verified`（内置映射或相同 capability ID）、`high`（规范化同名且描述一致）和 `low`（关键词相似；禁止批量选择）。`agent-browser → browser/chrome` 只排在首位待人工判断，不会自动禁用。
+迁移分析是唯一的 Dashboard 模块，内部包含覆盖与缺口、兼容性、功能重叠与去重、迁移决策、执行与验证。运行 `uagent-sync dashboard --page migration-analysis` 后，选择单 Agent（检查同一 Agent 内的功能重复）或明确的来源/目标 Agent（迁移比较）；未选择范围时不扫描、不显示比较结果和数量。来源统一标记为官方、第三方、本地或未知；官方身份必须有受控安装证据。`agent-browser → browser/chrome` 是一个功能分组，保留多条证据边和一个动作控件。
 
-决策账本固定为 `usync-dotfiles/agents/codex/policies/extension-conflicts.json`。应用前会展示保留注释、顺序、BOM、换行格式的 `~/.codex/config.toml` 精确差异和账本变化，并要求二次确认；同时建立带时间戳的备份。应用后需重启 Codex 或新建任务。`update` 只在完成相关更新后做一次只读扫描，有待审时仅提示聚焦命令；不修改 OpenCode/DeepSeek，不卸载或删除任何扩展。
+V1 审计账本 `usync-dotfiles/agents/codex/policies/extension-conflicts.json` 只读保留。首次确认写入时才在事务内创建/导入 V2 账本 `usync-dotfiles/policies/capability-decisions.json`。Codex 写入必须经过暂存、精确配置/账本 diff 和一次性二次确认；OpenCode、DeepSeek 永远只读，不卸载或删除扩展。旧 `/extension-conflicts` 仅作为统一 Dashboard 的兼容入口。
 
 ### 首次备份
 
@@ -298,9 +298,11 @@ npm install
 npm run typecheck    # tsc --noEmit
 npm run build        # TypeScript → dist/
 npm test             # 全量测试（node:test）
+npx playwright install chromium  # 首次安装浏览器
+npm run test:e2e     # 真实 Dashboard 浏览器流程
 ```
 
-CI 门禁（GitHub Actions，Windows，Node 20/22）：`npm run build` + `npm test` 全部通过才能合并。
+CI 门禁（GitHub Actions，Windows，Node 20/22）：构建、单元测试和 Playwright 浏览器 E2E 全部通过才能合并。
 
 ---
 

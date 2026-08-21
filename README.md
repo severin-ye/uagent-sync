@@ -78,9 +78,9 @@ codex plugin marketplace add severin-ye/uagent-sync
 
 ### Codex extension deduplication
 
-Skills, MCP servers, and plugins are reviewed as peer capabilities. Run `uagent-sync dashboard --page extension-conflicts` to inspect evidence and stage decisions. Confidence is `verified` (built-in/equal capability ID), `high` (normalized name plus matching description), or `low` (keyword similarity; never bulk-selected). The `agent-browser → browser/chrome` mapping is a first, pending review item and is never auto-disabled.
+Migration analysis is the single Dashboard module for coverage/gaps, compatibility, functional overlap/deduplication, migration decisions, and execution verification. Choose either `uagent-sync dashboard --page migration-analysis` with a single Agent (functional duplicates) or an explicit source/target pair (migration comparison); no scope means no comparison scan. Sources are labeled official, third-party, local, or unknown, and official provenance requires controlled install evidence. The `agent-browser → browser/chrome` mapping is one grouped review item with multiple evidence edges.
 
-The portable decision ledger is `usync-dotfiles/agents/codex/policies/extension-conflicts.json`. Applying a decision shows an exact byte-preserving `~/.codex/config.toml` diff and ledger changes, then requires a second confirmation. Timestamped backups are created; Codex must be restarted (or a new task started) after applying. `update` performs one read-only post-update scan and only reports the focused command when review is needed. OpenCode and DeepSeek are not changed, and no extension is uninstalled or deleted.
+The V1 audit ledger `usync-dotfiles/agents/codex/policies/extension-conflicts.json` is never changed by scans. New confirmed decisions use `usync-dotfiles/policies/capability-decisions.json`; creation/import happens inside the first write transaction. Codex changes require a staged decision, exact byte-preserving config/ledger diff, and a second confirmation with a one-use token. Timestamped backups are created; restart Codex after applying. OpenCode and DeepSeek are always read-only, and no extension is uninstalled or deleted. The legacy extension write endpoint is disabled; `/extension-conflicts` is a compatibility alias for the unified Dashboard.
 
 ### First backup
 
@@ -288,9 +288,11 @@ npm install
 npm run typecheck    # tsc --noEmit
 npm run build        # TypeScript → dist/
 npm test             # full node:test suite
+npx playwright install chromium  # one-time browser setup
+npm run test:e2e     # real dashboard browser workflow
 ```
 
-CI gate (GitHub Actions, Windows, Node 20/22): `npm run build` + `npm test` must pass before merge.
+CI gate (GitHub Actions, Windows, Node 20/22): build, unit tests, and the Playwright browser E2E must all pass before merge.
 
 ---
 
