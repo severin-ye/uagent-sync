@@ -252,7 +252,6 @@ uagent-sync/                  # ← This repo (code only, never modified at runt
 │   │   ├── keys.ts            #   API key detection & templates
 │   │   ├── skills.ts          #   Skill source map
 │   │   ├── update.ts          #   updateExtensions — ecosystem update orchestration
-│   │   ├── codebase-memory.ts #   codebase-memory-mcp release updater
 │   │   └── guide.ts           #   SYNC-GUIDE.md generator
 │   ├── sync.ts                # Barrel export
 │   ├── plugin.ts              # opencode plugin (16 opencode_sync_* tools)

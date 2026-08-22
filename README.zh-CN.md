@@ -261,7 +261,6 @@ uagent-sync/                  # ← 本仓库（纯代码，运行时永不修�
 │   │   ├── keys.ts            #   API 密钥检测与模板
 │   │   ├── skills.ts          #   技能源映射
 │   │   ├── update.ts          #   updateExtensions —— 生态更新编排
-│   │   ├── codebase-memory.ts #   codebase-memory-mcp 发布更新器
 │   │   └── guide.ts           #   SYNC-GUIDE.md 生成器
 │   ├── sync.ts                # 汇总导出
 │   ├── plugin.ts              # opencode 插件（16 个 opencode_sync_* 工具）

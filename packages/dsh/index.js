@@ -294,7 +294,7 @@ export function apply(ctx, config) {
       components: { flag: '--components', type: 'array' },
       dryRun: { flag: '--dry-run', type: 'boolean' },
     },
-    description: 'Update the coding-agent ecosystem to latest versions. Components (default: plugins, skills, mcp, cli, sync, config-deps): plugins (npm plugin cache), skills (skills update -g), mcp (uv academic MCP servers + codebase-memory-mcp GitHub release), cli (uv CLI tools), sync (self-built uagent-sync repo: git pull + build), config-deps (opencode config deps). opencode itself is NOT updated by default — pass components=opencode explicitly. Use dryRun=true to preview commands without executing. After updating, restart opencode/OpenChamber/DSH.',
+    description: 'Update the coding-agent ecosystem to latest versions. Components (default: plugins, skills, mcp, cli, sync, config-deps): plugins (npm plugin cache), skills (skills update -g), mcp (uv academic MCP servers), cli (uv CLI tools), sync (self-built uagent-sync repo: git pull + build), config-deps (opencode config deps). opencode itself is NOT updated by default — pass components=opencode explicitly. Use dryRun=true to preview commands without executing. After updating, restart opencode/OpenChamber/DSH.',
     parameters: {
       components: { type: 'array', description: 'Comma-separated components: opencode, plugins, skills, mcp, cli, sync, config-deps' },
       dryRun: { type: 'boolean', description: 'Only show what would be run' },

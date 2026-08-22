@@ -50,13 +50,27 @@ describe("updateExtensions", () => {
     assert.ok(report.steps.some((s) => isSkillStep(s)), "skills component present");
     assert.ok(report.steps.some((s) => s.name.startsWith("mcp(uv)/")), "uv mcp component present");
     assert.ok(report.steps.some((s) => s.name.startsWith("mcp(npx)/")), "npx mcp component present");
-    assert.ok(report.steps.some((s) => s.name.startsWith("mcp(bin)/")), "binary mcp component present");
+    assert.ok(!report.steps.some((s) => s.name.startsWith("mcp(bin)/")), "codebase-memory-mcp is not an update component");
     assert.ok(report.steps.some((s) => s.name.startsWith("cli(uv)/")), "cli(uv) component present");
     assert.ok(report.steps.some((s) => s.name.startsWith("sync/")), "sync component present");
     assert.ok(report.steps.some((s) => s.name === "config-deps"), "config-deps component present");
     assert.equal(report.summary.skipped, report.steps.length);
     assert.equal(report.summary.error, 0);
     assert.equal(report.summary.warning, 0);
+  });
+
+  it("does not plan codebase-memory-mcp for default or MCP-only updates", async () => {
+    const reports = await Promise.all([
+      updateExtensions({ dryRun: true, env }),
+      updateExtensions({ components: ["mcp"], dryRun: true, env }),
+    ]);
+
+    for (const report of reports) {
+      assert.ok(
+        !report.steps.some((step) => step.name.includes("codebase-memory-mcp") || step.command.includes("codebase-memory-mcp")),
+        "automatic codebase-memory-mcp installation/update must not be planned",
+      );
+    }
   });
 
   it("emits plan → step-start → step-end → done event flow", async () => {
