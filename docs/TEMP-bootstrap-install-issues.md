@@ -4,6 +4,26 @@
 > 记录日期：2026-08-23
 > 当前目标：以后用户只提供 U同步插件 GitHub 地址和 dotfiles GitHub 地址，安装器应自动补齐环境、安装插件并完成恢复，不因下列可自动修复的问题中断。
 
+## 2026-08-23 重构结论
+
+| 原问题 | 状态 | 当前处理 |
+|---|---|---|
+| 1. 插件未真正安装/启用 | 已修复 | personal marketplace + 当前 Codex CLI `plugin add`，并解析 `plugin list --json` 的 installed/enabled。 |
+| 2. 源码未构建 | 已修复 | bootstrap 执行 `npm ci`、自构建 `npm test`、`npm pack` 和 tarball 安装。 |
+| 3. Node/npm 缺失 | 已修复 | winget 安装；失败或 npm 半缺失时切换当前用户 portable LTS。 |
+| 4. msstore 证书错误 | 已修复 | 所有安装显式 `--source winget`，失败不依赖 msstore。 |
+| 5. UAC/安装路径漂移 | 已修复 | 真实版本命令为唯一成功判据；portable fallback 不需要管理员权限。 |
+| 6. WindowsApps 假 codex | 已修复 | 拒绝 WindowsApps 路径并执行真实 `codex --version`。 |
+| 7. npm 半安装/下载卡住 | 已修复 | 先卸载再有界重装，配置 fetch timeout/retries，最后执行版本验证。 |
+| 8. GitHub 连接/私有仓库 | 部分修复 | 有界重试、自动浏览器登录、`gh repo view` 权限验证已实现；真实断网矩阵仍待新电脑验收。 |
+| 9. PowerShell profile 噪声 | 已修复 | 重试入口和子 PowerShell 明确 `-NoProfile`。 |
+| 10. codebase-memory 被再次引入 | 已修复 | 永久 tombstone，当前 Codex manifest 已清理，pull/setup/update/verify 均禁止恢复。 |
+| 11. 安装包缺生产依赖 | 已修复 | 真实 tarball 生产依赖安装测试验证 `smol-toml` 和 `zod`。 |
+| 12. 临时目录危险清理 | 已修复 | 测试使用安全临时 API；bootstrap 不执行基于未验证计算路径的递归删除。 |
+| 13. manifest 不兼容/版本漂移 | 已修复 | 删除禁止字段、补 defaultPrompt、版本统一为 2.1.0；已用当前 Codex CLI 隔离安装成功。 |
+
+当前无代码级阻塞。尚未声称完成的是一台真正全新的 Windows 机器上的整机验收，以及私有仓库首次登录/真实断网场景；执行方法见 [Codex 新电脑端到端重试指南](./CODEX-CLEAN-WINDOWS-RETRY.md)。
+
 ## 本次环境
 
 - Windows 10/11（Codex Desktop）

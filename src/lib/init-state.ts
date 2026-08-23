@@ -1,18 +1,28 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
-import type { InitState, InitType } from "./types.js";
+import type { InitState, InitType, TargetAgent } from "./types.js";
 import { DOTFILES_DIR } from "./dotfiles.js";
 
 const INIT_STATE_RELATIVE = `${DOTFILES_DIR}/state/init-state.json`;
 
-export function emptyInitState(): InitState {
-  return { initialized: false, initType: "backup", workspaceName: "", githubUrl: "", githubRepoPrivate: true, completedSteps: {}, firstInitAt: "", lastInitAt: "" };
+export function detectTargetAgent(env: NodeJS.ProcessEnv = process.env): TargetAgent {
+  if (env.CODEX_SESSION_ID || env.CODEX_THREAD_ID || env.CODEX_HOME) return "codex";
+  if (env.OPENCODE_SESSION_ID || env.OPENCODE_CONFIG_DIR) return "opencode";
+  if (env.DSH_HOME || env.DEEPSEEK_HARNESS_HOME) return "dsh";
+  return "codex";
+}
+
+export function emptyInitState(targetAgent: TargetAgent = detectTargetAgent()): InitState {
+  return { initialized: false, initType: "backup", workspaceName: "", githubUrl: "", targetAgent, githubRepoPrivate: true, completedSteps: {}, firstInitAt: "", lastInitAt: "" };
 }
 
 export function readInitState(workspaceRoot: string): InitState {
   const statePath = path.join(workspaceRoot, INIT_STATE_RELATIVE);
   if (!fs.existsSync(statePath)) return emptyInitState();
-  try { return JSON.parse(fs.readFileSync(statePath, "utf-8")) as InitState; }
+  try {
+    const parsed = JSON.parse(fs.readFileSync(statePath, "utf-8")) as Partial<InitState>;
+    return { ...emptyInitState(), ...parsed, targetAgent: parsed.targetAgent ?? detectTargetAgent() };
+  }
   catch { return emptyInitState(); }
 }
 

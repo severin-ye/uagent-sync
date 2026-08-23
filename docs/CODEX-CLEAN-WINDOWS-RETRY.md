@@ -1,0 +1,40 @@
+# Codex 新电脑端到端重试指南
+
+## 唯一入口
+
+在 Windows PowerShell 中执行下面一条命令。它只需要 U同步和 dotfiles 两个仓库地址；脚本会自动安装或修复 Git、GitHub CLI、Node/npm、Codex CLI，随后构建、测试、打包、安装插件并恢复 Codex 环境。
+
+```powershell
+$script = Join-Path ([IO.Path]::GetTempPath()) 'uagent-bootstrap.ps1'; Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/severin-ye/uagent-sync/master/scripts/bootstrap.ps1' -OutFile $script; powershell.exe -NoProfile -ExecutionPolicy Bypass -File $script -UagentRepo 'https://github.com/severin-ye/uagent-sync' -DotfilesRepo 'https://github.com/severin-ye/usync-dotfiles' -TargetAgent codex
+```
+
+私有 dotfiles 尚未授权时，脚本会自动启动 GitHub 的浏览器登录；用户只需完成 GitHub 身份确认，不需要手工执行修复命令。认证、仓库不存在或权限不足会明确失败，不会继续伪报成功。
+
+## 先看计划（不修改电脑）
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\bootstrap.ps1 -UagentRepo 'https://github.com/severin-ye/uagent-sync' -DotfilesRepo 'https://github.com/severin-ye/usync-dotfiles' -TargetAgent codex -PlanOnly
+```
+
+计划和最终结果都包含 `ok`、`warnings`、`errors`、`skipped`、`targetAgent`。任何必需步骤失败均返回非零退出码。
+
+## 失败后重试
+
+直接重复同一条入口命令。进度保存在 `%USERPROFILE%\UagentWorkspace\.uagent-bootstrap-state.json`；已完成且通过真实版本检查的步骤会安全复用。下载和网络步骤执行有界重试，winget 失败会切换到当前用户的 portable 工具目录。
+
+不要删除状态文件，也不要手工复制旧机器配置。若确需从头验证，请使用新的 `-WorkspaceRoot`，保留原目录作为故障证据。
+
+## 成功判据
+
+最终验证必须同时满足：
+
+- `codex plugin list --json` 中 `uagent-sync` 为 `installed=true` 且 `enabled=true`；
+- 全局 `uagent-sync --version` 和核心 CLI 命令可运行；
+- `state/workspace-state.json` 为 `targetAgent=codex` 且清单完整；
+- 清单选中的 skills 均可见，Codex MCP（包括 runtime 管理项）均真实存在；
+- 需要认证的 MCP 只保存变量名，最终验证要求对应环境变量已由用户安全配置；
+- `codebase-memory-mcp` 不在配置中，tombstone 仍存在；
+- OpenCode 配置未被检查、创建或修改；
+- 输出和提交前 secrets 扫描没有发现密钥值。
+
+安装完成后新建一个 Codex 任务，让新安装的 skills 进入新任务上下文。

@@ -5,12 +5,44 @@ export interface SubmoduleState {
   commit: string;
 }
 
+export type TargetAgent = "codex" | "opencode" | "dsh" | "all";
+
+export interface ExtensionRef {
+  kind: "plugin" | "skill" | "mcp";
+  id: string;
+  source?: string;
+  path?: string;
+  version?: string;
+  commit?: string;
+  enabled?: boolean;
+  config?: Record<string, unknown>;
+}
+
+export interface ExtensionTombstone {
+  kind: ExtensionRef["kind"];
+  id: string;
+  deletedAt: string;
+  reason?: string;
+}
+
+export interface AgentRestoreState {
+  plugins: ExtensionRef[];
+  skills: ExtensionRef[];
+  mcp: ExtensionRef[];
+  config: Record<string, unknown>;
+}
+
 export interface WorkspaceState {
   [key: string]: unknown;
   timestamp: string;
   platform: "windows" | "macos" | "linux";
   hostname: string;
-  opencodeConfig: Record<string, unknown>;
+  schemaVersion?: 2;
+  targetAgent?: TargetAgent;
+  completeness?: "complete" | "partial";
+  agents?: Partial<Record<Exclude<TargetAgent, "all">, AgentRestoreState>>;
+  tombstones?: ExtensionTombstone[];
+  opencodeConfig?: Record<string, unknown>;
   envVars: string[];
   submodules: SubmoduleState[];
   skills: string[];
@@ -41,6 +73,7 @@ export interface InitState {
   initType: InitType;
   workspaceName: string;
   githubUrl: string;
+  targetAgent: TargetAgent;
   githubRepoPrivate: boolean;
   completedSteps: Record<string, boolean>;
   firstInitAt: string;

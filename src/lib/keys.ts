@@ -43,6 +43,7 @@ export function detectApiKeys(workspaceRoot: string): ApiKeyInfo {
 }
 
 export function initApiKeyFile(workspaceRoot: string, options?: { additionalKeys?: string[]; githubToken?: string }): { path: string; created: boolean; detail: string } {
+  if (options?.githubToken) throw new Error("Refusing to accept or persist a secret value; provide variable names only");
   const dotfilesDir = path.join(workspaceRoot, DOTFILES_DIR);
   if (!fs.existsSync(dotfilesDir)) fs.mkdirSync(dotfilesDir, { recursive: true });
   // 代码层保证：写真实值前确保 keys/、.env 一定被 dotfiles 仓库 ignore，
@@ -59,11 +60,7 @@ export function initApiKeyFile(workspaceRoot: string, options?: { additionalKeys
     sections.push(`| \`${key}\` | \`<YOUR_${key}>\` | ${desc} |`);
   }
 
-  // 真实 token 仅写入本地文件：usync-dotfiles/keys/ 已在 .gitignore 中（2026-07-17 安全清理），
-  // crystallize/push 的 git add -A 不会带上它，保证真实值永不进入 Git 历史。
-  // README 承诺 "names + descriptions (never values)" 依赖此忽略规则。
-  if (options?.githubToken) { sections.push(``, `## GitHub Token`, ``, `\`\`\``, options.githubToken, `\`\`\``); }
-
+  fs.mkdirSync(path.dirname(apiKeyPath), { recursive: true });
   fs.writeFileSync(apiKeyPath, sections.join("\n") + "\n");
   return { path: apiKeyPath, created: !keyInfo.exists, detail: `API key template written with ${allKeys.length} keys` };
 }

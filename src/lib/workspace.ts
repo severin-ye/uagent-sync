@@ -4,11 +4,12 @@ import * as os from "node:os";
 import { run } from "./run.js";
 import { getPlatform, detectWorkspaceInfo } from "./cache.js";
 import { appendInstallEntry } from "./log.js";
-import { stripJsonComments } from "./state.js";
+import { exportSystemState, stripJsonComments } from "./state.js";
 import { loadKnownMcps, analyzeMcpConfig } from "./guide.js";
 import { detectSyncPath, isMachineSpecificPath } from "./portable.js";
-import type { SubmoduleStatusItem, SetupResult, VerifyResult } from "./types.js";
+import type { SubmoduleStatusItem, SetupResult, VerifyResult, TargetAgent, WorkspaceState, ExtensionRef } from "./types.js";
 import { DOTFILES_DIR } from "./dotfiles.js";
+import { restoreCodexExtensions } from "./codex-restore.js";
 import { t } from "../i18n/index.js";
 import { scanMigrationAnalysis } from "./migration-analysis/index.js";
 
@@ -42,8 +43,70 @@ export function getSubmoduleStatus(workspaceRoot: string): SubmoduleStatusItem[]
   return items;
 }
 
-export function verifyEnvironment(workspaceRoot: string): VerifyResult[] {
+export function planWorkspaceSetup(input: { workspaceRoot: string; targetAgent: TargetAgent; homeDir?: string }): SetupResult[] {
+  if (input.targetAgent === "codex") return [
+    { step: "Git", status: "skipped", detail: "verify or install" },
+    { step: "GitHub CLI", status: "skipped", detail: "verify or install" },
+    { step: "Node.js and npm", status: "skipped", detail: "verify or install" },
+    { step: "Codex CLI", status: "skipped", detail: "verify or install" },
+    { step: "Uagent Sync Codex plugin", status: "skipped", detail: "install from selected personal marketplace" },
+    { step: "Selected Codex skills and MCP", status: "skipped", detail: "restore from host-scoped manifest after tombstone filtering" },
+  ];
+  return [{ step: `${input.targetAgent} workspace`, status: "skipped", detail: "legacy setup adapter" }];
+}
+
+export function verifyEnvironment(workspaceRoot: string, options?: { targetAgent?: TargetAgent; homeDir?: string }): VerifyResult[] {
   const results: VerifyResult[] = [];
+  const targetAgent = options?.targetAgent ?? "opencode";
+  const homeDir = options?.homeDir ?? os.homedir();
+  if (targetAgent === "codex") {
+    const commands: Array<[string, string]> = [["Git", "git --version"], ["GitHub CLI", "gh --version"], ["Node.js", "node --version"], ["npm", "npm --version"], ["Codex CLI", "codex --version"]];
+    for (const [component, command] of commands) {
+      const check = run(command);
+      results.push({ component, status: check.code === 0 ? "ok" : "error", detail: check.code === 0 ? check.stdout.trim().split(/\r?\n/)[0] : `Unavailable or not executable: ${command}` });
+    }
+    const configPath = path.join(homeDir, ".codex", "config.toml");
+    const configText = fs.existsSync(configPath) ? fs.readFileSync(configPath, "utf-8") : "";
+    results.push({ component: "Codex config", status: configText ? "ok" : "error", detail: configText ? configPath : "Missing .codex/config.toml" });
+    const forbidden = /^\[mcp_servers\.(?:"codebase-memory-mcp"|codebase-memory-mcp)\]/m.test(configText);
+    results.push({ component: "Deleted MCP tombstones", status: forbidden ? "error" : "ok", detail: forbidden ? "codebase-memory-mcp is still active and must remain deleted" : "codebase-memory-mcp absent" });
+    const skillsDir = path.join(homeDir, ".agents", "skills");
+    const skillCount = fs.existsSync(skillsDir) ? fs.readdirSync(skillsDir, { withFileTypes: true }).filter((entry) => entry.isDirectory()).length : 0;
+    results.push({ component: "Codex skills", status: skillCount ? "ok" : "warning", detail: `${skillCount} skill(s) installed` });
+    const pluginList = run("codex plugin list --json");
+    let pluginEnabled = false;
+    try {
+      const parsed = JSON.parse(pluginList.stdout) as { installed?: Array<{ name?: string; installed?: boolean; enabled?: boolean }> };
+      pluginEnabled = pluginList.code === 0 && !!parsed.installed?.some((item) => item.name === "uagent-sync" && item.installed === true && item.enabled === true);
+    } catch { pluginEnabled = false; }
+    results.push({ component: "Uagent Sync Codex plugin", status: pluginEnabled ? "ok" : "error", detail: pluginEnabled ? "installed and enabled" : "not confirmed enabled by codex plugin list" });
+    const statePath = path.join(workspaceRoot, DOTFILES_DIR, "state", "workspace-state.json");
+    if (!fs.existsSync(statePath)) results.push({ component: "Codex recovery manifest", status: "error", detail: `Missing ${statePath}` });
+    else {
+      try {
+        const state = JSON.parse(fs.readFileSync(statePath, "utf-8")) as WorkspaceState;
+        const selected = state.agents?.codex;
+        if (state.targetAgent !== "codex" || !selected) throw new Error("Manifest is not scoped to Codex");
+        const installedNames = new Set<string>();
+        for (const root of [path.join(homeDir, ".agents", "skills"), path.join(homeDir, ".codex", "skills")]) {
+          if (fs.existsSync(root)) for (const entry of fs.readdirSync(root, { withFileTypes: true })) if (entry.isDirectory()) installedNames.add(entry.name);
+        }
+        const missingSkills = selected.skills.filter((item) => !installedNames.has(item.id));
+        results.push({ component: "Selected Codex skills", status: missingSkills.length ? "error" : "ok", detail: missingSkills.length ? `Missing: ${missingSkills.map((item) => item.id).join(", ")}` : `${selected.skills.length} selected skill(s) available` });
+        const missingMcp = selected.mcp.filter((item) => !new RegExp(`^\\[mcp_servers\\.(?:"${item.id}"|${item.id.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})\\]`, "m").test(configText));
+        results.push({ component: "Selected Codex MCP", status: missingMcp.length ? "error" : "ok", detail: missingMcp.length ? `Missing: ${missingMcp.map((item) => item.id).join(", ")}` : `${selected.mcp.length} selected MCP entry(s) available` });
+        const requiredEnvVars = new Set<string>();
+        for (const item of selected.mcp) {
+          if (typeof item.config?.bearerTokenEnvVar === "string") requiredEnvVars.add(item.config.bearerTokenEnvVar);
+          if (Array.isArray(item.config?.envVars)) for (const value of item.config.envVars) if (typeof value === "string") requiredEnvVars.add(value);
+        }
+        const missingCredentials = [...requiredEnvVars].filter((name) => !process.env[name]);
+        results.push({ component: "Codex MCP credentials", status: missingCredentials.length ? "error" : "ok", detail: missingCredentials.length ? `Unset required environment variable(s): ${missingCredentials.join(", ")}` : `${requiredEnvVars.size} required credential variable(s) available` });
+        results.push({ component: "Codex recovery manifest", status: "ok", detail: `schemaVersion=${state.schemaVersion ?? "legacy"}, completeness=${state.completeness ?? "unknown"}` });
+      } catch (error) { results.push({ component: "Codex recovery manifest", status: "error", detail: String(error) }); }
+    }
+    return results;
+  }
   try {
     const analysis = scanMigrationAnalysis({ homeDir: os.homedir(), workspaceRoot, context: { mode: "single_agent", agent: "codex" } });
     results.push({ component: "Codex migration analysis", status: analysis.groups.length ? "warning" : "ok", detail: analysis.groups.length ? `${analysis.groups.length} functional group(s) require review — uagent-sync dashboard --page migration-analysis` : "No functional duplicate groups detected." });
@@ -174,9 +237,39 @@ export function verifyEnvironment(workspaceRoot: string): VerifyResult[] {
 export function setupWorkspace(workspaceRoot: string, options?: {
   fixWindowsPaths?: boolean; copyConfig?: boolean; installRalph?: boolean;
   installSkillsCli?: boolean; installGhCli?: boolean; installSkills?: string[];
-  windowsFixPaths?: string[];
+  windowsFixPaths?: string[]; targetAgent?: TargetAgent; homeDir?: string;
 }): SetupResult[] {
   const results: SetupResult[] = [];
+  if (options?.targetAgent === "codex") {
+    const plan = planWorkspaceSetup({ workspaceRoot, targetAgent: "codex", homeDir: options.homeDir });
+    for (const planned of plan) {
+      const command = planned.step === "Git" ? "git --version" : planned.step === "GitHub CLI" ? "gh --version" : planned.step === "Node.js and npm" ? "node --version" : planned.step === "Codex CLI" ? "codex --version" : undefined;
+      if (!command) { results.push(planned); continue; }
+      const check = run(command);
+      results.push({ step: planned.step, status: check.code === 0 ? "ok" : "error", detail: check.code === 0 ? check.stdout.trim().split(/\r?\n/)[0] : `Required command unavailable: ${command}` });
+    }
+    const statePath = path.join(workspaceRoot, DOTFILES_DIR, "state", "workspace-state.json");
+    if (!fs.existsSync(statePath)) {
+      results.push({ step: "Restore selected Codex extensions", status: "error", detail: `Required manifest missing: ${statePath}` });
+      return results;
+    }
+    try {
+      const state = JSON.parse(fs.readFileSync(statePath, "utf-8")) as WorkspaceState;
+      if (state.targetAgent !== "codex" || !state.agents?.codex) throw new Error("Manifest targetAgent must be codex and include agents.codex");
+      const selected: ExtensionRef[] = [...state.agents.codex.plugins, ...state.agents.codex.skills, ...state.agents.codex.mcp];
+      const current = exportSystemState(workspaceRoot, { targetAgent: "codex", homeDir: options.homeDir });
+      const currentCodex = current.agents?.codex;
+      const installed: ExtensionRef[] = currentCodex ? [...currentCodex.plugins, ...currentCodex.skills, ...currentCodex.mcp] : [];
+      const restored = restoreCodexExtensions({ targetAgent: "codex", selected, installed, tombstones: state.tombstones ?? [] });
+      results.push(...restored.restored.map((item) => ({ step: `Restore ${item}`, status: "ok" as const, detail: "Restored or deletion enforced" })));
+      results.push(...restored.skipped.map((item) => ({ step: `Skip ${item}`, status: "skipped" as const, detail: "Already present or explicitly deleted" })));
+      results.push(...restored.warnings.map((item) => ({ step: "Restore selected Codex extensions", status: "warning" as const, detail: item })));
+      results.push(...restored.errors.map((item) => ({ step: "Restore selected Codex extensions", status: "error" as const, detail: item })));
+    } catch (error) {
+      results.push({ step: "Restore selected Codex extensions", status: "error", detail: String(error) });
+    }
+    return results;
+  }
   const platform = getPlatform();
   const { fixWindowsPaths = true, copyConfig = false, installRalph = true, installSkillsCli = true, installGhCli = true, installSkills, windowsFixPaths } = options ?? {};
 

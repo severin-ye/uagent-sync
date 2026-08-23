@@ -1,6 +1,6 @@
 {
   "name": "uagent-sync",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Cross-device workspace sync for coding agents: backup, restore, and ecosystem update via a single CLI.",
   "author": {
     "name": "severin-ye"
@@ -16,7 +16,6 @@
     "dev-environment"
   ],
   "skills": "./skills/",
-  "hooks": "./hooks/hooks-codex.json",
   "interface": {
     "displayName": "Uagent Sync",
     "shortDescription": "Cross-device workspace backup, restore, and update",
@@ -30,6 +29,11 @@
     "websiteURL": "https://github.com/severin-ye/uagent-sync",
     "privacyPolicyURL": "https://github.com/severin-ye/uagent-sync",
     "termsOfServiceURL": "https://github.com/severin-ye/uagent-sync",
-    "brandColor": "#3B82F6"
+    "brandColor": "#3B82F6",
+    "defaultPrompt": [
+      "U同步，检查环境",
+      "U同步，恢复工作区",
+      "U同步，更新所有扩展"
+    ]
   }
 }

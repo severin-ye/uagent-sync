@@ -90,11 +90,9 @@ describe("CLI read-only commands", () => {
     assert.ok(stdout.includes("fake"), "should list fake submodule");
   });
 
-  it("verify prints environment check summary", () => {
-    const { stdout, code } = runCli(["verify"]);
-    assert.equal(code, 0);
-    assert.ok(stdout.includes("Environment Verification"), "should print verify header");
-    assert.ok(stdout.includes("ok"), "should include ok count");
+  it("verify does not report success when required checks fail", () => {
+    const { code } = runCli(["verify", "--target-agent", "codex", "--json"]);
+    assert.notEqual(code, 0);
   });
 
   it("guide generates SYNC-GUIDE.md", () => {

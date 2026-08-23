@@ -16,5 +16,7 @@ if (files.length === 0) {
   process.exit(1);
 }
 
-const result = spawnSync(process.execPath, ["--import", "tsx", "--test", ...files], { stdio: "inherit" });
+// Pack/install tests invoke the package lifecycle, whose clean build removes dist/.
+// Run test files serially so that real packaging cannot race CLI smoke tests.
+const result = spawnSync(process.execPath, ["--import", "tsx", "--test", "--test-concurrency=1", ...files], { stdio: "inherit" });
 process.exit(result.status ?? 1);

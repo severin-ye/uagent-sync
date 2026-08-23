@@ -80,6 +80,65 @@
 51. 安装日志应保存每个组件的来源、版本、安装命令、结果和失败原因，以便审计和重新恢复。
 52. CI 应覆盖干净 Windows、路径变化、网络重试、私有仓库、状态缺失、敏感信息和删除扩展等真实场景。
 
+## 2026-08-23 实施状态（逐项）
+
+状态口径：**已修复**＝代码和回归测试已落地；**部分修复**＝主路径已实现，但仍缺真实外部场景或全矩阵验证；**仍阻塞**＝当前没有可靠实现。详细重试见 [Codex 新电脑端到端重试指南](./CODEX-CLEAN-WINDOWS-RETRY.md)。
+
+1. **已修复**：`scripts/bootstrap.ps1` 以两个 GitHub URL 为唯一业务输入，串联准备、安装、恢复和验证。
+2. **已修复**：引入并持久化 `targetAgent`，支持显式覆盖和宿主环境识别。
+3. **已修复**：Codex 的 pull/setup/verify/export 分支使用独立 Codex 缓存，不读取或写入 OpenCode 配置/缓存，并有隔离测试。
+4. **已修复**：自动注册 personal marketplace，使用当前 CLI 的 `plugin add` 安装，并用 JSON 确认 installed/enabled。
+5. **已修复**：完成后明确提示新建 Codex 任务加载 skills，不再把重启当作唯一手段。
+6. **已修复**：自动处理 Git、gh、Node/npm、Codex CLI；winget 失败使用当前用户 portable fallback。
+7. **已修复**：依赖判据均执行真实版本命令。
+8. **已修复**：WindowsApps `codex.exe` 被判定为无效并改走 npm CLI。
+9. **已修复**：winget 显式使用 `--source winget`，失败后切换 portable fallback。
+10. **已修复**：优先采用无需 UAC 的 portable fallback；安装后再次执行真实命令确认。
+11. **已修复**：通过命令解析和 PATH 刷新发现工具，不依赖标准安装目录。
+12. **已修复**：npm/Git/GitHub 下载使用有界重试、退避和可见输出。
+13. **已修复**：Codex npm 包先卸载半安装状态，再重装并执行 `codex --version`。
+14. **部分修复**：已自动检查 gh 登录、仓库存在性和私有仓库权限；更细的网络错误分类仍依赖上游错误文本。
+15. **已修复**：结构化错误脱敏，提交前还有独立 secrets 扫描门禁。
+16. **已修复**：`pretest` 自动 clean build；无 `dist/` 的 checkout 可直接执行 `npm test`。
+17. **已修复**：构建是测试前置门禁，失败立即停止；测试文件串行避免 pack 的 clean build 竞态。
+18. **已修复**：manifest 必需/禁止字段有回归测试，并已用当前 Codex CLI 隔离安装验证。
+19. **已修复**：package、Codex manifest 和 marketplace 版本一致性有测试。
+20. **已修复**：顶层 `hooks` 已移除，skills 走默认发现，验证规则与实际清单一致。
+21. **已修复**：真实 tarball 安装生产依赖，并验证 `smol-toml`、`zod` 可解析。
+22. **已修复**：`npm test` 内含真实 `npm pack`、生产依赖安装和 CLI smoke。
+23. **已修复**：bootstrap/verify 同时验证插件、CLI、selected skills、MCP 和 Codex 配置。
+24. **已修复**：测试使用 `mkdtemp`；bootstrap 不对计算路径做递归清理。
+25. **已修复**：Windows 重试入口和子 PowerShell 使用 `-NoProfile`，按退出码/JSON 判断。
+26. **已修复**：pull/verify/setup 任何必需错误均非零退出。
+27. **已修复**：三者统一返回 `ok/warnings/errors/skipped/targetAgent`。
+28. **已修复**：Codex-only 分支把 OpenCode/非 Codex 工作区内容列为 out-of-scope，不阻塞。
+29. **部分修复**：`--force` 可安全更新显式 URL/模式/宿主；自动冲突迁移仍保持保守失败。
+30. **已修复**：初始化状态可靠复用并允许显式覆盖。
+31. **已修复**：v2 状态只保存变量名/安全来源元数据，不保存密钥值。
+32. **已修复**：export、push、crystallize 写入或提交前执行 secrets 扫描。
+33. **已修复**：dotfiles 重新提交安全且足够恢复的 `workspace-state.json`。
+34. **已修复**：核心状态缺失时明确非零失败；不再用未定义文档猜测恢复。
+35. **已修复**：状态含 source machine、targetAgent 和 completeness，不冒充旧快照。
+36. **已修复**：210 个当前 skill 保存仓库 URL、skill path 和内容 hash/版本。
+37. **已修复**：旧用户名绝对路径已从 Codex 当前 manifest 清除。
+38. **已修复**：当前自定义项 `agent-reach` 保存可信仓库来源；无来源陈旧项写 tombstone。
+39. **已修复**：恢复分类器输出可恢复、已存在、来源缺失、冲突和明确删除。
+40. **已修复**：恢复只使用 portable 来源和用户 HOME，不依赖固定 Windows 用户名。
+41. **已修复**：Codex 当前清单独立存放；OpenCode 历史配置不进入 Codex 状态。
+42. **已修复**：只迭代 dotfiles `agents.codex` 的 selected 项，不遍历 marketplace 可用项。
+43. **已修复**：know-how/安装日志明确标为历史，不参与恢复发现。
+44. **已修复**：tombstone 在分类和执行阶段优先于 selected、旧快照和文档；文件损坏时 fail-closed，永久删除项即使被旧清单省略也继续生效。
+45. **已修复**：pull/setup/update/verify 均有 `codebase-memory-mcp` 禁止恢复测试或硬性检查。
+46. **已修复**：Codex MCP manifest 已清除该陈旧项，另有永久 tombstone。
+47. **已修复**：`gpt-dotfiles-sync` 经实际安装日志确认已退役并写 tombstone；`node_repl` 标为 Codex runtime 管理，但最终验证仍要求其真实出现在 Codex 配置中。
+48. **已修复**：API 流程拒绝 `--key-value` 和真实 token，只接受变量名/占位符。
+49. **已修复**：bootstrap 状态逐步持久化并记录源码 commit；同一 commit 复用构建/安装结果，源码变化自动失效旧步骤，安装命令容忍 already-present。
+50. **已修复**：verify 对 selected plugin/skills/MCP/CLI/config 做实际命令和清单比对。
+51. **部分修复**：bootstrap 与现有 install-log 保留步骤、来源和失败原因；portable fallback 的精确下载 commit 尚无统一审计字段。
+52. **部分修复**：已有 Windows CI、状态缺失、密钥、tombstone、跨 HOME、真实 pack 测试；私有仓库登录、真实断网重试和全新 Windows 整机仍需按重试指南执行验收。
+
+**仍阻塞：无代码级阻塞。** 外部条件只剩私有 GitHub 仓库首次浏览器身份确认，以及真实全新 Windows 整机验收；两者无法在当前已配置机器上伪造为已验证。
+
 ## 原电脑修复后的重试验收
 
 原电脑完成重构并推送后，当前电脑应只提供 U同步仓库地址和 dotfiles 仓库地址即可自动完成 Codex-only 安装、恢复与最终验证，并且全过程不得访问或修改 OpenCode、不得恢复 `codebase-memory-mcp`、不得泄露密钥、不得把失败报告为成功。

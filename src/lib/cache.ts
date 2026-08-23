@@ -2,13 +2,14 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import * as os from "node:os";
 import { run } from "./run.js";
-import type { WorkspaceCache, WorkspaceInfo } from "./types.js";
+import type { TargetAgent, WorkspaceCache, WorkspaceInfo } from "./types.js";
 import { DOTFILES_DIR, dotfilesExists } from "./dotfiles.js";
 import { t } from "../i18n/index.js";
 
 const LEGACY_CACHE_RELATIVE = `${DOTFILES_DIR}/state/sync-cache.json`;
 
 let _cachedRoot: string | null = null;
+let _cachedCodexRoot: string | null = null;
 
 /**
  * 固定缓存位置：~/.config/opencode/sync-cache.json。
@@ -28,6 +29,7 @@ export function __overrideHomeDir(dir: string | undefined): void {
 /** 测试注入点：重置进程内缓存（node:test 同进程串行跑多个用例时避免状态泄漏）。 */
 export function __resetCacheForTests(): void {
   _cachedRoot = null;
+  _cachedCodexRoot = null;
 }
 function homeDir(): string {
   return homeDirOverride ?? os.homedir();
@@ -35,6 +37,10 @@ function homeDir(): string {
 
 export function getFixedCachePath(): string {
   return path.join(homeDir(), ".config", "opencode", "sync-cache.json");
+}
+
+export function getCodexCachePath(): string {
+  return path.join(homeDir(), ".codex", "uagent-sync-cache.json");
 }
 
 function findDotfiles(cwd: string): string | null {
@@ -134,6 +140,47 @@ export function resolveWorkspaceRoot(): string {
   }
 
   _cachedRoot = root;
+  return root;
+}
+
+/** Resolve a workspace without crossing the selected host's configuration boundary. */
+export function resolveWorkspaceRootForAgent(targetAgent: TargetAgent): string {
+  if (targetAgent !== "codex") return resolveWorkspaceRoot();
+  if (_cachedCodexRoot && fs.existsSync(_cachedCodexRoot)) return _cachedCodexRoot;
+
+  // OPENCODE_SYNC_WORKSPACE_ROOT remains an environment-only compatibility alias;
+  // no OpenCode file or directory is inspected in Codex scope.
+  const envRoot = process.env.UAGENT_SYNC_WORKSPACE_ROOT ?? process.env.OPENCODE_SYNC_WORKSPACE_ROOT;
+  if (envRoot && fs.existsSync(envRoot)) {
+    _cachedCodexRoot = envRoot;
+    return envRoot;
+  }
+
+  const cached = readJsonCache(getCodexCachePath());
+  if (isValidCache(cached)) {
+    _cachedCodexRoot = cached.workspaceRoot;
+    return cached.workspaceRoot;
+  }
+
+  let root = process.cwd();
+  while (root !== path.dirname(root)) {
+    if (fs.existsSync(path.join(root, DOTFILES_DIR)) || fs.existsSync(path.join(root, ".gitmodules"))) break;
+    root = path.dirname(root);
+  }
+  if (root === path.dirname(root)) throw new Error(t("lib.workspaceNotFound"));
+
+  const cachePath = getCodexCachePath();
+  fs.mkdirSync(path.dirname(cachePath), { recursive: true });
+  fs.writeFileSync(cachePath, JSON.stringify({
+    workspaceRoot: root,
+    workspaceName: path.basename(root),
+    gitRemote: run("git remote get-url origin", root).stdout.trim() || "",
+    dotfilesPath: path.join(root, DOTFILES_DIR),
+    mcpInstalled: true,
+    createdAt: new Date().toISOString(),
+    lastVerified: new Date().toISOString(),
+  } satisfies WorkspaceCache, null, 2));
+  _cachedCodexRoot = root;
   return root;
 }
 

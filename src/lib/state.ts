@@ -6,8 +6,10 @@ import { getPlatform } from "./cache.js";
 import { resolveSkillSources } from "./skills.js";
 import { generateSyncMcpConfig } from "./portable.js";
 import { redactSecretsDeep, REDACTED } from "./redact.js";
-import type { WorkspaceState, SubmoduleState, ImportResult } from "./types.js";
+import type { WorkspaceState, SubmoduleState, ImportResult, TargetAgent, ExtensionTombstone, ExtensionRef } from "./types.js";
 import { DOTFILES_DIR } from "./dotfiles.js";
+import { parse as parseToml } from "smol-toml";
+import { mergePermanentTombstones } from "./tombstones.js";
 
 export function stripJsonComments(content: string): string {
   let result = "";
@@ -121,7 +123,105 @@ function readSkills(): string[] {
   return fs.readdirSync(skillsDir).filter(f => fs.statSync(path.join(skillsDir, f)).isDirectory());
 }
 
-export function exportSystemState(workspaceRoot: string): WorkspaceState {
+function readTombstones(workspaceRoot: string): ExtensionTombstone[] {
+  const file = path.join(workspaceRoot, DOTFILES_DIR, "state", "extension-tombstones.json");
+  let items: ExtensionTombstone[] = [];
+  if (fs.existsSync(file)) {
+    try {
+      const parsed = JSON.parse(fs.readFileSync(file, "utf-8")) as unknown;
+      if (!Array.isArray(parsed) || parsed.some((item) => !item || typeof item !== "object" || !["plugin", "skill", "mcp"].includes(String((item as ExtensionTombstone).kind)) || typeof (item as ExtensionTombstone).id !== "string" || typeof (item as ExtensionTombstone).deletedAt !== "string")) {
+        throw new Error("expected an array of valid tombstone records");
+      }
+      items = parsed as ExtensionTombstone[];
+    } catch (error) {
+      throw new Error(`Invalid tombstone file ${file}: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+  return mergePermanentTombstones(items);
+}
+
+function readCodexState(homeDir: string): { plugins: ExtensionRef[]; skills: ExtensionRef[]; mcp: ExtensionRef[]; config: Record<string, unknown> } {
+  const configPath = path.join(homeDir, ".codex", "config.toml");
+  const configText = fs.existsSync(configPath) ? fs.readFileSync(configPath, "utf-8") : "";
+  let parsed: Record<string, unknown> = {};
+  if (configText.trim()) {
+    try { parsed = parseToml(configText) as Record<string, unknown>; }
+    catch (error) { throw new Error(`Invalid Codex config TOML: ${error instanceof Error ? error.message : String(error)}`); }
+  }
+  const pluginTables = (parsed.plugins && typeof parsed.plugins === "object" ? parsed.plugins : {}) as Record<string, Record<string, unknown>>;
+  const marketplaces = (parsed.marketplaces && typeof parsed.marketplaces === "object" ? parsed.marketplaces : {}) as Record<string, Record<string, unknown>>;
+  const plugins: ExtensionRef[] = Object.entries(pluginTables).map(([selector, config]) => {
+    const separator = selector.lastIndexOf("@");
+    const id = separator > 0 ? selector.slice(0, separator) : selector;
+    const marketplace = separator > 0 ? selector.slice(separator + 1) : undefined;
+    const marketplaceConfig = marketplace ? marketplaces[marketplace] : undefined;
+    const runtimeManaged = marketplaceConfig?.source_type === "local";
+    const source = runtimeManaged ? `codex-runtime:${marketplace}` : typeof marketplaceConfig?.source === "string" ? marketplaceConfig.source : undefined;
+    const restoreConfig: Record<string, unknown> = {};
+    if (marketplace) restoreConfig.marketplace = marketplace;
+    if (runtimeManaged) restoreConfig.managedBy = "codex-runtime";
+    return { kind: "plugin", id, source, version: typeof marketplaceConfig?.last_revision === "string" ? marketplaceConfig.last_revision : undefined, enabled: config?.enabled !== false, config: Object.keys(restoreConfig).length ? restoreConfig : undefined };
+  });
+  const mcpTables = (parsed.mcp_servers && typeof parsed.mcp_servers === "object" ? parsed.mcp_servers : {}) as Record<string, Record<string, unknown>>;
+  const mcp: ExtensionRef[] = Object.entries(mcpTables).map(([id, config]) => {
+    const safeConfig: Record<string, unknown> = {};
+    if (typeof config.command === "string") safeConfig.command = config.command;
+    if (Array.isArray(config.args)) safeConfig.args = config.args.filter((value): value is string => typeof value === "string");
+    if (typeof config.url === "string") safeConfig.url = config.url;
+    if (typeof config.bearer_token_env_var === "string") safeConfig.bearerTokenEnvVar = config.bearer_token_env_var;
+    if (config.env && typeof config.env === "object") safeConfig.envVars = Object.keys(config.env as Record<string, unknown>);
+    const npmPackage = safeConfig.command === "npx" && Array.isArray(safeConfig.args)
+      ? safeConfig.args.find((value) => typeof value === "string" && !value.startsWith("-")) as string | undefined
+      : undefined;
+    const source = id === "node_repl" ? "codex-runtime" : typeof safeConfig.url === "string" ? safeConfig.url : npmPackage ? `npm:${npmPackage}` : typeof safeConfig.command === "string" ? `command:${safeConfig.command}` : undefined;
+    if (id === "node_repl") safeConfig.managedBy = "codex-runtime";
+    return { kind: "mcp", id, source, config: safeConfig };
+  });
+  let lockedSkills: Record<string, { source?: string; sourceUrl?: string; skillPath?: string; skillFolderHash?: string }> = {};
+  const skillLockPath = path.join(homeDir, ".agents", ".skill-lock.json");
+  if (fs.existsSync(skillLockPath)) {
+    try {
+      const lock = JSON.parse(fs.readFileSync(skillLockPath, "utf-8")) as { skills?: typeof lockedSkills };
+      lockedSkills = lock.skills ?? {};
+    } catch { lockedSkills = {}; }
+  }
+  const skills: ExtensionRef[] = [];
+  for (const root of [path.join(homeDir, ".agents", "skills"), path.join(homeDir, ".codex", "skills")]) {
+    if (!fs.existsSync(root)) continue;
+    for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
+      if (entry.isDirectory() && fs.existsSync(path.join(root, entry.name, "SKILL.md"))) {
+        const locked = lockedSkills[entry.name];
+        skills.push({
+          kind: "skill", id: entry.name,
+          source: locked?.sourceUrl ?? locked?.source,
+          path: locked?.skillPath,
+          version: locked?.skillFolderHash,
+        });
+      }
+    }
+  }
+  return { plugins, skills, mcp, config: { configFile: ".codex/config.toml", secretValuesIncluded: false } };
+}
+
+export function exportSystemState(workspaceRoot: string, options?: { targetAgent?: TargetAgent; homeDir?: string }): WorkspaceState {
+  const targetAgent = options?.targetAgent;
+  if (targetAgent === "codex") {
+    const tombstones = readTombstones(workspaceRoot);
+    const codex = readCodexState(options?.homeDir ?? os.homedir());
+    const blocked = new Set(tombstones.map((item) => `${item.kind}:${item.id.toLowerCase()}`));
+    codex.plugins = codex.plugins.filter((item) => !blocked.has(`plugin:${item.id.toLowerCase()}`));
+    codex.skills = codex.skills.filter((item) => !blocked.has(`skill:${item.id.toLowerCase()}`));
+    codex.mcp = codex.mcp.filter((item) => !blocked.has(`mcp:${item.id.toLowerCase()}`));
+    return {
+      schemaVersion: 2,
+      targetAgent,
+      completeness: [...codex.plugins, ...codex.skills, ...codex.mcp].some((item) => !item.source || (item.kind === "mcp" && Array.isArray(item.config?.envVars) && item.config.envVars.length > 0)) ? "partial" : "complete",
+      timestamp: new Date().toISOString(), platform: getPlatform(), hostname: os.hostname(),
+      agents: { codex }, tombstones, envVars: readEnvVarNames(workspaceRoot),
+      submodules: [], skills: codex.skills.map((item) => item.id),
+      skillSources: codex.skills.flatMap((item) => item.source ? [item.source] : []), windowsFixPaths: [],
+    };
+  }
   const skills = readSkills();
   const config = readOpenCodeConfig(workspaceRoot);
   const pwConfig = detectPlaywrightInfo(config);
@@ -251,6 +351,15 @@ export function diffState(current: WorkspaceState, saved: WorkspaceState): strin
 
 export function importSystemState(workspaceRoot: string, state: WorkspaceState): ImportResult {
   const messages: string[] = [];
+  if (state.targetAgent === "codex") {
+    const codex = state.agents?.codex;
+    if (!codex) return { success: false, messages: ["Error: Codex restore manifest is missing"] };
+    const deleted = new Set(mergePermanentTombstones(state.tombstones ?? []).map((item) => `${item.kind}:${item.id.toLowerCase()}`));
+    const forbidden = [...codex.mcp, ...codex.plugins, ...codex.skills].filter((item) => deleted.has(`${item.kind}:${item.id.toLowerCase()}`));
+    if (forbidden.length) return { success: false, messages: forbidden.map((item) => `Error: tombstoned extension present: ${item.kind}/${item.id}`) };
+    messages.push("Codex-only manifest accepted; OpenCode configuration skipped (out of scope)");
+    return { success: true, messages };
+  }
   const platform = getPlatform();
   for (const sub of state.submodules) {
     const subPath = path.join(workspaceRoot, sub.path);

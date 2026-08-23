@@ -15,13 +15,16 @@
     "data",
     ".codex-plugin",
     ".claude-plugin",
+    "scripts/bootstrap.ps1",
     "README.md",
     "README.zh-CN.md",
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc && node scripts/generate-dashboard-i18n.mjs && node scripts/copy-dashboard.mjs",
+    "build": "rimraf dist && tsc && node scripts/generate-dashboard-i18n.mjs && node scripts/copy-dashboard.mjs",
     "typecheck": "tsc --noEmit",
+    "pretest": "npm run build",
+    "prepack": "npm run build",
     "test:e2e": "node --import tsx --test test/dashboard-browser.e2e.ts",
     "cli": "tsx src/cli.ts",
     "test": "node scripts/run-tests.mjs",

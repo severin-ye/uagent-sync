@@ -3,7 +3,7 @@ import * as assert from "node:assert";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { resolveWorkspaceRoot, findWorkspaceRoot, getFixedCachePath, __overrideHomeDir, __resetCacheForTests } from "../src/lib/cache.js";
+import { resolveWorkspaceRoot, resolveWorkspaceRootForAgent, findWorkspaceRoot, getFixedCachePath, __overrideHomeDir, __resetCacheForTests } from "../src/lib/cache.js";
 import { DOTFILES_DIR } from "../src/lib/dotfiles.js";
 
 /**
@@ -53,6 +53,14 @@ afterEach(() => {
 });
 
 describe("resolveWorkspaceRoot — 非 workspace cwd", () => {
+  it("Codex 作用域使用自己的缓存且不创建 OpenCode 路径", () => {
+    setupOutsideCwd();
+    process.env.UAGENT_SYNC_WORKSPACE_ROOT = fakeWorkspace;
+    try {
+      assert.equal(resolveWorkspaceRootForAgent("codex"), fakeWorkspace);
+      assert.equal(fs.existsSync(path.join(tmpRoot, ".config", "opencode")), false);
+    } finally { delete process.env.UAGENT_SYNC_WORKSPACE_ROOT; }
+  });
   it("workspace 外启动 + 固定缓存存在 → 直接命中缓存", () => {
     setupOutsideCwd();
     fs.mkdirSync(path.dirname(getFixedCachePath()), { recursive: true });

@@ -10,6 +10,21 @@
 - 本文档：记录 U同步开始执行安装、测试、插件/技能配置和工作区数据恢复时遇到的问题。
 - 本次故障发生在工作流的测试门禁，尚未真正 pull 或修改 dotfiles 数据。
 
+## 2026-08-23 重构结论
+
+| 原问题 | 状态 | 当前处理 |
+|---|---|---|
+| 1. 干净 checkout 缺 dist | 已修复 | `pretest` 自动 clean build；真实 pack 测试与其他文件串行，248/248 通过。 |
+| 2. Codex manifest 验证失败 | 已修复 | 当前 CLI 隔离注册 marketplace、安装 2.1.0、确认 enabled 成功。 |
+| 3. Codex 流程误查 OpenCode | 已修复 | targetAgent 持久化；Codex 使用独立的 `~/.codex/uagent-sync-cache.json`，Codex-only 分支不读取、创建或修改 OpenCode 配置与缓存。 |
+| 4. 内部失败仍返回 0 | 已修复 | pull 从 dotfiles 子仓库执行 `git pull --ff-only`；Git/JSON/import/verify/setup 必需错误均返回非零和统一结构化字段。 |
+| 5. 安全状态文件缺失 | 已修复 | dotfiles 已生成设计上无密钥的 v2 `workspace-state.json`，缺失时明确失败。 |
+| 6. 旧 init 状态冲突 | 已修复 | init-state 已迁移为 sync + 正确 URL + targetAgent=codex；显式 `--force` 可覆盖。 |
+| 7. 212 skills 只有旧路径 | 已修复 | 210 个当前 skill 具有稳定仓库来源/path/hash；2 个无有效内容的陈旧项已 tombstone。 |
+| 8. MCP manifest 残留 codebase-memory | 已修复 | 当前 manifest 只保留 Codex runtime 的 node_repl；codebase-memory 和已退役 gpt-dotfiles-sync 均 tombstone。 |
+
+仍需外部验收而非代码修复：全新 Windows、首次 GitHub 私有仓库登录和真实网络中断。不能在当前已配置机器上把这些场景伪报为已验证。重试步骤见 [Codex 新电脑端到端重试指南](./CODEX-CLEAN-WINDOWS-RETRY.md)。
+
 ## 问题 1：干净 checkout 执行 `npm test` 必然依赖尚不存在的 `dist/`
 
 ### 执行顺序

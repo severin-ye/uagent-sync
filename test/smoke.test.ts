@@ -17,9 +17,9 @@ describe("CLI smoke tests", () => {
   });
 
   it("should export state without errors", () => {
-    const tmp = path.join(import.meta.dirname, "..", "test-output.json");
     // CI/非 workspace 目录：注入 fake workspace root（env 分支不需要 .gitmodules）
     const fakeWs = path.join(import.meta.dirname, "..", "test-fixture-ws");
+    const tmp = path.join(fakeWs, "test-output.json");
     fs.mkdirSync(fakeWs, { recursive: true });
     try {
       execSync(`node "${CLI}" export "${tmp}"`, {

@@ -329,6 +329,7 @@ Detects the current workspace (finds .gitmodules + opencode-dotfiles); for backu
             initType,
             workspaceName: args.workspaceName || info.name,
             githubUrl: args.githubUrl || info.gitRemote || "",
+            targetAgent: "opencode",
             githubRepoPrivate: true,
             completedSteps: {
               workspace_detected: true,

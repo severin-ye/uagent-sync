@@ -4,14 +4,15 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { spawn } from "node:child_process";
 import {
-  exportSystemState, importSystemState, diffState, resolveWorkspaceRoot, run,
+  exportSystemState, importSystemState, diffState, resolveWorkspaceRoot, resolveWorkspaceRootForAgent, run,
   getSubmoduleStatus, verifyEnvironment, setupWorkspace, detectWorkspaceInfo,
   createGitHubRepo, detectApiKeys, initApiKeyFile, generateSyncGuide,
   readInstallLog, appendInstallEntry, exportInstallLogAsMarkdown,
-  readInitState, writeInitState, markStepCompleted, pendingSteps, emptyInitState,
+  readInitState, writeInitState, markStepCompleted, pendingSteps, emptyInitState, detectTargetAgent,
   shellEscape, isPathSafe,
+  assertNoSecrets,
   scanWorkspaceInventory, startDashboardServer,
-  type WorkspaceState, type InitType,
+  type WorkspaceState, type InitType, type TargetAgent,
 } from "./sync.js";
 import { updateExtensions, archiveUpdateReport, type UpdateComponent, type UpdateProgress } from "./lib/update.js";
 import { DOTFILES_DIR } from "./lib/dotfiles.js";
@@ -137,7 +138,14 @@ function initLines(workspaceRoot: string, initState: InitStateLike, initType: In
   return lines;
 }
 
-interface InitStateLike { initType?: string; workspaceName?: string; githubUrl?: string; initialized?: boolean; completedSteps?: Record<string, boolean>; firstInitAt?: string; lastInitAt?: string; }
+interface InitStateLike { initType?: string; workspaceName?: string; githubUrl?: string; targetAgent?: TargetAgent; initialized?: boolean; completedSteps?: Record<string, boolean>; firstInitAt?: string; lastInitAt?: string; }
+
+function targetAgentFor(flags: Map<string, string | boolean>, workspaceRoot: string): TargetAgent {
+  const explicit = flags.get("target-agent");
+  const value = typeof explicit === "string" ? explicit : readInitState(workspaceRoot).targetAgent;
+  if (!(["codex", "opencode", "dsh", "all"] as string[]).includes(value)) throw new Error(`Invalid targetAgent: ${value}`);
+  return value as TargetAgent;
+}
 
 function readPackageVersion(): string {
   try {
@@ -169,7 +177,10 @@ async function main() {
     process.exit(1);
   }
 
-  const workspaceRoot = resolveWorkspaceRoot();
+  const explicitAgent = flags.get("target-agent");
+  const initialTargetAgent = typeof explicitAgent === "string" ? explicitAgent as TargetAgent : detectTargetAgent();
+  if (!( ["codex", "opencode", "dsh", "all"] as string[]).includes(initialTargetAgent)) throw new Error(`Invalid targetAgent: ${initialTargetAgent}`);
+  const workspaceRoot = resolveWorkspaceRootForAgent(initialTargetAgent);
   const stateRel = `${DOTFILES_DIR}/state/workspace-state.json`;
   const stateFile = path.join(workspaceRoot, stateRel);
 
@@ -207,9 +218,11 @@ async function main() {
       break;
     }
     case "export": {
-      const out = positionals[0] || stateFile;
-      const state = exportSystemState(workspaceRoot);
-      fs.writeFileSync(out, JSON.stringify(state, null, 2));
+      const out = isPathSafe(positionals[0] || stateFile, workspaceRoot);
+      const state = exportSystemState(workspaceRoot, { targetAgent: targetAgentFor(flags, workspaceRoot) });
+      const serialized = JSON.stringify(state, null, 2);
+      assertNoSecrets(serialized, out);
+      fs.writeFileSync(out, serialized);
       log(t("cli.exported", { path: out }));
       log(t("cli.exportedSubmodules", { count: state.submodules.length }));
       log(t("cli.exportedSkills", { count: state.skills.length }));
@@ -243,24 +256,45 @@ async function main() {
       break;
     }
     case "push": {
-      const state = exportSystemState(workspaceRoot);
-      fs.writeFileSync(stateFile, JSON.stringify(state, null, 2));
+      const targetAgent = targetAgentFor(flags, workspaceRoot);
+      const state = exportSystemState(workspaceRoot, { targetAgent });
+      const serialized = JSON.stringify(state, null, 2);
+      assertNoSecrets(serialized, stateFile);
+      fs.writeFileSync(stateFile, serialized);
       log(t("cli.exportedState"));
       const msg = flags.get("message") || flags.get("m") || `Update workspace state ${new Date().toISOString().slice(0, 19)}`;
       const tmpFile = path.join(workspaceRoot, DOTFILES_DIR, "state", ".commit-msg.tmp");
       fs.writeFileSync(tmpFile, String(msg), "utf-8");
-      run(`git add ${stateRel}`, workspaceRoot);
+      const added = run(`git add ${stateRel}`, workspaceRoot);
+      if (added.code !== 0) throw new Error(`git add failed: ${added.stderr}`);
       const commit = run(`git commit -F "${tmpFile}"`, workspaceRoot);
+      if (commit.code !== 0 && !/nothing to commit|no changes added/i.test(`${commit.stdout}\n${commit.stderr}`)) throw new Error(`git commit failed: ${commit.stderr}`);
       if (commit.code !== 0) log(t("cli.commitNothing", { detail: commit.stderr || "nothing to commit" }));
       try { fs.unlinkSync(tmpFile); } catch { /* ok */ }
-      run("git push", workspaceRoot);
+      const pushed = run("git push", workspaceRoot);
+      if (pushed.code !== 0) throw new Error(`git push failed: ${pushed.stderr}`);
       log(t("cli.pushedRemote"));
       break;
     }
     case "pull": {
-      run("git pull", workspaceRoot);
-      if (!fs.existsSync(stateFile)) { log(t("cli.noStateAfterPull", { rel: stateRel })); process.exit(0); }
-      const state = JSON.parse(fs.readFileSync(stateFile, "utf-8")) as WorkspaceState;
+      const targetAgent = targetAgentFor(flags, workspaceRoot);
+      const dotfilesRoot = path.join(workspaceRoot, DOTFILES_DIR);
+      const failPull = (message: string): never => {
+        console.error(JSON.stringify({ ok: false, warnings: [], errors: [message], skipped: [], targetAgent }));
+        process.exit(1);
+      };
+      if (!fs.existsSync(path.join(dotfilesRoot, ".git"))) failPull(`Dotfiles repository is not initialized: ${dotfilesRoot}`);
+      const pull = run("git pull --ff-only", dotfilesRoot);
+      if (pull.code !== 0) failPull(pull.stderr || "dotfiles git pull failed");
+      if (!fs.existsSync(stateFile)) failPull(t("cli.noStateAfterPull", { rel: stateRel }));
+      const state = (() => {
+        try { return JSON.parse(fs.readFileSync(stateFile, "utf-8")) as WorkspaceState; }
+        catch (error) { return failPull(`Invalid workspace-state.json: ${error instanceof Error ? error.message : String(error)}`); }
+      })();
+      if (state.targetAgent && targetAgent !== "all" && state.targetAgent !== targetAgent) {
+        console.error(JSON.stringify({ ok: false, warnings: [], errors: [`workspace-state targetAgent=${state.targetAgent} conflicts with ${targetAgent}`], skipped: [], targetAgent }));
+        process.exit(1);
+      }
       if (flags.has("dry-run")) {
         console.log([
           t("cli.dryRunStateApplied"),
@@ -269,18 +303,36 @@ async function main() {
         ].join("\n"));
         break;
       }
-      const result = importSystemState(workspaceRoot, state);
+      const result = (() => {
+        try { return importSystemState(workspaceRoot, state); }
+        catch (error) { return failPull(`State import failed: ${error instanceof Error ? error.message : String(error)}`); }
+      })();
       for (const msg of result.messages) log(msg);
+      if (!result.success) failPull(result.messages.join("; ") || "State import failed");
       break;
     }
     case "status":
       console.log(submoduleStatusLines(workspaceRoot).join("\n"));
       break;
     case "verify":
-      console.log(verifyLines(workspaceRoot).join("\n"));
+    {
+      const targetAgent = targetAgentFor(flags, workspaceRoot);
+      const results = verifyEnvironment(workspaceRoot, { targetAgent });
+      const warnings = results.filter((item) => item.status === "warning").map((item) => `${item.component}: ${item.detail}`);
+      const errors = results.filter((item) => item.status === "error").map((item) => `${item.component}: ${item.detail}`);
+      const skipped: string[] = targetAgent === "codex" ? ["OpenCode (out of scope)"] : [];
+      if (boolFlag(flags, "json")) console.log(JSON.stringify({ ok: errors.length === 0, warnings, errors, skipped, targetAgent, steps: results }, null, 2));
+      else {
+        const ok = results.filter((item) => item.status === "ok").length;
+        console.log(["# Environment Verification", `Results: ${ok} ok, ${warnings.length} warning, ${errors.length} error`, "", ...results.flatMap((item) => [`### ${ICON[item.status]} ${item.component}`, `  ${item.detail}`, ""])].join("\n"));
+      }
+      if (errors.length > 0) process.exit(1);
       break;
+    }
     case "setup": {
+      const targetAgent = targetAgentFor(flags, workspaceRoot);
       const results = setupWorkspace(workspaceRoot, {
+        targetAgent,
         fixWindowsPaths: boolFlag(flags, "fix-windows-paths", true),
         copyConfig: boolFlag(flags, "copy-config", false),
         installRalph: boolFlag(flags, "install-ralph", true),
@@ -294,11 +346,23 @@ async function main() {
         const icon = r.status === "ok" ? "✅" : r.status === "warning" ? "⚠️" : r.status === "error" ? "❌" : "⏭️";
         lines.push(`### ${icon} ${r.step}`, `  ${r.detail}`, "");
       }
-      console.log(lines.join("\n"));
+      const warnings = results.filter((item) => item.status === "warning").map((item) => `${item.step}: ${item.detail}`);
+      const errors = results.filter((item) => item.status === "error").map((item) => `${item.step}: ${item.detail}`);
+      const skipped = results.filter((item) => item.status === "skipped").map((item) => `${item.step}: ${item.detail}`);
+      if (boolFlag(flags, "json")) console.log(JSON.stringify({ ok: errors.length === 0, warnings, errors, skipped, targetAgent, steps: results }, null, 2));
+      else console.log(lines.join("\n"));
+      if (errors.length > 0) process.exit(1);
       break;
     }
     case "init": {
-      const info = detectWorkspaceInfo();
+      const info = initialTargetAgent === "codex" ? {
+        name: path.basename(workspaceRoot), root: workspaceRoot,
+        hasGitmodules: fs.existsSync(path.join(workspaceRoot, ".gitmodules")),
+        gitRemote: run("git remote get-url origin", workspaceRoot).stdout.trim(),
+        defaultRepoName: `codelib-${os.userInfo().username || "user"}`,
+        dotfilesExist: fs.existsSync(path.join(workspaceRoot, DOTFILES_DIR)),
+        mcpConfigured: fs.existsSync(path.join(os.homedir(), ".codex", "config.toml")),
+      } : detectWorkspaceInfo();
       if (!info) {
         const username = os.userInfo().username || "user";
         const suggested = String(flags.get("workspace-name") || `codelib-${username}`);
@@ -350,6 +414,7 @@ async function main() {
         initType,
         workspaceName: String(flags.get("workspace-name") || info.name),
         githubUrl: String(flags.get("github-url") || info.gitRemote || ""),
+        targetAgent: targetAgentFor(flags, root),
         completedSteps: { workspace_detected: true, workspace_confirmed: true, gh_authenticated: false },
         firstInitAt: new Date().toISOString(),
         lastInitAt: new Date().toISOString(),
@@ -359,7 +424,7 @@ async function main() {
       break;
     }
     case "create-repo": {
-      const workspaceRootLocal = resolveWorkspaceRoot();
+      const workspaceRootLocal = workspaceRoot;
       if (boolFlag(flags, "check-only")) {
         const info = detectWorkspaceInfo(workspaceRootLocal);
         if (!info?.gitRemote) { console.log(t("cli.checkOnlyNoRemote")); break; }
@@ -388,7 +453,7 @@ async function main() {
     }
     case "api-keys": {
       const action = positionals[0] || "detect";
-      const workspaceRootLocal = resolveWorkspaceRoot();
+      const workspaceRootLocal = workspaceRoot;
       if (action === "detect") {
         const info = detectApiKeys(workspaceRootLocal);
         console.log([
@@ -401,6 +466,8 @@ async function main() {
         break;
       }
       if (action === "generate") {
+        const requestedKey = flags.get("key-name");
+        if (typeof requestedKey === "string" && !/^[A-Z_][A-Z0-9_]*$/.test(requestedKey)) { console.error("Invalid environment variable name"); process.exit(1); }
         const result = initApiKeyFile(workspaceRootLocal, {
           additionalKeys: flags.get("key-name") ? [String(flags.get("key-name"))] : undefined,
           githubToken: flags.get("github-token") as string | undefined,
@@ -411,10 +478,12 @@ async function main() {
       if (action === "add") {
         const keyName = flags.get("key-name");
         if (!keyName) { console.error(t("cli.apiKeyNameRequired")); process.exit(1); }
+        if (typeof keyName !== "string" || !/^[A-Z_][A-Z0-9_]*$/.test(keyName)) { console.error("Invalid environment variable name"); process.exit(1); }
+        if (flags.has("key-value")) { console.error("Secret values are never accepted. Only variable names and safe placeholders may be recorded."); process.exit(1); }
         const apiKeyPath = path.join(workspaceRootLocal, DOTFILES_DIR, "keys", "API.md");
         if (!fs.existsSync(apiKeyPath)) initApiKeyFile(workspaceRootLocal);
         let content = fs.readFileSync(apiKeyPath, "utf-8");
-        const newLine = `| \`${keyName}\` | \`${flags.get("key-value") || `<YOUR_${keyName}>`}\` | |`;
+        const newLine = `| \`${keyName}\` | \`<YOUR_${keyName}>\` | |`;
         fs.writeFileSync(apiKeyPath, content.replace(/\n$/, `\n${newLine}\n`));
         console.log(t("cli.apiKeyAdded", { name: keyName }));
         break;
@@ -430,7 +499,7 @@ async function main() {
     }
     case "log": {
       const action = positionals[0] || "read";
-      const workspaceRootLocal = resolveWorkspaceRoot();
+      const workspaceRootLocal = workspaceRoot;
       if (action === "read") {
         const entryLog = readInstallLog(workspaceRootLocal);
         console.log(entryLog.entries.length === 0
@@ -474,7 +543,9 @@ async function main() {
       results.push(t("cli.crystallizeStep2", { path: guidePath }));
 
       const stateOut = exportSystemState(workspaceRoot);
-      fs.writeFileSync(stateFile, JSON.stringify(stateOut, null, 2));
+      const serialized = JSON.stringify(stateOut, null, 2);
+      assertNoSecrets(serialized, stateFile);
+      fs.writeFileSync(stateFile, serialized);
       results.push(t("cli.crystallizeStep3", { submodules: stateOut.submodules.length, skills: stateOut.skills.length }));
 
       const commitMsg = String(flags.get("message") || `Crystallize: ${name} ${new Date().toISOString().slice(0, 19)}`);
