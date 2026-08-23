@@ -5,7 +5,7 @@ import * as path from "node:path";
 import { spawn } from "node:child_process";
 import {
   exportSystemState, importSystemState, diffState, resolveWorkspaceRoot, resolveWorkspaceRootForAgent, run,
-  getSubmoduleStatus, verifyEnvironment, setupWorkspace, detectWorkspaceInfo,
+  getSubmoduleStatus, setupWorkspace, detectWorkspaceInfo,
   createGitHubRepo, detectApiKeys, initApiKeyFile, generateSyncGuide,
   readInstallLog, appendInstallEntry, exportInstallLogAsMarkdown,
   readInitState, writeInitState, markStepCompleted, pendingSteps, emptyInitState, detectTargetAgent,
@@ -18,6 +18,8 @@ import { updateExtensions, archiveUpdateReport, type UpdateComponent, type Updat
 import { DOTFILES_DIR } from "./lib/dotfiles.js";
 import { commitCrystallize } from "./lib/crystallize-commit.js";
 import { setLang, t } from "./i18n/index.js";
+import { defaultWorkspaceApplication } from "./application/default-workspace-application.js";
+import { formatVerifyJson, formatVerifyText } from "./entrypoints/result-formatters.js";
 
 function log(msg: string) { console.error(`[opencode-sync] ${msg}`); }
 
@@ -103,19 +105,6 @@ function submoduleStatusLines(workspaceRoot: string): string[] {
       if (s.dirty) lines.push("  ⚠️ **Dirty** — uncommitted changes");
     }
     lines.push("");
-  }
-  return lines;
-}
-
-function verifyLines(workspaceRoot: string): string[] {
-  const results = verifyEnvironment(workspaceRoot);
-  const ok = results.filter(r => r.status === "ok").length;
-  const warn = results.filter(r => r.status === "warning").length;
-  const err = results.filter(r => r.status === "error").length;
-  const lines = ["# Environment Verification", `Results: ${ok} ok, ${warn} warning, ${err} error`, ""];
-  for (const r of results) {
-    const icon = r.status === "ok" ? "✅" : r.status === "warning" ? "⚠️" : "❌";
-    lines.push(`### ${icon} ${r.component}`, `  ${r.detail}`, "");
   }
   return lines;
 }
@@ -317,16 +306,10 @@ async function main() {
     case "verify":
     {
       const targetAgent = targetAgentFor(flags, workspaceRoot);
-      const results = verifyEnvironment(workspaceRoot, { targetAgent });
-      const warnings = results.filter((item) => item.status === "warning").map((item) => `${item.component}: ${item.detail}`);
-      const errors = results.filter((item) => item.status === "error").map((item) => `${item.component}: ${item.detail}`);
-      const skipped: string[] = targetAgent === "codex" ? ["OpenCode (out of scope)"] : [];
-      if (boolFlag(flags, "json")) console.log(JSON.stringify({ ok: errors.length === 0, warnings, errors, skipped, targetAgent, steps: results }, null, 2));
-      else {
-        const ok = results.filter((item) => item.status === "ok").length;
-        console.log(["# Environment Verification", `Results: ${ok} ok, ${warnings.length} warning, ${errors.length} error`, "", ...results.flatMap((item) => [`### ${ICON[item.status]} ${item.component}`, `  ${item.detail}`, ""])].join("\n"));
-      }
-      if (errors.length > 0) process.exit(1);
+      const result = defaultWorkspaceApplication.verifyWorkspace({ workspaceRoot, targetAgent });
+      if (boolFlag(flags, "json")) console.log(JSON.stringify(formatVerifyJson(result), null, 2));
+      else console.log(formatVerifyText(result));
+      if (!result.ok) process.exit(1);
       break;
     }
     case "setup": {

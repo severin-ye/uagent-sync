@@ -16,7 +16,7 @@ import * as path from "node:path";
 import * as os from "node:os";
 import {
   exportSystemState, importSystemState, diffState, resolveWorkspaceRoot,
-  getSubmoduleStatus, verifyEnvironment, setupWorkspace, detectWorkspaceInfo,
+  getSubmoduleStatus, setupWorkspace, detectWorkspaceInfo,
   createGitHubRepo, detectApiKeys, initApiKeyFile, generateSyncGuide,
   readInstallLog, appendInstallEntry, exportInstallLogAsMarkdown,
   readInitState, writeInitState, markStepCompleted, pendingSteps, emptyInitState,
@@ -27,6 +27,8 @@ import { updateExtensions, archiveUpdateReport, type UpdateComponent } from "./l
 import { DOTFILES_DIR } from "./lib/dotfiles.js";
 import { commitCrystallize } from "./lib/crystallize-commit.js";
 import { t } from "./i18n/index.js";
+import { defaultWorkspaceApplication } from "./application/default-workspace-application.js";
+import { formatVerifyText } from "./entrypoints/result-formatters.js";
 
 const z = tool.schema;
 
@@ -227,16 +229,8 @@ Steps: git pull, then import+apply the state (submodules, config, env vars). Use
         args: {},
         async execute() {
           const workspaceRoot = resolveWorkspaceRoot();
-          const results = verifyEnvironment(workspaceRoot);
-          const ok = results.filter(r => r.status === "ok").length;
-          const warn = results.filter(r => r.status === "warning").length;
-          const err = results.filter(r => r.status === "error").length;
-          const lines = ["# Environment Verification", `Results: ${ok} ok, ${warn} warning, ${err} error`, ""];
-          for (const r of results) {
-            const icon = r.status === "ok" ? "✅" : r.status === "warning" ? "⚠️" : "❌";
-            lines.push(`### ${icon} ${r.component}`, `  ${r.detail}`, "");
-          }
-          return text(lines.join("\n"));
+          const result = defaultWorkspaceApplication.verifyWorkspace({ workspaceRoot, targetAgent: "opencode" });
+          return text(formatVerifyText(result));
         },
       }),
 
