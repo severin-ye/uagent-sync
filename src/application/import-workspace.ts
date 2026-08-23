@@ -21,20 +21,34 @@ export type ImportWorkspaceOutput =
   | { kind: "dry-run"; state: WorkspaceStateV3; diffs: string[] }
   | { kind: "import"; state: WorkspaceStateV3; result: ImportResult };
 
-function assertSupportedImportTarget(targetAgent: TargetAgent): void {
+export type ImportWorkspaceCapability =
+  | { supported: true; targetAgent: TargetAgent }
+  | { supported: false; targetAgent: TargetAgent; error: string };
+
+export function preflightImportWorkspace(targetAgent: TargetAgent): ImportWorkspaceCapability {
   if (targetAgent === "dsh") {
-    throw new Error("Unsupported WorkspaceState import targetAgent=dsh: DeepSeek Harness has inventory only and no restore writer");
+    return {
+      supported: false,
+      targetAgent,
+      error: "Unsupported WorkspaceState import targetAgent=dsh: DeepSeek Harness has inventory only and no restore writer",
+    };
   }
   if (targetAgent === "all") {
-    throw new Error("Unsupported WorkspaceState import targetAgent=all: no multi-agent artifact/restore contract is available");
+    return {
+      supported: false,
+      targetAgent,
+      error: "Unsupported WorkspaceState import targetAgent=all: no multi-agent artifact/restore contract is available",
+    };
   }
+  return { supported: true, targetAgent };
 }
 
 export function importWorkspace(
   input: ImportWorkspaceInput,
   dependencies: ImportWorkspaceDependencies,
 ): ImportWorkspaceOutput {
-  assertSupportedImportTarget(input.targetAgent);
+  const capability = preflightImportWorkspace(input.targetAgent);
+  if (!capability.supported) throw new Error(capability.error);
   const state = dependencies.parseArtifact(input.artifact);
   if (input.targetAgent !== "all" && state.targetAgent !== input.targetAgent) {
     throw new Error(`workspace-state targetAgent=${state.targetAgent} conflicts with ${input.targetAgent}`);

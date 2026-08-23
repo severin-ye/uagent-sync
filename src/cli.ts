@@ -19,6 +19,7 @@ import { DOTFILES_DIR } from "./lib/dotfiles.js";
 import { commitCrystallize } from "./lib/crystallize-commit.js";
 import { setLang, t } from "./i18n/index.js";
 import { defaultWorkspaceApplication } from "./application/default-workspace-application.js";
+import { preflightImportWorkspace } from "./application/import-workspace.js";
 import { formatVerifyJson, formatVerifyText } from "./entrypoints/result-formatters.js";
 
 function log(msg: string) { console.error(`[opencode-sync] ${msg}`); }
@@ -230,6 +231,8 @@ async function main() {
     case "import": {
       const src = positionals[0] || stateFile;
       const targetAgent = targetAgentFor(flags, workspaceRoot);
+      const capability = preflightImportWorkspace(targetAgent);
+      if (!capability.supported) failStateCommand(targetAgent, capability.error);
       let artifact: string;
       if (/^https?:\/\//.test(src)) {
         const res = await fetch(src);

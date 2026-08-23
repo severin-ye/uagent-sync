@@ -26,6 +26,7 @@ import {
 import { updateExtensions, archiveUpdateReport, type UpdateComponent } from "./lib/update.js";
 import { DOTFILES_DIR } from "./lib/dotfiles.js";
 import { commitCrystallize } from "./lib/crystallize-commit.js";
+import { redactString } from "./lib/redact.js";
 import { t } from "./i18n/index.js";
 import { defaultWorkspaceApplication } from "./application/default-workspace-application.js";
 import { formatVerifyText } from "./entrypoints/result-formatters.js";
@@ -57,27 +58,32 @@ The JSON file can be committed to Git and imported on another device.`,
           trackState: z.boolean().optional().default(false).describe("Whether to keep workspace-state.json tracked by git (private repos: true, public: false)"),
         },
         async execute(args) {
-          const workspaceRoot = resolveWorkspaceRoot();
-          const stateFile = args.output || path.join(workspaceRoot, `${DOTFILES_DIR}/state/workspace-state.json`);
-          const { state, serialized } = defaultWorkspaceApplication.exportWorkspace({
-            workspaceRoot,
-            outputPath: stateFile,
-            targetAgent: "opencode",
-            trackState: args.trackState,
-          });
+          try {
+            const workspaceRoot = resolveWorkspaceRoot();
+            const stateFile = args.output || path.join(workspaceRoot, `${DOTFILES_DIR}/state/workspace-state.json`);
+            const { state, serialized } = defaultWorkspaceApplication.exportWorkspace({
+              workspaceRoot,
+              outputPath: stateFile,
+              targetAgent: "opencode",
+              trackState: args.trackState,
+            });
 
-          const summary = [
-            `Exported workspace state to: ${stateFile}`,
-            `  Submodules: ${state.submodules.length}`, `  Skills: ${state.skills.length}`,
-            `  Env vars (names only): ${state.envVars.length}`, `  Platform: ${state.platform}`, `  Hostname: ${state.hostname}`,
-            `  Git tracking: ${args.trackState ? "tracked (private repo)" : "untracked (.gitignore)"}`,
-          ].join("\n");
+            const summary = [
+              `Exported workspace state to: ${stateFile}`,
+              `  Submodules: ${state.submodules.length}`, `  Skills: ${state.skills.length}`,
+              `  Env vars (names only): ${state.envVars.length}`, `  Platform: ${state.platform}`, `  Hostname: ${state.hostname}`,
+              `  Git tracking: ${args.trackState ? "tracked (private repo)" : "untracked (.gitignore)"}`,
+            ].join("\n");
 
-          const truncated = serialized.length > CHARACTER_LIMIT
-            ? serialized.slice(0, CHARACTER_LIMIT) + `\n... (truncated)`
-            : serialized;
+            const truncated = serialized.length > CHARACTER_LIMIT
+              ? serialized.slice(0, CHARACTER_LIMIT) + `\n... (truncated)`
+              : serialized;
 
-          return text(summary + "\n\n" + truncated);
+            return text(summary + "\n\n" + truncated);
+          } catch (error) {
+            const message = error instanceof Error ? error.message : String(error);
+            return text(`Error: ${redactString(message)}`);
+          }
         },
       }),
 

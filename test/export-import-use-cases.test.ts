@@ -3,7 +3,7 @@ import * as assert from "node:assert/strict";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { spawnSync } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import type { ImportResult, TargetAgent, WorkspaceState, WorkspaceStateV3 } from "../src/lib/types.js";
 
 const exportModulePath = "../src/application/export-workspace.js";
@@ -157,6 +157,27 @@ describe("exportWorkspace", () => {
 });
 
 describe("importWorkspace", () => {
+  it("exposes a pure capability preflight with stable unsupported-target errors", async () => {
+    const module = await import(importModulePath).catch(() => null) as {
+      preflightImportWorkspace?: (targetAgent: TargetAgent) =>
+        | { supported: true; targetAgent: TargetAgent }
+        | { supported: false; targetAgent: TargetAgent; error: string };
+    } | null;
+    assert.ok(module?.preflightImportWorkspace, "Application import capability preflight must exist");
+
+    assert.deepEqual(module.preflightImportWorkspace("opencode"), { supported: true, targetAgent: "opencode" });
+    assert.deepEqual(module.preflightImportWorkspace("dsh"), {
+      supported: false,
+      targetAgent: "dsh",
+      error: "Unsupported WorkspaceState import targetAgent=dsh: DeepSeek Harness has inventory only and no restore writer",
+    });
+    assert.deepEqual(module.preflightImportWorkspace("all"), {
+      supported: false,
+      targetAgent: "all",
+      error: "Unsupported WorkspaceState import targetAgent=all: no multi-agent artifact/restore contract is available",
+    });
+  });
+
   it("parses with the artifact codec and rejects a target mismatch before mutation", async () => {
     const module = await import(importModulePath).catch(() => null) as { importWorkspace?: ImportWorkspace } | null;
     assert.ok(module?.importWorkspace, "importWorkspace use case must exist");
@@ -308,6 +329,27 @@ describe("real CLI export/import protocol", () => {
     });
   }
 
+  async function startRequestObserver(marker: string): Promise<{ url: string; stop(): void }> {
+    const script = [
+      "const fs = require('node:fs');",
+      "const http = require('node:http');",
+      "const marker = process.argv[1];",
+      "const server = http.createServer((_request, response) => {",
+      "  fs.appendFileSync(marker, 'requested\\n');",
+      "  response.end('{}');",
+      "});",
+      "server.listen(0, '127.0.0.1', () => console.log(server.address().port));",
+    ].join("\n");
+    const child = spawn(process.execPath, ["-e", script, marker], { stdio: ["ignore", "pipe", "pipe"] });
+    const port = await new Promise<string>((resolve, reject) => {
+      child.once("error", reject);
+      child.once("exit", (code) => reject(new Error(`request observer exited early (${code})`)));
+      child.stdout.setEncoding("utf-8");
+      child.stdout.once("data", (chunk: string) => resolve(chunk.trim()));
+    });
+    return { url: `http://127.0.0.1:${port}/artifact.json`, stop: () => child.kill() };
+  }
+
   it("roundtrips a supported OpenCode artifact with stable exit/output and JSON", () => {
     const { workspace, home, config } = fixture();
     const artifact = path.join(workspace, "state.json");
@@ -345,6 +387,29 @@ describe("real CLI export/import protocol", () => {
       assert.doesNotMatch(importError.errors.join("\n"), /invalid.*json/i);
     }
   });
+
+  it("preflights unsupported imports before a missing path read or observable URL fetch", async () => {
+    const { workspace, home, config } = fixture();
+    const missing = path.join(workspace, "does-not-exist.json");
+    const marker = path.join(workspace, "url-requested.txt");
+    const observer = await startRequestObserver(marker);
+    try {
+      for (const targetAgent of ["dsh", "all"] as const) {
+        for (const source of [missing, observer.url]) {
+          const imported = runCli(workspace, home, config, ["import", source, "--target-agent", targetAgent]);
+          assert.notEqual(imported.status, 0);
+          const error = JSON.parse(imported.stderr || imported.stdout);
+          assert.equal(error.ok, false);
+          assert.equal(error.targetAgent, targetAgent);
+          assert.match(error.errors.join("\n"), new RegExp(`unsupported.*targetAgent=${targetAgent}`, "i"));
+          assert.doesNotMatch(error.errors.join("\n"), /enoent|fetch failed|failed to fetch/i);
+        }
+      }
+      assert.equal(fs.existsSync(marker), false, "unsupported URL import must not issue a request");
+    } finally {
+      observer.stop();
+    }
+  });
 });
 
 describe("real Plugin export/import protocol", () => {
@@ -376,6 +441,37 @@ describe("real Plugin export/import protocol", () => {
       const failure = await tools.opencode_sync_import.execute({ source: codexArtifact, dryRun: false });
       assert.equal(failure.title, "opencode-sync");
       assert.match(failure.output, /^Error: workspace-state targetAgent=codex conflicts with opencode$/);
+    } finally {
+      if (oldWorkspace === undefined) delete process.env.OPENCODE_SYNC_WORKSPACE_ROOT;
+      else process.env.OPENCODE_SYNC_WORKSPACE_ROOT = oldWorkspace;
+      if (oldConfig === undefined) delete process.env.OPENCODE_CONFIG_TEST;
+      else process.env.OPENCODE_CONFIG_TEST = oldConfig;
+    }
+  });
+
+  it("renders artifact write failures as stable non-secret Plugin text", async () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "uagent-plugin-write-failure-"));
+    temporaryDirectories.push(root);
+    const workspace = path.join(root, "workspace");
+    const config = path.join(root, "opencode.json");
+    const secret = "sk-1234567890abcdef";
+    const outputDirectory = path.join(workspace, "usync-dotfiles", `state-${secret}`);
+    fs.mkdirSync(outputDirectory, { recursive: true });
+    fs.writeFileSync(path.join(workspace, ".gitmodules"), "");
+    fs.writeFileSync(config, JSON.stringify({ plugin: ["fixture-plugin"] }));
+    const oldWorkspace = process.env.OPENCODE_SYNC_WORKSPACE_ROOT;
+    const oldConfig = process.env.OPENCODE_CONFIG_TEST;
+    process.env.OPENCODE_SYNC_WORKSPACE_ROOT = workspace;
+    process.env.OPENCODE_CONFIG_TEST = config;
+    try {
+      const { default: OpencodeSyncPlugin } = await import("../dist/plugin.js");
+      const plugin = await OpencodeSyncPlugin({} as never);
+      const tools = plugin.tool as unknown as Record<string, { execute(args: Record<string, unknown>): Promise<{ title: string; output: string }> }>;
+
+      const failure = await tools.opencode_sync_export.execute({ output: outputDirectory, trackState: false });
+      assert.equal(failure.title, "opencode-sync");
+      assert.match(failure.output, /^Error: /);
+      assert.doesNotMatch(failure.output, new RegExp(`${secret}|fixture-plugin|opencodeConfig|envVars`));
     } finally {
       if (oldWorkspace === undefined) delete process.env.OPENCODE_SYNC_WORKSPACE_ROOT;
       else process.env.OPENCODE_SYNC_WORKSPACE_ROOT = oldWorkspace;
