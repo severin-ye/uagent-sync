@@ -465,6 +465,59 @@ Conflicting recovery entries for plugin:uagent-sync
 6. 恢复输出应按来源聚合，不能再次产生上千条重复 skipped 记录。
 7. `setup` 和最终 `verify` 都必须返回 `ok=true`，bootstrap 总退出码必须为 0。
 
+## 第二台 Windows 机器重试记录（2026-08-23，提交 `f271000`）
+
+### 本机环境与结果
+
+- Windows 用户名：`severin`，用于验证从原电脑用户 `6seve` 跨用户名恢复。
+- raw GitHub bootstrap 成功快进到 `f271000`，完整测试 262/262、60 suites、0 failed。
+- U同步插件成功刷新并安装，同源插件被正确识别为 existing。
+- Windows shim 修复生效，恢复器使用 `C:\npx.cmd`，不再出现 `EPERM` 或 `ENOENT`。
+- `codebase-memory-mcp` tombstone 被判定为 satisfied，没有活动配置，也没有重新安装。
+- `panniantong/agent-reach`、`anthropics/skills` 和 `google-deepmind/science-skills` 三个来源恢复成功，共覆盖 58 个所选 skills。
+- `nexu-io/open-design` 和 `garrytan/gstack` 两个来源恢复失败，共影响 152 个所选 skills。
+- `setup` 返回退出码 1 和 `ok=false`，bootstrap 总退出码为 1，并正确停止在最终 verify 之前。
+
+### 问题 13：skill 来源安装缺少自身的有界重试、超时和进度心跳
+
+**现象**
+
+- 本次 GitHub 操作多次出现 `Recv failure: Connection was reset`，仓库 pull 能自动重试恢复。
+- skill 来源安装过程中连续数分钟没有输出，随后两个来源仅以 `non-zero exit; path=C:\npx.cmd` 结束。
+- 另外三个来源在同一流程中成功，说明 shim、Skills CLI 和全局安装能力本身可用。
+
+**判断**
+
+此次失败高度符合外部 GitHub clone 网络中断，但 skill 来源安装没有使用 bootstrap 已具备的有界重试策略，因此单次 `npx skills add` 失败就使整个 setup 失败；由于错误报告没有保留安全脱敏后的 stdout，目前无法从结构化结果确认底层 Git 的精确错误文本。
+
+**重构方案**
+
+1. 每个规范化 skill source 应独立执行有界重试，并使用指数退避和可配置超时。
+2. 重试前重新扫描已安装 skills，避免重复安装前一次已经部分成功的内容。
+3. 每个来源应输出开始、重试次数、耗时和完成心跳，避免长时间静默。
+4. 网络连接重置、超时和临时 DNS/TLS 错误应分类为可重试错误，来源不存在、权限拒绝和清单无效应立即失败。
+5. 单个来源最终失败时应保留安全脱敏后的 stdout 与 stderr 摘要以及底层退出码。
+6. bootstrap 的重试状态应精确到来源级别，重新运行时只处理失败或未完成的来源。
+7. 增加可控的“前两次 clone 连接重置、第三次成功”端到端测试。
+
+### 问题 14：聚合错误仍会展开 151 个 skill 名称
+
+**现象**
+
+来源级 skipped 日志已经聚合，但 `open-design` 失败时仍在一条错误中展开全部 151 个 skill 名称，导致错误结果非常长。
+
+**重构方案**
+
+- 结构化摘要只输出来源、skill 数量、少量示例和独立失败报告路径，完整名称列表写入报告文件而不是终端主结果。
+
+### 下一次跨设备重试验收条件
+
+1. 在本机模拟或真实遇到 GitHub connection reset 时，skill 来源安装必须自动重试而无需再次运行整条 bootstrap。
+2. 5 个来源最终都成功，dotfiles 选择的 210 个 skills 全部可用。
+3. setup 和 verify 均返回退出码 0、`ok=true`、0 errors。
+4. bootstrap 总退出码为 0，并保持 Codex-only、tombstone 和密钥安全要求。
+5. 终端错误摘要不得展开数百个 skill 名称，完整明细应写入可审计报告文件。
+
 ## 第二轮真实 Windows 修复与本地 bootstrap 验收（2026-08-23）
 
 测试方式：先在隔离的临时 workspace clone `ee4c5ec`，再应用本轮未推送 diff，直接运行本地 `scripts/bootstrap.ps1`。该方式保证测试的是本地修改，而不是 raw GitHub 上尚未推送的旧脚本。
