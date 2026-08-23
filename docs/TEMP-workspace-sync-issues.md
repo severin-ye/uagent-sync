@@ -518,6 +518,55 @@ Conflicting recovery entries for plugin:uagent-sync
 4. bootstrap 总退出码为 0，并保持 Codex-only、tombstone 和密钥安全要求。
 5. 终端错误摘要不得展开数百个 skill 名称，完整明细应写入可审计报告文件。
 
+## 第三次 `severin` 机器重试记录（2026-08-23，提交 `4f55a1a`）
+
+### 本次中断位置
+
+- 仓库成功更新到 `4f55a1a`，新增的来源重试、超时、heartbeat、错误分类和脱敏报告测试均通过。
+- 完整测试在 `crystallize-submodule.test.ts` 创建本地测试子模块时发生 Git Bash 环境错误，最终 270 项中 266 通过、4 取消、0 断言失败。
+- bootstrap 按门禁要求返回退出码 1，并在真实 skill 来源恢复和最终 verify 之前停止。
+- 随后单独重跑 `crystallize-submodule.test.ts`，6/6 全部通过，说明该故障具有环境性或偶发性。
+
+### 问题 15：全套测试中的 Git 子模块 fixture 偶发 `Bad file descriptor`
+
+**错误**
+
+```text
+/mingw64/libexec/git-core/git-sh-setup: line 315: pwd: write error: Bad file descriptor
+Unable to determine absolute path of git directory
+```
+
+**触发位置**
+
+`test/crystallize-submodule.test.ts` 的 `makeSubmoduleWorld()` 通过字符串 shell 执行：
+
+```text
+git -c protocol.file.allow=always submodule add <local-bare-repo> usync-dotfiles
+```
+
+错误发生在测试 fixture 构造阶段，尚未进入 U同步 crystallize 业务逻辑；同一测试文件立即单独重跑可以稳定通过。
+
+**可能关联因素**
+
+- 测试帮助函数使用 `execSync("git ...")` 的字符串 shell 形式，而不是解析后的 Git 可执行文件加参数数组。
+- 前一次 bootstrap 的 skill 下载曾长时间运行多个 Node/Git 子进程，全套重试需要保证失败或超时后完整清理 Windows 子进程树和文件描述符。
+- 当前证据只能确认这是偶发环境错误，尚不能断言唯一根因。
+
+**重构方案**
+
+1. 测试 Git 帮助函数改为 `execFileSync(resolvedGitExe, args)`，避免额外的命令 shell 和字符串解析层。
+2. Windows 受监控命令超时时必须终止整个进程树，并等待句柄关闭后再返回。
+3. 在完整测试开始前检测 U同步遗留的 Git/Skills 子进程，并仅清理可确认属于上一次 bootstrap 的进程树。
+4. fixture 为每次 Git 调用记录脱敏后的可执行路径、参数阶段、退出码、stdout 和 stderr 摘要。
+5. 针对明确的 Git Bash `Bad file descriptor` 环境错误，可在重新创建全新临时 fixture 后做一次有界重试，但不得隐藏真实业务失败。
+6. 增加“受监控命令超时后立即运行本地 submodule fixture”的 Windows 回归测试，验证没有遗留子进程或坏句柄。
+
+### 下一次重试要求
+
+1. 完整 `npm test` 必须一次通过 270/270，不能依赖人工单独重跑失败文件。
+2. 通过测试门禁后继续验证 5/5 skill 来源、210/210 selected skills、setup/verify `ok=true` 和 bootstrap 退出码 0。
+3. 若仍失败，必须区分测试 fixture 环境错误与真实恢复错误，并分别生成脱敏报告。
+
 ## 第三轮修复状态（原电脑，基于 `bc33778`）
 
 ### 问题 13：已修复，等待 `severin` 机器复验真实仓库下载
