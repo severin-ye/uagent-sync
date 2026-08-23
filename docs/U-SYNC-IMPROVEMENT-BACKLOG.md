@@ -150,7 +150,7 @@
 - **第 39 项 — 已修复并实机验证**：同一 GitHub 仓库的 URL、`.git`、大小写和 `owner/repo` 表示统一；同源 U同步为 existing，真正异源仍为 conflict。
 - **第 44、45 项 — 已修复并实机验证**：原始扫描与导出过滤分离，tombstone 缺席不执行删除，存在时删除后复扫；`codebase-memory-mcp` 最终 absent。
 - **第 50、51 项 — 已修复并实机验证**：210 个 selected skills 全部可用，并按 5 个 source 汇总；setup 仅 13 个聚合 skipped，verify 逐项确认插件、skills、MCP、CLI、配置。
-- **第 52 项 — 部分修复**：本机真实 Windows PowerShell `-NoProfile` 隔离 workspace bootstrap 已通过；仍需推送后 raw GitHub 入口复验，以及另一台真正全新 Windows 机器验证 winget/UAC/首次 gh 登录矩阵。
+- **第 52 项 — 部分修复**：本机真实 Windows PowerShell `-NoProfile` 隔离 workspace 与推送后 raw GitHub 唯一入口均已通过；raw 验收提交为 `a30ec80`，总退出码 0，setup/verify 均 `ok=true`。仍需另一台真正全新 Windows 机器验证 winget/UAC/首次 gh 登录矩阵。
 
 ## 原电脑修复后的重试验收
 

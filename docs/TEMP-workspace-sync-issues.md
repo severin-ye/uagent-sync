@@ -490,4 +490,17 @@ Conflicting recovery entries for plugin:uagent-sync
 - 可信入口：`codex.cmd` 位于 npm global bin，`npx.cmd` 位于 Node 安装目录，二者均不在 WindowsApps。
 - 全过程 targetAgent 为 codex；OpenCode 仅作为 out-of-scope 结果出现，没有读取、创建、覆盖或验证其配置。
 
-本地未推送代码验收已经通过；推送后仍需按 raw GitHub 唯一入口再执行一次最终验收并记录提交号。
+### 推送后 raw GitHub 最终验收
+
+- 验收提交：`a30ec80f8829e567d0fba6e9a89e9111fd043a87`。
+- 严格使用文档中的 `Invoke-WebRequest` raw GitHub 入口和 `powershell.exe -NoProfile`，默认 workspace 为 `C:\Users\6seve\UagentWorkspace`；bootstrap 总退出码 `0`。
+- 干净 clone 自动执行 `npm ci`、build、`npm test` 与真实 `npm pack` 安装；结果为 `262/262` 通过，pack CLI smoke 通过。
+- GitHub 网络先后出现 connection reset 和一次 dotfiles pull 连接超时；有界重试继续执行并最终成功，没有人工补命令。
+- 独立在目标 workspace 复跑 `setup --target-agent codex --json` 与 `verify --target-agent codex --json`，二者退出码均为 `0`、`ok=true`、0 warnings、0 errors。
+- `setup` 只有 13 个聚合 skipped，其中 210 个 selected skills 按 5 个来源汇总；`verify` 记录 223 个已安装 skills、210 个 selected skills 可用、1 个 selected MCP 可用。
+- `uagent-sync@uagent-sync` 为 `2.1.0`、installed/enabled，marketplace Git 来源规范化后与 U同步仓库一致，因此分类为 existing，不再产生 conflict。
+- 恢复器实际采用 `C:\Users\6seve\AppData\Roaming\npm\codex.cmd` 和 `C:\Program Files\nodejs\npx.cmd`，二者存在且均不位于 WindowsApps。
+- tombstone 验证为 `codebase-memory-mcp absent`，Codex 配置中无活动表；未执行无意义删除，也未重新安装。
+- OpenCode 只作为结构化结果中的 out-of-scope skipped 项出现，没有读取或修改其配置；日志和状态没有真实密钥。
+
+从其他源码仓库目录手工复核时应显式设置 `OPENCODE_SYNC_WORKSPACE_ROOT`，或先切换到 bootstrap workspace；否则当前目录会按设计参与 workspace 解析。这不是 bootstrap 失败，目标 workspace 上的独立 setup/verify 已再次通过。

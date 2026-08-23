@@ -371,4 +371,12 @@ npm install --omit=dev --no-audit --no-fund
 - 永久 tombstone 确认 `codebase-memory-mcp` absent，未重新安装。
 - 没有访问或修改 OpenCode 配置，也没有写入真实密钥。
 
-本记录对应推送前的本地脚本验收；推送后的 raw GitHub 验收结果应继续追加在此处。
+### 16. 推送后的 raw GitHub 验收已通过
+
+- raw 脚本取得并验证提交 `a30ec80`；默认 `C:\Users\6seve\UagentWorkspace` 从两个 GitHub URL 完成 clone、构建、测试、pack、运行时安装、marketplace 刷新、恢复和验证。
+- 总退出码 `0`；`npm test` 为 `262/262`，真实 pack 生产依赖安装与 CLI smoke 通过。
+- marketplace Git 更新前两次 connection reset，第三次成功；dotfiles pull 也经历一次网络超时并通过有界重试完成，全程无需人工执行恢复命令。
+- setup 为 `ok=true`、0 warnings、0 errors、13 个聚合 skipped；verify 为 `ok=true`、0 warnings、0 errors、1 个 OpenCode out-of-scope skipped。
+- U同步插件为 `2.1.0` installed/enabled；223 个 skills 已安装，210 个选定 skills 和 1 个选定 MCP 均可用。
+- 可信入口为 npm global bin 的 `codex.cmd` 与 Node 安装目录的 `npx.cmd`，均未命中 WindowsApps。
+- `codebase-memory-mcp` tombstone 为幂等满足且活动配置 absent；没有恢复或写入真实密钥。
