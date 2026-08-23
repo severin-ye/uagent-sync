@@ -567,6 +567,13 @@ git -c protocol.file.allow=always submodule add <local-bare-repo> usync-dotfiles
 2. 通过测试门禁后继续验证 5/5 skill 来源、210/210 selected skills、setup/verify `ok=true` 和 bootstrap 退出码 0。
 3. 若仍失败，必须区分测试 fixture 环境错误与真实恢复错误，并分别生成脱敏报告。
 
+### 问题 15 当前状态（本轮代码修复，尚待 raw bootstrap 复验）
+
+- **代码已修复**：`crystallize-submodule.test.ts` 现在通过解析后的可信绝对 Git 入口和 `execFileSync` 参数数组执行 Git；Node CLI 也通过 `process.execPath` 与参数数组执行，不再拼接 shell 命令。
+- **重试边界已收窄**：fixture helper 只识别上述两条精确环境诊断，最多重新创建一次全新临时 fixture；普通 Git 失败、权限失败和业务断言不会重试或被隐藏。
+- **当前自动化证据**：fixture helper 与 crystallize 聚焦测试已通过；`run-tests.mjs` 的取消 hook 非零退出码回归已通过；本轮 `npm test` 为 379/379、82 suites、0 failed，独立 bootstrap/DSH schema/pack/smoke 组为 11/11。
+- **尚不能声称**：当前 HEAD 尚未重新执行 raw GitHub bootstrap；此前记录中的 bootstrap 结果不能替代本轮代码推送后的真实 Windows 复验。
+
 ## 第三轮修复状态（原电脑，基于 `bc33778`）
 
 ### 问题 13：已修复，等待 `severin` 机器复验真实仓库下载

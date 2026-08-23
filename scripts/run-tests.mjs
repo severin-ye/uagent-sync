@@ -5,7 +5,10 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const testDir = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "test");
+const defaultTestDir = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "test");
+// A private directory override keeps cancellation/exit-code regression tests
+// isolated; npm test continues to use the repository test directory.
+const testDir = path.resolve(process.env.UAGENT_SYNC_TEST_DIR ?? defaultTestDir);
 const files = fs
   .readdirSync(testDir)
   .filter((f) => f.endsWith(".test.ts"))

@@ -3,8 +3,9 @@ import * as assert from "node:assert";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { execSync } from "node:child_process";
+import { execFileSync } from "node:child_process";
 import { DOTFILES_DIR } from "../src/lib/dotfiles.js";
+import { resolveGitExecutable, runGit, runWithFreshFixture } from "./support/fixture-runner.js";
 
 /**
  * Regression tests for crystallize step 4 (git commit + push):
@@ -19,30 +20,22 @@ import { DOTFILES_DIR } from "../src/lib/dotfiles.js";
 const CLI = path.join(import.meta.dirname, "..", "dist", "cli.js");
 const TMP = path.join(os.tmpdir(), `crystallize-git-test-${Date.now()}`);
 
-function sh(cmd: string, cwd: string): { stdout: string; stderr: string; code: number } {
-  try {
-    const stdout = execSync(cmd, { cwd, encoding: "utf-8", stdio: ["pipe", "pipe", "pipe"] });
-    return { stdout, stderr: "", code: 0 };
-  } catch (e: unknown) {
-    const err = e as { stdout?: string; stderr?: string; status?: number };
-    return { stdout: err.stdout ?? "", stderr: err.stderr ?? "", code: err.status ?? 1 };
-  }
-}
+const GIT = resolveGitExecutable();
 
-function git(cwd: string, args: string): { stdout: string; stderr: string; code: number } {
-  return sh(`git ${args}`, cwd);
+function git(cwd: string, args: readonly string[]): { stdout: string; stderr: string; code: number } {
+  return runGit(cwd, args, GIT);
 }
 
 function initRepo(dir: string, branch: string): void {
   fs.mkdirSync(dir, { recursive: true });
-  git(dir, `init -b ${branch}`);
-  git(dir, "config user.name test");
-  git(dir, "config user.email test@example.com");
+  git(dir, ["init", "-b", branch]);
+  git(dir, ["config", "user.name", "test"]);
+  git(dir, ["config", "user.email", "test@example.com"]);
 }
 
 function initBare(dir: string): void {
   fs.mkdirSync(dir, { recursive: true });
-  git(dir, "init --bare");
+  git(dir, ["init", "--bare"]);
 }
 
 /** Build a workspace whose usync-dotfiles is a real submodule, with bare remotes. */
@@ -57,36 +50,35 @@ function makeSubmoduleWorld(): { workspace: string; dotfiles: string; dotfilesRe
   initBare(workspaceRemote);
   // bare 仓库默认 HEAD 指向 unborn 分支；把 HEAD 指到将要 push 的实际分支，
   // 否则子模块 clone 与 bare 内 rev-parse HEAD 都会失败。
-  sh(`git --git-dir=${dotfilesRemote} symbolic-ref HEAD refs/heads/main`, TMP);
-  sh(`git --git-dir=${workspaceRemote} symbolic-ref HEAD refs/heads/master`, TMP);
+  git(TMP, ["--git-dir", dotfilesRemote, "symbolic-ref", "HEAD", "refs/heads/main"]);
+  git(TMP, ["--git-dir", workspaceRemote, "symbolic-ref", "HEAD", "refs/heads/master"]);
 
   initRepo(dotfiles, "main");
   fs.writeFileSync(path.join(dotfiles, "seed.txt"), "seed");
-  git(dotfiles, "add -A");
-  git(dotfiles, "commit -m initial");
-  git(dotfiles, `remote add origin ${dotfilesRemote}`);
-  git(dotfiles, `push -u origin main`);
+  git(dotfiles, ["add", "-A"]);
+  git(dotfiles, ["commit", "-m", "initial"]);
+  git(dotfiles, ["remote", "add", "origin", dotfilesRemote]);
+  git(dotfiles, ["push", "-u", "origin", "main"]);
 
   initRepo(workspace, "master");
   fs.writeFileSync(path.join(workspace, "vault.txt"), "vault");
-  git(workspace, "add -A");
-  git(workspace, "commit -m initial");
-  git(workspace, `remote add origin ${workspaceRemote}`);
-  git(workspace, `push -u origin master`);
+  git(workspace, ["add", "-A"]);
+  git(workspace, ["commit", "-m", "initial"]);
+  git(workspace, ["remote", "add", "origin", workspaceRemote]);
+  git(workspace, ["push", "-u", "origin", "master"]);
 
   // 注册子模块：URL 用裸仓库，保证子模块内 push 可用。
-  const add = git(workspace, `-c protocol.file.allow=always submodule add ${dotfilesRemote} ${DOTFILES_DIR}`);
+  const add = git(workspace, ["-c", "protocol.file.allow=always", "submodule", "add", dotfilesRemote, DOTFILES_DIR]);
   assert.equal(add.code, 0, `submodule add failed: ${add.stderr}`);
-  git(workspace, "commit -am add-submodule");
-  git(workspace, "push origin master");
+  git(workspace, ["commit", "-am", "add-submodule"]);
+  git(workspace, ["push", "origin", "master"]);
 
   return { workspace, dotfiles: path.join(workspace, DOTFILES_DIR), dotfilesRemote, workspaceRemote };
 }
 
 function runCli(args: string[], workspaceRoot: string): { stdout: string; code: number } {
-  const quoted = args.map((a) => (/\s|"|'/.test(a) ? `"${a.replace(/"/g, '\\"')}"` : a)).join(" ");
   try {
-    const stdout = execSync(`node "${CLI}" ${quoted}`, {
+    const stdout = execFileSync(process.execPath, [CLI, ...args], {
       encoding: "utf-8", timeout: 60000,
       env: { ...process.env, OPENCODE_SYNC_WORKSPACE_ROOT: workspaceRoot },
     });
@@ -112,13 +104,27 @@ describe("crystallize step 4 with dotfiles as a git submodule", () => {
   let beforeWorkspaceHead: string;
 
   before(() => {
-    world = makeSubmoduleWorld();
-    beforeDotfilesHead = git(world.dotfiles, "rev-parse HEAD").stdout.trim();
-    beforeWorkspaceHead = git(world.workspace, "rev-parse HEAD").stdout.trim();
-    out = runCli(
-      ["crystallize", "--type", "plugin", "--name", "test-plugin", "--source", "https://example.com/test.git", "--message", "Crystallize submodule test"],
-      world.workspace,
+    const prepared = runWithFreshFixture(
+      () => makeSubmoduleWorld(),
+      (fixture) => {
+        const initial = {
+          beforeDotfilesHead: git(fixture.dotfiles, ["rev-parse", "HEAD"]).stdout.trim(),
+          beforeWorkspaceHead: git(fixture.workspace, ["rev-parse", "HEAD"]).stdout.trim(),
+        };
+        return {
+          fixture,
+          ...initial,
+          out: runCli(
+          ["crystallize", "--type", "plugin", "--name", "test-plugin", "--source", "https://example.com/test.git", "--message", "Crystallize submodule test"],
+          fixture.workspace,
+        ),
+        };
+      },
     );
+    world = prepared.fixture;
+    beforeDotfilesHead = prepared.beforeDotfilesHead;
+    beforeWorkspaceHead = prepared.beforeWorkspaceHead;
+    out = prepared.out;
   });
 
   it("exits 0 and reports committed steps", () => {
@@ -131,30 +137,30 @@ describe("crystallize step 4 with dotfiles as a git submodule", () => {
   });
 
   it("commits the generated artifacts inside the submodule", () => {
-    const head = git(world.dotfiles, "rev-parse HEAD").stdout.trim();
+    const head = git(world.dotfiles, ["rev-parse", "HEAD"]).stdout.trim();
     assert.notEqual(head, beforeDotfilesHead, "dotfiles HEAD must move");
-    assert.equal(git(world.dotfiles, "status --porcelain").stdout.trim(), "", "dotfiles worktree must be clean");
-    const msg = git(world.dotfiles, "log -1 --pretty=%s").stdout.trim();
+    assert.equal(git(world.dotfiles, ["status", "--porcelain"]).stdout.trim(), "", "dotfiles worktree must be clean");
+    const msg = git(world.dotfiles, ["log", "-1", "--pretty=%s"]).stdout.trim();
     assert.equal(msg, "Crystallize submodule test");
-    const listed = git(world.dotfiles, "ls-tree -r --name-only HEAD").stdout;
+    const listed = git(world.dotfiles, ["ls-tree", "-r", "--name-only", "HEAD"]).stdout;
     assert.ok(listed.includes("state/install-log.json"), "install-log must be committed in dotfiles");
     assert.ok(listed.includes("guide/SYNC-GUIDE.md"), "guide must be committed in dotfiles");
   });
 
   it("pushes the dotfiles commit to its remote", () => {
-    const remoteHead = git(world.dotfilesRemote, "rev-parse HEAD").stdout.trim();
-    const localHead = git(world.dotfiles, "rev-parse HEAD").stdout.trim();
+    const remoteHead = git(world.dotfilesRemote, ["rev-parse", "HEAD"]).stdout.trim();
+    const localHead = git(world.dotfiles, ["rev-parse", "HEAD"]).stdout.trim();
     assert.equal(remoteHead, localHead, "dotfiles remote must match local HEAD");
   });
 
   it("updates the workspace pointer and pushes it", () => {
-    const head = git(world.workspace, "rev-parse HEAD").stdout.trim();
+    const head = git(world.workspace, ["rev-parse", "HEAD"]).stdout.trim();
     assert.notEqual(head, beforeWorkspaceHead, "workspace HEAD must move");
-    const treeEntry = git(world.workspace, `ls-tree HEAD ${DOTFILES_DIR}`).stdout.trim();
+    const treeEntry = git(world.workspace, ["ls-tree", "HEAD", DOTFILES_DIR]).stdout.trim();
     assert.ok(treeEntry.startsWith("160000"), `dotfiles must be recorded as gitlink: ${treeEntry}`);
-    const dotfilesHead = git(world.dotfiles, "rev-parse HEAD").stdout.trim();
+    const dotfilesHead = git(world.dotfiles, ["rev-parse", "HEAD"]).stdout.trim();
     assert.ok(treeEntry.includes(dotfilesHead.slice(0, 7)), "pointer must reference new dotfiles commit");
-    const remoteHead = git(world.workspaceRemote, "rev-parse HEAD").stdout.trim();
+    const remoteHead = git(world.workspaceRemote, ["rev-parse", "HEAD"]).stdout.trim();
     assert.equal(remoteHead, head, "workspace remote must match local HEAD");
   });
 });
@@ -166,14 +172,14 @@ describe("crystallize step 4 with dotfiles as a plain directory", () => {
     const workspaceRemote = path.join(base, "workspace-remote.git");
     initBare(workspaceRemote);
     initRepo(workspace, "master");
-    git(workspace, "remote add origin " + workspaceRemote);
-    sh(`git --git-dir=${workspaceRemote} symbolic-ref HEAD refs/heads/master`, TMP);
+    git(workspace, ["remote", "add", "origin", workspaceRemote]);
+    git(TMP, ["--git-dir", workspaceRemote, "symbolic-ref", "HEAD", "refs/heads/master"]);
     fs.writeFileSync(path.join(workspace, "vault.txt"), "vault");
     fs.mkdirSync(path.join(workspace, DOTFILES_DIR, "state"), { recursive: true });
     fs.mkdirSync(path.join(workspace, DOTFILES_DIR, "guide"), { recursive: true });
-    git(workspace, "add -A");
-    git(workspace, "commit -m initial");
-    git(workspace, "push -u origin master");
+    git(workspace, ["add", "-A"]);
+    git(workspace, ["commit", "-m", "initial"]);
+    git(workspace, ["push", "-u", "origin", "master"]);
 
     const out = runCli(
       ["crystallize", "--type", "skill", "--name", "plain-test", "--source", "https://example.com/p.git", "--message", "Plain dir test"],
@@ -181,10 +187,10 @@ describe("crystallize step 4 with dotfiles as a plain directory", () => {
     );
     assert.equal(out.code, 0);
     assert.ok(out.stdout.includes("✅ Step 4: Committed"), out.stdout);
-    const tree = git(workspace, `ls-tree -r --name-only HEAD`).stdout;
+    const tree = git(workspace, ["ls-tree", "-r", "--name-only", "HEAD"]).stdout;
     assert.ok(tree.includes("guide/SYNC-GUIDE.md"), "plain-dir files must be in workspace commit");
-    const remoteHead = git(workspaceRemote, "rev-parse HEAD").stdout.trim();
-    assert.equal(remoteHead, git(workspace, "rev-parse HEAD").stdout.trim(), "workspace must be pushed");
+    const remoteHead = git(workspaceRemote, ["rev-parse", "HEAD"]).stdout.trim();
+    assert.equal(remoteHead, git(workspace, ["rev-parse", "HEAD"]).stdout.trim(), "workspace must be pushed");
   });
 });
 
