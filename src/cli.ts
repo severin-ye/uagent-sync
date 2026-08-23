@@ -4,7 +4,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { spawn } from "node:child_process";
 import {
-  exportSystemState, importSystemState, diffState, resolveWorkspaceRoot, resolveWorkspaceRootForAgent, run,
+  exportSystemState, diffState, resolveWorkspaceRoot, resolveWorkspaceRootForAgent, run,
   getSubmoduleStatus, detectWorkspaceInfo,
   createGitHubRepo, detectApiKeys, initApiKeyFile, generateSyncGuide,
   readInstallLog, appendInstallEntry, exportInstallLogAsMarkdown,
@@ -270,45 +270,20 @@ async function main() {
     }
     case "push": {
       const targetAgent = targetAgentFor(flags, workspaceRoot);
-      const state = exportSystemState(workspaceRoot, { targetAgent });
-      const serialized = JSON.stringify(state, null, 2);
-      assertNoSecrets(serialized, stateFile);
-      fs.writeFileSync(stateFile, serialized);
+      const msg = String(flags.get("message") || flags.get("m") || `Update workspace state ${new Date().toISOString().slice(0, 19)}`);
+      const result = defaultWorkspaceApplication.pushWorkspace({ workspaceRoot, targetAgent, message: msg });
+      if (!result.ok) failStateCommand(targetAgent, result.errors.join("; ") || "Workspace push failed");
       log(t("cli.exportedState"));
-      const msg = flags.get("message") || flags.get("m") || `Update workspace state ${new Date().toISOString().slice(0, 19)}`;
-      const tmpFile = path.join(workspaceRoot, DOTFILES_DIR, "state", ".commit-msg.tmp");
-      fs.writeFileSync(tmpFile, String(msg), "utf-8");
-      const added = run(`git add ${stateRel}`, workspaceRoot);
-      if (added.code !== 0) throw new Error(`git add failed: ${added.stderr}`);
-      const commit = run(`git commit -F "${tmpFile}"`, workspaceRoot);
-      if (commit.code !== 0 && !/nothing to commit|no changes added/i.test(`${commit.stdout}\n${commit.stderr}`)) throw new Error(`git commit failed: ${commit.stderr}`);
-      if (commit.code !== 0) log(t("cli.commitNothing", { detail: commit.stderr || "nothing to commit" }));
-      try { fs.unlinkSync(tmpFile); } catch { /* ok */ }
-      const pushed = run("git push", workspaceRoot);
-      if (pushed.code !== 0) throw new Error(`git push failed: ${pushed.stderr}`);
+      for (const detail of result.skipped) log(t("cli.commitNothing", { detail }));
       log(t("cli.pushedRemote"));
       break;
     }
     case "pull": {
       const targetAgent = targetAgentFor(flags, workspaceRoot);
-      const dotfilesRoot = path.join(workspaceRoot, DOTFILES_DIR);
-      const failPull = (message: string): never => {
-        console.error(JSON.stringify({ ok: false, warnings: [], errors: [message], skipped: [], targetAgent }));
-        process.exit(1);
-      };
-      if (!fs.existsSync(path.join(dotfilesRoot, ".git"))) failPull(`Dotfiles repository is not initialized: ${dotfilesRoot}`);
-      const pull = run("git pull --ff-only", dotfilesRoot);
-      if (pull.code !== 0) failPull(pull.stderr || "dotfiles git pull failed");
-      if (!fs.existsSync(stateFile)) failPull(t("cli.noStateAfterPull", { rel: stateRel }));
-      const state = (() => {
-        try { return JSON.parse(fs.readFileSync(stateFile, "utf-8")) as WorkspaceState; }
-        catch (error) { return failPull(`Invalid workspace-state.json: ${error instanceof Error ? error.message : String(error)}`); }
-      })();
-      if (state.targetAgent && targetAgent !== "all" && state.targetAgent !== targetAgent) {
-        console.error(JSON.stringify({ ok: false, warnings: [], errors: [`workspace-state targetAgent=${state.targetAgent} conflicts with ${targetAgent}`], skipped: [], targetAgent }));
-        process.exit(1);
-      }
-      if (flags.has("dry-run")) {
+      const result = defaultWorkspaceApplication.pullWorkspace({ workspaceRoot, targetAgent, dryRun: flags.has("dry-run") });
+      if (!result.ok || !result.value) failStateCommand(targetAgent, result.errors.join("; ") || "Workspace pull failed");
+      if (result.value.kind === "dry-run") {
+        const state = result.value.state as unknown as WorkspaceState;
         console.log([
           t("cli.dryRunStateApplied"),
           t("cli.dryRunTimestamp", { value: state.timestamp }), t("cli.dryRunPlatform", { value: state.platform }), t("cli.dryRunHostname", { value: state.hostname }),
@@ -316,12 +291,7 @@ async function main() {
         ].join("\n"));
         break;
       }
-      const result = (() => {
-        try { return importSystemState(workspaceRoot, state); }
-        catch (error) { return failPull(`State import failed: ${error instanceof Error ? error.message : String(error)}`); }
-      })();
-      for (const msg of result.messages) log(msg);
-      if (!result.success) failPull(result.messages.join("; ") || "State import failed");
+      for (const msg of result.value.result.messages) log(msg);
       break;
     }
     case "status":

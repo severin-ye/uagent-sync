@@ -15,7 +15,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import * as os from "node:os";
 import {
-  exportSystemState, importSystemState, diffState, resolveWorkspaceRoot,
+  exportSystemState, diffState, resolveWorkspaceRoot,
   getSubmoduleStatus, detectWorkspaceInfo,
   createGitHubRepo, detectApiKeys, initApiKeyFile, generateSyncGuide,
   readInstallLog, appendInstallEntry, exportInstallLogAsMarkdown,
@@ -54,7 +54,7 @@ export const OpencodeSyncPlugin: Plugin = async (_ctx) => {
 Captures: OpenCode config (without secrets), env var names, git submodule commits, installed skills, platform metadata.
 The JSON file can be committed to Git and imported on another device.`,
         args: {
-          output: z.string().optional().describe("Output file path (default: opencode-dotfiles/state/workspace-state.json)"),
+          output: z.string().optional().describe("Output file path (default: usync-dotfiles/state/workspace-state.json)"),
           trackState: z.boolean().optional().default(false).describe("Whether to keep workspace-state.json tracked by git (private repos: true, public: false)"),
         },
         async execute(args) {
@@ -146,32 +146,24 @@ Shows: submodules with different commits, skills missing locally. Read-only — 
       opencode_sync_push: tool({
         description: `Export workspace state and push the state file to GitHub.
 
-Steps: export state to opencode-dotfiles/state/workspace-sync-state.json, git add + commit + push. Requires GitHub CLI (gh) authenticated.`,
+Steps: export state to usync-dotfiles/state/workspace-state.json, git add + commit + push. Requires GitHub authentication.`,
         args: {
           message: z.string().max(500).optional().describe("Git commit message"),
         },
         async execute(args) {
           const workspaceRoot = resolveWorkspaceRoot();
-          const stateFile = path.join(workspaceRoot, `${DOTFILES_DIR}/state/workspace-sync-state.json`);
-          fs.writeFileSync(stateFile, JSON.stringify(exportSystemState(workspaceRoot), null, 2));
-
-          const results: string[] = ["Exported workspace state"];
-          const add = run(`git add ${DOTFILES_DIR}/state/workspace-sync-state.json`, workspaceRoot);
-          if (add.code !== 0) results.push(`Warning: git add failed: ${add.stderr}`);
-
           const commitMsg = args.message || `Update workspace state ${new Date().toISOString().slice(0, 19)}`;
-          const tmpMsgFile = path.join(workspaceRoot, DOTFILES_DIR, "state", ".commit-msg.tmp");
-          fs.writeFileSync(tmpMsgFile, commitMsg, "utf-8");
-          const commit = run(`git commit -F ${shellEscape(tmpMsgFile)}`, workspaceRoot);
-          try { fs.unlinkSync(tmpMsgFile); } catch { /* ok */ }
-          if (commit.code !== 0) results.push(`Warning: git commit: ${commit.stderr}`);
-          else results.push(`Committed: ${commitMsg}`);
-
-          const push = run("git push", workspaceRoot);
-          if (push.code !== 0) results.push(`Warning: git push failed: ${push.stderr}`);
-          else results.push("Pushed to remote");
-
-          return text(results.join("\n"));
+          const result = defaultWorkspaceApplication.pushWorkspace({ workspaceRoot, targetAgent: "opencode", message: commitMsg });
+          const errors = result.errors.map(redactString);
+          const warnings = result.warnings.map(redactString);
+          const skipped = result.skipped.map(redactString);
+          const output = result.ok
+            ? ["Exported workspace state", result.value?.committed ? `Committed: ${commitMsg}` : skipped[0], "Pushed to remote"].filter(Boolean).join("\n")
+            : `Error: ${errors.join("; ") || "Workspace push failed"}`;
+          return {
+            ...text(output),
+            metadata: { ok: result.ok, warnings, errors, skipped, targetAgent: result.targetAgent },
+          };
         },
       }),
 
@@ -179,29 +171,33 @@ Steps: export state to opencode-dotfiles/state/workspace-sync-state.json, git ad
       opencode_sync_pull: tool({
         description: `Pull latest workspace state from GitHub and apply it.
 
-Steps: git pull, then import+apply the state (submodules, config, env vars). Use dryRun=true to preview without applying.`,
+Steps: git pull --ff-only in usync-dotfiles, then import+apply the canonical state (submodules, config, env vars). Use dryRun=true to preview without applying.`,
         args: {
           dryRun: z.boolean().optional().default(false).describe("If true, only show what would be changed"),
         },
         async execute(args) {
           const workspaceRoot = resolveWorkspaceRoot();
-          const pull = run("git pull", workspaceRoot);
-          if (pull.code !== 0) return text(`Failed to pull: ${pull.stderr}`);
-
-          const stateFile = path.join(workspaceRoot, `${DOTFILES_DIR}/state/workspace-sync-state.json`);
-          if (!fs.existsSync(stateFile)) return text("No workspace-state.json found in opencode-dotfiles/state/ after pull");
-
-          const state = JSON.parse(fs.readFileSync(stateFile, "utf-8")) as WorkspaceState;
-          if (args.dryRun) {
-            return text([
+          const result = defaultWorkspaceApplication.pullWorkspace({ workspaceRoot, targetAgent: "opencode", dryRun: args.dryRun });
+          const errors = result.errors.map(redactString);
+          const warnings = result.warnings.map(redactString);
+          const skipped = result.skipped.map(redactString);
+          let output: string;
+          if (!result.ok || !result.value) {
+            output = `Error: ${errors.join("; ") || "Workspace pull failed"}`;
+          } else if (result.value.kind === "dry-run") {
+            const state = result.value.state as unknown as WorkspaceState;
+            output = [
               "Dry run — state to be applied:",
               `  Timestamp: ${state.timestamp}`, `  Platform: ${state.platform}`, `  Hostname: ${state.hostname}`,
               `  Submodules: ${state.submodules.length}`, `  Skills: ${state.skills.length}`,
-            ].join("\n"));
+            ].join("\n");
+          } else {
+            output = `Pulled and applied workspace state:\n${result.value.result.messages.join("\n")}`;
           }
-
-          const result = importSystemState(workspaceRoot, state);
-          return text(`Pulled and applied workspace state:\n${result.messages.join("\n")}`);
+          return {
+            ...text(output),
+            metadata: { ok: result.ok, warnings, errors, skipped, targetAgent: result.targetAgent },
+          };
         },
       }),
 
@@ -539,7 +535,7 @@ Trigger with natural language: "crystallize this install" / "结晶这个安装"
           const guidePath = generateSyncGuide(workspaceRoot, exportSystemState(workspaceRoot));
           results.push(`📖 Step 2: Generated guide — ${guidePath}`);
 
-          const stateFile = path.join(workspaceRoot, DOTFILES_DIR, "state", "workspace-sync-state.json");
+          const stateFile = path.join(workspaceRoot, DOTFILES_DIR, "state", "workspace-state.json");
           const state = exportSystemState(workspaceRoot);
           fs.writeFileSync(stateFile, JSON.stringify(state, null, 2));
           results.push(`📦 Step 3: Exported state — ${state.submodules.length} submodules, ${state.skills.length} skills`);

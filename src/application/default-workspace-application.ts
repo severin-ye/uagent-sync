@@ -1,4 +1,5 @@
 import { nodeFileSystem } from "../adapters/infrastructure/node-file-system.js";
+import { gitCli } from "../adapters/infrastructure/git-cli.js";
 import { parseWorkspaceStateArtifact } from "../artifacts/workspace-state-codec.js";
 import { assertNoSecrets } from "../lib/secret-scan.js";
 import { diffState, exportSystemState, importSystemState } from "../lib/state.js";
@@ -7,6 +8,8 @@ import type { TargetAgent, VerifyResult, WorkspaceState, WorkspaceStateV3 } from
 import { setupWorkspace as setupLegacyWorkspace, verifyEnvironment } from "../lib/workspace.js";
 import { exportWorkspace as runExportWorkspace, type ExportWorkspaceInput, type ExportWorkspaceOutput } from "./export-workspace.js";
 import { importWorkspace as runImportWorkspace, type ImportWorkspaceInput, type ImportWorkspaceOutput } from "./import-workspace.js";
+import { pullWorkspace as runPullWorkspace, type PullWorkspaceInput } from "./pull-workspace.js";
+import { pushWorkspace as runPushWorkspace, type PushWorkspaceInput, type PushWorkspaceOutput } from "./push-workspace.js";
 import type { ApplicationResult } from "./result.js";
 import { setupWorkspace as runSetupWorkspace, type SetupWorkspaceInput } from "./setup-workspace.js";
 import { updateWorkspace as runUpdateWorkspace, type UpdateWorkspaceInput } from "./update-workspace.js";
@@ -21,6 +24,8 @@ export interface WorkspaceApplication {
   verifyWorkspace(input: VerifyWorkspaceRequest): ApplicationResult<VerifyResult[]>;
   exportWorkspace(input: ExportWorkspaceInput): ExportWorkspaceOutput;
   importWorkspace(input: ImportWorkspaceInput): ImportWorkspaceOutput;
+  pushWorkspace(input: PushWorkspaceInput): ApplicationResult<PushWorkspaceOutput>;
+  pullWorkspace(input: PullWorkspaceInput): ApplicationResult<ImportWorkspaceOutput>;
   setupWorkspace(input: SetupWorkspaceInput): ApplicationResult<import("../lib/types.js").SetupResult[]>;
   updateWorkspace(input: UpdateWorkspaceInput): Promise<ApplicationResult<import("../lib/update.js").UpdateReport>>;
 }
@@ -42,6 +47,20 @@ export function createDefaultWorkspaceApplication(
       assertNoSecrets,
     }),
     importWorkspace: (input) => runImportWorkspace(input, {
+      parseArtifact: parseWorkspaceStateArtifact,
+      importState: importValidatedWorkspaceState,
+      exportState: exportSystemState,
+      diffState,
+    }),
+    pushWorkspace: (input) => runPushWorkspace(input, {
+      fileSystem: nodeFileSystem,
+      git: gitCli,
+      exportState: exportSystemState,
+      assertNoSecrets,
+    }),
+    pullWorkspace: (input) => runPullWorkspace(input, {
+      fileSystem: nodeFileSystem,
+      git: gitCli,
       parseArtifact: parseWorkspaceStateArtifact,
       importState: importValidatedWorkspaceState,
       exportState: exportSystemState,
