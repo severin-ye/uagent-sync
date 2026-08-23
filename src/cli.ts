@@ -145,15 +145,35 @@ interface ResolvedTargetContext {
   operation?: WorkspaceOperation;
 }
 
+function isTargetAgent(value: unknown): value is TargetAgent {
+  return typeof value === "string" && (["codex", "opencode", "dsh", "all"] as string[]).includes(value);
+}
+
+function discoverHostNeutralWorkspaceRoot(
+  env: NodeJS.ProcessEnv = process.env,
+  cwd: string = process.cwd(),
+): string | undefined {
+  for (const candidate of [env.UAGENT_SYNC_WORKSPACE_ROOT, env.OPENCODE_SYNC_WORKSPACE_ROOT]) {
+    if (candidate && fs.existsSync(candidate)) return path.resolve(candidate);
+  }
+  let current = path.resolve(cwd);
+  while (true) {
+    if (fs.existsSync(path.join(current, DOTFILES_DIR)) || fs.existsSync(path.join(current, ".gitmodules"))) return current;
+    const parent = path.dirname(current);
+    if (parent === current) return undefined;
+    current = parent;
+  }
+}
+
 function resolveTargetContext(
   flags: Map<string, string | boolean>,
   workspaceRoot: string,
   initialTargetAgent: TargetAgent,
   operation?: WorkspaceOperation,
 ): ResolvedTargetContext {
-  if (operation && typeof flags.get("target-agent") !== "string") {
+  if (operation && !flags.has("target-agent")) {
     const persistedTargetAgent = readInitState(workspaceRoot).targetAgent;
-    if (!( ["codex", "opencode", "dsh", "all"] as string[]).includes(persistedTargetAgent)) {
+    if (!isTargetAgent(persistedTargetAgent)) {
       throw new Error(`Invalid persisted targetAgent: ${persistedTargetAgent}`);
     }
     if (persistedTargetAgent !== initialTargetAgent) {
@@ -200,15 +220,20 @@ async function main() {
     process.exit(1);
   }
 
+  const hasExplicitAgent = flags.has("target-agent");
   const explicitAgent = flags.get("target-agent");
-  const initialTargetAgent = typeof explicitAgent === "string" ? explicitAgent as TargetAgent : detectTargetAgent();
-  if (!( ["codex", "opencode", "dsh", "all"] as string[]).includes(initialTargetAgent)) throw new Error(`Invalid targetAgent: ${initialTargetAgent}`);
+  if (hasExplicitAgent && !isTargetAgent(explicitAgent)) throw new Error(`Invalid explicit targetAgent: ${String(explicitAgent)}`);
+  const initialTargetAgent = hasExplicitAgent ? explicitAgent as TargetAgent : detectTargetAgent();
   const workspaceOperation = WORKSPACE_OPERATION_COMMANDS.has(command as WorkspaceOperation) ? command as WorkspaceOperation : undefined;
   if (workspaceOperation) {
     const capability = preflightWorkspaceOperation(workspaceOperation, initialTargetAgent);
     if (!capability.supported) failStateCommand(initialTargetAgent, capability.error);
   }
-  const workspaceRoot = resolveWorkspaceRootForAgent(initialTargetAgent);
+  const neutralWorkspaceRoot = workspaceOperation && !hasExplicitAgent ? discoverHostNeutralWorkspaceRoot() : undefined;
+  if (workspaceOperation && !hasExplicitAgent && initialTargetAgent === "opencode" && !neutralWorkspaceRoot) {
+    throw new Error("Cannot safely resolve the OpenCode workspace without reading host cache; run from the workspace or set UAGENT_SYNC_WORKSPACE_ROOT");
+  }
+  const workspaceRoot = neutralWorkspaceRoot ?? resolveWorkspaceRootForAgent(initialTargetAgent);
   const targetContext = resolveTargetContext(flags, workspaceRoot, initialTargetAgent, workspaceOperation);
   const stateRel = `${DOTFILES_DIR}/state/workspace-state.json`;
   const stateFile = path.join(workspaceRoot, stateRel);
