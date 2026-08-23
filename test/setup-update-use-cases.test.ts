@@ -71,6 +71,7 @@ describe("setupWorkspace application use case", () => {
 describe("updateWorkspace application use case", () => {
   it("passes explicit scope, typed progress and argv process execution to the updater", async () => {
     const module = await import("../src/application/update-workspace.js").catch(() => null);
+    const { asUpdateCommandExecutor } = await import("../src/adapters/infrastructure/system-process-runner.js");
     assert.ok(module?.updateWorkspace, "updateWorkspace application use case must exist");
     const processCalls: unknown[] = [];
     const progress: unknown[] = [];
@@ -85,12 +86,12 @@ describe("updateWorkspace application use case", () => {
         onProgress: (event: unknown) => progress.push(event),
       },
       {
-        processRunner: {
+        executeCommand: asUpdateCommandExecutor({
           run: async (file: string, args: readonly string[], options?: Record<string, unknown>) => {
             processCalls.push({ file, args: [...args], cwd: options?.cwd });
             return { code: 0, output: "ok" };
           },
-        },
+        }),
         update: async (options: Record<string, unknown>) => {
           delegatedOptions = options;
           (options.onProgress as (event: unknown) => void)({ type: "done", summary: { ok: 1, warning: 0, error: 0, skipped: 0 } });
@@ -126,7 +127,7 @@ describe("updateWorkspace application use case", () => {
     const result = await updateWorkspace(
       { workspaceRoot: "C:/workspace", targetAgent: "opencode" },
       {
-        processRunner: { run: async () => ({ code: 0, output: "ok" }) },
+        executeCommand: async () => ({ code: 0, output: "ok" }),
         update: async () => ({
           timestamp: "2026-08-23T00:00:00.000Z",
           dryRun: false,
@@ -153,7 +154,7 @@ describe("updateWorkspace application use case", () => {
     const result = await updateWorkspace(
       { workspaceRoot: "C:/workspace", targetAgent: "codex" },
       {
-        processRunner: { run: async () => ({ code: 0, output: "ok" }) },
+        executeCommand: async () => ({ code: 0, output: "ok" }),
         update: async () => { throw new Error("update exploded"); },
       },
     );
@@ -161,6 +162,64 @@ describe("updateWorkspace application use case", () => {
     assert.equal(result.ok, false);
     assert.deepEqual(result.errors, ["update exploded"]);
     assert.equal(result.value, undefined);
+  });
+
+  it("preserves the updater's legacy default executor when no ProcessRunner is injected", async () => {
+    const { updateWorkspace } = await import("../src/application/update-workspace.js");
+    let delegatedExecutor: unknown = "not observed";
+    const result = await updateWorkspace(
+      { workspaceRoot: "C:/workspace", targetAgent: "codex", dryRun: true },
+      {
+        update: async (options) => {
+          delegatedExecutor = options.executeCommand;
+          return {
+            timestamp: "2026-08-23T00:00:00.000Z",
+            dryRun: true,
+            targetAgent: "codex",
+            components: ["sync"],
+            steps: [],
+            summary: { ok: 0, warning: 0, error: 0, skipped: 0 },
+            text: "report",
+          };
+        },
+      },
+    );
+
+    assert.equal(result.ok, true);
+    assert.equal(delegatedExecutor, undefined, "omitting executeCommand lets updateExtensions keep its established executor");
+  });
+
+  it("buffers split output events before exposing redacted progress", async () => {
+    const { updateWorkspace } = await import("../src/application/update-workspace.js");
+    const events: Array<{ type: string; line?: string }> = [];
+    const secret = "sk-1234567890abcdef";
+    const result = await updateWorkspace(
+      { workspaceRoot: "C:/workspace", targetAgent: "codex", onProgress: (event) => events.push(event) },
+      {
+        update: async (options) => {
+          options.onProgress?.({ type: "step-start", name: "sync/test", command: "npm test", index: 1, total: 1 });
+          options.onProgress?.({ type: "output", name: "sync/test", line: "sk-12345678" });
+          options.onProgress?.({ type: "output", name: "sync/test", line: "90abcdef" });
+          options.onProgress?.({ type: "step-end", name: "sync/test", status: "ok", detail: "ok", durationMs: 1 });
+          options.onProgress?.({ type: "done", summary: { ok: 1, warning: 0, error: 0, skipped: 0 } });
+          return {
+            timestamp: "2026-08-23T00:00:00.000Z",
+            dryRun: false,
+            targetAgent: "codex",
+            components: ["sync"],
+            steps: [],
+            summary: { ok: 1, warning: 0, error: 0, skipped: 0 },
+            text: "report",
+          };
+        },
+      },
+    );
+
+    assert.equal(result.ok, true);
+    const serialized = JSON.stringify(events);
+    assert.doesNotMatch(serialized, new RegExp(secret));
+    assert.doesNotMatch(serialized, /sk-12345678|90abcdef/);
+    assert.ok(events.some((event) => event.type === "output" && event.line?.includes("<hidden>")));
   });
 });
 
@@ -204,28 +263,74 @@ describe("setup/update entrypoint delegation", () => {
   });
 });
 
-describe("systemProcessRunner", () => {
-  it("passes shell metacharacters as a literal argv value", async () => {
-    const { systemProcessRunner } = await import("../src/adapters/infrastructure/system-process-runner.js");
-    const literal = "value & echo must-not-run | <literal>";
-    const result = await systemProcessRunner.run(process.execPath, ["-e", "process.stdout.write(process.argv[1])", literal]);
+describe("ProcessRunner adapter bridge", () => {
+  it("adapts the argv port without spawning or joining a shell command", async () => {
+    const module = await import("../src/adapters/infrastructure/system-process-runner.js") as {
+      asUpdateCommandExecutor?: (runner: { run(file: string, args: readonly string[], options?: Record<string, unknown>): Promise<{ code: number; output: string }> }) =>
+        (file: string, args: string[], options?: Record<string, unknown>) => Promise<{ code: number; output: string }>;
+    };
+    assert.ok(module.asUpdateCommandExecutor, "the infrastructure module must be an adapter bridge, not a second process runner");
+    const calls: unknown[] = [];
+    const execute = module.asUpdateCommandExecutor({
+      run: async (file, args, options) => {
+        calls.push({ file, args: [...args], cwd: options?.cwd });
+        return { code: 0, output: "ok" };
+      },
+    });
 
-    assert.equal(result.code, 0);
-    assert.equal(result.output, literal);
+    const result = await execute("codex", ["plugin", "add", "value & literal"], { cwd: "C:/workspace" });
+    assert.deepEqual(calls, [{ file: "codex", args: ["plugin", "add", "value & literal"], cwd: "C:/workspace" }]);
+    assert.deepEqual(result, { code: 0, output: "ok" });
+    const source = fs.readFileSync(path.join(repositoryRoot, "src", "adapters", "infrastructure", "system-process-runner.ts"), "utf-8");
+    assert.doesNotMatch(source, /node:child_process|\bspawn\s*\(/);
   });
+});
 
-  it("redacts command output before returning or emitting progress", async () => {
-    const { systemProcessRunner } = await import("../src/adapters/infrastructure/system-process-runner.js");
+describe("real Plugin setup failure", () => {
+  it("renders stable redacted result fields with metadata.ok=false", async () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "uagent-plugin-setup-failure-"));
+    temporaryDirectories.push(root);
+    const workspace = path.join(root, "workspace");
     const secret = "sk-1234567890abcdef";
-    const lines: string[] = [];
-    const result = await systemProcessRunner.run(
-      process.execPath,
-      ["-e", "process.stdout.write(process.argv[1])", secret],
-      { onLine: (line) => lines.push(line) },
-    );
+    const blockedHome = path.join(root, `home-${secret}`);
+    fs.mkdirSync(path.join(workspace, "usync-dotfiles", "config"), { recursive: true });
+    fs.writeFileSync(path.join(workspace, ".gitmodules"), "");
+    fs.writeFileSync(path.join(workspace, "usync-dotfiles", "config", "opencode.json"), "{}");
+    fs.writeFileSync(blockedHome, "not a directory");
+    const previous = {
+      workspace: process.env.OPENCODE_SYNC_WORKSPACE_ROOT,
+      home: process.env.HOME,
+      userprofile: process.env.USERPROFILE,
+    };
+    process.env.OPENCODE_SYNC_WORKSPACE_ROOT = workspace;
+    process.env.HOME = blockedHome;
+    process.env.USERPROFILE = blockedHome;
+    try {
+      const { default: OpencodeSyncPlugin } = await import("../dist/plugin.js");
+      const plugin = await OpencodeSyncPlugin({} as never);
+      const tools = plugin.tool as unknown as Record<string, { execute(args: Record<string, unknown>): Promise<{ title: string; output: string; metadata?: { ok?: boolean; errors?: string[]; warnings?: string[]; skipped?: string[] } }> }>;
+      const result = await tools.opencode_sync_setup.execute({
+        fixWindowsPaths: false,
+        copyConfig: true,
+        installRalph: false,
+        installSkillsCli: false,
+        installGhCli: false,
+      });
 
-    assert.equal(result.code, 0);
-    assert.doesNotMatch(result.output, new RegExp(secret));
-    assert.doesNotMatch(lines.join("\n"), new RegExp(secret));
+      assert.equal(result.title, "opencode-sync");
+      assert.equal(result.metadata?.ok, false);
+      assert.ok((result.metadata?.errors?.length ?? 0) > 0);
+      assert.ok(Array.isArray(result.metadata?.warnings));
+      assert.ok(Array.isArray(result.metadata?.skipped));
+      assert.match(result.output, /ok:\s*false/i);
+      assert.match(result.output, /errors/i);
+      assert.match(result.output, /warnings/i);
+      assert.match(result.output, /skipped/i);
+      assert.doesNotMatch(JSON.stringify(result), new RegExp(secret));
+    } finally {
+      if (previous.workspace === undefined) delete process.env.OPENCODE_SYNC_WORKSPACE_ROOT; else process.env.OPENCODE_SYNC_WORKSPACE_ROOT = previous.workspace;
+      if (previous.home === undefined) delete process.env.HOME; else process.env.HOME = previous.home;
+      if (previous.userprofile === undefined) delete process.env.USERPROFILE; else process.env.USERPROFILE = previous.userprofile;
+    }
   });
 });

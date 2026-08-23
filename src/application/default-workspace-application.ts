@@ -1,5 +1,4 @@
 import { nodeFileSystem } from "../adapters/infrastructure/node-file-system.js";
-import { systemProcessRunner } from "../adapters/infrastructure/system-process-runner.js";
 import { parseWorkspaceStateArtifact } from "../artifacts/workspace-state-codec.js";
 import { assertNoSecrets } from "../lib/secret-scan.js";
 import { diffState, exportSystemState, importSystemState } from "../lib/state.js";
@@ -50,7 +49,6 @@ export function createDefaultWorkspaceApplication(
     }),
     setupWorkspace: (input) => runSetupWorkspace(input, { setup: setupLegacyWorkspace }),
     updateWorkspace: (input) => runUpdateWorkspace(input, {
-      processRunner: systemProcessRunner,
       update: updateExtensions,
     }),
   };

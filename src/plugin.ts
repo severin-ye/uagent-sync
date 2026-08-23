@@ -258,12 +258,26 @@ Idempotent — safe to run repeatedly.`,
           const workspaceRoot = resolveWorkspaceRoot();
           const result = defaultWorkspaceApplication.setupWorkspace({ workspaceRoot, targetAgent: "opencode", ...args });
           const results = result.value ?? [];
-          const lines = ["# Workspace Setup Results", ""];
+          const warnings = result.warnings.map((item) => redactString(item));
+          const errors = result.errors.map((item) => redactString(item));
+          const skipped = result.skipped.map((item) => redactString(item));
+          const list = (items: string[]) => items.length ? items.map((item) => `- ${item}`) : ["- None"];
+          const lines = [
+            "# Workspace Setup Results", "",
+            `ok: ${result.ok}`, "",
+            "## Errors", ...list(errors), "",
+            "## Warnings", ...list(warnings), "",
+            "## Skipped", ...list(skipped), "",
+            "## Steps", "",
+          ];
           for (const r of results) {
             const icon = r.status === "ok" ? "✅" : r.status === "warning" ? "⚠️" : r.status === "error" ? "❌" : "⏭️";
-            lines.push(`### ${icon} ${r.step}`, `  ${r.detail}`, "");
+            lines.push(`### ${icon} ${redactString(r.step)}`, `  ${redactString(r.detail)}`, "");
           }
-          return text(lines.join("\n"));
+          return {
+            ...text(redactString(lines.join("\n"))),
+            metadata: { ok: result.ok, warnings, errors, skipped, targetAgent: result.targetAgent },
+          };
         },
       }),
 

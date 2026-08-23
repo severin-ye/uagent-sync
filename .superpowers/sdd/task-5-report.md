@@ -34,3 +34,12 @@
 
 - The legacy setup/update domain functions still own several internal process invocations. Task 5 intentionally limits `ProcessRunner` to the application-visible executor seam instead of duplicating or rewriting those domain abstractions.
 - GitNexus does not include newly created, unindexed files in its symbol count; exact Task 5 staging is used to prevent unrelated files from entering the commit.
+
+## Review changes
+
+- Removed the duplicate system process implementation. `system-process-runner.ts` now only adapts an explicitly supplied `ProcessRunner` to `UpdateCommandExecutor`.
+- The default composition no longer supplies `executeCommand`, so `updateExtensions` retains its established executor, including Codex self-update handling, successful JSON stderr suppression, and output limits.
+- Buffered output progress until a safe step boundary and redacted the combined payload, preventing secrets split across progress events from leaking.
+- Plugin setup now renders `ok`, errors, warnings, and skipped results, and returns redacted `metadata.ok=false` for a real delegated exception.
+- Review RED: 4/11 focused tests failed for the four missing behaviors before the fixes.
+- Review GREEN: 11/11 review-focused tests, 54/54 update/Codex-scope/CLI/Plugin tests, and 318/318 full tests passed.
