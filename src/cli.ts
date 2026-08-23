@@ -139,6 +139,30 @@ function initLines(workspaceRoot: string, initState: InitStateLike, initType: In
 
 interface InitStateLike { initType?: string; workspaceName?: string; githubUrl?: string; targetAgent?: TargetAgent; initialized?: boolean; completedSteps?: Record<string, boolean>; firstInitAt?: string; lastInitAt?: string; }
 
+interface ResolvedTargetContext {
+  targetAgent: TargetAgent;
+  workspaceRoot: string;
+  operation?: WorkspaceOperation;
+}
+
+function resolveTargetContext(
+  flags: Map<string, string | boolean>,
+  workspaceRoot: string,
+  initialTargetAgent: TargetAgent,
+  operation?: WorkspaceOperation,
+): ResolvedTargetContext {
+  if (operation && typeof flags.get("target-agent") !== "string") {
+    const persistedTargetAgent = readInitState(workspaceRoot).targetAgent;
+    if (!( ["codex", "opencode", "dsh", "all"] as string[]).includes(persistedTargetAgent)) {
+      throw new Error(`Invalid persisted targetAgent: ${persistedTargetAgent}`);
+    }
+    if (persistedTargetAgent !== initialTargetAgent) {
+      throw new Error(`Target agent conflict: runtime targetAgent=${initialTargetAgent} but persisted init-state targetAgent=${persistedTargetAgent}`);
+    }
+  }
+  return { targetAgent: initialTargetAgent, workspaceRoot, operation };
+}
+
 function targetAgentFor(flags: Map<string, string | boolean>, workspaceRoot: string): TargetAgent {
   const explicit = flags.get("target-agent");
   const value = typeof explicit === "string" ? explicit : readInitState(workspaceRoot).targetAgent;
@@ -179,11 +203,13 @@ async function main() {
   const explicitAgent = flags.get("target-agent");
   const initialTargetAgent = typeof explicitAgent === "string" ? explicitAgent as TargetAgent : detectTargetAgent();
   if (!( ["codex", "opencode", "dsh", "all"] as string[]).includes(initialTargetAgent)) throw new Error(`Invalid targetAgent: ${initialTargetAgent}`);
-  if (WORKSPACE_OPERATION_COMMANDS.has(command as WorkspaceOperation)) {
-    const capability = preflightWorkspaceOperation(command as WorkspaceOperation, initialTargetAgent);
+  const workspaceOperation = WORKSPACE_OPERATION_COMMANDS.has(command as WorkspaceOperation) ? command as WorkspaceOperation : undefined;
+  if (workspaceOperation) {
+    const capability = preflightWorkspaceOperation(workspaceOperation, initialTargetAgent);
     if (!capability.supported) failStateCommand(initialTargetAgent, capability.error);
   }
   const workspaceRoot = resolveWorkspaceRootForAgent(initialTargetAgent);
+  const targetContext = resolveTargetContext(flags, workspaceRoot, initialTargetAgent, workspaceOperation);
   const stateRel = `${DOTFILES_DIR}/state/workspace-state.json`;
   const stateFile = path.join(workspaceRoot, stateRel);
 
@@ -222,7 +248,7 @@ async function main() {
     }
     case "export": {
       const out = isPathSafe(positionals[0] || stateFile, workspaceRoot);
-      const targetAgent = targetAgentFor(flags, workspaceRoot);
+      const targetAgent = targetContext.targetAgent;
       const { state } = (() => {
         try {
           return defaultWorkspaceApplication.exportWorkspace({ workspaceRoot, outputPath: out, targetAgent });
@@ -237,7 +263,7 @@ async function main() {
     }
     case "import": {
       const src = positionals[0] || stateFile;
-      const targetAgent = targetAgentFor(flags, workspaceRoot);
+      const targetAgent = targetContext.targetAgent;
       const capability = preflightImportWorkspace(targetAgent);
       if (!capability.supported) failStateCommand(targetAgent, capability.error);
       let artifact: string;
@@ -282,7 +308,7 @@ async function main() {
       break;
     }
     case "push": {
-      const targetAgent = targetAgentFor(flags, workspaceRoot);
+      const targetAgent = targetContext.targetAgent;
       const msg = String(flags.get("message") || flags.get("m") || `Update workspace state ${new Date().toISOString().slice(0, 19)}`);
       const result = defaultWorkspaceApplication.pushWorkspace({ workspaceRoot, targetAgent, message: msg });
       if (!result.ok) failStateCommand(targetAgent, result.errors.join("; ") || "Workspace push failed");
@@ -292,7 +318,7 @@ async function main() {
       break;
     }
     case "pull": {
-      const targetAgent = targetAgentFor(flags, workspaceRoot);
+      const targetAgent = targetContext.targetAgent;
       const result = defaultWorkspaceApplication.pullWorkspace({ workspaceRoot, targetAgent, dryRun: flags.has("dry-run") });
       if (!result.ok || !result.value) failStateCommand(targetAgent, result.errors.join("; ") || "Workspace pull failed");
       if (result.value.kind === "dry-run") {
@@ -312,7 +338,7 @@ async function main() {
       break;
     case "verify":
     {
-      const targetAgent = targetAgentFor(flags, workspaceRoot);
+      const targetAgent = targetContext.targetAgent;
       const result = defaultWorkspaceApplication.verifyWorkspace({ workspaceRoot, targetAgent });
       if (boolFlag(flags, "json")) console.log(JSON.stringify(formatVerifyJson(result), null, 2));
       else console.log(formatVerifyText(result));
@@ -320,7 +346,7 @@ async function main() {
       break;
     }
     case "setup": {
-      const targetAgent = targetAgentFor(flags, workspaceRoot);
+      const targetAgent = targetContext.targetAgent;
       const result = defaultWorkspaceApplication.setupWorkspace({
         workspaceRoot,
         targetAgent,
@@ -554,7 +580,7 @@ async function main() {
     case "update": {
       const components = parseComponents(flags.get("components") as string | undefined);
       const dryRun = boolFlag(flags, "dry-run");
-      const targetAgent = targetAgentFor(flags, workspaceRoot);
+      const targetAgent = targetContext.targetAgent;
       console.log(dryRun ? t("cli.updateDryRun") : t("cli.updateStart"));
       const result = await defaultWorkspaceApplication.updateWorkspace({ workspaceRoot, components, dryRun, targetAgent, onProgress: (ev) => console.log(formatProgress(ev)) });
       if (!result.value) {
@@ -589,4 +615,10 @@ async function main() {
   }
 }
 
-main();
+main().catch((error) => {
+  const explicitValue = parseArgs(process.argv.slice(3)).flags.get("target-agent");
+  const targetAgent = typeof explicitValue === "string" && (["codex", "opencode", "dsh", "all"] as string[]).includes(explicitValue)
+    ? explicitValue as TargetAgent
+    : detectTargetAgent();
+  failStateCommand(targetAgent, error);
+});
