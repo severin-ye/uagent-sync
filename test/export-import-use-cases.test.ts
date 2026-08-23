@@ -5,6 +5,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { spawn, spawnSync } from "node:child_process";
 import type { ImportResult, TargetAgent, WorkspaceState, WorkspaceStateV3 } from "../src/lib/types.js";
+import type { ApplicationResult } from "../src/application/result.js";
 
 const exportModulePath = "../src/application/export-workspace.js";
 const importModulePath = "../src/application/import-workspace.js";
@@ -33,9 +34,10 @@ type ImportWorkspace = (
     exportState(workspaceRoot: string, options: { targetAgent: TargetAgent }): WorkspaceState;
     diffState(current: WorkspaceState, saved: WorkspaceState): string[];
   },
-) =>
+) => ApplicationResult<
   | { kind: "import"; state: WorkspaceStateV3; result: ImportResult }
-  | { kind: "dry-run"; state: WorkspaceStateV3; diffs: string[] };
+  | { kind: "dry-run"; state: WorkspaceStateV3; diffs: string[] }
+>;
 
 const baseState = {
   schemaVersion: 3,
@@ -157,6 +159,23 @@ describe("exportWorkspace", () => {
 });
 
 describe("importWorkspace", () => {
+  it("propagates a domain import failure as ok=false", async () => {
+    const { importWorkspace } = await import(importModulePath) as { importWorkspace: ImportWorkspace };
+    const output = importWorkspace(
+      { workspaceRoot: "C:/workspace", targetAgent: "codex", artifact: baseState },
+      {
+        parseArtifact: () => baseState,
+        importState: () => ({ success: false, messages: ["restore failed"] }),
+        exportState: () => baseState as unknown as WorkspaceState,
+        diffState: () => [],
+      },
+    );
+
+    assert.equal(output.ok, false);
+    assert.deepEqual(output.errors, ["restore failed"]);
+    assert.equal(output.targetAgent, "codex");
+  });
+
   it("exposes a pure capability preflight with stable unsupported-target errors", async () => {
     const module = await import(importModulePath).catch(() => null) as {
       preflightImportWorkspace?: (targetAgent: TargetAgent) =>
@@ -166,16 +185,12 @@ describe("importWorkspace", () => {
     assert.ok(module?.preflightImportWorkspace, "Application import capability preflight must exist");
 
     assert.deepEqual(module.preflightImportWorkspace("opencode"), { supported: true, targetAgent: "opencode" });
-    assert.deepEqual(module.preflightImportWorkspace("dsh"), {
-      supported: false,
-      targetAgent: "dsh",
-      error: "Unsupported WorkspaceState import targetAgent=dsh: DeepSeek Harness has inventory only and no restore writer",
-    });
-    assert.deepEqual(module.preflightImportWorkspace("all"), {
-      supported: false,
-      targetAgent: "all",
-      error: "Unsupported WorkspaceState import targetAgent=all: no multi-agent artifact/restore contract is available",
-    });
+    const dsh = module.preflightImportWorkspace("dsh");
+    const all = module.preflightImportWorkspace("all");
+    assert.equal(dsh.supported, false);
+    assert.equal(all.supported, false);
+    if (!dsh.supported) assert.match(dsh.error, /unsupported.*import.*targetAgent=dsh/i);
+    if (!all.supported) assert.match(all.error, /unsupported.*import.*targetAgent=all/i);
   });
 
   it("parses with the artifact codec and rejects a target mismatch before mutation", async () => {
@@ -183,7 +198,7 @@ describe("importWorkspace", () => {
     assert.ok(module?.importWorkspace, "importWorkspace use case must exist");
     const events: string[] = [];
 
-    assert.throws(() => module.importWorkspace(
+    const output = module.importWorkspace(
       { workspaceRoot: "C:/workspace", targetAgent: "opencode", artifact: "raw artifact" },
       {
         parseArtifact: (input) => { events.push(`parse:${input}`); return baseState; },
@@ -191,8 +206,10 @@ describe("importWorkspace", () => {
         exportState: () => { events.push("export"); return baseState as unknown as WorkspaceState; },
         diffState: () => { events.push("diff"); return []; },
       },
-    ), /targetAgent=codex.*opencode/i);
+    );
 
+    assert.equal(output.ok, false);
+    assert.match(output.errors.join("\n"), /targetAgent=codex.*opencode/i);
     assert.deepEqual(events, ["parse:raw artifact"]);
   });
 
@@ -211,7 +228,8 @@ describe("importWorkspace", () => {
       },
     );
 
-    assert.equal(output.kind, "import");
+    assert.equal(output.ok, true);
+    assert.equal(output.value?.kind, "import");
     assert.equal(imported, parsed, "the compatibility bridge must pass the codec result unchanged");
     assert.deepEqual((imported as unknown as Record<string, unknown>).legacyMetadata, { retained: true });
   });
@@ -220,7 +238,7 @@ describe("importWorkspace", () => {
     const { importWorkspace } = await import(importModulePath) as { importWorkspace: ImportWorkspace };
     let inspectedWorkspace = false;
 
-    assert.throws(() => importWorkspace(
+    const output = importWorkspace(
       { workspaceRoot: "C:/workspace", targetAgent: "opencode", artifact: baseState, dryRun: true },
       {
         parseArtifact: () => baseState,
@@ -228,7 +246,9 @@ describe("importWorkspace", () => {
         exportState: () => { inspectedWorkspace = true; return baseState as unknown as WorkspaceState; },
         diffState: () => [],
       },
-    ), /targetAgent=codex.*opencode/i);
+    );
+    assert.equal(output.ok, false);
+    assert.match(output.errors.join("\n"), /targetAgent=codex.*opencode/i);
     assert.equal(inspectedWorkspace, false);
   });
 
@@ -236,7 +256,7 @@ describe("importWorkspace", () => {
     const { importWorkspace } = await import(importModulePath) as { importWorkspace: ImportWorkspace };
     for (const targetAgent of ["dsh", "all"] as const) {
       const events: string[] = [];
-      assert.throws(() => importWorkspace(
+      const output = importWorkspace(
         { workspaceRoot: "C:/workspace", targetAgent, artifact: "{malformed", dryRun: true },
         {
           parseArtifact: () => { events.push("parse"); return baseState; },
@@ -244,7 +264,9 @@ describe("importWorkspace", () => {
           exportState: () => { events.push("snapshot"); return baseState as unknown as WorkspaceState; },
           diffState: () => { events.push("diff"); return []; },
         },
-      ), new RegExp(`unsupported.*targetAgent=${targetAgent}`, "i"));
+      );
+      assert.equal(output.ok, false);
+      assert.match(output.errors.join("\n"), new RegExp(`unsupported.*import.*targetAgent=${targetAgent}`, "i"));
       assert.deepEqual(events, []);
     }
   });
@@ -296,6 +318,7 @@ describe("export/import entrypoint parity", () => {
     assert.match(exportTool, /trackState/);
     assert.doesNotMatch(exportTool, /exportSystemState\s*\(|fs\.(?:existsSync|readFileSync|writeFileSync|appendFileSync)/);
     assert.match(importTool, /defaultWorkspaceApplication\.importWorkspace\s*\(/);
+    assert.match(importTool, /if\s*\(\s*!result\.ok\s*\|\|\s*!result\.value\s*\)[\s\S]*?formatPluginApplicationResult/);
     assert.match(importTool, /z\.string\(\)\.min\(1\)\.max\(2000\)/, "Plugin keeps its source schema");
     assert.doesNotMatch(importTool, /importSystemState\s*\(|diffState\s*\(|exportSystemState\s*\(/);
   });
@@ -386,6 +409,19 @@ describe("real CLI export/import protocol", () => {
       assert.match(importError.errors.join("\n"), new RegExp(`unsupported.*targetAgent=${targetAgent}`, "i"));
       assert.doesNotMatch(importError.errors.join("\n"), /invalid.*json/i);
     }
+  });
+
+  it("exits non-zero when the domain importer returns success=false", () => {
+    const { workspace, home, config } = fixture();
+    const artifact = path.join(workspace, "codex-missing-restore-manifest.json");
+    fs.writeFileSync(artifact, JSON.stringify(baseState));
+
+    const imported = runCli(workspace, home, config, ["import", artifact, "--target-agent", "codex"]);
+    assert.notEqual(imported.status, 0);
+    const error = JSON.parse(imported.stderr || imported.stdout);
+    assert.equal(error.ok, false);
+    assert.equal(error.targetAgent, "codex");
+    assert.match(error.errors.join("\n"), /restore manifest is missing/i);
   });
 
   it("preflights unsupported imports before a missing path read or observable URL fetch", async () => {

@@ -1,4 +1,6 @@
 import type { ImportResult, TargetAgent, WorkspaceState, WorkspaceStateV3 } from "../lib/types.js";
+import type { ApplicationResult } from "./result.js";
+import { preflightWorkspaceOperation } from "./workspace-operation-capabilities.js";
 
 export interface ImportWorkspaceInput {
   workspaceRoot: string;
@@ -26,43 +28,30 @@ export type ImportWorkspaceCapability =
   | { supported: false; targetAgent: TargetAgent; error: string };
 
 export function preflightImportWorkspace(targetAgent: TargetAgent): ImportWorkspaceCapability {
-  if (targetAgent === "dsh") {
-    return {
-      supported: false,
-      targetAgent,
-      error: "Unsupported WorkspaceState import targetAgent=dsh: DeepSeek Harness has inventory only and no restore writer",
-    };
-  }
-  if (targetAgent === "all") {
-    return {
-      supported: false,
-      targetAgent,
-      error: "Unsupported WorkspaceState import targetAgent=all: no multi-agent artifact/restore contract is available",
-    };
-  }
+  const capability = preflightWorkspaceOperation("import", targetAgent);
+  if (!capability.supported) return { supported: false, targetAgent, error: capability.error };
   return { supported: true, targetAgent };
 }
 
 export function importWorkspace(
   input: ImportWorkspaceInput,
   dependencies: ImportWorkspaceDependencies,
-): ImportWorkspaceOutput {
+): ApplicationResult<ImportWorkspaceOutput> {
   const capability = preflightImportWorkspace(input.targetAgent);
-  if (!capability.supported) throw new Error(capability.error);
-  const state = dependencies.parseArtifact(input.artifact);
-  if (input.targetAgent !== "all" && state.targetAgent !== input.targetAgent) {
-    throw new Error(`workspace-state targetAgent=${state.targetAgent} conflicts with ${input.targetAgent}`);
+  if (!capability.supported) return { ok: false, warnings: [], errors: [capability.error], skipped: [], targetAgent: input.targetAgent };
+  try {
+    const state = dependencies.parseArtifact(input.artifact);
+    if (state.targetAgent !== input.targetAgent) throw new Error(`workspace-state targetAgent=${state.targetAgent} conflicts with ${input.targetAgent}`);
+    if (input.dryRun) {
+      const current = dependencies.exportState(input.workspaceRoot, { targetAgent: input.targetAgent });
+      const value: ImportWorkspaceOutput = { kind: "dry-run", state, diffs: dependencies.diffState(current, state as unknown as WorkspaceState) };
+      return { ok: true, warnings: [], errors: [], skipped: [], targetAgent: input.targetAgent, value };
+    }
+    const result = dependencies.importState(input.workspaceRoot, state);
+    const value: ImportWorkspaceOutput = { kind: "import", state, result };
+    const errors = result.success ? [] : result.messages.length > 0 ? result.messages : ["State import failed"];
+    return { ok: result.success, warnings: [], errors, skipped: [], targetAgent: input.targetAgent, value };
+  } catch (error) {
+    return { ok: false, warnings: [], errors: [error instanceof Error ? error.message : String(error)], skipped: [], targetAgent: input.targetAgent };
   }
-
-  if (input.dryRun) {
-    const current = dependencies.exportState(input.workspaceRoot, { targetAgent: input.targetAgent });
-    const diffs = dependencies.diffState(current, state as unknown as WorkspaceState);
-    return { kind: "dry-run", state, diffs };
-  }
-
-  return {
-    kind: "import",
-    state,
-    result: dependencies.importState(input.workspaceRoot, state),
-  };
 }

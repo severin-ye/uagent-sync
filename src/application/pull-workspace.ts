@@ -2,8 +2,9 @@ import { DOTFILES_DIR } from "../lib/dotfiles.js";
 import type { ImportResult, TargetAgent, WorkspaceState, WorkspaceStateV3 } from "../lib/types.js";
 import type { FileSystem } from "../ports/file-system.js";
 import type { GitPort, GitRunResult } from "../ports/git.js";
-import { preflightImportWorkspace, type ImportWorkspaceOutput } from "./import-workspace.js";
+import type { ImportWorkspaceOutput } from "./import-workspace.js";
 import type { ApplicationResult } from "./result.js";
+import { preflightWorkspaceOperation } from "./workspace-operation-capabilities.js";
 
 export interface PullWorkspaceInput {
   workspaceRoot: string;
@@ -28,7 +29,7 @@ export function pullWorkspace(
   input: PullWorkspaceInput,
   dependencies: PullWorkspaceDependencies,
 ): ApplicationResult<ImportWorkspaceOutput> {
-  const capability = preflightImportWorkspace(input.targetAgent);
+  const capability = preflightWorkspaceOperation("pull", input.targetAgent);
   if (!capability.supported) {
     return { ok: false, warnings: [], errors: [capability.error], skipped: [], targetAgent: input.targetAgent };
   }

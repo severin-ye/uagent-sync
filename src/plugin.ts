@@ -26,14 +26,16 @@ import {
 import { archiveUpdateReport, type UpdateComponent } from "./lib/update.js";
 import { DOTFILES_DIR } from "./lib/dotfiles.js";
 import { commitCrystallize } from "./lib/crystallize-commit.js";
-import { redactString } from "./lib/redact.js";
 import { t } from "./i18n/index.js";
 import { defaultWorkspaceApplication } from "./application/default-workspace-application.js";
-import { formatVerifyText } from "./entrypoints/result-formatters.js";
+import { formatPluginApplicationResult, formatVerifyText } from "./entrypoints/result-formatters.js";
 
 const z = tool.schema;
 
 const text = (output: string) => ({ title: "opencode-sync", output });
+const pluginFailure = (error: unknown) => formatPluginApplicationResult("opencode-sync", `Error: ${error instanceof Error ? error.message : String(error)}`, {
+  ok: false, warnings: [], errors: [error instanceof Error ? error.message : String(error)], skipped: [], targetAgent: "opencode",
+});
 
 export const OpencodeSyncPlugin: Plugin = async (_ctx) => {
   return {
@@ -79,10 +81,11 @@ The JSON file can be committed to Git and imported on another device.`,
               ? serialized.slice(0, CHARACTER_LIMIT) + `\n... (truncated)`
               : serialized;
 
-            return text(summary + "\n\n" + truncated);
+            return formatPluginApplicationResult("opencode-sync", summary + "\n\n" + truncated, {
+              ok: true, warnings: [], errors: [], skipped: [], targetAgent: "opencode",
+            });
           } catch (error) {
-            const message = error instanceof Error ? error.message : String(error);
-            return text(`Error: ${redactString(message)}`);
+            return pluginFailure(error);
           }
         },
       }),
@@ -98,32 +101,30 @@ Use dryRun=true to preview changes without applying them.`,
           dryRun: z.boolean().optional().default(false).describe("If true, only show what would be changed"),
         },
         async execute(args) {
-          const workspaceRoot = resolveWorkspaceRoot();
-          let artifact: string;
-          if (args.source.startsWith("http://") || args.source.startsWith("https://")) {
-            const result = run(`curl -sL ${shellEscape(args.source)}`);
-            if (result.code !== 0) return text(`Error: Failed to fetch from URL: ${result.stderr}`);
-            artifact = result.stdout;
-          } else {
-            artifact = fs.readFileSync(isPathSafe(args.source, workspaceRoot), "utf-8");
-          }
-
-          let output;
           try {
-            output = defaultWorkspaceApplication.importWorkspace({
+            const workspaceRoot = resolveWorkspaceRoot();
+            let artifact: string;
+            if (args.source.startsWith("http://") || args.source.startsWith("https://")) {
+              const fetched = run(`curl -sL ${shellEscape(args.source)}`);
+              if (fetched.code !== 0) return pluginFailure(`Failed to fetch from URL: ${fetched.stderr}`);
+              artifact = fetched.stdout;
+            } else {
+              artifact = fs.readFileSync(isPathSafe(args.source, workspaceRoot), "utf-8");
+            }
+            const result = defaultWorkspaceApplication.importWorkspace({
               workspaceRoot,
               targetAgent: "opencode",
               artifact,
               dryRun: args.dryRun,
             });
+            if (!result.ok || !result.value) return formatPluginApplicationResult("opencode-sync", `Error: ${result.errors.join("; ") || "Workspace import failed"}`, result);
+            const output = result.value.kind === "dry-run"
+              ? (result.value.diffs.length > 0 ? ["Dry run — would make these changes:", ...result.value.diffs].join("\n") : "Dry run — no changes needed (already in sync)")
+              : `Import complete:\n${result.value.result.messages.join("\n")}`;
+            return formatPluginApplicationResult("opencode-sync", output, result);
           } catch (error) {
-            return text(`Error: ${error instanceof Error ? error.message : String(error)}`);
+            return pluginFailure(error);
           }
-          if (output.kind === "dry-run") {
-            return text(output.diffs.length > 0 ? ["Dry run — would make these changes:", ...output.diffs].join("\n") : "Dry run — no changes needed (already in sync)");
-          }
-
-          return text(`Import complete:\n${output.result.messages.join("\n")}`);
         },
       }),
 
@@ -151,19 +152,15 @@ Steps: export state to usync-dotfiles/state/workspace-state.json, git add + comm
           message: z.string().max(500).optional().describe("Git commit message"),
         },
         async execute(args) {
-          const workspaceRoot = resolveWorkspaceRoot();
-          const commitMsg = args.message || `Update workspace state ${new Date().toISOString().slice(0, 19)}`;
-          const result = defaultWorkspaceApplication.pushWorkspace({ workspaceRoot, targetAgent: "opencode", message: commitMsg });
-          const errors = result.errors.map(redactString);
-          const warnings = result.warnings.map(redactString);
-          const skipped = result.skipped.map(redactString);
-          const output = result.ok
-            ? ["Exported workspace state", result.value?.committed ? `Committed: ${commitMsg}` : skipped[0], "Pushed to remote"].filter(Boolean).join("\n")
-            : `Error: ${errors.join("; ") || "Workspace push failed"}`;
-          return {
-            ...text(output),
-            metadata: { ok: result.ok, warnings, errors, skipped, targetAgent: result.targetAgent },
-          };
+          try {
+            const workspaceRoot = resolveWorkspaceRoot();
+            const commitMsg = args.message || `Update workspace state ${new Date().toISOString().slice(0, 19)}`;
+            const result = defaultWorkspaceApplication.pushWorkspace({ workspaceRoot, targetAgent: "opencode", message: commitMsg });
+            const output = result.ok
+              ? ["Exported workspace state", result.value?.committed ? `Committed: ${commitMsg}` : result.skipped[0], "Pushed to remote"].filter(Boolean).join("\n")
+              : `Error: ${result.errors.join("; ") || "Workspace push failed"}`;
+            return formatPluginApplicationResult("opencode-sync", output, result);
+          } catch (error) { return pluginFailure(error); }
         },
       }),
 
@@ -176,28 +173,24 @@ Steps: git pull --ff-only in usync-dotfiles, then import+apply the canonical sta
           dryRun: z.boolean().optional().default(false).describe("If true, only show what would be changed"),
         },
         async execute(args) {
-          const workspaceRoot = resolveWorkspaceRoot();
-          const result = defaultWorkspaceApplication.pullWorkspace({ workspaceRoot, targetAgent: "opencode", dryRun: args.dryRun });
-          const errors = result.errors.map(redactString);
-          const warnings = result.warnings.map(redactString);
-          const skipped = result.skipped.map(redactString);
-          let output: string;
-          if (!result.ok || !result.value) {
-            output = `Error: ${errors.join("; ") || "Workspace pull failed"}`;
-          } else if (result.value.kind === "dry-run") {
-            const state = result.value.state as unknown as WorkspaceState;
-            output = [
-              "Dry run — state to be applied:",
-              `  Timestamp: ${state.timestamp}`, `  Platform: ${state.platform}`, `  Hostname: ${state.hostname}`,
-              `  Submodules: ${state.submodules.length}`, `  Skills: ${state.skills.length}`,
-            ].join("\n");
-          } else {
-            output = `Pulled and applied workspace state:\n${result.value.result.messages.join("\n")}`;
-          }
-          return {
-            ...text(output),
-            metadata: { ok: result.ok, warnings, errors, skipped, targetAgent: result.targetAgent },
-          };
+          try {
+            const workspaceRoot = resolveWorkspaceRoot();
+            const result = defaultWorkspaceApplication.pullWorkspace({ workspaceRoot, targetAgent: "opencode", dryRun: args.dryRun });
+            let output: string;
+            if (!result.ok || !result.value) {
+              output = `Error: ${result.errors.join("; ") || "Workspace pull failed"}`;
+            } else if (result.value.kind === "dry-run") {
+              const state = result.value.state as unknown as WorkspaceState;
+              output = [
+                "Dry run — state to be applied:",
+                `  Timestamp: ${state.timestamp}`, `  Platform: ${state.platform}`, `  Hostname: ${state.hostname}`,
+                `  Submodules: ${state.submodules.length}`, `  Skills: ${state.skills.length}`,
+              ].join("\n");
+            } else {
+              output = `Pulled and applied workspace state:\n${result.value.result.messages.join("\n")}`;
+            }
+            return formatPluginApplicationResult("opencode-sync", output, result);
+          } catch (error) { return pluginFailure(error); }
         },
       }),
 
@@ -229,9 +222,11 @@ Steps: git pull --ff-only in usync-dotfiles, then import+apply the canonical sta
         description: `Comprehensive check of the development environment: GitHub CLI, Git, OpenCode config, Ralph CLI, Skills CLI, skills dir, submodules. Read-only.`,
         args: {},
         async execute() {
-          const workspaceRoot = resolveWorkspaceRoot();
-          const result = defaultWorkspaceApplication.verifyWorkspace({ workspaceRoot, targetAgent: "opencode" });
-          return text(formatVerifyText(result));
+          try {
+            const workspaceRoot = resolveWorkspaceRoot();
+            const result = defaultWorkspaceApplication.verifyWorkspace({ workspaceRoot, targetAgent: "opencode" });
+            return formatPluginApplicationResult("opencode-sync", formatVerifyText(result), result);
+          } catch (error) { return pluginFailure(error); }
         },
       }),
 
@@ -251,29 +246,22 @@ Idempotent — safe to run repeatedly.`,
           windowsFixPaths: z.array(z.string()).optional().describe("Submodule paths with Windows-invalid filenames (from export state or SYNC-GUIDE)"),
         },
         async execute(args) {
-          const workspaceRoot = resolveWorkspaceRoot();
-          const result = defaultWorkspaceApplication.setupWorkspace({ workspaceRoot, targetAgent: "opencode", ...args });
-          const results = result.value ?? [];
-          const warnings = result.warnings.map((item) => redactString(item));
-          const errors = result.errors.map((item) => redactString(item));
-          const skipped = result.skipped.map((item) => redactString(item));
-          const list = (items: string[]) => items.length ? items.map((item) => `- ${item}`) : ["- None"];
-          const lines = [
-            "# Workspace Setup Results", "",
-            `ok: ${result.ok}`, "",
-            "## Errors", ...list(errors), "",
-            "## Warnings", ...list(warnings), "",
-            "## Skipped", ...list(skipped), "",
-            "## Steps", "",
-          ];
-          for (const r of results) {
-            const icon = r.status === "ok" ? "✅" : r.status === "warning" ? "⚠️" : r.status === "error" ? "❌" : "⏭️";
-            lines.push(`### ${icon} ${redactString(r.step)}`, `  ${redactString(r.detail)}`, "");
-          }
-          return {
-            ...text(redactString(lines.join("\n"))),
-            metadata: { ok: result.ok, warnings, errors, skipped, targetAgent: result.targetAgent },
-          };
+          try {
+            const workspaceRoot = resolveWorkspaceRoot();
+            const result = defaultWorkspaceApplication.setupWorkspace({ workspaceRoot, targetAgent: "opencode", ...args });
+            const results = result.value ?? [];
+            const list = (items: string[]) => items.length ? items.map((item) => `- ${item}`) : ["- None"];
+            const lines = [
+              "# Workspace Setup Results", "", `ok: ${result.ok}`, "",
+              "## Errors", ...list(result.errors), "", "## Warnings", ...list(result.warnings), "",
+              "## Skipped", ...list(result.skipped), "", "## Steps", "",
+            ];
+            for (const r of results) {
+              const icon = r.status === "ok" ? "✅" : r.status === "warning" ? "⚠️" : r.status === "error" ? "❌" : "⏭️";
+              lines.push(`### ${icon} ${r.step}`, `  ${r.detail}`, "");
+            }
+            return formatPluginApplicationResult("opencode-sync", lines.join("\n"), result);
+          } catch (error) { return pluginFailure(error); }
         },
       }),
 
@@ -572,22 +560,15 @@ Use dryRun=true to preview commands without executing. After updating, restart o
           dryRun: z.boolean().optional().default(false).describe("If true, only show what would be run"),
         },
         async execute(args) {
-          const result = await defaultWorkspaceApplication.updateWorkspace({ workspaceRoot: resolveWorkspaceRoot(), components: args.components as UpdateComponent[] | undefined, dryRun: args.dryRun, targetAgent: "opencode" });
-          if (!result.value) return {
-            title: "opencode-sync update",
-            output: result.errors.join("\n"),
-            metadata: { ok: false, summary: { ok: 0, warning: 0, error: result.errors.length, skipped: 0 } },
-          };
-          const report = result.value;
-          let reportFile: string | undefined;
           try {
-            reportFile = archiveUpdateReport(resolveWorkspaceRoot(), report);
-          } catch { /* archive is best-effort */ }
-          return {
-            title: "opencode-sync update",
-            output: report.text + (reportFile ? t("plugin.updateReportArchived", { path: reportFile }) : ""),
-            metadata: { ok: result.ok, summary: report.summary },
-          };
+            const workspaceRoot = resolveWorkspaceRoot();
+            const result = await defaultWorkspaceApplication.updateWorkspace({ workspaceRoot, components: args.components as UpdateComponent[] | undefined, dryRun: args.dryRun, targetAgent: "opencode" });
+            if (!result.value) return formatPluginApplicationResult("opencode-sync update", result.errors.join("\n"), result);
+            const report = result.value;
+            let reportFile: string | undefined;
+            try { reportFile = archiveUpdateReport(workspaceRoot, report); } catch { /* archive is best-effort */ }
+            return formatPluginApplicationResult("opencode-sync update", report.text + (reportFile ? t("plugin.updateReportArchived", { path: reportFile }) : ""), result);
+          } catch (error) { return pluginFailure(error); }
         },
       }),
 

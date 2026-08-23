@@ -16,7 +16,7 @@ import { spawn } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { resolveWorkspaceRoot } from "../sync.js";
+import { resolveWorkspaceRoot } from "./cache.js";
 import { DOTFILES_DIR } from "./dotfiles.js";
 import { t } from "../i18n/index.js";
 import { scanMigrationAnalysis } from "./migration-analysis/index.js";

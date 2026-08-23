@@ -1,6 +1,6 @@
 export type {
   SubmoduleState, WorkspaceState, ImportResult, WorkspaceCache, InitType, InitState,
-  TargetAgent, ExtensionRef, ExtensionTombstone, AgentRestoreState,
+  TargetAgent, WorkspaceStateV3, ExtensionRef, ExtensionTombstone, AgentRestoreState,
   InstallEntry, InstallLog, SubmoduleStatusItem, VerifyResult, SetupResult,
   WorkspaceInfo, RepoCreateResult, ApiKeyInfo, McpBuildInfo, PlaywrightMcpConfig,
   KnownMcpData, KnownMcpEntry, McpGuide, KnownMcpSetupStep,
@@ -38,6 +38,12 @@ export type { AnalysisContext, CapabilityImplementation, FunctionalRelation, Dup
 // available for wire/package compatibility while entrypoints migrate by slice.
 export type { ApplicationResult } from "./application/result.js";
 export type { VerifyWorkspaceRequest, WorkspaceApplication } from "./application/default-workspace-application.js";
+export type { ExportWorkspaceInput, ExportWorkspaceOutput } from "./application/export-workspace.js";
+export type { ImportWorkspaceInput, ImportWorkspaceOutput } from "./application/import-workspace.js";
+export type { SetupWorkspaceInput } from "./application/setup-workspace.js";
+export type { UpdateWorkspaceInput } from "./application/update-workspace.js";
+export type { PushWorkspaceInput, PushWorkspaceOutput } from "./application/push-workspace.js";
+export type { PullWorkspaceInput } from "./application/pull-workspace.js";
 export { createDefaultWorkspaceApplication, defaultWorkspaceApplication } from "./application/default-workspace-application.js";
 export { CURRENT_WORKSPACE_STATE_SCHEMA_VERSION, parseWorkspaceStateArtifact, parseWorkspaceState } from "./artifacts/workspace-state-codec.js";
 export type { AgentAdapter } from "./ports/agent-adapter.js";

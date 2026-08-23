@@ -241,7 +241,7 @@ async function main() {
       } else {
         artifact = fs.readFileSync(isPathSafe(src, workspaceRoot), "utf-8");
       }
-      const output = (() => {
+      const result = (() => {
         try {
           return defaultWorkspaceApplication.importWorkspace({
             workspaceRoot,
@@ -253,6 +253,8 @@ async function main() {
           return failStateCommand(targetAgent, error);
         }
       })();
+      if (!result.ok || !result.value) failStateCommand(targetAgent, result.errors.join("; ") || "Workspace import failed");
+      const output = result.value;
       if (output.kind === "dry-run") {
         console.log(output.diffs.length > 0 ? [t("cli.dryRunChanges"), ...output.diffs].join("\n") : t("cli.dryRunNoChanges"));
         break;

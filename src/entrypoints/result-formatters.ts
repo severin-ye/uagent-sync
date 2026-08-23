@@ -1,5 +1,6 @@
 import type { ApplicationResult } from "../application/result.js";
 import type { VerifyResult } from "../lib/types.js";
+import { redactString } from "../lib/redact.js";
 
 const VERIFY_ICON: Record<VerifyResult["status"], string> = {
   ok: "✅",
@@ -14,6 +15,30 @@ export interface VerifyJsonResult {
   skipped: string[];
   targetAgent: ApplicationResult<unknown>["targetAgent"];
   steps: VerifyResult[];
+}
+
+export interface PluginApplicationResult {
+  title: string;
+  output: string;
+  metadata: Pick<ApplicationResult<unknown>, "ok" | "warnings" | "errors" | "skipped" | "targetAgent">;
+}
+
+export function formatPluginApplicationResult(
+  title: string,
+  output: string,
+  result: ApplicationResult<unknown>,
+): PluginApplicationResult {
+  return {
+    title: redactString(title),
+    output: redactString(output),
+    metadata: {
+      ok: result.ok,
+      warnings: result.warnings.map(redactString),
+      errors: result.errors.map(redactString),
+      skipped: result.skipped.map(redactString),
+      targetAgent: result.targetAgent,
+    },
+  };
 }
 
 export function formatVerifyJson(result: ApplicationResult<VerifyResult[]>): VerifyJsonResult {

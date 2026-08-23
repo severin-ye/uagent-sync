@@ -99,6 +99,16 @@ function applicationEntrypointViolations(edges: ImportEdge[]): string[] {
   });
 }
 
+function inwardDependencyViolations(edges: ImportEdge[]): string[] {
+  return edges.flatMap((edge) => {
+    const target = targetWithinSrc(edge);
+    const sourceIsDomain = edge.sourceFile.startsWith("src/lib/");
+    const sourceIsPort = edge.sourceFile.startsWith("src/ports/");
+    const forbidden = target === "sync.ts" || target?.startsWith("application/") || target?.startsWith("adapters/");
+    return (sourceIsDomain || sourceIsPort) && forbidden ? [`${edge.sourceFile} imports ${edge.modulePath}`] : [];
+  });
+}
+
 function productionTsFiles(directory: string): string[] {
   return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
     const fullPath = path.join(directory, entry.name);
@@ -122,6 +132,11 @@ test("Application never imports presentation entrypoints", () => {
   );
 
   assert.deepEqual(violations, []);
+});
+
+test("Domain and Ports never import the public barrel, Application, or Adapters", () => {
+  const files = [path.join(ROOT, "src", "lib"), path.join(ROOT, "src", "ports")].flatMap(productionTsFiles);
+  assert.deepEqual(files.flatMap((filePath) => inwardDependencyViolations(importsIn(filePath))), []);
 });
 
 test("import analysis sees and rejects default, namespace, and dynamic import bypasses", (context) => {
@@ -167,6 +182,14 @@ test("the public barrel exposes the implemented architecture contracts", () => {
   ] as const) {
     assert.ok(name in publicApi, `src/sync.ts must export ${name}`);
   }
+});
+
+test("the public barrel exports v3 and major Application request/result types", () => {
+  const source = fs.readFileSync(path.join(ROOT, "src", "sync.ts"), "utf8");
+  for (const name of [
+    "WorkspaceStateV3", "ExportWorkspaceInput", "ExportWorkspaceOutput", "ImportWorkspaceInput", "ImportWorkspaceOutput",
+    "SetupWorkspaceInput", "UpdateWorkspaceInput", "PushWorkspaceInput", "PushWorkspaceOutput", "PullWorkspaceInput",
+  ]) assert.match(source, new RegExp(`export\\s+type\\s+\\{[^}]*\\b${name}\\b`, "s"), `src/sync.ts must type-export ${name}`);
 });
 
 test("the runtime Agent registry carries a fourth scanner through inventory diff", () => {

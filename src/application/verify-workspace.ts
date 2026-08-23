@@ -1,5 +1,6 @@
 import type { TargetAgent, VerifyResult } from "../lib/types.js";
 import type { ApplicationResult } from "./result.js";
+import { preflightWorkspaceOperation } from "./workspace-operation-capabilities.js";
 
 export type WorkspaceVerifier = (
   workspaceRoot: string,
@@ -13,6 +14,10 @@ export interface VerifyWorkspaceInput {
 }
 
 export function verifyWorkspace(input: VerifyWorkspaceInput): ApplicationResult<VerifyResult[]> {
+  const capability = preflightWorkspaceOperation("verify", input.targetAgent);
+  if (!capability.supported) {
+    return { ok: false, warnings: [], errors: [capability.error], skipped: [], targetAgent: input.targetAgent };
+  }
   const steps = input.verifier(input.workspaceRoot, { targetAgent: input.targetAgent });
   const warnings = steps
     .filter((item) => item.status === "warning")

@@ -69,6 +69,41 @@ describe("setupWorkspace application use case", () => {
 });
 
 describe("updateWorkspace application use case", () => {
+  it("redacts every progress string field and all structured result strings", async () => {
+    const { updateWorkspace } = await import("../src/application/update-workspace.js");
+    const secret = "sk-1234567890abcdef";
+    const events: unknown[] = [];
+    const result = await updateWorkspace(
+      { workspaceRoot: "C:/workspace", targetAgent: "codex", onProgress: (event) => events.push(event) },
+      {
+        update: async (options) => {
+          options.onProgress?.({ type: "plan", steps: [{ name: `name-${secret}`, command: `cmd --token=${secret}`, cwd: `C:/${secret}` }] });
+          options.onProgress?.({ type: "step-start", name: `name-${secret}`, command: `cmd ${secret}`, cwd: `C:/${secret}`, index: 1, total: 1 });
+          options.onProgress?.({ type: "output", name: `name-${secret}`, line: `output ${secret}` });
+          options.onProgress?.({ type: "step-end", name: `name-${secret}`, status: "error", detail: `detail ${secret}`, versionBefore: secret, versionAfter: secret, durationMs: 1 });
+          options.onProgress?.({ type: "done", summary: { ok: 0, warning: 1, error: 1, skipped: 1 }, reportPath: `C:/${secret}` });
+          return {
+            timestamp: "now", dryRun: false, targetAgent: "codex", components: ["sync"],
+            steps: [
+              { name: `warn-${secret}`, command: `cmd ${secret}`, cwd: `C:/${secret}`, status: "warning", detail: `warning ${secret}`, durationMs: 1, startedAt: "start", finishedAt: "end" },
+              { name: `error-${secret}`, command: `cmd ${secret}`, status: "error", detail: `error ${secret}`, durationMs: 1, startedAt: "start", finishedAt: "end" },
+              { name: `skip-${secret}`, command: `cmd ${secret}`, status: "skipped", detail: `skip ${secret}`, durationMs: 1, startedAt: "start", finishedAt: "end" },
+            ],
+            summary: { ok: 0, warning: 1, error: 1, skipped: 1 }, text: `report ${secret}`,
+            extensionConflicts: { status: "error", pending: 0, drift: 0, message: `conflict ${secret}` },
+          };
+        },
+      },
+    );
+
+    assert.doesNotMatch(JSON.stringify(events), new RegExp(secret));
+    assert.doesNotMatch(JSON.stringify(result), new RegExp(secret));
+    assert.equal(result.ok, false);
+    assert.equal(result.warnings.length, 1);
+    assert.equal(result.errors.length, 1);
+    assert.equal(result.skipped.length, 1);
+  });
+
   it("passes explicit scope, typed progress and argv process execution to the updater", async () => {
     const module = await import("../src/application/update-workspace.js").catch(() => null);
     const { asUpdateCommandExecutor } = await import("../src/adapters/infrastructure/system-process-runner.js");

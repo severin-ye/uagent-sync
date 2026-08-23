@@ -3,6 +3,7 @@ import type { TargetAgent, WorkspaceState } from "../lib/types.js";
 import type { FileSystem } from "../ports/file-system.js";
 import type { GitPort, GitRunResult } from "../ports/git.js";
 import type { ApplicationResult } from "./result.js";
+import { preflightWorkspaceOperation } from "./workspace-operation-capabilities.js";
 
 const ARTIFACT_RELATIVE_TO_DOTFILES = "state/workspace-state.json";
 
@@ -33,6 +34,8 @@ export function pushWorkspace(
   input: PushWorkspaceInput,
   dependencies: PushWorkspaceDependencies,
 ): ApplicationResult<PushWorkspaceOutput> {
+  const capability = preflightWorkspaceOperation("push", input.targetAgent);
+  if (!capability.supported) return { ok: false, warnings: [], errors: [capability.error], skipped: [], targetAgent: input.targetAgent };
   const dotfilesRoot = dependencies.fileSystem.joinPath(input.workspaceRoot, DOTFILES_DIR);
   const artifactPath = dependencies.fileSystem.joinPath(dotfilesRoot, "state", "workspace-state.json");
   const skipped: string[] = [];

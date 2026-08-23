@@ -23,7 +23,7 @@ export interface VerifyWorkspaceRequest {
 export interface WorkspaceApplication {
   verifyWorkspace(input: VerifyWorkspaceRequest): ApplicationResult<VerifyResult[]>;
   exportWorkspace(input: ExportWorkspaceInput): ExportWorkspaceOutput;
-  importWorkspace(input: ImportWorkspaceInput): ImportWorkspaceOutput;
+  importWorkspace(input: ImportWorkspaceInput): ApplicationResult<ImportWorkspaceOutput>;
   pushWorkspace(input: PushWorkspaceInput): ApplicationResult<PushWorkspaceOutput>;
   pullWorkspace(input: PullWorkspaceInput): ApplicationResult<ImportWorkspaceOutput>;
   setupWorkspace(input: SetupWorkspaceInput): ApplicationResult<import("../lib/types.js").SetupResult[]>;

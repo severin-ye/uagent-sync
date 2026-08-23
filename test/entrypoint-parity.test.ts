@@ -57,3 +57,21 @@ describe("verify entrypoint parity", () => {
     }
   });
 });
+
+it("formats Plugin Application results with sanitized structured metadata", async () => {
+  const module = await import("../src/entrypoints/result-formatters.js") as {
+    formatPluginApplicationResult?: (title: string, output: string, result: ApplicationResult<unknown>) => {
+      title: string; output: string;
+      metadata: { ok: boolean; warnings: string[]; errors: string[]; skipped: string[]; targetAgent: string };
+    };
+  };
+  assert.ok(module.formatPluginApplicationResult, "a shared Plugin result adapter must exist");
+  const secret = "sk-1234567890abcdef";
+  const formatted = module.formatPluginApplicationResult("tool", `output ${secret}`, {
+    ok: false, warnings: [`warning ${secret}`], errors: [`error ${secret}`], skipped: [`skip ${secret}`], targetAgent: "opencode",
+  });
+  assert.deepEqual(Object.keys(formatted.metadata).sort(), ["errors", "ok", "skipped", "targetAgent", "warnings"]);
+  assert.doesNotMatch(JSON.stringify(formatted), new RegExp(secret));
+  assert.equal(formatted.metadata.ok, false);
+  assert.equal(formatted.metadata.targetAgent, "opencode");
+});

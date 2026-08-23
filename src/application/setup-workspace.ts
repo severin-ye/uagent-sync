@@ -1,6 +1,7 @@
 import type { SkillProgressEvent } from "../lib/codex-restore.js";
 import type { SetupResult, TargetAgent } from "../lib/types.js";
 import type { ApplicationResult } from "./result.js";
+import { preflightWorkspaceOperation } from "./workspace-operation-capabilities.js";
 
 export interface SetupWorkspaceInput {
   workspaceRoot: string;
@@ -29,6 +30,8 @@ export function setupWorkspace(
   input: SetupWorkspaceInput,
   dependencies: SetupWorkspaceDependencies,
 ): ApplicationResult<SetupResult[]> {
+  const capability = preflightWorkspaceOperation("setup", input.targetAgent);
+  if (!capability.supported) return { ok: false, warnings: [], errors: [capability.error], skipped: [], targetAgent: input.targetAgent };
   const { workspaceRoot, ...options } = input;
   try {
     const steps = dependencies.setup(workspaceRoot, options);

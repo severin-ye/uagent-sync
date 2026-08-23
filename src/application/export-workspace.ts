@@ -1,6 +1,7 @@
 import type { FileSystem } from "../ports/file-system.js";
 import type { TargetAgent, WorkspaceState } from "../lib/types.js";
 import { DOTFILES_DIR } from "../lib/dotfiles.js";
+import { preflightWorkspaceOperation } from "./workspace-operation-capabilities.js";
 
 const STATE_PATTERN = "state/workspace-state.json";
 
@@ -26,15 +27,6 @@ export interface ExportWorkspaceOutput {
   outputPath: string;
 }
 
-function assertSupportedExportTarget(targetAgent: TargetAgent): void {
-  if (targetAgent === "dsh") {
-    throw new Error("Unsupported WorkspaceState export targetAgent=dsh: DeepSeek Harness has inventory only and no restore writer");
-  }
-  if (targetAgent === "all") {
-    throw new Error("Unsupported WorkspaceState export targetAgent=all: no multi-agent artifact/restore contract is available");
-  }
-}
-
 function updateTrackingPolicy(input: ExportWorkspaceInput, fileSystem: FileSystem): void {
   if (input.trackState === undefined) return;
   const gitignorePath = fileSystem.joinPath(input.workspaceRoot, DOTFILES_DIR, ".gitignore");
@@ -56,7 +48,8 @@ export function exportWorkspace(
   input: ExportWorkspaceInput,
   dependencies: ExportWorkspaceDependencies,
 ): ExportWorkspaceOutput {
-  assertSupportedExportTarget(input.targetAgent);
+  const capability = preflightWorkspaceOperation("export", input.targetAgent);
+  if (!capability.supported) throw new Error(capability.error);
   const state = dependencies.exportState(input.workspaceRoot, { targetAgent: input.targetAgent });
   const serialized = JSON.stringify(state, null, 2);
   dependencies.assertNoSecrets(serialized, input.outputPath);
