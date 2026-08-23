@@ -51,6 +51,16 @@ export interface WorkspaceState {
   playwrightMcp?: Record<string, unknown>;
 }
 
+/**
+ * Validated in-memory artifact model. The legacy WorkspaceState shape remains
+ * unchanged until all export and import entrypoints have moved to the codec.
+ */
+export type WorkspaceStateV3 = Omit<WorkspaceState, "schemaVersion" | "targetAgent" | "tombstones"> & {
+  schemaVersion: 3;
+  targetAgent: TargetAgent;
+  tombstones: ExtensionTombstone[];
+};
+
 export interface ImportResult {
   success: boolean;
   messages: string[];
