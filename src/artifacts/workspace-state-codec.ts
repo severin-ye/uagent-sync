@@ -108,6 +108,12 @@ function filterRecoverableConfig(config: unknown, deleted: ReadonlySet<string>):
   for (const table of RECOVERABLE_CONFIG_TABLES) {
     for (const name of table.names) {
       const entries = config[name];
+      if (Array.isArray(entries)) {
+        filtered[name] = entries.filter((id) => (
+          typeof id !== "string" || !deleted.has(extensionKey({ kind: table.kind, id }))
+        ));
+        continue;
+      }
       if (!isObject(entries)) continue;
       filtered[name] = Object.fromEntries(
         Object.entries(entries).filter(([id]) => !deleted.has(extensionKey({ kind: table.kind, id }))),

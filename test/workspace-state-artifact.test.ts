@@ -132,6 +132,29 @@ describe("WorkspaceState artifact codec", () => {
     assert.ok("codebase-memory-mcp" in input.opencodeConfig.mcp, "codec only normalizes its returned object");
   });
 
+  it("removes tombstoned extensions from recoverable string-array configuration tables", () => {
+    const input = {
+      ...legacyBase,
+      schemaVersion: 2,
+      targetAgent: "opencode",
+      tombstones: [
+        { kind: "plugin", id: "retired-plugin", deletedAt: "2026-08-23T00:00:00.000Z" },
+        { kind: "skill", id: "retired-skill", deletedAt: "2026-08-23T00:00:00.000Z" },
+      ],
+      opencodeConfig: {
+        plugin: ["retired-plugin", "kept-plugin"],
+        skills: ["retired-skill", "kept-skill"],
+      },
+    };
+
+    const parsed = parseWorkspaceStateArtifact(input);
+
+    assert.deepEqual(parsed.opencodeConfig?.plugin, ["kept-plugin"]);
+    assert.deepEqual(parsed.opencodeConfig?.skills, ["kept-skill"]);
+    assert.deepEqual(input.opencodeConfig.plugin, ["retired-plugin", "kept-plugin"]);
+    assert.deepEqual(input.opencodeConfig.skills, ["retired-skill", "kept-skill"]);
+  });
+
   it("does not echo rejected runtime values in validation errors", () => {
     const sensitiveMarker = "SENSITIVE_TARGET_MARKER";
     assert.throws(
