@@ -12,9 +12,16 @@ Set-StrictMode -Version Latest
 
 function Assert-GitHubUrl([string]$Value, [string]$Name) {
   $uri = $null
-  if (-not [Uri]::TryCreate($Value, [UriKind]::Absolute, [ref]$uri) -or $uri.Scheme -ne 'https' -or $uri.Host -ne 'github.com') {
+  if (-not [Uri]::TryCreate($Value, [UriKind]::Absolute, [ref]$uri) -or $uri.Scheme -ne 'https' -or $uri.Host -ne 'github.com' -or $uri.UserInfo -or $uri.Query -or $uri.Fragment) {
     throw "$Name must be an https://github.com repository URL"
   }
+}
+
+function Normalize-GitHubRepoUrl([string]$Value) {
+  $uri = [Uri]$Value
+  $repoPath = $uri.AbsolutePath.Trim('/').ToLowerInvariant()
+  if ($repoPath.EndsWith('.git')) { $repoPath = $repoPath.Substring(0, $repoPath.Length - 4) }
+  return "https://github.com/$repoPath"
 }
 
 Assert-GitHubUrl $UagentRepo 'UagentRepo'
@@ -67,7 +74,8 @@ function Save-State {
 function Refresh-Path {
   $machine = [Environment]::GetEnvironmentVariable('Path', 'Machine')
   $user = [Environment]::GetEnvironmentVariable('Path', 'User')
-  $env:Path = "$user;$machine"
+  $parts = @($env:Path, $user, $machine) -join ';' -split ';' | Where-Object { $_ }
+  $env:Path = (($parts | Select-Object -Unique) -join ';')
 }
 
 function Add-PersistentUserPath([string]$Directory) {
@@ -122,13 +130,35 @@ function Install-PortableFallback([string]$Name) {
   } else { throw "No portable fallback is defined for $Name" }
 }
 
+function Resolve-UsableCommand([string]$Name, [switch]$RequireCmd) {
+  $names = if ($RequireCmd) { @("$Name.cmd") } else { @("$Name.cmd", $Name) }
+  foreach ($candidateName in $names) {
+    foreach ($cmd in @(Get-Command $candidateName -All -ErrorAction SilentlyContinue)) {
+      if (-not $cmd.Source -or $cmd.Source -match '\\WindowsApps\\') { continue }
+      try {
+        & $cmd.Source '--version' *> $null
+        if ($LASTEXITCODE -eq 0) { return $cmd.Source }
+      } catch { continue }
+    }
+  }
+  return $null
+}
+
 function Test-CommandVersion([string]$Name) {
-  try {
-    $cmd = Get-Command $Name -ErrorAction Stop
-    if ($Name -eq 'codex' -and $cmd.Source -match '\\WindowsApps\\') { return $false }
-    & $cmd.Source '--version' *> $null
-    return $LASTEXITCODE -eq 0
-  } catch { return $false }
+  return $null -ne (Resolve-UsableCommand $Name -RequireCmd:($Name -in @('codex', 'npx')))
+}
+
+function Resolve-PackFilename($PackJson) {
+  foreach ($item in @($PackJson)) {
+    $direct = $item.PSObject.Properties['filename']
+    if ($direct -and $direct.Value) { return [string]$direct.Value }
+    foreach ($property in $item.PSObject.Properties) {
+      if (-not $property.Value) { continue }
+      $nested = $property.Value.PSObject.Properties['filename']
+      if ($nested -and $nested.Value) { return [string]$nested.Value }
+    }
+  }
+  throw 'npm pack completed without a filename in its JSON result'
 }
 
 function Invoke-WithRetry([scriptblock]$Action, [string]$Label, [int]$Attempts = 3) {
@@ -190,6 +220,11 @@ try {
     Refresh-Path
   }
   if (-not (Test-CommandVersion 'codex')) { throw 'Codex CLI is missing, half-installed, or resolves only to an inaccessible WindowsApps executable' }
+  $trustedCodex = Resolve-UsableCommand 'codex' -RequireCmd
+  $trustedNpx = Resolve-UsableCommand 'npx' -RequireCmd
+  if (-not $trustedCodex -or -not $trustedNpx) { throw 'Trusted codex.cmd or npx.cmd entry could not be resolved' }
+  $env:UAGENT_SYNC_CODEX_CMD = $trustedCodex
+  $env:UAGENT_SYNC_NPX_CMD = $trustedNpx
   $completed['install-codex-cli'] = $true; Save-State
 
   New-Item -ItemType Directory -Path $WorkspaceRoot -Force | Out-Null
@@ -201,6 +236,7 @@ try {
   $completed['clone-dotfiles'] = $true; Save-State
 
   $currentSourceCommit = (git -C $sourceDir rev-parse HEAD).Trim()
+  $expectedPluginVersion = [string]((Get-Content -LiteralPath (Join-Path $sourceDir 'package.json') -Raw | ConvertFrom-Json).version)
   if ($savedSourceCommit -ne $currentSourceCommit) {
     $completed.Remove('build-and-test'); $completed.Remove('install-runtime'); $completed.Remove('install-personal-marketplace')
   }
@@ -211,8 +247,9 @@ try {
       Invoke-WithRetry { npm ci --no-audit --no-fund --fetch-timeout=300000 --fetch-retries=5 } 'npm ci' 2
       npm test; if ($LASTEXITCODE -ne 0) { throw 'npm test failed' }
       $packJson = npm pack --json | ConvertFrom-Json
-      if ($LASTEXITCODE -ne 0 -or -not $packJson[0].filename) { throw 'npm pack failed' }
-      $tarball = Join-Path $sourceDir $packJson[0].filename
+      if ($LASTEXITCODE -ne 0) { throw 'npm pack failed' }
+      $packFilename = Resolve-PackFilename $packJson
+      $tarball = Join-Path $sourceDir $packFilename
       npm install --global $tarball --no-audit --no-fund --fetch-timeout=300000 --fetch-retries=5
       if ($LASTEXITCODE -ne 0) { throw 'packed CLI installation failed' }
     } finally { Pop-Location }
@@ -223,19 +260,26 @@ try {
   if (-not $completed['install-personal-marketplace']) { $installPlugin = $true }
   if (-not $installPlugin) {
     try {
-      $existingPluginList = codex plugin list --json | ConvertFrom-Json
-      $existingPlugin = $existingPluginList.installed | Where-Object { $_.name -eq 'uagent-sync' -and $_.installed -and $_.enabled } | Select-Object -First 1
+      $existingPluginList = & $trustedCodex plugin list --json | ConvertFrom-Json
+      $existingPlugin = $existingPluginList.installed | Where-Object { $_.name -eq 'uagent-sync' -and $_.installed -and $_.enabled -and $_.version -eq $expectedPluginVersion } | Select-Object -First 1
       if (-not $existingPlugin) { $installPlugin = $true }
     } catch { $installPlugin = $true }
   }
   if ($installPlugin) {
-    codex plugin marketplace add $UagentRepo
-    if ($LASTEXITCODE -ne 0) { throw 'Codex personal marketplace registration failed' }
-    codex plugin add 'uagent-sync@uagent-sync'
+    Invoke-WithRetry { & $trustedCodex plugin marketplace add $UagentRepo } 'register Codex personal marketplace' 3
+    $marketplaceList = & $trustedCodex plugin marketplace list --json | ConvertFrom-Json
+    if ($LASTEXITCODE -ne 0) { throw 'Codex personal marketplace listing failed' }
+    $marketplace = $marketplaceList.marketplaces | Where-Object { $_.name -eq 'uagent-sync' } | Select-Object -First 1
+    if (-not $marketplace -or -not $marketplace.root) { throw 'Codex personal marketplace root could not be resolved' }
+    $marketplaceRoot = [string]$marketplace.root
+    $marketplaceOrigin = [string](git -C $marketplaceRoot remote get-url origin)
+    if ($LASTEXITCODE -ne 0 -or (Normalize-GitHubRepoUrl $marketplaceOrigin.Trim()) -ne (Normalize-GitHubRepoUrl $UagentRepo)) { throw 'Codex marketplace origin does not match UagentRepo' }
+    Invoke-WithRetry { git -C $marketplaceRoot pull --ff-only origin master } 'refresh Codex personal marketplace' 3
+    & $trustedCodex plugin add 'uagent-sync@uagent-sync'
     if ($LASTEXITCODE -ne 0) { throw 'Uagent Sync plugin installation failed' }
   }
-  $pluginList = codex plugin list --json | ConvertFrom-Json
-  $uagentPlugin = $pluginList.installed | Where-Object { $_.name -eq 'uagent-sync' -and $_.installed -and $_.enabled } | Select-Object -First 1
+  $pluginList = & $trustedCodex plugin list --json | ConvertFrom-Json
+  $uagentPlugin = $pluginList.installed | Where-Object { $_.name -eq 'uagent-sync' -and $_.installed -and $_.enabled -and $_.version -eq $expectedPluginVersion } | Select-Object -First 1
   if ($LASTEXITCODE -ne 0 -or -not $uagentPlugin) { throw 'Uagent Sync plugin is not confirmed installed and enabled' }
   if ($installPlugin) { $warnings.Add('Uagent Sync is installed and enabled. Open a new Codex task to load its newly installed skills into task context.') }
   else { $skipped.Add('Uagent Sync plugin was already installed and enabled for the current source commit.') }
@@ -244,8 +288,7 @@ try {
   $env:UAGENT_SYNC_WORKSPACE_ROOT = $WorkspaceRoot
   uagent-sync init --init-type sync --github-url $DotfilesRepo --target-agent codex --force
   if ($LASTEXITCODE -ne 0) { throw 'Uagent Sync init failed' }
-  uagent-sync pull --target-agent codex --json
-  if ($LASTEXITCODE -ne 0) { throw 'Uagent Sync pull failed' }
+  Invoke-WithRetry { uagent-sync pull --target-agent codex --json } 'pull dotfiles state' 3
   uagent-sync setup --target-agent codex --json
   if ($LASTEXITCODE -ne 0) { throw 'Uagent Sync setup failed' }
   $completed['restore-dotfiles'] = $true; Save-State

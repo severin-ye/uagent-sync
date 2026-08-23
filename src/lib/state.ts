@@ -203,6 +203,11 @@ function readCodexState(homeDir: string): { plugins: ExtensionRef[]; skills: Ext
   return { plugins, skills, mcp, config: { configFile: ".codex/config.toml", secretValuesIncluded: false } };
 }
 
+export function scanInstalledCodexExtensions(homeDir: string): ExtensionRef[] {
+  const codex = readCodexState(homeDir);
+  return [...codex.plugins, ...codex.skills, ...codex.mcp];
+}
+
 export function exportSystemState(workspaceRoot: string, options?: { targetAgent?: TargetAgent; homeDir?: string }): WorkspaceState {
   const targetAgent = options?.targetAgent;
   if (targetAgent === "codex") {

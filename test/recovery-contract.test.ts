@@ -179,6 +179,16 @@ describe("safe recovery protocol", () => {
     assert.deepEqual(state.agents?.codex?.mcp[0]?.config?.args, ["-y", "example-mcp"]);
   });
 
+  it("raw Codex scanning sees an active tombstone while exported state keeps it deleted", async () => {
+    const { scanInstalledCodexExtensions } = await import("../dist/lib/state.js");
+    fs.mkdirSync(path.join(HOME, ".codex"), { recursive: true });
+    fs.writeFileSync(path.join(HOME, ".codex", "config.toml"), '[mcp_servers.codebase-memory-mcp]\ncommand = "npx"\nargs = ["-y", "codebase-memory-mcp"]\n');
+    const raw = scanInstalledCodexExtensions(HOME);
+    assert.ok(raw.some((item) => item.kind === "mcp" && item.id === "codebase-memory-mcp"));
+    const exported = exportSystemState(WS, { targetAgent: "codex", homeDir: HOME });
+    assert.ok(!exported.agents?.codex?.mcp.some((item) => item.id === "codebase-memory-mcp"));
+  });
+
   it("permanent deletions reject a legacy manifest even when it omits tombstones", async () => {
     const { importSystemState } = await import("../dist/lib/state.js");
     const state = {

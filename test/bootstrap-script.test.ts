@@ -43,4 +43,26 @@ describe("Windows Codex bootstrap plan", () => {
     const marketplace = JSON.parse(fs.readFileSync(path.join(ROOT, ".claude-plugin", "marketplace.json"), "utf-8"));
     assert.equal(marketplace.plugins[0].version, pkg.version);
   });
+
+  it("accepts both npm 10 array and npm 12 keyed-object pack JSON", () => {
+    const script = fs.readFileSync(SCRIPT, "utf-8");
+    assert.match(script, /Resolve-PackFilename/);
+    assert.match(script, /PSObject\.Properties/);
+    assert.doesNotMatch(script, /\$packJson\[0\]\.filename/);
+  });
+
+  it("retries the state pull before entering idempotent setup", () => {
+    const script = fs.readFileSync(SCRIPT, "utf-8");
+    assert.match(script, /Invoke-WithRetry\s+\{\s*uagent-sync pull --target-agent codex --json\s*\}\s*'pull dotfiles state'\s*3/);
+  });
+
+  it("refreshes an existing personal marketplace and verifies the installed plugin version", () => {
+    const script = fs.readFileSync(SCRIPT, "utf-8");
+    assert.match(script, /plugin marketplace list --json/);
+    assert.match(script, /git -C \$marketplaceRoot pull --ff-only origin master/);
+    assert.match(script, /marketplace origin does not match UagentRepo/);
+    assert.doesNotMatch(script, /plugin marketplace upgrade uagent-sync/);
+    assert.match(script, /expectedPluginVersion/);
+    assert.match(script, /\.version -eq \$expectedPluginVersion/);
+  });
 });

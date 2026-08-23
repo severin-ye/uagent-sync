@@ -464,3 +464,30 @@ Conflicting recovery entries for plugin:uagent-sync
 5. 选定 skills 必须成功恢复，或者只为真实来源/凭据问题返回精确错误。
 6. 恢复输出应按来源聚合，不能再次产生上千条重复 skipped 记录。
 7. `setup` 和最终 `verify` 都必须返回 `ok=true`，bootstrap 总退出码必须为 0。
+
+## 第二轮真实 Windows 修复与本地 bootstrap 验收（2026-08-23）
+
+测试方式：先在隔离的临时 workspace clone `ee4c5ec`，再应用本轮未推送 diff，直接运行本地 `scripts/bootstrap.ps1`。该方式保证测试的是本地修改，而不是 raw GitHub 上尚未推送的旧脚本。
+
+### 四个指定问题的状态
+
+1. **问题 9 — 已修复**：Windows 恢复器只解析可信绝对 `codex.cmd` / `npx.cmd`。实际入口分别为 npm global bin 和 Node 安装目录；随后直接执行对应 Node CLI，`shell=false`，参数不经过 shell。WindowsApps 被显式拒绝，错误包含脱敏路径和错误类型。新增真实临时 `.cmd`、真实子进程和 shell 元字符回归测试。
+2. **问题 10 — 已修复**：GitHub URL、`owner/repo`、大小写、尾部 `.git`、插件名和语义版本统一规范化。同仓同版本 `uagent-sync@uagent-sync` 被分类为 existing；不同仓库仍按供应链冲突失败。真实 bootstrap 顺序中未再出现 conflict。
+3. **问题 11 — 已修复**：恢复器使用未经过 tombstone 过滤的原始 Codex 扫描。目标缺席时记录 `tombstone-satisfied` 且不执行删除；目标存在时才删除并复扫。权限错误和“命令成功但目标仍存在”均失败。`codebase-memory-mcp` 实际验证为 absent。
+4. **问题 12 — 已修复**：restorable 和 existing skills 都按规范化 source 聚合。当前 210 个 selected skills 被汇总为 5 个仓库来源（151、39、18、1、1），不再产生逐 skill 的重复 skipped 项。
+
+### 本地完整 bootstrap 结果
+
+- 首次发现 npm 12 把 `npm pack --json` 改为 keyed object，旧数组读取报错；已增加兼容解析和回归测试。
+- 恢复 pull 首次遇到 GitHub connection reset；已把 pull 纳入三次有界退避重试。
+- Codex marketplace 内置 upgrade 固定 30 秒 clone 超时；改为读取 Codex 认可的 marketplace root、核验 Git origin 与 `UagentRepo` 一致，再使用 Git 的 `pull --ff-only` 重试更新。
+- U同步插件从陈旧缓存 2.0.0 更新并严格确认到 2.1.0。
+- bootstrap 总退出码：`0`。
+- `setup --target-agent codex --json`：`ok=true`，0 warnings，0 errors，13 个聚合 skipped，17 个步骤。
+- `verify --target-agent codex --json`：`ok=true`，0 warnings，0 errors，1 个 out-of-scope skipped，13 个验证步骤。
+- Codex skills：223 个已安装；dotfiles 选中的 210 个全部可用。
+- Codex MCP：选中的 1 个条目可用；`codebase-memory-mcp` 无活动配置。
+- 可信入口：`codex.cmd` 位于 npm global bin，`npx.cmd` 位于 Node 安装目录，二者均不在 WindowsApps。
+- 全过程 targetAgent 为 codex；OpenCode 仅作为 out-of-scope 结果出现，没有读取、创建、覆盖或验证其配置。
+
+本地未推送代码验收已经通过；推送后仍需按 raw GitHub 唯一入口再执行一次最终验收并记录提交号。

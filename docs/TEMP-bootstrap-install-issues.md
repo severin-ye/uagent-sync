@@ -350,3 +350,25 @@ npm install --omit=dev --no-audit --no-fund
 - `uagent-sync@personal` 已安装并在 Codex 中显示为 enabled 2.1.0。
 
 这说明早先的“尚未执行”状态已被后续步骤取代；保留原记录是为了完整呈现故障与修复时间线。
+
+## 第二轮 Windows bootstrap 结果（2026-08-23）
+
+### 14. Windows shim、npm 12 和恢复网络重试已修复
+
+- bootstrap 解析并传递经过版本验证的 `codex.cmd` 与 `npx.cmd` 绝对入口；WindowsApps 候选被拒绝。
+- Node 恢复器根据可信 shim 定位对应 Node CLI，以参数数组和 `shell=false` 执行，避免 `.cmd` 的 EPERM/ENOENT 和 shell injection。
+- `npm pack --json` 同时支持 npm 10 数组与 npm 12 keyed object。
+- clone、dotfiles pull、marketplace Git 更新均执行有界退避重试。
+- marketplace 更新先校验 Codex 返回的 root 及其 Git origin，再 `pull --ff-only`，避免 Codex 内置 upgrade 的固定 30 秒 clone 超时。
+
+### 15. 本地隔离 bootstrap 已通过
+
+- 总退出码 `0`。
+- 本地 bootstrap 当次测试 `257/257`；补齐聚合和脱敏回归后，提交前最终全量测试 `262/262`。真实 pack 安装通过。
+- U同步 Codex 插件 `2.1.0` installed/enabled。
+- setup 与 verify 均为 `ok=true`。
+- 210 个 selected skills 全部可用，按 5 个来源聚合；不再输出上千条重复 skipped。
+- 永久 tombstone 确认 `codebase-memory-mcp` absent，未重新安装。
+- 没有访问或修改 OpenCode 配置，也没有写入真实密钥。
+
+本记录对应推送前的本地脚本验收；推送后的 raw GitHub 验收结果应继续追加在此处。

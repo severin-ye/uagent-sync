@@ -22,6 +22,8 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\bootstrap.ps1 
 
 直接重复同一条入口命令。进度保存在 `%USERPROFILE%\UagentWorkspace\.uagent-bootstrap-state.json`；已完成且通过真实版本检查的步骤会安全复用。下载和网络步骤执行有界重试，winget 失败会切换到当前用户的 portable 工具目录。
 
+脚本会保存并复用经过验证的 npm `codex.cmd` 和 Node `npx.cmd` 入口，不会回退到 WindowsApps 假命令。Codex personal marketplace 已存在但版本陈旧时，脚本会先核验其 Git origin，再执行可重试的 fast-forward 更新。
+
 不要删除状态文件，也不要手工复制旧机器配置。若确需从头验证，请使用新的 `-WorkspaceRoot`，保留原目录作为故障证据。
 
 ## 成功判据
@@ -38,3 +40,15 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\bootstrap.ps1 
 - 输出和提交前 secrets 扫描没有发现密钥值。
 
 安装完成后新建一个 Codex 任务，让新安装的 skills 进入新任务上下文。
+
+## 独立复核命令
+
+bootstrap 返回 0 后可直接运行；这些命令不修复状态，只做 Codex-only 验收：
+
+```powershell
+uagent-sync setup --target-agent codex --json
+uagent-sync verify --target-agent codex --json
+codex.cmd plugin list --json
+```
+
+预期 `setup` 与 `verify` 都返回 `ok=true`。setup 的 skill 结果应按 `existing-skill-source:<owner>/<repo>:skills=<count>` 聚合；不得逐项重复输出同一个来源。`codebase-memory-mcp` 必须显示为 absent，任何 active 配置都应让验收失败。
