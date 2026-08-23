@@ -154,6 +154,7 @@
 - **失败传播 — 已修复（自动化验证）**：上述任一必需步骤失败均记为 `error`；后续替换 CLI 和插件的步骤会被跳过，CLI 总退出码为非零，不再把部分完成报告为成功。
 - **Codex-only 作用域 — 已修复（自动化验证）**：更新报告持久化 `targetAgent`；Codex 默认更新不扫描 OpenCode plugin cache，也不读取或更新 OpenCode config dependencies。OpenCode 插件入口仍显式传入 `targetAgent=opencode`，与 Codex 流程隔离。
 - **发布版本 — 已修复（自动化验证）**：本轮补丁版本升至 `2.1.1`，`package.json`、lockfile、Codex plugin manifest 与 marketplace 元数据保持一致，避免 Codex 复用旧的 2.1.0 插件缓存。
+- **Windows 实机验收 — 已通过**：真实执行 Codex `sync` 自更新得到 `8 ok / 0 warning / 0 error / 0 skipped`；全局 CLI 与 installed/enabled 插件均确认到 `2.1.1`，marketplace 来源核验和 Git 快进成功。
 - **第 39 项 — 已修复并实机验证**：同一 GitHub 仓库的 URL、`.git`、大小写和 `owner/repo` 表示统一；同源 U同步为 existing，真正异源仍为 conflict。
 - **第 44、45 项 — 已修复并实机验证**：原始扫描与导出过滤分离，tombstone 缺席不执行删除，存在时删除后复扫；`codebase-memory-mcp` 最终 absent。
 - **第 50、51 项 — 已修复并实机验证**：210 个 selected skills 全部可用，并按 5 个 source 汇总；setup 仅 13 个聚合 skipped，verify 逐项确认插件、skills、MCP、CLI、配置。

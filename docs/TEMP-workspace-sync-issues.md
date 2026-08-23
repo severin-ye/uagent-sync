@@ -621,6 +621,13 @@ git -c protocol.file.allow=always submodule add <local-bare-repo> usync-dotfiles
 - 更新结果带 `targetAgent=codex`，Codex 默认计划不访问 OpenCode plugin cache 或 config 目录。
 - 回归测试覆盖完整计划、Codex-only 隔离、pack 安装和插件验证成功路径，以及测试失败后的安全停止路径。
 - 发布元数据统一升至 `2.1.1`，使 Codex 能把本轮实现识别为新插件版本，而不是继续复用 2.1.0 缓存。
+
+### severin Windows 实机结果
+
+- 从本地 2.1.1 构建直接执行 `updateExtensions({ components: ['sync'], targetAgent: 'codex' })`，总结果为 `ok=8, warning=0, error=0, skipped=0`。
+- 源码 `pull --ff-only`、`npm ci`、275 项测试、真实 pack、tarball 全局安装、marketplace 来源核验/快进、插件安装和最终版本验证全部成功。
+- 全局 `uagent-sync --version` 为 `2.1.1`；Codex 返回 `uagent-sync@uagent-sync` installed/enabled，版本为 `2.1.1`。
+- personal marketplace 从旧提交快进至 `0e3de43`，Git origin 仍为 `https://github.com/severin-ye/uagent-sync.git`。
 - bootstrap 总退出码：`0`。
 - `setup --target-agent codex --json`：`ok=true`，0 warnings，0 errors，13 个聚合 skipped，17 个步骤。
 - `verify --target-agent codex --json`：`ok=true`，0 warnings，0 errors，1 个 out-of-scope skipped，13 个验证步骤。
