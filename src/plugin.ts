@@ -59,8 +59,11 @@ The JSON file can be committed to Git and imported on another device.`,
         async execute(args) {
           const workspaceRoot = resolveWorkspaceRoot();
           const stateFile = args.output || path.join(workspaceRoot, `${DOTFILES_DIR}/state/workspace-state.json`);
-          const state = exportSystemState(workspaceRoot);
-          fs.writeFileSync(stateFile, JSON.stringify(state, null, 2));
+          const { state, serialized } = defaultWorkspaceApplication.exportWorkspace({
+            workspaceRoot,
+            outputPath: stateFile,
+            targetAgent: "opencode",
+          });
 
           const gitignorePath = path.join(workspaceRoot, `${DOTFILES_DIR}/.gitignore`);
           const statePattern = "state/workspace-state.json";
@@ -83,9 +86,9 @@ The JSON file can be committed to Git and imported on another device.`,
             `  Git tracking: ${args.trackState ? "tracked (private repo)" : "untracked (.gitignore)"}`,
           ].join("\n");
 
-          const truncated = JSON.stringify(state, null, 2).length > CHARACTER_LIMIT
-            ? JSON.stringify(state, null, 2).slice(0, CHARACTER_LIMIT) + `\n... (truncated)`
-            : JSON.stringify(state, null, 2);
+          const truncated = serialized.length > CHARACTER_LIMIT
+            ? serialized.slice(0, CHARACTER_LIMIT) + `\n... (truncated)`
+            : serialized;
 
           return text(summary + "\n\n" + truncated);
         },
@@ -103,22 +106,26 @@ Use dryRun=true to preview changes without applying them.`,
         },
         async execute(args) {
           const workspaceRoot = resolveWorkspaceRoot();
-          let state: WorkspaceState;
+          let artifact: string;
           if (args.source.startsWith("http://") || args.source.startsWith("https://")) {
             const result = run(`curl -sL ${shellEscape(args.source)}`);
             if (result.code !== 0) return text(`Error: Failed to fetch from URL: ${result.stderr}`);
-            state = JSON.parse(result.stdout) as WorkspaceState;
+            artifact = result.stdout;
           } else {
-            state = JSON.parse(fs.readFileSync(isPathSafe(args.source, workspaceRoot), "utf-8")) as WorkspaceState;
+            artifact = fs.readFileSync(isPathSafe(args.source, workspaceRoot), "utf-8");
           }
 
-          if (args.dryRun) {
-            const diffs = diffState(exportSystemState(workspaceRoot), state);
-            return text(diffs.length > 0 ? ["Dry run — would make these changes:", ...diffs].join("\n") : "Dry run — no changes needed (already in sync)");
+          const output = defaultWorkspaceApplication.importWorkspace({
+            workspaceRoot,
+            targetAgent: "opencode",
+            artifact,
+            dryRun: args.dryRun,
+          });
+          if (output.kind === "dry-run") {
+            return text(output.diffs.length > 0 ? ["Dry run — would make these changes:", ...output.diffs].join("\n") : "Dry run — no changes needed (already in sync)");
           }
 
-          const result = importSystemState(workspaceRoot, state);
-          return text(`Import complete:\n${result.messages.join("\n")}`);
+          return text(`Import complete:\n${output.result.messages.join("\n")}`);
         },
       }),
 

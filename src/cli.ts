@@ -208,10 +208,11 @@ async function main() {
     }
     case "export": {
       const out = isPathSafe(positionals[0] || stateFile, workspaceRoot);
-      const state = exportSystemState(workspaceRoot, { targetAgent: targetAgentFor(flags, workspaceRoot) });
-      const serialized = JSON.stringify(state, null, 2);
-      assertNoSecrets(serialized, out);
-      fs.writeFileSync(out, serialized);
+      const { state } = defaultWorkspaceApplication.exportWorkspace({
+        workspaceRoot,
+        outputPath: out,
+        targetAgent: targetAgentFor(flags, workspaceRoot),
+      });
       log(t("cli.exported", { path: out }));
       log(t("cli.exportedSubmodules", { count: state.submodules.length }));
       log(t("cli.exportedSkills", { count: state.skills.length }));
@@ -219,21 +220,25 @@ async function main() {
     }
     case "import": {
       const src = positionals[0] || stateFile;
-      let state: WorkspaceState;
+      let artifact: string;
       if (/^https?:\/\//.test(src)) {
         const res = await fetch(src);
         if (!res.ok) throw new Error(t("cli.failedToFetch", { src, status: res.status }));
-        state = JSON.parse(await res.text()) as WorkspaceState;
+        artifact = await res.text();
       } else {
-        state = JSON.parse(fs.readFileSync(isPathSafe(src, workspaceRoot), "utf-8")) as WorkspaceState;
+        artifact = fs.readFileSync(isPathSafe(src, workspaceRoot), "utf-8");
       }
-      if (flags.has("dry-run")) {
-        const diffs = diffState(exportSystemState(workspaceRoot), state);
-        console.log(diffs.length > 0 ? [t("cli.dryRunChanges"), ...diffs].join("\n") : t("cli.dryRunNoChanges"));
+      const output = defaultWorkspaceApplication.importWorkspace({
+        workspaceRoot,
+        targetAgent: targetAgentFor(flags, workspaceRoot),
+        artifact,
+        dryRun: flags.has("dry-run"),
+      });
+      if (output.kind === "dry-run") {
+        console.log(output.diffs.length > 0 ? [t("cli.dryRunChanges"), ...output.diffs].join("\n") : t("cli.dryRunNoChanges"));
         break;
       }
-      const result = importSystemState(workspaceRoot, state);
-      for (const msg of result.messages) log(msg);
+      for (const msg of output.result.messages) log(msg);
       break;
     }
     case "diff": {
