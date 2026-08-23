@@ -249,22 +249,15 @@ UAGENT_SYNC_LANG=zh opencode-sync guide  # 中文引导文档
 ```
 uagent-sync/                  # ← 本仓库（纯代码，运行时永不修改）
 ├── src/
-│   ├── lib/                   # 模块，每个 <200 行
-│   │   ├── types.ts           #   全部接口定义
-│   │   ├── run.ts             #   Shell 执行与安全（shellEscape, isPathSafe）
-│   │   ├── cache.ts           #   工作区根定位（固定缓存 + 环境变量 + 迁移）
-│   │   ├── init-state.ts      #   初始化生命周期跟踪
-│   │   ├── log.ts             #   安装溯源日志
-│   │   ├── state.ts           #   导出/导入/对比核心逻辑
-│   │   ├── workspace.ts       #   验证/设置/子模块状态
-│   │   ├── github.ts          #   私有仓库创建
-│   │   ├── keys.ts            #   API 密钥检测与模板
-│   │   ├── skills.ts          #   技能源映射
-│   │   ├── update.ts          #   updateExtensions —— 生态更新编排
-│   │   └── guide.ts           #   SYNC-GUIDE.md 生成器
-│   ├── sync.ts                # 汇总导出
-│   ├── plugin.ts              # opencode 插件（16 个 opencode_sync_* 工具）
-│   └── cli.ts                 # 独立 CLI（18 个命令）
+│   ├── application/           # 共享 verify/export/import/setup/update/push/pull 用例
+│   ├── ports/                 # 文件系统、Git、进程和 Agent 契约
+│   ├── adapters/              # Node/Git/进程和 Agent 扫描实现
+│   ├── artifacts/             # 版本化 WorkspaceState 读时 codec 与迁移
+│   ├── entrypoints/           # 仅负责呈现的格式化器
+│   ├── lib/                   # 现有领域实现与兼容模块
+│   ├── sync.ts                # 公共兼容与架构汇总导出
+│   ├── plugin.ts              # OpenCode 插件入口
+│   └── cli.ts                 # 独立 18 命令入口
 ├── skills/                    # 3 个共享技能（opencode + Codex + DSH）
 ├── hooks/                     # Codex 会话启动钩子
 ├── .codex-plugin/             # Codex 插件清单 + marketplace
@@ -285,6 +278,8 @@ usync-dotfiles/             # ← 运行时数据（独立仓库，随 Git 同�
 ```
 
 > **代码永不触碰数据。** 插件代码在一个目录，所有生成文件写入 `usync-dotfiles/`。职责分离。
+
+已实装的依赖方向为 **入口 → Application → Domain/Ports ← Adapters**。`WorkspaceState` v3 是内部验证后的读时契约，当前 wire 导出继续兼容旧格式。DSH 与 `all` 尚无恢复 writer/contract，因此恢复会 fail-closed。具体边界、Codex-only 隔离、`codebase-memory-mcp` 永久删除语义和第四 Agent 扩展方式见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)。
 
 ---
 

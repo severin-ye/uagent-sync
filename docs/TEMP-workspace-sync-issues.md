@@ -650,3 +650,16 @@ git -c protocol.file.allow=always submodule add <local-bare-repo> usync-dotfiles
 - OpenCode 只作为结构化结果中的 out-of-scope skipped 项出现，没有读取或修改其配置；日志和状态没有真实密钥。
 
 从其他源码仓库目录手工复核时应显式设置 `OPENCODE_SYNC_WORKSPACE_ROOT`，或先切换到 bootstrap workspace；否则当前目录会按设计参与 workspace 解析。这不是 bootstrap 失败，目标 workspace 上的独立 setup/verify 已再次通过。
+
+## 2026-08-23 Hexagonal Modular Monolith 架构收口
+
+本节是增量状态，不覆盖上文真实故障时间线。
+
+- **已修**：CLI 与 OpenCode Plugin 的 verify/export/import/setup/update/push/pull 已共用 `src/application/` 用例；依赖方向记录为 Entry → Application → Domain/Ports ← Adapters。
+- **已修**：新增 AST 级架构边界守卫；聚焦测试 RED 后为 4/4，通过命名导入和解析后的模块路径检查入口不得绕过 Application、Application 不得反向依赖 entrypoints。
+- **已修**：Agent inventory 使用可注入 registry；第四 Agent fixture 已证明无需修改 inventory 核心扫描循环。
+- **已修**：WorkspaceState v3 codec 是内部读时验证/迁移契约；当前 wire export 保持兼容，不声称已整体切换到 v3 输出。
+- **已修**：Codex-only 隔离和 `codebase-memory-mcp` 永久删除语义保持不变；架构改造没有扩大宿主写入范围。
+- **仍待**：DSH 只有 inventory、没有 restore writer；`targetAgent=dsh` 和 `all` 的 artifact restore 继续 fail-closed。
+- **已修（本轮自动化验证）**：`npm test` 为 333/333；独立 manifest/真实 pack 组为 25/25；真实 CLI smoke 随全量测试通过；隔离 workspace 的 Codex-only update dry-run 为 11 skipped / 0 error，报告确认 `targetAgent=codex`，计划不含 OpenCode 配置/cache 或 `codebase-memory-mcp`。
+- **仍待外部验收**：另一台全新 Windows 的 bootstrap/首次登录/winget-UAC 矩阵仍按原记录待验，不能由本轮架构与隔离 dry-run 替代。

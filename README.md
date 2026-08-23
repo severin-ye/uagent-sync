@@ -240,22 +240,15 @@ Run any command as `node dist/cli.js <command>` (or `opencode-sync <command>` af
 ```
 uagent-sync/                  # ← This repo (code only, never modified at runtime)
 ├── src/
-│   ├── lib/                   # Modules, each <200 lines
-│   │   ├── types.ts           #   All interfaces
-│   │   ├── run.ts             #   Shell execution + safety (shellEscape, isPathSafe)
-│   │   ├── cache.ts           #   Workspace root detection (fixed cache + env + migration)
-│   │   ├── init-state.ts      #   Init lifecycle tracker
-│   │   ├── log.ts             #   Install provenance log
-│   │   ├── state.ts           #   Export/import/diff core logic
-│   │   ├── workspace.ts       #   Verify/setup/submodule status
-│   │   ├── github.ts          #   Private repo creation
-│   │   ├── keys.ts            #   API key detection & templates
-│   │   ├── skills.ts          #   Skill source map
-│   │   ├── update.ts          #   updateExtensions — ecosystem update orchestration
-│   │   └── guide.ts           #   SYNC-GUIDE.md generator
-│   ├── sync.ts                # Barrel export
-│   ├── plugin.ts              # opencode plugin (16 opencode_sync_* tools)
-│   └── cli.ts                 # Standalone CLI (16 commands)
+│   ├── application/           # Shared verify/export/import/setup/update/push/pull use cases
+│   ├── ports/                 # File system, Git, process, and Agent contracts
+│   ├── adapters/              # Node/Git/process and Agent scanner implementations
+│   ├── artifacts/             # Versioned WorkspaceState read codec and migrations
+│   ├── entrypoints/           # Presentation-only formatters
+│   ├── lib/                   # Existing domain implementation and compatibility modules
+│   ├── sync.ts                # Public compatibility + architecture barrel
+│   ├── plugin.ts              # OpenCode plugin entrypoint
+│   └── cli.ts                 # Standalone 18-command entrypoint
 ├── skills/                    # 3 shared skills (opencode + Codex)
 ├── hooks/                     # Codex SessionStart hook
 ├── .codex-plugin/             # Codex plugin manifest + marketplace
@@ -275,6 +268,8 @@ usync-dotfiles/             # ← Runtime data (separate repo, synced via Git)
 ```
 
 > **Code never touches data.** The plugin lives in one directory. All generated files go to `usync-dotfiles/`. Clean separation.
+
+The implemented dependency direction is **Entry → Application → Domain/Ports ← Adapters**. `WorkspaceState` v3 is the validated in-memory read contract; current wire exports remain backward-compatible. DSH and `all` restore scopes fail closed because they do not yet have restore writers/contracts. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for concrete boundaries, Codex-only isolation, permanent `codebase-memory-mcp` deletion, and the fourth-Agent extension path.
 
 ---
 

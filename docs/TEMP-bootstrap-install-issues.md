@@ -380,3 +380,13 @@ npm install --omit=dev --no-audit --no-fund
 - U同步插件为 `2.1.0` installed/enabled；223 个 skills 已安装，210 个选定 skills 和 1 个选定 MCP 均可用。
 - 可信入口为 npm global bin 的 `codex.cmd` 与 Node 安装目录的 `npx.cmd`，均未命中 WindowsApps。
 - `codebase-memory-mcp` tombstone 为幂等满足且活动配置 absent；没有恢复或写入真实密钥。
+
+## 2026-08-23 架构重构对 bootstrap 的影响
+
+本节只记录本轮已测事实，保留上文 bootstrap 故障与实机结果。
+
+- **已修**：CLI/OpenCode 共享 verify/export/import/setup/update/push/pull Application 用例，并新增依赖方向守卫；聚焦架构测试为 4/4。
+- **未改变**：Codex-only 路径继续显式携带 `targetAgent=codex`，OpenCode 保持 out-of-scope；`codebase-memory-mcp` 继续由永久 tombstone 禁止恢复。
+- **未扩大**：本轮没有修改 `scripts/bootstrap.ps1`、恢复器、CLI 或 Plugin 外部协议。
+- **已修（本轮自动化验证）**：`npm test` 333/333；独立 manifest/真实 pack 组 25/25；CLI smoke 通过；隔离 workspace 的 Codex-only update dry-run 为 11 skipped / 0 error，且计划不含 OpenCode 配置/cache 或 `codebase-memory-mcp`。
+- **仍待**：本轮没有执行另一台全新 Windows 的 raw bootstrap，因此不能把 winget/UAC、首次 gh 登录、私有仓库访问或第二台机器网络下载标为通过。

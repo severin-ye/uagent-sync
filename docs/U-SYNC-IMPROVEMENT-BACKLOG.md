@@ -169,3 +169,15 @@
 ## 原电脑修复后的重试验收
 
 原电脑完成重构并推送后，当前电脑应只提供 U同步仓库地址和 dotfiles 仓库地址即可自动完成 Codex-only 安装、恢复与最终验证，并且全过程不得访问或修改 OpenCode、不得恢复 `codebase-memory-mcp`、不得泄露密钥、不得把失败报告为成功。
+
+## 2026-08-23 架构项增量状态
+
+- **已修**：共享 `ApplicationResult` 和 WorkspaceApplication 已覆盖 verify/export/import/setup/update/push/pull，CLI 与 OpenCode Plugin 只保留入口呈现职责。
+- **已修**：FileSystem、Git、ProcessRunner 和 AgentAdapter ports 已落地；基础设施与 Agent scanner 通过 adapters 接入。
+- **已修**：Agent registry 可注入，第四 Agent fixture 不需要修改 inventory 核心扫描循环。
+- **已修**：WorkspaceState v3 codec 已作为内部读时 contract 使用，迁移 v1/v2、拒绝未来版本并优先执行永久 tombstone；wire export 继续兼容旧格式。
+- **已修**：新增 AST 级依赖边界测试，Entry → Application → Domain/Ports ← Adapters 的已迁移方向有自动化守卫。
+- **部分**：`src/lib/` 仍是兼容性领域实现，composition root 仍在 `src/application/default-workspace-application.ts` 连接具体 adapters；这是当前已实装结构，不声称完成纯粹分层重写。
+- **仍待**：DSH/all artifact restore contract 与 writer 尚未实现，当前必须 fail-closed。
+- **仍待外部验收**：另一台全新 Windows 的 bootstrap、首次 gh 登录、winget/UAC 与真实私有仓库网络矩阵；本轮架构测试不能替代这些结果。
+- **本轮验证已完成**：架构聚焦测试 RED→GREEN（最终 4/4）；`npm test` 333/333；独立 manifest/真实 pack 组 25/25；CLI smoke 通过；隔离 workspace 的 Codex-only update dry-run 为 11 skipped / 0 error，报告作用域为 Codex 且无 OpenCode 配置/cache 或 `codebase-memory-mcp` 计划。

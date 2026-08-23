@@ -33,3 +33,16 @@ export { createCapabilityImplementation, sanitizeForPublic } from "./lib/migrati
 export { createFunctionalRelation } from "./lib/migration-analysis/relations.js";
 export { previewMigrationAnalysis, applyMigrationAnalysis } from "./lib/migration-analysis/transaction.js";
 export type { AnalysisContext, CapabilityImplementation, FunctionalRelation, DuplicateGroup, ImplementationAction, ActionValue, SourceClass } from "./lib/migration-analysis/index.js";
+
+// Hexagonal application API and extension contracts. Legacy exports above remain
+// available for wire/package compatibility while entrypoints migrate by slice.
+export type { ApplicationResult } from "./application/result.js";
+export type { VerifyWorkspaceRequest, WorkspaceApplication } from "./application/default-workspace-application.js";
+export { createDefaultWorkspaceApplication, defaultWorkspaceApplication } from "./application/default-workspace-application.js";
+export { CURRENT_WORKSPACE_STATE_SCHEMA_VERSION, parseWorkspaceStateArtifact, parseWorkspaceState } from "./artifacts/workspace-state-codec.js";
+export type { AgentAdapter } from "./ports/agent-adapter.js";
+export type { AgentAdapterRegistry } from "./adapters/agents/registry.js";
+export { createAgentAdapterRegistry, defaultAgentAdapterRegistry } from "./adapters/agents/registry.js";
+export type { FileSystem } from "./ports/file-system.js";
+export type { GitPort, GitRunResult } from "./ports/git.js";
+export type { ProcessRunner, ProcessRunOptions, ProcessRunResult } from "./ports/process-runner.js";
