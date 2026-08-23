@@ -5,7 +5,7 @@
 - Added an argv-only synchronous `GitPort` and `gitCli` adapter (`spawnSync("git", args, { shell: false })`).
 - Added shared push/pull application use cases and wired both CLI and OpenCode Plugin through `defaultWorkspaceApplication`.
 - Standardized recovery on `usync-dotfiles/state/workspace-state.json`.
-- Push now performs export → secret scan → write → stage → commit → push in the dotfiles repository. A real commit failure is fatal; a recognized no-change commit is an explicit successful skip and push still runs.
+- Push now performs export → secret scan → write → stage → staged-change probe → conditional commit → push in the dotfiles repository. A real commit failure is fatal; probe code 0 is an explicit successful skip and push still runs.
 - Pull now runs `git pull --ff-only` in the dotfiles repository, parses the canonical artifact, enforces `targetAgent`, and returns failure for Git, parse, target mismatch, or restore errors.
 - Plugin push/pull remains explicitly scoped to `targetAgent: "opencode"`; Codex-only CLI paths remain explicit and do not invoke OpenCode restoration.
 
@@ -29,4 +29,11 @@
 ## Remaining risk
 
 - No production remote was contacted by tests. Git validation used fake ports, temporary repositories, and local bare remotes only.
-- No-change detection relies on Git's standard English no-op commit messages, matching the existing compatibility behavior.
+
+## Review 1 follow-up
+
+- Replaced commit-output substring matching with `git diff --cached --quiet --exit-code` through the argv-only `GitPort`.
+- Probe semantics are strict: code 0 skips commit and still pushes; code 1 commits; any other code fails before commit/push.
+- Every non-zero commit result now fails, including deceptive `nothing to commit` stdout paired with fatal stderr.
+- Review TDD RED: 5 related failures before implementation; focused GREEN: 10/10.
+- Review validation: typecheck/build passed; recovery + crystallize 23/23; full `npm test` 329/329.

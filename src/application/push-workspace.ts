@@ -29,10 +29,6 @@ function gitDetail(result: GitRunResult): string {
   return (result.stderr || result.stdout || "").trim() || "unknown error";
 }
 
-function isNoChangeCommit(result: GitRunResult): boolean {
-  return /nothing to commit|no changes added|no changes yet|nothing added/i.test(`${result.stdout}\n${result.stderr}`);
-}
-
 export function pushWorkspace(
   input: PushWorkspaceInput,
   dependencies: PushWorkspaceDependencies,
@@ -49,13 +45,17 @@ export function pushWorkspace(
     const add = dependencies.git.run(["add", ARTIFACT_RELATIVE_TO_DOTFILES], dotfilesRoot);
     if (add.code !== 0) throw new Error(`git add failed: ${gitDetail(add)}`);
 
-    const message = input.message || `Update workspace state ${new Date().toISOString().slice(0, 19)}`;
-    const commit = dependencies.git.run(["commit", "-m", message], dotfilesRoot);
-    let committed = true;
-    if (commit.code !== 0) {
-      if (!isNoChangeCommit(commit)) throw new Error(`git commit failed: ${gitDetail(commit)}`);
-      committed = false;
-      skipped.push(`nothing to commit: ${gitDetail(commit)}`);
+    const stagedChanges = dependencies.git.probeStagedChanges(dotfilesRoot);
+    let committed = false;
+    if (stagedChanges.code === 0) {
+      skipped.push("nothing to commit: staged workspace artifact is unchanged");
+    } else if (stagedChanges.code === 1) {
+      const message = input.message || `Update workspace state ${new Date().toISOString().slice(0, 19)}`;
+      const commit = dependencies.git.run(["commit", "-m", message], dotfilesRoot);
+      if (commit.code !== 0) throw new Error(`git commit failed: ${gitDetail(commit)}`);
+      committed = true;
+    } else {
+      throw new Error(`git staged-change probe failed: ${gitDetail(stagedChanges)}`);
     }
 
     const push = dependencies.git.run(["push"], dotfilesRoot);

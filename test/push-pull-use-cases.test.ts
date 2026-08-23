@@ -72,21 +72,27 @@ describe("pushWorkspace application use case", () => {
             gitCalls.push({ args: [...args], cwd });
             return { code: 0, stdout: "ok", stderr: "" };
           },
+          probeStagedChanges(cwd: string) {
+            events.push("git:probe");
+            gitCalls.push({ args: ["diff", "--cached", "--quiet", "--exit-code"], cwd });
+            return { code: 1, stdout: "", stderr: "" };
+          },
         },
       },
     );
 
     assert.equal(result.ok, true);
-    assert.deepEqual(events, ["export", "scan", "write", "git:add", "git:commit", "git:push"]);
+    assert.deepEqual(events, ["export", "scan", "write", "git:add", "git:probe", "git:commit", "git:push"]);
     assert.equal(memory.files.has("C:/workspace/usync-dotfiles/state/workspace-state.json"), true);
     assert.deepEqual(gitCalls, [
       { args: ["add", "state/workspace-state.json"], cwd: "C:/workspace/usync-dotfiles" },
+      { args: ["diff", "--cached", "--quiet", "--exit-code"], cwd: "C:/workspace/usync-dotfiles" },
       { args: ["commit", "-m", "sync & literal"], cwd: "C:/workspace/usync-dotfiles" },
       { args: ["push"], cwd: "C:/workspace/usync-dotfiles" },
     ]);
   });
 
-  it("treats an idempotent no-change commit as an explicit successful skip and still pushes", async () => {
+  it("treats probe code 0 as an explicit no-change skip without committing and still pushes", async () => {
     const { pushWorkspace } = await import("../src/application/push-workspace.js");
     const memory = memoryFileSystem();
     const calls: string[][] = [];
@@ -99,20 +105,69 @@ describe("pushWorkspace application use case", () => {
         git: {
           run(args: readonly string[]) {
             calls.push([...args]);
-            return args[0] === "commit"
-              ? { code: 1, stdout: "nothing to commit, working tree clean", stderr: "" }
-              : { code: 0, stdout: "ok", stderr: "" };
+            return { code: 0, stdout: "ok", stderr: "" };
           },
+          probeStagedChanges: () => ({ code: 0, stdout: "", stderr: "" }),
         },
       },
     );
 
     assert.equal(result.ok, true);
     assert.match(result.skipped.join("\n"), /nothing to commit/i);
+    assert.deepEqual(calls.map((args) => args[0]), ["add", "push"]);
+  });
+
+  it("treats probe code 1 as staged changes and commits before pushing", async () => {
+    const { pushWorkspace } = await import("../src/application/push-workspace.js");
+    const memory = memoryFileSystem();
+    const calls: string[][] = [];
+    const result = pushWorkspace(
+      { workspaceRoot: "C:/workspace", targetAgent: "codex" },
+      {
+        fileSystem: memory.port,
+        exportState: () => baseState,
+        assertNoSecrets: () => {},
+        git: {
+          run(args: readonly string[]) {
+            calls.push([...args]);
+            return { code: 0, stdout: "ok", stderr: "" };
+          },
+          probeStagedChanges: () => ({ code: 1, stdout: "", stderr: "" }),
+        },
+      },
+    );
+
+    assert.equal(result.ok, true);
+    assert.equal(result.value?.committed, true);
     assert.deepEqual(calls.map((args) => args[0]), ["add", "commit", "push"]);
   });
 
-  it("does not swallow a real commit failure or continue to push", async () => {
+  it("fails a probe code above 1 and does not commit or push", async () => {
+    const { pushWorkspace } = await import("../src/application/push-workspace.js");
+    const memory = memoryFileSystem();
+    const calls: string[][] = [];
+    const result = pushWorkspace(
+      { workspaceRoot: "C:/workspace", targetAgent: "codex" },
+      {
+        fileSystem: memory.port,
+        exportState: () => baseState,
+        assertNoSecrets: () => {},
+        git: {
+          run(args: readonly string[]) {
+            calls.push([...args]);
+            return { code: 0, stdout: "ok", stderr: "" };
+          },
+          probeStagedChanges: () => ({ code: 128, stdout: "", stderr: "fatal: permission denied" }),
+        },
+      },
+    );
+
+    assert.equal(result.ok, false);
+    assert.match(result.errors.join("\n"), /staged-change probe failed.*permission denied/i);
+    assert.deepEqual(calls.map((args) => args[0]), ["add"]);
+  });
+
+  it("never treats deceptive no-change stdout as success when commit has a fatal stderr", async () => {
     const { pushWorkspace } = await import("../src/application/push-workspace.js");
     const memory = memoryFileSystem();
     const calls: string[][] = [];
@@ -126,15 +181,16 @@ describe("pushWorkspace application use case", () => {
           run(args: readonly string[]) {
             calls.push([...args]);
             return args[0] === "commit"
-              ? { code: 128, stdout: "", stderr: "fatal: identity missing" }
+              ? { code: 128, stdout: "nothing to commit", stderr: "fatal: permission denied" }
               : { code: 0, stdout: "ok", stderr: "" };
           },
+          probeStagedChanges: () => ({ code: 1, stdout: "", stderr: "" }),
         },
       },
     );
 
     assert.equal(result.ok, false);
-    assert.match(result.errors.join("\n"), /git commit failed.*identity missing/i);
+    assert.match(result.errors.join("\n"), /git commit failed.*permission denied/i);
     assert.deepEqual(calls.map((args) => args[0]), ["add", "commit"]);
   });
 });
@@ -153,6 +209,7 @@ describe("pullWorkspace application use case", () => {
           gitCalls.push({ args: [...args], cwd });
           return { code: 0, stdout: "Already up to date.", stderr: "" };
         },
+        probeStagedChanges: () => ({ code: 0, stdout: "", stderr: "" }),
       },
       parseArtifact: (artifact: unknown) => JSON.parse(String(artifact)),
       importState: () => { restoreCalls += 1; return { success: true, messages: ["restored"] }; },
@@ -227,6 +284,12 @@ describe("Git CLI adapter", () => {
     const result = module.gitCli.run(["rev-parse", "--is-inside-work-tree"], repository);
     assert.equal(result.code, 0, result.stderr);
     assert.equal(result.stdout.trim(), "true");
+    const unchanged = module.gitCli.probeStagedChanges(repository);
+    assert.equal(unchanged.code, 0);
+    fs.writeFileSync(path.join(repository, "staged.txt"), "staged");
+    execFileSync("git", ["add", "staged.txt"], { cwd: repository, stdio: "ignore" });
+    const changed = module.gitCli.probeStagedChanges(repository);
+    assert.equal(changed.code, 1);
     const source = fs.readFileSync(path.join(repositoryRoot, "src", "adapters", "infrastructure", "git-cli.ts"), "utf-8");
     assert.match(source, /shell:\s*false/);
   });
