@@ -1,14 +1,14 @@
 import type { AgentId, CapabilityKind, CapabilityMatrixRow, InventoryDiff, MigrationAction, MigrationActionName, WorkspaceInventory } from "./agent-inventory-types.js";
 import { createAgentPaths, type AgentPaths } from "./agent-paths.js";
 import { safeForDisplay } from "./agent-scan-utils.js";
-import { scanCodex } from "./adapters/codex.js";
-import { scanOpenCode } from "./adapters/opencode.js";
-import { scanDeepSeek } from "./adapters/deepseek.js";
+import type { AgentAdapter } from "../ports/agent-adapter.js";
+import { createAgentAdapterRegistry, defaultAgentAdapters } from "../adapters/agents/registry.js";
 
-export function scanWorkspaceInventory(options: { workspaceRoot?: string; paths?: AgentPaths } = {}): WorkspaceInventory {
+export function scanWorkspaceInventory(options: { workspaceRoot?: string; paths?: AgentPaths; adapters?: readonly AgentAdapter[] } = {}): WorkspaceInventory {
   const workspaceRoot = options.paths?.workspaceRoot ?? options.workspaceRoot ?? process.cwd();
   const paths = options.paths ?? createAgentPaths({ workspaceRoot });
-  return safeForDisplay({ scannedAt: new Date().toISOString(), workspaceRoot, readOnly: true, secretsIncluded: false, agents: [scanCodex(paths), scanOpenCode(paths), scanDeepSeek(paths)] });
+  const registry = createAgentAdapterRegistry(options.adapters ?? defaultAgentAdapters);
+  return safeForDisplay({ scannedAt: new Date().toISOString(), workspaceRoot, readOnly: true, secretsIncluded: false, agents: registry.scan(paths) });
 }
 
 const KINDS: CapabilityKind[] = ["instructions", "skills", "scripts", "cli", "mcp", "hooks", "plugins", "tools", "subagents"];
