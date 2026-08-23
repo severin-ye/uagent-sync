@@ -365,3 +365,102 @@ U同步知道“以前有哪些 skill”，却不知道“应从哪里重新下�
 - 引入扩展 tombstone/删除记录，并让其优先级高于旧快照、know-how 和自动发现清单。
 - 删除扩展时同步更新各宿主 manifest；历史说明文档不得被解释为待安装项。
 - 增加测试，保证 pull/setup/update/verify 都不会重新引入 tombstone 中的扩展。
+
+## 真实 bootstrap 重试记录（2026-08-23，提交 `0dafd452`）
+
+执行入口：
+
+```powershell
+$script = Join-Path ([IO.Path]::GetTempPath()) 'uagent-bootstrap.ps1'
+Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/severin-ye/uagent-sync/master/scripts/bootstrap.ps1' -OutFile $script
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File $script -UagentRepo 'https://github.com/severin-ye/uagent-sync' -DotfilesRepo 'https://github.com/severin-ye/usync-dotfiles' -TargetAgent codex
+```
+
+### 已验证通过的改进
+
+- GitHub 第一次 clone 出现 `Recv failure: Connection was reset` 后脚本自动重试并成功。
+- 干净 checkout 的 `npm test` 自动通过 `pretest` 先构建 `dist`。
+- 248/248 项测试通过，包括真实 `npm pack`、Codex-only 作用域、tombstone、退出码、密钥扫描和路径安全测试。
+- U同步 marketplace 和 `uagent-sync@uagent-sync` 插件成功安装。
+- 初始化状态正确保存 `targetAgent=codex`，且 OpenCode 被明确跳过。
+- bootstrap 在恢复失败后返回退出码 1，并没有继续执行最终 verify。
+
+### 问题 9：Node 恢复器无法在真实 Windows 环境执行 `codex` 和 `npx` shim
+
+**现象**
+
+- tombstone MCP 删除命令失败：`spawnSync codex EPERM`。
+- skill 删除和安装命令失败：`spawnSync npx ENOENT`。
+- 同一个 PowerShell 进程中 `codex --version`、`npx` 和 bootstrap 前置检查均可用。
+
+**根因**
+
+`src/lib/codex-restore.ts` 使用 `spawnSync(file, args, { shell: false })` 执行裸命令名，而 Windows 上实际可用入口是 `codex.cmd`、`codex.ps1` 和 `npx.cmd` 等 shim；PowerShell 能解析这些入口，但 Node 的无 shell 子进程无法可靠执行它们，并可能继续命中不可执行的 WindowsApps `codex.exe`。
+
+**重构方案**
+
+1. bootstrap 在验证命令时保存经过验证的绝对可执行入口，并传递给恢复器。
+2. Windows 下显式选择可信的 `.cmd` shim，并通过 `ComSpec /d /s /c` 安全调用，或直接调用对应 Node CLI 入口。
+3. 不得重新搜索并命中 WindowsApps 中不可执行的 `codex.exe`。
+4. 增加真实 Windows `.cmd` shim 端到端测试，不能只使用 mock execute 验证参数。
+5. 错误结果应包含最终解析路径和错误类型，但不得输出敏感环境变量。
+
+### 问题 10：bootstrap 已安装的 U同步插件被恢复器误判为来源冲突
+
+**现象**
+
+恢复阶段报告：
+
+```text
+Conflicting recovery entries for plugin:uagent-sync
+```
+
+但 bootstrap 在此前已经从同一个 U同步仓库成功注册 marketplace 并安装了 `uagent-sync@uagent-sync`。
+
+**根因**
+
+恢复分类器直接比较 selected 与 installed 的原始 `source` 字符串，只要表示形式不同就判定冲突，没有把 GitHub URL、marketplace 标识和已安装插件元数据规范化为同一来源身份。
+
+**重构方案**
+
+1. 为插件来源建立规范化身份，例如规范化 GitHub URL、marketplace 名称、仓库 owner/name 和版本。
+2. bootstrap 自己安装的同版本插件必须分类为 existing，而不是 conflict。
+3. 只有规范化来源确实不同且存在供应链风险时才报告冲突。
+4. 增加“先由 bootstrap 安装、再由恢复器扫描”的真实顺序回归测试。
+
+### 问题 11：tombstone 在确认扩展是否存在前无条件调用删除命令
+
+**现象**
+
+当前配置中并没有活动的 `codebase-memory-mcp`，恢复器仍调用 `codex mcp remove codebase-memory-mcp`，并因命令启动失败把 tombstone 记为 required error。
+
+**根因**
+
+恢复器先遍历所有永久 tombstone 并执行删除，然后才处理 installed/selected 分类，没有利用已扫描的 installed 清单跳过本来就不存在的扩展。
+
+**重构方案**
+
+1. tombstone 目标不在已安装清单时直接记录为已满足，不启动删除命令。
+2. 目标存在时才执行删除，并在删除后重新扫描确认确实消失。
+3. 删除命令的“未安装/不存在”结果必须幂等成功，真正的权限或执行错误才失败。
+4. `codebase-memory-mcp` 必须继续保持删除状态，修复不得以绕过 tombstone 为代价。
+
+### 问题 12：按 skill 输出重复的 source-already-installed 日志导致结果膨胀
+
+**现象**
+
+多个 skill 来自同一个仓库时，恢复输出为每一项重复一条 `source-already-installed`，最终产生上千行 JSON 并被终端截断。
+
+**重构方案**
+
+- 安装计划应先按规范化 source 分组，每个仓库只执行一次并输出一次汇总，同时列出该来源覆盖的 skill 数量和失败项目。
+
+### 下一次重试的新增验收条件
+
+1. 在真实 Windows PowerShell `-NoProfile` 环境中运行完整 bootstrap，而不是只跑单元测试。
+2. 验证恢复器实际执行 `codex.cmd` 和 `npx.cmd`，并且不会命中 WindowsApps。
+3. 已由 bootstrap 安装的 U同步插件必须被识别为 existing。
+4. 未安装的 `codebase-memory-mcp` tombstone 必须幂等通过且不得重新安装。
+5. 选定 skills 必须成功恢复，或者只为真实来源/凭据问题返回精确错误。
+6. 恢复输出应按来源聚合，不能再次产生上千条重复 skipped 记录。
+7. `setup` 和最终 `verify` 都必须返回 `ok=true`，bootstrap 总退出码必须为 0。
