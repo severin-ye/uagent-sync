@@ -189,7 +189,30 @@ describe("updateWorkspace application use case", () => {
     assert.equal(delegatedExecutor, undefined, "omitting executeCommand lets updateExtensions keep its established executor");
   });
 
-  it("buffers split output events before exposing redacted progress", async () => {
+  it("streams ordinary output with at most one-event delay and preserves line boundaries", async () => {
+    const { updateWorkspace } = await import("../src/application/update-workspace.js");
+    const events: Array<{ type: string; line?: string }> = [];
+    await updateWorkspace(
+      { workspaceRoot: "C:/workspace", targetAgent: "codex", onProgress: (event) => events.push(event) },
+      {
+        update: async (options) => {
+          options.onProgress?.({ type: "step-start", name: "sync/test", command: "npm test", index: 1, total: 1 });
+          options.onProgress?.({ type: "output", name: "sync/test", line: "first" });
+          options.onProgress?.({ type: "output", name: "sync/test", line: "second" });
+          assert.deepEqual(events.filter((event) => event.type === "output").map((event) => event.line), ["first"]);
+          options.onProgress?.({ type: "step-end", name: "sync/test", status: "ok", detail: "ok", durationMs: 1 });
+          return {
+            timestamp: "2026-08-23T00:00:00.000Z", dryRun: false, targetAgent: "codex", components: ["sync"], steps: [],
+            summary: { ok: 1, warning: 0, error: 0, skipped: 0 }, text: "report",
+          };
+        },
+      },
+    );
+
+    assert.deepEqual(events.filter((event) => event.type === "output").map((event) => event.line), ["first", "second"]);
+  });
+
+  it("streams split-secret output safely without leaking through joined lines", async () => {
     const { updateWorkspace } = await import("../src/application/update-workspace.js");
     const events: Array<{ type: string; line?: string }> = [];
     const secret = "sk-1234567890abcdef";
@@ -200,6 +223,7 @@ describe("updateWorkspace application use case", () => {
           options.onProgress?.({ type: "step-start", name: "sync/test", command: "npm test", index: 1, total: 1 });
           options.onProgress?.({ type: "output", name: "sync/test", line: "sk-12345678" });
           options.onProgress?.({ type: "output", name: "sync/test", line: "90abcdef" });
+          assert.ok(events.some((event) => event.type === "output"), "second output must release one safe event before step-end");
           options.onProgress?.({ type: "step-end", name: "sync/test", status: "ok", detail: "ok", durationMs: 1 });
           options.onProgress?.({ type: "done", summary: { ok: 1, warning: 0, error: 0, skipped: 0 } });
           return {
@@ -216,10 +240,10 @@ describe("updateWorkspace application use case", () => {
     );
 
     assert.equal(result.ok, true);
-    const serialized = JSON.stringify(events);
-    assert.doesNotMatch(serialized, new RegExp(secret));
-    assert.doesNotMatch(serialized, /sk-12345678|90abcdef/);
-    assert.ok(events.some((event) => event.type === "output" && event.line?.includes("<hidden>")));
+    const lines = events.filter((event) => event.type === "output").map((event) => event.line ?? "");
+    assert.equal(lines.length, 2, "each input output event keeps one output boundary");
+    assert.doesNotMatch(JSON.stringify(lines), new RegExp(secret));
+    assert.doesNotMatch(lines.join(""), new RegExp(secret));
   });
 });
 

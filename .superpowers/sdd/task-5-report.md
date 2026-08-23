@@ -43,3 +43,11 @@
 - Plugin setup now renders `ok`, errors, warnings, and skipped results, and returns redacted `metadata.ok=false` for a real delegated exception.
 - Review RED: 4/11 focused tests failed for the four missing behaviors before the fixes.
 - Review GREEN: 11/11 review-focused tests, 54/54 update/Codex-scope/CLI/Plugin tests, and 318/318 full tests passed.
+
+## Re-review progress fix
+
+- Replaced whole-step output buffering with a bounded 64 KiB, one-event pending window.
+- The second output event releases the previous safe line before `step-end`; ordinary event boundaries remain unchanged.
+- Adjacent lines are checked both independently and concatenated. A secret spanning the boundary masks each affected event separately, so neither individual events nor their concatenation reveal it.
+- Re-review RED: both streaming-timing and line-boundary tests failed under whole-step buffering.
+- Re-review GREEN: 2/2 focused progress tests, 55/55 related tests, and 319/319 full tests passed.
