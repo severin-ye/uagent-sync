@@ -340,6 +340,10 @@ async function main() {
         installGhCli: boolFlag(flags, "install-gh-cli", true),
         installSkills: listFlag(flags, "install-skills"),
         windowsFixPaths: listFlag(flags, "windows-fix-paths"),
+        onProgress: (event) => {
+          const retry = event.phase === "retry" ? ` delayMs=${event.delayMs ?? 0}` : "";
+          console.error(`[uagent-sync] skill-source ${event.phase} source=${event.source} attempt=${event.attempt}/${event.maxAttempts} elapsedMs=${event.elapsedMs}${retry}`);
+        },
       });
       const lines = ["# Workspace Setup Results", ""];
       for (const r of results) {

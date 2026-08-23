@@ -24,6 +24,8 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\bootstrap.ps1 
 
 脚本会保存并复用经过验证的 npm `codex.cmd` 和 Node `npx.cmd` 入口，不会回退到 WindowsApps 假命令。Codex personal marketplace 已存在但版本陈旧时，脚本会先核验其 Git origin，再执行可重试的 fast-forward 更新。
 
+每个 skill 仓库来源也会独立进行最多 3 次有界网络重试；每次重试前重新扫描已安装项。单次安装期间每 15 秒输出 heartbeat，默认 120 秒超时。权限、认证、仓库不存在和无效 manifest 不会盲目重试。最终失败的完整脱敏明细保存在 `usync-dotfiles/state/recovery-reports/`，终端只显示来源、数量和最多 3 个示例。
+
 不要删除状态文件，也不要手工复制旧机器配置。若确需从头验证，请使用新的 `-WorkspaceRoot`，保留原目录作为故障证据。
 
 ## 成功判据

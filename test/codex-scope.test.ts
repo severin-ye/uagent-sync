@@ -4,7 +4,7 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import { spawnSync } from "node:child_process";
-import { verifyEnvironment } from "../dist/lib/workspace.js";
+import { setupWorkspace, verifyEnvironment } from "../dist/lib/workspace.js";
 
 const TMP = path.join(os.tmpdir(), `uagent-codex-scope-${Date.now()}`);
 const WS = path.join(TMP, "workspace");
@@ -57,6 +57,40 @@ describe("Codex-only verify/setup scope", () => {
     const steps = (mod.planWorkspaceSetup as Function)({ targetAgent: "codex", homeDir: HOME, workspaceRoot: WS }) as Array<{ step: string }>;
     assert.ok(!steps.some((item) => /opencode/i.test(item.step)), JSON.stringify(steps));
     assert.ok(!fs.existsSync(path.join(HOME, ".config", "opencode", "opencode.json")));
+  });
+
+  it("writes a safe source failure report and emits setup progress on Windows", { skip: process.platform !== "win32" }, () => {
+    const workspace = path.join(TMP, "retry-workspace");
+    const home = path.join(TMP, "retry-home");
+    const globalBin = path.join(TMP, "retry-npm-global");
+    const stateDir = path.join(workspace, "usync-dotfiles", "state");
+    const npxCli = path.join(globalBin, "node_modules", "npm", "bin", "npx-cli.js");
+    fs.mkdirSync(path.dirname(npxCli), { recursive: true });
+    fs.mkdirSync(path.join(home, ".codex"), { recursive: true });
+    fs.mkdirSync(stateDir, { recursive: true });
+    fs.writeFileSync(path.join(globalBin, "npx.cmd"), "@echo off\r\nexit /b 99\r\n");
+    fs.writeFileSync(npxCli, "process.stderr.write('permission denied'); process.exit(1)");
+    fs.writeFileSync(path.join(home, ".codex", "config.toml"), "");
+    fs.writeFileSync(path.join(stateDir, "workspace-state.json"), JSON.stringify({
+      targetAgent: "codex",
+      agents: { codex: { plugins: [], mcp: [], skills: [{ kind: "skill", id: "fixture-skill", source: "acme/shared-skills" }] } },
+      tombstones: [],
+    }));
+    const originalNpx = process.env.UAGENT_SYNC_NPX_CMD;
+    process.env.UAGENT_SYNC_NPX_CMD = path.join(globalBin, "npx.cmd");
+    const progress: string[] = [];
+    try {
+      const results = setupWorkspace(workspace, { targetAgent: "codex", homeDir: home, onProgress: (event) => progress.push(event.phase) });
+      const restoreError = results.find((item) => item.status === "error" && item.detail.includes("skill source"));
+      assert.ok(restoreError, JSON.stringify(results));
+      assert.match(restoreError.detail, /report=%USERPROFILE%|report=.*recovery-reports/i);
+      assert.ok(progress.includes("start"));
+      assert.ok(progress.includes("complete"));
+      const reports = fs.readdirSync(path.join(stateDir, "recovery-reports"));
+      assert.equal(reports.length, 1);
+    } finally {
+      if (originalNpx === undefined) delete process.env.UAGENT_SYNC_NPX_CMD; else process.env.UAGENT_SYNC_NPX_CMD = originalNpx;
+    }
   });
 
   it("CLI verify returns structured fields and exits non-zero on required errors", () => {

@@ -152,6 +152,12 @@
 - **第 50、51 项 — 已修复并实机验证**：210 个 selected skills 全部可用，并按 5 个 source 汇总；setup 仅 13 个聚合 skipped，verify 逐项确认插件、skills、MCP、CLI、配置。
 - **第 52 项 — 部分修复**：本机真实 Windows PowerShell `-NoProfile` 隔离 workspace 与推送后 raw GitHub 唯一入口均已通过；raw 验收提交为 `a30ec80`，总退出码 0，setup/verify 均 `ok=true`。仍需另一台真正全新 Windows 机器验证 winget/UAC/首次 gh 登录矩阵。
 
+## 2026-08-23 第三轮跨设备网络修复
+
+- **第 12、49 项 — 已修复，待第二台机器复验**：skill source 现在独立执行 3 次有界重试、指数退避、重试前重扫、单次 120 秒超时和 15 秒 heartbeat；真实临时 `npx.cmd` 测试验证前两次 reset、第三次成功。
+- **第 15、27、51 项 — 已修复**：最终错误分别保留脱敏 stdout/stderr、exit code、可信路径和错误类型；终端只给数量与 3 个示例，完整列表和 attempts 原子写入 secrets-scanned recovery report。
+- **第 50、52 项 — 部分修复**：原电脑 270/270、真实 pack、setup/verify 均通过，但 `severin` 机器的 `open-design`/`gstack` 真实下载以及 bootstrap 最终 verify 仍需在本提交推送后复验，未伪报为通过。
+
 ## 原电脑修复后的重试验收
 
 原电脑完成重构并推送后，当前电脑应只提供 U同步仓库地址和 dotfiles 仓库地址即可自动完成 Codex-only 安装、恢复与最终验证，并且全过程不得访问或修改 OpenCode、不得恢复 `codebase-memory-mcp`、不得泄露密钥、不得把失败报告为成功。

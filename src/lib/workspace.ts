@@ -9,7 +9,7 @@ import { loadKnownMcps, analyzeMcpConfig } from "./guide.js";
 import { detectSyncPath, isMachineSpecificPath } from "./portable.js";
 import type { SubmoduleStatusItem, SetupResult, VerifyResult, TargetAgent, WorkspaceState, ExtensionRef } from "./types.js";
 import { DOTFILES_DIR } from "./dotfiles.js";
-import { restoreCodexExtensions } from "./codex-restore.js";
+import { restoreCodexExtensions, type SkillProgressEvent } from "./codex-restore.js";
 import { t } from "../i18n/index.js";
 import { scanMigrationAnalysis } from "./migration-analysis/index.js";
 
@@ -238,6 +238,7 @@ export function setupWorkspace(workspaceRoot: string, options?: {
   fixWindowsPaths?: boolean; copyConfig?: boolean; installRalph?: boolean;
   installSkillsCli?: boolean; installGhCli?: boolean; installSkills?: string[];
   windowsFixPaths?: string[]; targetAgent?: TargetAgent; homeDir?: string;
+  onProgress?: (event: SkillProgressEvent) => void;
 }): SetupResult[] {
   const results: SetupResult[] = [];
   if (options?.targetAgent === "codex") {
@@ -259,7 +260,12 @@ export function setupWorkspace(workspaceRoot: string, options?: {
       const selected: ExtensionRef[] = [...state.agents.codex.plugins, ...state.agents.codex.skills, ...state.agents.codex.mcp];
       const homeDir = options.homeDir ?? os.homedir();
       const installed = scanInstalledCodexExtensions(homeDir);
-      const restored = restoreCodexExtensions({ targetAgent: "codex", selected, installed, tombstones: state.tombstones ?? [], scanInstalled: () => scanInstalledCodexExtensions(homeDir) });
+      const restored = restoreCodexExtensions({
+        targetAgent: "codex", selected, installed, tombstones: state.tombstones ?? [],
+        scanInstalled: () => scanInstalledCodexExtensions(homeDir),
+        onProgress: options?.onProgress,
+        recoveryReportDirectory: path.join(workspaceRoot, DOTFILES_DIR, "state", "recovery-reports"),
+      });
       results.push(...restored.restored.map((item) => ({ step: `Restore ${item}`, status: "ok" as const, detail: "Restored or deletion enforced" })));
       results.push(...restored.skipped.map((item) => ({ step: `Skip ${item}`, status: "skipped" as const, detail: "Already present or explicitly deleted" })));
       results.push(...restored.warnings.map((item) => ({ step: "Restore selected Codex extensions", status: "warning" as const, detail: item })));

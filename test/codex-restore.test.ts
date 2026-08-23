@@ -1,8 +1,10 @@
 import { afterEach, describe, it } from "node:test";
 import * as assert from "node:assert";
+import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 import { executeTrustedCommand, restoreCodexExtensions } from "../dist/lib/codex-restore.js";
 
 const temporaryDirectories: string[] = [];
@@ -157,23 +159,110 @@ describe("Codex extension restoration", () => {
       targetAgent: "codex",
       selected: [{ kind: "skill", id: "alpha", source: "acme/shared-skills" }, { kind: "skill", id: "beta", source: "https://github.com/acme/shared-skills.git" }],
       installed: [], tombstones: [], execute: () => ({ code: 1, stdout: "", stderr: "network unavailable" }),
+      skillRecovery: { maxAttempts: 1 },
     });
     assert.equal(result.ok, false);
     assert.equal(result.errors.length, 1);
     assert.deepEqual(result.sourceSummaries[0]?.failed, ["alpha", "beta"]);
   });
 
+  it("retries a reset skill source with a bounded backoff and succeeds on the third attempt", () => {
+    const calls: number[] = [];
+    const scans: number[] = [];
+    const sleeps: number[] = [];
+    const progress: Array<{ phase: string; attempt: number; elapsedMs: number }> = [];
+    const result = restoreCodexExtensions({
+      targetAgent: "codex",
+      selected: [{ kind: "skill", id: "alpha", source: "https://github.com/acme/shared-skills.git" }],
+      installed: [], tombstones: [],
+      execute: (_file, _args) => {
+        calls.push(calls.length + 1);
+        return calls.length < 3
+          ? { code: 1, stdout: "", stderr: "fatal: Recv failure: Connection was reset" }
+          : { code: 0, stdout: "installed", stderr: "" };
+      },
+      scanInstalled: () => { scans.push(scans.length + 1); return []; },
+      onProgress: (event) => progress.push({ phase: event.phase, attempt: event.attempt, elapsedMs: event.elapsedMs }),
+      skillRecovery: { maxAttempts: 3, baseDelayMs: 10, maxDelayMs: 20, sleep: (ms) => sleeps.push(ms), now: () => 1000 },
+    });
+    assert.equal(result.ok, true, JSON.stringify(result));
+    assert.deepEqual(calls, [1, 2, 3]);
+    assert.deepEqual(scans, [1, 2]);
+    assert.deepEqual(sleeps, [10, 20]);
+    assert.equal(result.sourceSummaries[0]?.status, "installed");
+    assert.ok(progress.some((event) => event.phase === "start"));
+    assert.ok(progress.some((event) => event.phase === "retry" && event.attempt === 2));
+    assert.ok(progress.some((event) => event.phase === "complete" && event.attempt === 3));
+  });
+
+  it("stops retrying when a pre-retry scan confirms the whole source is installed", () => {
+    let executes = 0;
+    let scans = 0;
+    const selected = [{ kind: "skill" as const, id: "alpha", source: "acme/shared-skills" }];
+    const result = restoreCodexExtensions({
+      targetAgent: "codex", selected, installed: [], tombstones: [],
+      execute: () => { executes += 1; return { code: 1, stdout: "", stderr: "connection reset" }; },
+      scanInstalled: () => { scans += 1; return scans === 1 ? selected : []; },
+      skillRecovery: { maxAttempts: 3, baseDelayMs: 10, sleep: () => { throw new Error("must not sleep after complete scan"); } },
+    });
+    assert.equal(result.ok, true, JSON.stringify(result));
+    assert.equal(executes, 1);
+    assert.equal(scans, 1);
+    assert.deepEqual(result.sourceSummaries[0]?.succeeded, ["alpha"]);
+  });
+
+  it("fails non-retryable source errors immediately and keeps full details in an optional report", () => {
+    const directory = fs.mkdtempSync(path.join(os.tmpdir(), "uagent-skill-report-"));
+    temporaryDirectories.push(directory);
+    const selected = Array.from({ length: 151 }, (_, index) => ({ kind: "skill" as const, id: `skill-${index + 1}`, source: "acme/shared-skills" }));
+    let executes = 0;
+    const result = restoreCodexExtensions({
+      targetAgent: "codex", selected, installed: [], tombstones: [],
+      execute: () => { executes += 1; return { code: 403, stdout: "", stderr: "permission denied" }; },
+      recoveryReportDirectory: directory,
+    });
+    assert.equal(result.ok, false);
+    assert.equal(executes, 1);
+    assert.equal(result.errors.length, 1);
+    assert.ok(result.errors[0]?.includes("skills=151"));
+    assert.ok(result.errors[0]?.includes("skill-1, skill-2, skill-3"));
+    assert.ok(!result.errors[0]?.includes("skill-4"));
+    const reportPath = result.sourceSummaries[0]?.reportPath;
+    assert.ok(reportPath);
+    const report = JSON.parse(fs.readFileSync(reportPath!, "utf8")) as { source: string; skills: string[]; attempts: Array<{ exitCode: number; stderr: string }> };
+    assert.equal(report.skills.length, 151);
+    assert.equal(report.attempts[0]?.exitCode, 403);
+    assert.equal(report.attempts[0]?.stderr, "permission denied");
+  });
+
+  it("keeps separate redacted stdout and stderr summaries when stdout is long", () => {
+    const result = restoreCodexExtensions({
+      targetAgent: "codex", selected: [{ kind: "skill", id: "alpha", source: "acme/shared-skills" }], installed: [], tombstones: [],
+      execute: () => ({ code: 1, stdout: "x".repeat(800), stderr: "final stderr diagnosis" }),
+      skillRecovery: { maxAttempts: 1 },
+    });
+    assert.equal(result.ok, false);
+    assert.match(result.errors[0] ?? "", /stdout=x+/);
+    assert.match(result.errors[0] ?? "", /stderr=final stderr diagnosis/);
+  });
+
   it("redacts command stderr before adding it to structured recovery errors", () => {
+    const directory = fs.mkdtempSync(path.join(os.tmpdir(), "uagent-redacted-report-"));
+    temporaryDirectories.push(directory);
     const fixtureValue = ["fixture", "secret", "value"].join("-");
     const fixtureStderr = `Authorization: ${["Bear", "er"].join("")} ${fixtureValue}`;
     const result = restoreCodexExtensions({
       targetAgent: "codex", selected: [{ kind: "skill", id: "alpha", source: "acme/shared-skills" }], installed: [], tombstones: [],
       execute: () => ({ code: 1, stdout: "", stderr: fixtureStderr }),
+      recoveryReportDirectory: directory,
     });
     const serialized = JSON.stringify(result);
     assert.equal(result.ok, false);
     assert.ok(!serialized.includes(fixtureValue), serialized);
     assert.ok(serialized.includes("<hidden>"), serialized);
+    const reportPath = result.sourceSummaries[0]?.reportPath;
+    assert.ok(reportPath);
+    assert.ok(!fs.readFileSync(reportPath!, "utf8").includes(fixtureValue));
   });
 
   it("aggregates existing skills into one skipped entry per normalized source", () => {
@@ -220,5 +309,68 @@ describe("trusted Windows command execution", () => {
     assert.equal(codex.resolvedPath, path.join("%USERPROFILE%", path.relative(os.homedir(), path.join(globalBin, "codex.cmd"))));
     assert.equal(npx.resolvedPath, path.join("%USERPROFILE%", path.relative(os.homedir(), path.join(globalBin, "npx.cmd"))));
     assert.ok(!`${codex.resolvedPath}\n${npx.resolvedPath}`.toLowerCase().includes("windowsapps"));
+  });
+
+  it("emits periodic stderr heartbeats while a real monitored skill command is still running", { skip: process.platform !== "win32" }, () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "uagent-heartbeat-shim-"));
+    temporaryDirectories.push(root);
+    const globalBin = path.join(root, "npm-global");
+    const npxCli = path.join(globalBin, "node_modules", "npm", "bin", "npx-cli.js");
+    fs.mkdirSync(path.dirname(npxCli), { recursive: true });
+    fs.writeFileSync(path.join(globalBin, "npx.cmd"), "@echo off\r\nexit /b 99\r\n");
+    fs.writeFileSync(npxCli, "setTimeout(() => process.exit(0), 700)");
+    const moduleUrl = pathToFileURL(path.join(import.meta.dirname, "..", "dist", "lib", "codex-restore.js")).href;
+    const driver = path.join(root, "driver.mjs");
+    fs.writeFileSync(driver, `import { executeTrustedCommand } from ${JSON.stringify(moduleUrl)}; const result = executeTrustedCommand("npx", ["--yes", "skills", "add", "acme/shared-skills", "-g", "-y"], { timeoutMs: 2000, heartbeatIntervalMs: 250 }); process.stdout.write(JSON.stringify(result));`);
+    const run = spawnSync(process.execPath, [driver], {
+      encoding: "utf-8",
+      env: { ...process.env, UAGENT_SYNC_NPX_CMD: path.join(globalBin, "npx.cmd") },
+    });
+    assert.equal(run.status, 0, run.stderr);
+    assert.equal(JSON.parse(run.stdout).code, 0);
+    assert.ok(run.stderr.split(/\r?\n/).filter((line) => line.includes("skill source install still running")).length >= 2, run.stderr);
+    assert.ok(!run.stderr.includes(String.raw`running\n`), run.stderr);
+  });
+
+  it("terminates a real monitored skill command at its bounded timeout", { skip: process.platform !== "win32" }, () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "uagent-timeout-shim-"));
+    temporaryDirectories.push(root);
+    const globalBin = path.join(root, "npm-global");
+    const npxCli = path.join(globalBin, "node_modules", "npm", "bin", "npx-cli.js");
+    fs.mkdirSync(path.dirname(npxCli), { recursive: true });
+    fs.writeFileSync(path.join(globalBin, "npx.cmd"), "@echo off\r\nexit /b 99\r\n");
+    fs.writeFileSync(npxCli, "setInterval(() => {}, 1000)");
+    const result = executeTrustedCommand("npx", ["--yes", "skills", "add", "acme/shared-skills", "-g", "-y"], {
+      env: { ...process.env, UAGENT_SYNC_NPX_CMD: path.join(globalBin, "npx.cmd") }, timeoutMs: 300, heartbeatIntervalMs: 250,
+    });
+    assert.equal(result.code, 124, JSON.stringify(result));
+    assert.equal(result.errorType, "TIMEOUT");
+  });
+
+  it("retries two real monitored connection resets and succeeds on the third process", { skip: process.platform !== "win32" }, () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "uagent-real-retry-shim-"));
+    temporaryDirectories.push(root);
+    const globalBin = path.join(root, "npm-global");
+    const npxCli = path.join(globalBin, "node_modules", "npm", "bin", "npx-cli.js");
+    const counter = path.join(root, "attempt.txt");
+    fs.mkdirSync(path.dirname(npxCli), { recursive: true });
+    fs.writeFileSync(path.join(globalBin, "npx.cmd"), "@echo off\r\nexit /b 99\r\n");
+    fs.writeFileSync(npxCli, `const fs = require("node:fs"); const file = process.env.UAGENT_FIXTURE_COUNTER; const attempt = fs.existsSync(file) ? Number(fs.readFileSync(file, "utf8")) + 1 : 1; fs.writeFileSync(file, String(attempt)); if (attempt < 3) { process.stderr.write("fatal: Recv failure: Connection was reset"); process.exit(1); }`);
+    const oldNpx = process.env.UAGENT_SYNC_NPX_CMD;
+    const oldCounter = process.env.UAGENT_FIXTURE_COUNTER;
+    process.env.UAGENT_SYNC_NPX_CMD = path.join(globalBin, "npx.cmd");
+    process.env.UAGENT_FIXTURE_COUNTER = counter;
+    try {
+      const result = restoreCodexExtensions({
+        targetAgent: "codex", selected: [{ kind: "skill", id: "alpha", source: "acme/shared-skills" }], installed: [], tombstones: [],
+        scanInstalled: () => [], skillRecovery: { maxAttempts: 3, baseDelayMs: 0, maxDelayMs: 0, timeoutMs: 2000 },
+      });
+      assert.equal(result.ok, true, JSON.stringify(result));
+      assert.equal(fs.readFileSync(counter, "utf8"), "3");
+      assert.equal(result.sourceSummaries[0]?.attempts?.length, 3);
+    } finally {
+      if (oldNpx === undefined) delete process.env.UAGENT_SYNC_NPX_CMD; else process.env.UAGENT_SYNC_NPX_CMD = oldNpx;
+      if (oldCounter === undefined) delete process.env.UAGENT_FIXTURE_COUNTER; else process.env.UAGENT_FIXTURE_COUNTER = oldCounter;
+    }
   });
 });

@@ -518,6 +518,30 @@ Conflicting recovery entries for plugin:uagent-sync
 4. bootstrap 总退出码为 0，并保持 Codex-only、tombstone 和密钥安全要求。
 5. 终端错误摘要不得展开数百个 skill 名称，完整明细应写入可审计报告文件。
 
+## 第三轮修复状态（原电脑，基于 `bc33778`）
+
+### 问题 13：已修复，等待 `severin` 机器复验真实仓库下载
+
+- 每个规范化 skill source 默认最多尝试 3 次，指数退避为 500ms、1000ms，单次默认超时 120 秒；参数均有上下界并可在测试中注入。
+- 只有 connection reset、超时、临时 DNS/TLS、429/502/503/504 等瞬态网络错误会重试；权限、认证、仓库不存在、来源或 manifest 无效立即失败。
+- 每次重试前重新扫描已安装清单；若该来源覆盖的 skills 已全部出现，立即记为成功，不重复安装。
+- 默认 Windows 执行器通过受控 Node monitor 运行可信 CLI，`shell=false`；单次命令仍运行时每 15 秒向 stderr 输出一行无参数、无密钥的 heartbeat，120 秒后返回 `124/TIMEOUT`。
+- CLI 另外输出 source 级 `start/heartbeat/retry/complete`、attempt、elapsedMs 和退避时间；结构化 JSON 保持在 stdout，不被进度输出污染。
+- 新增真实临时 `npx.cmd` 端到端测试：两个独立子进程返回 `Recv failure: Connection was reset`，第三个进程成功；同时覆盖真实周期心跳和真实超时终止。
+
+### 问题 14：已修复
+
+- 主错误只显示规范化 source、skill 总数、最多 3 个示例、退出码、分别脱敏限长的 stdout/stderr、可信路径与错误类型，不再展开 151 个名称。
+- 失败完整明细原子写入 `usync-dotfiles/state/recovery-reports/skill-source-*.json`，保存完整 skill ID、每次尝试的耗时、退出码和脱敏摘要；写入前再次执行 secrets 扫描。
+- setup 返回的错误包含脱敏 report 路径，便于跨设备审计；报告测试确认 Bearer fixture 的实际值既不进入结构化结果也不进入文件。
+
+### 原电脑验证
+
+- `npm test`：270/270、60 suites、0 failed。
+- 独立真实 `npm pack`、production install、CLI `--version`/`--help` smoke：通过。
+- 原电脑目标 workspace：setup 退出 0、`ok=true`、0 errors；verify 退出 0、`ok=true`、210 个 selected skills 可用，`codebase-memory-mcp absent`。
+- 上述原电脑结果不能代替 `severin` 机器对 `open-design` 与 `gstack` 的真实网络下载复验；推送后必须在该机器重新执行同一 raw bootstrap，确认 5/5 来源和最终 verify。
+
 ## 第二轮真实 Windows 修复与本地 bootstrap 验收（2026-08-23）
 
 测试方式：先在隔离的临时 workspace clone `ee4c5ec`，再应用本轮未推送 diff，直接运行本地 `scripts/bootstrap.ps1`。该方式保证测试的是本地修改，而不是 raw GitHub 上尚未推送的旧脚本。
