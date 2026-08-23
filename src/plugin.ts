@@ -63,21 +63,8 @@ The JSON file can be committed to Git and imported on another device.`,
             workspaceRoot,
             outputPath: stateFile,
             targetAgent: "opencode",
+            trackState: args.trackState,
           });
-
-          const gitignorePath = path.join(workspaceRoot, `${DOTFILES_DIR}/.gitignore`);
-          const statePattern = "state/workspace-state.json";
-          let gitignoreContent = fs.existsSync(gitignorePath) ? fs.readFileSync(gitignorePath, "utf-8") : "";
-
-          if (args.trackState) {
-            if (gitignoreContent.includes(statePattern)) {
-              fs.writeFileSync(gitignorePath, gitignoreContent.split("\n").filter(l => l.trim() !== statePattern).join("\n"));
-            }
-          } else {
-            if (!gitignoreContent.includes(statePattern)) {
-              fs.appendFileSync(gitignorePath, `\n${statePattern}\n`);
-            }
-          }
 
           const summary = [
             `Exported workspace state to: ${stateFile}`,
@@ -115,12 +102,17 @@ Use dryRun=true to preview changes without applying them.`,
             artifact = fs.readFileSync(isPathSafe(args.source, workspaceRoot), "utf-8");
           }
 
-          const output = defaultWorkspaceApplication.importWorkspace({
-            workspaceRoot,
-            targetAgent: "opencode",
-            artifact,
-            dryRun: args.dryRun,
-          });
+          let output;
+          try {
+            output = defaultWorkspaceApplication.importWorkspace({
+              workspaceRoot,
+              targetAgent: "opencode",
+              artifact,
+              dryRun: args.dryRun,
+            });
+          } catch (error) {
+            return text(`Error: ${error instanceof Error ? error.message : String(error)}`);
+          }
           if (output.kind === "dry-run") {
             return text(output.diffs.length > 0 ? ["Dry run — would make these changes:", ...output.diffs].join("\n") : "Dry run — no changes needed (already in sync)");
           }

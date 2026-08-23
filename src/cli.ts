@@ -23,6 +23,12 @@ import { formatVerifyJson, formatVerifyText } from "./entrypoints/result-formatt
 
 function log(msg: string) { console.error(`[opencode-sync] ${msg}`); }
 
+function failStateCommand(targetAgent: TargetAgent, error: unknown): never {
+  const message = error instanceof Error ? error.message : String(error);
+  console.error(JSON.stringify({ ok: false, warnings: [], errors: [message], skipped: [], targetAgent }));
+  process.exit(1);
+}
+
 const ICON: Record<string, string> = { ok: "✅", warning: "⚠️", error: "❌", skipped: "⏭️" };
 
 /** 解析 argv：--key value / --key=value / --key（布尔 true）/ --no-key（布尔 false）+ 位置参数 */
@@ -208,11 +214,14 @@ async function main() {
     }
     case "export": {
       const out = isPathSafe(positionals[0] || stateFile, workspaceRoot);
-      const { state } = defaultWorkspaceApplication.exportWorkspace({
-        workspaceRoot,
-        outputPath: out,
-        targetAgent: targetAgentFor(flags, workspaceRoot),
-      });
+      const targetAgent = targetAgentFor(flags, workspaceRoot);
+      const { state } = (() => {
+        try {
+          return defaultWorkspaceApplication.exportWorkspace({ workspaceRoot, outputPath: out, targetAgent });
+        } catch (error) {
+          return failStateCommand(targetAgent, error);
+        }
+      })();
       log(t("cli.exported", { path: out }));
       log(t("cli.exportedSubmodules", { count: state.submodules.length }));
       log(t("cli.exportedSkills", { count: state.skills.length }));
@@ -220,6 +229,7 @@ async function main() {
     }
     case "import": {
       const src = positionals[0] || stateFile;
+      const targetAgent = targetAgentFor(flags, workspaceRoot);
       let artifact: string;
       if (/^https?:\/\//.test(src)) {
         const res = await fetch(src);
@@ -228,12 +238,18 @@ async function main() {
       } else {
         artifact = fs.readFileSync(isPathSafe(src, workspaceRoot), "utf-8");
       }
-      const output = defaultWorkspaceApplication.importWorkspace({
-        workspaceRoot,
-        targetAgent: targetAgentFor(flags, workspaceRoot),
-        artifact,
-        dryRun: flags.has("dry-run"),
-      });
+      const output = (() => {
+        try {
+          return defaultWorkspaceApplication.importWorkspace({
+            workspaceRoot,
+            targetAgent,
+            artifact,
+            dryRun: flags.has("dry-run"),
+          });
+        } catch (error) {
+          return failStateCommand(targetAgent, error);
+        }
+      })();
       if (output.kind === "dry-run") {
         console.log(output.diffs.length > 0 ? [t("cli.dryRunChanges"), ...output.diffs].join("\n") : t("cli.dryRunNoChanges"));
         break;

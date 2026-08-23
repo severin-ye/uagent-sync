@@ -3,6 +3,7 @@ import * as assert from "node:assert/strict";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
+import { spawnSync } from "node:child_process";
 import type { ImportResult, TargetAgent, WorkspaceState, WorkspaceStateV3 } from "../src/lib/types.js";
 
 const exportModulePath = "../src/application/export-workspace.js";
@@ -11,9 +12,14 @@ const nodeFileSystemModulePath = "../src/adapters/infrastructure/node-file-syste
 const repositoryRoot = path.join(import.meta.dirname, "..");
 
 type ExportWorkspace = (
-  input: { workspaceRoot: string; outputPath: string; targetAgent: TargetAgent },
+  input: { workspaceRoot: string; outputPath: string; targetAgent: TargetAgent; trackState?: boolean },
   dependencies: {
-    fileSystem: { readText(path: string): string; writeText(path: string, content: string): void };
+    fileSystem: {
+      exists(path: string): boolean;
+      joinPath(...parts: string[]): string;
+      readText(path: string): string;
+      writeText(path: string, content: string): void;
+    };
     exportState(workspaceRoot: string, options: { targetAgent: TargetAgent }): WorkspaceState;
     assertNoSecrets(content: string, source?: string): void;
   },
@@ -64,6 +70,8 @@ describe("exportWorkspace", () => {
       { workspaceRoot: "C:/workspace", outputPath: "C:/workspace/state.json", targetAgent: "codex" },
       {
         fileSystem: {
+          exists: () => false,
+          joinPath: (...parts) => parts.join("/"),
           readText: () => "",
           writeText: (_file, content) => { events.push("write"); written = content; },
         },
@@ -91,12 +99,60 @@ describe("exportWorkspace", () => {
     assert.throws(() => exportWorkspace(
       { workspaceRoot: "C:/workspace", outputPath: "state.json", targetAgent: "opencode" },
       {
-        fileSystem: { readText: () => "", writeText: () => { writes += 1; } },
+        fileSystem: { exists: () => false, joinPath: (...parts) => parts.join("/"), readText: () => "", writeText: () => { writes += 1; } },
         exportState: () => ({ ...baseState, targetAgent: "opencode" }) as unknown as WorkspaceState,
         assertNoSecrets: () => { throw new Error("secret blocked"); },
       },
     ), /secret blocked/);
     assert.equal(writes, 0);
+  });
+
+  it("fails unsupported dsh/all scopes before collection, scanning, or any file write", async () => {
+    const { exportWorkspace } = await import(exportModulePath) as { exportWorkspace: ExportWorkspace };
+    for (const targetAgent of ["dsh", "all"] as const) {
+      const events: string[] = [];
+      assert.throws(() => exportWorkspace(
+        { workspaceRoot: "C:/workspace", outputPath: `${targetAgent}.json`, targetAgent },
+        {
+          fileSystem: {
+            exists: () => { events.push("exists"); return false; },
+            joinPath: (...parts) => parts.join("/"),
+            readText: () => { events.push("read"); return ""; },
+            writeText: () => { events.push("write"); },
+          },
+          exportState: () => { events.push("collect"); return baseState as unknown as WorkspaceState; },
+          assertNoSecrets: () => { events.push("scan"); },
+        },
+      ), new RegExp(`unsupported.*targetAgent=${targetAgent}`, "i"));
+      assert.deepEqual(events, []);
+    }
+  });
+
+  it("owns the Plugin tracking policy and performs every .gitignore operation through FileSystem", async () => {
+    const { exportWorkspace } = await import(exportModulePath) as { exportWorkspace: ExportWorkspace };
+    const files = new Map<string, string>();
+    const writes: string[] = [];
+    const fileSystem = {
+      exists: (file: string) => files.has(file),
+      joinPath: (...parts: string[]) => parts.join("/"),
+      readText: (file: string) => files.get(file) ?? "",
+      writeText: (file: string, content: string) => { files.set(file, content); writes.push(file); },
+    };
+    const dependencies = {
+      fileSystem,
+      exportState: () => ({ ...baseState, targetAgent: "opencode" }) as unknown as WorkspaceState,
+      assertNoSecrets: () => undefined,
+    };
+    const gitignore = "C:/workspace/usync-dotfiles/.gitignore";
+
+    exportWorkspace({ workspaceRoot: "C:/workspace", outputPath: "state.json", targetAgent: "opencode", trackState: false }, dependencies);
+    assert.match(files.get(gitignore) ?? "", /^state\/workspace-state\.json$/m);
+    assert.ok(writes.includes(gitignore));
+
+    writes.length = 0;
+    exportWorkspace({ workspaceRoot: "C:/workspace", outputPath: "state.json", targetAgent: "opencode", trackState: true }, dependencies);
+    assert.doesNotMatch(files.get(gitignore) ?? "", /^state\/workspace-state\.json$/m);
+    assert.ok(writes.includes(gitignore));
   });
 });
 
@@ -144,22 +200,39 @@ describe("importWorkspace", () => {
     let inspectedWorkspace = false;
 
     assert.throws(() => importWorkspace(
-      { workspaceRoot: "C:/workspace", targetAgent: "dsh", artifact: baseState, dryRun: true },
+      { workspaceRoot: "C:/workspace", targetAgent: "opencode", artifact: baseState, dryRun: true },
       {
         parseArtifact: () => baseState,
         importState: () => ({ success: true, messages: [] }),
         exportState: () => { inspectedWorkspace = true; return baseState as unknown as WorkspaceState; },
         diffState: () => [],
       },
-    ), /targetAgent=codex.*dsh/i);
+    ), /targetAgent=codex.*opencode/i);
     assert.equal(inspectedWorkspace, false);
+  });
+
+  it("fails unsupported dsh/all scopes before codec parsing or any downstream work", async () => {
+    const { importWorkspace } = await import(importModulePath) as { importWorkspace: ImportWorkspace };
+    for (const targetAgent of ["dsh", "all"] as const) {
+      const events: string[] = [];
+      assert.throws(() => importWorkspace(
+        { workspaceRoot: "C:/workspace", targetAgent, artifact: "{malformed", dryRun: true },
+        {
+          parseArtifact: () => { events.push("parse"); return baseState; },
+          importState: () => { events.push("import"); return { success: true, messages: [] }; },
+          exportState: () => { events.push("snapshot"); return baseState as unknown as WorkspaceState; },
+          diffState: () => { events.push("diff"); return []; },
+        },
+      ), new RegExp(`unsupported.*targetAgent=${targetAgent}`, "i"));
+      assert.deepEqual(events, []);
+    }
   });
 });
 
 describe("nodeFileSystem", () => {
   it("implements the text file port", async () => {
     const module = await import(nodeFileSystemModulePath).catch(() => null) as {
-      nodeFileSystem?: { readText(path: string): string; writeText(path: string, content: string): void };
+      nodeFileSystem?: { exists(path: string): boolean; joinPath(...parts: string[]): string; readText(path: string): string; writeText(path: string, content: string): void };
     } | null;
     assert.ok(module?.nodeFileSystem, "Node file-system adapter must exist");
     const directory = fs.mkdtempSync(path.join(os.tmpdir(), "uagent-file-port-"));
@@ -167,6 +240,8 @@ describe("nodeFileSystem", () => {
     const file = path.join(directory, "artifact.json");
 
     module.nodeFileSystem.writeText(file, "artifact");
+    assert.equal(module.nodeFileSystem.exists(file), true);
+    assert.equal(module.nodeFileSystem.joinPath(directory, "artifact.json"), file);
     assert.equal(module.nodeFileSystem.readText(file), "artifact");
   });
 });
@@ -198,9 +273,114 @@ describe("export/import entrypoint parity", () => {
 
     assert.match(exportTool, /defaultWorkspaceApplication\.exportWorkspace\s*\(/);
     assert.match(exportTool, /trackState/);
-    assert.doesNotMatch(exportTool, /exportSystemState\s*\(|writeFileSync\(stateFile/);
+    assert.doesNotMatch(exportTool, /exportSystemState\s*\(|fs\.(?:existsSync|readFileSync|writeFileSync|appendFileSync)/);
     assert.match(importTool, /defaultWorkspaceApplication\.importWorkspace\s*\(/);
     assert.match(importTool, /z\.string\(\)\.min\(1\)\.max\(2000\)/, "Plugin keeps its source schema");
     assert.doesNotMatch(importTool, /importSystemState\s*\(|diffState\s*\(|exportSystemState\s*\(/);
+  });
+});
+
+describe("real CLI export/import protocol", () => {
+  function fixture(): { workspace: string; home: string; config: string } {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "uagent-export-protocol-"));
+    temporaryDirectories.push(root);
+    const workspace = path.join(root, "workspace");
+    const home = path.join(root, "home");
+    const config = path.join(root, "opencode.json");
+    fs.mkdirSync(path.join(workspace, "usync-dotfiles", "state"), { recursive: true });
+    fs.mkdirSync(home, { recursive: true });
+    fs.writeFileSync(path.join(workspace, ".gitmodules"), "");
+    fs.writeFileSync(config, JSON.stringify({ plugin: ["fixture-plugin"] }));
+    return { workspace, home, config };
+  }
+
+  function runCli(workspace: string, home: string, config: string, args: string[]) {
+    return spawnSync(process.execPath, [path.join(repositoryRoot, "dist", "cli.js"), ...args], {
+      encoding: "utf-8",
+      env: {
+        ...process.env,
+        HOME: home,
+        USERPROFILE: home,
+        OPENCODE_CONFIG_TEST: config,
+        OPENCODE_SYNC_WORKSPACE_ROOT: workspace,
+        UAGENT_SYNC_LANG: "en",
+      },
+    });
+  }
+
+  it("roundtrips a supported OpenCode artifact with stable exit/output and JSON", () => {
+    const { workspace, home, config } = fixture();
+    const artifact = path.join(workspace, "state.json");
+    const exported = runCli(workspace, home, config, ["export", artifact, "--target-agent", "opencode"]);
+    assert.equal(exported.status, 0, exported.stderr);
+    assert.match(exported.stderr, /Exported:/);
+    assert.deepEqual(JSON.parse(fs.readFileSync(artifact, "utf-8")).opencodeConfig.plugin, ["fixture-plugin"]);
+
+    const imported = runCli(workspace, home, config, ["import", artifact, "--target-agent", "opencode", "--dry-run"]);
+    assert.equal(imported.status, 0, imported.stderr);
+    assert.match(imported.stdout, /Dry run/);
+  });
+
+  it("fails dsh/all export and import with ok=false before artifact writes or parsing", () => {
+    const { workspace, home, config } = fixture();
+    const malformed = path.join(workspace, "malformed.json");
+    fs.writeFileSync(malformed, "{malformed");
+
+    for (const targetAgent of ["dsh", "all"] as const) {
+      const artifact = path.join(workspace, `${targetAgent}.json`);
+      const exported = runCli(workspace, home, config, ["export", artifact, "--target-agent", targetAgent]);
+      assert.notEqual(exported.status, 0);
+      assert.equal(fs.existsSync(artifact), false);
+      const exportError = JSON.parse(exported.stderr || exported.stdout);
+      assert.equal(exportError.ok, false);
+      assert.equal(exportError.targetAgent, targetAgent);
+      assert.match(exportError.errors.join("\n"), new RegExp(`unsupported.*targetAgent=${targetAgent}`, "i"));
+
+      const imported = runCli(workspace, home, config, ["import", malformed, "--target-agent", targetAgent, "--dry-run"]);
+      assert.notEqual(imported.status, 0);
+      const importError = JSON.parse(imported.stderr || imported.stdout);
+      assert.equal(importError.ok, false);
+      assert.equal(importError.targetAgent, targetAgent);
+      assert.match(importError.errors.join("\n"), new RegExp(`unsupported.*targetAgent=${targetAgent}`, "i"));
+      assert.doesNotMatch(importError.errors.join("\n"), /invalid.*json/i);
+    }
+  });
+});
+
+describe("real Plugin export/import protocol", () => {
+  it("returns success and failure as Plugin text while application owns tracking", async () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "uagent-plugin-protocol-"));
+    temporaryDirectories.push(root);
+    const workspace = path.join(root, "workspace");
+    const config = path.join(root, "opencode.json");
+    fs.mkdirSync(path.join(workspace, "usync-dotfiles", "state"), { recursive: true });
+    fs.writeFileSync(path.join(workspace, ".gitmodules"), "");
+    fs.writeFileSync(config, JSON.stringify({ plugin: ["fixture-plugin"] }));
+    const oldWorkspace = process.env.OPENCODE_SYNC_WORKSPACE_ROOT;
+    const oldConfig = process.env.OPENCODE_CONFIG_TEST;
+    process.env.OPENCODE_SYNC_WORKSPACE_ROOT = workspace;
+    process.env.OPENCODE_CONFIG_TEST = config;
+    try {
+      const { default: OpencodeSyncPlugin } = await import("../dist/plugin.js");
+      const plugin = await OpencodeSyncPlugin({} as never);
+      const tools = plugin.tool as unknown as Record<string, { execute(args: Record<string, unknown>): Promise<{ title: string; output: string }> }>;
+      const artifact = path.join(workspace, "usync-dotfiles", "state", "workspace-state.json");
+
+      const success = await tools.opencode_sync_export.execute({ output: artifact, trackState: false });
+      assert.equal(success.title, "opencode-sync");
+      assert.match(success.output, /Exported workspace state to:/);
+      assert.match(fs.readFileSync(path.join(workspace, "usync-dotfiles", ".gitignore"), "utf-8"), /^state\/workspace-state\.json$/m);
+
+      const codexArtifact = path.join(workspace, "codex.json");
+      fs.writeFileSync(codexArtifact, JSON.stringify(baseState));
+      const failure = await tools.opencode_sync_import.execute({ source: codexArtifact, dryRun: false });
+      assert.equal(failure.title, "opencode-sync");
+      assert.match(failure.output, /^Error: workspace-state targetAgent=codex conflicts with opencode$/);
+    } finally {
+      if (oldWorkspace === undefined) delete process.env.OPENCODE_SYNC_WORKSPACE_ROOT;
+      else process.env.OPENCODE_SYNC_WORKSPACE_ROOT = oldWorkspace;
+      if (oldConfig === undefined) delete process.env.OPENCODE_CONFIG_TEST;
+      else process.env.OPENCODE_CONFIG_TEST = oldConfig;
+    }
   });
 });
