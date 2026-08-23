@@ -20,6 +20,10 @@ import { resolveWorkspaceRoot } from "../sync.js";
 import { DOTFILES_DIR } from "./dotfiles.js";
 import { t } from "../i18n/index.js";
 import { scanMigrationAnalysis } from "./migration-analysis/index.js";
+import { executeTrustedCommand } from "./codex-restore.js";
+import { normalizeExtensionSource } from "./recovery-manifest.js";
+import { redactString } from "./redact.js";
+import type { TargetAgent } from "./types.js";
 
 export type UpdateComponent =
   | "opencode"
@@ -55,6 +59,7 @@ export interface UpdateStep {
 export interface UpdateReport {
   timestamp: string;
   dryRun: boolean;
+  targetAgent: TargetAgent;
   components: UpdateComponent[];
   steps: UpdateStep[];
   summary: { ok: number; warning: number; error: number; skipped: number };
@@ -85,6 +90,8 @@ export interface SpawnResult {
   code: number;
   output: string;
 }
+
+export type UpdateCommandExecutor = (file: string, args: string[], options?: { cwd?: string; timeoutMs?: number; onLine?: (line: string) => void }) => Promise<SpawnResult>;
 
 /** 流式执行命令：逐行收集输出并实时回调；带超时（超时 kill 子进程）。 */
 export function spawnCommand(cmd: string, opts: { cwd?: string; onLine?: (line: string) => void; timeoutMs?: number; env?: Record<string, string> } = {}): Promise<SpawnResult> {
@@ -224,21 +231,120 @@ async function collectChangeEvidence(stepName: string, cwd: string | undefined, 
 export interface UpdateOptions {
   components?: UpdateComponent[];
   dryRun?: boolean;
+  targetAgent?: TargetAgent;
   onProgress?: (event: UpdateProgress) => void;
+  executeCommand?: UpdateCommandExecutor;
   /**
    * 环境注入（测试用）：覆盖插件缓存目录与 config 目录。
    * 默认取 ~/.cache/opencode/packages 与 ~/.config/opencode——在 CI/干净环境不可用，
    * 测试通过注入临时目录获得确定性。
    */
-  env?: { pluginCache?: string; configDir?: string };
+  env?: { pluginCache?: string; configDir?: string; syncDir?: string };
+}
+
+function displayCommand(file: string, args: string[]): string {
+  return [file, ...args.map((arg) => /[\s&|<>^]/.test(arg) ? JSON.stringify(arg) : arg)].join(" ");
+}
+
+function safeUpdateOutput(value: string, maxLength = 2000): string {
+  return redactString(value).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, "").trim().slice(0, maxLength);
+}
+
+function spawnArgsCommand(file: string, args: string[], opts: { cwd?: string; timeoutMs?: number; onLine?: (line: string) => void } = {}): Promise<SpawnResult> {
+  if (file === "codex") {
+    const result = executeTrustedCommand(file, args, { timeoutMs: opts.timeoutMs ?? COMMAND_TIMEOUT_MS });
+    const diagnostics = result.code === 0 ? [] : [result.errorType ? `errorType=${result.errorType}` : "", result.resolvedPath ? `resolvedPath=${result.resolvedPath}` : ""];
+    const jsonSuccess = result.code === 0 && args.at(-1) === "--json";
+    const output = safeUpdateOutput([result.stdout, jsonSuccess ? "" : result.stderr, ...diagnostics].filter(Boolean).join("\n"), 1_000_000);
+    for (const line of output.split(/\r?\n/).filter(Boolean)) opts.onLine?.(line);
+    return Promise.resolve({ code: result.code, output });
+  }
+
+  let executable = file;
+  let finalArgs = args;
+  if (file === "npm") {
+    const npmCli = path.join(path.dirname(process.execPath), "node_modules", "npm", "bin", "npm-cli.js");
+    if (fs.existsSync(npmCli)) {
+      executable = process.execPath;
+      finalArgs = [npmCli, ...args];
+    }
+  }
+
+  return new Promise((resolve) => {
+    const child = spawn(executable, finalArgs, { cwd: opts.cwd, shell: false, windowsHide: true, env: process.env });
+    let output = "";
+    let timedOut = false;
+    const timeout = setTimeout(() => {
+      timedOut = true;
+      try { child.kill(); } catch { /* already stopped */ }
+    }, opts.timeoutMs ?? COMMAND_TIMEOUT_MS);
+    const push = (chunk: Buffer) => {
+      const text = chunk.toString();
+      output += text;
+      for (const line of text.split(/\r?\n/).map((item) => item.trim()).filter(Boolean)) opts.onLine?.(safeUpdateOutput(line));
+    };
+    child.stdout?.on("data", push);
+    child.stderr?.on("data", push);
+    child.once("error", (error) => {
+      clearTimeout(timeout);
+      resolve({ code: 1, output: safeUpdateOutput(`${output}\n${String(error)}`) });
+    });
+    child.once("close", (code) => {
+      clearTimeout(timeout);
+      resolve({ code: timedOut ? 124 : (code ?? 1), output: safeUpdateOutput(output, 1_000_000) });
+    });
+  });
+}
+
+function parseJsonOutput<T>(output: string): T {
+  for (let start = 0; start < output.length; start++) {
+    if (output[start] !== "[" && output[start] !== "{") continue;
+    const stack: string[] = [];
+    let quoted = false;
+    let escaped = false;
+    for (let index = start; index < output.length; index++) {
+      const char = output[index];
+      if (quoted) {
+        if (escaped) escaped = false;
+        else if (char === "\\") escaped = true;
+        else if (char === "\"") quoted = false;
+        continue;
+      }
+      if (char === "\"") { quoted = true; continue; }
+      if (char === "[" || char === "{") stack.push(char);
+      else if (char === "]" || char === "}") {
+        const opener = stack.pop();
+        if ((opener === "[" && char !== "]") || (opener === "{" && char !== "}")) break;
+        if (stack.length === 0) {
+          try { return JSON.parse(output.slice(start, index + 1)) as T; } catch { break; }
+        }
+      }
+    }
+  }
+  throw new Error("command returned no valid JSON payload");
+}
+
+function resolvePackFilename(payload: unknown): string | undefined {
+  const records = Array.isArray(payload) ? payload : [payload];
+  for (const record of records) {
+    if (!record || typeof record !== "object") continue;
+    const direct = (record as { filename?: unknown }).filename;
+    if (typeof direct === "string" && direct) return direct;
+    for (const nested of Object.values(record as Record<string, unknown>)) {
+      if (nested && typeof nested === "object" && typeof (nested as { filename?: unknown }).filename === "string") return (nested as { filename: string }).filename;
+    }
+  }
+  return undefined;
 }
 
 export async function updateExtensions(options: UpdateOptions = {}): Promise<UpdateReport> {
   const dryRun = options.dryRun === true;
+  const targetAgent = options.targetAgent ?? "opencode";
   const selected = options.components && options.components.length > 0
     ? new Set(options.components)
     : new Set<UpdateComponent>(DEFAULT_COMPONENTS);
   const onProgress = options.onProgress ?? (() => {});
+  const executeCommand = options.executeCommand ?? spawnArgsCommand;
   const pluginCache = options.env?.pluginCache ?? PLUGIN_CACHE;
   const configDir = options.env?.configDir ?? CONFIG_DIR;
   const timestamp = new Date().toISOString();
@@ -261,9 +367,13 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
   };
 
   // ── 计划（先列出将执行的所有步骤）──
-  const planned: { name: string; command: string; cwd?: string }[] = [];
+  const planned: { name: string; command: string; cwd?: string; scopeError?: string; run?: (onLine: (line: string) => void) => Promise<SpawnResult> }[] = [];
 
-  if (selected.has("plugins") && fs.existsSync(pluginCache)) {
+  if (targetAgent === "codex" && selected.has("opencode")) {
+    planned.push({ name: "scope/opencode", command: "blocked", scopeError: "OpenCode update is outside targetAgent=codex and was not executed" });
+  }
+
+  if (targetAgent !== "codex" && selected.has("plugins") && fs.existsSync(pluginCache)) {
     // opencode 对 npm 插件执行 bun add <pkg>@latest，安装目录是 packages/<pkg>@latest（源码 resolvePluginTarget 确认）。
     // 扫描时目录名去掉 @latest 后缀得到包名；更新目标一律用 @latest 目录。
     const dirs = fs.readdirSync(pluginCache)
@@ -325,22 +435,86 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
     }
   }
   if (selected.has("sync")) {
-    const syncDir = path.join(resolveWorkspaceRoot(), "2_Business", "uagent-sync");
+    const syncDir = options.env?.syncDir ?? path.join(resolveWorkspaceRoot(), "2_Business", "uagent-sync");
     if (fs.existsSync(path.join(syncDir, "package.json"))) {
-      planned.push({ name: "sync/pull", command: "git pull --rebase", cwd: syncDir });
-      planned.push({ name: "sync/install", command: "npm install --no-audit --no-fund", cwd: syncDir });
-      planned.push({ name: "sync/build", command: "npm run build", cwd: syncDir });
+      if (targetAgent === "codex") {
+        let packedTarball: string | undefined;
+        let packDirectory: string | undefined;
+        const add = (name: string, file: string, args: string[], cwd = syncDir) => planned.push({
+          name, command: displayCommand(file, args), cwd,
+          run: (onLine) => executeCommand(file, args, { cwd, onLine, timeoutMs: name === "sync/test" ? 600_000 : COMMAND_TIMEOUT_MS }),
+        });
+        add("sync/pull", "git", ["pull", "--ff-only", "origin", "master"]);
+        add("sync/install", "npm", ["ci", "--no-audit", "--no-fund"]);
+        add("sync/test", "npm", ["test"]);
+        planned.push({ name: "sync/pack", command: "npm pack --json --pack-destination <temporary-directory>", cwd: syncDir, run: async (onLine) => {
+          packDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "uagent-sync-pack-"));
+          const result = await executeCommand("npm", ["pack", "--json", "--pack-destination", packDirectory], { cwd: syncDir, onLine, timeoutMs: 600_000 });
+          if (result.code !== 0) return result;
+          try {
+            const payload = parseJsonOutput<unknown>(result.output);
+            const filename = resolvePackFilename(payload);
+            if (!filename || path.basename(filename) !== filename) throw new Error("npm pack returned an unsafe filename");
+            packedTarball = path.join(packDirectory, filename);
+            if (!fs.existsSync(packedTarball)) throw new Error("npm pack artifact does not exist");
+            return result;
+          } catch (error) { return { code: 1, output: safeUpdateOutput(String(error)) }; }
+        } });
+        planned.push({ name: "sync/install-global", command: "npm install --global <packed-tarball> --no-audit --no-fund", cwd: syncDir, run: async (onLine) => {
+          if (!packedTarball) return { code: 1, output: "packed tarball was not produced" };
+          try { return await executeCommand("npm", ["install", "--global", packedTarball, "--no-audit", "--no-fund"], { cwd: syncDir, onLine, timeoutMs: 600_000 }); }
+          finally { if (packDirectory) fs.rmSync(packDirectory, { recursive: true, force: true }); }
+        } });
+        planned.push({ name: "sync/marketplace-refresh", command: "codex plugin marketplace add <origin>; verify origin; git pull --ff-only origin master", cwd: syncDir, run: async (onLine) => {
+          const originResult = await executeCommand("git", ["remote", "get-url", "origin"], { cwd: syncDir, onLine });
+          if (originResult.code !== 0) return originResult;
+          const origin = originResult.output.trim().split(/\r?\n/).at(-1) ?? "";
+          if (!normalizeExtensionSource(origin)?.startsWith("github:")) return { code: 1, output: "Uagent repository origin is not a trusted GitHub repository source" };
+          const registered = await executeCommand("codex", ["plugin", "marketplace", "add", origin], { onLine });
+          if (registered.code !== 0 && !/already/i.test(registered.output)) return registered;
+          const listed = await executeCommand("codex", ["plugin", "marketplace", "list", "--json"], { onLine });
+          if (listed.code !== 0) return listed;
+          try {
+            const payload = parseJsonOutput<{ marketplaces?: Array<{ name?: string; root?: string }> }>(listed.output);
+            const marketplaceRoot = payload.marketplaces?.find((item) => item.name === "uagent-sync")?.root;
+            if (!marketplaceRoot || !path.isAbsolute(marketplaceRoot)) throw new Error("Codex marketplace root could not be resolved");
+            const marketplaceOrigin = await executeCommand("git", ["remote", "get-url", "origin"], { cwd: marketplaceRoot, onLine });
+            if (marketplaceOrigin.code !== 0 || normalizeExtensionSource(marketplaceOrigin.output.trim()) !== normalizeExtensionSource(origin)) throw new Error("Codex marketplace origin does not match the Uagent repository");
+            return await executeCommand("git", ["pull", "--ff-only", "origin", "master"], { cwd: marketplaceRoot, onLine });
+          } catch (error) { return { code: 1, output: safeUpdateOutput(String(error)) }; }
+        } });
+        planned.push({ name: "sync/plugin-install", command: "codex plugin add uagent-sync@uagent-sync", cwd: syncDir, run: async (onLine) => {
+          const installed = await executeCommand("codex", ["plugin", "add", "uagent-sync@uagent-sync"], { onLine });
+          return installed.code !== 0 && /already (?:installed|exists)|is already/i.test(installed.output) ? { code: 0, output: installed.output } : installed;
+        } });
+        planned.push({ name: "sync/plugin-verify", command: "codex plugin list --json (verify installed, enabled, and version)", cwd: syncDir, run: async (onLine) => {
+          const listed = await executeCommand("codex", ["plugin", "list", "--json"], { onLine });
+          if (listed.code !== 0) return listed;
+          try {
+            const expected = (JSON.parse(fs.readFileSync(path.join(syncDir, "package.json"), "utf-8")) as { version?: string }).version;
+            const payload = parseJsonOutput<{ installed?: Array<{ name?: string; installed?: boolean; enabled?: boolean; version?: string }> }>(listed.output);
+            const plugin = payload.installed?.find((item) => item.name === "uagent-sync" && item.installed === true && item.enabled === true && item.version === expected);
+            if (!plugin) throw new Error(`Uagent Sync plugin is not confirmed installed, enabled, and at version ${expected ?? "unknown"}`);
+            return { code: 0, output: `uagent-sync ${expected} installed and enabled` };
+          } catch (error) { return { code: 1, output: safeUpdateOutput(String(error)) }; }
+        } });
+      } else {
+        planned.push({ name: "sync/pull", command: "git pull --rebase", cwd: syncDir });
+        planned.push({ name: "sync/install", command: "npm install --no-audit --no-fund", cwd: syncDir });
+        planned.push({ name: "sync/build", command: "npm run build", cwd: syncDir });
+      }
     }
   }
-  if (selected.has("config-deps") && fs.existsSync(path.join(configDir, "package.json"))) {
+  if (targetAgent !== "codex" && selected.has("config-deps") && fs.existsSync(path.join(configDir, "package.json"))) {
     planned.push({ name: "config-deps", command: "npm install --no-audit --no-fund", cwd: configDir });
   }
-  if (selected.has("opencode")) planned.push({ name: "opencode", command: "npm update -g opencode-ai" });
+  if (targetAgent !== "codex" && selected.has("opencode")) planned.push({ name: "opencode", command: "npm update -g opencode-ai" });
 
   emit({ type: "plan", steps: planned });
 
   // ── 执行 ──
   const total = planned.length;
+  let codexSelfUpdateBlocked = false;
   for (const [index, p] of planned.entries()) {
     const startedAt = Date.now();
     const step: UpdateStep = {
@@ -350,8 +524,16 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
     steps.push(step);
     emit({ type: "step-start", name: p.name, command: p.command, cwd: p.cwd, index: index + 1, total });
 
+    if (p.scopeError) {
+      endStep(step, startedAt, "error", p.scopeError);
+      continue;
+    }
     if (dryRun) {
       endStep(step, startedAt, "skipped", `[dry-run] would run in ${p.cwd || "cwd"}`);
+      continue;
+    }
+    if (targetAgent === "codex" && p.name.startsWith("sync/") && codexSelfUpdateBlocked) {
+      endStep(step, startedAt, "skipped", "blocked by an earlier required Codex self-update failure");
       continue;
     }
 
@@ -369,11 +551,9 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
 
     // 执行（流式输出）；skills 步骤注入 GITHUB_TOKEN 避免 rate limit
     const env = p.name === "skills" && githubToken ? { GITHUB_TOKEN: githubToken } : undefined;
-    const result = await spawnCommand(p.command, {
-      cwd: p.cwd,
-      env,
-      onLine: (line) => emit({ type: "output", name: p.name, line }),
-    });
+    const result = p.run
+      ? await p.run((line) => emit({ type: "output", name: p.name, line }))
+      : await spawnCommand(p.command, { cwd: p.cwd, env, onLine: (line) => emit({ type: "output", name: p.name, line }) });
     const detail = (result.output || "").trim().slice(0, 600) || "ok";
 
     // 捕获执行后版本
@@ -389,7 +569,7 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
     }
 
     // 判定状态：命令失败且允许失败 → warning；否则 error；成功 → ok
-    const allowFail = p.name.startsWith("sync/") || p.name === "config-deps" || p.name === "opencode" || p.name.startsWith("mcp(uv)/") || p.name.startsWith("mcp(npx)/") || p.name.startsWith("cli(uv)/");
+    const allowFail = (targetAgent !== "codex" && p.name.startsWith("sync/")) || p.name === "config-deps" || p.name === "opencode" || p.name.startsWith("mcp(uv)/") || p.name.startsWith("mcp(npx)/") || p.name.startsWith("cli(uv)/");
     const status: UpdateStep["status"] = result.code === 0 ? "ok"
       : result.code === 124 ? "error"
       : allowFail ? "warning" : "error";
@@ -397,6 +577,7 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
       ? `timeout after ${COMMAND_TIMEOUT_MS / 1000}s (killed)`
       : detail;
     endStep(step, startedAt, status, detailOut, versionBefore, versionAfter);
+    if (targetAgent === "codex" && p.name.startsWith("sync/") && status === "error") codexSelfUpdateBlocked = true;
 
     // 变更证据收集（尽力而为）：版本有变化且更新成功时
     if (status === "ok" && versionBefore && versionAfter && versionBefore !== versionAfter) {
@@ -443,7 +624,7 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
   ];
   if (extensionConflicts?.message) lines.push("", `### Codex extension governance`, `  ${extensionConflicts.message}`);
 
-  const report: UpdateReport = { timestamp, dryRun, components: [...selected], steps, summary, text: lines.join("\n"), extensionConflicts };
+  const report: UpdateReport = { timestamp, dryRun, targetAgent, components: [...selected], steps, summary, text: lines.join("\n"), extensionConflicts };
   emit({ type: "done", summary });
   return report;
 }

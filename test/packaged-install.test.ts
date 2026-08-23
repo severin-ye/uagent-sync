@@ -52,7 +52,7 @@ describe("real npm pack installation", () => {
 
   it("ships valid Codex metadata and all three skills", () => {
     const manifest = JSON.parse(fs.readFileSync(path.join(installedPackage, ".codex-plugin", "plugin.json"), "utf-8"));
-    assert.equal(manifest.version, "2.1.0");
+    assert.equal(manifest.version, "2.1.1");
     for (const skill of ["uagent-sync-backup", "uagent-sync-restore", "uagent-sync-update"]) {
       assert.ok(fs.existsSync(path.join(installedPackage, "skills", skill, "SKILL.md")), skill);
     }

@@ -565,8 +565,9 @@ async function main() {
     case "update": {
       const components = parseComponents(flags.get("components") as string | undefined);
       const dryRun = boolFlag(flags, "dry-run");
+      const targetAgent = targetAgentFor(flags, workspaceRoot);
       console.log(dryRun ? t("cli.updateDryRun") : t("cli.updateStart"));
-      const report = await updateExtensions({ components, dryRun, onProgress: (ev) => console.log(formatProgress(ev)) });
+      const report = await updateExtensions({ components, dryRun, targetAgent, onProgress: (ev) => console.log(formatProgress(ev)) });
       const reportFile = archiveUpdateReport(workspaceRoot, report);
       console.log(t("cli.updateReportArchived", { path: reportFile }));
       process.exit(report.summary.error > 0 ? 1 : 0);

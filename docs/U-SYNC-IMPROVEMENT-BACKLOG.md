@@ -147,6 +147,13 @@
 - **第 12、49 项 — 已修复并实机验证**：新增 npm 12 pack JSON 兼容、dotfiles pull 重试、marketplace origin 校验与 Git 更新重试；同一隔离 workspace 可从失败步骤安全重入直至退出码 0。
 - **第 15、48 项 — 已修复并实机验证**：恢复命令 stderr 在进入 structured result 前脱敏、移除控制字符并限长；验收日志和状态未包含真实密钥。
 - **第 19 项 — 已修复并实机验证**：bootstrap 不再只检查 installed/enabled，还要求已安装 U同步插件版本等于源码 `package.json`；陈旧 2.0.0 缓存已更新并确认 2.1.0。
+
+## 2026-08-23 Codex 自更新闭环补充
+
+- **更新命令自身 — 已修复（自动化验证）**：`update --target-agent codex` 的 `sync` 组件不再只拉取、安装依赖和构建；现在依次执行 `git pull --ff-only`、`npm ci`、完整 `npm test`、真实 `npm pack`、从 tarball 重装全局 CLI、核验 personal marketplace Git 来源并刷新、重新安装 U同步插件，最后确认 installed/enabled/version 与源码一致。
+- **失败传播 — 已修复（自动化验证）**：上述任一必需步骤失败均记为 `error`；后续替换 CLI 和插件的步骤会被跳过，CLI 总退出码为非零，不再把部分完成报告为成功。
+- **Codex-only 作用域 — 已修复（自动化验证）**：更新报告持久化 `targetAgent`；Codex 默认更新不扫描 OpenCode plugin cache，也不读取或更新 OpenCode config dependencies。OpenCode 插件入口仍显式传入 `targetAgent=opencode`，与 Codex 流程隔离。
+- **发布版本 — 已修复（自动化验证）**：本轮补丁版本升至 `2.1.1`，`package.json`、lockfile、Codex plugin manifest 与 marketplace 元数据保持一致，避免 Codex 复用旧的 2.1.0 插件缓存。
 - **第 39 项 — 已修复并实机验证**：同一 GitHub 仓库的 URL、`.git`、大小写和 `owner/repo` 表示统一；同源 U同步为 existing，真正异源仍为 conflict。
 - **第 44、45 项 — 已修复并实机验证**：原始扫描与导出过滤分离，tombstone 缺席不执行删除，存在时删除后复扫；`codebase-memory-mcp` 最终 absent。
 - **第 50、51 项 — 已修复并实机验证**：210 个 selected skills 全部可用，并按 5 个 source 汇总；setup 仅 13 个聚合 skipped，verify 逐项确认插件、skills、MCP、CLI、配置。

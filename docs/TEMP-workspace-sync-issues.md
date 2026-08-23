@@ -608,6 +608,19 @@ git -c protocol.file.allow=always submodule add <local-bare-repo> usync-dotfiles
 - 恢复 pull 首次遇到 GitHub connection reset；已把 pull 纳入三次有界退避重试。
 - Codex marketplace 内置 upgrade 固定 30 秒 clone 超时；改为读取 Codex 认可的 marketplace root、核验 Git origin 与 `UagentRepo` 一致，再使用 Git 的 `pull --ff-only` 重试更新。
 - U同步插件从陈旧缓存 2.0.0 更新并严格确认到 2.1.0。
+
+## 2026-08-23：U同步自身更新闭环
+
+此前 `update` 的 `sync` 组件只执行源码拉取、`npm install` 和 build，因此会更新 checkout 中的代码，但不会更新全局 `uagent-sync` CLI，也不会刷新 Codex personal marketplace、重装插件或核验插件版本；而且 `sync/*` 非零退出被降级成 warning。
+
+当前状态：**已修复并通过自动化回归**。
+
+- Codex `sync` 更新执行 pull、干净依赖安装、全部测试、真实 pack、tarball 全局安装、marketplace 来源核验与刷新、插件安装及 installed/enabled/version 验证。
+- 所有命令使用参数数组执行；Windows 上 Codex 调用复用可信 `codex.cmd`/Node CLI 解析，不会命中 WindowsApps 假入口。
+- 任一必需步骤失败立即阻断后续替换步骤，并计为 error；测试失败时不会覆盖当前全局 CLI。
+- 更新结果带 `targetAgent=codex`，Codex 默认计划不访问 OpenCode plugin cache 或 config 目录。
+- 回归测试覆盖完整计划、Codex-only 隔离、pack 安装和插件验证成功路径，以及测试失败后的安全停止路径。
+- 发布元数据统一升至 `2.1.1`，使 Codex 能把本轮实现识别为新插件版本，而不是继续复用 2.1.0 缓存。
 - bootstrap 总退出码：`0`。
 - `setup --target-agent codex --json`：`ok=true`，0 warnings，0 errors，13 个聚合 skipped，17 个步骤。
 - `verify --target-agent codex --json`：`ok=true`，0 warnings，0 errors，1 个 out-of-scope skipped，13 个验证步骤。

@@ -562,7 +562,7 @@ Use dryRun=true to preview commands without executing. After updating, restart o
           dryRun: z.boolean().optional().default(false).describe("If true, only show what would be run"),
         },
         async execute(args) {
-          const report = await updateExtensions({ components: args.components as UpdateComponent[] | undefined, dryRun: args.dryRun });
+          const report = await updateExtensions({ components: args.components as UpdateComponent[] | undefined, dryRun: args.dryRun, targetAgent: "opencode" });
           let reportFile: string | undefined;
           try {
             reportFile = archiveUpdateReport(resolveWorkspaceRoot(), report);

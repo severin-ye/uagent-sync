@@ -3,7 +3,7 @@ import * as assert from "node:assert";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { updateExtensions, type UpdateProgress } from "../dist/lib/update.js";
+import { updateExtensions, type UpdateCommandExecutor, type UpdateProgress } from "../dist/lib/update.js";
 import OpencodeSyncPlugin from "../dist/plugin.js";
 
 describe("updateExtensions", () => {
@@ -12,7 +12,7 @@ describe("updateExtensions", () => {
   const isSkillStep = (s: { name: string }) => s.name === "skills" || s.name.startsWith("skills/add:");
 
   let tmpRoot: string;
-  let env: { pluginCache: string; configDir: string };
+  let env: { pluginCache: string; configDir: string; syncDir: string };
   let oldWorkspaceEnv: string | undefined;
 
   /** 构造隔离环境：fake 插件缓存 / fake config 目录 / fake workspace（含 sync 仓库 package.json）。 */
@@ -21,6 +21,7 @@ describe("updateExtensions", () => {
     env = {
       pluginCache: path.join(tmpRoot, "packages"),
       configDir: path.join(tmpRoot, "config"),
+      syncDir: path.join(tmpRoot, "ws", "2_Business", "uagent-sync"),
     };
     fs.mkdirSync(path.join(env.pluginCache, "fake-plugin"), { recursive: true });
     fs.writeFileSync(path.join(env.pluginCache, "fake-plugin", "package.json"), JSON.stringify({ name: "fake-plugin", version: "1.0.0" }));
@@ -30,7 +31,7 @@ describe("updateExtensions", () => {
     fs.writeFileSync(path.join(env.configDir, "package.json"), JSON.stringify({ name: "fake-config" }));
     const ws = path.join(tmpRoot, "ws");
     fs.mkdirSync(path.join(ws, "2_Business", "uagent-sync"), { recursive: true });
-    fs.writeFileSync(path.join(ws, "2_Business", "uagent-sync", "package.json"), JSON.stringify({ name: "sync" }));
+    fs.writeFileSync(path.join(ws, "2_Business", "uagent-sync", "package.json"), JSON.stringify({ name: "uagent-sync", version: "2.1.1" }));
     fs.writeFileSync(path.join(ws, ".gitmodules"), "x");
     oldWorkspaceEnv = process.env.OPENCODE_SYNC_WORKSPACE_ROOT;
     process.env.OPENCODE_SYNC_WORKSPACE_ROOT = ws;
@@ -97,6 +98,84 @@ describe("updateExtensions", () => {
   it("includes opencode when explicitly requested", async () => {
     const report = await updateExtensions({ components: ["opencode"], dryRun: true, env });
     assert.ok(report.steps.some((s) => s.name === "opencode"));
+  });
+
+  it("plans a complete Codex-only self-update without touching OpenCode", async () => {
+    const report = await updateExtensions({ components: ["sync"], dryRun: true, targetAgent: "codex", env });
+    const names = report.steps.map((step) => step.name);
+
+    assert.equal(report.targetAgent, "codex");
+    for (const required of [
+      "sync/pull",
+      "sync/install",
+      "sync/test",
+      "sync/pack",
+      "sync/install-global",
+      "sync/marketplace-refresh",
+      "sync/plugin-install",
+      "sync/plugin-verify",
+    ]) assert.ok(names.includes(required), `missing Codex self-update step: ${required}`);
+
+    const serialized = JSON.stringify(report.steps).toLowerCase();
+    assert.doesNotMatch(serialized, /[\\/]\.config[\\/]opencode|[\\/]\.cache[\\/]opencode/);
+  });
+
+  it("does not inspect OpenCode plugin or config directories in the default Codex plan", async () => {
+    const report = await updateExtensions({ dryRun: true, targetAgent: "codex", env });
+    assert.ok(!report.steps.some((step) => step.name.startsWith("plugins/")));
+    assert.ok(!report.steps.some((step) => step.name === "config-deps"));
+  });
+
+  it("rejects an explicit OpenCode update inside Codex scope without executing it", async () => {
+    let executed = false;
+    const report = await updateExtensions({
+      components: ["opencode"], targetAgent: "codex", env,
+      executeCommand: async () => { executed = true; return { code: 0, output: "must not run" }; },
+    });
+    assert.equal(executed, false);
+    assert.equal(report.summary.error, 1);
+    assert.match(report.steps[0]?.detail ?? "", /outside targetAgent=codex/i);
+  });
+
+  it("executes packed CLI installation and verifies the Codex marketplace and plugin version", async () => {
+    const marketplaceRoot = path.join(tmpRoot, "marketplace");
+    fs.mkdirSync(marketplaceRoot, { recursive: true });
+    const calls: Array<{ file: string; args: string[]; cwd?: string }> = [];
+    const executeCommand: UpdateCommandExecutor = async (file, args, options) => {
+      calls.push({ file, args, cwd: options?.cwd });
+      if (file === "npm" && args[0] === "pack") {
+        const destination = args[args.indexOf("--pack-destination") + 1];
+        fs.writeFileSync(path.join(destination, "uagent-sync-2.1.1.tgz"), "fixture");
+        return { code: 0, output: `npm notice prepack\n${JSON.stringify({ "uagent-sync-2.1.1": { filename: "uagent-sync-2.1.1.tgz" } })}\nnpm notice done` };
+      }
+      if (file === "git" && args.join(" ") === "remote get-url origin") return { code: 0, output: "https://github.com/severin-ye/uagent-sync.git\n" };
+      if (file === "codex" && args.join(" ") === "plugin marketplace list --json") return { code: 0, output: JSON.stringify({ marketplaces: [{ name: "uagent-sync", root: marketplaceRoot }] }) };
+      if (file === "codex" && args.join(" ") === "plugin list --json") return { code: 0, output: JSON.stringify({ installed: [{ name: "uagent-sync", installed: true, enabled: true, version: "2.1.1" }] }) };
+      if (file === "codex" && args.join(" ") === "plugin add uagent-sync@uagent-sync") return { code: 1, output: "plugin is already installed" };
+      return { code: 0, output: "ok" };
+    };
+
+    const report = await updateExtensions({ components: ["sync"], targetAgent: "codex", env, executeCommand });
+    assert.equal(report.summary.error, 0);
+    assert.ok(calls.some((call) => call.file === "npm" && call.args[0] === "install" && call.args[1] === "--global" && call.args[2].endsWith(".tgz")));
+    assert.ok(calls.some((call) => call.file === "codex" && call.args.join(" ") === "plugin add uagent-sync@uagent-sync"));
+    assert.equal(report.steps.find((step) => step.name === "sync/plugin-verify")?.status, "ok");
+  });
+
+  it("stops before replacing the installed CLI when the required self-test fails", async () => {
+    const calls: Array<{ file: string; args: string[] }> = [];
+    const executeCommand: UpdateCommandExecutor = async (file, args) => {
+      calls.push({ file, args });
+      if (file === "npm" && args.join(" ") === "test") return { code: 7, output: "regression suite failed" };
+      return { code: 0, output: "ok" };
+    };
+
+    const report = await updateExtensions({ components: ["sync"], targetAgent: "codex", env, executeCommand });
+    assert.equal(report.summary.error, 1);
+    assert.equal(report.steps.find((step) => step.name === "sync/test")?.status, "error");
+    assert.equal(report.steps.find((step) => step.name === "sync/install-global")?.status, "skipped");
+    assert.ok(!calls.some((call) => call.file === "npm" && call.args[0] === "install" && call.args[1] === "--global"));
+    assert.ok(!calls.some((call) => call.file === "codex"));
   });
 });
 
