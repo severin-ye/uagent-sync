@@ -21,13 +21,14 @@ export function buildCapabilityMatrix(inventory: WorkspaceInventory): Capability
 }
 
 export function buildInventoryDiff(inventory: WorkspaceInventory): InventoryDiff[] {
+  const agentIds = [...new Set(inventory.agents.map((agent) => agent.id))];
   const all = new Map<string, { kind: CapabilityKind; name: string; agents: Set<AgentId>; portable: boolean }>();
   for (const agent of inventory.agents) for (const item of agent.capabilities) {
     const key = `${item.kind}:${item.name}`;
     const row = all.get(key) ?? { kind: item.kind, name: item.name, agents: new Set<AgentId>(), portable: item.portability === "portable" };
     row.agents.add(agent.id); all.set(key, row);
   }
-  return [...all.values()].filter((row) => row.agents.size < 3).map((row) => ({ kind: row.kind, name: row.name, presentIn: [...row.agents], missingFrom: inventory.agents.map((a) => a.id).filter((id) => !row.agents.has(id)), intentional: !row.portable }));
+  return [...all.values()].filter((row) => row.agents.size < agentIds.length).map((row) => ({ kind: row.kind, name: row.name, presentIn: [...row.agents], missingFrom: agentIds.filter((id) => !row.agents.has(id)), intentional: !row.portable }));
 }
 
 export function buildMigrationPlan(inventory: WorkspaceInventory, target: AgentId): MigrationAction[] {

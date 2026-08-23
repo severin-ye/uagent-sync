@@ -388,5 +388,5 @@ npm install --omit=dev --no-audit --no-fund
 - **已修**：CLI/OpenCode 共享 verify/export/import/setup/update/push/pull Application 用例，并新增依赖方向守卫；聚焦架构测试为 4/4。
 - **未改变**：Codex-only 路径继续显式携带 `targetAgent=codex`，OpenCode 保持 out-of-scope；`codebase-memory-mcp` 继续由永久 tombstone 禁止恢复。
 - **未扩大**：本轮没有修改 `scripts/bootstrap.ps1`、恢复器、CLI 或 Plugin 外部协议。
-- **已修（本轮自动化验证）**：`npm test` 333/333；独立 manifest/真实 pack 组 25/25；CLI smoke 通过；隔离 workspace 的 Codex-only update dry-run 为 11 skipped / 0 error，且计划不含 OpenCode 配置/cache 或 `codebase-memory-mcp`。
+- **已修（本轮自动化验证）**：初始 `npm test` 333/333，Review 2 补强后 334/334；架构/inventory 聚焦组 10/10，typecheck 通过；独立 manifest/真实 pack 组 25/25；CLI smoke 通过；隔离 workspace 的 Codex-only update dry-run 为 11 skipped / 0 error，且计划不含 OpenCode 配置/cache 或 `codebase-memory-mcp`。
 - **仍待**：本轮没有执行另一台全新 Windows 的 raw bootstrap，因此不能把 winget/UAC、首次 gh 登录、私有仓库访问或第二台机器网络下载标为通过。

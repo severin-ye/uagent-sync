@@ -279,7 +279,7 @@ usync-dotfiles/             # ← 运行时数据（独立仓库，随 Git 同�
 
 > **代码永不触碰数据。** 插件代码在一个目录，所有生成文件写入 `usync-dotfiles/`。职责分离。
 
-已实装的依赖方向为 **入口 → Application → Domain/Ports ← Adapters**。`WorkspaceState` v3 是内部验证后的读时契约，当前 wire 导出继续兼容旧格式。DSH 与 `all` 尚无恢复 writer/contract，因此恢复会 fail-closed。具体边界、Codex-only 隔离、`codebase-memory-mcp` 永久删除语义和第四 Agent 扩展方式见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)。
+已实装的依赖方向为 **入口 → Application → Domain/Ports ← Adapters**。`WorkspaceState` v3 是内部验证后的读时契约，当前 wire 导出继续兼容旧格式。DSH 与 `all` 尚无恢复 writer/contract，因此恢复会 fail-closed。具体边界、Codex-only 隔离、`codebase-memory-mcp` 永久删除语义和 runtime scanner 扩展边界见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)。要正式支持第四 Agent，仍需显式扩展 AgentId、路径、Dashboard、迁移上下文和宿主契约。
 
 ---
 

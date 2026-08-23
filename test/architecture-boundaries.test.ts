@@ -1,12 +1,16 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 import ts from "typescript";
 
 import * as publicApi from "../src/sync.js";
 import { createAgentAdapterRegistry } from "../src/adapters/agents/registry.js";
+import { buildInventoryDiff, scanWorkspaceInventory } from "../src/lib/agent-inventory.js";
 import type { AgentPaths } from "../src/lib/agent-paths.js";
+import type { AgentCapability, AgentId, AgentInventory } from "../src/lib/agent-inventory-types.js";
+import type { AgentAdapter } from "../src/ports/agent-adapter.js";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 
@@ -14,27 +18,85 @@ interface ImportEdge {
   sourceFile: string;
   modulePath: string;
   importedNames: string[];
+  kind: "named" | "default" | "namespace" | "side-effect" | "dynamic";
+  localName?: string;
 }
 
-function importsIn(filePath: string): ImportEdge[] {
-  const source = fs.readFileSync(filePath, "utf8");
+function importsFromSource(source: string, filePath: string): ImportEdge[] {
   const sourceFile = ts.createSourceFile(filePath, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
   const edges: ImportEdge[] = [];
 
-  sourceFile.forEachChild((node) => {
-    if (!ts.isImportDeclaration(node) || !ts.isStringLiteral(node.moduleSpecifier)) return;
-    const bindings = node.importClause?.namedBindings;
-    const importedNames = bindings && ts.isNamedImports(bindings)
-      ? bindings.elements.map((element) => element.propertyName?.text ?? element.name.text)
-      : [];
-    edges.push({
-      sourceFile: path.relative(ROOT, filePath).replaceAll("\\", "/"),
-      modulePath: node.moduleSpecifier.text,
-      importedNames,
-    });
-  });
+  const push = (modulePath: string, kind: ImportEdge["kind"], importedNames: string[] = [], localName?: string) => {
+    edges.push({ sourceFile: path.relative(ROOT, filePath).replaceAll("\\", "/"), modulePath, importedNames, kind, localName });
+  };
+  const visit = (node: ts.Node): void => {
+    if (ts.isImportDeclaration(node) && ts.isStringLiteral(node.moduleSpecifier)) {
+      const modulePath = node.moduleSpecifier.text;
+      if (!node.importClause) push(modulePath, "side-effect");
+      if (node.importClause?.name) push(modulePath, "default", [], node.importClause.name.text);
+      const bindings = node.importClause?.namedBindings;
+      if (bindings && ts.isNamespaceImport(bindings)) push(modulePath, "namespace", [], bindings.name.text);
+      if (bindings && ts.isNamedImports(bindings)) {
+        push(modulePath, "named", bindings.elements.map((element) => element.propertyName?.text ?? element.name.text));
+      }
+    } else if (ts.isCallExpression(node) && node.expression.kind === ts.SyntaxKind.ImportKeyword) {
+      const argument = node.arguments[0];
+      const modulePath = argument && (ts.isStringLiteral(argument) || ts.isNoSubstitutionTemplateLiteral(argument))
+        ? argument.text
+        : "<non-literal>";
+      push(modulePath, "dynamic");
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sourceFile);
 
   return edges;
+}
+
+function importsIn(filePath: string): ImportEdge[] {
+  return importsFromSource(fs.readFileSync(filePath, "utf8"), filePath);
+}
+
+const migratedDomainModules = new Map<string, ReadonlySet<string>>([
+  ["lib/workspace.ts", new Set(["verifyEnvironment", "setupWorkspace"])],
+  ["lib/update.ts", new Set(["updateExtensions"])],
+  ["lib/state.ts", new Set(["importSystemState"])],
+  ["lib/codex-restore.ts", new Set(["restoreCodexExtensions"])],
+  ["sync.ts", new Set(["verifyEnvironment", "setupWorkspace", "updateExtensions", "importSystemState", "restoreCodexExtensions"])],
+]);
+
+function targetWithinSrc(edge: ImportEdge): string | undefined {
+  if (!edge.modulePath.startsWith(".")) return undefined;
+  const absoluteSource = path.join(ROOT, edge.sourceFile);
+  const target = path.resolve(path.dirname(absoluteSource), edge.modulePath.replace(/\.js$/, ".ts"));
+  return path.relative(path.join(ROOT, "src"), target).replaceAll("\\", "/");
+}
+
+function entrypointDomainViolations(edges: ImportEdge[]): string[] {
+  return edges.flatMap((edge) => {
+    if (edge.kind === "dynamic" && edge.modulePath === "<non-literal>") {
+      return [`${edge.sourceFile} dynamic import target cannot be verified`];
+    }
+    const target = targetWithinSrc(edge);
+    const forbiddenNames = target ? migratedDomainModules.get(target) : undefined;
+    if (!forbiddenNames) return [];
+    if (edge.kind !== "named") return [`${edge.sourceFile} ${edge.kind} imports ${edge.modulePath}`];
+    return edge.importedNames
+      .filter((name) => forbiddenNames.has(name))
+      .map((name) => `${edge.sourceFile} imports ${name} from ${edge.modulePath}`);
+  });
+}
+
+function applicationEntrypointViolations(edges: ImportEdge[]): string[] {
+  return edges.flatMap((edge) => {
+    const target = targetWithinSrc(edge);
+    const isEntrypoint = target === "cli.ts"
+      || target === "plugin.ts"
+      || target === "dsh-plugin.ts"
+      || target?.startsWith("entrypoints/");
+    const cannotResolveDynamicTarget = edge.kind === "dynamic" && edge.modulePath === "<non-literal>";
+    return isEntrypoint || cannotResolveDynamicTarget ? [`${edge.sourceFile} ${edge.kind} imports ${edge.modulePath}`] : [];
+  });
 }
 
 function productionTsFiles(directory: string): string[] {
@@ -46,19 +108,8 @@ function productionTsFiles(directory: string): string[] {
 }
 
 test("migrated entrypoints depend on Application instead of migrated domain orchestrators", () => {
-  const migratedDomainOrchestrators = new Set([
-    "verifyEnvironment",
-    "setupWorkspace",
-    "updateExtensions",
-    "importSystemState",
-    "restoreCodexExtensions",
-  ]);
   const violations = ["src/cli.ts", "src/plugin.ts"].flatMap((relativePath) =>
-    importsIn(path.join(ROOT, relativePath)).flatMap((edge) =>
-      edge.importedNames
-        .filter((name) => migratedDomainOrchestrators.has(name))
-        .map((name) => `${edge.sourceFile} imports ${name} from ${edge.modulePath}`),
-    ),
+    entrypointDomainViolations(importsIn(path.join(ROOT, relativePath))),
   );
 
   assert.deepEqual(violations, []);
@@ -67,20 +118,42 @@ test("migrated entrypoints depend on Application instead of migrated domain orch
 test("Application never imports presentation entrypoints", () => {
   const applicationRoot = path.join(ROOT, "src", "application");
   const violations = productionTsFiles(applicationRoot).flatMap((filePath) =>
-    importsIn(filePath)
-      .filter((edge) => {
-        if (!edge.modulePath.startsWith(".")) return false;
-        const target = path.resolve(path.dirname(filePath), edge.modulePath.replace(/\.js$/, ".ts"));
-        const relativeTarget = path.relative(path.join(ROOT, "src"), target).replaceAll("\\", "/");
-        return relativeTarget === "cli.ts"
-          || relativeTarget === "plugin.ts"
-          || relativeTarget === "dsh-plugin.ts"
-          || relativeTarget.startsWith("entrypoints/");
-      })
-      .map((edge) => `${edge.sourceFile} imports ${edge.modulePath}`),
+    applicationEntrypointViolations(importsIn(filePath)),
   );
 
   assert.deepEqual(violations, []);
+});
+
+test("import analysis sees and rejects default, namespace, and dynamic import bypasses", (context) => {
+  const temporaryDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "uagent-architecture-imports-"));
+  context.after(() => fs.rmSync(temporaryDirectory, { recursive: true, force: true }));
+  const fixture = path.join(temporaryDirectory, "fixture.ts");
+  fs.writeFileSync(fixture, [
+    'import workspaceDomain from "./lib/workspace.js";',
+    'import * as updateDomain from "./lib/update.js";',
+    'void import("./entrypoints/result-formatters.js");',
+  ].join("\n"));
+
+  assert.deepEqual(importsIn(fixture).map(({ modulePath, kind, localName }) => ({ modulePath, kind, localName })), [
+    { modulePath: "./lib/workspace.js", kind: "default", localName: "workspaceDomain" },
+    { modulePath: "./lib/update.js", kind: "namespace", localName: "updateDomain" },
+    { modulePath: "./entrypoints/result-formatters.js", kind: "dynamic", localName: undefined },
+  ]);
+
+  const entrypointFixture = importsFromSource([
+    'import workspaceDomain from "./lib/workspace.js";',
+    'import * as updateDomain from "./lib/update.js";',
+    'void import("./lib/codex-restore.js");',
+    'const domainPath = "./lib/state.js"; void import(domainPath);',
+  ].join("\n"), path.join(ROOT, "src", "fixture-entrypoint.ts"));
+  const applicationFixture = importsFromSource([
+    'import formatter from "../entrypoints/result-formatters.js";',
+    'import * as plugin from "../plugin.js";',
+    'void import("../cli.js");',
+  ].join("\n"), path.join(ROOT, "src", "application", "fixture-application.ts"));
+
+  assert.equal(entrypointDomainViolations(entrypointFixture).length, 4);
+  assert.equal(applicationEntrypointViolations(applicationFixture).length, 3);
 });
 
 test("the public barrel exposes the implemented architecture contracts", () => {
@@ -96,13 +169,25 @@ test("the public barrel exposes the implemented architecture contracts", () => {
   }
 });
 
-test("the Agent registry accepts a fourth adapter without changing core flows", () => {
-  const fourthAdapter = {
-    id: "future-agent" as never,
-    scan: () => ({ id: "future-agent", displayName: "Future Agent", available: true, capabilities: [] }) as never,
-  };
-  const registry = createAgentAdapterRegistry([fourthAdapter]);
+test("the runtime Agent registry carries a fourth scanner through inventory diff", () => {
+  const sharedCapability: AgentCapability = { kind: "skills", name: "shared-review", portability: "portable" };
+  const adapter = (id: AgentId, label: string, capabilities: AgentCapability[]): AgentAdapter => ({
+    id,
+    scan: (): AgentInventory => ({ id, label, status: "detected", sources: [], capabilities, warnings: [] }),
+  });
+  const futureId = "future-agent" as AgentId;
+  const futureAdapter = adapter(futureId, "Future Agent", []);
+  const registry = createAgentAdapterRegistry([
+    adapter("codex", "Codex", [sharedCapability]),
+    adapter("opencode", "OpenCode", [sharedCapability]),
+    adapter("deepseek", "DeepSeek Harness", [sharedCapability]),
+    futureAdapter,
+  ]);
 
-  assert.deepEqual(registry.adapters, [fourthAdapter]);
-  assert.equal(registry.scan({} as AgentPaths)[0]?.displayName, "Future Agent");
+  const inventory = scanWorkspaceInventory({ paths: {} as AgentPaths, adapters: registry.adapters });
+  const sharedDiff = buildInventoryDiff(inventory).find((item) => item.name === "shared-review");
+
+  assert.equal(inventory.agents.length, 4);
+  assert.deepEqual(sharedDiff?.presentIn, ["codex", "opencode", "deepseek"]);
+  assert.deepEqual(sharedDiff?.missingFrom, [futureId]);
 });

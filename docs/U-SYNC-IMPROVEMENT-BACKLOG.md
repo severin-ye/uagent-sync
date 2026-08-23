@@ -174,10 +174,11 @@
 
 - **已修**：共享 `ApplicationResult` 和 WorkspaceApplication 已覆盖 verify/export/import/setup/update/push/pull，CLI 与 OpenCode Plugin 只保留入口呈现职责。
 - **已修**：FileSystem、Git、ProcessRunner 和 AgentAdapter ports 已落地；基础设施与 Agent scanner 通过 adapters 接入。
-- **已修**：Agent registry 可注入，第四 Agent fixture 不需要修改 inventory 核心扫描循环。
+- **已修（runtime scanner/diff）**：Agent registry 可注入，`scanWorkspaceInventory` 和 `buildInventoryDiff` 根据实际 adapter/inventory 集合工作；四端 fixture 已走完 registry→scan→diff，前三端具备而第四端缺失的能力会形成 diff。
+- **部分**：第四 Agent 当前只能作为 runtime scanner fixture 注入，类型测试仍需把新 id cast 为现有 `AgentId`。正式产品支持仍需扩展 `AgentId`、`AgentPaths`、默认 registry/target mapping、CapabilityMatrix、Dashboard route/presentation，以及 migration scope/context；不得把 scanner 可注入表述为 Dashboard/migration 已自动支持。
 - **已修**：WorkspaceState v3 codec 已作为内部读时 contract 使用，迁移 v1/v2、拒绝未来版本并优先执行永久 tombstone；wire export 继续兼容旧格式。
 - **已修**：新增 AST 级依赖边界测试，Entry → Application → Domain/Ports ← Adapters 的已迁移方向有自动化守卫。
 - **部分**：`src/lib/` 仍是兼容性领域实现，composition root 仍在 `src/application/default-workspace-application.ts` 连接具体 adapters；这是当前已实装结构，不声称完成纯粹分层重写。
 - **仍待**：DSH/all artifact restore contract 与 writer 尚未实现，当前必须 fail-closed。
 - **仍待外部验收**：另一台全新 Windows 的 bootstrap、首次 gh 登录、winget/UAC 与真实私有仓库网络矩阵；本轮架构测试不能替代这些结果。
-- **本轮验证已完成**：架构聚焦测试 RED→GREEN（最终 4/4）；`npm test` 333/333；独立 manifest/真实 pack 组 25/25；CLI smoke 通过；隔离 workspace 的 Codex-only update dry-run 为 11 skipped / 0 error，报告作用域为 Codex 且无 OpenCode 配置/cache 或 `codebase-memory-mcp` 计划。
+- **本轮验证已完成**：初始架构测试 RED→GREEN（4/4）；Review 2 的 bypass/四端 diff 测试为 3 pass / 2 fail → 聚焦组 10/10；typecheck 通过；全量由 333/333 更新为 334/334；独立 manifest/真实 pack 组 25/25；CLI smoke 通过；隔离 workspace 的 Codex-only update dry-run 为 11 skipped / 0 error，报告作用域为 Codex 且无 OpenCode 配置/cache 或 `codebase-memory-mcp` 计划。

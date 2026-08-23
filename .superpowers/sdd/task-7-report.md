@@ -43,3 +43,20 @@
 - DSH/all restore contracts remain intentionally unsupported and fail closed.
 - The dry-run report remains in `C:\Users\6seve\AppData\Local\Temp\uagent-task7-codex-dry-run` because the environment rejected the recursive cleanup command. The directory contains only the isolated dry-run workspace/report and no secret fixture.
 - Task 7 commits only its owned slice. Feature-branch push, merge to `master`, and `origin/master` push remain with the parent integration task.
+
+## Review 2 follow-up
+
+- Import analysis now walks the TypeScript AST recursively and records named, default, namespace, side-effect, and dynamic imports. Named aliases are checked by their exported symbol name; namespace/default/dynamic access to a module containing migrated orchestration is rejected. Application also rejects a non-literal dynamic import because its target cannot be proven outside presentation.
+- Synthetic/temporary source fixtures prove default, namespace, and dynamic forms cannot bypass either Entry→Application or Application→entrypoint direction guards.
+- `buildInventoryDiff` no longer assumes exactly three Agents. It derives unique Agent ids from the runtime inventories and reports a difference whenever a capability is absent from any returned inventory.
+- The fourth-Agent fixture now exercises `createAgentAdapterRegistry` → `scanWorkspaceInventory` → `buildInventoryDiff`; a capability present in Codex/OpenCode/DeepSeek but absent from the fourth runtime adapter is reported with the fourth id in `missingFrom`.
+- The production type model remains intentionally closed to three `AgentId` values, so the fixture keeps an explicit cast. Documentation now calls this runtime scanner/diff extensibility only. A supported fourth Agent still requires explicit AgentId, paths, default registry/target mapping, capability matrix, Dashboard route/presentation, migration scope/context, and host-contract work.
+
+### Review 2 TDD and validation
+
+- RED: architecture test → 3 pass / 2 fail. One failure proved default/namespace/dynamic imports were not represented; the other proved the fixed `row.agents.size < 3` comparison hid a three-of-four capability gap.
+- GREEN focused: `test/architecture-boundaries.test.ts` plus `test/agent-inventory.test.ts` → 10 pass / 0 fail.
+- `npm run typecheck` → pass.
+- `npm test` → 334 pass / 0 fail.
+- Pre-change GitNexus: `buildInventoryDiff` LOW (3 upstream symbols, 2 processes, 1 module); `scanWorkspaceInventory` HIGH (8 upstream symbols, 3 processes, 4 modules). Only the LOW symbol changed; the HIGH scanner was exercised without implementation changes.
+- Final GitNexus compare remains **CRITICAL: 47 files / 246 changed symbols / 24 affected processes**. This is retained as the cumulative feature-branch comparison against `master`, not downgraded to a Review 2-only score.

@@ -269,7 +269,7 @@ usync-dotfiles/             # ← Runtime data (separate repo, synced via Git)
 
 > **Code never touches data.** The plugin lives in one directory. All generated files go to `usync-dotfiles/`. Clean separation.
 
-The implemented dependency direction is **Entry → Application → Domain/Ports ← Adapters**. `WorkspaceState` v3 is the validated in-memory read contract; current wire exports remain backward-compatible. DSH and `all` restore scopes fail closed because they do not yet have restore writers/contracts. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for concrete boundaries, Codex-only isolation, permanent `codebase-memory-mcp` deletion, and the fourth-Agent extension path.
+The implemented dependency direction is **Entry → Application → Domain/Ports ← Adapters**. `WorkspaceState` v3 is the validated in-memory read contract; current wire exports remain backward-compatible. DSH and `all` restore scopes fail closed because they do not yet have restore writers/contracts. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for concrete boundaries, Codex-only isolation, permanent `codebase-memory-mcp` deletion, and the runtime scanner extension boundary. A supported fourth Agent still requires explicit AgentId, paths, Dashboard, migration-context, and host-contract work.
 
 ---
 

@@ -26,7 +26,7 @@ The intended direction is **Entry → Application → Domain/Ports ← Adapters*
 - Adapters: `src/adapters/infrastructure/` and `src/adapters/agents/` implement those contracts.
 - Composition root: `src/application/default-workspace-application.ts` wires the current domain functions and concrete infrastructure adapters. This file is the deliberate wiring point; individual use cases depend on ports, not concrete infrastructure.
 
-`test/architecture-boundaries.test.ts` parses TypeScript import declarations and guards two directions: migrated entrypoints may not import the migrated domain orchestrators directly, and Application modules may not import presentation entrypoints.
+`test/architecture-boundaries.test.ts` parses TypeScript syntax and guards two directions: migrated entrypoints may not import the migrated domain orchestrators directly, and Application modules may not import presentation entrypoints. The guard covers named, default, namespace, side-effect, and dynamic imports instead of relying on whole-file regular expressions.
 
 ## Shared application contract
 
@@ -50,14 +50,15 @@ Codex operations carry an explicit `targetAgent: "codex"`. Codex-only export, se
 
 ## Adding a fourth Agent scanner
 
-Inventory is extended through `AgentAdapter`, not by adding another branch to the inventory flow:
+The runtime scanner loop and inventory diff can accept another adapter without adding an Agent-specific branch to those two operations:
 
-1. Add the Agent id and inventory types in `src/lib/agent-inventory-types.ts` if the type union does not already include it.
-2. Implement `AgentAdapter` in `src/adapters/agents/<agent>-adapter.ts`. The adapter only needs `id` and `scan(paths)`.
-3. Add it to `defaultAgentAdapters` in `src/adapters/agents/registry.ts` at the intended stable output position, and extend `targetAgentByInventoryId` when it maps to a supported target.
-4. Add contract tests for its normalized inventory and portability behavior.
+1. Implement the runtime `AgentAdapter` shape (`id` and `scan(paths)`) and pass it to `createAgentAdapterRegistry` or `scanWorkspaceInventory`.
+2. `scanWorkspaceInventory` iterates the injected adapters, and `buildInventoryDiff` derives coverage from the unique Agent ids actually returned. Neither function assumes exactly three inventories.
+3. Add contract tests for normalized inventory and portability behavior.
 
-`scanWorkspaceInventory` already consumes an injected adapter list through `createAgentAdapterRegistry`; its scan loop and the Dashboard/migration consumers do not need a new Agent-specific branch. Inventory support does not imply restore/setup/update support. Those write capabilities require a separate, explicit host contract and must remain fail-closed until implemented.
+This is **runtime scanner extension only** today. The compile-time `AgentId` union, `AgentPaths.skillsRoots`, default registry/target mapping, capability matrix types, Dashboard routes and presentation, and migration analysis scope/context each still enumerate the three supported Agents. Promoting a fourth Agent to a supported product target therefore requires explicit changes and tests in those locations. Dashboard and migration flows are not claimed to become fourth-Agent-aware merely because a scanner can be injected.
+
+Inventory support also does not imply restore/setup/update support. Those write capabilities require a separate, explicit host contract and must remain fail-closed until implemented.
 
 ## Public API and compatibility
 
