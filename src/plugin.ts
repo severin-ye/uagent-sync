@@ -16,14 +16,14 @@ import * as path from "node:path";
 import * as os from "node:os";
 import {
   exportSystemState, importSystemState, diffState, resolveWorkspaceRoot,
-  getSubmoduleStatus, setupWorkspace, detectWorkspaceInfo,
+  getSubmoduleStatus, detectWorkspaceInfo,
   createGitHubRepo, detectApiKeys, initApiKeyFile, generateSyncGuide,
   readInstallLog, appendInstallEntry, exportInstallLogAsMarkdown,
   readInitState, writeInitState, markStepCompleted, pendingSteps, emptyInitState,
   run, shellEscape, isPathSafe, CHARACTER_LIMIT,
   type WorkspaceState, type InitType,
 } from "./sync.js";
-import { updateExtensions, archiveUpdateReport, type UpdateComponent } from "./lib/update.js";
+import { archiveUpdateReport, type UpdateComponent } from "./lib/update.js";
 import { DOTFILES_DIR } from "./lib/dotfiles.js";
 import { commitCrystallize } from "./lib/crystallize-commit.js";
 import { redactString } from "./lib/redact.js";
@@ -256,7 +256,8 @@ Idempotent — safe to run repeatedly.`,
         },
         async execute(args) {
           const workspaceRoot = resolveWorkspaceRoot();
-          const results = setupWorkspace(workspaceRoot, args);
+          const result = defaultWorkspaceApplication.setupWorkspace({ workspaceRoot, targetAgent: "opencode", ...args });
+          const results = result.value ?? [];
           const lines = ["# Workspace Setup Results", ""];
           for (const r of results) {
             const icon = r.status === "ok" ? "✅" : r.status === "warning" ? "⚠️" : r.status === "error" ? "❌" : "⏭️";
@@ -561,7 +562,13 @@ Use dryRun=true to preview commands without executing. After updating, restart o
           dryRun: z.boolean().optional().default(false).describe("If true, only show what would be run"),
         },
         async execute(args) {
-          const report = await updateExtensions({ components: args.components as UpdateComponent[] | undefined, dryRun: args.dryRun, targetAgent: "opencode" });
+          const result = await defaultWorkspaceApplication.updateWorkspace({ workspaceRoot: resolveWorkspaceRoot(), components: args.components as UpdateComponent[] | undefined, dryRun: args.dryRun, targetAgent: "opencode" });
+          if (!result.value) return {
+            title: "opencode-sync update",
+            output: result.errors.join("\n"),
+            metadata: { ok: false, summary: { ok: 0, warning: 0, error: result.errors.length, skipped: 0 } },
+          };
+          const report = result.value;
           let reportFile: string | undefined;
           try {
             reportFile = archiveUpdateReport(resolveWorkspaceRoot(), report);
@@ -569,7 +576,7 @@ Use dryRun=true to preview commands without executing. After updating, restart o
           return {
             title: "opencode-sync update",
             output: report.text + (reportFile ? t("plugin.updateReportArchived", { path: reportFile }) : ""),
-            metadata: { summary: report.summary },
+            metadata: { ok: result.ok, summary: report.summary },
           };
         },
       }),

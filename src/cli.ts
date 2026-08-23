@@ -5,7 +5,7 @@ import * as path from "node:path";
 import { spawn } from "node:child_process";
 import {
   exportSystemState, importSystemState, diffState, resolveWorkspaceRoot, resolveWorkspaceRootForAgent, run,
-  getSubmoduleStatus, setupWorkspace, detectWorkspaceInfo,
+  getSubmoduleStatus, detectWorkspaceInfo,
   createGitHubRepo, detectApiKeys, initApiKeyFile, generateSyncGuide,
   readInstallLog, appendInstallEntry, exportInstallLogAsMarkdown,
   readInitState, writeInitState, markStepCompleted, pendingSteps, emptyInitState, detectTargetAgent,
@@ -14,7 +14,7 @@ import {
   scanWorkspaceInventory, startDashboardServer,
   type WorkspaceState, type InitType, type TargetAgent,
 } from "./sync.js";
-import { updateExtensions, archiveUpdateReport, type UpdateComponent, type UpdateProgress } from "./lib/update.js";
+import { archiveUpdateReport, type UpdateComponent, type UpdateProgress } from "./lib/update.js";
 import { DOTFILES_DIR } from "./lib/dotfiles.js";
 import { commitCrystallize } from "./lib/crystallize-commit.js";
 import { setLang, t } from "./i18n/index.js";
@@ -338,7 +338,8 @@ async function main() {
     }
     case "setup": {
       const targetAgent = targetAgentFor(flags, workspaceRoot);
-      const results = setupWorkspace(workspaceRoot, {
+      const result = defaultWorkspaceApplication.setupWorkspace({
+        workspaceRoot,
         targetAgent,
         fixWindowsPaths: boolFlag(flags, "fix-windows-paths", true),
         copyConfig: boolFlag(flags, "copy-config", false),
@@ -352,17 +353,15 @@ async function main() {
           console.error(`[uagent-sync] skill-source ${event.phase} source=${event.source} attempt=${event.attempt}/${event.maxAttempts} elapsedMs=${event.elapsedMs}${retry}`);
         },
       });
+      const results = result.value ?? [];
       const lines = ["# Workspace Setup Results", ""];
       for (const r of results) {
         const icon = r.status === "ok" ? "✅" : r.status === "warning" ? "⚠️" : r.status === "error" ? "❌" : "⏭️";
         lines.push(`### ${icon} ${r.step}`, `  ${r.detail}`, "");
       }
-      const warnings = results.filter((item) => item.status === "warning").map((item) => `${item.step}: ${item.detail}`);
-      const errors = results.filter((item) => item.status === "error").map((item) => `${item.step}: ${item.detail}`);
-      const skipped = results.filter((item) => item.status === "skipped").map((item) => `${item.step}: ${item.detail}`);
-      if (boolFlag(flags, "json")) console.log(JSON.stringify({ ok: errors.length === 0, warnings, errors, skipped, targetAgent, steps: results }, null, 2));
+      if (boolFlag(flags, "json")) console.log(JSON.stringify({ ok: result.ok, warnings: result.warnings, errors: result.errors, skipped: result.skipped, targetAgent, steps: results }, null, 2));
       else console.log(lines.join("\n"));
-      if (errors.length > 0) process.exit(1);
+      if (!result.ok) process.exit(1);
       break;
     }
     case "init": {
@@ -574,10 +573,15 @@ async function main() {
       const dryRun = boolFlag(flags, "dry-run");
       const targetAgent = targetAgentFor(flags, workspaceRoot);
       console.log(dryRun ? t("cli.updateDryRun") : t("cli.updateStart"));
-      const report = await updateExtensions({ components, dryRun, targetAgent, onProgress: (ev) => console.log(formatProgress(ev)) });
+      const result = await defaultWorkspaceApplication.updateWorkspace({ workspaceRoot, components, dryRun, targetAgent, onProgress: (ev) => console.log(formatProgress(ev)) });
+      if (!result.value) {
+        console.error(JSON.stringify({ ok: false, warnings: result.warnings, errors: result.errors, skipped: result.skipped, targetAgent }));
+        process.exit(1);
+      }
+      const report = result.value;
       const reportFile = archiveUpdateReport(workspaceRoot, report);
       console.log(t("cli.updateReportArchived", { path: reportFile }));
-      process.exit(report.summary.error > 0 ? 1 : 0);
+      process.exit(result.ok ? 0 : 1);
       break;
     }
     case "changelog": {
