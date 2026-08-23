@@ -20,15 +20,18 @@ import { commitCrystallize } from "./lib/crystallize-commit.js";
 import { setLang, t } from "./i18n/index.js";
 import { defaultWorkspaceApplication } from "./application/default-workspace-application.js";
 import { preflightImportWorkspace } from "./application/import-workspace.js";
-import { formatVerifyJson, formatVerifyText } from "./entrypoints/result-formatters.js";
+import { preflightWorkspaceOperation, type WorkspaceOperation } from "./application/workspace-operation-capabilities.js";
+import { formatApplicationJson, formatVerifyJson, formatVerifyText } from "./entrypoints/result-formatters.js";
 
 function log(msg: string) { console.error(`[opencode-sync] ${msg}`); }
 
 function failStateCommand(targetAgent: TargetAgent, error: unknown): never {
   const message = error instanceof Error ? error.message : String(error);
-  console.error(JSON.stringify({ ok: false, warnings: [], errors: [message], skipped: [], targetAgent }));
+  console.error(JSON.stringify(formatApplicationJson({ ok: false, warnings: [], errors: [message], skipped: [], targetAgent })));
   process.exit(1);
 }
+
+const WORKSPACE_OPERATION_COMMANDS = new Set<WorkspaceOperation>(["verify", "export", "import", "setup", "update", "push", "pull"]);
 
 const ICON: Record<string, string> = { ok: "✅", warning: "⚠️", error: "❌", skipped: "⏭️" };
 
@@ -176,6 +179,10 @@ async function main() {
   const explicitAgent = flags.get("target-agent");
   const initialTargetAgent = typeof explicitAgent === "string" ? explicitAgent as TargetAgent : detectTargetAgent();
   if (!( ["codex", "opencode", "dsh", "all"] as string[]).includes(initialTargetAgent)) throw new Error(`Invalid targetAgent: ${initialTargetAgent}`);
+  if (WORKSPACE_OPERATION_COMMANDS.has(command as WorkspaceOperation)) {
+    const capability = preflightWorkspaceOperation(command as WorkspaceOperation, initialTargetAgent);
+    if (!capability.supported) failStateCommand(initialTargetAgent, capability.error);
+  }
   const workspaceRoot = resolveWorkspaceRootForAgent(initialTargetAgent);
   const stateRel = `${DOTFILES_DIR}/state/workspace-state.json`;
   const stateFile = path.join(workspaceRoot, stateRel);
@@ -234,12 +241,16 @@ async function main() {
       const capability = preflightImportWorkspace(targetAgent);
       if (!capability.supported) failStateCommand(targetAgent, capability.error);
       let artifact: string;
-      if (/^https?:\/\//.test(src)) {
-        const res = await fetch(src);
-        if (!res.ok) throw new Error(t("cli.failedToFetch", { src, status: res.status }));
-        artifact = await res.text();
-      } else {
-        artifact = fs.readFileSync(isPathSafe(src, workspaceRoot), "utf-8");
+      try {
+        if (/^https?:\/\//.test(src)) {
+          const res = await fetch(src);
+          if (!res.ok) throw new Error(t("cli.failedToFetch", { src, status: res.status }));
+          artifact = await res.text();
+        } else {
+          artifact = fs.readFileSync(isPathSafe(src, workspaceRoot), "utf-8");
+        }
+      } catch (error) {
+        return failStateCommand(targetAgent, error);
       }
       const result = (() => {
         try {
@@ -331,7 +342,7 @@ async function main() {
         const icon = r.status === "ok" ? "✅" : r.status === "warning" ? "⚠️" : r.status === "error" ? "❌" : "⏭️";
         lines.push(`### ${icon} ${r.step}`, `  ${r.detail}`, "");
       }
-      if (boolFlag(flags, "json")) console.log(JSON.stringify({ ok: result.ok, warnings: result.warnings, errors: result.errors, skipped: result.skipped, targetAgent, steps: results }, null, 2));
+      if (boolFlag(flags, "json")) console.log(JSON.stringify(formatApplicationJson(result, { steps: results }), null, 2));
       else console.log(lines.join("\n"));
       if (!result.ok) process.exit(1);
       break;
@@ -547,7 +558,7 @@ async function main() {
       console.log(dryRun ? t("cli.updateDryRun") : t("cli.updateStart"));
       const result = await defaultWorkspaceApplication.updateWorkspace({ workspaceRoot, components, dryRun, targetAgent, onProgress: (ev) => console.log(formatProgress(ev)) });
       if (!result.value) {
-        console.error(JSON.stringify({ ok: false, warnings: result.warnings, errors: result.errors, skipped: result.skipped, targetAgent }));
+        console.error(JSON.stringify(formatApplicationJson(result)));
         process.exit(1);
       }
       const report = result.value;

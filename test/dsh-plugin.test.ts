@@ -270,3 +270,23 @@ describe("runCli + renderResult", () => {
     assert.match(renderResult(result), /Usage/);
   });
 });
+
+describe("DSH target scope forwarding", () => {
+  it("passes --target-agent dsh through all workspace operation tools", async () => {
+    const root = makeTmpDir();
+    const fake = path.join(root, "argv-cli.mjs");
+    fs.writeFileSync(fake, "console.log(JSON.stringify(process.argv.slice(2)))");
+    const tools: Array<{ name: string; execute(args: Record<string, unknown>): Promise<string> }> = [];
+    const { apply } = await import("../packages/dsh/index.js");
+    apply({ tools: { register: (tool: typeof tools[number]) => tools.push(tool) } }, { cliPath: fake });
+
+    for (const name of ["sync_verify", "sync_export", "sync_import", "sync_setup", "sync_update", "sync_push", "sync_pull"]) {
+      const tool = tools.find((candidate) => candidate.name === name);
+      assert.ok(tool, `${name} must be registered`);
+      const args = name === "sync_import" ? { source: "state.json" } : {};
+      const output = await tool.execute(args);
+      const argv = JSON.parse(output) as string[];
+      assert.deepEqual(argv.slice(-2), ["--target-agent", "dsh"], `${name} must preserve DSH scope`);
+    }
+  });
+});

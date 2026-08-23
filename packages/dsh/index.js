@@ -45,7 +45,7 @@ function makeTool({ name: toolName, description, parameters, positionalKeys = []
       if (!cliPath) return cliPathError()
       const positionals = positionalKeys.filter((k) => args[k] !== undefined && args[k] !== null).map((k) => String(args[k]))
       const flags = argsToFlags(args, flagMap)
-      const result = await runCli(cliPath, command, [...positionals, ...flags], {
+      const result = await runCli(cliPath, command, [...positionals, ...flags, '--target-agent', 'dsh'], {
         timeoutMs: pluginConfig?.commandTimeoutMs ?? 600000,
       })
       return renderResult(result)

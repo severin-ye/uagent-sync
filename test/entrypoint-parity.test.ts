@@ -75,3 +75,41 @@ it("formats Plugin Application results with sanitized structured metadata", asyn
   assert.equal(formatted.metadata.ok, false);
   assert.equal(formatted.metadata.targetAgent, "opencode");
 });
+
+it("deeply redacts every structured Application result field including URL credentials", async () => {
+  const module = await import("../src/entrypoints/result-formatters.js") as {
+    formatApplicationJson?: (
+      result: ApplicationResult<unknown>,
+      extra?: Record<string, unknown>,
+    ) => Record<string, unknown>;
+  };
+  assert.ok(module.formatApplicationJson, "a shared structured result formatter must exist");
+  const secrets = {
+    github: "ghp_1234567890abcdef",
+    openai: "sk-1234567890abcdef",
+    url: "https://user:password-token@example.invalid/private.git",
+  };
+  for (const operation of ["push", "pull", "import"]) {
+    const formatted = module.formatApplicationJson({
+      ok: false,
+      warnings: [`${operation} warning ${secrets.github}`],
+      errors: [`${operation} error ${secrets.openai}`, secrets.url],
+      skipped: [`${operation} skipped ${secrets.github}`],
+      targetAgent: "codex",
+      value: { nested: { command: `git clone ${secrets.url}`, detail: secrets.openai } },
+    }, { steps: [{ detail: secrets.github, source: secrets.url }] });
+    const serialized = JSON.stringify(formatted);
+    for (const secret of Object.values(secrets)) assert.doesNotMatch(serialized, new RegExp(secret.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+    assert.deepEqual(Object.keys(formatted).sort(), ["errors", "ok", "skipped", "steps", "targetAgent", "warnings"]);
+    assert.equal(formatted.ok, false);
+    assert.equal(formatted.targetAgent, "codex");
+  }
+});
+
+it("routes CLI failure JSON through the shared structured result formatter", () => {
+  const source = fs.readFileSync(path.join(repositoryRoot, "src", "cli.ts"), "utf-8");
+  assert.match(source, /function failStateCommand[\s\S]*?formatApplicationJson\s*\(/);
+  for (const operation of ["push", "pull", "import"]) {
+    assert.match(source, new RegExp(`case "${operation}"[\\s\\S]*?failStateCommand\\s*\\(`));
+  }
+});
