@@ -69,7 +69,7 @@ describe("WorkspaceState artifact codec", () => {
   it("rejects future schema versions instead of guessing a migration", () => {
     assert.throws(
       () => parseWorkspaceStateArtifact({ ...legacyBase, schemaVersion: 4, targetAgent: "codex" }),
-      /unsupported future WorkspaceState schema version 4/i,
+      /unsupported_future_version.*schemaVersion/i,
     );
   });
 
@@ -98,6 +98,51 @@ describe("WorkspaceState artifact codec", () => {
     assert.deepEqual(parsed.agents?.codex?.skills.map((item) => item.id), ["kept-skill"]);
     assert.deepEqual(parsed.agents?.codex?.mcp.map((item) => item.id), ["kept-mcp"]);
     assert.ok(parsed.tombstones.some((item) => item.kind === "mcp" && item.id === "codebase-memory-mcp"));
+  });
+
+  it("removes tombstoned MCPs from every recoverable configuration table without mutating input", () => {
+    const input = {
+      ...legacyBase,
+      schemaVersion: 2,
+      targetAgent: "codex",
+      agents: {
+        codex: {
+          plugins: [],
+          skills: [],
+          mcp: [],
+          config: {
+            mcp: { "codebase-memory-mcp": { command: "removed" }, kept: { command: "kept" } },
+            MCP: { "CODEBASE-MEMORY-MCP": { command: "removed" }, keptUpper: { command: "kept" } },
+          },
+        },
+      },
+      opencodeConfig: {
+        mcp: { "codebase-memory-mcp": { command: "removed" }, browser: { command: "kept" } },
+      },
+    };
+
+    const parsed = parseWorkspaceStateArtifact(input);
+    const agentConfig = parsed.agents?.codex?.config as Record<string, Record<string, unknown>>;
+    const opencodeMcp = parsed.opencodeConfig?.mcp as Record<string, unknown>;
+
+    assert.deepEqual(Object.keys(agentConfig.mcp), ["kept"]);
+    assert.deepEqual(Object.keys(agentConfig.MCP), ["keptUpper"]);
+    assert.deepEqual(Object.keys(opencodeMcp), ["browser"]);
+    assert.ok("codebase-memory-mcp" in input.agents.codex.config.mcp, "codec must not mutate the supplied artifact");
+    assert.ok("codebase-memory-mcp" in input.opencodeConfig.mcp, "codec only normalizes its returned object");
+  });
+
+  it("does not echo rejected runtime values in validation errors", () => {
+    const sensitiveMarker = "SENSITIVE_TARGET_MARKER";
+    assert.throws(
+      () => parseWorkspaceStateArtifact({ ...legacyBase, schemaVersion: 3, targetAgent: sensitiveMarker }),
+      (error: unknown) => {
+        assert.ok(error instanceof Error);
+        assert.match(error.message, /invalid_enum_value.*targetAgent/i);
+        assert.ok(!error.message.includes(sensitiveMarker));
+        return true;
+      },
+    );
   });
 
   it("accepts JSON text and rejects malformed runtime shapes", () => {

@@ -66,12 +66,12 @@ function asJsonObject(input: unknown): JsonObject {
   if (typeof input === "string") {
     try {
       parsed = JSON.parse(input) as unknown;
-    } catch (error) {
-      throw new Error(`Invalid WorkspaceState JSON: ${error instanceof Error ? error.message : String(error)}`);
+    } catch {
+      throw new Error("Invalid WorkspaceState JSON [invalid_json] at root");
     }
   }
   if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
-    throw new Error("Invalid WorkspaceState artifact: expected a JSON object");
+    throw new Error("Invalid WorkspaceState artifact [invalid_type] at root");
   }
   return parsed as JsonObject;
 }
@@ -80,10 +80,10 @@ function schemaVersionOf(input: JsonObject): number {
   const value = input.schemaVersion;
   if (value === undefined) return 1;
   if (typeof value !== "number" || !Number.isInteger(value) || value < 1) {
-    throw new Error("Invalid WorkspaceState artifact: schemaVersion must be a positive integer");
+    throw new Error("Invalid WorkspaceState artifact [invalid_schema_version] at schemaVersion");
   }
   if (value > CURRENT_WORKSPACE_STATE_SCHEMA_VERSION) {
-    throw new Error(`Unsupported future WorkspaceState schema version ${value}`);
+    throw new Error("Unsupported WorkspaceState artifact [unsupported_future_version] at schemaVersion");
   }
   return value;
 }
@@ -96,6 +96,27 @@ function isObject(value: unknown): value is JsonObject {
   return !!value && typeof value === "object" && !Array.isArray(value);
 }
 
+const RECOVERABLE_CONFIG_TABLES: ReadonlyArray<{ names: readonly string[]; kind: ExtensionRef["kind"] }> = [
+  { names: ["plugin", "plugins"], kind: "plugin" },
+  { names: ["skill", "skills"], kind: "skill" },
+  { names: ["mcp", "MCP", "mcpServers", "mcp_servers"], kind: "mcp" },
+];
+
+function filterRecoverableConfig(config: unknown, deleted: ReadonlySet<string>): unknown {
+  if (!isObject(config)) return config;
+  const filtered = { ...config };
+  for (const table of RECOVERABLE_CONFIG_TABLES) {
+    for (const name of table.names) {
+      const entries = config[name];
+      if (!isObject(entries)) continue;
+      filtered[name] = Object.fromEntries(
+        Object.entries(entries).filter(([id]) => !deleted.has(extensionKey({ kind: table.kind, id }))),
+      );
+    }
+  }
+  return filtered;
+}
+
 function filterSelectedExtensions(input: JsonObject, tombstones: ExtensionTombstone[]): JsonObject {
   const deleted = new Set(tombstones.map(extensionKey));
   const agents = isObject(input.agents) ? { ...input.agents } : input.agents;
@@ -104,7 +125,7 @@ function filterSelectedExtensions(input: JsonObject, tombstones: ExtensionTombst
     for (const agentId of ["codex", "opencode", "dsh"] as const) {
       const current = agents[agentId];
       if (!isObject(current)) continue;
-      const filtered = { ...current };
+      const filtered: JsonObject = { ...current, config: filterRecoverableConfig(current.config, deleted) };
       for (const kind of ["plugins", "skills", "mcp"] as const) {
         const expectedKind = kind === "plugins" ? "plugin" : kind === "skills" ? "skill" : "mcp";
         const selected = current[kind];
@@ -122,13 +143,27 @@ function filterSelectedExtensions(input: JsonObject, tombstones: ExtensionTombst
     ? input.skills.filter((id) => typeof id !== "string" || !deleted.has(extensionKey({ kind: "skill", id })))
     : input.skills;
 
-  return { ...input, agents, skills, tombstones };
+  const opencodeConfig = filterRecoverableConfig(input.opencodeConfig, deleted);
+
+  return { ...input, agents, opencodeConfig, skills, tombstones };
+}
+
+function safeIssuePath(path: Array<string | number>): string {
+  if (path.length === 0) return "root";
+  return path.map((part) => {
+    if (typeof part === "number") return String(part);
+    return /^[a-z][a-z0-9_-]*$/i.test(part) ? part : "field";
+  }).join(".");
+}
+
+function formatValidationIssues(error: z.ZodError): string {
+  return error.issues.map((issue) => `[${issue.code}] at ${safeIssuePath(issue.path)}`).join("; ");
 }
 
 function applyTombstones(input: JsonObject): JsonObject {
   const parsedTombstones = z.array(tombstoneSchema).safeParse(input.tombstones ?? []);
   if (!parsedTombstones.success) {
-    throw new Error(`Invalid WorkspaceState artifact: ${parsedTombstones.error.issues.map((issue) => issue.message).join("; ")}`);
+    throw new Error(`Invalid WorkspaceState artifact: ${formatValidationIssues(parsedTombstones.error)}`);
   }
   const tombstones = mergePermanentTombstones(parsedTombstones.data as ExtensionTombstone[]);
   return filterSelectedExtensions(input, tombstones);
@@ -144,8 +179,7 @@ export function parseWorkspaceStateArtifact(input: unknown): WorkspaceStateV3 {
 
   const result = workspaceStateV3Schema.safeParse(applyTombstones(migrated));
   if (!result.success) {
-    const detail = result.error.issues.map((issue) => `${issue.path.join(".") || "root"}: ${issue.message}`).join("; ");
-    throw new Error(`Invalid WorkspaceState artifact: ${detail}`);
+    throw new Error(`Invalid WorkspaceState artifact: ${formatValidationIssues(result.error)}`);
   }
   return result.data as WorkspaceStateV3;
 }
