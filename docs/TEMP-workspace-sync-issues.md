@@ -769,3 +769,21 @@ git -c protocol.file.allow=always submodule add <local-bare-repo> usync-dotfiles
 **改进建议**
 
 - 为不需要 embeddings 的 `detect_changes` 提供不下载 `onnxruntime-node` 的轻量安装路径，或随 U同步预装可离线执行的 GitNexus 门禁运行时。
+
+### 问题 21：severin raw bootstrap 的 marketplace 网络刷新耗尽后中断（本轮已修复，待实机复验）
+
+**现象**
+
+- severin 实机 bootstrap 的 source checkout 已从 `b4214d5` 快进到 `62e65d1`，`390/390`、build、prepack 和 tarball 均通过；随后 Codex personal marketplace 的 `git pull --ff-only origin master` 连续三次 connection reset，bootstrap 返回 `ok=false`、退出码 1，restore/setup/verify 未继续执行。
+- 本机没有该实机的 staged raw 报告；以下状态仅基于用户提供的现象和本仓库自动化 fixture，不声称已取得或复验远端报告。
+
+**解决方案与边界**
+
+- 保留原有三次网络 `pull --ff-only` 行为；三次失败后只在 marketplace 与已成功更新的 source checkout 的 `origin` 均规范化等于 `UagentRepo` 时，使用本地 source repository fetch + `merge --ff-only` 回退。
+- 回退逐次检查原生 Git 的 `$LASTEXITCODE`，不 reset、不 force；来源不一致、本地无法快进或最终 marketplace 未包含当前 source commit 时仍失败，不会继续 `plugin add` 或伪报成功。
+- plugin add 前再次验证 marketplace HEAD 已包含/达到当前 source commit；Codex-only、`codebase-memory-mcp` tombstone 和后续恢复流程保持不变。
+
+**本地验证**
+
+- 新增真实本地 Git fixture：三次远端失败后的同源快进、source origin 不一致拒绝、marketplace 非 fast-forward 拒绝；bootstrap 聚焦测试 `10/10` 通过。
+- **仍待 severin raw 复验**：本修复尚未推送，也未在 severin 实机重跑；必须在包含本修复的 raw GitHub bootstrap 上确认 marketplace HEAD、plugin add、restore/setup/verify 和最终退出码。

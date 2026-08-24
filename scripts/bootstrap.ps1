@@ -17,12 +17,44 @@ function Assert-GitHubUrl([string]$Value, [string]$Name) {
   }
 }
 
+# region Marketplace helpers
 function Normalize-GitHubRepoUrl([string]$Value) {
   $uri = [Uri]$Value
   $repoPath = $uri.AbsolutePath.Trim('/').ToLowerInvariant()
   if ($repoPath.EndsWith('.git')) { $repoPath = $repoPath.Substring(0, $repoPath.Length - 4) }
   return "https://github.com/$repoPath"
 }
+
+function Test-RepositoryOrigin([string]$RepositoryDir, [string]$ExpectedRepo) {
+  $origin = git -C $RepositoryDir remote get-url origin 2>$null
+  $originExitCode = $LASTEXITCODE
+  if ($originExitCode -ne 0) { return $false }
+  try {
+    return (Normalize-GitHubRepoUrl ([string]$origin).Trim()) -eq (Normalize-GitHubRepoUrl $ExpectedRepo)
+  } catch { return $false }
+}
+
+function Test-GitCommitContained([string]$RepositoryDir, [string]$SourceCommit) {
+  git -C $RepositoryDir merge-base --is-ancestor $SourceCommit HEAD *> $null
+  return $LASTEXITCODE -eq 0
+}
+
+function Update-MarketplaceFromSource([string]$MarketplaceRoot, [string]$SourceDir, [string]$SourceCommit, [string]$ExpectedRepo) {
+  if (-not (Test-RepositoryOrigin $MarketplaceRoot $ExpectedRepo)) {
+    throw 'Codex marketplace origin does not match UagentRepo'
+  }
+  if (-not (Test-RepositoryOrigin $SourceDir $ExpectedRepo)) {
+    throw 'Uagent source repository origin does not match UagentRepo'
+  }
+  git -C $MarketplaceRoot fetch --no-tags $SourceDir $SourceCommit
+  if ($LASTEXITCODE -ne 0) { throw 'Local source fetch for Codex marketplace failed' }
+  git -C $MarketplaceRoot merge --ff-only FETCH_HEAD
+  if ($LASTEXITCODE -ne 0) { throw 'Local source fast-forward for Codex marketplace failed' }
+  if (-not (Test-GitCommitContained $MarketplaceRoot $SourceCommit)) {
+    throw "Codex marketplace does not contain source commit $SourceCommit"
+  }
+}
+# endregion Marketplace helpers
 
 Assert-GitHubUrl $UagentRepo 'UagentRepo'
 Assert-GitHubUrl $DotfilesRepo 'DotfilesRepo'
@@ -228,8 +260,13 @@ try {
   $completed['install-codex-cli'] = $true; Save-State
 
   New-Item -ItemType Directory -Path $WorkspaceRoot -Force | Out-Null
-  if (Test-Path -LiteralPath (Join-Path $sourceDir '.git')) { Invoke-WithRetry { git -C $sourceDir pull --ff-only origin master; if ($LASTEXITCODE -ne 0) { throw 'git pull Uagent Sync failed' } } 'update Uagent Sync' }
-  else { Invoke-WithRetry { git clone $UagentRepo $sourceDir; if ($LASTEXITCODE -ne 0) { throw 'git clone Uagent Sync failed' } } 'clone Uagent Sync' }
+  if (Test-Path -LiteralPath (Join-Path $sourceDir '.git')) {
+    if (-not (Test-RepositoryOrigin $sourceDir $UagentRepo)) { throw 'Uagent source repository origin does not match UagentRepo' }
+    Invoke-WithRetry { git -C $sourceDir pull --ff-only origin master; if ($LASTEXITCODE -ne 0) { throw 'git pull Uagent Sync failed' } } 'update Uagent Sync'
+  } else {
+    Invoke-WithRetry { git clone $UagentRepo $sourceDir; if ($LASTEXITCODE -ne 0) { throw 'git clone Uagent Sync failed' } } 'clone Uagent Sync'
+    if (-not (Test-RepositoryOrigin $sourceDir $UagentRepo)) { throw 'Uagent source repository origin does not match UagentRepo' }
+  }
   $completed['clone-uagent'] = $true; Save-State
   if (Test-Path -LiteralPath (Join-Path $dotfilesDir '.git')) { Invoke-WithRetry { git -C $dotfilesDir pull --ff-only; if ($LASTEXITCODE -ne 0) { throw 'git pull dotfiles failed' } } 'update dotfiles' }
   else { Invoke-WithRetry { git clone $DotfilesRepo $dotfilesDir; if ($LASTEXITCODE -ne 0) { throw 'git clone dotfiles failed' } } 'clone dotfiles' }
@@ -272,9 +309,20 @@ try {
     $marketplace = $marketplaceList.marketplaces | Where-Object { $_.name -eq 'uagent-sync' } | Select-Object -First 1
     if (-not $marketplace -or -not $marketplace.root) { throw 'Codex personal marketplace root could not be resolved' }
     $marketplaceRoot = [string]$marketplace.root
-    $marketplaceOrigin = [string](git -C $marketplaceRoot remote get-url origin)
-    if ($LASTEXITCODE -ne 0 -or (Normalize-GitHubRepoUrl $marketplaceOrigin.Trim()) -ne (Normalize-GitHubRepoUrl $UagentRepo)) { throw 'Codex marketplace origin does not match UagentRepo' }
-    Invoke-WithRetry { git -C $marketplaceRoot pull --ff-only origin master; if ($LASTEXITCODE -ne 0) { throw 'git pull Codex marketplace failed' } } 'refresh Codex personal marketplace' 3
+    if (-not (Test-RepositoryOrigin $marketplaceRoot $UagentRepo)) { throw 'Codex marketplace origin does not match UagentRepo' }
+    $marketplacePullSucceeded = $false
+    try {
+      Invoke-WithRetry { git -C $marketplaceRoot pull --ff-only origin master; if ($LASTEXITCODE -ne 0) { throw 'git pull Codex marketplace failed' } } 'refresh Codex personal marketplace' 3
+      $marketplacePullSucceeded = $true
+    } catch {
+      $warnings.Add('Marketplace network refresh failed after 3 attempts; using the verified local source checkout for a fast-forward.')
+    }
+    if (-not $marketplacePullSucceeded) {
+      Update-MarketplaceFromSource $marketplaceRoot $sourceDir $currentSourceCommit $UagentRepo
+    }
+    if (-not (Test-GitCommitContained $marketplaceRoot $currentSourceCommit)) {
+      throw "Codex marketplace does not contain source commit $currentSourceCommit"
+    }
     & $trustedCodex plugin add 'uagent-sync@uagent-sync'
     if ($LASTEXITCODE -ne 0) { throw 'Uagent Sync plugin installation failed' }
   }

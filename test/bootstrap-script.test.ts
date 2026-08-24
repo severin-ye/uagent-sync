@@ -7,6 +7,81 @@ import { spawnSync } from "node:child_process";
 
 const ROOT = path.join(import.meta.dirname, "..");
 const SCRIPT = path.join(ROOT, "scripts", "bootstrap.ps1");
+const EXPECTED_REPO = "https://github.com/example/uagent-sync";
+
+function runGit(cwd: string, args: string[]): string {
+  const result = spawnSync("git", ["-C", cwd, ...args], { encoding: "utf-8" });
+  assert.equal(result.status, 0, `git ${args.join(" ")} failed: ${result.stderr}`);
+  return result.stdout.trim();
+}
+
+function createMarketplaceFixture(options: { sourceOrigin?: string; divergedMarketplace?: boolean } = {}) {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "uagent-marketplace-fixture-"));
+  const source = path.join(directory, "source");
+  const marketplace = path.join(directory, "marketplace");
+  fs.mkdirSync(source);
+  runGit(source, ["init", "--initial-branch=master"]);
+  runGit(source, ["config", "user.name", "Bootstrap Test"]);
+  runGit(source, ["config", "user.email", "bootstrap-test@example.invalid"]);
+  fs.writeFileSync(path.join(source, "plugin.txt"), "base\n");
+  runGit(source, ["add", "plugin.txt"]);
+  runGit(source, ["commit", "-m", "base"]);
+  runGit(source, ["remote", "add", "origin", options.sourceOrigin ?? EXPECTED_REPO]);
+  const clone = spawnSync("git", ["clone", source, marketplace], { encoding: "utf-8" });
+  assert.equal(clone.status, 0, `git clone failed: ${clone.stderr}`);
+  runGit(marketplace, ["config", "user.name", "Bootstrap Test"]);
+  runGit(marketplace, ["config", "user.email", "bootstrap-test@example.invalid"]);
+  runGit(marketplace, ["remote", "set-url", "origin", EXPECTED_REPO]);
+  fs.writeFileSync(path.join(source, "plugin.txt"), "source-update\n");
+  runGit(source, ["add", "plugin.txt"]);
+  runGit(source, ["commit", "-m", "source update"]);
+  const sourceCommit = runGit(source, ["rev-parse", "HEAD"]);
+  if (options.divergedMarketplace) {
+    fs.writeFileSync(path.join(marketplace, "plugin.txt"), "local-divergence\n");
+    runGit(marketplace, ["add", "plugin.txt"]);
+    runGit(marketplace, ["commit", "-m", "marketplace divergence"]);
+  }
+  return { directory, source, marketplace, sourceCommit };
+}
+
+function marketplaceHelperScript(): string {
+  const script = fs.readFileSync(SCRIPT, "utf-8");
+  const start = script.indexOf("# region Marketplace helpers");
+  const end = script.indexOf("# endregion Marketplace helpers");
+  assert.ok(start >= 0 && end > start, "marketplace helper region must be present");
+  return script.slice(start, end);
+}
+
+function runMarketplaceHelper(fixture: { source: string; marketplace: string; sourceCommit: string }, expectSuccess: boolean) {
+  const driverDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "uagent-marketplace-probe-"));
+  const driver = path.join(driverDirectory, "probe.ps1");
+  const probe = `${marketplaceHelperScript()}
+$ErrorActionPreference = 'Stop'
+try {
+  Update-MarketplaceFromSource -MarketplaceRoot $env:MARKETPLACE_ROOT -SourceDir $env:SOURCE_DIR -SourceCommit $env:SOURCE_COMMIT -ExpectedRepo $env:EXPECTED_REPO
+  $head = (git -C $env:MARKETPLACE_ROOT rev-parse HEAD).Trim()
+  if ($LASTEXITCODE -ne 0) { throw 'marketplace HEAD lookup failed' }
+  if ($head -ne $env:SOURCE_COMMIT) { throw "marketplace HEAD mismatch: $head" }
+  Write-Output 'success'
+} catch {
+  Write-Error $_
+  exit 1
+}`;
+  fs.writeFileSync(driver, probe, "utf-8");
+  const result = spawnSync("powershell.exe", ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", driver], {
+    encoding: "utf-8",
+    env: {
+      ...process.env,
+      MARKETPLACE_ROOT: fixture.marketplace,
+      SOURCE_DIR: fixture.source,
+      SOURCE_COMMIT: fixture.sourceCommit,
+      EXPECTED_REPO,
+    },
+  });
+  fs.rmSync(driverDirectory, { recursive: true, force: true });
+  assert.equal(result.status === 0, expectSuccess, `marketplace helper probe output: ${result.stdout}\n${result.stderr}`);
+  return result;
+}
 
 describe("Windows Codex bootstrap plan", () => {
   it("accepts only the two repository URLs and produces a Codex-only resumable plan", () => {
@@ -65,6 +140,42 @@ describe("Windows Codex bootstrap plan", () => {
     assert.doesNotMatch(script, /plugin marketplace upgrade uagent-sync/);
     assert.match(script, /expectedPluginVersion/);
     assert.match(script, /\.version -eq \$expectedPluginVersion/);
+  });
+
+  it("falls back after three remote failures only through a same-origin local fast-forward", () => {
+    const script = fs.readFileSync(SCRIPT, "utf-8");
+    assert.match(script, /Invoke-WithRetry\s+\{[\s\S]*?git -C \$marketplaceRoot pull --ff-only origin master[\s\S]*?\}\s+'refresh Codex personal marketplace'\s+3/);
+    assert.match(script, /Update-MarketplaceFromSource/);
+    assert.match(script, /merge-base --is-ancestor \$SourceCommit HEAD/);
+    const sourceRefresh = script.slice(script.indexOf("if (Test-Path -LiteralPath (Join-Path $sourceDir '.git'))"), script.indexOf("$completed['clone-uagent']"));
+    assert.ok(sourceRefresh.indexOf("Test-RepositoryOrigin") < sourceRefresh.indexOf("git -C $sourceDir pull"), "source origin must be checked before pulling source code");
+
+    const fixture = createMarketplaceFixture();
+    try {
+      runMarketplaceHelper(fixture, true);
+      assert.equal(runGit(fixture.marketplace, ["rev-parse", "HEAD"]), fixture.sourceCommit);
+    } finally {
+      fs.rmSync(fixture.directory, { recursive: true, force: true });
+    }
+  });
+
+  it("rejects a source-origin mismatch before using the local fallback", () => {
+    const fixture = createMarketplaceFixture({ sourceOrigin: "https://github.com/attacker/not-uagent-sync" });
+    try {
+      const result = runMarketplaceHelper(fixture, false);
+      assert.match(`${result.stdout}\n${result.stderr}`, /source repository origin does\s+not\s+match UagentRepo/i);
+    } finally {
+      fs.rmSync(fixture.directory, { recursive: true, force: true });
+    }
+  });
+
+  it("rejects a local marketplace branch that cannot fast-forward to source", () => {
+    const fixture = createMarketplaceFixture({ divergedMarketplace: true });
+    try {
+      runMarketplaceHelper(fixture, false);
+    } finally {
+      fs.rmSync(fixture.directory, { recursive: true, force: true });
+    }
   });
 
   it("uses terminating cmdlet errors and leaves LASTEXITCODE checks to native commands", () => {
