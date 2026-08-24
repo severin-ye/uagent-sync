@@ -787,3 +787,33 @@ git -c protocol.file.allow=always submodule add <local-bare-repo> usync-dotfiles
 
 - 新增真实本地 Git fixture：三次远端失败后的同源快进、source origin 不一致拒绝、marketplace 非 fast-forward 拒绝；bootstrap 聚焦测试 `10/10` 通过。
 - **仍待 severin raw 复验**：本修复尚未推送，也未在 severin 实机重跑；必须在包含本修复的 raw GitHub bootstrap 上确认 marketplace HEAD、plugin add、restore/setup/verify 和最终退出码。
+
+## 2026-08-24 `b4214d5` / `62e65d1` severin 实机复验：marketplace 刷新被外部网络阻断
+
+- 首次 `git fetch origin master` 连接 GitHub 443 端口超时，第二次成功；隔离工作区安全快进到 `b4214d5b101650aabf999687cd492e534e3dd41f`，本机其他未提交文件均被保留。
+- raw bootstrap 启动后又检测到远端前进至仅调整测试的 `62e65d1`，并自动快进；因此本轮实际测试目标为 `62e65d1`。
+- 完整 `npm test` 为 390/390、82 suites、0 failed、0 cancelled；新增的 38/39 复扫、exit 1 幂等成功、部分安装重试、spinner-only clone 重试和明确 source 终态均在真实完整测试中通过。
+- 真实 prepack/build、production tarball 全局安装和 marketplace 路径核验已经通过。
+- 随后的 Codex marketplace `git pull` 连续三次返回 `Recv failure: Connection was reset`，bootstrap 正确返回 `ok=false` 和退出码 1，错误为 `git pull Codex marketplace failed`。
+- 已按顺序执行规则停止；没有进入 restore-dotfiles、skills 恢复、setup 或 final verify，所以仍不能声称问题 16—19 已通过 severin 真实来源下载验收，也不能声称 5/5 来源或 210/210 skills 可用。
+
+**处理与改进建议**
+
+- 网络恢复后直接重复同一 raw bootstrap 入口；已完成步骤由状态文件和真实版本检查安全复用，不应手工跳过 marketplace 门禁。
+- bootstrap 已经从同一远端更新、测试并打包了 U同步 checkout，marketplace 刷新可考虑复用这个经过验证的本地对象库或 bundle，减少对同一 GitHub 仓库的第二次独立网络拉取；仍须核验 origin 与目标提交一致并保持 fast-forward 语义。
+- 更换 VPN 节点后再次执行同一 raw 入口：raw 文件下载成功，但 Uagent Sync `git pull` 三次有界尝试分别出现两次 `Recv failure: Connection was reset` 和一次 GitHub 443 连接超时；bootstrap 在第一项必需拉取处退出 1，表明该节点对 GitHub raw HTTP 的可达性有所恢复，但 Git smart HTTP 连接仍不稳定。
+- 远端 `0534348` 与 GitHub Actions 全绿后再次准备最终验收时，severin 机器的预检 `git fetch origin master` 仍连续三次失败（两次 connection reset、一次 GitHub 443 超时）；本机未取得 `0534348`，因此按门禁没有运行 raw bootstrap，也没有产生新的 5/5、210/210、setup 或 verify 结论。
+
+### 问题 22：PowerShell 会在单词内部自动折行，`0534348` 的兼容断言仍不完整
+
+**现象**
+
+- 更换 VPN 后 Git 通道恢复，本机成功快进到远端 `0534348`，但 raw bootstrap 的完整测试为 392/393，唯一失败为 `rejects a source-origin mismatch before using the local fallback`。
+- 生产脚本正确拒绝了不匹配的 source origin；实际 PowerShell stderr 把 `not` 在控制台宽度边界拆成 `no\r\nt`，而测试正则 `/source repository origin\s+does\s+not\s+match UagentRepo/i` 只允许单词之间出现空白，不能匹配单词内部折行。
+- GitHub Actions 的 Node 20/22 全绿没有覆盖 severin 当前 PowerShell host 的具体输出宽度，因此该问题只在本机真实 bootstrap 中暴露。
+
+**解决方案**
+
+- 测试应先把 PowerShell 诊断中的所有空白 canonicalize 后再比较固定语义片段，例如将实际输出与预期短语都执行 `replace(/\s+/g, "").toLowerCase()`，再断言包含 `sourcerepositoryorigindoesnotmatchuagentrepo`。
+- 新增一个明确把 `not` 折成 `no\r\nt` 的 fixture，确保断言不再依赖控制台宽度；生产脚本的 origin 校验和 fail-closed 行为无需放宽。
+- bootstrap 已因 `npm test failed` 返回 `ok=false` 和退出码 1，并按门禁停止；没有执行 pack 安装、marketplace 回退、skills 恢复、setup 或 verify。
