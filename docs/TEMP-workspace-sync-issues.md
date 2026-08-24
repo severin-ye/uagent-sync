@@ -817,3 +817,9 @@ git -c protocol.file.allow=always submodule add <local-bare-repo> usync-dotfiles
 - 测试应先把 PowerShell 诊断中的所有空白 canonicalize 后再比较固定语义片段，例如将实际输出与预期短语都执行 `replace(/\s+/g, "").toLowerCase()`，再断言包含 `sourcerepositoryorigindoesnotmatchuagentrepo`。
 - 新增一个明确把 `not` 折成 `no\r\nt` 的 fixture，确保断言不再依赖控制台宽度；生产脚本的 origin 校验和 fail-closed 行为无需放宽。
 - bootstrap 已因 `npm test failed` 返回 `ok=false` 和退出码 1，并按门禁停止；没有执行 pack 安装、marketplace 回退、skills 恢复、setup 或 verify。
+
+**修复状态（2026-08-24）**
+
+- **已修复，待 severin raw bootstrap 复验**：测试现将 PowerShell 诊断压缩全部空白并转为小写后比较固定语义，新增 `no\r\nt` 单词内部折行回归 fixture；生产端同源校验未修改。
+- 本地聚焦测试为 11/11；完整 `npm test` 为 394/394、82 suites、0 failed、0 cancelled，并包含 clean build、真实 `npm pack` 安装和 CLI smoke 门禁。
+- 尚未声称最终 bootstrap 成功：必须在本提交推送并通过 GitHub Actions 后，由 severin 机器重新执行 raw GitHub bootstrap，继续验证 marketplace、5/5 skill 来源、210/210 skills、setup 与 final verify。

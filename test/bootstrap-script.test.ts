@@ -163,10 +163,19 @@ describe("Windows Codex bootstrap plan", () => {
     const fixture = createMarketplaceFixture({ sourceOrigin: "https://github.com/attacker/not-uagent-sync" });
     try {
       const result = runMarketplaceHelper(fixture, false);
-      assert.match(`${result.stdout}\n${result.stderr}`, /source repository origin\s+does\s+not\s+match UagentRepo/i);
+      const diagnostic = `${result.stdout}\n${result.stderr}`.replace(/\s+/g, "").toLowerCase();
+      assert.ok(
+        diagnostic.includes("sourcerepositoryorigindoesnotmatchuagentrepo"),
+        `unexpected diagnostic: ${result.stdout}\n${result.stderr}`,
+      );
     } finally {
       fs.rmSync(fixture.directory, { recursive: true, force: true });
     }
+  });
+
+  it("matches a PowerShell diagnostic even when a word is line-wrapped", () => {
+    const diagnostic = "source repository origin does no\r\nt match UagentRepo".replace(/\s+/g, "").toLowerCase();
+    assert.ok(diagnostic.includes("sourcerepositoryorigindoesnotmatchuagentrepo"));
   });
 
   it("rejects a local marketplace branch that cannot fast-forward to source", () => {
