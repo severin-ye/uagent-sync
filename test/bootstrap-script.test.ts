@@ -163,7 +163,7 @@ describe("Windows Codex bootstrap plan", () => {
     const fixture = createMarketplaceFixture({ sourceOrigin: "https://github.com/attacker/not-uagent-sync" });
     try {
       const result = runMarketplaceHelper(fixture, false);
-      assert.match(`${result.stdout}\n${result.stderr}`, /source repository origin does\s+not\s+match UagentRepo/i);
+      assert.match(`${result.stdout}\n${result.stderr}`, /source repository origin\s+does\s+not\s+match UagentRepo/i);
     } finally {
       fs.rmSync(fixture.directory, { recursive: true, force: true });
     }
