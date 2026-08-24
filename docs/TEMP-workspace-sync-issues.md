@@ -670,3 +670,92 @@ git -c protocol.file.allow=always submodule add <local-bare-repo> usync-dotfiles
 - **仍待**：DSH 只有 inventory、没有 restore writer；`targetAgent=dsh` 和 `all` 的 artifact restore 继续 fail-closed。
 - **已修（本轮自动化验证）**：初始 `npm test` 为 333/333；Review 2 补强后为 334/334，架构/inventory 聚焦组 10/10，typecheck 通过；独立 manifest/真实 pack 组为 25/25；真实 CLI smoke 随全量测试通过；隔离 workspace 的 Codex-only update dry-run 为 11 skipped / 0 error，报告确认 `targetAgent=codex`，计划不含 OpenCode 配置/cache 或 `codebase-memory-mcp`。
 - **仍待外部验收**：另一台全新 Windows 的 bootstrap/首次登录/winget-UAC 矩阵仍按原记录待验，不能由本轮架构与隔离 dry-run 替代。
+
+## 2026-08-24 severin Windows raw bootstrap 复验（基于 `1d3300b`）
+
+### 已确认修复
+
+- 隔离工作区已从 `bc68f75` 快进到 `1d3300b`；本地既有未提交文件与远端变更无路径重叠，未被覆盖或纳入本次记录。
+- `npm test` 一次通过 379/379、82 suites、0 failed；此前偶发失败的 Windows Git submodule fixture 本轮完整通过。
+- skill source 的 120 秒超时、15 秒 heartbeat、最多三次有界重试和脱敏恢复报告均在真实 bootstrap 中触发并按设计工作。
+- `google-deepmind/science-skills` 首次超时后第二次命令退出成功，证明瞬态网络重试链路能够继续执行。
+- `codebase-memory-mcp`、`gpt-dotfiles-sync`、`agent-browser`、`brand-extract` tombstone 均保持 satisfied，没有被重新安装。
+
+### 问题 16：source 级 `complete` 事件会掩盖最终失败
+
+**现象**
+
+- `open-design` 和 `gstack` 都输出了 source 级 `complete`，但随后 setup 返回 `ok=false`、bootstrap 退出码 1。
+- 源码当前无论来源恢复成功还是失败，都会在循环尾部发送 `phase="complete"`；该词实际只表示“此来源处理结束”，不是“安装完成”。
+
+**影响**
+
+- 用户和 Agent 会把 `complete` 误读为安装成功，并与最终错误产生矛盾，增加错误诊断成本。
+
+**解决方案**
+
+- 将进度终态拆为明确的 `succeeded`、`failed`、`already-complete`，或为 `complete` 增加不可省略的 success/result 字段；CLI 文案必须直接输出成功或失败。
+- 为“最后一次命令退出 1 后仍发送 complete”增加回归测试，禁止失败来源显示成功语义。
+
+### 问题 17：恢复成功判定只信任 CLI 退出码，没有验证最终 skill 集合
+
+**现象**
+
+- `science-skills` 第二次命令被记录为成功，但磁盘复扫仍缺少 `scienceskillscommon`；按 dotfiles 的 210 个选择项逐 ID 核对，当前只匹配 57/210。
+- 分来源实际结果为：Anthropic 18/18、Agent-Reach 1/1、science-skills 38/39、open-design 0/151、gstack 0/1。
+- 当前实现仅在“准备重试之前”复扫该来源是否完整；命令退出 0 后不会复扫完整性，最后一次非零退出后也不会复扫以识别可能的部分成功。
+
+**影响**
+
+- CLI 退出 0 但漏装 skill 时会产生假成功；CLI 非零但已完成部分写入时也无法给出准确缺失清单。
+
+**解决方案**
+
+- 每一次安装命令结束后都重新扫描，并以“该来源所有 selected skill 均存在且来源一致”作为唯一成功条件，退出码仅作为诊断和重试分类证据。
+- 对部分成功只重试缺失项或重新执行来源级幂等安装；最终错误必须报告准确的 present/missing 数量及最多三个缺失示例。
+- 增加“退出 0 但缺一项”“退出 1 但实际已完整”“退出 1 且部分安装”三组回归测试。
+
+### 问题 18：无诊断文本的 clone 退出 1 不会重试，报告摘要被终端控制字符污染
+
+**现象**
+
+- `gstack` 首次运行约 22 秒后退出 1，stdout 只有 `Cloning repository` spinner、stderr 为空、errorType 为空，因此没有命中瞬态网络错误正则，也没有第二次尝试。
+- `open-design` 前两次明确为 `ETIMEDOUT` 并重试，第三次约 40 秒后同样只留下 clone spinner 和退出码 1，最终失败。
+- 脱敏报告虽然没有密钥，但 stdout 仍包含 `[?25l`、`[1G[J` 等 ANSI/终端控制序列，主错误无法呈现真正的 Git 失败原因。
+
+**影响**
+
+- 网络克隆失败一旦被第三方 CLI 吞掉 stderr，就会被当作非瞬态失败立即终止；恢复报告也只有动画噪声，不能支持根因分析。
+
+**解决方案**
+
+- 优先让 skills CLI 使用非交互/无 spinner 输出；若不可控，则在 U同步层剥离 ANSI/光标控制序列，并保留底层 Git 的最终诊断。
+- 对处于 clone 阶段、短时间退出 1 且无权限/认证/404/manifest 等永久错误证据的结果，允许有界重试，但必须受总次数和总时间限制。
+- 报告新增 failureStage、lastMeaningfulLine、retryDecision 和 decisionReason，测试 spinner-only、空 stderr、永久错误三种分支。
+
+### 问题 19：PowerShell 验收命令不能在 Web 请求后直接判断 `$LASTEXITCODE`
+
+**现象**
+
+- 首次复验把 `Invoke-WebRequest` 后的 `$LASTEXITCODE` 当成 cmdlet 退出码；该变量未由 PowerShell cmdlet 设置，空值与 0 比较导致脚本在真正执行 bootstrap 前提前退出，并呈现误导性的进程退出 0。
+
+**解决方案**
+
+- 下载步骤使用 `$ErrorActionPreference='Stop'` 或 `Invoke-WebRequest -ErrorAction Stop` 捕获异常；只在执行原生程序后检查 `$LASTEXITCODE`，并把文档中的多行命令作为自动化 smoke fixture 验证。
+
+### 本轮停止点
+
+- setup 返回 `ok=false` 后已按顺序执行规则停止，没有继续运行 final verify；因此当前不能声称 5/5 来源成功、210/210 skills 可用或 bootstrap 退出码 0。
+- 本轮完整脱敏证据位于 `usync-dotfiles/state/recovery-reports/skill-source-github-nexu-io-open-design-1787502276728-69652.json` 和 `skill-source-github-garrytan-gstack-1787502298807-69652.json`。
+
+### 问题 20：GitNexus 提交门禁在首次下载依赖时被网络超时阻断
+
+**现象与处理**
+
+- 当前 Codex 会话没有暴露 GitNexus MCP 的 `detect_changes` 工具，本机也没有全局 GitNexus，因此提交前按仓库规则调用 `.gitnexus/run.cjs` 安装 runner。
+- pnpm 下载 `onnxruntime-node-1.27.0.tgz` 时经过内置重试后仍以 timeout error 23 失败，导致强制的 `detect_changes` 门禁无法执行。
+- 本轮没有绕过门禁提交或推送；问题文档保留为隔离工作区中的单文件未提交增量，待网络恢复并成功运行 `detect_changes({scope: "staged"})` 后再提交。
+
+**改进建议**
+
+- 为不需要 embeddings 的 `detect_changes` 提供不下载 `onnxruntime-node` 的轻量安装路径，或随 U同步预装可离线执行的 GitNexus 门禁运行时。
