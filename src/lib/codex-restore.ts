@@ -9,14 +9,19 @@ import { mergePermanentTombstones } from "./tombstones.js";
 import { redactString } from "./redact.js";
 
 export interface CommandResult { code: number; stdout: string; stderr: string; resolvedPath?: string; errorType?: string }
-export interface SkillAttemptSummary { attempt: number; elapsedMs: number; exitCode: number; stdout: string; stderr: string; resolvedPath?: string; errorType?: string }
+export interface SkillAttemptSummary {
+  attempt: number; elapsedMs: number; exitCode: number; stdout: string; stderr: string; resolvedPath?: string; errorType?: string;
+  failureStage: "none" | "clone" | "manifest" | "install" | "verification";
+  lastMeaningfulLine: string; retryDecision: "succeeded" | "retry" | "stop"; decisionReason: string;
+  present: number; missing: number;
+}
 export interface SkillSourceSummary {
   source: string; status: "installed" | "existing" | "error"; skills: string[]; succeeded: string[]; failed: string[];
   attempts?: SkillAttemptSummary[]; elapsedMs?: number; reportPath?: string;
 }
-export interface SkillProgressEvent { phase: "start" | "heartbeat" | "retry" | "complete"; source: string; attempt: number; maxAttempts: number; elapsedMs: number; delayMs?: number }
+export interface SkillProgressEvent { phase: "start" | "heartbeat" | "retry" | "succeeded" | "failed" | "already-complete"; source: string; attempt: number; maxAttempts: number; elapsedMs: number; delayMs?: number }
 export interface SkillRecoveryOptions {
-  maxAttempts?: number; baseDelayMs?: number; maxDelayMs?: number; timeoutMs?: number; heartbeatIntervalMs?: number;
+  maxAttempts?: number; baseDelayMs?: number; maxDelayMs?: number; timeoutMs?: number; totalTimeoutMs?: number; heartbeatIntervalMs?: number;
   sleep?: (milliseconds: number) => void; now?: () => number;
 }
 export interface CodexRestoreResult { ok: boolean; warnings: string[]; errors: string[]; skipped: string[]; targetAgent: TargetAgent; restored: string[]; sourceSummaries: SkillSourceSummary[] }
@@ -30,6 +35,27 @@ function safePath(value: string, env: NodeJS.ProcessEnv): string {
 
 function safeError(value: string): string {
   return redactString(value).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, "").trim().slice(0, 500);
+}
+
+function stripSkillTerminalControls(value: string): string {
+  return value
+    .replace(/\u001b\][^\u0007]*(?:\u0007|\u001b\\)/g, "")
+    .replace(/\u001b\[[0-?]*[ -/]*[@-~]/g, "")
+    .replace(/\u001b[@-_]/g, "")
+    .replace(/\r/g, "\n");
+}
+
+function safeSkillDiagnostic(value: string): string {
+  return safeError(stripSkillTerminalControls(value));
+}
+
+function skillLastMeaningfulLine(...values: string[]): string {
+  const lines = redactString(stripSkillTerminalControls(values.join("\n")))
+    .replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, "")
+    .split(/\r?\n/)
+    .map((line) => line.trim().replace(/^[\u2800-\u28ff]+\s*/, "").trim())
+    .filter(Boolean);
+  return (lines.at(-1) ?? "<empty>").slice(0, 300);
 }
 
 function trustedShim(file: "codex" | "npx", env: NodeJS.ProcessEnv, execPath: string): string | undefined {
@@ -102,7 +128,7 @@ function runMonitoredSkillCommand(executable: string, args: string[], options: T
   if (spawned.status === null) return { code: 124, stdout: "", stderr: "skill source install timed out", resolvedPath, errorType: "TIMEOUT" };
   try {
     const parsed = JSON.parse(spawned.stdout ?? "") as CommandResult;
-    return { code: parsed.code ?? 1, stdout: parsed.stdout ?? "", stderr: safeError(parsed.stderr ?? ""), resolvedPath, errorType: parsed.errorType };
+    return { code: parsed.code ?? 1, stdout: parsed.stdout ?? "", stderr: safeError(stripSkillTerminalControls(parsed.stderr ?? "")), resolvedPath, errorType: parsed.errorType };
   } catch {
     return { code: spawned.status ?? 1, stdout: spawned.stdout ?? "", stderr: "monitor runner returned invalid output", resolvedPath, errorType: "MONITOR_RUNNER_PROTOCOL" };
   }
@@ -141,18 +167,37 @@ function bounded(value: number | undefined, fallback: number, minimum: number, m
   return Math.min(maximum, Math.max(minimum, Number.isFinite(value) ? Math.floor(value as number) : fallback));
 }
 
+function skillFailureText(executed: CommandResult): string {
+  return stripSkillTerminalControls(`${executed.errorType ?? ""}\n${executed.stdout}\n${executed.stderr}`).toLowerCase();
+}
+
+function permanentSkillFailure(executed: CommandResult): boolean {
+  return /permission denied|access denied|forbidden|authentication failed|authentication required|unauthorized|repository not found|not found|404|invalid manifest|manifest is invalid|invalid source|does not exist/.test(skillFailureText(executed));
+}
+
 function retryableSkillFailure(executed: CommandResult): boolean {
-  const text = `${executed.errorType ?? ""}\n${executed.stdout}\n${executed.stderr}`.toLowerCase();
-  if (/permission denied|access denied|forbidden|authentication failed|unauthorized|repository not found|not found|404|invalid manifest|manifest is invalid|invalid source|does not exist/.test(text)) return false;
+  const text = skillFailureText(executed);
+  if (permanentSkillFailure(executed)) return false;
   return /connection (?:was )?reset|recv failure|econnreset|etimedout|timed out|timeout|temporary failure|eai_again|could not resolve host|network (?:is )?unavailable|socket hang up|tls|ssl|502|503|504|429/.test(text);
 }
 
-function installedSkillSourceIsComplete(source: string, skills: ExtensionRef[], installed: ExtensionRef[]): boolean {
-  const expected = new Set(skills.map((item) => item.id.toLowerCase()));
+function skillFailureStage(executed: CommandResult, missing: number): SkillAttemptSummary["failureStage"] {
+  const text = skillFailureText(executed);
+  if (/cloning repository|git clone|clone failed|failed to clone/.test(text)) return "clone";
+  if (/manifest/.test(text)) return "manifest";
+  if (executed.code === 0 && missing > 0) return "verification";
+  return "install";
+}
+
+function installedSkillSourceInventory(source: string, skills: ExtensionRef[], installed: ExtensionRef[]): { present: string[]; missing: string[] } {
   const present = new Set(installed
     .filter((item) => item.kind === "skill" && normalizeExtensionSource(item.source) === source)
     .map((item) => item.id.toLowerCase()));
-  return expected.size > 0 && [...expected].every((id) => present.has(id));
+  const unique = new Map(skills.map((item) => [item.id.toLowerCase(), item.id]));
+  return {
+    present: [...unique].filter(([id]) => present.has(id)).map(([, id]) => id),
+    missing: [...unique].filter(([id]) => !present.has(id)).map(([, id]) => id),
+  };
 }
 
 function defaultSleep(milliseconds: number): void {
@@ -195,6 +240,7 @@ export function restoreCodexExtensions(input: {
   const baseDelayMs = bounded(recovery.baseDelayMs, 500, 0, 30_000);
   const maxDelayMs = bounded(recovery.maxDelayMs, 8_000, 0, 120_000);
   const timeoutMs = bounded(recovery.timeoutMs, 120_000, 1, 900_000);
+  const totalTimeoutMs = bounded(recovery.totalTimeoutMs, Math.min(3_600_000, timeoutMs * maxAttempts), 1, 3_600_000);
   const heartbeatIntervalMs = bounded(recovery.heartbeatIntervalMs, 15_000, 250, 120_000);
   const sleep = recovery.sleep ?? defaultSleep;
   const now = recovery.now ?? (() => Date.now());
@@ -225,78 +271,132 @@ export function restoreCodexExtensions(input: {
   }
 
   result.skipped.push(...classified.existing.filter((item) => item.kind !== "skill").map((item) => `existing:${key(item)}`));
-  const existingSkillGroups = new Map<string, ExtensionRef[]>();
+  const groupedSkills = new Map<string, ExtensionRef[]>();
+  const sourcesToRestore = new Set<string>();
   for (const item of classified.existing.filter((entry) => entry.kind === "skill")) {
     const source = normalizeExtensionSource(item.source) ?? "source-unverified";
-    const group = existingSkillGroups.get(source) ?? [];
+    const group = groupedSkills.get(source) ?? [];
     group.push(item);
-    existingSkillGroups.set(source, group);
-  }
-  for (const [source, skills] of existingSkillGroups) {
-    const ids = skills.map((item) => item.id);
-    result.skipped.push(`existing-skill-source:${source}:skills=${ids.length}`);
-    result.sourceSummaries.push({ source, status: "existing", skills: ids, succeeded: ids, failed: [] });
+    groupedSkills.set(source, group);
   }
   for (const item of classified.missingSource) result.errors.push(`Missing trusted source for ${key(item)}`);
   for (const item of classified.conflicts) result.errors.push(`Conflicting recovery entries for ${key(item)}`);
 
-  const skillGroups = new Map<string, ExtensionRef[]>();
   for (const item of classified.restorable.filter((entry) => entry.kind === "skill")) {
     const source = normalizeExtensionSource(item.source);
     if (!source || !item.source) { result.errors.push(`Missing trusted source for ${key(item)}`); continue; }
-    const group = skillGroups.get(source) ?? [];
+    const group = groupedSkills.get(source) ?? [];
     group.push(item);
-    skillGroups.set(source, group);
+    groupedSkills.set(source, group);
+    sourcesToRestore.add(source);
+  }
+  const skillGroups = new Map<string, ExtensionRef[]>();
+  for (const [source, skills] of groupedSkills) {
+    if (sourcesToRestore.has(source)) {
+      skillGroups.set(source, skills);
+      continue;
+    }
+    const ids = skills.map((item) => item.id);
+    result.skipped.push(`existing-skill-source:${source}:skills=${ids.length}`);
+    result.sourceSummaries.push({ source, status: "existing", skills: ids, succeeded: ids, failed: [] });
+    emitProgress({ phase: "already-complete", source, attempt: 0, maxAttempts, elapsedMs: 0 });
   }
   for (const [source, skills] of skillGroups) {
     const ids = skills.map((item) => item.id);
     const startedAt = now();
     const attempts: SkillAttemptSummary[] = [];
     let succeeded: string[] = [];
+    let missing = [...ids];
     let finalExecuted: CommandResult = { code: 1, stdout: "", stderr: "non-zero exit" };
     emitProgress({ phase: "start", source, attempt: 1, maxAttempts, elapsedMs: 0 });
     for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
       const elapsedBefore = Math.max(0, now() - startedAt);
+      if (elapsedBefore >= totalTimeoutMs) {
+        const previous = attempts.at(-1);
+        if (previous?.retryDecision === "retry") {
+          previous.retryDecision = "stop";
+          previous.decisionReason = "total timeout reached before next attempt";
+        }
+        break;
+      }
       emitProgress({ phase: "heartbeat", source, attempt, maxAttempts, elapsedMs: elapsedBefore });
       const attemptStartedAt = now();
-      const executed = execute("npx", ["--yes", "skills", "add", skills[0].source!, "-g", "-y"], { timeoutMs, heartbeatIntervalMs });
+      const remainingMs = Math.max(1, totalTimeoutMs - elapsedBefore);
+      const executed = execute("npx", ["--yes", "skills", "add", skills[0].source!, "-g", "-y"], { timeoutMs: Math.min(timeoutMs, remainingMs), heartbeatIntervalMs });
       finalExecuted = executed;
       const elapsedMs = Math.max(0, now() - attemptStartedAt);
-      attempts.push({ attempt, elapsedMs, exitCode: executed.code, stdout: safeError(executed.stdout), stderr: safeError(executed.stderr), resolvedPath: executed.resolvedPath ? safeError(executed.resolvedPath) : undefined, errorType: executed.errorType ? safeError(executed.errorType) : undefined });
-      const commandSucceeded = executed.code === 0 || /already (installed|exists|configured)/i.test(`${executed.stdout}\n${executed.stderr}`);
-      if (commandSucceeded) {
-        succeeded = ids;
-        break;
-      }
-      if (!retryableSkillFailure(executed) || attempt >= maxAttempts) break;
-      const rescanned = input.scanInstalled?.() ?? [];
-      if (installedSkillSourceIsComplete(source, skills, rescanned)) {
-        succeeded = ids;
-        break;
-      }
+      const rescanned = input.scanInstalled?.() ?? input.installed;
+      const inventory = installedSkillSourceInventory(source, skills, rescanned);
+      succeeded = inventory.present;
+      missing = inventory.missing;
+      const complete = missing.length === 0 && ids.length > 0;
+      const permanent = permanentSkillFailure(executed);
+      const failureStage = complete ? "none" : skillFailureStage(executed, missing.length);
+      const totalElapsedMs = Math.max(0, now() - startedAt);
       const delayMs = Math.min(maxDelayMs, baseDelayMs * (2 ** (attempt - 1)));
+      let retryDecision: SkillAttemptSummary["retryDecision"];
+      let decisionReason: string;
+      if (complete) {
+        retryDecision = "succeeded";
+        decisionReason = `selected source inventory complete (present=${succeeded.length}, missing=0)`;
+      } else if (permanent) {
+        retryDecision = "stop";
+        decisionReason = "permanent failure evidence";
+      } else if (attempt >= maxAttempts) {
+        retryDecision = "stop";
+        decisionReason = "attempt limit reached";
+      } else if (totalElapsedMs + delayMs >= totalTimeoutMs) {
+        retryDecision = "stop";
+        decisionReason = "total timeout reached";
+      } else if (executed.code === 0) {
+        retryDecision = "retry";
+        decisionReason = `exit zero but selected source inventory is incomplete (present=${succeeded.length}, missing=${missing.length})`;
+      } else if (succeeded.length > 0) {
+        retryDecision = "retry";
+        decisionReason = `partial source install detected (present=${succeeded.length}, missing=${missing.length})`;
+      } else if (retryableSkillFailure(executed)) {
+        retryDecision = "retry";
+        decisionReason = "transient failure evidence";
+      } else if (failureStage === "clone") {
+        retryDecision = "retry";
+        decisionReason = "clone failed without permanent failure evidence";
+      } else {
+        retryDecision = "stop";
+        decisionReason = "non-retryable failure without installed selected skills";
+      }
+      attempts.push({
+        attempt, elapsedMs, exitCode: executed.code,
+        stdout: safeSkillDiagnostic(executed.stdout), stderr: safeSkillDiagnostic(executed.stderr),
+        resolvedPath: executed.resolvedPath ? safeSkillDiagnostic(executed.resolvedPath) : undefined,
+        errorType: executed.errorType ? safeSkillDiagnostic(executed.errorType) : undefined,
+        failureStage, lastMeaningfulLine: skillLastMeaningfulLine(executed.errorType ?? "", executed.stdout, executed.stderr),
+        retryDecision, decisionReason: safeSkillDiagnostic(decisionReason), present: succeeded.length, missing: missing.length,
+      });
+      if (retryDecision === "succeeded") {
+        break;
+      }
+      if (retryDecision === "stop") break;
       emitProgress({ phase: "retry", source, attempt: attempt + 1, maxAttempts, elapsedMs: Math.max(0, now() - startedAt), delayMs });
       sleep(delayMs);
     }
-    const failed = succeeded.length ? [] : ids;
+    const failed = missing;
     const summary: SkillSourceSummary = { source, status: failed.length ? "error" : "installed", skills: ids, succeeded, failed };
     const totalElapsedMs = Math.max(0, now() - startedAt);
-    if (attempts.length > 1) { summary.attempts = attempts; summary.elapsedMs = totalElapsedMs; }
+    if (attempts.length > 1 || failed.length > 0) { summary.attempts = attempts; summary.elapsedMs = totalElapsedMs; }
     if (failed.length) {
-      summary.attempts = attempts;
-      summary.elapsedMs = totalElapsedMs;
       if (input.recoveryReportDirectory) summary.reportPath = writeSkillRecoveryReport(input.recoveryReportDirectory, source, skills, attempts);
       result.sourceSummaries.push(summary);
       const examples = safeError(failed.slice(0, 3).join(", ")) || "none";
-      const stdoutSummary = safeError(finalExecuted.stdout) || "<empty>";
-      const stderrSummary = safeError(finalExecuted.stderr) || "<empty>";
+      const finalAttempt = attempts.at(-1);
+      const stdoutSummary = finalAttempt?.stdout || "<empty>";
+      const stderrSummary = finalAttempt?.stderr || "<empty>";
       const report = summary.reportPath ? `; report=${safePath(summary.reportPath, process.env)}` : "";
-      result.errors.push(`Restore failed for skill source ${source} (skills=${failed.length}; examples=${examples}): exit=${finalExecuted.code}; stdout=${stdoutSummary}; stderr=${stderrSummary}${finalExecuted.resolvedPath ? `; path=${safeError(finalExecuted.resolvedPath)}` : ""}${finalExecuted.errorType ? `; type=${safeError(finalExecuted.errorType)}` : ""}${report}`);
+      result.errors.push(`Restore failed for skill source ${source} (skills=${ids.length}; present=${succeeded.length}; missing=${failed.length}; examples=${examples}): exit=${finalExecuted.code}; stdout=${stdoutSummary}; stderr=${stderrSummary}; failureStage=${finalAttempt?.failureStage ?? "install"}; lastMeaningfulLine=${finalAttempt?.lastMeaningfulLine ?? "<empty>"}; retryDecision=${finalAttempt?.retryDecision ?? "stop"}; decisionReason=${finalAttempt?.decisionReason ?? "unknown"}${finalAttempt?.resolvedPath ? `; path=${finalAttempt.resolvedPath}` : ""}${finalAttempt?.errorType ? `; type=${finalAttempt.errorType}` : ""}${report}`);
     } else {
       result.sourceSummaries.push(summary);
       result.restored.push(`skill-source:${source}:skills=${succeeded.length}`);
     }
-    emitProgress({ phase: "complete", source, attempt: attempts.length, maxAttempts, elapsedMs: totalElapsedMs });
+    emitProgress({ phase: failed.length ? "failed" : "succeeded", source, attempt: attempts.length, maxAttempts, elapsedMs: totalElapsedMs });
   }
 
   for (const item of classified.restorable.filter((entry) => entry.kind !== "skill")) {

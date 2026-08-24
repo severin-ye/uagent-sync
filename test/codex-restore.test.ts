@@ -26,6 +26,7 @@ describe("Codex extension restoration", () => {
       installed: [],
       tombstones: [{ kind: "mcp", id: "codebase-memory-mcp", deletedAt: "2026-08-23T00:00:00Z" }],
       execute: (file, args) => { commands.push([file, ...args]); return { code: 0, stdout: "", stderr: "" }; },
+      scanInstalled: () => [{ kind: "skill", id: "portable", source: "https://github.com/acme/skills.git" }],
     });
     assert.equal(result.ok, true, JSON.stringify(result));
     assert.ok(commands.some((item) => item.join(" ").includes("skills add https://github.com/acme/skills.git")));
@@ -147,6 +148,11 @@ describe("Codex extension restoration", () => {
       ],
       installed: [], tombstones: [],
       execute: (file, args) => { commands.push([file, ...args]); return { code: 0, stdout: "", stderr: "" }; },
+      scanInstalled: () => [
+        { kind: "skill", id: "alpha", source },
+        { kind: "skill", id: "beta", source: "https://github.com/ACME/shared-skills/" },
+        { kind: "skill", id: "gamma", source: "acme/shared-skills" },
+      ],
     });
     assert.equal(result.ok, true, JSON.stringify(result));
     assert.equal(commands.filter((command) => command[0] === "npx" && command.includes("add")).length, 1);
@@ -181,18 +187,18 @@ describe("Codex extension restoration", () => {
           ? { code: 1, stdout: "", stderr: "fatal: Recv failure: Connection was reset" }
           : { code: 0, stdout: "installed", stderr: "" };
       },
-      scanInstalled: () => { scans.push(scans.length + 1); return []; },
+      scanInstalled: () => { scans.push(scans.length + 1); return calls.length === 3 ? [{ kind: "skill", id: "alpha", source: "acme/shared-skills" }] : []; },
       onProgress: (event) => progress.push({ phase: event.phase, attempt: event.attempt, elapsedMs: event.elapsedMs }),
       skillRecovery: { maxAttempts: 3, baseDelayMs: 10, maxDelayMs: 20, sleep: (ms) => sleeps.push(ms), now: () => 1000 },
     });
     assert.equal(result.ok, true, JSON.stringify(result));
     assert.deepEqual(calls, [1, 2, 3]);
-    assert.deepEqual(scans, [1, 2]);
+    assert.deepEqual(scans, [1, 2, 3]);
     assert.deepEqual(sleeps, [10, 20]);
     assert.equal(result.sourceSummaries[0]?.status, "installed");
     assert.ok(progress.some((event) => event.phase === "start"));
     assert.ok(progress.some((event) => event.phase === "retry" && event.attempt === 2));
-    assert.ok(progress.some((event) => event.phase === "complete" && event.attempt === 3));
+    assert.ok(progress.some((event) => event.phase === "succeeded" && event.attempt === 3));
   });
 
   it("stops retrying when a pre-retry scan confirms the whole source is installed", () => {
@@ -209,6 +215,179 @@ describe("Codex extension restoration", () => {
     assert.equal(executes, 1);
     assert.equal(scans, 1);
     assert.deepEqual(result.sourceSummaries[0]?.succeeded, ["alpha"]);
+  });
+
+  it("fails a 38/39 source after exit zero and names the one source-consistent missing skill", () => {
+    const selected = [
+      ...Array.from({ length: 38 }, (_, index) => ({ kind: "skill" as const, id: `science-${index + 1}`, source: "google-deepmind/science-skills" })),
+      { kind: "skill" as const, id: "scienceskillscommon", source: "https://github.com/google-deepmind/science-skills.git" },
+    ];
+    const installed = selected.slice(0, 38);
+    const progress: string[] = [];
+    const result = restoreCodexExtensions({
+      targetAgent: "codex", selected, installed: [], tombstones: [],
+      execute: () => ({ code: 0, stdout: "Installed 38 skills", stderr: "" }),
+      scanInstalled: () => installed,
+      onProgress: (event) => progress.push(event.phase),
+      skillRecovery: { maxAttempts: 1 },
+    });
+    assert.equal(result.ok, false, JSON.stringify(result));
+    assert.deepEqual(result.sourceSummaries[0]?.succeeded, selected.slice(0, 38).map((item) => item.id));
+    assert.deepEqual(result.sourceSummaries[0]?.failed, ["scienceskillscommon"]);
+    assert.match(result.errors[0] ?? "", /present=38; missing=1; examples=scienceskillscommon/);
+    assert.equal(progress.at(-1), "failed");
+    assert.ok(!progress.includes("complete"), JSON.stringify(progress));
+  });
+
+  it("treats exit one as idempotent success when the immediate rescan is source-complete", () => {
+    const selected = [
+      { kind: "skill" as const, id: "alpha", source: "acme/shared-skills" },
+      { kind: "skill" as const, id: "beta", source: "https://github.com/acme/shared-skills.git" },
+    ];
+    const progress: string[] = [];
+    const result = restoreCodexExtensions({
+      targetAgent: "codex", selected, installed: [], tombstones: [],
+      execute: () => ({ code: 1, stdout: "", stderr: "clone process exited after files were written" }),
+      scanInstalled: () => selected,
+      onProgress: (event) => progress.push(event.phase),
+      skillRecovery: { maxAttempts: 3, sleep: () => { throw new Error("complete inventory must not retry"); } },
+    });
+    assert.equal(result.ok, true, JSON.stringify(result));
+    assert.equal(result.sourceSummaries[0]?.status, "installed");
+    assert.deepEqual(progress, ["start", "heartbeat", "succeeded"]);
+  });
+
+  it("retries an exit-one partial install until every selected skill from that source is present", () => {
+    const selected = [
+      { kind: "skill" as const, id: "alpha", source: "acme/shared-skills" },
+      { kind: "skill" as const, id: "beta", source: "acme/shared-skills" },
+    ];
+    let executions = 0;
+    let scans = 0;
+    const result = restoreCodexExtensions({
+      targetAgent: "codex", selected, installed: [], tombstones: [],
+      execute: () => { executions += 1; return { code: 1, stdout: "", stderr: "installer exited after partial write" }; },
+      scanInstalled: () => { scans += 1; return scans === 1 ? selected.slice(0, 1) : selected; },
+      skillRecovery: { maxAttempts: 3, baseDelayMs: 0, maxDelayMs: 0, sleep: () => {} },
+    });
+    assert.equal(result.ok, true, JSON.stringify(result));
+    assert.equal(executions, 2);
+    assert.equal(scans, 2);
+    assert.deepEqual(result.sourceSummaries[0]?.succeeded, ["alpha", "beta"]);
+  });
+
+  it("does not count a globally same-named skill from a different source", () => {
+    const result = restoreCodexExtensions({
+      targetAgent: "codex",
+      selected: [{ kind: "skill", id: "alpha", source: "acme/shared-skills" }],
+      installed: [], tombstones: [],
+      execute: () => ({ code: 0, stdout: "installed", stderr: "" }),
+      scanInstalled: () => [{ kind: "skill", id: "alpha", source: "other-owner/shared-skills" }],
+      skillRecovery: { maxAttempts: 1 },
+    });
+    assert.equal(result.ok, false, JSON.stringify(result));
+    assert.match(result.errors[0] ?? "", /present=0; missing=1; examples=alpha/);
+  });
+
+  it("keeps one source summary and verifies every selected ID when that source was initially partial", () => {
+    const selected = [
+      { kind: "skill" as const, id: "alpha", source: "acme/shared-skills" },
+      { kind: "skill" as const, id: "beta", source: "https://github.com/acme/shared-skills.git" },
+    ];
+    const result = restoreCodexExtensions({
+      targetAgent: "codex", selected, installed: selected.slice(0, 1), tombstones: [],
+      execute: () => ({ code: 0, stdout: "installed", stderr: "" }),
+      scanInstalled: () => selected,
+      skillRecovery: { maxAttempts: 1 },
+    });
+    assert.equal(result.ok, true, JSON.stringify(result));
+    assert.equal(result.sourceSummaries.length, 1, JSON.stringify(result.sourceSummaries));
+    assert.deepEqual(result.sourceSummaries[0], {
+      source: "github:acme/shared-skills", status: "installed", skills: ["alpha", "beta"], succeeded: ["alpha", "beta"], failed: [],
+    });
+    assert.ok(!result.skipped.some((item) => item.startsWith("existing-skill-source:")), JSON.stringify(result.skipped));
+  });
+
+  it("retries spinner-only clone failures and writes clean structured decisions", () => {
+    const directory = fs.mkdtempSync(path.join(os.tmpdir(), "uagent-spinner-report-"));
+    temporaryDirectories.push(directory);
+    let executions = 0;
+    const result = restoreCodexExtensions({
+      targetAgent: "codex", selected: [{ kind: "skill", id: "alpha", source: "acme/shared-skills" }], installed: [], tombstones: [],
+      execute: () => { executions += 1; return { code: 1, stdout: "\u001b[?25l\u001b[1G\u001b[J⠋ Cloning repository\r\u001b[1G\u001b[J⠙ Cloning repository", stderr: "" }; },
+      scanInstalled: () => [],
+      recoveryReportDirectory: directory,
+      skillRecovery: { maxAttempts: 3, baseDelayMs: 0, maxDelayMs: 0, sleep: () => {} },
+    });
+    assert.equal(result.ok, false, JSON.stringify(result));
+    assert.equal(executions, 3);
+    const attempts = result.sourceSummaries[0]?.attempts ?? [];
+    assert.equal(attempts.length, 3);
+    assert.equal(attempts[0]?.failureStage, "clone");
+    assert.equal(attempts[0]?.lastMeaningfulLine, "Cloning repository");
+    assert.equal(attempts[0]?.retryDecision, "retry");
+    assert.match(attempts[0]?.decisionReason ?? "", /clone/i);
+    assert.equal(attempts[2]?.retryDecision, "stop");
+    assert.match(attempts[2]?.decisionReason ?? "", /attempt limit/i);
+    const serialized = JSON.stringify(result);
+    assert.ok(!serialized.includes("\u001b"), serialized);
+    assert.ok(!serialized.includes("[?25l"), serialized);
+    const reportPath = result.sourceSummaries[0]?.reportPath;
+    assert.ok(reportPath);
+    const report = fs.readFileSync(reportPath!, "utf8");
+    assert.ok(!report.includes("\u001b"), report);
+    assert.ok(!report.includes("[1G"), report);
+  });
+
+  it("stops a spinner clone failure immediately when permanent 404 evidence is present", () => {
+    let executions = 0;
+    const result = restoreCodexExtensions({
+      targetAgent: "codex", selected: [{ kind: "skill", id: "alpha", source: "acme/shared-skills" }], installed: [], tombstones: [],
+      execute: () => { executions += 1; return { code: 1, stdout: "\u001b[?25l⠋ Cloning repository", stderr: "fatal: repository not found (404)", errorType: "ProcessExit" }; },
+      scanInstalled: () => [],
+      skillRecovery: { maxAttempts: 3, baseDelayMs: 0, maxDelayMs: 0, sleep: () => { throw new Error("permanent failure must not retry"); } },
+    });
+    assert.equal(result.ok, false, JSON.stringify(result));
+    assert.equal(executions, 1);
+    assert.equal(result.sourceSummaries[0]?.attempts?.length, 1, JSON.stringify(result.sourceSummaries[0]));
+    const attempt = result.sourceSummaries[0]?.attempts?.[0];
+    assert.equal(attempt?.failureStage, "clone");
+    assert.equal(attempt?.lastMeaningfulLine, "fatal: repository not found (404)");
+    assert.equal(attempt?.retryDecision, "stop");
+    assert.match(attempt?.decisionReason ?? "", /permanent/i);
+  });
+
+  it("does not start another clone attempt after the source total timeout expires", () => {
+    let executions = 0;
+    let clock = 0;
+    const result = restoreCodexExtensions({
+      targetAgent: "codex", selected: [{ kind: "skill", id: "alpha", source: "acme/shared-skills" }], installed: [], tombstones: [],
+      execute: () => { executions += 1; clock = 90; return { code: 1, stdout: "Cloning repository", stderr: "" }; },
+      scanInstalled: () => [],
+      skillRecovery: {
+        maxAttempts: 3, baseDelayMs: 0, maxDelayMs: 0, timeoutMs: 100, totalTimeoutMs: 100,
+        now: () => clock,
+        sleep: () => { clock = 101; },
+      },
+    });
+    assert.equal(result.ok, false, JSON.stringify(result));
+    assert.equal(executions, 1);
+    const finalAttempt = result.sourceSummaries[0]?.attempts?.at(-1);
+    assert.equal(finalAttempt?.retryDecision, "stop");
+    assert.match(finalAttempt?.decisionReason ?? "", /total timeout/i);
+  });
+
+  it("emits already-complete for an initially installed source without duplicating summaries", () => {
+    const selected = [{ kind: "skill" as const, id: "alpha", source: "acme/shared-skills" }];
+    const progress: string[] = [];
+    const result = restoreCodexExtensions({
+      targetAgent: "codex", selected, installed: selected, tombstones: [],
+      execute: () => { throw new Error("existing source must not execute"); },
+      onProgress: (event) => progress.push(event.phase),
+    });
+    assert.equal(result.ok, true, JSON.stringify(result));
+    assert.deepEqual(progress, ["already-complete"]);
+    assert.equal(result.sourceSummaries.length, 1);
   });
 
   it("fails non-retryable source errors immediately and keeps full details in an optional report", () => {
@@ -363,7 +542,10 @@ describe("trusted Windows command execution", () => {
     try {
       const result = restoreCodexExtensions({
         targetAgent: "codex", selected: [{ kind: "skill", id: "alpha", source: "acme/shared-skills" }], installed: [], tombstones: [],
-        scanInstalled: () => [], skillRecovery: { maxAttempts: 3, baseDelayMs: 0, maxDelayMs: 0, timeoutMs: 2000 },
+        scanInstalled: () => fs.existsSync(counter) && fs.readFileSync(counter, "utf8") === "3"
+          ? [{ kind: "skill", id: "alpha", source: "acme/shared-skills" }]
+          : [],
+        skillRecovery: { maxAttempts: 3, baseDelayMs: 0, maxDelayMs: 0, timeoutMs: 2000 },
       });
       assert.equal(result.ok, true, JSON.stringify(result));
       assert.equal(fs.readFileSync(counter, "utf8"), "3");

@@ -1,6 +1,7 @@
 import { describe, it } from "node:test";
 import * as assert from "node:assert";
 import * as fs from "node:fs";
+import * as os from "node:os";
 import * as path from "node:path";
 import { spawnSync } from "node:child_process";
 
@@ -53,7 +54,7 @@ describe("Windows Codex bootstrap plan", () => {
 
   it("retries the state pull before entering idempotent setup", () => {
     const script = fs.readFileSync(SCRIPT, "utf-8");
-    assert.match(script, /Invoke-WithRetry\s+\{\s*uagent-sync pull --target-agent codex --json\s*\}\s*'pull dotfiles state'\s*3/);
+    assert.match(script, /Invoke-WithRetry\s+\{\s*uagent-sync pull --target-agent codex --json;\s*if \(\$LASTEXITCODE -ne 0\) \{ throw 'Uagent Sync pull failed' \}\s*\}\s*'pull dotfiles state'\s*3/);
   });
 
   it("refreshes an existing personal marketplace and verifies the installed plugin version", () => {
@@ -64,5 +65,37 @@ describe("Windows Codex bootstrap plan", () => {
     assert.doesNotMatch(script, /plugin marketplace upgrade uagent-sync/);
     assert.match(script, /expectedPluginVersion/);
     assert.match(script, /\.version -eq \$expectedPluginVersion/);
+  });
+
+  it("uses terminating cmdlet errors and leaves LASTEXITCODE checks to native commands", () => {
+    const script = fs.readFileSync(SCRIPT, "utf-8");
+    assert.match(script, /Invoke-WebRequest[^\r\n]*-ErrorAction Stop/);
+    const retryBody = script.match(/function Invoke-WithRetry[\s\S]*?\n}/)?.[0] ?? "";
+    assert.ok(retryBody, "Invoke-WithRetry contract must be present");
+    assert.doesNotMatch(retryBody, /LASTEXITCODE/);
+    assert.match(script, /git clone \$UagentRepo \$sourceDir; if \(\$LASTEXITCODE -ne 0\)/);
+    assert.match(script, /npm ci[^\r\n]*; if \(\$LASTEXITCODE -ne 0\)/);
+  });
+
+  it("smoke-runs the documented raw download command and propagates the native bootstrap exit", () => {
+    const guide = fs.readFileSync(path.join(ROOT, "docs", "CODEX-CLEAN-WINDOWS-RETRY.md"), "utf8");
+    const command = guide.match(/```powershell\r?\n([\s\S]*?)\r?\n```/)?.[1];
+    assert.ok(command, "documented PowerShell bootstrap command must exist");
+    const directory = fs.mkdtempSync(path.join(os.tmpdir(), "uagent-bootstrap-doc-smoke-"));
+    try {
+      const driver = path.join(directory, "driver.ps1");
+      const fixture = [
+        "function Invoke-WebRequest {",
+        "  [CmdletBinding()] param([switch]$UseBasicParsing, [string]$Uri, [string]$OutFile)",
+        "  Set-Content -LiteralPath $OutFile -Encoding utf8 -Value \"param([string]`$UagentRepo,[string]`$DotfilesRepo,[string]`$TargetAgent); exit 7\"",
+        "}",
+        command!.replace("https://raw.githubusercontent.com/severin-ye/uagent-sync/master/scripts/bootstrap.ps1", "https://fixture.invalid/bootstrap.ps1"),
+      ].join("\r\n");
+      fs.writeFileSync(driver, fixture);
+      const result = spawnSync("powershell.exe", ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", driver], { encoding: "utf8" });
+      assert.equal(result.status, 7, `stdout=${result.stdout}\nstderr=${result.stderr}`);
+    } finally {
+      fs.rmSync(directory, { recursive: true, force: true });
+    }
   });
 });

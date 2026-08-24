@@ -681,7 +681,7 @@ git -c protocol.file.allow=always submodule add <local-bare-repo> usync-dotfiles
 - `google-deepmind/science-skills` 首次超时后第二次命令退出成功，证明瞬态网络重试链路能够继续执行。
 - `codebase-memory-mcp`、`gpt-dotfiles-sync`、`agent-browser`、`brand-extract` tombstone 均保持 satisfied，没有被重新安装。
 
-### 问题 16：source 级 `complete` 事件会掩盖最终失败
+### 问题 16：source 级 `complete` 事件会掩盖最终失败（已修复，待 severin raw 复验）
 
 **现象**
 
@@ -697,7 +697,7 @@ git -c protocol.file.allow=always submodule add <local-bare-repo> usync-dotfiles
 - 将进度终态拆为明确的 `succeeded`、`failed`、`already-complete`，或为 `complete` 增加不可省略的 success/result 字段；CLI 文案必须直接输出成功或失败。
 - 为“最后一次命令退出 1 后仍发送 complete”增加回归测试，禁止失败来源显示成功语义。
 
-### 问题 17：恢复成功判定只信任 CLI 退出码，没有验证最终 skill 集合
+### 问题 17：恢复成功判定只信任 CLI 退出码，没有验证最终 skill 集合（已修复，待 severin raw 复验）
 
 **现象**
 
@@ -715,7 +715,7 @@ git -c protocol.file.allow=always submodule add <local-bare-repo> usync-dotfiles
 - 对部分成功只重试缺失项或重新执行来源级幂等安装；最终错误必须报告准确的 present/missing 数量及最多三个缺失示例。
 - 增加“退出 0 但缺一项”“退出 1 但实际已完整”“退出 1 且部分安装”三组回归测试。
 
-### 问题 18：无诊断文本的 clone 退出 1 不会重试，报告摘要被终端控制字符污染
+### 问题 18：无诊断文本的 clone 退出 1 不会重试，报告摘要被终端控制字符污染（已修复，待 severin raw 复验）
 
 **现象**
 
@@ -733,7 +733,7 @@ git -c protocol.file.allow=always submodule add <local-bare-repo> usync-dotfiles
 - 对处于 clone 阶段、短时间退出 1 且无权限/认证/404/manifest 等永久错误证据的结果，允许有界重试，但必须受总次数和总时间限制。
 - 报告新增 failureStage、lastMeaningfulLine、retryDecision 和 decisionReason，测试 spinner-only、空 stderr、永久错误三种分支。
 
-### 问题 19：PowerShell 验收命令不能在 Web 请求后直接判断 `$LASTEXITCODE`
+### 问题 19：PowerShell 验收命令不能在 Web 请求后直接判断 `$LASTEXITCODE`（已修复，待 severin raw 复验）
 
 **现象**
 
@@ -747,6 +747,16 @@ git -c protocol.file.allow=always submodule add <local-bare-repo> usync-dotfiles
 
 - setup 返回 `ok=false` 后已按顺序执行规则停止，没有继续运行 final verify；因此当前不能声称 5/5 来源成功、210/210 skills 可用或 bootstrap 退出码 0。
 - 本轮完整脱敏证据位于 `usync-dotfiles/state/recovery-reports/skill-source-github-nexu-io-open-design-1787502276728-69652.json` 和 `skill-source-github-garrytan-gstack-1787502298807-69652.json`。
+
+### 问题 16—19 当前代码状态（2026-08-24）
+
+- **问题 16 已在代码与自动化中修复**：source 终态改为 `succeeded`、`failed`、`already-complete`；失败路径不再输出 `complete`，CLI stderr 直接呈现明确终态，结构化 source summary 仍只保留一份。
+- **问题 17 已在代码与自动化中修复**：每次 source 安装命令结束后都立即复扫，并按当前 `normalizeExtensionSource` 规则逐项核对该来源的 selected skill ID。退出 0 但缺项会失败或继续有界重试；退出 1 但复扫完整按幂等成功处理；部分安装继续重试。最终错误报告准确的 `present`、`missing` 和最多三个缺失示例。38/39 fixture 会明确列出 `scienceskillscommon`，实现中没有硬编码该仓库或 skill。
+- **问题 18 已在代码与自动化中修复**：skill 专用诊断路径先剥离 ANSI、光标和 spinner 控制序列；clone 阶段的空诊断退出 1 在最多三次和来源总时限内重试，权限、认证、404、manifest 等永久证据立即停止。attempt 报告包含已脱敏的 `failureStage`、`lastMeaningfulLine`、`retryDecision`、`decisionReason`。
+- **问题 19 已在脚本、文档与 smoke 中修复**：`Invoke-WebRequest` 使用 `-ErrorAction Stop` 和 `try/catch`；通用 retry wrapper 不再读取 cmdlet 不会设置的 `$LASTEXITCODE`，只在 `git`、`npm`、`powershell.exe` 等原生程序调用后检查退出码。文档 raw bootstrap 命令的 fixture 已验证原生退出 7 不会被误报为 0。
+- **保持不变的安全边界**：`codebase-memory-mcp` 永久 tombstone、Codex-only 不访问 OpenCode、source 级聚合、heartbeat、单次/总超时和受信 `.cmd` 路径均由既有与新增测试继续覆盖。
+- **本地自动化证据**：问题 16—19 聚焦组 43/43 通过；完整 `npm test` 为 390/390、82 suites、0 failed；typecheck 通过；bootstrap、recovery/manifest、DSH schema、真实 pack 与 CLI smoke 逐文件串行独立复核为 30/30。staged GitNexus 门禁结果在提交记录中另行报告。
+- **仍待实机验收**：当前 HEAD 尚未在 `severin` 机器重新执行 raw GitHub bootstrap，因此现在仍不能声称 5/5 skill 来源、210/210 selected skills、setup/verify `ok=true` 或 bootstrap 退出码 0；必须在本提交推送后按本文入口重跑。
 
 ### 问题 20：GitNexus 提交门禁在首次下载依赖时被网络超时阻断
 

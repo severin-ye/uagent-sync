@@ -89,7 +89,7 @@ function Add-PersistentUserPath([string]$Directory) {
 
 function Expand-PortableArchive([string]$Url, [string]$Destination, [string]$BinRelative) {
   $archive = Join-Path $WorkspaceRoot ([IO.Path]::GetFileName(([Uri]$Url).LocalPath))
-  Invoke-WithRetry { Invoke-WebRequest -UseBasicParsing -Uri $Url -OutFile $archive } "download $Url" 3
+  Invoke-WithRetry { Invoke-WebRequest -UseBasicParsing -Uri $Url -OutFile $archive -ErrorAction Stop } "download $Url" 3
   if (Test-Path -LiteralPath $Destination) {
     $partial = "$Destination.partial.$((Get-Date).ToUniversalTime().ToString('yyyyMMddHHmmss'))"
     Move-Item -LiteralPath $Destination -Destination $partial
@@ -163,7 +163,7 @@ function Resolve-PackFilename($PackJson) {
 
 function Invoke-WithRetry([scriptblock]$Action, [string]$Label, [int]$Attempts = 3) {
   for ($attempt = 1; $attempt -le $Attempts; $attempt++) {
-    try { & $Action; if ($LASTEXITCODE -eq 0 -or $null -eq $LASTEXITCODE) { return } } catch { if ($attempt -eq $Attempts) { throw } }
+    try { & $Action; return } catch { if ($attempt -eq $Attempts) { throw } }
     if ($attempt -lt $Attempts) { Start-Sleep -Seconds ([Math]::Pow(2, $attempt)) }
   }
   throw "$Label failed after $Attempts attempts"
@@ -216,7 +216,7 @@ try {
   $completed['install-node'] = $true; Save-State
 
   if (-not (Test-CommandVersion 'codex')) {
-    Invoke-WithRetry { npm uninstall --global '@openai/codex' --no-audit --no-fund *> $null; npm install --global '@openai/codex@latest' --no-audit --no-fund --fetch-timeout=300000 --fetch-retries=5 --loglevel=info } 'install Codex CLI' 2
+    Invoke-WithRetry { npm uninstall --global '@openai/codex' --no-audit --no-fund *> $null; if ($LASTEXITCODE -ne 0) { throw 'npm uninstall Codex CLI failed' }; npm install --global '@openai/codex@latest' --no-audit --no-fund --fetch-timeout=300000 --fetch-retries=5 --loglevel=info; if ($LASTEXITCODE -ne 0) { throw 'npm install Codex CLI failed' } } 'install Codex CLI' 2
     Refresh-Path
   }
   if (-not (Test-CommandVersion 'codex')) { throw 'Codex CLI is missing, half-installed, or resolves only to an inaccessible WindowsApps executable' }
@@ -228,11 +228,11 @@ try {
   $completed['install-codex-cli'] = $true; Save-State
 
   New-Item -ItemType Directory -Path $WorkspaceRoot -Force | Out-Null
-  if (Test-Path -LiteralPath (Join-Path $sourceDir '.git')) { Invoke-WithRetry { git -C $sourceDir pull --ff-only origin master } 'update Uagent Sync' }
-  else { Invoke-WithRetry { git clone $UagentRepo $sourceDir } 'clone Uagent Sync' }
+  if (Test-Path -LiteralPath (Join-Path $sourceDir '.git')) { Invoke-WithRetry { git -C $sourceDir pull --ff-only origin master; if ($LASTEXITCODE -ne 0) { throw 'git pull Uagent Sync failed' } } 'update Uagent Sync' }
+  else { Invoke-WithRetry { git clone $UagentRepo $sourceDir; if ($LASTEXITCODE -ne 0) { throw 'git clone Uagent Sync failed' } } 'clone Uagent Sync' }
   $completed['clone-uagent'] = $true; Save-State
-  if (Test-Path -LiteralPath (Join-Path $dotfilesDir '.git')) { Invoke-WithRetry { git -C $dotfilesDir pull --ff-only } 'update dotfiles' }
-  else { Invoke-WithRetry { git clone $DotfilesRepo $dotfilesDir } 'clone dotfiles' }
+  if (Test-Path -LiteralPath (Join-Path $dotfilesDir '.git')) { Invoke-WithRetry { git -C $dotfilesDir pull --ff-only; if ($LASTEXITCODE -ne 0) { throw 'git pull dotfiles failed' } } 'update dotfiles' }
+  else { Invoke-WithRetry { git clone $DotfilesRepo $dotfilesDir; if ($LASTEXITCODE -ne 0) { throw 'git clone dotfiles failed' } } 'clone dotfiles' }
   $completed['clone-dotfiles'] = $true; Save-State
 
   $currentSourceCommit = (git -C $sourceDir rev-parse HEAD).Trim()
@@ -244,7 +244,7 @@ try {
   if (-not $completed['build-and-test']) {
     Push-Location $sourceDir
     try {
-      Invoke-WithRetry { npm ci --no-audit --no-fund --fetch-timeout=300000 --fetch-retries=5 } 'npm ci' 2
+      Invoke-WithRetry { npm ci --no-audit --no-fund --fetch-timeout=300000 --fetch-retries=5; if ($LASTEXITCODE -ne 0) { throw 'npm ci failed' } } 'npm ci' 2
       npm test; if ($LASTEXITCODE -ne 0) { throw 'npm test failed' }
       $packJson = npm pack --json | ConvertFrom-Json
       if ($LASTEXITCODE -ne 0) { throw 'npm pack failed' }
@@ -266,7 +266,7 @@ try {
     } catch { $installPlugin = $true }
   }
   if ($installPlugin) {
-    Invoke-WithRetry { & $trustedCodex plugin marketplace add $UagentRepo } 'register Codex personal marketplace' 3
+    Invoke-WithRetry { & $trustedCodex plugin marketplace add $UagentRepo; if ($LASTEXITCODE -ne 0) { throw 'Codex marketplace registration failed' } } 'register Codex personal marketplace' 3
     $marketplaceList = & $trustedCodex plugin marketplace list --json | ConvertFrom-Json
     if ($LASTEXITCODE -ne 0) { throw 'Codex personal marketplace listing failed' }
     $marketplace = $marketplaceList.marketplaces | Where-Object { $_.name -eq 'uagent-sync' } | Select-Object -First 1
@@ -274,7 +274,7 @@ try {
     $marketplaceRoot = [string]$marketplace.root
     $marketplaceOrigin = [string](git -C $marketplaceRoot remote get-url origin)
     if ($LASTEXITCODE -ne 0 -or (Normalize-GitHubRepoUrl $marketplaceOrigin.Trim()) -ne (Normalize-GitHubRepoUrl $UagentRepo)) { throw 'Codex marketplace origin does not match UagentRepo' }
-    Invoke-WithRetry { git -C $marketplaceRoot pull --ff-only origin master } 'refresh Codex personal marketplace' 3
+    Invoke-WithRetry { git -C $marketplaceRoot pull --ff-only origin master; if ($LASTEXITCODE -ne 0) { throw 'git pull Codex marketplace failed' } } 'refresh Codex personal marketplace' 3
     & $trustedCodex plugin add 'uagent-sync@uagent-sync'
     if ($LASTEXITCODE -ne 0) { throw 'Uagent Sync plugin installation failed' }
   }
@@ -288,7 +288,7 @@ try {
   $env:UAGENT_SYNC_WORKSPACE_ROOT = $WorkspaceRoot
   uagent-sync init --init-type sync --github-url $DotfilesRepo --target-agent codex --force
   if ($LASTEXITCODE -ne 0) { throw 'Uagent Sync init failed' }
-  Invoke-WithRetry { uagent-sync pull --target-agent codex --json } 'pull dotfiles state' 3
+  Invoke-WithRetry { uagent-sync pull --target-agent codex --json; if ($LASTEXITCODE -ne 0) { throw 'Uagent Sync pull failed' } } 'pull dotfiles state' 3
   uagent-sync setup --target-agent codex --json
   if ($LASTEXITCODE -ne 0) { throw 'Uagent Sync setup failed' }
   $completed['restore-dotfiles'] = $true; Save-State

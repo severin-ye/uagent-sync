@@ -5,7 +5,16 @@
 在 Windows PowerShell 中执行下面一条命令。它只需要 U同步和 dotfiles 两个仓库地址；脚本会自动安装或修复 Git、GitHub CLI、Node/npm、Codex CLI，随后构建、测试、打包、安装插件并恢复 Codex 环境。
 
 ```powershell
-$script = Join-Path ([IO.Path]::GetTempPath()) 'uagent-bootstrap.ps1'; Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/severin-ye/uagent-sync/master/scripts/bootstrap.ps1' -OutFile $script; powershell.exe -NoProfile -ExecutionPolicy Bypass -File $script -UagentRepo 'https://github.com/severin-ye/uagent-sync' -DotfilesRepo 'https://github.com/severin-ye/usync-dotfiles' -TargetAgent codex
+$ErrorActionPreference = 'Stop'
+$script = Join-Path ([IO.Path]::GetTempPath()) 'uagent-bootstrap.ps1'
+try {
+  Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/severin-ye/uagent-sync/master/scripts/bootstrap.ps1' -OutFile $script -ErrorAction Stop
+} catch {
+  Write-Error "Bootstrap download failed: $($_.Exception.Message)"
+  exit 1
+}
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File $script -UagentRepo 'https://github.com/severin-ye/uagent-sync' -DotfilesRepo 'https://github.com/severin-ye/usync-dotfiles' -TargetAgent codex
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 ```
 
 私有 dotfiles 尚未授权时，脚本会自动启动 GitHub 的浏览器登录；用户只需完成 GitHub 身份确认，不需要手工执行修复命令。认证、仓库不存在或权限不足会明确失败，不会继续伪报成功。
@@ -24,7 +33,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\bootstrap.ps1 
 
 脚本会保存并复用经过验证的 npm `codex.cmd` 和 Node `npx.cmd` 入口，不会回退到 WindowsApps 假命令。Codex personal marketplace 已存在但版本陈旧时，脚本会先核验其 Git origin，再执行可重试的 fast-forward 更新。
 
-每个 skill 仓库来源也会独立进行最多 3 次有界网络重试；每次重试前重新扫描已安装项。单次安装期间每 15 秒输出 heartbeat，默认 120 秒超时。权限、认证、仓库不存在和无效 manifest 不会盲目重试。最终失败的完整脱敏明细保存在 `usync-dotfiles/state/recovery-reports/`，终端只显示来源、数量和最多 3 个示例。
+每个 skill 仓库来源也会独立进行最多 3 次有界网络重试；每次安装命令结束后立即按规范化来源重新扫描全部 selected skill，只有来源一致且逐项齐全才成功。单次安装期间每 15 秒输出 heartbeat，默认 120 秒超时，并受来源级总时限约束。权限、认证、仓库不存在和无效 manifest 会立即失败；无诊断文本的 clone 失败仍可在限额内重试。进度终态明确为 `succeeded`、`failed` 或 `already-complete`。最终失败的完整脱敏明细保存在 `usync-dotfiles/state/recovery-reports/`，包括失败阶段、最后有效诊断、重试决定和原因；终端显示准确的 present/missing 数量及最多 3 个缺失示例。
 
 不要删除状态文件，也不要手工复制旧机器配置。若确需从头验证，请使用新的 `-WorkspaceRoot`，保留原目录作为故障证据。
 

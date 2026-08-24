@@ -85,7 +85,8 @@ describe("Codex-only verify/setup scope", () => {
       assert.ok(restoreError, JSON.stringify(results));
       assert.match(restoreError.detail, /report=%USERPROFILE%|report=.*recovery-reports/i);
       assert.ok(progress.includes("start"));
-      assert.ok(progress.includes("complete"));
+      assert.ok(progress.includes("failed"));
+      assert.ok(!progress.includes("complete"));
       const reports = fs.readdirSync(path.join(stateDir, "recovery-reports"));
       assert.equal(reports.length, 1);
     } finally {
