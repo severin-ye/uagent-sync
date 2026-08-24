@@ -474,6 +474,7 @@ describe("trusted Windows command execution", () => {
     fs.writeFileSync(path.join(globalBin, "node_modules", "npm", "bin", "npx-cli.js"), cli);
     const env = {
       ...process.env,
+      USERPROFILE: root,
       PATH: `${windowsApps};${process.env.PATH ?? ""}`,
       UAGENT_SYNC_CODEX_CMD: path.join(globalBin, "codex.cmd"),
       UAGENT_SYNC_NPX_CMD: path.join(globalBin, "npx.cmd"),
@@ -485,8 +486,8 @@ describe("trusted Windows command execution", () => {
     assert.equal(npx.code, 0, JSON.stringify(npx));
     assert.deepEqual(JSON.parse(codex.stdout), ["plugin", "list", dangerous]);
     assert.deepEqual(JSON.parse(npx.stdout), ["--yes", "skills", dangerous]);
-    assert.equal(codex.resolvedPath, path.join("%USERPROFILE%", path.relative(os.homedir(), path.join(globalBin, "codex.cmd"))));
-    assert.equal(npx.resolvedPath, path.join("%USERPROFILE%", path.relative(os.homedir(), path.join(globalBin, "npx.cmd"))));
+    assert.equal(codex.resolvedPath, path.join("%USERPROFILE%", "npm-global", "codex.cmd"));
+    assert.equal(npx.resolvedPath, path.join("%USERPROFILE%", "npm-global", "npx.cmd"));
     assert.ok(!`${codex.resolvedPath}\n${npx.resolvedPath}`.toLowerCase().includes("windowsapps"));
   });
 
