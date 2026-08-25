@@ -1,0 +1,6 @@
+interface:
+  display_name: "U同步结晶"
+  short_description: "Record and commit the current installation change with uagent-sync"
+  default_prompt: "Use $uagent-sync-crystallize when the user says 结晶、结晶这个安装, or crystallize this install."
+policy:
+  allow_implicit_invocation: true
