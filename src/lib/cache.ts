@@ -1,7 +1,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import * as os from "node:os";
-import { run } from "./run.js";
+import { run, shellEscape } from "./run.js";
 import type { TargetAgent, WorkspaceCache, WorkspaceInfo } from "./types.js";
 import { DOTFILES_DIR, dotfilesExists } from "./dotfiles.js";
 import { t } from "../i18n/index.js";
@@ -86,6 +86,29 @@ function isValidCache(cache: WorkspaceCache | null): cache is WorkspaceCache {
   return cache !== null && typeof cache.workspaceRoot === "string" && fs.existsSync(cache.workspaceRoot);
 }
 
+/**
+ * A directory named usync-dotfiles is not sufficient evidence of a workspace:
+ * plugin source trees can contain that directory, and ignored plain folders
+ * are not independently usable. Accept an explicit .gitmodules marker, a
+ * dotfiles repository, or a tracked dotfiles tree in the workspace repository.
+ */
+export function isValidWorkspaceRoot(root: string): boolean {
+  if (!fs.existsSync(root) || !fs.statSync(root).isDirectory()) return false;
+  if (fs.existsSync(path.join(root, ".gitmodules"))) return true;
+
+  const dotfilesPath = path.join(root, DOTFILES_DIR);
+  if (!fs.existsSync(dotfilesPath) || !fs.statSync(dotfilesPath).isDirectory()) return false;
+
+  const workspaceTop = run(`git -C ${shellEscape(root)} rev-parse --show-toplevel`, root);
+  if (workspaceTop.code !== 0 || path.resolve(workspaceTop.stdout.trim()) !== path.resolve(root)) return false;
+
+  const dotfilesTop = run(`git -C ${shellEscape(dotfilesPath)} rev-parse --show-toplevel`, root);
+  if (dotfilesTop.code === 0 && path.resolve(dotfilesTop.stdout.trim()) === path.resolve(dotfilesPath)) return true;
+
+  const tracked = run(`git -C ${shellEscape(root)} ls-files --error-unmatch -- ${shellEscape(DOTFILES_DIR)}`, root);
+  return tracked.code === 0;
+}
+
 export function findWorkspaceRoot(): string {
   let dir = process.cwd();
   while (dir !== path.dirname(dir)) {
@@ -146,7 +169,7 @@ export function resolveWorkspaceRoot(): string {
 /** Resolve a workspace without crossing the selected host's configuration boundary. */
 export function resolveWorkspaceRootForAgent(targetAgent: TargetAgent): string {
   if (targetAgent !== "codex") return resolveWorkspaceRoot();
-  if (_cachedCodexRoot && fs.existsSync(_cachedCodexRoot)) return _cachedCodexRoot;
+  if (_cachedCodexRoot && isValidWorkspaceRoot(_cachedCodexRoot)) return _cachedCodexRoot;
 
   // OPENCODE_SYNC_WORKSPACE_ROOT remains an environment-only compatibility alias;
   // no OpenCode file or directory is inspected in Codex scope.
@@ -157,17 +180,17 @@ export function resolveWorkspaceRootForAgent(targetAgent: TargetAgent): string {
   }
 
   const cached = readJsonCache(getCodexCachePath());
-  if (isValidCache(cached)) {
+  if (isValidCache(cached) && isValidWorkspaceRoot(cached.workspaceRoot)) {
     _cachedCodexRoot = cached.workspaceRoot;
     return cached.workspaceRoot;
   }
 
   let root = process.cwd();
   while (root !== path.dirname(root)) {
-    if (fs.existsSync(path.join(root, DOTFILES_DIR)) || fs.existsSync(path.join(root, ".gitmodules"))) break;
+    if (isValidWorkspaceRoot(root)) break;
     root = path.dirname(root);
   }
-  if (root === path.dirname(root)) throw new Error(t("lib.workspaceNotFound"));
+  if (!isValidWorkspaceRoot(root)) throw new Error(t("lib.workspaceNotFound"));
 
   const cachePath = getCodexCachePath();
   fs.mkdirSync(path.dirname(cachePath), { recursive: true });

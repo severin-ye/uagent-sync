@@ -75,6 +75,7 @@ test("detected OpenCode resolves scope without reading its cache first", () => {
       const cwd = location === "workspace" ? workspace : path.join(root, "outside");
       fs.mkdirSync(path.join(workspace, "usync-dotfiles", "state"), { recursive: true });
       fs.mkdirSync(cwd, { recursive: true });
+      if (location === "workspace") fs.writeFileSync(path.join(workspace, ".gitmodules"), "[submodule \"fixture\"]\n\tpath = fixture\n\turl = https://example.com/fixture.git\n");
       fs.writeFileSync(path.join(workspace, "usync-dotfiles", "state", "init-state.json"), JSON.stringify({ targetAgent: "codex" }));
       const cachePath = path.join(home, ".config", "opencode", "sync-cache.json");
       fs.mkdirSync(path.dirname(cachePath), { recursive: true });
@@ -137,6 +138,7 @@ test("detected OpenCode runs normally from a workspace with matching persisted s
     const home = path.join(root, "home");
     const workspace = path.join(root, "workspace");
     fs.mkdirSync(path.join(workspace, "usync-dotfiles", "state"), { recursive: true });
+    fs.writeFileSync(path.join(workspace, ".gitmodules"), "[submodule \"fixture\"]\n\tpath = fixture\n\turl = https://example.com/fixture.git\n");
     fs.writeFileSync(path.join(workspace, "usync-dotfiles", "state", "init-state.json"), JSON.stringify({ targetAgent: "opencode" }));
     fs.mkdirSync(path.join(home, ".config", "opencode"), { recursive: true });
     fs.writeFileSync(path.join(home, ".config", "opencode", "opencode.json"), "{}");

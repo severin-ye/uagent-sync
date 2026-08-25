@@ -3,7 +3,7 @@ import * as assert from "node:assert";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { resolveWorkspaceRoot, resolveWorkspaceRootForAgent, findWorkspaceRoot, getFixedCachePath, __overrideHomeDir, __resetCacheForTests } from "../src/lib/cache.js";
+import { resolveWorkspaceRoot, resolveWorkspaceRootForAgent, findWorkspaceRoot, getFixedCachePath, getCodexCachePath, __overrideHomeDir, __resetCacheForTests } from "../src/lib/cache.js";
 import { DOTFILES_DIR } from "../src/lib/dotfiles.js";
 
 /**
@@ -109,6 +109,17 @@ describe("resolveWorkspaceRoot — 非 workspace cwd", () => {
     setupOutsideCwd();
     process.chdir(fakeWorkspace);
     assert.equal(resolveWorkspaceRoot(), fakeWorkspace);
+  });
+
+  it("Codex stale cache 指向嵌套插件目录时，改从上层真实 workspace 解析", () => {
+    setupOutsideCwd();
+    const pluginDir = path.join(fakeWorkspace, "plugin", "src");
+    fs.mkdirSync(path.join(pluginDir, DOTFILES_DIR), { recursive: true });
+    fs.mkdirSync(path.dirname(getCodexCachePath()), { recursive: true });
+    fs.writeFileSync(getCodexCachePath(), JSON.stringify({ workspaceRoot: pluginDir }));
+    process.chdir(pluginDir);
+
+    assert.equal(resolveWorkspaceRootForAgent("codex"), fakeWorkspace);
   });
 
   it("找不到时错误消息包含引导提示", () => {

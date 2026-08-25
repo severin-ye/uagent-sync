@@ -76,16 +76,16 @@ function makeSubmoduleWorld(): { workspace: string; dotfiles: string; dotfilesRe
   return { workspace, dotfiles: path.join(workspace, DOTFILES_DIR), dotfilesRemote, workspaceRemote };
 }
 
-function runCli(args: string[], workspaceRoot: string): { stdout: string; code: number } {
+function runCli(args: string[], workspaceRoot: string): { stdout: string; stderr: string; code: number } {
   try {
     const stdout = execFileSync(process.execPath, [CLI, ...args], {
       encoding: "utf-8", timeout: 60000,
       env: { ...process.env, OPENCODE_SYNC_WORKSPACE_ROOT: workspaceRoot },
     });
-    return { stdout, code: 0 };
+    return { stdout, stderr: "", code: 0 };
   } catch (e: unknown) {
-    const err = e as { stdout?: string; status?: number };
-    return { stdout: err.stdout || "", code: err.status ?? 1 };
+    const err = e as { stdout?: string; stderr?: string; status?: number };
+    return { stdout: err.stdout || "", stderr: err.stderr || "", code: err.status ?? 1 };
   }
 }
 
@@ -204,5 +204,30 @@ describe("crystallize step 4 failure visibility (no git repo)", () => {
       workspace,
     );
     assert.match(out.stdout, /⚠️ Step 4: .+failed.+— .+/s, `failure detail must be non-empty: ${out.stdout}`);
+  });
+});
+
+describe("crystallize preflight side-effect protection", () => {
+  it("refuses an ignored plain dotfiles directory before writing provenance artifacts", () => {
+    const base = path.join(TMP, `ignored-${Math.random().toString(36).slice(2, 8)}`);
+    const workspace = path.join(base, "workspace");
+    initRepo(workspace, "master");
+    fs.writeFileSync(path.join(workspace, ".gitignore"), `${DOTFILES_DIR}/\n`);
+    git(workspace, ["add", ".gitignore"]);
+    git(workspace, ["commit", "-m", "ignore dotfiles"]);
+    fs.mkdirSync(path.join(workspace, DOTFILES_DIR, "state"), { recursive: true });
+    fs.writeFileSync(path.join(workspace, DOTFILES_DIR, "state", "preexisting.txt"), "keep");
+
+    const out = runCli(
+      ["crystallize", "--type", "plugin", "--name", "ignored-test", "--source", "https://example.com/i.git", "--skip-push"],
+      workspace,
+    );
+
+    assert.notEqual(out.code, 0, `${out.stdout}\n${out.stderr}`);
+    assert.match(`${out.stdout}\n${out.stderr}`, /ignored|not a git repository|preflight/i);
+    assert.equal(fs.existsSync(path.join(workspace, DOTFILES_DIR, "state", "install-log.json")), false);
+    assert.equal(fs.existsSync(path.join(workspace, DOTFILES_DIR, "guide", "SYNC-GUIDE.md")), false);
+    assert.equal(fs.existsSync(path.join(workspace, DOTFILES_DIR, "state", "workspace-state.json")), false);
+    assert.equal(fs.readFileSync(path.join(workspace, DOTFILES_DIR, "state", "preexisting.txt"), "utf-8"), "keep");
   });
 });

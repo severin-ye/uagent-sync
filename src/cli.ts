@@ -16,7 +16,8 @@ import {
 } from "./sync.js";
 import { archiveUpdateReport, type UpdateComponent, type UpdateProgress } from "./lib/update.js";
 import { DOTFILES_DIR } from "./lib/dotfiles.js";
-import { commitCrystallize } from "./lib/crystallize-commit.js";
+import { commitCrystallize, validateCrystallizePreflight } from "./lib/crystallize-commit.js";
+import { isValidWorkspaceRoot } from "./lib/cache.js";
 import { setLang, t } from "./i18n/index.js";
 import { defaultWorkspaceApplication } from "./application/default-workspace-application.js";
 import { preflightImportWorkspace } from "./application/import-workspace.js";
@@ -158,7 +159,7 @@ function discoverHostNeutralWorkspaceRoot(
   }
   let current = path.resolve(cwd);
   while (true) {
-    if (fs.existsSync(path.join(current, DOTFILES_DIR)) || fs.existsSync(path.join(current, ".gitmodules"))) return current;
+    if (isValidWorkspaceRoot(current)) return current;
     const parent = path.dirname(current);
     if (parent === current) return undefined;
     current = parent;
@@ -575,6 +576,7 @@ async function main() {
         console.error(t("cli.crystallizeRequired"));
         process.exit(1);
       }
+      validateCrystallizePreflight({ workspaceRoot, dotfilesDir: DOTFILES_DIR });
       const results: string[] = [];
       const entry = appendInstallEntry(workspaceRoot, {
         type: String(type), name: String(name), source: String(source),

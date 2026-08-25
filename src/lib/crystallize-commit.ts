@@ -27,6 +27,11 @@ export interface CrystallizeCommitInput {
   skipPush: boolean;
 }
 
+export interface CrystallizePreflightInput {
+  workspaceRoot: string;
+  dotfilesDir: string;
+}
+
 /** Combine both command streams; prefer stderr, fall back to stdout. */
 function detail(result: { stdout: string; stderr: string }): string {
   return (result.stderr || result.stdout || "").trim() || "unknown error";
@@ -41,6 +46,20 @@ function isNoopCommit(result: { stdout: string; stderr: string }): boolean {
 /** True when the dotfiles directory is itself a git repository (repo or submodule checkout). */
 function isGitRepo(dir: string): boolean {
   return fs.existsSync(path.join(dir, ".git"));
+}
+
+/** Refuse to create artifacts that the parent repository cannot track. */
+export function validateCrystallizePreflight(input: CrystallizePreflightInput): void {
+  const dotfilesAbs = path.resolve(input.workspaceRoot, input.dotfilesDir);
+  if (isGitRepo(dotfilesAbs)) return;
+
+  const ignored = run(
+    `git -C ${shellEscape(input.workspaceRoot)} check-ignore --quiet -- ${shellEscape(input.dotfilesDir)}`,
+    input.workspaceRoot,
+  );
+  if (ignored.code === 0) {
+    throw new Error(`Crystallize preflight refused: ${input.dotfilesDir} is ignored by the parent repository and is not a Git repository`);
+  }
 }
 
 /**
