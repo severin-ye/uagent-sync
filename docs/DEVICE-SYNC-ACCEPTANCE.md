@@ -1,5 +1,7 @@
 # 第二台 Windows 电脑验证交接
 
+两机后续任务与状态统一维护在 [DEVICE-SYNC-TODO.md](DEVICE-SYNC-TODO.md)；各机按清单补充独立证据，不以另一机结果替代本机验收。
+
 本文件对应分支 `codex/device-sync-validation`。这是待实机验收的源码更新，不是已发布插件，不代表除了大文件之外全部完成。执行时记录 `git rev-parse HEAD`，以该提交作为验证对象。
 
 ## 首轮反馈后的修复与复验
