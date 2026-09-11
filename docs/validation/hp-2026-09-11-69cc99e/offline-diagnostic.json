@@ -1,0 +1,7 @@
+{
+  "originalUtf8Input": "FAIL reproduced",
+  "bomOnlyDiagnostic": "PASS preview/copy/resume/overwrite protection; input BOM changed, source untouched; not original regression PASS",
+  "mutationFaultInjection": "PASS",
+  "raceFinalFileAbsent": true,
+  "root": "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-acceptance-20260911-173421\\offline-diagnostic"
+}

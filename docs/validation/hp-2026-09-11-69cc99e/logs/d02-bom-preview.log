@@ -1,0 +1,7 @@
+{
+    "applied":  false,
+    "files":  1,
+    "bytes":  6,
+    "source":  "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-acceptance-20260911-173421\\offline-diagnostic\\source",
+    "staging":  "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-acceptance-20260911-173421\\offline-diagnostic\\bom-target"
+}

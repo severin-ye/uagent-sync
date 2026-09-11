@@ -1,0 +1,7 @@
+Source changed or copy verification failed: plain.txt
+����λ�� %USERPROFILE%\AppData\Local\Temp\uagent-hp-acceptance-20260911-173421\source\scripts\copy-offline-workspace
+.ps1:76 �ַ�: 89
++ ... expected) { throw "Source changed or copy verification failed: $($job ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Source changed ...iled: plain.txt:String) [], RuntimeException
+    + FullyQualifiedErrorId : Source changed or copy verification failed: plain.txt
