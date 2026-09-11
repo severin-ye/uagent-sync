@@ -16,6 +16,8 @@
     ".codex-plugin",
     ".claude-plugin",
     "scripts/bootstrap.ps1",
+    "scripts/copy-offline-workspace.ps1",
+    "docs/DEVICE-SYNC-USAGE.md",
     "README.md",
     "README.zh-CN.md",
     "LICENSE"

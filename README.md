@@ -321,3 +321,6 @@ MIT © 2026 uagent-sync contributors
 ---
 
 [**简体中文**](./README.zh-CN.md) | **English**
+# Multi-device handoff (source development)
+
+The new `device` command provides configurable device registration, workspace coverage reports, personal Codex profile snapshots, conflict-aware restore, and explicit private-registry transport. See [current usage and limitations](docs/DEVICE-SYNC-USAGE.md). This is not yet a complete workspace replication or plugin-installation flow; existing published versions may not contain it.

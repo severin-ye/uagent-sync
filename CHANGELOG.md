@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+- Add modular `device` registration, alias resolution, registry reconnect, workspace coverage and offline staging reports, Codex personal-file snapshots with protected restore, explicit private GitHub registry transport, and the U同步/Severin device-handoff workflow. Full Skill collection and real second-device acceptance remain pending; no release is claimed.
+
 ### 新增
 
 - **迁移分析统一入口**：资产盘点、覆盖与缺口、功能重叠与去重、兼容性、迁移决策、执行与验证共用同一 Dashboard 服务和显式分析范围；未选范围不扫描、不显示比较计数。旧扩展写入接口已冻结为 `410 upgrade_required`。

@@ -1,0 +1,21 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import os from 'node:os';
+import { spawnSync } from 'node:child_process';
+import { auditDeviceWorkspace } from '../src/lib/device-workspace-audit.js';
+test('audit includes ignored and untracked documents without reading credential contents', t => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'device-audit-')); t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const git = (...args: string[]) => { const r = spawnSync('git', ['-C', dir, ...args]); assert.equal(r.status, 0); };
+  git('init'); fs.writeFileSync(path.join(dir, '.gitignore'), 'ignored.txt\n'); fs.writeFileSync(path.join(dir, 'tracked.txt'), 'tracked');
+  git('add', '.'); git('-c', 'user.name=Test', '-c', 'user.email=test@example.com', 'commit', '-m', 'fixture');
+  fs.writeFileSync(path.join(dir, 'ignored.txt'), 'preserve this'); fs.writeFileSync(path.join(dir, 'new.txt'), 'new'); fs.writeFileSync(path.join(dir, '.env'), 'do not read');
+  fs.mkdirSync(path.join(dir, 'node_modules')); fs.writeFileSync(path.join(dir, 'node_modules/library'), 'dependency');
+  const before = spawnSync('git', ['-C', dir, 'status', '--porcelain']).stdout.toString();
+  const result = auditDeviceWorkspace(dir);
+  assert.equal(result.scannedFiles, 6); assert.equal(result.categories['untracked-or-ignored'].files, 2);
+  assert.equal(result.categories['credential-files-local'].files, 1); assert.equal(result.categories['dependencies-rebuild-review'].files, 1);
+  assert.equal(result.readyForGitOnlyTransfer, false); assert(!JSON.stringify(result).includes('do not read'));
+  assert.equal(spawnSync('git', ['-C', dir, 'status', '--porcelain']).stdout.toString(), before);
+});
