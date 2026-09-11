@@ -1,0 +1,19 @@
+{
+  "verified_source_sha": "d076fff50b142b4d09a2fbee9b0b8882b1554b96",
+  "handoff_input": "866e91967b56a5fec89a7789c43b350fd230120c",
+  "analysis_exit": 0,
+  "id_coverage": 172,
+  "source_files": 69,
+  "exact_raw_spans_checked": 178,
+  "groups": 80,
+  "fixture_candidates": 81,
+  "current_file_hashes_match": true,
+  "source_map_verified": false,
+  "all_automatic_allow_false": true,
+  "public_pattern_check": "PASS",
+  "new_tests_run": false,
+  "scanner_modified": false,
+  "real_link_modified": false,
+  "position_check": "UTF16 half-open; LF/CRLF report lines, not Python universal splitlines",
+  "note": "Read-only syntax/evidence checks, not credential authenticity or migration acceptance"
+}
