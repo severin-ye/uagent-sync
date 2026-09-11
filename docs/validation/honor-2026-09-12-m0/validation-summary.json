@@ -1,0 +1,78 @@
+{
+  "validationRoot": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09",
+  "cloneRoot": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\clone",
+  "logRoot": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09",
+  "userRoot": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\isolated-user",
+  "sourceSha": "11237d974ce42f3377cf06faf01e351b8f20cc3d",
+  "targetDiff": [
+    "src/lib/secret-scan.ts",
+    "test/secret-scan-m0.test.ts"
+  ],
+  "targetTest": {
+    "tests": 14,
+    "pass": 14,
+    "fail": 0,
+    "exitCode": 0
+  },
+  "fullTest": {
+    "tests": 433,
+    "suites": 85,
+    "pass": 422,
+    "fail": 11,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "durationMs": 114674.8193,
+    "exitCode": 1,
+    "failedTests": [
+      "status lists submodules",
+      "guide generates SYNC-GUIDE.md",
+      "init --force writes init state and prints next steps",
+      "exits 0 and reports committed steps",
+      "commits the generated artifacts inside the submodule",
+      "updates the workspace pointer and pushes it",
+      "commits files directly in the workspace repo",
+      "surfaces the failure detail instead of a blank warning",
+      "exits non-zero when the domain importer returns success=false",
+      "pull reports malformed state as structured JSON",
+      "keeps report archival at the CLI edge and exits non-zero if archival fails"
+    ]
+  },
+  "postRunTrackedStatus": [
+    " M src/dashboard/i18n.js"
+  ],
+  "postRunDiff": [],
+  "notExecuted": [
+    "No source fixes",
+    "No device-plugin installation",
+    "No writes to main repository or real configuration",
+    "No rerun with weakened isolation variables"
+  ],
+  "recovery": {
+    "cause": "UAGENT_SYNC_WORKSPACE_ROOT was fixed to clone and took precedence over per-test OPENCODE_SYNC_WORKSPACE_ROOT fixture overrides",
+    "environmentChange": "Unset UAGENT_SYNC_WORKSPACE_ROOT only; retained OPENCODE_SYNC_WORKSPACE_ROOT=clone and all user/config/temp isolation",
+    "failedGroups": {
+      "tests": 79,
+      "suites": 22,
+      "pass": 79,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 26992.7977,
+      "exitCode": 0
+    },
+    "fullTest": {
+      "tests": 433,
+      "suites": 85,
+      "pass": 433,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 112237.8484,
+      "exitCode": 0
+    }
+  },
+  "finalDiffQuietExit": 0
+}

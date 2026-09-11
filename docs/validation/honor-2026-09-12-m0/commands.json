@@ -1,0 +1,170 @@
+[
+  {
+    "name": "01-clone",
+    "command": "git.exe clone --no-hardlinks --no-checkout <USER_ROOT>\\Codelib-severin\\2_Business\\uagent-sync <USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\clone",
+    "workingDirectory": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09",
+    "startedAt": "2026-09-11T16:35:35.587052Z",
+    "endedAt": "2026-09-11T16:35:36.3852389Z",
+    "exitCode": 0,
+    "stdout": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\01-clone.stdout.log",
+    "stderr": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\01-clone.stderr.log"
+  },
+  {
+    "name": "02-checkout",
+    "command": "git.exe -c advice.detachedHead=false checkout --detach 11237d974ce42f3377cf06faf01e351b8f20cc3d",
+    "workingDirectory": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\clone",
+    "startedAt": "2026-09-11T16:35:36.3934068Z",
+    "endedAt": "2026-09-11T16:35:36.6531984Z",
+    "exitCode": 0,
+    "stdout": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\02-checkout.stdout.log",
+    "stderr": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\02-checkout.stderr.log"
+  },
+  {
+    "name": "03-rev-parse",
+    "command": "git.exe rev-parse HEAD",
+    "workingDirectory": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\clone",
+    "startedAt": "2026-09-11T16:35:57.5686883Z",
+    "endedAt": "2026-09-11T16:35:57.6688476Z",
+    "exitCode": 0,
+    "stdout": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\03-rev-parse.stdout.log",
+    "stderr": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\03-rev-parse.stderr.log"
+  },
+  {
+    "name": "04-diff-tree",
+    "command": "git.exe diff-tree --no-commit-id --name-only -r HEAD^ HEAD",
+    "workingDirectory": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\clone",
+    "startedAt": "2026-09-11T16:35:57.6743483Z",
+    "endedAt": "2026-09-11T16:35:57.7634572Z",
+    "exitCode": 0,
+    "stdout": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\04-diff-tree.stdout.log",
+    "stderr": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\04-diff-tree.stderr.log"
+  },
+  {
+    "name": "05-npm-ci",
+    "command": "npm ci --ignore-scripts --no-audit --no-fund",
+    "workingDirectory": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\clone",
+    "startedAt": "2026-09-11T16:36:42.1527137Z",
+    "endedAt": "2026-09-11T16:36:49.2866581Z",
+    "exitCode": 0,
+    "stdout": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\05-npm-ci.stdout.log",
+    "stderr": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\05-npm-ci.stderr.log"
+  },
+  {
+    "name": "06-npm-build",
+    "command": "npm run build",
+    "workingDirectory": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\clone",
+    "startedAt": "2026-09-11T16:37:13.0125289Z",
+    "endedAt": "2026-09-11T16:37:17.0819375Z",
+    "exitCode": 0,
+    "stdout": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\06-npm-build.stdout.log",
+    "stderr": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\06-npm-build.stderr.log"
+  },
+  {
+    "name": "07-m0-target",
+    "command": "node --import tsx --test test/secret-scan-m0.test.ts",
+    "workingDirectory": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\clone",
+    "startedAt": "2026-09-11T16:37:36.56234Z",
+    "endedAt": "2026-09-11T16:37:37.1091556Z",
+    "exitCode": 0,
+    "stdout": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\07-m0-target.stdout.log",
+    "stderr": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\07-m0-target.stderr.log"
+  },
+  {
+    "name": "08-npm-test",
+    "command": "npm test",
+    "workingDirectory": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\clone",
+    "startedAt": "2026-09-11T16:38:01.4875789Z",
+    "endedAt": "2026-09-11T16:40:00.6027793Z",
+    "exitCode": 1,
+    "stdout": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\08-npm-test.stdout.log",
+    "stderr": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\08-npm-test.stderr.log"
+  },
+  {
+    "name": "09-git-status",
+    "command": "git status --short --untracked-files=all",
+    "workingDirectory": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\clone",
+    "startedAt": "2026-09-11T16:41:25.7718628Z",
+    "endedAt": "2026-09-11T16:41:26.0500452Z",
+    "exitCode": 0,
+    "stdout": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\09-git-status.stdout.log",
+    "stderr": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\09-git-status.stderr.log"
+  },
+  {
+    "name": "10-git-diff",
+    "command": "git diff --name-only",
+    "workingDirectory": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\clone",
+    "startedAt": "2026-09-11T16:41:26.0600593Z",
+    "endedAt": "2026-09-11T16:41:26.1822236Z",
+    "exitCode": 0,
+    "stdout": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\10-git-diff.stdout.log",
+    "stderr": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\10-git-diff.stderr.log"
+  },
+  {
+    "name": "11-final-git-status",
+    "command": "git status --short --untracked-files=all",
+    "workingDirectory": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\clone",
+    "startedAt": "2026-09-11T16:42:26.7434154Z",
+    "endedAt": "2026-09-11T16:42:26.8770688Z",
+    "exitCode": 0,
+    "stdout": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\11-final-git-status.stdout.log",
+    "stderr": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\11-final-git-status.stderr.log"
+  },
+  {
+    "name": "12-final-git-diff",
+    "command": "git diff --name-only --",
+    "workingDirectory": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\clone",
+    "startedAt": "2026-09-11T16:42:26.8829894Z",
+    "endedAt": "2026-09-11T16:42:27.0119091Z",
+    "exitCode": 0,
+    "stdout": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\12-final-git-diff.stdout.log",
+    "stderr": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\12-final-git-diff.stderr.log"
+  },
+  {
+    "name": "13-recovery-failed-groups",
+    "command": "node --import tsx --test --test-concurrency=1 test/cli.test.ts test/crystallize-submodule.test.ts test/export-import-use-cases.test.ts test/recovery-contract.test.ts test/setup-update-use-cases.test.ts",
+    "workingDirectory": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\clone",
+    "environmentDelta": {
+      "UAGENT_SYNC_WORKSPACE_ROOT": "<unset>",
+      "OPENCODE_SYNC_WORKSPACE_ROOT": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\clone"
+    },
+    "startedAt": "2026-09-11T16:43:02.7025268Z",
+    "endedAt": "2026-09-11T16:43:29.816152Z",
+    "exitCode": 0,
+    "stdout": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\13-recovery-failed-groups.stdout.log",
+    "stderr": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\13-recovery-failed-groups.stderr.log"
+  },
+  {
+    "name": "14-recovery-npm-test",
+    "command": "npm test",
+    "workingDirectory": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\clone",
+    "environmentDelta": {
+      "UAGENT_SYNC_WORKSPACE_ROOT": "<unset>",
+      "OPENCODE_SYNC_WORKSPACE_ROOT": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\clone"
+    },
+    "startedAt": "2026-09-11T16:43:47.2622619Z",
+    "endedAt": "2026-09-11T16:45:44.2393122Z",
+    "exitCode": 0,
+    "stdout": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\14-recovery-npm-test.stdout.log",
+    "stderr": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\14-recovery-npm-test.stderr.log"
+  },
+  {
+    "name": "15-final-diff-quiet",
+    "command": "git diff --quiet --",
+    "workingDirectory": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\clone",
+    "startedAt": "2026-09-11T16:46:23.9648243Z",
+    "endedAt": "2026-09-11T16:46:24.0878987Z",
+    "exitCode": 0,
+    "stdout": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\15-final-diff-quiet.stdout.log",
+    "stderr": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\15-final-diff-quiet.stderr.log"
+  },
+  {
+    "name": "16-final-status",
+    "command": "git status --short --untracked-files=all",
+    "workingDirectory": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\clone",
+    "startedAt": "2026-09-11T16:46:24.0942640Z",
+    "endedAt": "2026-09-11T16:46:24.1886887Z",
+    "exitCode": 0,
+    "stdout": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\16-final-status.stdout.log",
+    "stderr": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-logs-20260912-013535-02c6ac09\\16-final-status.stderr.log"
+  }
+]

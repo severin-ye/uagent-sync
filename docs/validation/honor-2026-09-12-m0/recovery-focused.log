@@ -1,0 +1,146 @@
+Unknown command: nonexistent
+Invalid dashboard port: invalid
+Error: --type, --name, and --source are required for crystallize
+Error: --type, --name, and --source are required for 'add' action
+Error: --key-name is required for 'add' action
+▶ CLI usage
+  ✔ no command shows usage with all 16 commands (199.156ms)
+  ✔ unknown command exits non-zero (198.7828ms)
+  ✔ --help prints usage and exits 0 (192.9451ms)
+  ✔ -h prints usage and exits 0 (195.7018ms)
+  ✔ --version prints the package version and exits 0 (227.4706ms)
+✔ CLI usage (1014.6524ms)
+▶ CLI read-only commands
+  ✔ inventory --json returns a safe three-agent payload (201.2651ms)
+  ✔ dashboard rejects invalid ports (203.5811ms)
+  ✔ status lists submodules (206.2618ms)
+  ✔ verify does not report success when required checks fail (1593.0793ms)
+  ✔ guide generates SYNC-GUIDE.md (215.7947ms)
+  ✔ api-keys detect lists keys (197.4645ms)
+  ✔ log read shows empty log (214.8768ms)
+✔ CLI read-only commands (2833.0388ms)
+▶ CLI bilingual output
+  ✔ defaults to English (UAGENT_SYNC_LANG unset → en) (193.7236ms)
+  ✔ --lang zh switches CLI output to Chinese (199.7103ms)
+  ✔ UAGENT_SYNC_LANG=zh switches CLI output to Chinese (208.5065ms)
+  ✔ --lang en overrides UAGENT_SYNC_LANG=zh (203.4937ms)
+  ✔ help shows bilingual usage with --lang hint (420.2497ms)
+✔ CLI bilingual output (1226.371ms)
+▶ CLI stateful commands (safe paths)
+  ✔ init --force writes init state and prints next steps (317.2505ms)
+  ✔ log add records entry then read returns it (449.7854ms)
+  ✔ log export produces markdown (241.6151ms)
+  ✔ crystallize without required flags errors (211.1577ms)
+  ✔ log add without required flags errors (251.7208ms)
+  ✔ api-keys add without --key-name errors (232.4785ms)
+✔ CLI stateful commands (safe paths) (1704.4872ms)
+{"ok":false,"warnings":[],"errors":["Crystallize preflight refused: usync-dotfiles is ignored by the parent repository and is not a Git repository"],"skipped":[],"targetAgent":"codex"}
+▶ crystallize step 4 with dotfiles as a git submodule
+  ✔ exits 0 and reports committed steps (2.194ms)
+  ✔ commits the generated artifacts inside the submodule (301.0077ms)
+  ✔ pushes the dotfiles commit to its remote (139.9386ms)
+  ✔ updates the workspace pointer and pushes it (312.5558ms)
+✔ crystallize step 4 with dotfiles as a git submodule (8730.7674ms)
+▶ crystallize step 4 with dotfiles as a plain directory
+  ✔ commits files directly in the workspace repo (2571.752ms)
+✔ crystallize step 4 with dotfiles as a plain directory (2572.4545ms)
+▶ crystallize step 4 failure visibility (no git repo)
+  ✔ surfaces the failure detail instead of a blank warning (403.0143ms)
+✔ crystallize step 4 failure visibility (no git repo) (403.4284ms)
+▶ crystallize preflight side-effect protection
+  ✔ refuses an ignored plain dotfiles directory before writing provenance artifacts (771.2978ms)
+✔ crystallize preflight side-effect protection (771.7509ms)
+▶ exportWorkspace
+  ✔ scans the complete serialized artifact before writing it (6.7438ms)
+  ✔ fails closed without writing when the secret scan rejects the artifact (0.8822ms)
+  ✔ fails unsupported dsh/all scopes before collection, scanning, or any file write (0.44ms)
+  ✔ owns the Plugin tracking policy and performs every .gitignore operation through FileSystem (0.6139ms)
+✔ exportWorkspace (9.6034ms)
+▶ importWorkspace
+  ✔ propagates a domain import failure as ok=false (3.0615ms)
+  ✔ exposes a pure capability preflight with stable unsupported-target errors (0.8472ms)
+  ✔ parses with the artifact codec and rejects a target mismatch before mutation (1.2294ms)
+  ✔ passes the validated v3 artifact to the legacy bridge without dropping fields (0.3009ms)
+  ✔ validates target scope before a dry-run snapshot or diff (0.2697ms)
+  ✔ fails unsupported dsh/all scopes before codec parsing or any downstream work (0.333ms)
+✔ importWorkspace (6.3529ms)
+▶ nodeFileSystem
+  ✔ implements the text file port (3.5357ms)
+✔ nodeFileSystem (3.6118ms)
+▶ export/import entrypoint parity
+  ✔ keeps CLI path and URL parsing at the edge while delegating both workflows (0.8729ms)
+  ✔ keeps Plugin tool schemas and text protocol while delegating both workflows (0.4654ms)
+✔ export/import entrypoint parity (1.4207ms)
+▶ real CLI export/import protocol
+  ✔ roundtrips a supported OpenCode artifact with stable exit/output and JSON (359.7777ms)
+  ✔ fails dsh/all export and import with ok=false before artifact writes or parsing (670.7583ms)
+  ✔ exits non-zero when the domain importer returns success=false (210.7987ms)
+  ✔ preflights unsupported imports before a missing path read or observable URL fetch (765.6849ms)
+✔ real CLI export/import protocol (2007.4966ms)
+▶ real Plugin export/import protocol
+  ✔ returns success and failure as Plugin text while application owns tracking (186.7664ms)
+  ✔ renders artifact write failures as stable non-secret Plugin text (11.6471ms)
+✔ real Plugin export/import protocol (198.6037ms)
+{"ok":false,"warnings":[],"errors":["Dotfiles repository is not initialized: <USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\isolated-temp\\uagent-recovery-contract-1789145005339\\workspace\\usync-dotfiles"],"skipped":[],"targetAgent":"codex"}
+{"ok":false,"warnings":[],"errors":["git pull failed: fatal: not a git repository (or any of the parent directories): .git"],"skipped":[],"targetAgent":"codex"}
+warning: in the working copy of 'state/init-state.json', LF will be replaced by CRLF the next time Git touches it
+To <USER_ROOT>\AppData\Local\Temp\uagent-sync-m0-20260912-013535-02c6ac09\isolated-temp\uagent-recovery-contract-1789145005339\dotfiles-remote-1789145006160.git
+ * [new branch]      master -> master
+{"ok":false,"warnings":[],"errors":["Invalid workspace-state.json: Invalid WorkspaceState JSON [invalid_json] at root"],"skipped":[],"targetAgent":"codex"}
+Secret values are never accepted. Only variable names and safe placeholders may be recorded.
+Invalid environment variable name
+{"ok":false,"warnings":[],"errors":["Path traversal detected: <USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\isolated-temp\\uagent-recovery-contract-1789145005339\\outside.json"],"skipped":[],"targetAgent":"codex"}
+▶ targetAgent persistence and strict scope
+  ✔ persists an explicit Codex target in init-state.json (2.0773ms)
+  ✔ CLI init persists --target-agent codex (303.877ms)
+  ✔ Codex export contains a host-scoped manifest and no OpenCode config (6.863ms)
+  ✔ exports stable skill provenance from the shared skill lock (1.9924ms)
+✔ targetAgent persistence and strict scope (315.3642ms)
+▶ safe recovery protocol
+  ✔ pull fails non-zero when workspace-state.json is missing (180.2185ms)
+  ✔ pull reports a dotfiles git failure as structured JSON (318.1673ms)
+  ✔ pull reports malformed state as structured JSON (1548.7973ms)
+  ✔ API template never accepts or writes a real token value (0.5964ms)
+  ✔ CLI api-keys add rejects a supplied secret value (163.9544ms)
+  ✔ CLI api-keys rejects unsafe key names and export rejects paths outside the workspace (316.6652ms)
+  ✔ Codex export fails closed on a malformed tombstone file (1.315ms)
+  ✔ Codex export captures current plugin tables and recoverable MCP configuration (2.5817ms)
+  ✔ raw Codex scanning sees an active tombstone while exported state keeps it deleted (6.2894ms)
+  ✔ permanent deletions reject a legacy manifest even when it omits tombstones (3.4914ms)
+  ✔ tombstones override stale manifests and historical discovery (7.213ms)
+✔ safe recovery protocol (2550.0118ms)
+▶ clean checkout and Codex plugin contract
+  ✔ npm test has a build lifecycle prerequisite (0.6864ms)
+  ✔ Codex manifest version matches package and uses only accepted discovery fields (0.6062ms)
+✔ clean checkout and Codex plugin contract (1.5721ms)
+▶ setupWorkspace application use case
+  ✔ delegates once with an explicit target and aggregates typed setup results (6.5719ms)
+  ✔ converts a delegated setup exception into ok=false (1.1445ms)
+✔ setupWorkspace application use case (8.7381ms)
+▶ updateWorkspace application use case
+  ✔ redacts every progress string field and all structured result strings (5.4185ms)
+  ✔ passes explicit scope, typed progress and argv process execution to the updater (1.4644ms)
+  ✔ reports every update error as ok=false and preserves the report (0.4833ms)
+  ✔ converts a delegated update exception into ok=false (0.3093ms)
+  ✔ preserves the updater's legacy default executor when no ProcessRunner is injected (1.0797ms)
+  ✔ streams ordinary output with at most one-event delay and preserves line boundaries (0.9286ms)
+  ✔ streams split-secret output safely without leaking through joined lines (0.6463ms)
+✔ updateWorkspace application use case (10.8239ms)
+▶ setup/update entrypoint delegation
+  ✔ routes CLI and Plugin setup/update through the shared application with explicit scope (0.7479ms)
+  ✔ keeps report archival at the CLI edge and exits non-zero if archival fails (320.8508ms)
+✔ setup/update entrypoint delegation (321.7018ms)
+▶ ProcessRunner adapter bridge
+  ✔ adapts the argv port without spawning or joining a shell command (0.6312ms)
+✔ ProcessRunner adapter bridge (0.6822ms)
+▶ real Plugin setup failure
+  ✔ renders stable redacted result fields with metadata.ok=false (1028.091ms)
+✔ real Plugin setup failure (1028.1569ms)
+ℹ tests 79
+ℹ suites 22
+ℹ pass 79
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 26992.7977

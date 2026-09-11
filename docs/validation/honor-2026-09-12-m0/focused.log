@@ -1,0 +1,22 @@
+✔ M0 detects known-token-prefix before and after <hidden> (1.4415ms)
+✔ M0 detects authorization-bearer before and after <hidden> (0.0945ms)
+✔ M0 detects sensitive-assignment before and after <hidden> (0.0662ms)
+✔ M0 detects known-token-prefix before and after <YOUR_API_KEY> (0.0715ms)
+✔ M0 detects authorization-bearer before and after <YOUR_API_KEY> (0.076ms)
+✔ M0 detects sensitive-assignment before and after <YOUR_API_KEY> (0.0682ms)
+✔ M0 preserves placeholder-only inputs and one finding per rule per line (0.5008ms)
+✔ M0 marker variants, suffixes and concatenation cannot hide adjacent credentials (0.1356ms)
+✔ M0 retains original lines across LF, CRLF, non-BMP and Unicode separators (0.4999ms)
+✔ M0 scans past display windows and returns no credential text (0.2082ms)
+✔ M0 does not introduce M1, M2 or M3 allowances (0.266ms)
+✔ M0 profile collection, restore and publish reject the same fixture before effects (25.3171ms)
+✔ M0 Codex MCP recovery rejects a marker alongside a token before executing (0.8696ms)
+✔ M0 recovery report refuses residual credentials beside a redaction marker (2.8747ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 451.9779

@@ -1,0 +1,14 @@
+{
+  "USERPROFILE": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\isolated-user",
+  "HOME": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\isolated-user",
+  "APPDATA": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\isolated-user\\AppData\\Roaming",
+  "LOCALAPPDATA": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\isolated-user\\AppData\\Local",
+  "CODEX_HOME": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\isolated-user\\.codex",
+  "XDG_CONFIG_HOME": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\isolated-user\\.config",
+  "OPENCODE_SYNC_WORKSPACE_ROOT": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\clone",
+  "UAGENT_SYNC_WORKSPACE_ROOT": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\clone",
+  "TMP": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\isolated-temp",
+  "TEMP": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\isolated-temp",
+  "NPM_CONFIG_CACHE": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\isolated-user\\npm-cache",
+  "NPM_CONFIG_USERCONFIG": "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-sync-m0-20260912-013535-02c6ac09\\isolated-user\\.npmrc"
+}
