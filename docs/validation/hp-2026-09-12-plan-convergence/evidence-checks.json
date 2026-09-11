@@ -1,0 +1,75 @@
+{
+  "generated_at": "2026-09-11T15:29:12.139Z",
+  "handoff_sha": "98ceaa8de64b6110e29d157b04b95372535210d8",
+  "verified_source_sha": "d076fff50b142b4d09a2fbee9b0b8882b1554b96",
+  "checks_exit": 0,
+  "verified_published_checksums": [
+    ".gitattributes",
+    "additional-syntax.json",
+    "analysis-checks.json",
+    "LINK-PLAN.md",
+    "README.md",
+    "REVIEW.md"
+  ],
+  "id_path_rule_line_hash_join": "PASS",
+  "span_shape_group_consistency": "PASS",
+  "counts": {
+    "items": 172,
+    "files": 69,
+    "spans": 178,
+    "structural_groups": 80,
+    "rhs_structure_reported": 147,
+    "rhs_unresolved": 25,
+    "unresolved_in_string_or_template": 19,
+    "unresolved_other": 6,
+    "fixture_value_unconfirmed": 81,
+    "confirmed_credentials": 0,
+    "automatic_allow": 0
+  },
+  "limitations": [
+    "No raw Honor files copied or re-parsed on HP; exact regex match against raw bytes relies on Honor evidence.",
+    "147 reported RHS structures do not establish value provenance; all 172 remain blocked.",
+    "81 fixture candidates overlap other counts and are not an additional disjoint set.",
+    "Package metadata and matching build hashes do not prove upstream commit or per-span source-map provenance.",
+    "No new source tests, fix, install, snapshot, restore, or real-link mutation."
+  ],
+  "long_lines": [
+    {
+      "id": "RY-104",
+      "line": 1185,
+      "spans": [
+        [
+          6461,
+          6481
+        ],
+        [
+          6701,
+          6721
+        ],
+        [
+          6947,
+          6967
+        ],
+        [
+          7199,
+          7219
+        ]
+      ],
+      "blocked": true
+    },
+    {
+      "id": "RY-137",
+      "line": 4550,
+      "spans": [
+        [
+          17219,
+          17268
+        ]
+      ],
+      "blocked": true
+    }
+  ],
+  "core_policy_disagreements": [],
+  "first_batch_candidates": 16,
+  "first_batch_implemented": 0
+}

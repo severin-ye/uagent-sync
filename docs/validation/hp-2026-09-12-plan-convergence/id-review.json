@@ -1,0 +1,2927 @@
+[
+  {
+    "id": "RY-009",
+    "path": "agents/skills/gstack/.env.example",
+    "line": 5,
+    "rule": "known-token-prefix",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-010",
+    "path": "agents/skills/gstack/bin/gstack-distill-free-text",
+    "line": 190,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-011",
+    "path": "agents/skills/gstack/browse/src/browse-client.ts",
+    "line": 67,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-cc8bc7d66d5b"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-012",
+    "path": "agents/skills/gstack/browse/src/browse-client.ts",
+    "line": 76,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-1fc5ded29bdd"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-013",
+    "path": "agents/skills/gstack/browse/src/browse-client.ts",
+    "line": 88,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-3ceb9ab0c829"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-014",
+    "path": "agents/skills/gstack/browse/src/browse-client.ts",
+    "line": 141,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-ac1c731bf085"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-015",
+    "path": "agents/skills/gstack/browse/src/browser-manager.ts",
+    "line": 580,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-80592ff3ad14"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-016",
+    "path": "agents/skills/gstack/browse/src/cli.ts",
+    "line": 1093,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-b3bba8adcda4"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-017",
+    "path": "agents/skills/gstack/browse/src/cookie-import-browser.ts",
+    "line": 654,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-38aca9077c3e"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-018",
+    "path": "agents/skills/gstack/browse/src/proxy-config.ts",
+    "line": 101,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-a39f4e3ad3ea"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-019",
+    "path": "agents/skills/gstack/browse/src/proxy-config.ts",
+    "line": 104,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-3eee8319622f"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-020",
+    "path": "agents/skills/gstack/browse/src/proxy-config.ts",
+    "line": 123,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-b4a5d0d355d7"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-021",
+    "path": "agents/skills/gstack/browse/src/proxy-redact.ts",
+    "line": 26,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-9bf7cddb4d68"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-022",
+    "path": "agents/skills/gstack/browse/src/proxy-redact.ts",
+    "line": 44,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-9bf7cddb4d68"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-023",
+    "path": "agents/skills/gstack/browse/src/server.ts",
+    "line": 572,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-4ae98c8b957a"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-024",
+    "path": "agents/skills/gstack/browse/src/server.ts",
+    "line": 579,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-4ae98c8b957a"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-025",
+    "path": "agents/skills/gstack/browse/src/server.ts",
+    "line": 1893,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-80592ff3ad14"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-026",
+    "path": "agents/skills/gstack/browse/src/server.ts",
+    "line": 2281,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-e58c5b6b6011"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-027",
+    "path": "agents/skills/gstack/browse/src/server.ts",
+    "line": 2316,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-e58c5b6b6011"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-028",
+    "path": "agents/skills/gstack/browse/src/server.ts",
+    "line": 3082,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-4ca6530d56ae"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-029",
+    "path": "agents/skills/gstack/browse/src/server.ts",
+    "line": 3166,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-3a8129bf0edc"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-030",
+    "path": "agents/skills/gstack/browse/src/session-cookie-store.ts",
+    "line": 65,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-aa2d835aa94c"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-031",
+    "path": "agents/skills/gstack/browse/src/socks-bridge.ts",
+    "line": 57,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-75d72247301b"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-032",
+    "path": "agents/skills/gstack/browse/src/terminal-agent.ts",
+    "line": 615,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-178ec0a36fd1"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-033",
+    "path": "agents/skills/gstack/browse/src/terminal-agent.ts",
+    "line": 627,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-178ec0a36fd1"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-034",
+    "path": "agents/skills/gstack/browse/src/token-registry.ts",
+    "line": 263,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-e83aff07fc04"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-035",
+    "path": "agents/skills/gstack/browse/src/token-registry.ts",
+    "line": 310,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-e83aff07fc04"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-036",
+    "path": "agents/skills/gstack/browse/src/token-registry.ts",
+    "line": 386,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-c666b19f3d61"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-037",
+    "path": "agents/skills/gstack/browse/test/bridge-chromium-e2e.test.ts",
+    "line": 123,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-038",
+    "path": "agents/skills/gstack/browse/test/browse-client.test.ts",
+    "line": 43,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-757e11706127"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-039",
+    "path": "agents/skills/gstack/browse/test/browse-client.test.ts",
+    "line": 105,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-040",
+    "path": "agents/skills/gstack/browse/test/browse-client.test.ts",
+    "line": 127,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-041",
+    "path": "agents/skills/gstack/browse/test/browser-skill-commands.test.ts",
+    "line": 284,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-d3bca93b7ee4"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-042",
+    "path": "agents/skills/gstack/browse/test/busy-daemon-iron-rule.test.ts",
+    "line": 127,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-043",
+    "path": "agents/skills/gstack/browse/test/busy-daemon-iron-rule.test.ts",
+    "line": 159,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-044",
+    "path": "agents/skills/gstack/browse/test/busy-daemon-iron-rule.test.ts",
+    "line": 197,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-045",
+    "path": "agents/skills/gstack/browse/test/busy-daemon-iron-rule.test.ts",
+    "line": 233,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-046",
+    "path": "agents/skills/gstack/browse/test/busy-daemon-recovery.test.ts",
+    "line": 100,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-047",
+    "path": "agents/skills/gstack/browse/test/commands.test.ts",
+    "line": 1895,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-532ad23e3847"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-048",
+    "path": "agents/skills/gstack/browse/test/cookie-import-browser.test.ts",
+    "line": 8,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-049",
+    "path": "agents/skills/gstack/browse/test/daemon-mismatch-refuse.test.ts",
+    "line": 68,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-050",
+    "path": "agents/skills/gstack/browse/test/daemon-mismatch-refuse.test.ts",
+    "line": 104,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-051",
+    "path": "agents/skills/gstack/browse/test/daemon-mismatch-refuse.test.ts",
+    "line": 146,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-052",
+    "path": "agents/skills/gstack/browse/test/extension-token.test.ts",
+    "line": 33,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-705136ce2ae5"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-053",
+    "path": "agents/skills/gstack/browse/test/fixtures/injection-combined.html",
+    "line": 32,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-054",
+    "path": "agents/skills/gstack/browse/test/pair-agent-e2e.test.ts",
+    "line": 79,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52dbbf029bee"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-055",
+    "path": "agents/skills/gstack/browse/test/pair-agent-e2e.test.ts",
+    "line": 440,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-a1c59bda5557"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-056",
+    "path": "agents/skills/gstack/browse/test/pair-agent-tunnel-eval.test.ts",
+    "line": 122,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-a1c59bda5557"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-057",
+    "path": "agents/skills/gstack/browse/test/proxy-redact.test.ts",
+    "line": 51,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-058",
+    "path": "agents/skills/gstack/browse/test/server-auth.test.ts",
+    "line": 31,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-059",
+    "path": "agents/skills/gstack/browse/test/server-auth.test.ts",
+    "line": 41,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-060",
+    "path": "agents/skills/gstack/browse/test/server-embedder-terminal-port.test.ts",
+    "line": 48,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-705136ce2ae5"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-061",
+    "path": "agents/skills/gstack/browse/test/server-factory.test.ts",
+    "line": 204,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-705136ce2ae5"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-062",
+    "path": "agents/skills/gstack/browse/test/server-factory.test.ts",
+    "line": 246,
+    "rule": "authorization-bearer",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-063",
+    "path": "agents/skills/gstack/browse/test/sidebar-ux.test.ts",
+    "line": 850,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-064",
+    "path": "agents/skills/gstack/browse/test/stop-dead-daemon.test.ts",
+    "line": 82,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-065",
+    "path": "agents/skills/gstack/browse/test/stop-dead-daemon.test.ts",
+    "line": 118,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-066",
+    "path": "agents/skills/gstack/browse/test/terminal-agent-integration.test.ts",
+    "line": 56,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-067",
+    "path": "agents/skills/gstack/browse/test/terminal-agent-integration.test.ts",
+    "line": 99,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-068",
+    "path": "agents/skills/gstack/browse/test/terminal-agent-integration.test.ts",
+    "line": 199,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-069",
+    "path": "agents/skills/gstack/browse/test/terminal-agent-integration.test.ts",
+    "line": 239,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-070",
+    "path": "agents/skills/gstack/browse/test/terminal-agent-owner-watchdog.test.ts",
+    "line": 42,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-071",
+    "path": "agents/skills/gstack/browse/test/token-registry.test.ts",
+    "line": 57,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-072",
+    "path": "agents/skills/gstack/browse/test/token-registry.test.ts",
+    "line": 58,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-073",
+    "path": "agents/skills/gstack/browse/test/token-registry.test.ts",
+    "line": 588,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-7cc509a387cc"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-074",
+    "path": "agents/skills/gstack/browse/test/token-registry.test.ts",
+    "line": 596,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-f9965aa43d4f"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-075",
+    "path": "agents/skills/gstack/browse/test/token-registry.test.ts",
+    "line": 604,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-9d59029dd7a9"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-076",
+    "path": "agents/skills/gstack/browse/test/tunnel-revoke-cli.test.ts",
+    "line": 68,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-077",
+    "path": "agents/skills/gstack/browse/test/tunnel-revoke-cli.test.ts",
+    "line": 252,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-a1c59bda5557"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-078",
+    "path": "agents/skills/gstack/browser-skills/hackernews-frontpage/_lib/browse-client.ts",
+    "line": 67,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-cc8bc7d66d5b"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-079",
+    "path": "agents/skills/gstack/browser-skills/hackernews-frontpage/_lib/browse-client.ts",
+    "line": 76,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-1fc5ded29bdd"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-080",
+    "path": "agents/skills/gstack/browser-skills/hackernews-frontpage/_lib/browse-client.ts",
+    "line": 88,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-3ceb9ab0c829"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-081",
+    "path": "agents/skills/gstack/browser-skills/hackernews-frontpage/_lib/browse-client.ts",
+    "line": 141,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-ac1c731bf085"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-082",
+    "path": "agents/skills/gstack/design/src/check.ts",
+    "line": 19,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-b279fb44ec9f"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-083",
+    "path": "agents/skills/gstack/design/src/design-to-code.ts",
+    "line": 27,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-b279fb44ec9f"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-084",
+    "path": "agents/skills/gstack/design/src/diff.ts",
+    "line": 24,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-b279fb44ec9f"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-085",
+    "path": "agents/skills/gstack/design/src/evolve.ts",
+    "line": 25,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-b279fb44ec9f"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-086",
+    "path": "agents/skills/gstack/design/src/generate.ts",
+    "line": 99,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-b279fb44ec9f"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-087",
+    "path": "agents/skills/gstack/design/src/iterate.ts",
+    "line": 25,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-b279fb44ec9f"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-088",
+    "path": "agents/skills/gstack/design/src/memory.ts",
+    "line": 31,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-b279fb44ec9f"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-089",
+    "path": "agents/skills/gstack/design/src/variants.ts",
+    "line": 148,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-b279fb44ec9f"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-090",
+    "path": "agents/skills/gstack/docs/REMOTE_BROWSER_ACCESS.md",
+    "line": 70,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-091",
+    "path": "agents/skills/gstack/docs/designs/v2_PLAN.md",
+    "line": 646,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-092",
+    "path": "agents/skills/gstack/extension/background.js",
+    "line": 331,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-80592ff3ad14"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-093",
+    "path": "agents/skills/gstack/extension/background.js",
+    "line": 358,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-80592ff3ad14"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-094",
+    "path": "agents/skills/gstack/extension/sidepanel-terminal.js",
+    "line": 178,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-5751188de8cf"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-095",
+    "path": "agents/skills/gstack/extension/sidepanel-terminal.js",
+    "line": 789,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-601d99f78a85"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-096",
+    "path": "agents/skills/gstack/ios-qa/daemon/src/session-tokens.ts",
+    "line": 34,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-b735a61a2275"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-097",
+    "path": "agents/skills/gstack/ios-qa/daemon/test/daemon-integration.test.ts",
+    "line": 342,
+    "rule": "authorization-bearer",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-098",
+    "path": "agents/skills/gstack/ios-qa/scripts/gen-accessors.ts",
+    "line": 333,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-cb852ade009b"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-099",
+    "path": "agents/skills/gstack/lib/code-intelligence/sourcebot-adapter.ts",
+    "line": 87,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-260b117e2c3b"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-100",
+    "path": "agents/skills/gstack/lib/context-bill.ts",
+    "line": 935,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-c4b7d56128bb"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-101",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 858,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-ae0fbd8fc6ca"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-102",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 889,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-21bdac08dffd"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-103",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 1042,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-0d71f48c7817"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-104",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 1185,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 4,
+    "structural_group_ids": [
+      "S-a4afd1847298"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-105",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 1293,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-f414bad5630d"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-106",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 1589,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-54bf47cd77fb"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-107",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 1595,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-a7155a4e5b2e"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-108",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 1601,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-2241533e1777"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-109",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 1664,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-89904f7b3919"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-110",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 1808,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-488c75585bf1"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-111",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 1972,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-e62a67aeecc6"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-112",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 2191,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-08a9567064d1"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-113",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 2329,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-4c65e84e3036"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-114",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 2389,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-f316562ae0eb"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-115",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 2456,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-833b8d4d3cb4"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-116",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 2544,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-72e5da408c24"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-117",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 2618,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-c521210f714a"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-118",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 2808,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-5de4c2305bd0"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-119",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 2817,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-9b05bad6d932"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-120",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 2994,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-17d168ef0feb"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-121",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 2997,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 4,
+    "structural_group_ids": [
+      "S-191caa132e79",
+      "S-034067bfb8df"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-122",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 3063,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-c521210f714a"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-123",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 3319,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-3d7bb5299a74"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-124",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 3325,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-4a821bdbf7a3"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-125",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 3359,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-889417de07ad"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-126",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 3365,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-4be37bfa7411"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-127",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 3371,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-f414bad5630d"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-128",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 3422,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-4be37bfa7411"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-129",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 3543,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-5a2afb48feb0"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-130",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 3702,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-a53df7fd03c7"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-131",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 3910,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-a7155a4e5b2e"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-132",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 4048,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-5aa00baec298"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-133",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 4246,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-450e096cd5de"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-134",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 4340,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-d98fdd7afb02"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-135",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 4347,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-4f60019835aa"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-136",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 4464,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-889417de07ad"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-137",
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "line": 4550,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-138",
+    "path": "agents/skills/gstack/test/brain-sync.test.ts",
+    "line": 325,
+    "rule": "known-token-prefix",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-8fa20bda71a1"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-139",
+    "path": "agents/skills/gstack/test/brain-sync.test.ts",
+    "line": 327,
+    "rule": "known-token-prefix",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-8fa20bda71a1"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-140",
+    "path": "agents/skills/gstack/test/brain-sync.test.ts",
+    "line": 330,
+    "rule": "authorization-bearer",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-8fa20bda71a1"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-141",
+    "path": "agents/skills/gstack/test/brain-sync.test.ts",
+    "line": 358,
+    "rule": "known-token-prefix",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-142",
+    "path": "agents/skills/gstack/test/claude-provider-keychain.test.ts",
+    "line": 111,
+    "rule": "known-token-prefix",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-143",
+    "path": "agents/skills/gstack/test/code-intelligence.test.ts",
+    "line": 299,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-144",
+    "path": "agents/skills/gstack/test/free-tests-workflow-wiring.test.ts",
+    "line": 57,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-145",
+    "path": "agents/skills/gstack/test/gbrain-supabase-provision.test.ts",
+    "line": 151,
+    "rule": "authorization-bearer",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-146",
+    "path": "agents/skills/gstack/test/gstack-memory-ingest.test.ts",
+    "line": 790,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-a9e893288c30"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-147",
+    "path": "agents/skills/gstack/test/helpers/benchmark-judge.ts",
+    "line": 22,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-369fe10701fe"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-148",
+    "path": "agents/skills/gstack/test/helpers/hermetic-env.test.ts",
+    "line": 27,
+    "rule": "known-token-prefix",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-149",
+    "path": "agents/skills/gstack/test/helpers/hermetic-env.test.ts",
+    "line": 100,
+    "rule": "known-token-prefix",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-150",
+    "path": "agents/skills/gstack/test/helpers/hermetic-env.test.ts",
+    "line": 102,
+    "rule": "known-token-prefix",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-151",
+    "path": "agents/skills/gstack/test/helpers/hermetic-env.test.ts",
+    "line": 153,
+    "rule": "known-token-prefix",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-152",
+    "path": "agents/skills/gstack/test/helpers/hermetic-env.test.ts",
+    "line": 153,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-153",
+    "path": "agents/skills/gstack/test/helpers/hermetic-env.test.ts",
+    "line": 160,
+    "rule": "known-token-prefix",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-154",
+    "path": "agents/skills/gstack/test/helpers/hermetic-env.test.ts",
+    "line": 166,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-e00b4b8332ec"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-155",
+    "path": "agents/skills/gstack/test/helpers/hermetic-env.test.ts",
+    "line": 172,
+    "rule": "known-token-prefix",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-156",
+    "path": "agents/skills/gstack/test/helpers/hermetic-env.ts",
+    "line": 210,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-5d218c31af42"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-157",
+    "path": "agents/skills/gstack/test/helpers/hermetic-env.ts",
+    "line": 266,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-5d218c31af42"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": false,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-158",
+    "path": "agents/skills/gstack/test/helpers/touchfiles-data.ts",
+    "line": 577,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-159",
+    "path": "agents/skills/gstack/test/hermetic-skills-seeding.test.ts",
+    "line": 80,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-e00b4b8332ec"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-160",
+    "path": "agents/skills/gstack/test/redact-engine.test.ts",
+    "line": 37,
+    "rule": "known-token-prefix",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-fe037b0371ad"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-161",
+    "path": "agents/skills/gstack/test/redact-engine.test.ts",
+    "line": 72,
+    "rule": "known-token-prefix",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-96eb16eff8e8"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-162",
+    "path": "agents/skills/gstack/test/redact-engine.test.ts",
+    "line": 73,
+    "rule": "known-token-prefix",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-96eb16eff8e8"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-163",
+    "path": "agents/skills/gstack/test/redact-engine.test.ts",
+    "line": 74,
+    "rule": "known-token-prefix",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-96eb16eff8e8"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-164",
+    "path": "agents/skills/gstack/test/redact-engine.test.ts",
+    "line": 87,
+    "rule": "known-token-prefix",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-c32fa5caad9f"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-165",
+    "path": "agents/skills/gstack/test/redact-engine.test.ts",
+    "line": 88,
+    "rule": "known-token-prefix",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-c32fa5caad9f"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-166",
+    "path": "agents/skills/gstack/test/redact-engine.test.ts",
+    "line": 188,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-167",
+    "path": "agents/skills/gstack/test/redact-engine.test.ts",
+    "line": 196,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-168",
+    "path": "agents/skills/gstack/test/redact-engine.test.ts",
+    "line": 199,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-169",
+    "path": "agents/skills/gstack/test/redact-engine.test.ts",
+    "line": 202,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-170",
+    "path": "agents/skills/gstack/test/redact-engine.test.ts",
+    "line": 205,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-171",
+    "path": "agents/skills/gstack/test/redact-engine.test.ts",
+    "line": 206,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-172",
+    "path": "agents/skills/gstack/test/redact-engine.test.ts",
+    "line": 233,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-6b2ed8900842"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-173",
+    "path": "agents/skills/gstack/test/redact-engine.test.ts",
+    "line": 242,
+    "rule": "authorization-bearer",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-174",
+    "path": "agents/skills/gstack/test/redact-engine.test.ts",
+    "line": 250,
+    "rule": "authorization-bearer",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-175",
+    "path": "agents/skills/gstack/test/redact-engine.test.ts",
+    "line": 254,
+    "rule": "authorization-bearer",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-176",
+    "path": "agents/skills/gstack/test/redact-engine.test.ts",
+    "line": 540,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-177",
+    "path": "agents/skills/gstack/test/regression-issue2091-bsd-mktemp.test.ts",
+    "line": 82,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-309eacc2c175"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-178",
+    "path": "agents/skills/gstack/test/skill-e2e-cso.test.ts",
+    "line": 45,
+    "rule": "known-token-prefix",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-179",
+    "path": "agents/skills/gstack/test/skill-e2e-cso.test.ts",
+    "line": 45,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-52750bfe7c5f"
+    ],
+    "syntax_status": "RHS_UNRESOLVED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  },
+  {
+    "id": "RY-180",
+    "path": "agents/skills/gstack/test/telemetry.test.ts",
+    "line": 277,
+    "rule": "sensitive-assignment",
+    "raw_span_count": 1,
+    "structural_group_ids": [
+      "S-33a219248c37"
+    ],
+    "syntax_status": "RHS_STRUCTURE_REPORTED",
+    "value_provenance": "UNCONFIRMED",
+    "credential_confirmed": false,
+    "automatic_allow": false,
+    "fixture_candidate": true,
+    "evidence_source": "../honor-2026-09-11-plan-review/additional-syntax.json",
+    "hp_verification_scope": "Published evidence consistency only; no Honor raw file or AST execution on HP"
+  }
+]
