@@ -91,6 +91,10 @@ export function createCodexProfile(options: CreateOptions): CodexProfileManifest
     try { walk(root, relative); } catch (error) { issues.push(error instanceof Error ? error.message : String(error)); }
   }
   function walk(root: 'codex' | 'agents', relative: string) {
+    if (relative.split('/').some(part => part.toLowerCase() === '.git')) {
+      manifest.excluded.push(`${root}/${relative}: Git metadata is not personal content`);
+      return;
+    }
     const abs = contained(base[root], relative);
     if (!fs.existsSync(abs)) return;
     const stat = fs.lstatSync(abs);
@@ -125,6 +129,7 @@ function readSnapshot(snapshotDir: string): CodexProfileManifest {
   const seen = new Set<string>();
   for (const f of value.files) {
     if (!f || !['codex', 'agents'].includes(f.root) || typeof f.path !== 'string' || !/^[a-f0-9]{64}$/.test(f.sha256)) throw new Error('Invalid profile file');
+    if (f.path.split('/').some((part: string) => part.toLowerCase() === '.git')) throw new Error('Git metadata in legacy profile; regenerate snapshot before restoring');
     const permitted = f.root === 'codex' ? ['config.toml', 'AGENTS.md', 'rules', 'skills', 'memories'] : ['skills'];
     if (!permitted.some(x => f.path === x || (x !== 'config.toml' && x !== 'AGENTS.md' && f.path.startsWith(x + '/')))) throw new Error('Unsupported profile path');
     const key = keyOf(f); if (seen.has(key.toLowerCase())) throw new Error('Duplicate profile path'); seen.add(key.toLowerCase());

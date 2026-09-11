@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { createCodexProfile, planCodexProfileRestore, restoreCodexProfile } from '../src/lib/codex-profile.js';
 
@@ -76,4 +77,33 @@ test('junctions cannot redirect target writes outside the registered profile', t
   fs.symlinkSync(outside, path.join(f.target.codexHome, 'memories'), process.platform === 'win32' ? 'junction' : 'dir');
   assert.throws(() => restoreCodexProfile(f), /link/i);
   assert.deepEqual(fs.readdirSync(outside), []);
+});
+
+test('profile excludes nested Git directories and worktree pointers without changing source', t => {
+  const f = fixture(t);
+  const gitDir = path.join(f.source.codexHome, 'memories/.git');
+  fs.mkdirSync(gitDir); fs.writeFileSync(path.join(gitDir, 'config'), 'repository internal data');
+  const skillDir = path.join(f.source.userHome, '.agents/skills/example');
+  fs.mkdirSync(skillDir, { recursive: true }); fs.writeFileSync(path.join(skillDir, '.git'), 'gitdir: somewhere');
+  fs.writeFileSync(path.join(skillDir, 'SKILL.md'), 'Example skill');
+  const manifest = createCodexProfile(f);
+  assert(!manifest.files.some(file => file.path.toLowerCase().split('/').includes('.git')));
+  assert(manifest.excluded.some(item => item.includes('memories/.git')));
+  assert(manifest.excluded.some(item => item.includes('skills/example/.git')));
+  restoreCodexProfile(f);
+  assert(!fs.existsSync(path.join(f.target.codexHome, 'memories/.git')));
+  assert.equal(fs.readFileSync(path.join(gitDir, 'config'), 'utf8'), 'repository internal data');
+});
+
+test('legacy snapshot containing Git metadata is refused before target writes', t => {
+  const f = fixture(t); createCodexProfile(f);
+  const manifestPath = path.join(f.snapshotDir, 'manifest.json');
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  const bytes = 'repository internal data';
+  const payload = path.join(f.snapshotDir, 'files/codex/memories/.GiT/config');
+  fs.mkdirSync(path.dirname(payload), { recursive: true }); fs.writeFileSync(payload, bytes);
+  manifest.files.push({ root: 'codex', path: 'memories/.GiT/config', sha256: createHash('sha256').update(bytes).digest('hex') });
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest));
+  assert.throws(() => planCodexProfileRestore(f), /Git metadata/i);
+  assert(!fs.existsSync(f.target.codexHome));
 });

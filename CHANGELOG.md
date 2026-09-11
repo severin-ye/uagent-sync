@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+- Fix Windows offline staging JSON decoding under non-UTF8 defaults; exclude nested Git metadata from personal profiles and reject legacy profiles containing it before restore writes. Add regression coverage following second-device acceptance feedback.
+
 - Add modular `device` registration, alias resolution, registry reconnect, workspace coverage and offline staging reports, Codex personal-file snapshots with protected restore, explicit private GitHub registry transport, and the U同步/Severin device-handoff workflow. Full Skill collection and real second-device acceptance remain pending; no release is claimed.
 
 ### 新增

@@ -6,7 +6,7 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
-$report = Get-Content -LiteralPath $ReportPath -Raw | ConvertFrom-Json
+$report = Get-Content -LiteralPath $ReportPath -Raw -Encoding UTF8 | ConvertFrom-Json
 if ($report.schemaVersion -ne 1 -or -not $report.PSObject.Properties['transferFiles']) { throw 'A detailed device audit report is required' }
 $source = [IO.Path]::GetFullPath([string]$report.workspaceRoot).TrimEnd('\','/')
 $target = [IO.Path]::GetFullPath($TargetRoot).TrimEnd('\','/')
@@ -53,7 +53,7 @@ if (-not $Apply) {
 $marker = Join-Path $target '.uagent-offline-transfer.json'
 $reportHash = Get-Sha256 $ReportPath
 if (Test-Path -LiteralPath $marker) {
-  $previous = Get-Content -LiteralPath $marker -Raw | ConvertFrom-Json
+  $previous = Get-Content -LiteralPath $marker -Raw -Encoding UTF8 | ConvertFrom-Json
   if ($previous.reportHash -ne $reportHash -or $previous.source -ne $source) { throw 'Staging belongs to a different transfer report' }
 } elseif ((Test-Path -LiteralPath $target) -and @(Get-ChildItem -LiteralPath $target -Force).Count) {
   throw 'Use a new empty staging directory; existing target data is never overwritten'

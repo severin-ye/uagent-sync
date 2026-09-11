@@ -40,6 +40,8 @@ uagent-sync device restore --snapshot <快照目录> --apply
 
 默认采集配置、规则、记忆及本地 Skill 文件。可通过 `--components config,rules,skills,memories` 明确选择；未选择项会记录为排除，不能据此宣称全部迁移。snapshot 不覆盖已有快照目录，输出包含内容摘要和未覆盖项。
 
+所有层级的 `.git` 目录与 Git worktree 指针均排除并记录；旧快照若含这些条目，恢复会拒绝，必须重新采集。文件计数不能把 Git 内部文件算作个人配置或记忆。
+
 restore 默认只预览。无基线且目标内容不同会冲突；首次用户明确指定以源机为准时，可追加 `--prefer-source --apply`，会先备份原文件。后续源与目标均改动时阻断覆盖，仅本地改变而源未变则保留本地。源删除的文件暂不自动删除，会报告保留项。备份和基线位于目标 Codex 目录的 `uagent-device-state/`。
 
 路径转换用于受支持的 TOML 配置；文档和记忆原文不替换。现有目标配置中的机器专属内容保留。登录、宿主信任、sessions/SQLite、自动化、插件缓存和运行状态不复制。插件配置条目写入不代表插件已经安装。
