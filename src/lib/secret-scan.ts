@@ -13,7 +13,7 @@ const RULES: Array<[string, RegExp]> = [
 export function scanForSecrets(content: string): SecretFinding[] {
   const findings: SecretFinding[] = [];
   for (const [index, line] of content.split(/\r?\n/).entries()) {
-    if (/<hidden>|<YOUR_[A-Z0-9_]+>/.test(line)) continue;
+    // Placeholder text must not suppress unrelated credentials on the same line.
     for (const [rule, pattern] of RULES) {
       if (pattern.test(line)) findings.push({ rule, line: index + 1, evidence: "<redacted>" });
     }
