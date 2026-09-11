@@ -1,0 +1,59 @@
+{
+  "scope": "Publication review only; production scanner unmodified; original evidence unchanged.",
+  "files": [
+    {
+      "file": "analysis-checks.log",
+      "originalHeuristicMatches": 0,
+      "reviewedAs": "Only explicit documented argument/environment/parameter-description syntax, no quoted values",
+      "remainingAfterScratchReview": 0
+    },
+    {
+      "file": "hp-findings.json",
+      "originalHeuristicMatches": 13,
+      "reviewedAs": "Only explicit documented argument/environment/parameter-description syntax, no quoted values",
+      "remainingAfterScratchReview": 0
+    },
+    {
+      "file": "hp-scanner-reproduction.log",
+      "originalHeuristicMatches": 0,
+      "reviewedAs": "Only explicit documented argument/environment/parameter-description syntax, no quoted values",
+      "remainingAfterScratchReview": 0
+    },
+    {
+      "file": "merged-findings.json",
+      "originalHeuristicMatches": 0,
+      "reviewedAs": "Only explicit documented argument/environment/parameter-description syntax, no quoted values",
+      "remainingAfterScratchReview": 0
+    },
+    {
+      "file": "MINIMAL-FIX-PLAN.md",
+      "originalHeuristicMatches": 1,
+      "reviewedAs": "Only explicit documented argument/environment/parameter-description syntax, no quoted values",
+      "remainingAfterScratchReview": 0
+    },
+    {
+      "file": "protected-state-summary.json",
+      "originalHeuristicMatches": 0,
+      "reviewedAs": "Only explicit documented argument/environment/parameter-description syntax, no quoted values",
+      "remainingAfterScratchReview": 0
+    },
+    {
+      "file": "README.md",
+      "originalHeuristicMatches": 0,
+      "reviewedAs": "Only explicit documented argument/environment/parameter-description syntax, no quoted values",
+      "remainingAfterScratchReview": 0
+    },
+    {
+      "file": "summary.json",
+      "originalHeuristicMatches": 0,
+      "reviewedAs": "Only explicit documented argument/environment/parameter-description syntax, no quoted values",
+      "remainingAfterScratchReview": 0
+    },
+    {
+      "file": "TEST-DESIGN.md",
+      "originalHeuristicMatches": 0,
+      "reviewedAs": "Only explicit documented argument/environment/parameter-description syntax, no quoted values",
+      "remainingAfterScratchReview": 0
+    }
+  ]
+}

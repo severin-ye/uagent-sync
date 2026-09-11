@@ -1,0 +1,814 @@
+{
+  "summary": {
+    "files": 13,
+    "hits": 23,
+    "categories": {
+      "API_EXAMPLE": 7,
+      "UNCONFIRMED_TOKEN_LITERAL": 1,
+      "PARAMETER_DOC": 4,
+      "ARGUMENT_REF": 7,
+      "ENV_EMPTY_DEFAULT": 2,
+      "PASSWORD_EXAMPLE": 2
+    },
+    "historical_file_hash_matches": 13,
+    "scanner_reproduced_files": 13
+  },
+  "files": [
+    {
+      "path": "agents/skills/claude-api/php/managed-agents/README.md",
+      "current_sha256": "45f40f6e2322cfab24f0e1c249b91ded7a1604f58487bdb6b648cbcdd4ab3773",
+      "sha256_matches_honor_report": true,
+      "sha256_matches_hp_revalidation_baseline": true,
+      "hits": [
+        "HP-001"
+      ]
+    },
+    {
+      "path": "agents/skills/claude-api/python/claude-api/README.md",
+      "current_sha256": "44d1518721c5c5d2f4a3deb2095df55224d9b11cee3510176b3805bad4634281",
+      "sha256_matches_honor_report": true,
+      "sha256_matches_hp_revalidation_baseline": true,
+      "hits": [
+        "HP-002"
+      ]
+    },
+    {
+      "path": "agents/skills/claude-api/python/managed-agents/README.md",
+      "current_sha256": "613568340ce4962fe82f5c1c16f40823cce0c6a0ff2cd7c945dc97f579259cf8",
+      "sha256_matches_honor_report": true,
+      "sha256_matches_hp_revalidation_baseline": true,
+      "hits": [
+        "HP-003"
+      ]
+    },
+    {
+      "path": "agents/skills/claude-api/ruby/claude-api/README.md",
+      "current_sha256": "cf874b7aa952e701bbf2ad2a253d826d6dd4a0f41a605c6996ee8253c1b4f217",
+      "sha256_matches_honor_report": true,
+      "sha256_matches_hp_revalidation_baseline": true,
+      "hits": [
+        "HP-004"
+      ]
+    },
+    {
+      "path": "agents/skills/claude-api/ruby/managed-agents/README.md",
+      "current_sha256": "563c476e0516d0bb81bec209648780d1e64ed7ac18e76015b9146affe12b0ecd",
+      "sha256_matches_honor_report": true,
+      "sha256_matches_hp_revalidation_baseline": true,
+      "hits": [
+        "HP-005"
+      ]
+    },
+    {
+      "path": "agents/skills/claude-api/shared/managed-agents-tools.md",
+      "current_sha256": "dbe6506e49c9f58a2f744d633058366e3eb529f2453db6971cb45911edf21980",
+      "sha256_matches_honor_report": true,
+      "sha256_matches_hp_revalidation_baseline": true,
+      "hits": [
+        "HP-006"
+      ]
+    },
+    {
+      "path": "agents/skills/claude-api/typescript/claude-api/README.md",
+      "current_sha256": "07c3a035a8c93e5e2bfd9ecf6cf824e8fd8df15cc393eec19a842f184615fe12",
+      "sha256_matches_honor_report": true,
+      "sha256_matches_hp_revalidation_baseline": true,
+      "hits": [
+        "HP-007"
+      ]
+    },
+    {
+      "path": "agents/skills/claude-api/typescript/managed-agents/README.md",
+      "current_sha256": "6f49f9d66640f8d266b79ac655746889b5ee5470d8749dbfcf58f0e7b8ce014f",
+      "sha256_matches_honor_report": true,
+      "sha256_matches_hp_revalidation_baseline": true,
+      "hits": [
+        "HP-008"
+      ]
+    },
+    {
+      "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+      "current_sha256": "c8b9e42cbdd96e6390fca389531781191d01584d6f747218f6215816471065c1",
+      "sha256_matches_honor_report": true,
+      "sha256_matches_hp_revalidation_baseline": true,
+      "hits": [
+        "HP-009",
+        "HP-010",
+        "HP-011",
+        "HP-012",
+        "HP-013",
+        "HP-014",
+        "HP-015"
+      ]
+    },
+    {
+      "path": "agents/skills/ncbi-sequence-fetch/scripts/ncbi_fetch.py",
+      "current_sha256": "57d6c9cdfd10eaa3f15cee9008854132a475e9bc5564847ea97d2bfb2460b307",
+      "sha256_matches_honor_report": true,
+      "sha256_matches_hp_revalidation_baseline": true,
+      "hits": [
+        "HP-016",
+        "HP-017"
+      ]
+    },
+    {
+      "path": "agents/skills/openfda-database/scripts/openfda_query.py",
+      "current_sha256": "f16aa90b65dc17e5fbc59bf267fdd9f09ad07cb32cacb58ccbb18c8ddbca8a76",
+      "sha256_matches_honor_report": true,
+      "sha256_matches_hp_revalidation_baseline": true,
+      "hits": [
+        "HP-018",
+        "HP-019",
+        "HP-020",
+        "HP-021"
+      ]
+    },
+    {
+      "path": "agents/skills/pdf/SKILL.md",
+      "current_sha256": "067401220db5745f719ff8c048d545d5edc8545e809668a3a6f9e2892fa51d48",
+      "sha256_matches_honor_report": true,
+      "sha256_matches_hp_revalidation_baseline": true,
+      "hits": [
+        "HP-022"
+      ]
+    },
+    {
+      "path": "agents/skills/pdf/reference.md",
+      "current_sha256": "16fbf406156feb08e2951403c03b1bfd76be5f2bc6bed1eed0d70c25954ab562",
+      "sha256_matches_honor_report": true,
+      "sha256_matches_hp_revalidation_baseline": true,
+      "hits": [
+        "HP-023"
+      ]
+    }
+  ],
+  "hits": [
+    {
+      "id": "HP-001",
+      "device": "HP",
+      "path": "agents/skills/claude-api/php/managed-agents/README.md",
+      "line": 22,
+      "rule": "sensitive-assignment",
+      "category": "API_EXAMPLE",
+      "label": "文档API占位符",
+      "basis": "当前局部为SDK文档示例，键值精确为已识别的示例占位符；不是有效凭据证明。",
+      "advice": "M3：待双方审核后仅考虑完整字面量+示例语法范围，不放行整文件/整行；追加后缀或邻接凭据仍拒绝。",
+      "status": "current_structure_confirmed",
+      "current_sha256": "45f40f6e2322cfab24f0e1c249b91ded7a1604f58487bdb6b648cbcdd4ab3773",
+      "context": [
+        {
+          "line": 21,
+          "shape": "// Explicit API key"
+        },
+        {
+          "line": 22,
+          "shape": "$client = new Client(apiKey: <STRING>);"
+        },
+        {
+          "line": 23,
+          "shape": "<STRING>`"
+        }
+      ],
+      "credential_authenticity": "no_actual_credential_established_by_this_hit",
+      "automatic_allow": false
+    },
+    {
+      "id": "HP-002",
+      "device": "HP",
+      "path": "agents/skills/claude-api/python/claude-api/README.md",
+      "line": 20,
+      "rule": "sensitive-assignment",
+      "category": "API_EXAMPLE",
+      "label": "文档API占位符",
+      "basis": "当前局部为SDK文档示例，键值精确为已识别的示例占位符；不是有效凭据证明。",
+      "advice": "M3：待双方审核后仅考虑完整字面量+示例语法范围，不放行整文件/整行；追加后缀或邻接凭据仍拒绝。",
+      "status": "current_structure_confirmed",
+      "current_sha256": "44d1518721c5c5d2f4a3deb2095df55224d9b11cee3510176b3805bad4634281",
+      "context": [
+        {
+          "line": 19,
+          "shape": "# Explicit API key (only when you must inject a specific key)"
+        },
+        {
+          "line": 20,
+          "shape": "client = anthropic.Anthropic(api_key=<STRING>)"
+        },
+        {
+          "line": 21,
+          "shape": ""
+        }
+      ],
+      "credential_authenticity": "no_actual_credential_established_by_this_hit",
+      "automatic_allow": false
+    },
+    {
+      "id": "HP-003",
+      "device": "HP",
+      "path": "agents/skills/claude-api/python/managed-agents/README.md",
+      "line": 24,
+      "rule": "sensitive-assignment",
+      "category": "API_EXAMPLE",
+      "label": "文档API占位符",
+      "basis": "当前局部为SDK文档示例，键值精确为已识别的示例占位符；不是有效凭据证明。",
+      "advice": "M3：待双方审核后仅考虑完整字面量+示例语法范围，不放行整文件/整行；追加后缀或邻接凭据仍拒绝。",
+      "status": "current_structure_confirmed",
+      "current_sha256": "613568340ce4962fe82f5c1c16f40823cce0c6a0ff2cd7c945dc97f579259cf8",
+      "context": [
+        {
+          "line": 23,
+          "shape": "# Explicit API key (only when you must inject a specific key)"
+        },
+        {
+          "line": 24,
+          "shape": "client = anthropic.Anthropic(api_key=<STRING>)"
+        },
+        {
+          "line": 25,
+          "shape": "<STRING>`"
+        }
+      ],
+      "credential_authenticity": "no_actual_credential_established_by_this_hit",
+      "automatic_allow": false
+    },
+    {
+      "id": "HP-004",
+      "device": "HP",
+      "path": "agents/skills/claude-api/ruby/claude-api/README.md",
+      "line": 20,
+      "rule": "sensitive-assignment",
+      "category": "API_EXAMPLE",
+      "label": "文档API占位符",
+      "basis": "当前局部为SDK文档示例，键值精确为已识别的示例占位符；不是有效凭据证明。",
+      "advice": "M3：待双方审核后仅考虑完整字面量+示例语法范围，不放行整文件/整行；追加后缀或邻接凭据仍拒绝。",
+      "status": "current_structure_confirmed",
+      "current_sha256": "cf874b7aa952e701bbf2ad2a253d826d6dd4a0f41a605c6996ee8253c1b4f217",
+      "context": [
+        {
+          "line": 19,
+          "shape": "# Explicit API key"
+        },
+        {
+          "line": 20,
+          "shape": "client = Anthropic::Client.new(api_key: <STRING>)"
+        },
+        {
+          "line": 21,
+          "shape": "<STRING>`"
+        }
+      ],
+      "credential_authenticity": "no_actual_credential_established_by_this_hit",
+      "automatic_allow": false
+    },
+    {
+      "id": "HP-005",
+      "device": "HP",
+      "path": "agents/skills/claude-api/ruby/managed-agents/README.md",
+      "line": 22,
+      "rule": "sensitive-assignment",
+      "category": "API_EXAMPLE",
+      "label": "文档API占位符",
+      "basis": "当前局部为SDK文档示例，键值精确为已识别的示例占位符；不是有效凭据证明。",
+      "advice": "M3：待双方审核后仅考虑完整字面量+示例语法范围，不放行整文件/整行；追加后缀或邻接凭据仍拒绝。",
+      "status": "current_structure_confirmed",
+      "current_sha256": "563c476e0516d0bb81bec209648780d1e64ed7ac18e76015b9146affe12b0ecd",
+      "context": [
+        {
+          "line": 21,
+          "shape": "# Explicit API key"
+        },
+        {
+          "line": 22,
+          "shape": "client = Anthropic::Client.new(api_key: <STRING>)"
+        },
+        {
+          "line": 23,
+          "shape": "<STRING>`"
+        }
+      ],
+      "credential_authenticity": "no_actual_credential_established_by_this_hit",
+      "automatic_allow": false
+    },
+    {
+      "id": "HP-006",
+      "device": "HP",
+      "path": "agents/skills/claude-api/shared/managed-agents-tools.md",
+      "line": 263,
+      "rule": "known-token-prefix",
+      "category": "UNCONFIRMED_TOKEN_LITERAL",
+      "label": "未确认的令牌形字面量",
+      "basis": "位于工具调用文档的secret_value字段，存在示例标记特征，但仅此不足以证明非凭据；原值不输出。",
+      "advice": "M4：继续阻断，需上游版本/示例来源和本机私密复核；不得按文件名或示例标记自动放行。",
+      "status": "unconfirmed",
+      "current_sha256": "dbe6506e49c9f58a2f744d633058366e3eb529f2453db6971cb45911edf21980",
+      "context": [
+        {
+          "line": 262,
+          "shape": "    <STRING>: <STRING>,"
+        },
+        {
+          "line": 263,
+          "shape": "    <STRING>: <STRING>,"
+        },
+        {
+          "line": 264,
+          "shape": "    <STRING>: {"
+        }
+      ],
+      "credential_authenticity": "unconfirmed",
+      "automatic_allow": false
+    },
+    {
+      "id": "HP-007",
+      "device": "HP",
+      "path": "agents/skills/claude-api/typescript/claude-api/README.md",
+      "line": 26,
+      "rule": "sensitive-assignment",
+      "category": "API_EXAMPLE",
+      "label": "文档API占位符",
+      "basis": "当前局部为SDK文档示例，键值精确为已识别的示例占位符；不是有效凭据证明。",
+      "advice": "M3：待双方审核后仅考虑完整字面量+示例语法范围，不放行整文件/整行；追加后缀或邻接凭据仍拒绝。",
+      "status": "current_structure_confirmed",
+      "current_sha256": "07c3a035a8c93e5e2bfd9ecf6cf824e8fd8df15cc393eec19a842f184615fe12",
+      "context": [
+        {
+          "line": 25,
+          "shape": "// Explicit API key (only when you must inject a specific key)"
+        },
+        {
+          "line": 26,
+          "shape": "const client = new Anthropic({ apiKey: <STRING> });"
+        },
+        {
+          "line": 27,
+          "shape": "<STRING>`"
+        }
+      ],
+      "credential_authenticity": "no_actual_credential_established_by_this_hit",
+      "automatic_allow": false
+    },
+    {
+      "id": "HP-008",
+      "device": "HP",
+      "path": "agents/skills/claude-api/typescript/managed-agents/README.md",
+      "line": 24,
+      "rule": "sensitive-assignment",
+      "category": "API_EXAMPLE",
+      "label": "文档API占位符",
+      "basis": "当前局部为SDK文档示例，键值精确为已识别的示例占位符；不是有效凭据证明。",
+      "advice": "M3：待双方审核后仅考虑完整字面量+示例语法范围，不放行整文件/整行；追加后缀或邻接凭据仍拒绝。",
+      "status": "current_structure_confirmed",
+      "current_sha256": "6f49f9d66640f8d266b79ac655746889b5ee5470d8749dbfcf58f0e7b8ce014f",
+      "context": [
+        {
+          "line": 23,
+          "shape": "// Explicit API key (only when you must inject a specific key)"
+        },
+        {
+          "line": 24,
+          "shape": "const client = new Anthropic({ apiKey: <STRING> });"
+        },
+        {
+          "line": 25,
+          "shape": "<STRING>`"
+        }
+      ],
+      "credential_authenticity": "no_actual_credential_established_by_this_hit",
+      "automatic_allow": false
+    },
+    {
+      "id": "HP-009",
+      "device": "HP",
+      "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+      "line": 100,
+      "rule": "sensitive-assignment",
+      "category": "PARAMETER_DOC",
+      "label": "参数说明文本",
+      "basis": "已定位到Python三引号参数说明，Optional API key语句无嵌入凭据值。",
+      "advice": "M2：仅识别精确的文档说明语句跨度；同一docstring中真实赋值及令牌仍扫描。",
+      "status": "current_structure_confirmed",
+      "current_sha256": "c8b9e42cbdd96e6390fca389531781191d01584d6f747218f6215816471065c1",
+      "context": [
+        {
+          "line": 99,
+          "shape": "      url: The base URL, which may already contain query parameters."
+        },
+        {
+          "line": 100,
+          "shape": "      api_key: Optional API key string."
+        },
+        {
+          "line": 101,
+          "shape": ""
+        }
+      ],
+      "credential_authenticity": "no_actual_credential_established_by_this_hit",
+      "automatic_allow": false
+    },
+    {
+      "id": "HP-010",
+      "device": "HP",
+      "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+      "line": 125,
+      "rule": "sensitive-assignment",
+      "category": "PARAMETER_DOC",
+      "label": "参数说明文本",
+      "basis": "已定位到Python三引号参数说明，Optional API key语句无嵌入凭据值。",
+      "advice": "M2：仅识别精确的文档说明语句跨度；同一docstring中真实赋值及令牌仍扫描。",
+      "status": "current_structure_confirmed",
+      "current_sha256": "c8b9e42cbdd96e6390fca389531781191d01584d6f747218f6215816471065c1",
+      "context": [
+        {
+          "line": 124,
+          "shape": "      params: URL query parameters."
+        },
+        {
+          "line": 125,
+          "shape": "      api_key: Optional API key for authentication."
+        },
+        {
+          "line": 126,
+          "shape": "      max_retries: Maximum number of retry attempts."
+        }
+      ],
+      "credential_authenticity": "no_actual_credential_established_by_this_hit",
+      "automatic_allow": false
+    },
+    {
+      "id": "HP-011",
+      "device": "HP",
+      "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+      "line": 219,
+      "rule": "sensitive-assignment",
+      "category": "ARGUMENT_REF",
+      "label": "参数成员引用",
+      "basis": "右侧为args.api_key成员引用，不是嵌入的字符串凭据；运行时可能引用真实凭据，但本行不携带其值。",
+      "advice": "M1：完整成员表达式及边界限定；不接受任意标识符白名单、带字面量回退或拼接。",
+      "status": "current_structure_confirmed",
+      "current_sha256": "c8b9e42cbdd96e6390fca389531781191d01584d6f747218f6215816471065c1",
+      "context": [
+        {
+          "line": 218,
+          "shape": "  }"
+        },
+        {
+          "line": 219,
+          "shape": "  data = fetch_with_retry(url, params, api_key=args.api_key)"
+        },
+        {
+          "line": 220,
+          "shape": "  if data is None:"
+        }
+      ],
+      "credential_authenticity": "no_actual_credential_established_by_this_hit",
+      "automatic_allow": false
+    },
+    {
+      "id": "HP-012",
+      "device": "HP",
+      "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+      "line": 278,
+      "rule": "sensitive-assignment",
+      "category": "ARGUMENT_REF",
+      "label": "参数成员引用",
+      "basis": "右侧为args.api_key成员引用，不是嵌入的字符串凭据；运行时可能引用真实凭据，但本行不携带其值。",
+      "advice": "M1：完整成员表达式及边界限定；不接受任意标识符白名单、带字面量回退或拼接。",
+      "status": "current_structure_confirmed",
+      "current_sha256": "c8b9e42cbdd96e6390fca389531781191d01584d6f747218f6215816471065c1",
+      "context": [
+        {
+          "line": 277,
+          "shape": ""
+        },
+        {
+          "line": 278,
+          "shape": "  data = fetch_with_retry(url, params, api_key=args.api_key)"
+        },
+        {
+          "line": 279,
+          "shape": "  print_json(data)"
+        }
+      ],
+      "credential_authenticity": "no_actual_credential_established_by_this_hit",
+      "automatic_allow": false
+    },
+    {
+      "id": "HP-013",
+      "device": "HP",
+      "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+      "line": 344,
+      "rule": "sensitive-assignment",
+      "category": "PARAMETER_DOC",
+      "label": "参数说明文本",
+      "basis": "已定位到Python三引号参数说明，Optional API key语句无嵌入凭据值。",
+      "advice": "M2：仅识别精确的文档说明语句跨度；同一docstring中真实赋值及令牌仍扫描。",
+      "status": "current_structure_confirmed",
+      "current_sha256": "c8b9e42cbdd96e6390fca389531781191d01584d6f747218f6215816471065c1",
+      "context": [
+        {
+          "line": 343,
+          "shape": "      output_path: The local file path to save the PDF to."
+        },
+        {
+          "line": 344,
+          "shape": "      api_key: Optional API key for authentication."
+        },
+        {
+          "line": 345,
+          "shape": ""
+        }
+      ],
+      "credential_authenticity": "no_actual_credential_established_by_this_hit",
+      "automatic_allow": false
+    },
+    {
+      "id": "HP-014",
+      "device": "HP",
+      "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+      "line": 478,
+      "rule": "sensitive-assignment",
+      "category": "ARGUMENT_REF",
+      "label": "参数成员引用",
+      "basis": "右侧为args.api_key成员引用，不是嵌入的字符串凭据；运行时可能引用真实凭据，但本行不携带其值。",
+      "advice": "M1：完整成员表达式及边界限定；不接受任意标识符白名单、带字面量回退或拼接。",
+      "status": "current_structure_confirmed",
+      "current_sha256": "c8b9e42cbdd96e6390fca389531781191d01584d6f747218f6215816471065c1",
+      "context": [
+        {
+          "line": 477,
+          "shape": ""
+        },
+        {
+          "line": 478,
+          "shape": "  data = fetch_with_retry(url, params, api_key=args.api_key)"
+        },
+        {
+          "line": 479,
+          "shape": "  print_json(data)"
+        }
+      ],
+      "credential_authenticity": "no_actual_credential_established_by_this_hit",
+      "automatic_allow": false
+    },
+    {
+      "id": "HP-015",
+      "device": "HP",
+      "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+      "line": 492,
+      "rule": "sensitive-assignment",
+      "category": "ARGUMENT_REF",
+      "label": "参数成员引用",
+      "basis": "右侧为args.api_key成员引用，不是嵌入的字符串凭据；运行时可能引用真实凭据，但本行不携带其值。",
+      "advice": "M1：完整成员表达式及边界限定；不接受任意标识符白名单、带字面量回退或拼接。",
+      "status": "current_structure_confirmed",
+      "current_sha256": "c8b9e42cbdd96e6390fca389531781191d01584d6f747218f6215816471065c1",
+      "context": [
+        {
+          "line": 491,
+          "shape": "  data = fetch_with_retry("
+        },
+        {
+          "line": 492,
+          "shape": "      url, {<STRING>: 1}, api_key=args.api_key, return_headers=True"
+        },
+        {
+          "line": 493,
+          "shape": "  )"
+        }
+      ],
+      "credential_authenticity": "no_actual_credential_established_by_this_hit",
+      "automatic_allow": false
+    },
+    {
+      "id": "HP-016",
+      "device": "HP",
+      "path": "agents/skills/ncbi-sequence-fetch/scripts/ncbi_fetch.py",
+      "line": 124,
+      "rule": "sensitive-assignment",
+      "category": "ENV_EMPTY_DEFAULT",
+      "label": "环境读取与空默认值",
+      "basis": "右侧为os.environ.get(环境变量名, 空字符串)，现有规范化只支持单参数形式。",
+      "advice": "M1：仅扩展空默认值；非空默认值、or回退、相邻真实值必须保持拒绝。",
+      "status": "current_structure_confirmed",
+      "current_sha256": "57d6c9cdfd10eaa3f15cee9008854132a475e9bc5564847ea97d2bfb2460b307",
+      "context": [
+        {
+          "line": 123,
+          "shape": "  if _CLIENT is None:"
+        },
+        {
+          "line": 124,
+          "shape": "    api_key = os.environ.get(<STRING>, <STRING>)"
+        },
+        {
+          "line": 125,
+          "shape": "    qps = 10.0 if api_key else 3.0"
+        }
+      ],
+      "credential_authenticity": "no_actual_credential_established_by_this_hit",
+      "automatic_allow": false
+    },
+    {
+      "id": "HP-017",
+      "device": "HP",
+      "path": "agents/skills/ncbi-sequence-fetch/scripts/ncbi_fetch.py",
+      "line": 143,
+      "rule": "sensitive-assignment",
+      "category": "ENV_EMPTY_DEFAULT",
+      "label": "环境读取与空默认值",
+      "basis": "右侧为os.environ.get(环境变量名, 空字符串)，现有规范化只支持单参数形式。",
+      "advice": "M1：仅扩展空默认值；非空默认值、or回退、相邻真实值必须保持拒绝。",
+      "status": "current_structure_confirmed",
+      "current_sha256": "57d6c9cdfd10eaa3f15cee9008854132a475e9bc5564847ea97d2bfb2460b307",
+      "context": [
+        {
+          "line": 142,
+          "shape": "  <STRING>\""
+        },
+        {
+          "line": 143,
+          "shape": "  api_key = os.environ.get(<STRING>, <STRING>)"
+        },
+        {
+          "line": 144,
+          "shape": "  if api_key:"
+        }
+      ],
+      "credential_authenticity": "no_actual_credential_established_by_this_hit",
+      "automatic_allow": false
+    },
+    {
+      "id": "HP-018",
+      "device": "HP",
+      "path": "agents/skills/openfda-database/scripts/openfda_query.py",
+      "line": 158,
+      "rule": "sensitive-assignment",
+      "category": "PARAMETER_DOC",
+      "label": "参数说明文本",
+      "basis": "已定位到Python三引号参数说明，Optional API key语句无嵌入凭据值。",
+      "advice": "M2：仅识别精确的文档说明语句跨度；同一docstring中真实赋值及令牌仍扫描。",
+      "status": "current_structure_confirmed",
+      "current_sha256": "f16aa90b65dc17e5fbc59bf267fdd9f09ad07cb32cacb58ccbb18c8ddbca8a76",
+      "context": [
+        {
+          "line": 157,
+          "shape": "    count_field: Optional field to count unique values for."
+        },
+        {
+          "line": 158,
+          "shape": "    api_key: Optional API key."
+        },
+        {
+          "line": 159,
+          "shape": ""
+        }
+      ],
+      "credential_authenticity": "no_actual_credential_established_by_this_hit",
+      "automatic_allow": false
+    },
+    {
+      "id": "HP-019",
+      "device": "HP",
+      "path": "agents/skills/openfda-database/scripts/openfda_query.py",
+      "line": 240,
+      "rule": "sensitive-assignment",
+      "category": "ARGUMENT_REF",
+      "label": "参数成员引用",
+      "basis": "右侧为args.api_key成员引用，不是嵌入的字符串凭据；运行时可能引用真实凭据，但本行不携带其值。",
+      "advice": "M1：完整成员表达式及边界限定；不接受任意标识符白名单、带字面量回退或拼接。",
+      "status": "current_structure_confirmed",
+      "current_sha256": "f16aa90b65dc17e5fbc59bf267fdd9f09ad07cb32cacb58ccbb18c8ddbca8a76",
+      "context": [
+        {
+          "line": 239,
+          "shape": "      skip=args.skip,"
+        },
+        {
+          "line": 240,
+          "shape": "      api_key=args.api_key,"
+        },
+        {
+          "line": 241,
+          "shape": "  )"
+        }
+      ],
+      "credential_authenticity": "no_actual_credential_established_by_this_hit",
+      "automatic_allow": false
+    },
+    {
+      "id": "HP-020",
+      "device": "HP",
+      "path": "agents/skills/openfda-database/scripts/openfda_query.py",
+      "line": 278,
+      "rule": "sensitive-assignment",
+      "category": "ARGUMENT_REF",
+      "label": "参数成员引用",
+      "basis": "右侧为args.api_key成员引用，不是嵌入的字符串凭据；运行时可能引用真实凭据，但本行不携带其值。",
+      "advice": "M1：完整成员表达式及边界限定；不接受任意标识符白名单、带字面量回退或拼接。",
+      "status": "current_structure_confirmed",
+      "current_sha256": "f16aa90b65dc17e5fbc59bf267fdd9f09ad07cb32cacb58ccbb18c8ddbca8a76",
+      "context": [
+        {
+          "line": 277,
+          "shape": "      count_field=args.count_field,"
+        },
+        {
+          "line": 278,
+          "shape": "      api_key=args.api_key,"
+        },
+        {
+          "line": 279,
+          "shape": "  )"
+        }
+      ],
+      "credential_authenticity": "no_actual_credential_established_by_this_hit",
+      "automatic_allow": false
+    },
+    {
+      "id": "HP-021",
+      "device": "HP",
+      "path": "agents/skills/openfda-database/scripts/openfda_query.py",
+      "line": 339,
+      "rule": "sensitive-assignment",
+      "category": "ARGUMENT_REF",
+      "label": "参数成员引用",
+      "basis": "右侧为args.api_key成员引用，不是嵌入的字符串凭据；运行时可能引用真实凭据，但本行不携带其值。",
+      "advice": "M1：完整成员表达式及边界限定；不接受任意标识符白名单、带字面量回退或拼接。",
+      "status": "current_structure_confirmed",
+      "current_sha256": "f16aa90b65dc17e5fbc59bf267fdd9f09ad07cb32cacb58ccbb18c8ddbca8a76",
+      "context": [
+        {
+          "line": 338,
+          "shape": "        skip=skip,"
+        },
+        {
+          "line": 339,
+          "shape": "        api_key=args.api_key,"
+        },
+        {
+          "line": 340,
+          "shape": "    )"
+        }
+      ],
+      "credential_authenticity": "no_actual_credential_established_by_this_hit",
+      "automatic_allow": false
+    },
+    {
+      "id": "HP-022",
+      "device": "HP",
+      "path": "agents/skills/pdf/SKILL.md",
+      "line": 216,
+      "rule": "sensitive-assignment",
+      "category": "PASSWORD_EXAMPLE",
+      "label": "文档固定密码示例",
+      "basis": "当前局部是qpdf演示命令，固定弱密码字面量；示例用途可识别，但此类词也可能被人作为实际密码使用。",
+      "advice": "M4：保持阻断，不能全局白名单常见密码；仅提议逐处人工审核的哈希绑定例外，设计获认可前不实现。",
+      "status": "current_structure_confirmed",
+      "current_sha256": "067401220db5745f719ff8c048d545d5edc8545e809668a3a6f9e2892fa51d48",
+      "context": [
+        {
+          "line": 215,
+          "shape": "# Remove password"
+        },
+        {
+          "line": 216,
+          "shape": "qpdf --password=<REDACTED_VALUE> --decrypt encrypted.pdf decrypted.pdf"
+        },
+        {
+          "line": 217,
+          "shape": "<STRING>`"
+        }
+      ],
+      "credential_authenticity": "no_actual_credential_established_by_this_hit",
+      "automatic_allow": false
+    },
+    {
+      "id": "HP-023",
+      "device": "HP",
+      "path": "agents/skills/pdf/reference.md",
+      "line": 340,
+      "rule": "sensitive-assignment",
+      "category": "PASSWORD_EXAMPLE",
+      "label": "文档固定密码示例",
+      "basis": "当前局部是qpdf演示命令，固定弱密码字面量；示例用途可识别，但此类词也可能被人作为实际密码使用。",
+      "advice": "M4：保持阻断，不能全局白名单常见密码；仅提议逐处人工审核的哈希绑定例外，设计获认可前不实现。",
+      "status": "current_structure_confirmed",
+      "current_sha256": "16fbf406156feb08e2951403c03b1bfd76be5f2bc6bed1eed0d70c25954ab562",
+      "context": [
+        {
+          "line": 339,
+          "shape": "# Remove password protection (requires password)"
+        },
+        {
+          "line": 340,
+          "shape": "qpdf --password=<REDACTED_VALUE> --decrypt encrypted.pdf decrypted.pdf"
+        },
+        {
+          "line": 341,
+          "shape": "<STRING>`"
+        }
+      ],
+      "credential_authenticity": "no_actual_credential_established_by_this_hit",
+      "automatic_allow": false
+    }
+  ]
+}

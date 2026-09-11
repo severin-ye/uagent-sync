@@ -1,0 +1,69 @@
+{
+  "generated_at": "2026-09-11T13:58:36.468Z",
+  "handoff_sha": "11ea7d3477851a219b4ccca764a4d5f3a10b2a9e",
+  "verified_source_sha": "d076fff50b142b4d09a2fbee9b0b8882b1554b96",
+  "hp": {
+    "files": 13,
+    "hits": 23,
+    "categories": {
+      "API_EXAMPLE": 7,
+      "UNCONFIRMED_TOKEN_LITERAL": 1,
+      "PARAMETER_DOC": 4,
+      "ARGUMENT_REF": 7,
+      "ENV_EMPTY_DEFAULT": 2,
+      "PASSWORD_EXAMPLE": 2
+    },
+    "historical_file_hash_matches": 13,
+    "scanner_reproduced_files": 13
+  },
+  "honor": {
+    "files": 82,
+    "hits": 195,
+    "unique_file_lines": 193,
+    "categories": {
+      "API_EXAMPLE": 7,
+      "UNCONFIRMED_TOKEN_LITERAL": 1,
+      "UNCONFIRMED_ENV_EXAMPLE": 1,
+      "UNCONFIRMED_REFERENCE_CANDIDATE": 6,
+      "UNCONFIRMED_EXPRESSION": 45,
+      "UNCONFIRMED_TEST_FIXTURE": 81,
+      "UNCONFIRMED_DOCUMENT_EXAMPLE": 2,
+      "UNCONFIRMED_PARSER_TOKEN_CANDIDATE": 35,
+      "UNCONFIRMED_TRUNCATED_CONTEXT": 2,
+      "PARAMETER_DOC": 4,
+      "ARGUMENT_REF": 7,
+      "ENV_EMPTY_DEFAULT": 2,
+      "PASSWORD_EXAMPLE": 2
+    },
+    "shared_files": 13,
+    "shared_hits": 23,
+    "additional_files": 69,
+    "additional_hits": 172
+  },
+  "union": {
+    "unique_relative_files": 82,
+    "unique_path_rule_line_items": 195,
+    "device_observations": 218,
+    "note": "Only 23 hits share byte-identical files across devices; path/line union is not a claim of all future versions equivalence."
+  },
+  "confirmed_real_credentials": 0,
+  "confirmed_real_credentials_note": "None established; not proof of absence. Unknowns remain blocked.",
+  "integrity_verified_files": [
+    "honor-2026-09-11-scan-analysis/.gitattributes",
+    "honor-2026-09-11-scan-analysis/README.md",
+    "honor-2026-09-11-scan-analysis/report.json",
+    "honor-2026-09-11-d076fff/.gitattributes",
+    "honor-2026-09-11-d076fff/focused.log",
+    "honor-2026-09-11-d076fff/full-snapshot-blockers.txt",
+    "honor-2026-09-11-d076fff/full-tests.log",
+    "honor-2026-09-11-d076fff/npm-ci.log",
+    "honor-2026-09-11-d076fff/profile-result.json",
+    "honor-2026-09-11-d076fff/protected-state-summary.json",
+    "honor-2026-09-11-d076fff/README.md",
+    "honor-2026-09-11-d076fff/RESULT.md"
+  ],
+  "scanner_changed": false,
+  "source_files_modified": false,
+  "tests_implemented": false,
+  "hp02_review_pending": true
+}

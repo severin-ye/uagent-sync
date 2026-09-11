@@ -1,0 +1,10 @@
+Exit 0
+Input handoff: 11ea7d3477851a219b4ccca764a4d5f3a10b2a9e
+Verified Honor published checksums: 12
+HP scanner reproduced 13/13 blocked files
+HP findings: 23; rules and lines sourced from d076fff blocker record
+13/13 hashes match Honor report and HP prior baseline
+Honor entries:195; unique files:82; unique file-lines:193
+Shared path/rule/line items:23
+Protected entries changed during analysis: 0
+No source modifications, new tests, install, snapshot, restore or link edits performed
