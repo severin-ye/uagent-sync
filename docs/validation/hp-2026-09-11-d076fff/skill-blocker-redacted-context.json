@@ -1,0 +1,494 @@
+[
+  {
+    "file": "agents/skills/claude-api/php/managed-agents/README.md",
+    "findings": [
+      {
+        "rule": "sensitive-assignment",
+        "line": 22,
+        "context": [
+          {
+            "line": 21,
+            "shape": "// Explicit API key"
+          },
+          {
+            "line": 22,
+            "shape": "$client = new Client(apiKey: <string>);"
+          },
+          {
+            "line": 23,
+            "shape": "<string>`"
+          }
+        ]
+      }
+    ],
+    "interpretation": "Masked string literals; preserve code shape only. Not confirmed as real credentials or false positives."
+  },
+  {
+    "file": "agents/skills/claude-api/python/claude-api/README.md",
+    "findings": [
+      {
+        "rule": "sensitive-assignment",
+        "line": 20,
+        "context": [
+          {
+            "line": 19,
+            "shape": "# Explicit API key (only when you must inject a specific key)"
+          },
+          {
+            "line": 20,
+            "shape": "client = anthropic.Anthropic(api_key=<string>)"
+          },
+          {
+            "line": 21,
+            "shape": ""
+          }
+        ]
+      }
+    ],
+    "interpretation": "Masked string literals; preserve code shape only. Not confirmed as real credentials or false positives."
+  },
+  {
+    "file": "agents/skills/claude-api/python/managed-agents/README.md",
+    "findings": [
+      {
+        "rule": "sensitive-assignment",
+        "line": 24,
+        "context": [
+          {
+            "line": 23,
+            "shape": "# Explicit API key (only when you must inject a specific key)"
+          },
+          {
+            "line": 24,
+            "shape": "client = anthropic.Anthropic(api_key=<string>)"
+          },
+          {
+            "line": 25,
+            "shape": "<string>`"
+          }
+        ]
+      }
+    ],
+    "interpretation": "Masked string literals; preserve code shape only. Not confirmed as real credentials or false positives."
+  },
+  {
+    "file": "agents/skills/claude-api/ruby/claude-api/README.md",
+    "findings": [
+      {
+        "rule": "sensitive-assignment",
+        "line": 20,
+        "context": [
+          {
+            "line": 19,
+            "shape": "# Explicit API key"
+          },
+          {
+            "line": 20,
+            "shape": "client = Anthropic::Client.new(api_key: <string>)"
+          },
+          {
+            "line": 21,
+            "shape": "<string>`"
+          }
+        ]
+      }
+    ],
+    "interpretation": "Masked string literals; preserve code shape only. Not confirmed as real credentials or false positives."
+  },
+  {
+    "file": "agents/skills/claude-api/ruby/managed-agents/README.md",
+    "findings": [
+      {
+        "rule": "sensitive-assignment",
+        "line": 22,
+        "context": [
+          {
+            "line": 21,
+            "shape": "# Explicit API key"
+          },
+          {
+            "line": 22,
+            "shape": "client = Anthropic::Client.new(api_key: <string>)"
+          },
+          {
+            "line": 23,
+            "shape": "<string>`"
+          }
+        ]
+      }
+    ],
+    "interpretation": "Masked string literals; preserve code shape only. Not confirmed as real credentials or false positives."
+  },
+  {
+    "file": "agents/skills/claude-api/shared/managed-agents-tools.md",
+    "findings": [
+      {
+        "rule": "known-token-prefix",
+        "line": 263,
+        "context": [
+          {
+            "line": 262,
+            "shape": "    <string>: <string>,"
+          },
+          {
+            "line": 263,
+            "shape": "    <string>: <string>,"
+          },
+          {
+            "line": 264,
+            "shape": "    <string>: {"
+          }
+        ]
+      }
+    ],
+    "interpretation": "Masked string literals; preserve code shape only. Not confirmed as real credentials or false positives."
+  },
+  {
+    "file": "agents/skills/claude-api/typescript/claude-api/README.md",
+    "findings": [
+      {
+        "rule": "sensitive-assignment",
+        "line": 26,
+        "context": [
+          {
+            "line": 25,
+            "shape": "// Explicit API key (only when you must inject a specific key)"
+          },
+          {
+            "line": 26,
+            "shape": "const client = new Anthropic({ apiKey: <string> });"
+          },
+          {
+            "line": 27,
+            "shape": "<string>`"
+          }
+        ]
+      }
+    ],
+    "interpretation": "Masked string literals; preserve code shape only. Not confirmed as real credentials or false positives."
+  },
+  {
+    "file": "agents/skills/claude-api/typescript/managed-agents/README.md",
+    "findings": [
+      {
+        "rule": "sensitive-assignment",
+        "line": 24,
+        "context": [
+          {
+            "line": 23,
+            "shape": "// Explicit API key (only when you must inject a specific key)"
+          },
+          {
+            "line": 24,
+            "shape": "const client = new Anthropic({ apiKey: <string> });"
+          },
+          {
+            "line": 25,
+            "shape": "<string>`"
+          }
+        ]
+      }
+    ],
+    "interpretation": "Masked string literals; preserve code shape only. Not confirmed as real credentials or false positives."
+  },
+  {
+    "file": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+    "findings": [
+      {
+        "rule": "sensitive-assignment",
+        "line": 100,
+        "context": [
+          {
+            "line": 99,
+            "shape": "      url: The base URL, which may already contain query parameters."
+          },
+          {
+            "line": 100,
+            "shape": "      api_key: <hidden> API key string."
+          },
+          {
+            "line": 101,
+            "shape": ""
+          }
+        ]
+      },
+      {
+        "rule": "sensitive-assignment",
+        "line": 125,
+        "context": [
+          {
+            "line": 124,
+            "shape": "      params: URL query parameters."
+          },
+          {
+            "line": 125,
+            "shape": "      api_key: <hidden> API key for authentication."
+          },
+          {
+            "line": 126,
+            "shape": "      max_retries: Maximum number of retry attempts."
+          }
+        ]
+      },
+      {
+        "rule": "sensitive-assignment",
+        "line": 219,
+        "context": [
+          {
+            "line": 218,
+            "shape": "  }"
+          },
+          {
+            "line": 219,
+            "shape": "  data = fetch_with_retry(url, params, api_key=<hidden>)"
+          },
+          {
+            "line": 220,
+            "shape": "  if data is None:"
+          }
+        ]
+      },
+      {
+        "rule": "sensitive-assignment",
+        "line": 278,
+        "context": [
+          {
+            "line": 277,
+            "shape": ""
+          },
+          {
+            "line": 278,
+            "shape": "  data = fetch_with_retry(url, params, api_key=<hidden>)"
+          },
+          {
+            "line": 279,
+            "shape": "  print_json(data)"
+          }
+        ]
+      },
+      {
+        "rule": "sensitive-assignment",
+        "line": 344,
+        "context": [
+          {
+            "line": 343,
+            "shape": "      output_path: The local file path to save the PDF to."
+          },
+          {
+            "line": 344,
+            "shape": "      api_key: <hidden> API key for authentication."
+          },
+          {
+            "line": 345,
+            "shape": ""
+          }
+        ]
+      },
+      {
+        "rule": "sensitive-assignment",
+        "line": 478,
+        "context": [
+          {
+            "line": 477,
+            "shape": ""
+          },
+          {
+            "line": 478,
+            "shape": "  data = fetch_with_retry(url, params, api_key=<hidden>)"
+          },
+          {
+            "line": 479,
+            "shape": "  print_json(data)"
+          }
+        ]
+      },
+      {
+        "rule": "sensitive-assignment",
+        "line": 492,
+        "context": [
+          {
+            "line": 491,
+            "shape": "  data = fetch_with_retry("
+          },
+          {
+            "line": 492,
+            "shape": "      url, {<string>: 1}, api_key=<hidden>, return_headers=True"
+          },
+          {
+            "line": 493,
+            "shape": "  )"
+          }
+        ]
+      }
+    ],
+    "interpretation": "Masked string literals; preserve code shape only. Not confirmed as real credentials or false positives."
+  },
+  {
+    "file": "agents/skills/ncbi-sequence-fetch/scripts/ncbi_fetch.py",
+    "findings": [
+      {
+        "rule": "sensitive-assignment",
+        "line": 124,
+        "context": [
+          {
+            "line": 123,
+            "shape": "  if _CLIENT is None:"
+          },
+          {
+            "line": 124,
+            "shape": "    api_key = <hidden>(<string>, <string>)"
+          },
+          {
+            "line": 125,
+            "shape": "    qps = 10.0 if api_key else 3.0"
+          }
+        ]
+      },
+      {
+        "rule": "sensitive-assignment",
+        "line": 143,
+        "context": [
+          {
+            "line": 142,
+            "shape": "  <string>\""
+          },
+          {
+            "line": 143,
+            "shape": "  api_key = <hidden>(<string>, <string>)"
+          },
+          {
+            "line": 144,
+            "shape": "  if api_key:"
+          }
+        ]
+      }
+    ],
+    "interpretation": "Masked string literals; preserve code shape only. Not confirmed as real credentials or false positives."
+  },
+  {
+    "file": "agents/skills/openfda-database/scripts/openfda_query.py",
+    "findings": [
+      {
+        "rule": "sensitive-assignment",
+        "line": 158,
+        "context": [
+          {
+            "line": 157,
+            "shape": "    count_field: Optional field to count unique values for."
+          },
+          {
+            "line": 158,
+            "shape": "    api_key: <hidden> API key."
+          },
+          {
+            "line": 159,
+            "shape": ""
+          }
+        ]
+      },
+      {
+        "rule": "sensitive-assignment",
+        "line": 240,
+        "context": [
+          {
+            "line": 239,
+            "shape": "      skip=args.skip,"
+          },
+          {
+            "line": 240,
+            "shape": "      api_key=<hidden>,"
+          },
+          {
+            "line": 241,
+            "shape": "  )"
+          }
+        ]
+      },
+      {
+        "rule": "sensitive-assignment",
+        "line": 278,
+        "context": [
+          {
+            "line": 277,
+            "shape": "      count_field=args.count_field,"
+          },
+          {
+            "line": 278,
+            "shape": "      api_key=<hidden>,"
+          },
+          {
+            "line": 279,
+            "shape": "  )"
+          }
+        ]
+      },
+      {
+        "rule": "sensitive-assignment",
+        "line": 339,
+        "context": [
+          {
+            "line": 338,
+            "shape": "        skip=skip,"
+          },
+          {
+            "line": 339,
+            "shape": "        api_key=<hidden>,"
+          },
+          {
+            "line": 340,
+            "shape": "    )"
+          }
+        ]
+      }
+    ],
+    "interpretation": "Masked string literals; preserve code shape only. Not confirmed as real credentials or false positives."
+  },
+  {
+    "file": "agents/skills/pdf/SKILL.md",
+    "findings": [
+      {
+        "rule": "sensitive-assignment",
+        "line": 216,
+        "context": [
+          {
+            "line": 215,
+            "shape": "# Remove password"
+          },
+          {
+            "line": 216,
+            "shape": "qpdf --password=<hidden> --decrypt encrypted.pdf decrypted.pdf"
+          },
+          {
+            "line": 217,
+            "shape": "<string>`"
+          }
+        ]
+      }
+    ],
+    "interpretation": "Masked string literals; preserve code shape only. Not confirmed as real credentials or false positives."
+  },
+  {
+    "file": "agents/skills/pdf/reference.md",
+    "findings": [
+      {
+        "rule": "sensitive-assignment",
+        "line": 340,
+        "context": [
+          {
+            "line": 339,
+            "shape": "# Remove password protection (requires password)"
+          },
+          {
+            "line": 340,
+            "shape": "qpdf --password=<hidden> --decrypt encrypted.pdf decrypted.pdf"
+          },
+          {
+            "line": 341,
+            "shape": "<string>`"
+          }
+        ]
+      }
+    ],
+    "interpretation": "Masked string literals; preserve code shape only. Not confirmed as real credentials or false positives."
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "snapshot": "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-revalidation-evidence-d076fff\\hp-profile-no-skills",
+  "target": "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-revalidation-evidence-d076fff\\hp-backup-restore-target",
+  "fileCount": 9,
+  "gitMetadataFiles": 0,
+  "excluded": [
+    "sessions, archived_sessions, SQLite, auth, plugin cache/runtime, automations and host trust are not copied",
+    "config.notify: device-local or unsupported",
+    "config.desktop: device-local or unsupported",
+    "config.windows: device-local or unsupported",
+    "config.projects: device-local or unsupported",
+    "mcp_servers.node_repl.env: local credentials/environment",
+    "codex/memories/.git: Git metadata is not personal content",
+    "skills: explicitly not selected"
+  ],
+  "allNonConfigBytesEqual": true,
+  "configMappingMatches": true,
+  "previewUnchanged": true,
+  "oldSnapshotsUsed": false
+}

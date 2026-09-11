@@ -1,0 +1,20 @@
+[
+  {
+    "from": "2026-09-11T09:13:08.705Z",
+    "to": "2026-09-11T09:15:36.521Z",
+    "phase": "state-after-real-tests.json",
+    "changes": []
+  },
+  {
+    "from": "2026-09-11T09:15:36.521Z",
+    "to": "2026-09-11T09:15:48.394Z",
+    "phase": "state-before-snapshot.json",
+    "changes": []
+  },
+  {
+    "from": "2026-09-11T09:15:48.394Z",
+    "to": "2026-09-11T09:16:11.151Z",
+    "phase": "state-after-snapshot.json",
+    "changes": []
+  }
+]
