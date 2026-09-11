@@ -1,0 +1,658 @@
+
+> uagent-sync@2.1.1 pretest
+> npm run build
+
+
+> uagent-sync@2.1.1 build
+> rimraf dist && tsc && node scripts/generate-dashboard-i18n.mjs && node scripts/copy-dashboard.mjs
+
+
+> uagent-sync@2.1.1 test
+> node scripts/run-tests.mjs
+
+▶ AgentAdapter contract
+  ✔ scans exactly the injected adapters, in injection order (4.1082ms)
+  ✔ keeps DeepSeek inventory and target ids explicitly distinct (0.1657ms)
+✔ AgentAdapter contract (5.2163ms)
+▶ portability classification
+  ✔ classifies shared assets and platform state honestly (1.3362ms)
+  ✔ redacts nested values before display (0.6335ms)
+✔ portability classification (2.7976ms)
+▶ agent adapters
+  ✔ detects all three agents and shared skills without exposing secrets (21.3625ms)
+  ✔ reports an absent DeepSeek Harness without failing the inventory (12.1021ms)
+✔ agent adapters (33.7274ms)
+▶ workspace inventory
+  ✔ returns stable agents, coverage, drift, migration actions, and security flags (14.9603ms)
+✔ workspace inventory (15.0783ms)
+▶ Application operation x target capability gate
+  ✔ publishes the complete 7 operations x 4 targets matrix (1.6791ms)
+  ✔ every unsupported operation fails closed before invoking any dependency (1.0846ms)
+✔ Application operation x target capability gate (3.633ms)
+✔ migrated entrypoints depend on Application instead of migrated domain orchestrators (60.597ms)
+✔ Application never imports presentation entrypoints (17.8113ms)
+✔ Domain and Ports never import the public barrel, Application, or Adapters (139.3097ms)
+✔ import analysis sees and rejects default, namespace, and dynamic import bypasses (11.0433ms)
+✔ the public barrel exposes the implemented architecture contracts (0.1989ms)
+✔ the public barrel exports v3 and major Application request/result types (0.7677ms)
+✔ the runtime Agent registry carries a fourth scanner through inventory diff (2.7087ms)
+▶ unified dashboard backend contract
+  ✔ serves a cached unified snapshot and carries its identity into analysis (77.5058ms)
+  ✔ keeps agent-browser, browser, and chrome in one canonical group with one action per implementation (27.993ms)
+  ✔ allows non-Codex and cross-agent decisions in ledger-only mode without config writes (47.4225ms)
+  ✔ returns populated and internally consistent cross-agent sections (20.0851ms)
+  ✔ discovers DeepSeek profile bundles from the repository-standard profile manifest (18.4515ms)
+  ✔ returns 410 for legacy business APIs and keeps public DTOs path-free (41.4703ms)
+  ✔ verify performs a fresh scan and reports external configuration drift (24.0352ms)
+  ✔ keeps external ledger changes cached until refresh and then adopts them (30.6362ms)
+✔ unified dashboard backend contract (289.4625ms)
+▶ Windows Codex bootstrap plan
+  ✔ accepts only the two repository URLs and produces a Codex-only resumable plan (2382.265ms)
+  ✔ all marketplace metadata versions match package.json (0.5435ms)
+  ✔ accepts both npm 10 array and npm 12 keyed-object pack JSON (0.2511ms)
+  ✔ retries the state pull before entering idempotent setup (0.2713ms)
+  ✔ refreshes an existing personal marketplace and verifies the installed plugin version (0.2611ms)
+  ✔ falls back after three remote failures only through a same-origin local fast-forward (3301.6274ms)
+  ✔ rejects a source-origin mismatch before using the local fallback (2859.0761ms)
+  ✔ matches a PowerShell diagnostic even when a word is line-wrapped (0.2374ms)
+  ✔ rejects a local marketplace branch that cannot fast-forward to source (3155.196ms)
+  ✔ uses terminating cmdlet errors and leaves LASTEXITCODE checks to native commands (0.7671ms)
+  ✔ smoke-runs the documented raw download command and propagates the native bootstrap exit (2436.0015ms)
+✔ Windows Codex bootstrap plan (14137.8894ms)
+▶ resolveWorkspaceRoot — 非 workspace cwd
+  ✔ Codex 作用域使用自己的缓存且不创建 OpenCode 路径 (3.6551ms)
+  ✔ workspace 外启动 + 固定缓存存在 → 直接命中缓存 (12.5813ms)
+  ✔ 固定缓存仍指向旧 opencode-dotfiles → 自动改写为 workspace/usync-dotfiles (18.5447ms)
+  ✔ OPENCODE_SYNC_WORKSPACE_ROOT 环境变量优先于缓存 (4.045ms)
+  ✔ 旧位置缓存（workspace 内 opencode-dotfiles/state/）→ 迁移到固定位置 (22.6464ms)
+  ✔ workspace 内启动（无缓存）→ 向上找 .gitmodules 兜底 (4.1684ms)
+  ✔ Codex stale cache 指向嵌套插件目录时，改从上层真实 workspace 解析 (226.2138ms)
+  ✔ 找不到时错误消息包含引导提示 (3.9726ms)
+✔ resolveWorkspaceRoot — 非 workspace cwd (297.1806ms)
+✔ CLI verify preflights dsh/all before OpenCode workspace resolution (579.2198ms)
+✔ CLI export preflights dsh/all before OpenCode workspace resolution (569.6979ms)
+✔ CLI import preflights dsh/all before OpenCode workspace resolution (586.5915ms)
+✔ CLI setup preflights dsh/all before OpenCode workspace resolution (569.1816ms)
+✔ CLI update preflights dsh/all before OpenCode workspace resolution (594.7334ms)
+✔ CLI push preflights dsh/all before OpenCode workspace resolution (562.3322ms)
+✔ CLI pull preflights dsh/all before OpenCode workspace resolution (547.0691ms)
+✔ CLI verify rejects every malformed explicit target before resolution (785.0278ms)
+✔ CLI export rejects every malformed explicit target before resolution (772.6731ms)
+✔ CLI import rejects every malformed explicit target before resolution (767.6095ms)
+✔ CLI setup rejects every malformed explicit target before resolution (749.0151ms)
+✔ CLI update rejects every malformed explicit target before resolution (777.188ms)
+✔ CLI push rejects every malformed explicit target before resolution (742.0756ms)
+✔ CLI pull rejects every malformed explicit target before resolution (750.0406ms)
+✔ CLI push failure is structured and deeply redacted (198.3169ms)
+✔ CLI pull failure is structured and deeply redacted (206.6373ms)
+✔ CLI import failure is structured and deeply redacted (178.9527ms)
+✔ top-level CLI failures emit one sanitized structured JSON object (1138.7517ms)
+✔ detected OpenCode resolves scope without reading its cache first (481.7966ms)
+✔ an explicit OpenCode target may still use its cache from outside a workspace (3735.7487ms)
+✔ detected OpenCode runs normally from a workspace with matching persisted scope (1039.7874ms)
+✔ CLI verify keeps one immutable target across detection and init-state (391.021ms)
+✔ CLI export keeps one immutable target across detection and init-state (367.7639ms)
+✔ CLI import keeps one immutable target across detection and init-state (413.979ms)
+✔ CLI setup keeps one immutable target across detection and init-state (436.3099ms)
+✔ CLI update keeps one immutable target across detection and init-state (409.7402ms)
+✔ CLI push keeps one immutable target across detection and init-state (429.5394ms)
+✔ CLI pull keeps one immutable target across detection and init-state (423.9585ms)
+Unknown command: nonexistent
+Invalid dashboard port: invalid
+Error: --type, --name, and --source are required for crystallize
+Error: --type, --name, and --source are required for 'add' action
+Error: --key-name is required for 'add' action
+▶ CLI usage
+  ✔ no command shows usage with all 16 commands (223.8317ms)
+  ✔ unknown command exits non-zero (261.979ms)
+  ✔ --help prints usage and exits 0 (243.6984ms)
+  ✔ -h prints usage and exits 0 (208.242ms)
+  ✔ --version prints the package version and exits 0 (195.5906ms)
+✔ CLI usage (1134.1435ms)
+▶ CLI read-only commands
+  ✔ inventory --json returns a safe three-agent payload (225.0381ms)
+  ✔ dashboard rejects invalid ports (231.2644ms)
+  ✔ status lists submodules (308.9316ms)
+  ✔ verify does not report success when required checks fail (2630.3648ms)
+  ✔ guide generates SYNC-GUIDE.md (228.6023ms)
+  ✔ api-keys detect lists keys (226.6685ms)
+  ✔ log read shows empty log (237.4603ms)
+✔ CLI read-only commands (4088.9681ms)
+▶ CLI bilingual output
+  ✔ defaults to English (UAGENT_SYNC_LANG unset → en) (228.0509ms)
+  ✔ --lang zh switches CLI output to Chinese (215.1303ms)
+  ✔ UAGENT_SYNC_LANG=zh switches CLI output to Chinese (204.359ms)
+  ✔ --lang en overrides UAGENT_SYNC_LANG=zh (213.3482ms)
+  ✔ help shows bilingual usage with --lang hint (452.1815ms)
+✔ CLI bilingual output (1313.4179ms)
+▶ CLI stateful commands (safe paths)
+  ✔ init --force writes init state and prints next steps (295.6512ms)
+  ✔ log add records entry then read returns it (440.5364ms)
+  ✔ log export produces markdown (204.9208ms)
+  ✔ crystallize without required flags errors (221.9768ms)
+  ✔ log add without required flags errors (227.2532ms)
+  ✔ api-keys add without --key-name errors (203.466ms)
+✔ CLI stateful commands (safe paths) (1594.2857ms)
+✔ profile roundtrip preserves memory and maps config without transferring trust or auth (79.9371ms)
+✔ different existing data conflicts; explicit first restore makes a backup (91.0103ms)
+✔ three-way baseline protects edits and allows a subsequent source change (110.8301ms)
+✔ tampering and path traversal fail before any target writes (42.9363ms)
+✔ secret values block export without creating an uploadable snapshot (21.7069ms)
+✔ explicit component selection reports omitted skills and refuses empty component selection (28.6411ms)
+✔ junctions cannot redirect target writes outside the registered profile (41.54ms)
+✔ profile excludes nested Git directories and worktree pointers without changing source (79.8821ms)
+✔ legacy snapshot containing Git metadata is refused before target writes (40.4308ms)
+[uagent-sync] skill source install still running
+▶ Codex extension restoration
+  ✔ restores only selected portable entries and treats an absent tombstone as already satisfied (3.1646ms)
+  ✔ reports missing sources and secret-bearing MCP configuration as errors (0.5285ms)
+  ✔ restores a remote MCP bearer token by environment-variable name only (0.2475ms)
+  ✔ removes an installed tombstone once and rescans until absence is confirmed (0.8088ms)
+  ✔ does not hide a real tombstone permission failure (0.3278ms)
+  ✔ fails when a successful tombstone command does not actually remove the target (0.2855ms)
+  ✔ treats a not-found removal response as success only after absence is confirmed (0.2346ms)
+  ✔ recognizes the bootstrap-installed Uagent plugin as an existing equivalent source (0.3964ms)
+  ✔ reports a supply-chain conflict for genuinely different plugin repositories (0.1593ms)
+  ✔ groups skills by normalized source and emits one structured source summary (1.0538ms)
+  ✔ reports one grouped failure for every skill covered by a failed source (0.4087ms)
+  ✔ retries a reset skill source with a bounded backoff and succeeds on the third attempt (1.292ms)
+  ✔ stops retrying when a pre-retry scan confirms the whole source is installed (0.6973ms)
+  ✔ fails a 38/39 source after exit zero and names the one source-consistent missing skill (0.9386ms)
+  ✔ treats exit one as idempotent success when the immediate rescan is source-complete (0.4124ms)
+  ✔ retries an exit-one partial install until every selected skill from that source is present (0.3494ms)
+  ✔ does not count a globally same-named skill from a different source (0.2271ms)
+  ✔ keeps one source summary and verifies every selected ID when that source was initially partial (0.2518ms)
+  ✔ retries spinner-only clone failures and writes clean structured decisions (10.6321ms)
+  ✔ stops a spinner clone failure immediately when permanent 404 evidence is present (0.4677ms)
+  ✔ does not start another clone attempt after the source total timeout expires (0.4401ms)
+  ✔ emits already-complete for an initially installed source without duplicating summaries (0.2223ms)
+  ✔ fails non-retryable source errors immediately and keeps full details in an optional report (10.6283ms)
+  ✔ keeps separate redacted stdout and stderr summaries when stdout is long (0.3909ms)
+  ✔ redacts command stderr before adding it to structured recovery errors (10.7619ms)
+  ✔ aggregates existing skills into one skipped entry per normalized source (0.3807ms)
+✔ Codex extension restoration (47.5933ms)
+▶ trusted Windows command execution
+  ✔ resolves trusted codex.cmd and npx.cmd shims without executing WindowsApps or shell metacharacters (183.359ms)
+  ✔ emits periodic stderr heartbeats while a real monitored skill command is still running (951.4755ms)
+  ✔ terminates a real monitored skill command at its bounded timeout (378.7069ms)
+  ✔ retries two real monitored connection resets and succeeds on the third process (485.3999ms)
+✔ trusted Windows command execution (1999.306ms)
+▶ Codex-only verify/setup scope
+  ✔ setup scans current Codex extensions instead of treating all selected entries as absent (1.0569ms)
+  ✔ verify checks Codex and explicitly skips OpenCode without an error (1244.906ms)
+  ✔ verify reports a selected MCP whose required credential variable is unset (921.2469ms)
+  ✔ setup planning excludes every OpenCode action (3.1956ms)
+  ✔ writes a safe source failure report and emits setup progress on Windows (556.5539ms)
+  ✔ CLI verify returns structured fields and exits non-zero on required errors (1156.2801ms)
+✔ Codex-only verify/setup scope (3884.3061ms)
+
+> uagent-sync@2.1.1 prepack
+> npm run build
+
+
+> uagent-sync@2.1.1 build
+> rimraf dist && tsc && node scripts/generate-dashboard-i18n.mjs && node scripts/copy-dashboard.mjs
+
+▶ Codex crystallize Skill
+  ✔ publishes a discoverable Skill with the required triggers and CLI contract (1.8894ms)
+  ✔ includes the crystallize Skill and Codex metadata in the npm package (5585.0212ms)
+✔ Codex crystallize Skill (5587.8207ms)
+{"ok":false,"warnings":[],"errors":["Crystallize preflight refused: usync-dotfiles is ignored by the parent repository and is not a Git repository"],"skipped":[],"targetAgent":"codex"}
+▶ crystallize step 4 with dotfiles as a git submodule
+  ✔ exits 0 and reports committed steps (0.6562ms)
+  ✔ commits the generated artifacts inside the submodule (202.6377ms)
+  ✔ pushes the dotfiles commit to its remote (87.6736ms)
+  ✔ updates the workspace pointer and pushes it (165.8214ms)
+✔ crystallize step 4 with dotfiles as a git submodule (6835.9048ms)
+▶ crystallize step 4 with dotfiles as a plain directory
+  ✔ commits files directly in the workspace repo (1939.9911ms)
+✔ crystallize step 4 with dotfiles as a plain directory (1940.264ms)
+▶ crystallize step 4 failure visibility (no git repo)
+  ✔ surfaces the failure detail instead of a blank warning (369.2624ms)
+✔ crystallize step 4 failure visibility (no git repo) (369.4701ms)
+▶ crystallize preflight side-effect protection
+  ✔ refuses an ignored plain dotfiles directory before writing provenance artifacts (717.8727ms)
+✔ crystallize preflight side-effect protection (718.1696ms)
+▶ dashboard assets
+  ✔ builds the single dashboard shell and four top-level routes (2.8544ms)
+  ✔ keeps legacy extension URL on the same shell without loading a second page (0.6052ms)
+  ✔ switches language in place and exposes both dictionaries (0.5877ms)
+  ✔ uses a bounded inventory request and preserves the last result on errors (0.8219ms)
+  ✔ keeps all dashboard scripts syntactically executable (240.9451ms)
+  ✔ does not ship legacy migration UI or browser decision storage (2.2755ms)
+✔ dashboard assets (249.4272ms)
+▶ dashboard server
+  ✔ serves all read-only JSON endpoints without secrets (74.3237ms)
+  ✔ serves the i18n asset required before app initialization (18.5988ms)
+  ✔ serves extension deduplication from the same dashboard origin (10.8756ms)
+  ✔ rejects unknown routes and write methods (16.266ms)
+  ✔ retires the legacy migration-draft API (9.7107ms)
+  ✔ does not return migration results before an explicit analysis scope (8.4692ms)
+  ✔ rejects same-agent analysis and returns one unified scoped result (15.9473ms)
+✔ dashboard server (156.2082ms)
+▶ unified dashboard shell
+  ✔ exposes exactly four top-level navigation routes (1.8419ms)
+  ✔ models migration analysis as five real internal tabs (0.8619ms)
+  ✔ contains no legacy shell references (1.1583ms)
+  ✔ does not build or ship a second legacy dashboard implementation (0.6403ms)
+  ✔ runs a real Playwright browser test from the e2e command (1.3396ms)
+  ✔ starts with a null analysis scope and requires an explicit start action (0.9816ms)
+  ✔ keeps a cross-agent swap control that invalidates the previous analysis (0.8664ms)
+  ✔ renders real coverage, compatibility, and execution modules (1.3319ms)
+  ✔ invalidates unsafe transient state on preview failure and rescan (0.9059ms)
+  ✔ guards asynchronous analysis actions against stale responses and duplicate submits (2.1197ms)
+  ✔ keeps unavailable single-agent deep links explicit instead of silently changing tabs (0.6776ms)
+  ✔ switches language in place without reloading the document (0.8194ms)
+  ✔ generates the browser dictionary from the TypeScript message source (0.6397ms)
+  ✔ keeps every responsive navigation item available (0.3905ms)
+✔ unified dashboard shell (16.2925ms)
+✔ publication refuses traversal and literal credentials before Git/network mutation (19.4314ms)
+▶ device registry
+  ✔ registers one local device with a stable random id on rerun (55.2492ms)
+  ✔ supports multiple devices and rejects an ambiguous alias (55.7193ms)
+  ✔ renames a device without changing its id (43.1097ms)
+  ✔ reconnects to another checkout only when the same device id is present (65.2168ms)
+  ✔ rejects cross-schema and malformed records (24.4888ms)
+  ✔ rejects path traversal, symlink escape, and a connection inside the registry (26.3197ms)
+  ✔ does not overwrite an existing file with a conflicting device identity (18.1782ms)
+  ✔ CLI emits JSON and does not expose URL credentials (19.3705ms)
+✔ device registry (309.532ms)
+✔ audit includes ignored and untracked documents without reading credential contents (601.6736ms)
+▶ dsh plugin schema contract (dsh-tools)
+  ✔ apply() registers all 16 sync_* tools against the pinned dsh-tools contract (4.5367ms)
+✔ dsh plugin schema contract (dsh-tools) (5.3996ms)
+▶ argsToFlags
+  ✔ maps string, boolean true, boolean false, arrays, and underscore-to-dash (1.3599ms)
+  ✔ omits undefined/null values and keeps order (0.2504ms)
+✔ argsToFlags (2.5348ms)
+▶ findWorkspaceRoot
+  ✔ walks up from a nested dir to the .gitmodules root (5.6377ms)
+  ✔ returns undefined when no .gitmodules in ancestors (4.1414ms)
+✔ findWorkspaceRoot (10.2645ms)
+▶ findDeep
+  ✔ finds uagent-sync/dist/cli.js under the workspace root (5.7389ms)
+  ✔ skips node_modules and .git (3.7672ms)
+  ✔ returns undefined when nothing matches (1.9721ms)
+✔ findDeep (12.2918ms)
+▶ resolveCliPath
+  ✔ prefers explicit cliPath when it exists (4.2923ms)
+  ✔ ignores explicit cliPath when missing, falls to env var (3.0609ms)
+  ✔ finds the CLI via workspace recursion when nothing else set (6.6416ms)
+  ✔ finds the CLI via npm dependency (node_modules/uagent-sync/dist/cli.js) before workspace recursion (7.0945ms)
+  ✔ npm dependency lookup climbs out of nested installs (pnpm-style layout) (6.4986ms)
+  ✔ returns undefined when CLI is nowhere to be found (1.9441ms)
+  ✔ cliPathError gives actionable guidance (0.3423ms)
+✔ resolveCliPath (30.7661ms)
+▶ DSH bundle manifest compatibility
+  ✔ never declares required:false (DSH schema rejects it; optional params omit the field) (0.2555ms)
+  ✔ declares schemastery as a real dependency and host packages as peers (0.1579ms)
+  ✔ declares uagent-sync as a dependency so the CLI ships with the npm-installed plugin (0.139ms)
+✔ DSH bundle manifest compatibility (0.7496ms)
+▶ skill bridging
+  ✔ parseSkillMd extracts name/description and strips frontmatter (0.4245ms)
+  ✔ parseSkillMd returns null without frontmatter or missing fields (0.202ms)
+  ✔ resolveSkillsDir derives <checkout>/skills from the CLI path (3.6475ms)
+  ✔ resolveSkillsDir returns undefined when skills dir missing (2.2669ms)
+✔ skill bridging (6.7939ms)
+▶ runCli + renderResult
+  ✔ captures stdout on success (135.7486ms)
+  ✔ reports exit code and stderr on failure (123.7393ms)
+  ✔ kills on timeout and marks the result (527.9897ms)
+  ✔ real CLI without command prints usage and exits 1 (247.7076ms)
+✔ runCli + renderResult (1035.8096ms)
+▶ DSH target scope forwarding
+  ✔ passes --target-agent dsh through all workspace operation tools (814.148ms)
+✔ DSH target scope forwarding (814.4709ms)
+▶ verify entrypoint parity
+  ✔ keeps the existing human and JSON verification output contracts (2.3222ms)
+  ✔ routes CLI and plugin verification through the shared workspace application (1.2348ms)
+✔ verify entrypoint parity (4.8402ms)
+✔ formats Plugin Application results with sanitized structured metadata (0.5832ms)
+✔ deeply redacts every structured Application result field including URL credentials (0.618ms)
+✔ routes CLI failure JSON through the shared structured result formatter (0.6393ms)
+▶ exportWorkspace
+  ✔ scans the complete serialized artifact before writing it (10.5829ms)
+  ✔ fails closed without writing when the secret scan rejects the artifact (0.8548ms)
+  ✔ fails unsupported dsh/all scopes before collection, scanning, or any file write (0.5176ms)
+  ✔ owns the Plugin tracking policy and performs every .gitignore operation through FileSystem (0.6957ms)
+✔ exportWorkspace (13.7133ms)
+▶ importWorkspace
+  ✔ propagates a domain import failure as ok=false (2.6937ms)
+  ✔ exposes a pure capability preflight with stable unsupported-target errors (0.6545ms)
+  ✔ parses with the artifact codec and rejects a target mismatch before mutation (0.4765ms)
+  ✔ passes the validated v3 artifact to the legacy bridge without dropping fields (0.3429ms)
+  ✔ validates target scope before a dry-run snapshot or diff (0.3215ms)
+  ✔ fails unsupported dsh/all scopes before codec parsing or any downstream work (0.4454ms)
+✔ importWorkspace (5.3302ms)
+▶ nodeFileSystem
+  ✔ implements the text file port (12.5483ms)
+✔ nodeFileSystem (12.6532ms)
+▶ export/import entrypoint parity
+  ✔ keeps CLI path and URL parsing at the edge while delegating both workflows (0.7832ms)
+  ✔ keeps Plugin tool schemas and text protocol while delegating both workflows (0.5282ms)
+✔ export/import entrypoint parity (1.4285ms)
+▶ real CLI export/import protocol
+  ✔ roundtrips a supported OpenCode artifact with stable exit/output and JSON (510.1468ms)
+  ✔ fails dsh/all export and import with ok=false before artifact writes or parsing (854.3069ms)
+  ✔ exits non-zero when the domain importer returns success=false (221.1104ms)
+  ✔ preflights unsupported imports before a missing path read or observable URL fetch (895.3524ms)
+✔ real CLI export/import protocol (2481.4894ms)
+▶ real Plugin export/import protocol
+  ✔ returns success and failure as Plugin text while application owns tracking (1535.695ms)
+  ✔ renders artifact write failures as stable non-secret Plugin text (15.9823ms)
+✔ real Plugin export/import protocol (1551.8738ms)
+▶ legacy extension conflict API
+  ✔ is frozen while the unified migration analysis owns decisions (63.079ms)
+✔ legacy extension conflict API (64.2115ms)
+▶ Codex extension governance
+  ✔ normalizes capability IDs neutrally for same-type and cross-type matches (0.8353ms)
+  ✔ discovers only active official extensions in deterministic order (14.7299ms)
+  ✔ validates ledger decisions and rejects absolute paths (3.108ms)
+  ✔ does not trust a personal manifest that claims an official source (0.4106ms)
+  ✔ edits only a unique boolean enabled span while preserving BOM, CRLF, comments, and order (1.3073ms)
+  ✔ stops an extension block at the next unrelated TOML table (0.2374ms)
+✔ Codex extension governance (21.8635ms)
+▶ fixture command runner
+  ✔ retries one exact environment failure with a fresh fixture (1.5425ms)
+  ✔ fails after the single allowed retry when the environment error repeats (0.4567ms)
+  ✔ does not retry ordinary command failures (0.1594ms)
+  ✔ selects an absolute trusted Git executable and rejects WindowsApps shims (0.2958ms)
+  ✔ passes Git arguments as argv, preserving spaces and shell metacharacters (646.606ms)
+✔ fixture command runner (650.3427ms)
+▶ importSystemState redacted sentinel guard
+  ✔ should keep local real url when synced value contains <hidden> (12.4324ms)
+  ✔ should write <hidden> sentinel on a fresh device (no local config) (9.7758ms)
+✔ importSystemState redacted sentinel guard (26.6356ms)
+▶ data-driven MCP detection
+  ✔ should load known MCPs from data file (11.3307ms)
+  ✔ should fall back to built-in repo data when workspace has no data file (1.6031ms)
+  ✔ should match by command pattern (0.6259ms)
+  ✔ should match by URL pattern (remote MCPs) (0.1712ms)
+  ✔ should match by env var patterns (0.2501ms)
+  ✔ should analyze MCP with known entry (0.4735ms)
+  ✔ should analyze unknown MCP gracefully (0.2874ms)
+✔ data-driven MCP detection (168.1943ms)
+▶ known-mcps.json data integrity
+  ✔ should exist and be valid JSON (0.9011ms)
+✔ known-mcps.json data integrity (1.0865ms)
+▶ migration analysis contract
+  ✔ requires an explicit scope and rejects same-agent cross analysis (0.874ms)
+  ✔ does not create a disable action for cross-agent relations (0.7161ms)
+  ✔ groups multiple relations into one implementation action (10.7494ms)
+  ✔ never repeats an implementation action across different capability groups (0.4279ms)
+✔ migration analysis contract (13.7193ms)
+▶ migration analysis core model
+  ✔ uses the same context and relation implementations through every public entrypoint (0.7325ms)
+  ✔ requires a complete scope and rejects a same-agent route (1.0569ms)
+  ✔ allows disable_in_agent only for single-agent Codex analysis (0.1894ms)
+  ✔ derives an implementation id without content fingerprint and validates provenance (0.4816ms)
+  ✔ validates relation and confidence vocabularies (10.0873ms)
+  ✔ uses one relation type across the factory and production grouping API (0.8845ms)
+  ✔ groups equivalent implementations by capability with one action per implementation (0.4173ms)
+  ✔ sanitizes public output without locators or absolute paths (0.8627ms)
+✔ migration analysis core model (16.4076ms)
+▶ scoped migration analysis transaction
+  ✔ groups an auto-discovered skill once and applies only after exact preview (164.3212ms)
+  ✔ rejects malformed or future decision ledgers before preview/write (14.2982ms)
+  ✔ uses the same capability inventory for cross-agent comparisons without write actions (15.7758ms)
+  ✔ never re-enables a manually disabled Codex registration (29.1203ms)
+✔ scoped migration analysis transaction (224.9231ms)
+▶ bidirectional migration draft (orthogonal axes)
+  ✔ supports all six directions and rejects a same-agent route (5.0225ms)
+  ✔ classifies a missing portable capability as missing with direct_share (0.2429ms)
+  ✔ classifies same-named capability in a different config file as existing/dual_registered with keep_current (0.2001ms)
+  ✔ classifies target-native overlap as existing/target_native (0.1482ms)
+  ✔ counts same-file shared assets in summary.shared and skips them (0.1281ms)
+  ✔ keeps same-named skills in different directories as migration items (not shared) (0.1225ms)
+  ✔ defers unverified DeepSeek MCP as missing with defer (0.1321ms)
+  ✔ applies a global conflict policy and then an item override with the 4-action set (0.2003ms)
+  ✔ maps every policy to one of the four actions (0.1912ms)
+  ✔ keeps the custom adapter as the last, unrecommended candidate (0.1884ms)
+✔ bidirectional migration draft (orthogonal axes) (7.8125ms)
+✔ Windows offline staging previews, verifies, resumes, and refuses overwrites (7555.5885ms)
+
+> uagent-sync@2.1.1 prepack
+> npm run build
+
+
+> uagent-sync@2.1.1 build
+> rimraf dist && tsc && node scripts/generate-dashboard-i18n.mjs && node scripts/copy-dashboard.mjs
+
+▶ real npm pack installation
+  ✔ runs the installed CLI with production dependencies only (1677.3023ms)
+  ✔ ships valid Codex metadata and all three skills (2.7294ms)
+✔ real npm pack installation (1680.8968ms)
+▶ stripJsonComments
+  ✔ should strip line comments (0.7148ms)
+  ✔ should strip block comments (0.1326ms)
+  ✔ should NOT strip // inside URL strings (0.0879ms)
+  ✔ should NOT strip // inside single-quoted strings (0.1064ms)
+  ✔ should handle escaped quotes inside strings (0.0916ms)
+  ✔ should remove multiple mixed comments (0.6722ms)
+  ✔ should produce valid JSON from realistic JSONC with URL (0.2815ms)
+  ✔ should handle mixed comment styles together (0.1715ms)
+✔ stripJsonComments (168.5973ms)
+▶ detectPlaywrightMcpConfig
+  ✔ should detect playwright with extension + edge + token (0.4954ms)
+  ✔ should detect vision capability (0.2102ms)
+  ✔ should detect headless mode (0.0897ms)
+  ✔ should detect Chrome browser (0.0856ms)
+  ✔ should detect CDP endpoint (0.0713ms)
+  ✔ should return null when no playwright MCP (0.0598ms)
+  ✔ should return null when playwright is disabled (0.0541ms)
+  ✔ should detect token via PLAYWRIGHT_MCP_EXTENSION_TOKEN (0.0744ms)
+  ✔ should detect token via alternative env var naming (0.0719ms)
+  ✔ should detect missing token (0.0634ms)
+  ✔ should return null when mcp section is missing (0.0565ms)
+  ✔ should detect plain playwright without optional flags (0.2054ms)
+✔ detectPlaywrightMcpConfig (7.3652ms)
+▶ generateSyncGuide — Playwright section
+  ✔ should include Playwright install section (38.0413ms)
+  ✔ should include multi-model notes (20.2383ms)
+  ✔ should include known pitfalls (12.2011ms)
+  ✔ should NOT include Playwright section when not configured (18.7107ms)
+✔ generateSyncGuide — Playwright section (98.9159ms)
+▶ Module exports
+  ✔ should export new Playwright functions (2.3591ms)
+✔ Module exports (2.4623ms)
+▶ updateExtensions
+  ✔ dry-run returns skipped steps without executing any command (741.4612ms)
+  ✔ does not plan codebase-memory-mcp for default or MCP-only updates (263.5439ms)
+  ✔ emits plan → step-start → step-end → done event flow (144.6053ms)
+  ✔ respects explicit components filter (141.0174ms)
+  ✔ excludes opencode by default (253.6983ms)
+  ✔ includes opencode when explicitly requested (148.6749ms)
+  ✔ plans a complete Codex-only self-update without touching OpenCode (139.0941ms)
+  ✔ does not inspect OpenCode plugin or config directories in the default Codex plan (242.2486ms)
+  ✔ rejects an explicit OpenCode update inside Codex scope without executing it (164.2686ms)
+  ✔ executes packed CLI installation and verifies the Codex marketplace and plugin version (1534.3617ms)
+  ✔ stops before replacing the installed CLI when the required self-test fails (654.4927ms)
+✔ updateExtensions (4429.9798ms)
+▶ OpencodeSyncPlugin
+  ✔ exposes the full opencode_sync_* tool set (6.9336ms)
+✔ OpencodeSyncPlugin (7.0528ms)
+▶ isMachineSpecificPath
+  ✔ should detect Windows absolute user paths (0.7007ms)
+  ✔ should detect Linux absolute home paths (0.1221ms)
+  ✔ should detect macOS absolute user paths (0.0871ms)
+  ✔ should NOT flag workspace-relative paths (0.1349ms)
+  ✔ should NOT flag npx commands (0.1259ms)
+✔ isMachineSpecificPath (165.5688ms)
+▶ detectSyncPath
+  ✔ should detect workspace-relative sync plugin (3.7927ms)
+  ✔ should report published-channel when sync plugin not found (1.5233ms)
+✔ detectSyncPath (12.5822ms)
+▶ trackState toggle in export
+  ✔ should know the trackState parameter exists in export schema (2.3975ms)
+✔ trackState toggle in export (6.1963ms)
+▶ portable module exports
+  ✔ should export all portability functions (2.1743ms)
+✔ portable module exports (2.306ms)
+✔ source environment references are portable but literal tokens remain blocked (1.7873ms)
+▶ pushWorkspace application use case
+  ✔ exports, scans, writes and pushes the canonical artifact through argv-only Git (8.0662ms)
+  ✔ treats probe code 0 as an explicit no-change skip without committing and still pushes (0.581ms)
+  ✔ treats probe code 1 as staged changes and commits before pushing (2.9752ms)
+  ✔ fails a probe code above 1 and does not commit or push (0.7631ms)
+  ✔ never treats deceptive no-change stdout as success when commit has a fatal stderr (1.0625ms)
+✔ pushWorkspace application use case (14.5123ms)
+▶ pullWorkspace application use case
+  ✔ pulls --ff-only in the dotfiles repository and restores the canonical artifact (3.011ms)
+  ✔ fails closed on Git, parse, target mismatch and restore failures (0.6473ms)
+✔ pullWorkspace application use case (3.849ms)
+▶ Git CLI adapter
+  ✔ executes only argv arrays with shell:false (355.0596ms)
+✔ Git CLI adapter (355.2216ms)
+▶ push/pull entrypoint characterization
+  ✔ keeps CLI presentation while delegating push and pull to the application (0.8677ms)
+  ✔ removes old Plugin drift while keeping explicit OpenCode scope and tool schemas (0.6186ms)
+✔ push/pull entrypoint characterization (1.6389ms)
+{"ok":false,"warnings":[],"errors":["Dotfiles repository is not initialized: <USER_ROOT>/AppData/Local/Temp/uagent-recovery-contract-1789144102252/workspace/usync-dotfiles"],"skipped":[],"targetAgent":"codex"}
+{"ok":false,"warnings":[],"errors":["git pull failed: fatal: not a git repository (or any of the parent directories): .git"],"skipped":[],"targetAgent":"codex"}
+warning: in the working copy of 'state/init-state.json', LF will be replaced by CRLF the next time Git touches it
+To <USER_ROOT>/AppData/Local/Temp/uagent-recovery-contract-1789144102252/dotfiles-remote-1789144103064.git
+ * [new branch]      master -> master
+{"ok":false,"warnings":[],"errors":["Invalid workspace-state.json: Invalid WorkspaceState JSON [invalid_json] at root"],"skipped":[],"targetAgent":"codex"}
+Secret values are never accepted. Only variable names and safe placeholders may be recorded.
+Invalid environment variable name
+{"ok":false,"warnings":[],"errors":["Path traversal detected: <USER_ROOT>/AppData/Local/Temp/uagent-recovery-contract-1789144102252/outside.json"],"skipped":[],"targetAgent":"codex"}
+▶ targetAgent persistence and strict scope
+  ✔ persists an explicit Codex target in init-state.json (12.4585ms)
+  ✔ CLI init persists --target-agent codex (283.3375ms)
+  ✔ Codex export contains a host-scoped manifest and no OpenCode config (6.0342ms)
+  ✔ exports stable skill provenance from the shared skill lock (13.0602ms)
+✔ targetAgent persistence and strict scope (315.7657ms)
+▶ safe recovery protocol
+  ✔ pull fails non-zero when workspace-state.json is missing (213.7255ms)
+  ✔ pull reports a dotfiles git failure as structured JSON (272.6835ms)
+  ✔ pull reports malformed state as structured JSON (1446.1791ms)
+  ✔ API template never accepts or writes a real token value (0.8728ms)
+  ✔ CLI api-keys add rejects a supplied secret value (202.9592ms)
+  ✔ CLI api-keys rejects unsafe key names and export rejects paths outside the workspace (413.0761ms)
+  ✔ Codex export fails closed on a malformed tombstone file (2.1042ms)
+  ✔ Codex export captures current plugin tables and recoverable MCP configuration (12.4528ms)
+  ✔ raw Codex scanning sees an active tombstone while exported state keeps it deleted (14.619ms)
+  ✔ permanent deletions reject a legacy manifest even when it omits tombstones (2.1648ms)
+  ✔ tombstones override stale manifests and historical discovery (2.924ms)
+✔ safe recovery protocol (2584.6271ms)
+▶ clean checkout and Codex plugin contract
+  ✔ npm test has a build lifecycle prerequisite (0.4248ms)
+  ✔ Codex manifest version matches package and uses only accepted discovery fields (0.4025ms)
+✔ clean checkout and Codex plugin contract (0.964ms)
+▶ redactString
+  ✔ should mask url ?token= but keep base url (1.0014ms)
+  ✔ should mask &api_key= and other query secret params (0.4232ms)
+  ✔ should mask Bearer tokens (0.15ms)
+  ✔ should mask well-known token prefixes (0.175ms)
+  ✔ should NOT false-positive on ordinary words containing sk- (0.0993ms)
+  ✔ should leave non-secret strings unchanged (0.0906ms)
+  ✔ should be idempotent on already-redacted strings (0.1844ms)
+✔ redactString (3.4302ms)
+▶ redactSecretsDeep
+  ✔ should deep-redact nested objects and arrays without mutating input (0.5415ms)
+  ✔ should pass through non-string scalars unchanged (0.1581ms)
+✔ redactSecretsDeep (1.0323ms)
+▶ generateConfigRefMd redaction (guide layer)
+  ✔ should not leak url token into generated config-ref.md (2.8476ms)
+✔ generateConfigRefMd redaction (guide layer) (2.9851ms)
+✔ run-tests propagates a cancelled test hook as a non-zero exit (449.8012ms)
+▶ config sanitization for export
+  ✔ should strip environment variables from MCP config (22.581ms)
+  ✔ should strip Authorization headers from MCP config (12.2489ms)
+  ✔ should exclude OAuth-based providers (10.7027ms)
+  ✔ should keep plugin list intact (10.4876ms)
+  ✔ should redact tokens inside MCP url query strings (10.0889ms)
+  ✔ should redact inline apiKey in provider config (9.8522ms)
+  ✔ should NOT output empty config sections (9.2428ms)
+✔ config sanitization for export (256.7779ms)
+▶ ensureSecretGitignore
+  ✔ creates .gitignore with keys/ and .env when none exists (4.3664ms)
+  ✔ appends missing rules to an existing .gitignore without touching others (16.7992ms)
+  ✔ is idempotent when all rules already present (8.7845ms)
+  ✔ matches a keys/ rule written with a comment header (10.3267ms)
+✔ ensureSecretGitignore (41.4955ms)
+✔ M0 detects known-token-prefix before and after <hidden> (1.7711ms)
+✔ M0 detects authorization-bearer before and after <hidden> (0.1582ms)
+✔ M0 detects sensitive-assignment before and after <hidden> (0.0942ms)
+✔ M0 detects known-token-prefix before and after <YOUR_API_KEY> (0.0936ms)
+✔ M0 detects authorization-bearer before and after <YOUR_API_KEY> (0.1222ms)
+✔ M0 detects sensitive-assignment before and after <YOUR_API_KEY> (0.1018ms)
+✔ M0 preserves placeholder-only inputs and one finding per rule per line (0.6311ms)
+✔ M0 marker variants, suffixes and concatenation cannot hide adjacent credentials (0.1562ms)
+✔ M0 retains original lines across LF, CRLF, non-BMP and Unicode separators (0.7265ms)
+✔ M0 scans past display windows and returns no credential text (0.238ms)
+✔ M0 does not introduce M1, M2 or M3 allowances (0.3052ms)
+✔ M0 profile collection, restore and publish reject the same fixture before effects (52.6187ms)
+✔ M0 Codex MCP recovery rejects a marker alongside a token before executing (0.9196ms)
+✔ M0 recovery report refuses residual credentials beside a redaction marker (4.4455ms)
+▶ pre-commit secret scanner
+  ✔ blocks secret values while allowing variable names and safe placeholders (6.7833ms)
+  ✔ throws before unsafe serialized state can be written (2.4039ms)
+✔ pre-commit secret scanner (10.1617ms)
+▶ setupWorkspace application use case
+  ✔ delegates once with an explicit target and aggregates typed setup results (6.8179ms)
+  ✔ converts a delegated setup exception into ok=false (0.4345ms)
+✔ setupWorkspace application use case (8.0832ms)
+▶ updateWorkspace application use case
+  ✔ redacts every progress string field and all structured result strings (5.4085ms)
+  ✔ passes explicit scope, typed progress and argv process execution to the updater (5.0387ms)
+  ✔ reports every update error as ok=false and preserves the report (0.7712ms)
+  ✔ converts a delegated update exception into ok=false (0.4766ms)
+  ✔ preserves the updater's legacy default executor when no ProcessRunner is injected (0.341ms)
+  ✔ streams ordinary output with at most one-event delay and preserves line boundaries (1.0488ms)
+  ✔ streams split-secret output safely without leaking through joined lines (0.4651ms)
+✔ updateWorkspace application use case (14.0956ms)
+▶ setup/update entrypoint delegation
+  ✔ routes CLI and Plugin setup/update through the shared application with explicit scope (1.0612ms)
+  ✔ keeps report archival at the CLI edge and exits non-zero if archival fails (654.4278ms)
+✔ setup/update entrypoint delegation (655.6361ms)
+▶ ProcessRunner adapter bridge
+  ✔ adapts the argv port without spawning or joining a shell command (0.9694ms)
+✔ ProcessRunner adapter bridge (1.0633ms)
+▶ real Plugin setup failure
+  ✔ renders stable redacted result fields with metadata.ok=false (1158.2781ms)
+✔ real Plugin setup failure (1158.4097ms)
+[opencode-sync] Exported: <USER_ROOT>/AppData/Local/Temp/uagent-hp-m0-884dea9/test-fixture-ws/test-output.json
+[opencode-sync]   Submodules: 0
+[opencode-sync]   Skills: 0
+▶ CLI smoke tests
+  ✔ should show usage when no command given (252.5879ms)
+  ✔ should export state without errors (250.1889ms)
+  ✔ should load all exports from sync module (166.0482ms)
+✔ CLI smoke tests (669.9593ms)
+▶ verifyWorkspace
+  ✔ passes an explicit Codex scope to the verifier once and aggregates warnings and errors (1.3722ms)
+  ✔ passes an explicit OpenCode scope without adding Codex-only skips (0.2051ms)
+✔ verifyWorkspace (2.5641ms)
+▶ WorkspaceState artifact codec
+  ✔ migrates an unversioned v1 artifact and preserves safe legacy fields (4.7131ms)
+  ✔ migrates a v2 artifact into the validated internal v3 model (0.7699ms)
+  ✔ accepts and validates an already-current v3 artifact (1.1611ms)
+  ✔ rejects future schema versions instead of guessing a migration (0.2029ms)
+  ✔ applies permanent and artifact tombstones before exposing selected extensions (0.6121ms)
+  ✔ removes tombstoned MCPs from every recoverable configuration table without mutating input (0.3842ms)
+  ✔ removes tombstoned extensions from recoverable string-array configuration tables (0.3217ms)
+  ✔ does not echo rejected runtime values in validation errors (0.4871ms)
+  ✔ accepts JSON text and rejects malformed runtime shapes (0.6145ms)
+✔ WorkspaceState artifact codec (11.0743ms)
+▶ MCP security audit
+  ✔ should NOT expose tokens in URL query params (default security rule) (0.9396ms)
+  ✔ should use Authorization headers for tokens (default security rule) (0.3695ms)
+✔ MCP security audit (189.2166ms)
+▶ zapier-gmail config (ease-of-use exception)
+  ✔ should be in the URL_TOKEN_ALLOWED exception list (0.3794ms)
+  ✔ should have a valid Zapier MCP endpoint URL (0.3359ms)
+  ✔ should have oauth explicitly disabled (0.2395ms)
+✔ zapier-gmail config (ease-of-use exception) (3.3037ms)
+▶ zapier-gmail endpoint
+  ✔ should respond to initialize with valid MCP protocol (0.1757ms)
+  ✔ should list tools successfully (0.1064ms)
+✔ zapier-gmail endpoint (2.1467ms)
+ℹ tests 433
+ℹ suites 85
+ℹ pass 433
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 121963.9891

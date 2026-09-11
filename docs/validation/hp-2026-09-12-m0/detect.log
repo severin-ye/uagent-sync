@@ -1,0 +1,23 @@
+Changes: 2 files, 11 symbols
+Affected processes: 3
+Risk level: medium
+
+Changed symbols:
+  Function scanForSecrets → src/lib/secret-scan.ts
+  Const credential → test/secret-scan-m0.test.ts
+  Const bearer → test/secret-scan-m0.test.ts
+  Const fixtures → test/secret-scan-m0.test.ts
+  Function device → test/secret-scan-m0.test.ts
+  Const target → test/secret-scan-m0.test.ts
+  Function execute → test/secret-scan-m0.test.ts
+  Property code → test/secret-scan-m0.test.ts
+  Property stderr → test/secret-scan-m0.test.ts
+  Property stdout → test/secret-scan-m0.test.ts
+  Function execute → test/secret-scan-m0.test.ts
+
+Affected execution flows:
+  • CreateCodexProfile → ScanForSecrets (5 steps) — changed: scanForSecrets
+  • RestoreCodexProfile → ScanForSecrets (5 steps) — changed: scanForSecrets
+  • PublishDevicePaths → ScanForSecrets (4 steps) — changed: scanForSecrets
+
+  GitNexus Detect Changes (1.6.11)

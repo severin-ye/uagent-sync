@@ -1,0 +1,11 @@
+Changes: 13 files, 4 symbols
+Affected processes: 0
+Risk level: low
+
+Changed symbols:
+  Section U同步两机共用任务清单 → docs/DEVICE-SYNC-TODO.md
+  Section 当前证据 → docs/DEVICE-SYNC-TODO.md
+  Section 修复与重新采集 → docs/DEVICE-SYNC-TODO.md
+  Section 更新记录 → docs/DEVICE-SYNC-TODO.md
+
+  GitNexus Detect Changes (1.6.11)

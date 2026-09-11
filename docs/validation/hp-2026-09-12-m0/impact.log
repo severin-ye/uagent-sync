@@ -1,0 +1,910 @@
+{
+  "target": {
+    "id": "Function:src/lib/secret-scan.ts:scanForSecrets",
+    "name": "scanForSecrets",
+    "type": "Function",
+    "filePath": "src/lib/secret-scan.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 22,
+  "risk": "CRITICAL",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 4,
+    "processes_affected": 7,
+    "modules_affected": 6
+  },
+  "byDepthCounts": {
+    "1": 4,
+    "2": 9,
+    "3": 6,
+    "4": 3
+  },
+  "affected_processes": [
+    {
+      "name": "setupWorkspace",
+      "type": "Function",
+      "filePath": "src/application/default-workspace-application.ts",
+      "affected_process_count": 11,
+      "total_hits": 37,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "exportWorkspace",
+      "type": "Function",
+      "filePath": "src/application/default-workspace-application.ts",
+      "affected_process_count": 7,
+      "total_hits": 14,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "restoreCodexProfile",
+      "type": "Function",
+      "filePath": "src/lib/codex-profile.ts",
+      "affected_process_count": 5,
+      "total_hits": 14,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "createCodexProfile",
+      "type": "Function",
+      "filePath": "src/lib/codex-profile.ts",
+      "affected_process_count": 4,
+      "total_hits": 11,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "pushWorkspace",
+      "type": "Function",
+      "filePath": "src/application/default-workspace-application.ts",
+      "affected_process_count": 4,
+      "total_hits": 8,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "runDeviceCli",
+      "type": "Function",
+      "filePath": "src/entrypoints/device-cli.ts",
+      "affected_process_count": 5,
+      "total_hits": 5,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "publishDevicePaths",
+      "type": "Function",
+      "filePath": "src/lib/device-git-transport.ts",
+      "affected_process_count": 3,
+      "total_hits": 5,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Application",
+      "hits": 8,
+      "impact": "indirect"
+    },
+    {
+      "name": "Cluster_43",
+      "hits": 5,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_45",
+      "hits": 3,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_44",
+      "hits": 2,
+      "impact": "indirect"
+    },
+    {
+      "name": "Cluster_50",
+      "hits": 2,
+      "impact": "indirect"
+    },
+    {
+      "name": "Entrypoints",
+      "hits": 1,
+      "impact": "indirect"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/lib/codex-restore.ts:restoreCodexExtensions",
+        "name": "restoreCodexExtensions",
+        "filePath": "src/lib/codex-restore.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_17_setupworkspace",
+            "label": "SetupWorkspace → Bounded",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_11_setupworkspace",
+            "label": "SetupWorkspace → NormalizeExtensionVersion",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_9_setupworkspace",
+            "label": "SetupWorkspace → Key",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_10_setupworkspace",
+            "label": "SetupWorkspace → NormalizeExtensionSource",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_18_setupworkspace",
+            "label": "SetupWorkspace → Key",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_19_setupworkspace",
+            "label": "SetupWorkspace → MergePermanentTombstones",
+            "processType": "cross_community",
+            "step": 4
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/codex-restore.ts:writeSkillRecoveryReport",
+        "name": "writeSkillRecoveryReport",
+        "filePath": "src/lib/codex-restore.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/profile-secret-scan.ts:assertProfileContentSafe",
+        "name": "assertProfileContentSafe",
+        "filePath": "src/lib/profile-secret-scan.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_24_createcodexprofile",
+            "label": "CreateCodexProfile → ScanForSecrets",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_129_restorecodexprofile",
+            "label": "RestoreCodexProfile → ScanForSecrets",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_184_publishdevicepaths",
+            "label": "PublishDevicePaths → ScanForSecrets",
+            "processType": "cross_community",
+            "step": 3
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/secret-scan.ts:assertNoSecrets",
+        "name": "assertNoSecrets",
+        "filePath": "src/lib/secret-scan.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/application/default-workspace-application.ts:createDefaultWorkspaceApplication.exportWorkspace@43:4",
+        "name": "exportWorkspace",
+        "filePath": "src/application/default-workspace-application.ts",
+        "relationType": "USES",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_66_exportworkspace",
+            "label": "ExportWorkspace → AssertNoSecrets",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_35_exportworkspace",
+            "label": "ExportWorkspace → JoinPath",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_67_exportworkspace",
+            "label": "ExportWorkspace → ExportState",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_34_exportworkspace",
+            "label": "ExportWorkspace → Exists",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_36_exportworkspace",
+            "label": "ExportWorkspace → ReadText",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_37_exportworkspace",
+            "label": "ExportWorkspace → WriteText",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_65_exportworkspace",
+            "label": "ExportWorkspace → PreflightWorkspaceOperation",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/application/default-workspace-application.ts:createDefaultWorkspaceApplication.pushWorkspace@54:4",
+        "name": "pushWorkspace",
+        "filePath": "src/application/default-workspace-application.ts",
+        "relationType": "USES",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_76_pushworkspace",
+            "label": "PushWorkspace → GitDetail",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_155_pushworkspace",
+            "label": "PushWorkspace → PreflightWorkspaceOperation",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_78_pushworkspace",
+            "label": "PushWorkspace → ExportState",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_77_pushworkspace",
+            "label": "PushWorkspace → AssertNoSecrets",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/application/export-workspace.ts:exportWorkspace",
+        "name": "exportWorkspace",
+        "filePath": "src/application/export-workspace.ts",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": [
+          {
+            "id": "proc_65_exportworkspace",
+            "label": "ExportWorkspace → PreflightWorkspaceOperation",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_34_exportworkspace",
+            "label": "ExportWorkspace → Exists",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_36_exportworkspace",
+            "label": "ExportWorkspace → ReadText",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_37_exportworkspace",
+            "label": "ExportWorkspace → WriteText",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_35_exportworkspace",
+            "label": "ExportWorkspace → JoinPath",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_67_exportworkspace",
+            "label": "ExportWorkspace → ExportState",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_66_exportworkspace",
+            "label": "ExportWorkspace → AssertNoSecrets",
+            "processType": "intra_community",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/application/push-workspace.ts:pushWorkspace",
+        "name": "pushWorkspace",
+        "filePath": "src/application/push-workspace.ts",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": [
+          {
+            "id": "proc_78_pushworkspace",
+            "label": "PushWorkspace → ExportState",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_155_pushworkspace",
+            "label": "PushWorkspace → PreflightWorkspaceOperation",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_76_pushworkspace",
+            "label": "PushWorkspace → GitDetail",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_77_pushworkspace",
+            "label": "PushWorkspace → AssertNoSecrets",
+            "processType": "intra_community",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/cli.ts:main",
+        "name": "main",
+        "filePath": "src/cli.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/codex-profile.ts:createCodexProfile.walk@92:2",
+        "name": "walk",
+        "filePath": "src/lib/codex-profile.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_23_createcodexprofile",
+            "label": "CreateCodexProfile → NoLinks",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_6_createcodexprofile",
+            "label": "CreateCodexProfile → Mappings",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_24_createcodexprofile",
+            "label": "CreateCodexProfile → ScanForSecrets",
+            "processType": "cross_community",
+            "step": 3
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/codex-profile.ts:readSnapshot",
+        "name": "readSnapshot",
+        "filePath": "src/lib/codex-profile.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_128_restorecodexprofile",
+            "label": "RestoreCodexProfile → NoLinks",
+            "processType": "intra_community",
+            "step": 3
+          },
+          {
+            "id": "proc_46_restorecodexprofile",
+            "label": "RestoreCodexProfile → KeyOf",
+            "processType": "intra_community",
+            "step": 3
+          },
+          {
+            "id": "proc_129_restorecodexprofile",
+            "label": "RestoreCodexProfile → ScanForSecrets",
+            "processType": "cross_community",
+            "step": 3
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/device-git-transport.ts:publishDevicePaths.scan@28:2",
+        "name": "scan",
+        "filePath": "src/lib/device-git-transport.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_184_publishdevicepaths",
+            "label": "PublishDevicePaths → ScanForSecrets",
+            "processType": "cross_community",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/workspace.ts:setupWorkspace",
+        "name": "setupWorkspace",
+        "filePath": "src/lib/workspace.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_9_setupworkspace",
+            "label": "SetupWorkspace → Key",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_11_setupworkspace",
+            "label": "SetupWorkspace → NormalizeExtensionVersion",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_38_setupworkspace",
+            "label": "SetupWorkspace → Run",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_39_setupworkspace",
+            "label": "SetupWorkspace → PlanWorkspaceSetup",
+            "processType": "intra_community",
+            "step": 3
+          },
+          {
+            "id": "proc_17_setupworkspace",
+            "label": "SetupWorkspace → Bounded",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_20_setupworkspace",
+            "label": "SetupWorkspace → ReadCodexState",
+            "processType": "intra_community",
+            "step": 3
+          },
+          {
+            "id": "proc_10_setupworkspace",
+            "label": "SetupWorkspace → NormalizeExtensionSource",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_18_setupworkspace",
+            "label": "SetupWorkspace → Key",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_19_setupworkspace",
+            "label": "SetupWorkspace → MergePermanentTombstones",
+            "processType": "cross_community",
+            "step": 3
+          }
+        ]
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "File:src/cli.ts",
+        "name": "cli.ts",
+        "filePath": "src/cli.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/application/default-workspace-application.ts:createDefaultWorkspaceApplication.setupWorkspace@68:4",
+        "name": "setupWorkspace",
+        "filePath": "src/application/default-workspace-application.ts",
+        "relationType": "USES",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_79_setupworkspace",
+            "label": "SetupWorkspace → Setup",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_9_setupworkspace",
+            "label": "SetupWorkspace → Key",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_10_setupworkspace",
+            "label": "SetupWorkspace → NormalizeExtensionSource",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_18_setupworkspace",
+            "label": "SetupWorkspace → Key",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_19_setupworkspace",
+            "label": "SetupWorkspace → MergePermanentTombstones",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_11_setupworkspace",
+            "label": "SetupWorkspace → NormalizeExtensionVersion",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_38_setupworkspace",
+            "label": "SetupWorkspace → Run",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_39_setupworkspace",
+            "label": "SetupWorkspace → PlanWorkspaceSetup",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_201_setupworkspace",
+            "label": "SetupWorkspace → PreflightWorkspaceOperation",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_17_setupworkspace",
+            "label": "SetupWorkspace → Bounded",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_20_setupworkspace",
+            "label": "SetupWorkspace → ReadCodexState",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/application/setup-workspace.ts:setupWorkspace",
+        "name": "setupWorkspace",
+        "filePath": "src/application/setup-workspace.ts",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": [
+          {
+            "id": "proc_201_setupworkspace",
+            "label": "SetupWorkspace → PreflightWorkspaceOperation",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_39_setupworkspace",
+            "label": "SetupWorkspace → PlanWorkspaceSetup",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_11_setupworkspace",
+            "label": "SetupWorkspace → NormalizeExtensionVersion",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_38_setupworkspace",
+            "label": "SetupWorkspace → Run",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_18_setupworkspace",
+            "label": "SetupWorkspace → Key",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_19_setupworkspace",
+            "label": "SetupWorkspace → MergePermanentTombstones",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_10_setupworkspace",
+            "label": "SetupWorkspace → NormalizeExtensionSource",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_17_setupworkspace",
+            "label": "SetupWorkspace → Bounded",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_20_setupworkspace",
+            "label": "SetupWorkspace → ReadCodexState",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_79_setupworkspace",
+            "label": "SetupWorkspace → Setup",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_9_setupworkspace",
+            "label": "SetupWorkspace → Key",
+            "processType": "cross_community",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/codex-profile.ts:createCodexProfile.collect@89:2",
+        "name": "collect",
+        "filePath": "src/lib/codex-profile.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_6_createcodexprofile",
+            "label": "CreateCodexProfile → Mappings",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_23_createcodexprofile",
+            "label": "CreateCodexProfile → NoLinks",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_24_createcodexprofile",
+            "label": "CreateCodexProfile → ScanForSecrets",
+            "processType": "cross_community",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/codex-profile.ts:planCodexProfileRestore",
+        "name": "planCodexProfileRestore",
+        "filePath": "src/lib/codex-profile.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_46_restorecodexprofile",
+            "label": "RestoreCodexProfile → KeyOf",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_129_restorecodexprofile",
+            "label": "RestoreCodexProfile → ScanForSecrets",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_47_restorecodexprofile",
+            "label": "RestoreCodexProfile → Roots",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_128_restorecodexprofile",
+            "label": "RestoreCodexProfile → NoLinks",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_45_restorecodexprofile",
+            "label": "RestoreCodexProfile → BaselinePath",
+            "processType": "intra_community",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/device-git-transport.ts:publishDevicePaths",
+        "name": "publishDevicePaths",
+        "filePath": "src/lib/device-git-transport.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_184_publishdevicepaths",
+            "label": "PublishDevicePaths → ScanForSecrets",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_158_publishdevicepaths",
+            "label": "PublishDevicePaths → Normalize",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_159_publishdevicepaths",
+            "label": "PublishDevicePaths → Git",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      }
+    ],
+    "4": [
+      {
+        "depth": 4,
+        "id": "Function:src/entrypoints/device-cli.ts:runDeviceCli",
+        "name": "runDeviceCli",
+        "filePath": "src/entrypoints/device-cli.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_86_rundevicecli",
+            "label": "RunDeviceCli → ParseArgs",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_13_rundevicecli",
+            "label": "RunDeviceCli → IsRecord",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_2_rundevicecli",
+            "label": "RunDeviceCli → Error",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_5_rundevicecli",
+            "label": "RunDeviceCli → IsAbsolutePath",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_21_rundevicecli",
+            "label": "RunDeviceCli → One",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 4,
+        "id": "Function:src/lib/codex-profile.ts:createCodexProfile",
+        "name": "createCodexProfile",
+        "filePath": "src/lib/codex-profile.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_143_createcodexprofile",
+            "label": "CreateCodexProfile → Roots",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_6_createcodexprofile",
+            "label": "CreateCodexProfile → Mappings",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_24_createcodexprofile",
+            "label": "CreateCodexProfile → ScanForSecrets",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_23_createcodexprofile",
+            "label": "CreateCodexProfile → NoLinks",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 4,
+        "id": "Function:src/lib/codex-profile.ts:restoreCodexProfile",
+        "name": "restoreCodexProfile",
+        "filePath": "src/lib/codex-profile.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_129_restorecodexprofile",
+            "label": "RestoreCodexProfile → ScanForSecrets",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_46_restorecodexprofile",
+            "label": "RestoreCodexProfile → KeyOf",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_47_restorecodexprofile",
+            "label": "RestoreCodexProfile → Roots",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_45_restorecodexprofile",
+            "label": "RestoreCodexProfile → BaselinePath",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_128_restorecodexprofile",
+            "label": "RestoreCodexProfile → NoLinks",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      }
+    ]
+  }
+}
+
+  GitNexus Impact (1.6.11)

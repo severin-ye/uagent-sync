@@ -1,0 +1,37 @@
+{
+  "risk": "CRITICAL",
+  "impactedCount": 22,
+  "summary": {
+    "direct": 4,
+    "processes_affected": 7,
+    "modules_affected": 6
+  },
+  "direct": [
+    {
+      "name": "restoreCodexExtensions",
+      "filePath": "src/lib/codex-restore.ts",
+      "confidence": 0.85
+    },
+    {
+      "name": "writeSkillRecoveryReport",
+      "filePath": "src/lib/codex-restore.ts",
+      "confidence": 0.85
+    },
+    {
+      "name": "assertProfileContentSafe",
+      "filePath": "src/lib/profile-secret-scan.ts",
+      "confidence": 0.85
+    },
+    {
+      "name": "assertNoSecrets",
+      "filePath": "src/lib/secret-scan.ts",
+      "confidence": 0.85
+    }
+  ],
+  "index_scope": "Independent clone, isolated USERPROFILE; no global registry/config edits.",
+  "limitations": [
+    "Index reports truncated execution-flow exploration; absent flow is not evidence of no caller.",
+    "One large Honor evidence JSON omitted by 512KB indexing limit, not production source.",
+    "Manual source callsite review supplements graph and full regression."
+  ]
+}

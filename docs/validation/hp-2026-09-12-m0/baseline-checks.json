@@ -1,0 +1,11 @@
+{
+  "baseline": "884dea961d85b59d13f9526dfbc1211c0d6addbd",
+  "previous": "d076fff50b142b4d09a2fbee9b0b8882b1554b96",
+  "production_test_build_dependency_diff": [],
+  "honor_checksum_files": 3,
+  "exit": 0,
+  "node": "v24.19.0",
+  "platform": "win32",
+  "red_test_sha256": "f8956ebcdd09143f3f3136b3e9bffefdc78299f27b6f0bcd158494513897acd2",
+  "final_test_sha256": "f8956ebcdd09143f3f3136b3e9bffefdc78299f27b6f0bcd158494513897acd2"
+}

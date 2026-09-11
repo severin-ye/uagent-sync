@@ -1,0 +1,19 @@
+{
+  "code_sha": "11237d974ce42f3377cf06faf01e351b8f20cc3d",
+  "same_red_green_test": true,
+  "scanned_files": 13,
+  "secret_scan_findings": 0,
+  "unredacted_user_root_occurrences": 0,
+  "red_raw_log_uploaded": false,
+  "red_patch_uploaded": false,
+  "full_tests": {
+    "passed": 433,
+    "failed": 0,
+    "skipped": 0
+  },
+  "focused_tests": {
+    "passed": 14,
+    "failed": 0
+  },
+  "publication_check_exit": 0
+}

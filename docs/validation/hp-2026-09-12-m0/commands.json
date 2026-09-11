@@ -1,0 +1,119 @@
+[
+  {
+    "cmd": "npm.cmd",
+    "args": [
+      "ci",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "status": 0,
+    "signal": null,
+    "label": "install",
+    "raw_log_sha256": "c7cbbcbc79698b4deaf9287418b3ff356ed3c9fd9ed926b61b40cd8a6b819c8d",
+    "sanitized_log_published": true
+  },
+  {
+    "cmd": "npm.cmd",
+    "args": [
+      "run",
+      "build"
+    ],
+    "status": 0,
+    "signal": null,
+    "label": "baseline-build",
+    "raw_log_sha256": "64c6d7b272796b56fe8cee8f55ec0795f28db8c3701fc8163f40fe2a7de87890",
+    "sanitized_log_published": true
+  },
+  {
+    "cmd": "node",
+    "args": [
+      "<USER_ROOT>/AppData/Local/pnpm/store/v11/links/@/gitnexus/1.6.11/b5f5e5dfb93e9c782cd6bd8d226b0a45a779732252e19e5b493352f6b71ca9e6/node_modules/gitnexus/dist/cli/index.js",
+      "analyze",
+      "--index-only",
+      "--name",
+      "hp-m0",
+      "--workers",
+      "2"
+    ],
+    "status": 0,
+    "signal": null,
+    "label": "index",
+    "raw_log_sha256": "2d9aec14bb78971ae61204110c9b033acbcd556c4fc183a07440e1e36178f630",
+    "sanitized_log_published": true
+  },
+  {
+    "cmd": "node",
+    "args": [
+      "<USER_ROOT>/AppData/Local/pnpm/store/v11/links/@/gitnexus/1.6.11/b5f5e5dfb93e9c782cd6bd8d226b0a45a779732252e19e5b493352f6b71ca9e6/node_modules/gitnexus/dist/cli/index.js",
+      "impact",
+      "scanForSecrets",
+      "--direction",
+      "upstream",
+      "--repo",
+      "hp-m0",
+      "--depth",
+      "5"
+    ],
+    "status": 0,
+    "signal": null,
+    "label": "impact",
+    "raw_log_sha256": "da208a95e3ada57ac540ae566248a1fc7a7aafa12beeabb6159bd411879e1bef",
+    "sanitized_log_published": true
+  },
+  {
+    "cmd": "node",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/secret-scan-m0.test.ts"
+    ],
+    "status": 1,
+    "signal": null,
+    "label": "red-final",
+    "raw_log_sha256": "6eb8a5eb6202cd188d8bbd47d8d1774a2e6bf22780e96bd258198b32728a0fff",
+    "sanitized_log_published": false
+  },
+  {
+    "cmd": "node",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/secret-scan-m0.test.ts"
+    ],
+    "status": 0,
+    "signal": null,
+    "label": "green",
+    "raw_log_sha256": "4f4e8ee37edfa632f6bbcb5aad4b889dcb43a62130682922fba5b7dda7533e70",
+    "sanitized_log_published": true
+  },
+  {
+    "cmd": "npm.cmd",
+    "args": [
+      "test"
+    ],
+    "status": 0,
+    "signal": null,
+    "label": "full",
+    "raw_log_sha256": "023c028e20c21682bf9582fe3cedb8ca1697c510adeb95bfd6f6dc7ca9854863",
+    "sanitized_log_published": true
+  },
+  {
+    "cmd": "node",
+    "args": [
+      "<USER_ROOT>/AppData/Local/pnpm/store/v11/links/@/gitnexus/1.6.11/b5f5e5dfb93e9c782cd6bd8d226b0a45a779732252e19e5b493352f6b71ca9e6/node_modules/gitnexus/dist/cli/index.js",
+      "detect_changes",
+      "--scope",
+      "staged",
+      "--repo",
+      "hp-m0"
+    ],
+    "status": 0,
+    "signal": null,
+    "label": "detect",
+    "raw_log_sha256": "e01a2cdb0313934ffd7a7aa0d18fa15095c9824685a50a4f5293a377d0bed0b4",
+    "sanitized_log_published": true
+  }
+]
