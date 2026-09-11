@@ -1,0 +1,84 @@
+Profile collection blocked:
+Secret scan blocked agents/skills/claude-api/php/managed-agents/README.md: sensitive-assignment@22
+Secret scan blocked agents/skills/claude-api/python/claude-api/README.md: sensitive-assignment@20
+Secret scan blocked agents/skills/claude-api/python/managed-agents/README.md: sensitive-assignment@24
+Secret scan blocked agents/skills/claude-api/ruby/claude-api/README.md: sensitive-assignment@20
+Secret scan blocked agents/skills/claude-api/ruby/managed-agents/README.md: sensitive-assignment@22
+Secret scan blocked agents/skills/claude-api/shared/managed-agents-tools.md: known-token-prefix@263
+Secret scan blocked agents/skills/claude-api/typescript/claude-api/README.md: sensitive-assignment@26
+Secret scan blocked agents/skills/claude-api/typescript/managed-agents/README.md: sensitive-assignment@24
+Secret scan blocked agents/skills/gstack/.env.example: known-token-prefix@5
+Secret scan blocked agents/skills/gstack/bin/gstack-distill-free-text: sensitive-assignment@190
+Secret scan blocked agents/skills/gstack/browse/src/browse-client.ts: sensitive-assignment@67, sensitive-assignment@76, sensitive-assignment@88, sensitive-assignment@141
+Secret scan blocked agents/skills/gstack/browse/src/browser-manager.ts: sensitive-assignment@580
+Secret scan blocked agents/skills/gstack/browse/src/cli.ts: sensitive-assignment@1093
+Secret scan blocked agents/skills/gstack/browse/src/cookie-import-browser.ts: sensitive-assignment@654
+Secret scan blocked agents/skills/gstack/browse/src/proxy-config.ts: sensitive-assignment@101, sensitive-assignment@104, sensitive-assignment@123
+Secret scan blocked agents/skills/gstack/browse/src/proxy-redact.ts: sensitive-assignment@26, sensitive-assignment@44
+Secret scan blocked agents/skills/gstack/browse/src/server.ts: sensitive-assignment@572, sensitive-assignment@579, sensitive-assignment@1893, sensitive-assignment@2281, sensitive-assignment@2316, sensitive-assignment@3082, sensitive-assignment@3166
+Secret scan blocked agents/skills/gstack/browse/src/session-cookie-store.ts: sensitive-assignment@65
+Secret scan blocked agents/skills/gstack/browse/src/socks-bridge.ts: sensitive-assignment@57
+Secret scan blocked agents/skills/gstack/browse/src/terminal-agent.ts: sensitive-assignment@615, sensitive-assignment@627
+Secret scan blocked agents/skills/gstack/browse/src/token-registry.ts: sensitive-assignment@263, sensitive-assignment@310, sensitive-assignment@386
+Secret scan blocked agents/skills/gstack/browse/test/bridge-chromium-e2e.test.ts: sensitive-assignment@123
+Secret scan blocked agents/skills/gstack/browse/test/browse-client.test.ts: sensitive-assignment@43, sensitive-assignment@105, sensitive-assignment@127
+Secret scan blocked agents/skills/gstack/browse/test/browser-skill-commands.test.ts: sensitive-assignment@284
+Secret scan blocked agents/skills/gstack/browse/test/busy-daemon-iron-rule.test.ts: sensitive-assignment@127, sensitive-assignment@159, sensitive-assignment@197, sensitive-assignment@233
+Secret scan blocked agents/skills/gstack/browse/test/busy-daemon-recovery.test.ts: sensitive-assignment@100
+Secret scan blocked agents/skills/gstack/browse/test/commands.test.ts: sensitive-assignment@1895
+Secret scan blocked agents/skills/gstack/browse/test/cookie-import-browser.test.ts: sensitive-assignment@8
+Secret scan blocked agents/skills/gstack/browse/test/daemon-mismatch-refuse.test.ts: sensitive-assignment@68, sensitive-assignment@104, sensitive-assignment@146
+Secret scan blocked agents/skills/gstack/browse/test/extension-token.test.ts: sensitive-assignment@33
+Secret scan blocked agents/skills/gstack/browse/test/fixtures/injection-combined.html: sensitive-assignment@32
+Secret scan blocked agents/skills/gstack/browse/test/pair-agent-e2e.test.ts: sensitive-assignment@79, sensitive-assignment@440
+Secret scan blocked agents/skills/gstack/browse/test/pair-agent-tunnel-eval.test.ts: sensitive-assignment@122
+Secret scan blocked agents/skills/gstack/browse/test/proxy-redact.test.ts: sensitive-assignment@51
+Secret scan blocked agents/skills/gstack/browse/test/server-auth.test.ts: sensitive-assignment@31, sensitive-assignment@41
+Secret scan blocked agents/skills/gstack/browse/test/server-embedder-terminal-port.test.ts: sensitive-assignment@48
+Secret scan blocked agents/skills/gstack/browse/test/server-factory.test.ts: sensitive-assignment@204, authorization-bearer@246
+Secret scan blocked agents/skills/gstack/browse/test/sidebar-ux.test.ts: sensitive-assignment@850
+Secret scan blocked agents/skills/gstack/browse/test/stop-dead-daemon.test.ts: sensitive-assignment@82, sensitive-assignment@118
+Secret scan blocked agents/skills/gstack/browse/test/terminal-agent-integration.test.ts: sensitive-assignment@56, sensitive-assignment@99, sensitive-assignment@199, sensitive-assignment@239
+Secret scan blocked agents/skills/gstack/browse/test/terminal-agent-owner-watchdog.test.ts: sensitive-assignment@42
+Secret scan blocked agents/skills/gstack/browse/test/token-registry.test.ts: sensitive-assignment@57, sensitive-assignment@58, sensitive-assignment@588, sensitive-assignment@596, sensitive-assignment@604
+Secret scan blocked agents/skills/gstack/browse/test/tunnel-revoke-cli.test.ts: sensitive-assignment@68, sensitive-assignment@252
+Secret scan blocked agents/skills/gstack/browser-skills/hackernews-frontpage/_lib/browse-client.ts: sensitive-assignment@67, sensitive-assignment@76, sensitive-assignment@88, sensitive-assignment@141
+Secret scan blocked agents/skills/gstack/design/src/check.ts: sensitive-assignment@19
+Secret scan blocked agents/skills/gstack/design/src/design-to-code.ts: sensitive-assignment@27
+Secret scan blocked agents/skills/gstack/design/src/diff.ts: sensitive-assignment@24
+Secret scan blocked agents/skills/gstack/design/src/evolve.ts: sensitive-assignment@25
+Secret scan blocked agents/skills/gstack/design/src/generate.ts: sensitive-assignment@99
+Secret scan blocked agents/skills/gstack/design/src/iterate.ts: sensitive-assignment@25
+Secret scan blocked agents/skills/gstack/design/src/memory.ts: sensitive-assignment@31
+Secret scan blocked agents/skills/gstack/design/src/variants.ts: sensitive-assignment@148
+Secret scan blocked agents/skills/gstack/docs/REMOTE_BROWSER_ACCESS.md: sensitive-assignment@70
+Secret scan blocked agents/skills/gstack/docs/designs/v2_PLAN.md: sensitive-assignment@646
+Secret scan blocked agents/skills/gstack/extension/background.js: sensitive-assignment@331, sensitive-assignment@358
+Secret scan blocked agents/skills/gstack/extension/sidepanel-terminal.js: sensitive-assignment@178, sensitive-assignment@789
+Secret scan blocked agents/skills/gstack/ios-qa/daemon/src/session-tokens.ts: sensitive-assignment@34
+Secret scan blocked agents/skills/gstack/ios-qa/daemon/test/daemon-integration.test.ts: authorization-bearer@342
+Secret scan blocked agents/skills/gstack/ios-qa/scripts/gen-accessors.ts: sensitive-assignment@333
+Secret scan blocked agents/skills/gstack/lib/code-intelligence/sourcebot-adapter.ts: sensitive-assignment@87
+Secret scan blocked agents/skills/gstack/lib/context-bill.ts: sensitive-assignment@935
+Secret scan blocked agents/skills/gstack/lib/diagram-render/dist/diagram-render.html: sensitive-assignment@858, sensitive-assignment@889, sensitive-assignment@1042, sensitive-assignment@1185, sensitive-assignment@1293, sensitive-assignment@1589, sensitive-assignment@1595, sensitive-assignment@1601, sensitive-assignment@1664, sensitive-assignment@1808, sensitive-assignment@1972, sensitive-assignment@2191, sensitive-assignment@2329, sensitive-assignment@2389, sensitive-assignment@2456, sensitive-assignment@2544, sensitive-assignment@2618, sensitive-assignment@2808, sensitive-assignment@2817, sensitive-assignment@2994, sensitive-assignment@2997, sensitive-assignment@3063, sensitive-assignment@3319, sensitive-assignment@3325, sensitive-assignment@3359, sensitive-assignment@3365, sensitive-assignment@3371, sensitive-assignment@3422, sensitive-assignment@3543, sensitive-assignment@3702, sensitive-assignment@3910, sensitive-assignment@4048, sensitive-assignment@4246, sensitive-assignment@4340, sensitive-assignment@4347, sensitive-assignment@4464, sensitive-assignment@4550
+Secret scan blocked agents/skills/gstack/test/brain-sync.test.ts: known-token-prefix@325, known-token-prefix@327, authorization-bearer@330, known-token-prefix@358
+Secret scan blocked agents/skills/gstack/test/claude-provider-keychain.test.ts: known-token-prefix@111
+Secret scan blocked agents/skills/gstack/test/code-intelligence.test.ts: sensitive-assignment@299
+Secret scan blocked agents/skills/gstack/test/free-tests-workflow-wiring.test.ts: sensitive-assignment@57
+Secret scan blocked agents/skills/gstack/test/gbrain-supabase-provision.test.ts: authorization-bearer@151
+Secret scan blocked agents/skills/gstack/test/gstack-memory-ingest.test.ts: sensitive-assignment@790
+Secret scan blocked agents/skills/gstack/test/helpers/benchmark-judge.ts: sensitive-assignment@22
+Secret scan blocked agents/skills/gstack/test/helpers/hermetic-env.test.ts: known-token-prefix@27, known-token-prefix@100, known-token-prefix@102, known-token-prefix@153, sensitive-assignment@153, known-token-prefix@160, sensitive-assignment@166, known-token-prefix@172
+Secret scan blocked agents/skills/gstack/test/helpers/hermetic-env.ts: sensitive-assignment@210, sensitive-assignment@266
+Secret scan blocked agents/skills/gstack/test/helpers/touchfiles-data.ts: sensitive-assignment@577
+Secret scan blocked agents/skills/gstack/test/hermetic-skills-seeding.test.ts: sensitive-assignment@80
+Secret scan blocked agents/skills/gstack/test/redact-engine.test.ts: known-token-prefix@37, known-token-prefix@72, known-token-prefix@73, known-token-prefix@74, known-token-prefix@87, known-token-prefix@88, sensitive-assignment@188, sensitive-assignment@196, sensitive-assignment@199, sensitive-assignment@202, sensitive-assignment@205, sensitive-assignment@206, sensitive-assignment@233, authorization-bearer@242, authorization-bearer@250, authorization-bearer@254, sensitive-assignment@540
+Secret scan blocked agents/skills/gstack/test/regression-issue2091-bsd-mktemp.test.ts: sensitive-assignment@82
+Secret scan blocked agents/skills/gstack/test/skill-e2e-cso.test.ts: known-token-prefix@45, sensitive-assignment@45
+Secret scan blocked agents/skills/gstack/test/telemetry.test.ts: sensitive-assignment@277
+Secret scan blocked agents/skills/literature-search-openalex/scripts/openalex_cli.py: sensitive-assignment@100, sensitive-assignment@125, sensitive-assignment@219, sensitive-assignment@278, sensitive-assignment@344, sensitive-assignment@478, sensitive-assignment@492
+Secret scan blocked agents/skills/ncbi-sequence-fetch/scripts/ncbi_fetch.py: sensitive-assignment@124, sensitive-assignment@143
+Secret scan blocked agents/skills/openfda-database/scripts/openfda_query.py: sensitive-assignment@158, sensitive-assignment@240, sensitive-assignment@278, sensitive-assignment@339
+Secret scan blocked agents/skills/pdf/SKILL.md: sensitive-assignment@216
+Secret scan blocked agents/skills/pdf/reference.md: sensitive-assignment@340
+Symbolic link path is not portable: %HONOR_USERPROFILE%\.agents\skills\research-skill.legacy-broken-20260826

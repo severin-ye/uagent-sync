@@ -1,0 +1,26 @@
+{
+  "scope": "honor-only, no restore",
+  "startedAt": "2026-09-11T12:44:46.148Z",
+  "files": 98,
+  "gitFiles": 0,
+  "excluded": [
+    "sessions, archived_sessions, SQLite, auth, plugin cache/runtime, automations and host trust are not copied",
+    "config.approval_policy: device-local or unsupported",
+    "config.approvals_reviewer: device-local or unsupported",
+    "config.sandbox_mode: device-local or unsupported",
+    "config.notify: device-local or unsupported",
+    "config.windows: device-local or unsupported",
+    "config.projects: device-local or unsupported",
+    "config.desktop: device-local or unsupported",
+    "config.hooks: device-local or unsupported",
+    "config.apps: device-local or unsupported",
+    "config.shell_environment_policy: device-local or unsupported",
+    "mcp_servers.node_repl.env: local credentials/environment",
+    "codex/memories/.git: Git metadata is not personal content",
+    "skills: explicitly not selected"
+  ],
+  "partialSnapshot": "PASS",
+  "fullSnapshot": "FAIL",
+  "changedProtectedPaths": [],
+  "finishedAt": "2026-09-11T12:44:49.354Z"
+}

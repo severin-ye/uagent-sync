@@ -1,0 +1,16 @@
+{
+  "sourceCodeSHA": "d076fff50b142b4d09a2fbee9b0b8882b1554b96",
+  "scope": [
+    "config.toml",
+    "AGENTS.md",
+    "rules",
+    "memories"
+  ],
+  "beforeFileCount": 221,
+  "afterFileCount": 221,
+  "changedCount": 0,
+  "startedAt": "2026-09-11T12:44:46.148Z",
+  "finishedAt": "2026-09-11T12:44:49.354Z",
+  "fullPathAndHashLists": "Retained locally; not uploaded",
+  "originalReportSha256": "bb663e233e09d39cccc52783369b2c97843023ec94b60842add790eadb1cc188"
+}

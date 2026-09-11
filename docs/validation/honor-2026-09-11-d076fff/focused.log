@@ -1,0 +1,18 @@
+✔ profile roundtrip preserves memory and maps config without transferring trust or auth (40.2854ms)
+✔ different existing data conflicts; explicit first restore makes a backup (42.0974ms)
+✔ three-way baseline protects edits and allows a subsequent source change (52.2892ms)
+✔ tampering and path traversal fail before any target writes (16.1595ms)
+✔ secret values block export without creating an uploadable snapshot (7.2165ms)
+✔ explicit component selection reports omitted skills and refuses empty component selection (12.2811ms)
+✔ junctions cannot redirect target writes outside the registered profile (28.2447ms)
+✔ profile excludes nested Git directories and worktree pointers without changing source (39.1686ms)
+✔ legacy snapshot containing Git metadata is refused before target writes (18.3688ms)
+✔ Windows offline staging previews, verifies, resumes, and refuses overwrites (7698.0048ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8070.2993
