@@ -1,0 +1,53 @@
+{
+  "ok": false,
+  "value": {
+    "snapshotId": "6f8d4ebb-a1cd-4d76-a564-74f4cf8519b7",
+    "items": [
+      {
+        "root": "codex",
+        "path": "config.toml",
+        "targetPath": "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-acceptance-20260911-173421\\fixture-complete\\beta\\.codex\\config.toml",
+        "before": "b48a26366fd875b04e2232cd4d9b3d9c5df3f93c1abd4494f9c2b28c21cef696",
+        "after": "b48a26366fd875b04e2232cd4d9b3d9c5df3f93c1abd4494f9c2b28c21cef696",
+        "sourceHash": "de9b489f7eb6471c76917defc17c359d2699bbd1e5d53876d4e251b95be8d4cc",
+        "action": "unchanged"
+      },
+      {
+        "root": "codex",
+        "path": "AGENTS.md",
+        "targetPath": "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-acceptance-20260911-173421\\fixture-complete\\beta\\.codex\\AGENTS.md",
+        "before": "2f0680a18b74851c03bf515e78e0337b9a4a75bfa32dc0672760745f9c237f78",
+        "after": "2f0680a18b74851c03bf515e78e0337b9a4a75bfa32dc0672760745f9c237f78",
+        "sourceHash": "2f0680a18b74851c03bf515e78e0337b9a4a75bfa32dc0672760745f9c237f78",
+        "action": "unchanged"
+      },
+      {
+        "root": "codex",
+        "path": "memories/note.md",
+        "targetPath": "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-acceptance-20260911-173421\\fixture-complete\\beta\\.codex\\memories\\note.md",
+        "before": "3d1c22c380caa8d94599a59253bab8dd97a86fae1adf8a4412b0d596b70e4ab1",
+        "after": "f03c5b87aad7169f243745e95889fd3723fae231a73cd2932b1e9dcb674898b9",
+        "sourceHash": "f03c5b87aad7169f243745e95889fd3723fae231a73cd2932b1e9dcb674898b9",
+        "action": "conflict"
+      },
+      {
+        "root": "agents",
+        "path": "skills/local-demo/SKILL.md",
+        "targetPath": "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-acceptance-20260911-173421\\fixture-complete\\beta\\.agents\\skills\\local-demo\\SKILL.md",
+        "before": "d25f6c0305c2b05aec1e7b462a27b0997da0c8baef356115a7e7ebf4e439501b",
+        "after": "d25f6c0305c2b05aec1e7b462a27b0997da0c8baef356115a7e7ebf4e439501b",
+        "sourceHash": "d25f6c0305c2b05aec1e7b462a27b0997da0c8baef356115a7e7ebf4e439501b",
+        "action": "unchanged"
+      }
+    ],
+    "conflicts": [
+      "codex/memories/note.md"
+    ],
+    "sourceDeletionsRetained": [],
+    "excluded": [
+      "sessions, archived_sessions, SQLite, auth, plugin cache/runtime, automations and host trust are not copied"
+    ],
+    "applied": false,
+    "environmentComplete": false
+  }
+}

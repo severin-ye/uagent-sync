@@ -1,0 +1,9 @@
+Get-Item : �Ҳ���·����%USERPROFILE%\AppData\Local\Temp\uagent-hp-acceptance-20260911-173421\offline-diagnostic\sourc
+e\中文 file.txt������Ϊ��·�������ڡ�
+����λ�� %USERPROFILE%\AppData\Local\Temp\uagent-hp-acceptance-20260911-173421\source\scripts\copy-offline-workspace
+.ps1:45 �ַ�: 11
++   $file = Get-Item -LiteralPath $from
++           ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Users\severi...ce\中文 file.txt:String) [Get-Item], ItemNotFoundExce
+p    tion
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetItemCommand

@@ -1,0 +1,44 @@
+{
+  "ok": true,
+  "value": {
+    "snapshotDir": "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-acceptance-20260911-173421\\fixture-complete\\b12-reverse-snapshot",
+    "manifest": {
+      "schemaVersion": 1,
+      "id": "9ba99d8d-e01f-425e-8ba1-dc8be63a4696",
+      "sourceDeviceId": "564931aa-e297-4c26-b4da-54403ff9baf2",
+      "createdAt": "2026-09-11T08:42:48.893Z",
+      "files": [
+        {
+          "root": "codex",
+          "path": "config.toml",
+          "sha256": "de9b489f7eb6471c76917defc17c359d2699bbd1e5d53876d4e251b95be8d4cc"
+        },
+        {
+          "root": "codex",
+          "path": "AGENTS.md",
+          "sha256": "2f0680a18b74851c03bf515e78e0337b9a4a75bfa32dc0672760745f9c237f78"
+        },
+        {
+          "root": "codex",
+          "path": "memories/note.md",
+          "sha256": "043544d09778112141fe30cc1c68de677c4b5a5700485f19e8ed2d787d5f1cc0"
+        },
+        {
+          "root": "agents",
+          "path": "skills/local-demo/SKILL.md",
+          "sha256": "d25f6c0305c2b05aec1e7b462a27b0997da0c8baef356115a7e7ebf4e439501b"
+        }
+      ],
+      "excluded": [
+        "sessions, archived_sessions, SQLite, auth, plugin cache/runtime, automations and host trust are not copied"
+      ]
+    },
+    "scope": "codex-personal-files",
+    "environmentComplete": false,
+    "remaining": [
+      "workspace files and dependencies",
+      "plugin installation and runtime validation",
+      "excluded device-local settings listed in manifest"
+    ]
+  }
+}

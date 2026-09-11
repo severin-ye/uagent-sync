@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "devices": [
+    {
+      "schemaVersion": 1,
+      "deviceId": "564931aa-e297-4c26-b4da-54403ff9baf2",
+      "displayName": "南星",
+      "platform": "windows",
+      "paths": {
+        "userHome": "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-acceptance-20260911-173421\\fixture-complete\\beta",
+        "codexHome": "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-acceptance-20260911-173421\\fixture-complete\\beta\\.codex"
+      },
+      "workspaces": {
+        "main": {
+          "root": "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-acceptance-20260911-173421\\fixture-complete\\beta\\work"
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "deviceId": "bb0b90d4-b016-481e-8f4f-a9ad9b2876ee",
+      "displayName": "晨光",
+      "platform": "windows",
+      "paths": {
+        "userHome": "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-acceptance-20260911-173421\\fixture-complete\\alpha",
+        "codexHome": "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-acceptance-20260911-173421\\fixture-complete\\alpha\\.codex"
+      },
+      "workspaces": {
+        "main": {
+          "root": "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-acceptance-20260911-173421\\fixture-complete\\alpha\\work"
+        }
+      }
+    }
+  ]
+}

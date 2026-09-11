@@ -1,0 +1,11 @@
+{
+  "alias": "惠普",
+  "userHome": "%USERPROFILE%",
+  "workspace": "%USERPROFILE%/Codelib-severin",
+  "workspaceExists": true,
+  "platform": "win32",
+  "release": "10.0.26200",
+  "version": "Windows 11 Pro for Workstations",
+  "node": "v24.19.0",
+  "codexHomeEnv": null
+}

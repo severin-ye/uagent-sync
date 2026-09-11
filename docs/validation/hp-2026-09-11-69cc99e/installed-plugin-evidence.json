@@ -1,0 +1,22 @@
+{
+  "caches": [
+    {
+      "path": "%USERPROFILE%\\.codex\\plugins\\cache\\personal\\uagent-sync\\2.1.0",
+      "name": "uagent-sync",
+      "version": "2.1.0",
+      "deviceSkillExists": false,
+      "deviceWorkflowFiles": []
+    },
+    {
+      "path": "%USERPROFILE%\\.codex\\plugins\\cache\\uagent-sync\\uagent-sync\\2.1.1",
+      "name": "uagent-sync",
+      "version": "2.1.1",
+      "deviceSkillExists": false,
+      "deviceWorkflowFiles": []
+    }
+  ],
+  "sourceDeviceSkill": true,
+  "hostCatalogDeviceSkill": false,
+  "hostCatalogSeverin": false,
+  "note": "Current task supplied skill catalog contains uagent-sync 2.1.0 and 2.1.1 backup/restore/update skills; no uagent-sync-device or Severin. Catalog observation is not a host reload test."
+}

@@ -1,0 +1,7 @@
+Existing staged file differs: ���� file.txt
+����λ�� %USERPROFILE%\AppData\Local\Temp\uagent-hp-acceptance-20260911-173421\source\scripts\copy-offline-workspace
+.ps1:70 �ַ�: 47
++ ... $expected) { throw "Existing staged file differs: $($job.Relative)" }
++                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Existing staged...rs: ���� file.txt:String) [], RuntimeException
+    + FullyQualifiedErrorId : Existing staged file differs: ���� file.txt

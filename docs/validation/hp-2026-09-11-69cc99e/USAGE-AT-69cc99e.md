@@ -1,0 +1,64 @@
+# 多设备同步：当前可运行入口
+
+当前为源码中的新增能力，尚未发布或安装到现有插件缓存。先在本仓库运行 `npm run build`，以下 `uagent-sync` 用 `node <源码绝对路径>/dist/cli.js` 代替。不要在未升级的全局 2.1.1 命令上假设这些入口已经存在。
+
+## 设备配置
+
+设备资料独立保存在指定配置仓库 `sync/devices/<id>.json`；本机连接默认是 `~/.codex/uagent-device.json`。该连接不进入快照，避免覆盖另一台的身份。配置仓库应是本机已有 checkout，支持复用私有 dotfiles 仓库。
+
+```powershell
+uagent-sync device register --registry <配置仓库本地目录> --remote <私有GitHub仓库HTTPS地址> --name <设备别名> --workspace-id main --workspace-root <本机工作区>
+uagent-sync device list
+uagent-sync device show <设备ID或别名>
+uagent-sync device rename --name <新别名>
+uagent-sync device reconnect --registry <新配置仓库本地目录> --remote <新仓库HTTPS地址>
+```
+
+每台设备在自己机器上 register，重复执行保留身份。可用 `--connection <文件>` 指定独立连接文件；用户目录与 Codex 目录可用 `--user-home`、`--codex-home` 显式指定。多个工作区通过登记接口的 `workspaces` 管理，CLI 使用 `--workspace-id` 选择已登记项。当前平台首轮实测为 Windows。
+
+## 覆盖清单与离线搬运
+
+```powershell
+uagent-sync device audit --output <不存在的报告JSON路径>
+powershell.exe -NoProfile -File <源码目录>/scripts/copy-offline-workspace.ps1 -ReportPath <报告JSON> -TargetRoot <移动硬盘或共享目录中的暂存目录>
+```
+
+audit 只读取文件元数据和 Git 状态，不读取办公资料内容。报告涵盖普通文件、依赖、未跟踪/忽略文件、大文件、链接与失败项。Git 内部对象不计入文件体积，链接不跟随；仓库检测失败也会报告。`readyForGitOnlyTransfer=false` 不表示扫描失败，表示不能仅凭普通 Git 完整迁移。
+
+`transferFiles` 列出大文件和未跟踪/忽略文件，**不包含**依赖重建目录、识别为凭据的文件、链接和 Git 内部对象，因此不是全环境备份清单。源内容变更后应重新 audit。
+
+搬运脚本默认仅预览；追加 `-Apply` 才复制。目标必须是新空暂存目录，或者属于同一报告的可续传目录。逐文件校验 SHA256，拒绝覆盖不同内容，不向运行中的惠普工作区直接覆盖。它只生成离线暂存副本，不代表已完成目标机项目合并或环境重建。
+
+## Codex 个人文件快照
+
+```powershell
+uagent-sync device snapshot
+uagent-sync device snapshot --components config,rules,memories --output <新的快照目录>
+uagent-sync device restore --snapshot <快照目录>
+uagent-sync device restore --snapshot <快照目录> --apply
+```
+
+默认采集配置、规则、记忆及本地 Skill 文件。可通过 `--components config,rules,skills,memories` 明确选择；未选择项会记录为排除，不能据此宣称全部迁移。snapshot 不覆盖已有快照目录，输出包含内容摘要和未覆盖项。
+
+restore 默认只预览。无基线且目标内容不同会冲突；首次用户明确指定以源机为准时，可追加 `--prefer-source --apply`，会先备份原文件。后续源与目标均改动时阻断覆盖，仅本地改变而源未变则保留本地。源删除的文件暂不自动删除，会报告保留项。备份和基线位于目标 Codex 目录的 `uagent-device-state/`。
+
+路径转换用于受支持的 TOML 配置；文档和记忆原文不替换。现有目标配置中的机器专属内容保留。登录、宿主信任、sessions/SQLite、自动化、插件缓存和运行状态不复制。插件配置条目写入不代表插件已经安装。
+
+本机实测 config/rules/memories 快照包含221个文件，并在隔离目标目录完成恢复。完整 skills 采集目前被第三方源代码/文档中的82项疑似密钥文件报告阻断，部分已证实是示例或变量引用，不能把这些报告一律当成真实密钥，也不能整体关闭扫描绕过。原始文件未修改，完整个人环境尚未迁移完成。
+
+## 配置仓库传输
+
+```powershell
+uagent-sync device publish --path sync/devices/<本机ID>.json --path sync/profiles/<本机ID>/<快照目录名>
+uagent-sync device fetch
+```
+
+publish 只接受显式设备/快照目录，检查 origin 与连接一致、GitHub PRIVATE、候选文件密钥规则、已有暂存改动和远端分叉。它不会提交工作区所有项目，不会强推；失败可能保留尚未推送的本地提交，必须检查 Git 状态后处理。fetch 要求配置仓库干净，使用 fast-forward。
+
+这些传输入口尚未对用户远端执行端到端写入验收。密钥检查是启发式检查，不是任意文件均可安全上传的证明。不要把未来生成的快照目录与之前已审查目录混为一谈。
+
+## Severin 联动与完成边界
+
+U同步新增 `uagent-sync-device` Skill；Severin 的 Agent 运维 Skill 增加按需设备交接工作流及目录登记。两者共用 U同步设备表，不写死别名、路径或仓库地址。源文件接入已完成，安装缓存未更新，不能声称新工作流已在宿主加载。
+
+完整完成仍需：处理 Skill 采集阻断、发布/安装新版本、传输项目与离线文件、在真实目标机恢复、安装与运行验证、双向回传。历史对话继续作为可选项。

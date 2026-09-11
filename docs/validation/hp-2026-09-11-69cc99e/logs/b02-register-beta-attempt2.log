@@ -1,0 +1,24 @@
+{
+  "ok": true,
+  "device": {
+    "schemaVersion": 1,
+    "deviceId": "564931aa-e297-4c26-b4da-54403ff9baf2",
+    "displayName": "南星",
+    "platform": "windows",
+    "paths": {
+      "userHome": "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-acceptance-20260911-173421\\fixture-complete\\beta",
+      "codexHome": "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-acceptance-20260911-173421\\fixture-complete\\beta\\.codex"
+    },
+    "workspaces": {
+      "main": {
+        "root": "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-acceptance-20260911-173421\\fixture-complete\\beta\\work"
+      }
+    }
+  },
+  "connection": {
+    "schemaVersion": 1,
+    "deviceId": "564931aa-e297-4c26-b4da-54403ff9baf2",
+    "registryRemote": "https://github.com/example/private-registry.git",
+    "registryCheckout": "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-acceptance-20260911-173421\\fixture-complete\\registry"
+  }
+}

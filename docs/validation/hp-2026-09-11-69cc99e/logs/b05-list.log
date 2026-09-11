@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "devices": [
+    {
+      "schemaVersion": 1,
+      "deviceId": "5d1d3076-6540-446f-90e6-394d984bd5d0",
+      "displayName": "晨光",
+      "platform": "windows",
+      "paths": {
+        "userHome": "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-acceptance-20260911-173421\\fixture\\alpha",
+        "codexHome": "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-acceptance-20260911-173421\\fixture\\alpha\\.codex"
+      },
+      "workspaces": {
+        "main": {
+          "root": "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-acceptance-20260911-173421\\fixture\\alpha\\work"
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "deviceId": "fabb3728-ee8f-4b67-ac82-25bd0a717a15",
+      "displayName": "南星",
+      "platform": "windows",
+      "paths": {
+        "userHome": "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-acceptance-20260911-173421\\fixture\\beta",
+        "codexHome": "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-acceptance-20260911-173421\\fixture\\beta\\.codex"
+      },
+      "workspaces": {
+        "main": {
+          "root": "%USERPROFILE%\\AppData\\Local\\Temp\\uagent-hp-acceptance-20260911-173421\\fixture\\beta\\work"
+        }
+      }
+    }
+  ]
+}

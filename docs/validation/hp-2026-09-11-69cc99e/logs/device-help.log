@@ -1,0 +1,7 @@
+device register|list|show|rename|reconnect|audit|snapshot|restore|fetch|publish
+Shared: --connection <local-file> --workspace-id <id>
+audit: [--output <new-json-file>]
+snapshot: [--output <new-directory>]
+restore: --snapshot <directory> [--apply] [--prefer-source (first restore only)]
+publish: --path <sync/devices/... or sync/profiles/...> (repeatable)
+Restore transfers personal files only; extension installation and project transfer require separate verification.

@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Different IDs",
+    "status": "PASS"
+  },
+  {
+    "name": "Repeat register retains ID",
+    "status": "PASS"
+  },
+  {
+    "name": "Rename retains ID",
+    "status": "PASS"
+  },
+  {
+    "name": "List and arbitrary alias show",
+    "status": "PASS"
+  },
+  {
+    "name": "Default snapshot covers config rules skills memories",
+    "status": "PASS"
+  },
+  {
+    "name": "Preview writes nothing",
+    "status": "PASS"
+  },
+  {
+    "name": "Initial conflict apply leaves target unchanged",
+    "status": "PASS"
+  },
+  {
+    "name": "Original backup exact",
+    "status": "PASS"
+  },
+  {
+    "name": "Restore text and mapped config",
+    "status": "PASS"
+  },
+  {
+    "name": "First reverse reports conflict and writes nothing",
+    "status": "PASS"
+  },
+  {
+    "name": "Reverse subsequent source-only update applies",
+    "status": "PASS"
+  },
+  {
+    "name": "Both changed protected including prefer-source misuse",
+    "status": "PASS"
+  }
+]
