@@ -1,0 +1,191 @@
+{
+  "summary": {
+    "changed_count": 5,
+    "affected_count": 12,
+    "changed_files": 2,
+    "risk_level": "high"
+  },
+  "changed_symbols": [
+    {
+      "id": "Function:src/lib/profile-expressions.ts:recognizeProfileExpressions",
+      "name": "recognizeProfileExpressions",
+      "type": "Function",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:test/profile-secret-scan-quoted.test.ts:safe",
+      "name": "safe",
+      "type": "Const",
+      "filePath": "test/profile-secret-scan-quoted.test.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:test/profile-secret-scan-quoted.test.ts:fn@56:219.device@59:2",
+      "name": "device",
+      "type": "Function",
+      "filePath": "test/profile-secret-scan-quoted.test.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:test/profile-secret-scan-quoted.test.ts:fn@56:219.target@60:2",
+      "name": "target",
+      "type": "Const",
+      "filePath": "test/profile-secret-scan-quoted.test.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:test/profile-secret-scan-quoted.test.ts:fn@56:219.check@85:2",
+      "name": "check",
+      "type": "Function",
+      "filePath": "test/profile-secret-scan-quoted.test.ts",
+      "change_type": "touched"
+    }
+  ],
+  "affected_processes": [
+    {
+      "id": "proc_3_restorecodexprofile",
+      "name": "RestoreCodexProfile → Text",
+      "process_type": "cross_community",
+      "step_count": 8,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        }
+      ]
+    },
+    {
+      "id": "proc_14_restorecodexprofile",
+      "name": "RestoreCodexProfile → CodeRegions",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        }
+      ]
+    },
+    {
+      "id": "proc_15_restorecodexprofile",
+      "name": "RestoreCodexProfile → Lex",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        }
+      ]
+    },
+    {
+      "id": "proc_16_restorecodexprofile",
+      "name": "RestoreCodexProfile → TypescriptPlaceholders",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        }
+      ]
+    },
+    {
+      "id": "proc_116_walk",
+      "name": "Walk → Text",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_124_walk",
+      "name": "Walk → CodeRegions",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_125_walk",
+      "name": "Walk → Lex",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_126_walk",
+      "name": "Walk → TypescriptPlaceholders",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_175_scan",
+      "name": "Scan → Text",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_183_scan",
+      "name": "Scan → CodeRegions",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_184_scan",
+      "name": "Scan → Lex",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_185_scan",
+      "name": "Scan → TypescriptPlaceholders",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        }
+      ]
+    }
+  ]
+}

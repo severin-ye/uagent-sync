@@ -1,0 +1,72 @@
+{
+  "target": {
+    "id": "Function:src/lib/profile-expressions.ts:recognizeProfileExpressions",
+    "name": "recognizeProfileExpressions",
+    "type": "Function",
+    "filePath": "src/lib/profile-expressions.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 7,
+  "risk": "HIGH",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 3,
+    "modules_affected": 3
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 3,
+    "3": 3
+  },
+  "affected_processes": [
+    {
+      "name": "restoreCodexProfile",
+      "type": "Function",
+      "filePath": "src/lib/codex-profile.ts",
+      "affected_process_count": 7,
+      "total_hits": 18,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "walk",
+      "type": "Function",
+      "filePath": "src/lib/codex-profile.ts",
+      "affected_process_count": 7,
+      "total_hits": 12,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "scan",
+      "type": "Function",
+      "filePath": "src/lib/device-git-transport.ts",
+      "affected_process_count": 5,
+      "total_hits": 10,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Cluster_46",
+      "hits": 4,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_53",
+      "hits": 2,
+      "impact": "indirect"
+    },
+    {
+      "name": "Cluster_47",
+      "hits": 1,
+      "impact": "indirect"
+    }
+  ]
+}
+
+  GitNexus Impact (1.6.11)

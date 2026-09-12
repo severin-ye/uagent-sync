@@ -1,0 +1,148 @@
+[
+  {
+    "label": "install",
+    "cmd": "npm.cmd",
+    "args": [
+      "ci",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "status": 0,
+    "signal": null,
+    "preEnv": "install-pre-env.json",
+    "log": "install.log"
+  },
+  {
+    "label": "baseline-build",
+    "cmd": "npm.cmd",
+    "args": [
+      "run",
+      "build"
+    ],
+    "status": 0,
+    "signal": null,
+    "preEnv": "baseline-build-pre-env.json",
+    "log": "baseline-build.log"
+  },
+  {
+    "label": "index",
+    "cmd": "node",
+    "args": [
+      "<USER_ROOT>\\AppData\\Local\\pnpm\\store\\v11\\links\\@\\gitnexus\\1.6.11\\b5f5e5dfb93e9c782cd6bd8d226b0a45a779732252e19e5b493352f6b71ca9e6\\node_modules\\gitnexus\\dist\\cli\\index.js",
+      "analyze",
+      "--index-only",
+      "--name",
+      "hp-quoted",
+      "--workers",
+      "2"
+    ],
+    "status": 0,
+    "signal": null,
+    "preEnv": "index-pre-env.json",
+    "log": "index.log"
+  },
+  {
+    "label": "impact",
+    "cmd": "node",
+    "args": [
+      "<USER_ROOT>\\AppData\\Local\\pnpm\\store\\v11\\links\\@\\gitnexus\\1.6.11\\b5f5e5dfb93e9c782cd6bd8d226b0a45a779732252e19e5b493352f6b71ca9e6\\node_modules\\gitnexus\\dist\\cli\\index.js",
+      "impact",
+      "recognizeProfileExpressions",
+      "--direction",
+      "upstream",
+      "--repo",
+      "hp-quoted",
+      "--file",
+      "src/lib/profile-expressions.ts",
+      "--summary-only"
+    ],
+    "status": 0,
+    "signal": null,
+    "preEnv": "impact-pre-env.json",
+    "log": "impact.log"
+  },
+  {
+    "label": "red",
+    "cmd": "node",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-secret-scan-quoted.test.ts"
+    ],
+    "status": 1,
+    "signal": null,
+    "preEnv": "red-pre-env.json",
+    "log": "red.log"
+  },
+  {
+    "label": "red-final",
+    "cmd": "node",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-secret-scan-quoted.test.ts"
+    ],
+    "status": 1,
+    "signal": null,
+    "preEnv": "red-final-pre-env.json",
+    "log": "red-final.log"
+  },
+  {
+    "label": "red-expanded",
+    "cmd": "node",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-secret-scan-quoted.test.ts"
+    ],
+    "status": 1,
+    "signal": null,
+    "preEnv": "red-expanded-pre-env.json",
+    "log": "red-expanded.log"
+  },
+  {
+    "label": "focused",
+    "cmd": "node",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-secret-scan-quoted.test.ts",
+      "test/profile-secret-scan-five.test.ts",
+      "test/profile-secret-scan-boundary.test.ts",
+      "test/profile-secret-scan-m13.test.ts",
+      "test/profile-secret-scan.test.ts",
+      "test/secret-scan-m0.test.ts"
+    ],
+    "status": 0,
+    "signal": null,
+    "preEnv": "focused-pre-env.json",
+    "log": "focused.log"
+  },
+  {
+    "label": "full",
+    "cmd": "npm.cmd",
+    "args": [
+      "test"
+    ],
+    "status": 0,
+    "signal": null,
+    "preEnv": "full-pre-env.json",
+    "log": "full.log"
+  },
+  {
+    "label": "detect",
+    "cmd": "node",
+    "args": [
+      "<USER_ROOT>\\AppData\\Local\\Temp\\uagent-hp-quoted-evidence\\detect-all.mjs"
+    ],
+    "status": 0,
+    "signal": null,
+    "preEnv": "detect-pre-env.json",
+    "log": "detect.log"
+  }
+]

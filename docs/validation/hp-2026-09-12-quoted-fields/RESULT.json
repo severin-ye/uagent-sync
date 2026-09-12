@@ -1,0 +1,29 @@
+{
+  "inputSha": "0b13fbb28b679ba16f89b74f39e091fae389a97e",
+  "baselineCodeSha": "04672a6314d66c745bb11819e90f71b5ced0d3d0",
+  "inputSourceDiff": [],
+  "codeSha": "c96ee5bb130ad89e31f3d37724161c6ac80c2983",
+  "red": {
+    "total": 18,
+    "pass": 1,
+    "expectedFailures": 17,
+    "exit": 1
+  },
+  "focused": {
+    "pass": 139,
+    "exit": 0
+  },
+  "full": {
+    "pass": 557,
+    "exit": 0
+  },
+  "productionChange": "exact single/double quoted apiKey tokens added to existing TS colon refusal guard",
+  "allowScopeChanged": false,
+  "realCollection": false,
+  "realRestore": false,
+  "installation": false,
+  "linkOperations": false,
+  "migrationComplete": false,
+  "hp03Complete": false,
+  "honorReview": "pending"
+}

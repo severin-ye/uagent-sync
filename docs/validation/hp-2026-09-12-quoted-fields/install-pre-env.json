@@ -1,0 +1,15 @@
+{
+  "USERPROFILE": "<USER_ROOT>/AppData/Local/Temp/uagent-hp-quoted-home",
+  "HOME": "<USER_ROOT>/AppData/Local/Temp/uagent-hp-quoted-home",
+  "APPDATA": "<USER_ROOT>/AppData/Local/Temp/uagent-hp-quoted-home/AppData/Roaming",
+  "LOCALAPPDATA": "<USER_ROOT>/AppData/Local/Temp/uagent-hp-quoted-home/AppData/Local",
+  "CODEX_HOME": "<USER_ROOT>/AppData/Local/Temp/uagent-hp-quoted-home/.codex",
+  "XDG_CONFIG_HOME": "<USER_ROOT>/AppData/Local/Temp/uagent-hp-quoted-home/.config",
+  "TEMP": "<USER_ROOT>/AppData/Local/Temp/uagent-hp-quoted-home/tmp",
+  "TMP": "<USER_ROOT>/AppData/Local/Temp/uagent-hp-quoted-home/tmp",
+  "npm_config_cache": "<USER_ROOT>/AppData/Local/Temp/uagent-hp-quoted-home/npm-cache",
+  "npm_config_userconfig": "<USER_ROOT>/AppData/Local/Temp/uagent-hp-quoted-home/npmrc",
+  "npm_config_globalconfig": "<USER_ROOT>/AppData/Local/Temp/uagent-hp-quoted-home/npm-globalrc",
+  "UAGENT_SYNC_WORKSPACE_ROOT": null,
+  "OPENCODE_SYNC_WORKSPACE_ROOT": "<USER_ROOT>/AppData/Local/Temp/uagent-hp-quoted-fields"
+}

@@ -1,0 +1,322 @@
+{"variant":"quoted-comment","expectedRefusalFailures":["collect rejection","collect no artifact","restore rejection","restore bytes unchanged","restore baseline unchanged","publish rejection","publish no additional Git calls"],"calls":2}
+{"variant":"quoted-template","expectedRefusalFailures":["collect rejection","collect no artifact","restore rejection","restore bytes unchanged","restore baseline unchanged","publish rejection","publish no additional Git calls"],"calls":2}
+✖ RY-C5-01 quoted field " comment (4.8778ms)
+✖ RY-C5-01 quoted field " template (0.5095ms)
+✖ RY-C5-01 quoted field " newline (0.2221ms)
+✖ RY-C5-01 quoted field " line-comment (0.1893ms)
+✖ RY-C5-01 quoted field " interpolation (0.2399ms)
+✖ RY-C5-01 quoted field " comment-template (0.1905ms)
+✖ RY-C5-01 quoted field ' comment (0.2272ms)
+✖ RY-C5-01 quoted field ' template (0.1918ms)
+✖ RY-C5-01 quoted field ' newline (0.2296ms)
+✖ RY-C5-01 quoted field ' line-comment (0.3066ms)
+✖ RY-C5-01 quoted field ' interpolation (0.2388ms)
+✖ RY-C5-01 quoted field ' comment-template (0.2071ms)
+✔ RY-C5-01 quoted fields do not gain a placeholder allowance (0.8076ms)
+✖ RY-C5-01 does not reinterpret string contents or mask comments and neighbors (1.4149ms)
+✖ RY-C5-01 quoted-comment (115.4833ms)
+✖ RY-C5-01 quoted-template (110.8422ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 1
+ℹ fail 15
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 556.4163
+
+✖ failing tests:
+
+test at test\profile-secret-scan-quoted.test.ts:1:1101
+✖ RY-C5-01 quoted field " comment (4.8778ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-quoted-fields\test\profile-secret-scan-quoted.test.ts:30:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@1$/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-quoted.test.ts:1:1101
+✖ RY-C5-01 quoted field " template (0.5095ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-quoted-fields\test\profile-secret-scan-quoted.test.ts:30:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@1$/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-quoted.test.ts:1:1101
+✖ RY-C5-01 quoted field " newline (0.2221ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-quoted-fields\test\profile-secret-scan-quoted.test.ts:30:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@1$/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-quoted.test.ts:1:1101
+✖ RY-C5-01 quoted field " line-comment (0.1893ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-quoted-fields\test\profile-secret-scan-quoted.test.ts:30:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@1$/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-quoted.test.ts:1:1101
+✖ RY-C5-01 quoted field " interpolation (0.2399ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-quoted-fields\test\profile-secret-scan-quoted.test.ts:30:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@1$/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-quoted.test.ts:1:1101
+✖ RY-C5-01 quoted field " comment-template (0.1905ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-quoted-fields\test\profile-secret-scan-quoted.test.ts:30:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@1$/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-quoted.test.ts:1:1101
+✖ RY-C5-01 quoted field ' comment (0.2272ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-quoted-fields\test\profile-secret-scan-quoted.test.ts:30:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@1$/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-quoted.test.ts:1:1101
+✖ RY-C5-01 quoted field ' template (0.1918ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-quoted-fields\test\profile-secret-scan-quoted.test.ts:30:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@1$/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-quoted.test.ts:1:1101
+✖ RY-C5-01 quoted field ' newline (0.2296ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-quoted-fields\test\profile-secret-scan-quoted.test.ts:30:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@1$/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-quoted.test.ts:1:1101
+✖ RY-C5-01 quoted field ' line-comment (0.3066ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-quoted-fields\test\profile-secret-scan-quoted.test.ts:30:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@1$/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-quoted.test.ts:1:1101
+✖ RY-C5-01 quoted field ' interpolation (0.2388ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-quoted-fields\test\profile-secret-scan-quoted.test.ts:30:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@1$/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-quoted.test.ts:1:1101
+✖ RY-C5-01 quoted field ' comment-template (0.2071ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-quoted-fields\test\profile-secret-scan-quoted.test.ts:30:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@1$/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-quoted.test.ts:1:2015
+✖ RY-C5-01 does not reinterpret string contents or mask comments and neighbors (1.4149ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-quoted-fields\test\profile-secret-scan-quoted.test.ts:51:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@3$/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-quoted.test.ts:1:2833
+✖ RY-C5-01 quoted-comment (115.4833ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + [
+  +   'collect rejection',
+  +   'collect no artifact',
+  +   'restore rejection',
+  +   'restore bytes unchanged',
+  +   'restore baseline unchanged',
+  +   'publish rejection',
+  +   'publish no additional Git calls'
+  + ]
+  - []
+
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-quoted-fields\test\profile-secret-scan-quoted.test.ts:102:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'collect rejection', 'collect no artifact', 'restore rejection', 'restore bytes unchanged', 'restore baseline unchanged', 'publish rejection', 'publish no additional Git calls' ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-quoted.test.ts:1:2833
+✖ RY-C5-01 quoted-template (110.8422ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + [
+  +   'collect rejection',
+  +   'collect no artifact',
+  +   'restore rejection',
+  +   'restore bytes unchanged',
+  +   'restore baseline unchanged',
+  +   'publish rejection',
+  +   'publish no additional Git calls'
+  + ]
+  - []
+
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-quoted-fields\test\profile-secret-scan-quoted.test.ts:102:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'collect rejection', 'collect no artifact', 'restore rejection', 'restore bytes unchanged', 'restore baseline unchanged', 'publish rejection', 'publish no additional Git calls' ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
