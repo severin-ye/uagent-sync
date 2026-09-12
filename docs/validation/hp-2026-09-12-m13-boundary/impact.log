@@ -1,0 +1,400 @@
+{
+  "target": {
+    "id": "Function:src/lib/profile-expressions.ts:terminated",
+    "name": "terminated",
+    "type": "Function",
+    "filePath": "src/lib/profile-expressions.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 5,
+  "risk": "HIGH",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 3,
+    "modules_affected": 3
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 1,
+    "3": 3
+  },
+  "affected_processes": [
+    {
+      "name": "createCodexProfile",
+      "type": "Function",
+      "filePath": "src/lib/codex-profile.ts",
+      "affected_process_count": 7,
+      "total_hits": 16,
+      "earliest_broken_step": 3
+    },
+    {
+      "name": "restoreCodexProfile",
+      "type": "Function",
+      "filePath": "src/lib/codex-profile.ts",
+      "affected_process_count": 6,
+      "total_hits": 15,
+      "earliest_broken_step": 3
+    },
+    {
+      "name": "scan",
+      "type": "Function",
+      "filePath": "src/lib/device-git-transport.ts",
+      "affected_process_count": 5,
+      "total_hits": 14,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Cluster_45",
+      "hits": 3,
+      "impact": "indirect"
+    },
+    {
+      "name": "Cluster_52",
+      "hits": 1,
+      "impact": "indirect"
+    },
+    {
+      "name": "Cluster_65",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/lib/profile-expressions.ts:recognizeProfileExpressions",
+        "name": "recognizeProfileExpressions",
+        "filePath": "src/lib/profile-expressions.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_17_createcodexprofile",
+            "label": "CreateCodexProfile → Terminated",
+            "processType": "cross_community",
+            "step": 5
+          },
+          {
+            "id": "proc_122_restorecodexprofile",
+            "label": "RestoreCodexProfile → CodeRegions",
+            "processType": "cross_community",
+            "step": 5
+          },
+          {
+            "id": "proc_172_scan",
+            "label": "Scan → Text",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_16_createcodexprofile",
+            "label": "CreateCodexProfile → Lex",
+            "processType": "cross_community",
+            "step": 5
+          },
+          {
+            "id": "proc_124_restorecodexprofile",
+            "label": "RestoreCodexProfile → Terminated",
+            "processType": "cross_community",
+            "step": 5
+          },
+          {
+            "id": "proc_123_restorecodexprofile",
+            "label": "RestoreCodexProfile → Lex",
+            "processType": "cross_community",
+            "step": 5
+          },
+          {
+            "id": "proc_15_createcodexprofile",
+            "label": "CreateCodexProfile → CodeRegions",
+            "processType": "cross_community",
+            "step": 5
+          },
+          {
+            "id": "proc_3_createcodexprofile",
+            "label": "CreateCodexProfile → Text",
+            "processType": "cross_community",
+            "step": 5
+          },
+          {
+            "id": "proc_113_restorecodexprofile",
+            "label": "RestoreCodexProfile → Text",
+            "processType": "cross_community",
+            "step": 5
+          },
+          {
+            "id": "proc_181_scan",
+            "label": "Scan → Lex",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_182_scan",
+            "label": "Scan → Terminated",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_180_scan",
+            "label": "Scan → CodeRegions",
+            "processType": "cross_community",
+            "step": 3
+          }
+        ]
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/lib/profile-secret-scan.ts:assertProfileContentSafe",
+        "name": "assertProfileContentSafe",
+        "filePath": "src/lib/profile-secret-scan.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_15_createcodexprofile",
+            "label": "CreateCodexProfile → CodeRegions",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_122_restorecodexprofile",
+            "label": "RestoreCodexProfile → CodeRegions",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_172_scan",
+            "label": "Scan → Text",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_17_createcodexprofile",
+            "label": "CreateCodexProfile → Terminated",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_124_restorecodexprofile",
+            "label": "RestoreCodexProfile → Terminated",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_16_createcodexprofile",
+            "label": "CreateCodexProfile → Lex",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_3_createcodexprofile",
+            "label": "CreateCodexProfile → Text",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_189_scan",
+            "label": "Scan → ScanForSecrets",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_123_restorecodexprofile",
+            "label": "RestoreCodexProfile → Lex",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_180_scan",
+            "label": "Scan → CodeRegions",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_113_restorecodexprofile",
+            "label": "RestoreCodexProfile → Text",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_132_restorecodexprofile",
+            "label": "RestoreCodexProfile → ScanForSecrets",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_28_createcodexprofile",
+            "label": "CreateCodexProfile → ScanForSecrets",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_181_scan",
+            "label": "Scan → Lex",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_182_scan",
+            "label": "Scan → Terminated",
+            "processType": "cross_community",
+            "step": 2
+          }
+        ]
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/lib/codex-profile.ts:createCodexProfile.walk@92:2",
+        "name": "walk",
+        "filePath": "src/lib/codex-profile.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_27_createcodexprofile",
+            "label": "CreateCodexProfile → NoLinks",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_7_createcodexprofile",
+            "label": "CreateCodexProfile → Mappings",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_15_createcodexprofile",
+            "label": "CreateCodexProfile → CodeRegions",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_28_createcodexprofile",
+            "label": "CreateCodexProfile → ScanForSecrets",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_3_createcodexprofile",
+            "label": "CreateCodexProfile → Text",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_16_createcodexprofile",
+            "label": "CreateCodexProfile → Lex",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_17_createcodexprofile",
+            "label": "CreateCodexProfile → Terminated",
+            "processType": "cross_community",
+            "step": 3
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/codex-profile.ts:readSnapshot",
+        "name": "readSnapshot",
+        "filePath": "src/lib/codex-profile.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_124_restorecodexprofile",
+            "label": "RestoreCodexProfile → Terminated",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_131_restorecodexprofile",
+            "label": "RestoreCodexProfile → NoLinks",
+            "processType": "intra_community",
+            "step": 3
+          },
+          {
+            "id": "proc_113_restorecodexprofile",
+            "label": "RestoreCodexProfile → Text",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_123_restorecodexprofile",
+            "label": "RestoreCodexProfile → Lex",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_132_restorecodexprofile",
+            "label": "RestoreCodexProfile → ScanForSecrets",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_122_restorecodexprofile",
+            "label": "RestoreCodexProfile → CodeRegions",
+            "processType": "cross_community",
+            "step": 3
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/device-git-transport.ts:publishDevicePaths.scan@28:2",
+        "name": "scan",
+        "filePath": "src/lib/device-git-transport.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_181_scan",
+            "label": "Scan → Lex",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_182_scan",
+            "label": "Scan → Terminated",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_180_scan",
+            "label": "Scan → CodeRegions",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_189_scan",
+            "label": "Scan → ScanForSecrets",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_172_scan",
+            "label": "Scan → Text",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      }
+    ]
+  }
+}
+
+  GitNexus Impact (1.6.11)

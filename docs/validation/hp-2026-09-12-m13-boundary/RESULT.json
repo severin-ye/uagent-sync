@@ -1,0 +1,41 @@
+{
+  "inputSha": "8e4bb4b154c3671def2b82269850219ddbc73201",
+  "sourceBaseline": "ec827170ec24d78fd27e213d3cc3ff1d678a6377",
+  "sourceDifferenceAtInput": [],
+  "codeSha": "1ad915b9b9a45289dd9540408907ce593982e227",
+  "red": {
+    "exitCode": 1,
+    "total": 34,
+    "pass": 15,
+    "expectedAssertionFailures": 19
+  },
+  "baselineFocused": {
+    "exitCode": 0,
+    "pass": 56
+  },
+  "focused": {
+    "exitCode": 0,
+    "pass": 90
+  },
+  "full": {
+    "exitCode": 0,
+    "pass": 508
+  },
+  "productionSymbolsChanged": [
+    "terminated"
+  ],
+  "allowedCandidateScope": "unchanged: 11 bounded Python forms, not real files rescanned",
+  "deferred": [
+    "HP-001",
+    "HP-004",
+    "HP-005",
+    "HP-007",
+    "HP-008"
+  ],
+  "honorReview": "pending; RY-09 status not changed",
+  "migrationComplete": false,
+  "realCollection": false,
+  "realRestore": false,
+  "pluginInstall": false,
+  "realLinkOperations": false
+}

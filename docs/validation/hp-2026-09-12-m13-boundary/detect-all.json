@@ -1,0 +1,83 @@
+{
+  "summary": {
+    "changed_count": 5,
+    "affected_count": 3,
+    "changed_files": 2,
+    "risk_level": "medium"
+  },
+  "changed_symbols": [
+    {
+      "id": "Function:src/lib/profile-expressions.ts:terminated",
+      "name": "terminated",
+      "type": "Function",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:test/profile-secret-scan-boundary.test.ts:fn@12:74.device@15:2",
+      "name": "device",
+      "type": "Function",
+      "filePath": "test/profile-secret-scan-boundary.test.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:test/profile-secret-scan-boundary.test.ts:fn@12:74.target@16:2",
+      "name": "target",
+      "type": "Const",
+      "filePath": "test/profile-secret-scan-boundary.test.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:test/profile-secret-scan-boundary.test.ts:fn@12:74.check@40:2",
+      "name": "check",
+      "type": "Function",
+      "filePath": "test/profile-secret-scan-boundary.test.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:test/profile-secret-scan-boundary.test.ts:tails",
+      "name": "tails",
+      "type": "Const",
+      "filePath": "test/profile-secret-scan-boundary.test.ts",
+      "change_type": "touched"
+    }
+  ],
+  "affected_processes": [
+    {
+      "id": "proc_17_createcodexprofile",
+      "name": "CreateCodexProfile → Terminated",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "terminated",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_124_restorecodexprofile",
+      "name": "RestoreCodexProfile → Terminated",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "terminated",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_182_scan",
+      "name": "Scan → Terminated",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "terminated",
+          "step": 4
+        }
+      ]
+    }
+  ]
+}

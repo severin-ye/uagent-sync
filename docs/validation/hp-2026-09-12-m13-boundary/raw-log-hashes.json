@@ -1,0 +1,38 @@
+[
+  {
+    "label": "install",
+    "rawSha256": "dc62d9ae1717b0e135b2e9e42c17ea902a27e73c96d695d67973433403b630f7"
+  },
+  {
+    "label": "baseline-build",
+    "rawSha256": "64c6d7b272796b56fe8cee8f55ec0795f28db8c3701fc8163f40fe2a7de87890"
+  },
+  {
+    "label": "baseline-focused",
+    "rawSha256": "7b68318e22285765b55d835ef90a31f1df528f1c8cd93fe5fe3fc40301111402"
+  },
+  {
+    "label": "red",
+    "rawSha256": "7e002487f62ca7524372885a70a1efa021261dfd254bff6d8abbd33452b2f5f7"
+  },
+  {
+    "label": "index",
+    "rawSha256": "3cb09287903fba69dd34a29143a0cc8eec95d48bd6da1ed689cd4580c89b04b8"
+  },
+  {
+    "label": "impact",
+    "rawSha256": "b9b8c8701a69fe2f545e16ae01900da3e7e19a1b525b5ac754e9b37c10cbb10c"
+  },
+  {
+    "label": "focused",
+    "rawSha256": "c8683468766cef5fa0875c6d3d9febd1dbc1dc92a4dbd7c41ee431877ee42852"
+  },
+  {
+    "label": "full",
+    "rawSha256": "6a5d806e21d9f42752d10cf810f3359aa3cec9130598c76782d2ca15fbce282b"
+  },
+  {
+    "label": "detect",
+    "rawSha256": "9bcdffc5b59661a5fe782d7d1af4cbd0c7c03084748b3507058fb58aa9b11911"
+  }
+]

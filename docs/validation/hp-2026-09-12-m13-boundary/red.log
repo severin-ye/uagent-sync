@@ -1,0 +1,397 @@
+✖ RY-M13-01 three gates reject JS continuation after a safe control (128.5381ms)
+✖ RY-M13-01 valid JS continuation 1 (0.6768ms)
+✔ RY-M13-01 valid JS continuation 2 (0.4415ms)
+✔ RY-M13-01 valid JS continuation 3 (0.3601ms)
+✖ RY-M13-01 valid JS continuation 4 (0.2112ms)
+✔ RY-M13-01 valid JS continuation 5 (0.3452ms)
+✖ RY-M13-01 valid JS continuation 6 (0.2157ms)
+✖ RY-M13-01 valid JS continuation 7 (0.2188ms)
+✔ RY-M13-01 valid JS continuation 8 (0.3396ms)
+✔ RY-M13-01 valid JS continuation 9 (0.4168ms)
+✔ RY-M13-01 valid JS continuation 10 (0.3943ms)
+✔ RY-M13-01 valid JS continuation 11 (0.3522ms)
+✔ RY-M13-01 valid JS continuation 12 (0.4148ms)
+✖ RY-M13-01 valid JS continuation 13 (0.2487ms)
+✖ RY-M13-01 valid JS continuation 14 (0.3043ms)
+✖ RY-M13-01 valid JS continuation 15 (0.3256ms)
+✖ RY-M13-01 valid JS continuation 16 (0.5199ms)
+✖ RY-M13-01 valid JS continuation 17 (0.2028ms)
+✖ RY-M13-01 valid JS continuation 18 (0.2384ms)
+✖ RY-M13-01 valid JS continuation 19 (0.1742ms)
+✖ RY-M13-01 valid JS continuation 20 (0.1682ms)
+✖ RY-M13-01 valid JS continuation 21 (0.3802ms)
+✖ RY-M13-01 valid JS continuation 22 (0.1446ms)
+✖ RY-M13-01 valid JS continuation 23 (0.1383ms)
+✖ RY-M13-01 valid JS continuation 24 (0.2171ms)
+✖ RY-M13-01 valid JS continuation 25 (0.1473ms)
+✔ RY-M13-01 valid JS continuation 26 (0.3295ms)
+✔ RY-M13-01 valid JS continuation 27 (0.2764ms)
+✔ RY-M13-01 valid JS continuation 28 (0.2771ms)
+✔ RY-M13-01 valid JS continuation 29 (0.2592ms)
+✔ RY-M13-01 valid JS continuation 30 (0.3661ms)
+✔ RY-M13-01 valid JS continuation 31 (0.2858ms)
+✔ RY-M13-01 explicit terminators and independent statements remain safe (0.4289ms)
+✖ RY-M13-01 TS type continuations remain unproven (0.1882ms)
+ℹ tests 34
+ℹ suites 0
+ℹ pass 15
+ℹ fail 19
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 910.2852
+
+✖ failing tests:
+
+test at test\profile-secret-scan-boundary.test.ts:1:605
+✖ RY-M13-01 three gates reject JS continuation after a safe control (128.5381ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + [
+  +   'collect rejection',
+  +   'collect no artifact',
+  +   'restore rejection',
+  +   'restore bytes unchanged',
+  +   'restore baseline unchanged',
+  +   'publish rejection',
+  +   'publish no additional Git calls'
+  + ]
+  - []
+
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-m13-boundary\test\profile-secret-scan-boundary.test.ts:56:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'collect rejection', 'collect no artifact', 'restore rejection', 'restore bytes unchanged', 'restore baseline unchanged', 'publish rejection', 'publish no additional Git calls' ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-boundary.test.ts:1:4194
+✖ RY-M13-01 valid JS continuation 1 (0.6768ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-m13-boundary\test\profile-secret-scan-boundary.test.ts:75:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-boundary.test.ts:1:4194
+✖ RY-M13-01 valid JS continuation 4 (0.2112ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-m13-boundary\test\profile-secret-scan-boundary.test.ts:75:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-boundary.test.ts:1:4194
+✖ RY-M13-01 valid JS continuation 6 (0.2157ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-m13-boundary\test\profile-secret-scan-boundary.test.ts:75:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-boundary.test.ts:1:4194
+✖ RY-M13-01 valid JS continuation 7 (0.2188ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-m13-boundary\test\profile-secret-scan-boundary.test.ts:75:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-boundary.test.ts:1:4194
+✖ RY-M13-01 valid JS continuation 13 (0.2487ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-m13-boundary\test\profile-secret-scan-boundary.test.ts:75:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-boundary.test.ts:1:4194
+✖ RY-M13-01 valid JS continuation 14 (0.3043ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-m13-boundary\test\profile-secret-scan-boundary.test.ts:75:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-boundary.test.ts:1:4194
+✖ RY-M13-01 valid JS continuation 15 (0.3256ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-m13-boundary\test\profile-secret-scan-boundary.test.ts:75:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-boundary.test.ts:1:4194
+✖ RY-M13-01 valid JS continuation 16 (0.5199ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-m13-boundary\test\profile-secret-scan-boundary.test.ts:75:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-boundary.test.ts:1:4194
+✖ RY-M13-01 valid JS continuation 17 (0.2028ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-m13-boundary\test\profile-secret-scan-boundary.test.ts:75:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-boundary.test.ts:1:4194
+✖ RY-M13-01 valid JS continuation 18 (0.2384ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-m13-boundary\test\profile-secret-scan-boundary.test.ts:75:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-boundary.test.ts:1:4194
+✖ RY-M13-01 valid JS continuation 19 (0.1742ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-m13-boundary\test\profile-secret-scan-boundary.test.ts:75:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-boundary.test.ts:1:4194
+✖ RY-M13-01 valid JS continuation 20 (0.1682ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-m13-boundary\test\profile-secret-scan-boundary.test.ts:75:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-boundary.test.ts:1:4194
+✖ RY-M13-01 valid JS continuation 21 (0.3802ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-m13-boundary\test\profile-secret-scan-boundary.test.ts:75:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-boundary.test.ts:1:4194
+✖ RY-M13-01 valid JS continuation 22 (0.1446ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-m13-boundary\test\profile-secret-scan-boundary.test.ts:75:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-boundary.test.ts:1:4194
+✖ RY-M13-01 valid JS continuation 23 (0.1383ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-m13-boundary\test\profile-secret-scan-boundary.test.ts:75:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-boundary.test.ts:1:4194
+✖ RY-M13-01 valid JS continuation 24 (0.2171ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-m13-boundary\test\profile-secret-scan-boundary.test.ts:75:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-boundary.test.ts:1:4194
+✖ RY-M13-01 valid JS continuation 25 (0.1473ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-m13-boundary\test\profile-secret-scan-boundary.test.ts:75:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-boundary.test.ts:1:4922
+✖ RY-M13-01 TS type continuations remain unproven (0.1882ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-m13-boundary\test\profile-secret-scan-boundary.test.ts:91:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@1/,
+    operator: 'throws',
+    diff: 'simple'
+  }

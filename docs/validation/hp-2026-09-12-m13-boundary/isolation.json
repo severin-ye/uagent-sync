@@ -1,0 +1,15 @@
+{
+  "USERPROFILE": "<isolated-home>",
+  "HOME": "<isolated-home>",
+  "APPDATA": "<isolated-home>/AppData/Roaming",
+  "LOCALAPPDATA": "<isolated-home>/AppData/Local",
+  "CODEX_HOME": "<isolated-home>/.codex",
+  "XDG_CONFIG_HOME": "<isolated-home>/.config",
+  "TMP": "<isolated-home>/tmp",
+  "TEMP": "<isolated-home>/tmp",
+  "npm_config_cache": "<isolated-home>/npm-cache",
+  "npm_config_userconfig": "<isolated-home>/npmrc",
+  "npm_config_globalconfig": "<isolated-home>/npm-globalrc",
+  "UAGENT_SYNC_WORKSPACE_ROOT": "unset",
+  "OPENCODE_SYNC_WORKSPACE_ROOT": "<independent-clone; tests may override>"
+}
