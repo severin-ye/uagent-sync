@@ -1,0 +1,129 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import childProcess from 'node:child_process';
+import { syncBuiltinESMExports } from 'node:module';
+import { createHash } from 'node:crypto';
+import { assertProfileContentSafe } from '../src/lib/profile-secret-scan.js';
+import { recognizeProfileExpressions } from '../src/lib/profile-expressions.js';
+import { createCodexProfile, restoreCodexProfile } from '../src/lib/codex-profile.js';
+import { publishDevicePaths } from '../src/lib/device-git-transport.js';
+
+const php = ['$client = new Client(apiKey: "your-api-key");', 'use Anthropic\\Client;', '$client = new Client();'];
+const ruby = ['client = Anthropic::Client.new(api_key: "your-api-key")', 'require "anthropic"', 'client = Anthropic::Client.new'];
+const languages = [{ ext: 'php', tag: 'php', parts: php, comment: '//' }, { ext: 'rb', tag: 'ruby', parts: ruby, comment: '#' }];
+const marker = '"your-api-key"';
+
+for (const { ext, tag, parts: [explicit, imported, defaults], comment } of languages) {
+  const sequence = [imported, defaults, explicit].join('\n');
+  const checkMasked = (content: string, source: string) => {
+    assert.doesNotThrow(() => assertProfileContentSafe(content, source));
+    const normalized = recognizeProfileExpressions(content, source).normalized;
+    assert.equal(normalized, content.replaceAll(marker, ' '.repeat(marker.length)));
+    assert.equal(normalized.length, content.length);
+  };
+  for (const nl of ['\n', '\r\n']) for (const candidateLine of [20, 22]) {
+    test(`SEQ ordered allow ${ext} ${nl.length} line ${candidateLine}`, () => {
+      const prefix = Array(candidateLine - 7).fill('ordinary 😀 prose').join(nl) + nl;
+      const content = prefix + ['```' + tag, imported, '', comment + ' ordinary note', defaults, comment + ' ordinary note', explicit, '```'].join(nl);
+      checkMasked(content, 'fixture.md');
+      checkMasked([imported, defaults, explicit].join(nl), 'fixture.' + ext);
+      assert.doesNotThrow(() => assertProfileContentSafe(explicit, 'fixture.' + ext));
+    });
+  }
+  test('SEQ multiline and multiple fences ' + ext, () => {
+    const multi = sequence.replace(marker, '\n' + marker + '\n');
+    checkMasked(multi, 'fixture.' + ext);
+    checkMasked('```' + tag + '\n' + sequence + '\n```\ntext\n```' + tag + '\n' + sequence + '\n```', 'fixture.md');
+    assert.doesNotThrow(() => assertProfileContentSafe(sequence.replaceAll('"', "'"), 'fixture.' + ext));
+  });
+  const mutations = [
+    explicit + '\n' + imported + '\n' + defaults,
+    imported + '\n' + imported + '\n' + defaults + '\n' + explicit,
+    sequence + '\n' + defaults, 'unknown\n' + sequence, sequence + '\nunknown',
+    sequence.replaceAll('client =', 'other ='), sequence.replaceAll('Client', 'Other'),
+    sequence.replace(imported, ext === 'php' ? 'use Anthropic\\Client as Other;' : 'require_relative "anthropic"'),
+    sequence.replace(imported, ext === 'php' ? 'use Other\\Client;' : 'require "other"'),
+    sequence.replace(imported, ext === 'php' ? 'use Anthropic\\\\Client;' : 'require ("anthropic")'),
+    sequence.replace(imported, ext === 'php' ? 'use Anthropic\\Client\\Other;' : 'require "anthropic" + "extra"'),
+    sequence.replace(imported, ext === 'php' ? 'use Anthropic /* note */ \\Client;' : 'require "#{dynamic}"'),
+    sequence.replace(imported, ext === 'php' ? 'use $dynamic;' : 'require package'),
+    sequence.replace(marker, marker + (ext === 'php' ? ' .' : ' +') + '\n "SYNTHETIC_NONEMPTY"'),
+    sequence.replace(marker, marker + '\n || "SYNTHETIC_NONEMPTY"'),
+    sequence.replace(marker, marker + '\n && "SYNTHETIC_NONEMPTY"'),
+    sequence.replace(marker, marker + '\n == "SYNTHETIC_NONEMPTY"'),
+    sequence.replace(marker, marker + ', password: ("SYNTHETIC_NONEMPTY")'),
+    sequence.replace(defaults, defaults.replace('new', 'new("SYNTHETIC_NONEMPTY")')),
+    sequence.slice(0, -1), sequence.replace(marker, '"your-api-key'),
+    sequence + '\n.call', sequence + '\n{ unknown }', sequence + '\\\nunknown',
+    sequence.replace(marker, '"your-api-key\\n"'), sequence.replace(marker, '"your-api-key-extra"'),
+  ];
+  for (const [i, bad] of mutations.entries()) test(`SEQ boundary refusal ${ext} ${i}`, () => {
+    assert.equal(recognizeProfileExpressions(bad, 'fixture.' + ext).normalized, bad);
+    assert.throws(() => assertProfileContentSafe(bad, 'fixture.' + ext), /Secret scan blocked/);
+  });
+  test('SEQ embedded and unsupported contexts ' + ext, () => {
+    const contexts = ext === 'php'
+      ? ['<<<TEXT\n' + sequence + '\nTEXT;', "<<<'TEXT'\n" + sequence + '\nTEXT;', '<?php\n// ?>\n' + sequence, '#[Unknown]\n' + sequence]
+      : ['%q{' + sequence + '}', '%Q{' + sequence + '}', '=begin\n' + sequence + '\n=end', '<<TEXT\n' + sequence + '\nTEXT'];
+    for (const bad of contexts) {
+      assert.equal(recognizeProfileExpressions(bad, 'fixture.' + ext).normalized, bad);
+      assert.throws(() => assertProfileContentSafe(bad, 'fixture.' + ext), /Secret/);
+    }
+    for (const content of [JSON.stringify(sequence), '```\n' + sequence + '\n```', '```text\n' + sequence + '\n```', '```' + tag + '\n' + sequence]) {
+      assert.equal(recognizeProfileExpressions(content, 'fixture.md').normalized, content);
+    }
+  });
+  test('SEQ comments and original lines ' + ext, () => {
+    for (const key of ['apiKey', 'APIKEY', 'api_key', 'API-KEY', 'TOKEN', 'secret', 'PASSWORD', 'authorization']) {
+      for (const nl of ['\n', '\r\n']) for (const insertion of [0, 1, 2, 3]) {
+        const lines = [imported, defaults, explicit];
+        lines.splice(insertion, 0, comment + ' "' + key + '": ("SYNTHETIC_NONEMPTY")');
+        const bad = lines.join(nl);
+        assert.equal(recognizeProfileExpressions(bad, 'fixture.' + ext).normalized, bad.replace(marker, ' '.repeat(14)));
+        assert.throws(() => assertProfileContentSafe(bad, 'fixture.' + ext), new RegExp('sensitive-assignment@' + (insertion + 1) + '(?:,|$)'));
+      }
+    }
+    for (const value of ['/* note */ "SYNTHETIC_NONEMPTY"', '`SYNTHETIC_NONEMPTY`', '("SYNTHETIC_NONEMPTY")']) {
+      const bad = sequence + '\n"apiKey": ' + value;
+      assert.equal(recognizeProfileExpressions(bad, 'fixture.' + ext).normalized, bad);
+      assert.throws(() => assertProfileContentSafe(bad, 'fixture.' + ext), /sensitive-assignment@4/);
+    }
+  });
+  for (const nl of ['\n', '\r\n']) test(`SEQ three gates ${ext} ${nl.length}`, t => {
+    const safe = sequence.replaceAll('\n', nl), bad = safe + nl + comment + ' PASSWORD=("SYNTHETIC_NONEMPTY")';
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'seq-'));
+    t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+    const device = (name: string) => ({ deviceId: name, userHome: path.join(root, name), codexHome: path.join(root, name, '.codex'), workspaceRoot: path.join(root, name, 'work') });
+    const source = device('source'), target = device('target'), rel = 'skills/artificial/tool.' + ext;
+    fs.mkdirSync(path.dirname(path.join(source.codexHome, rel)), { recursive: true });
+    fs.writeFileSync(path.join(source.codexHome, rel), safe);
+    const snapshotDir = path.join(root, 'snapshot');
+    createCodexProfile({ source, snapshotDir, components: ['skills'] }); restoreCodexProfile({ target, snapshotDir });
+    assert.equal(fs.readFileSync(path.join(target.codexHome, rel), 'utf8'), safe);
+    let calls = 0;
+    t.mock.method(childProcess, 'spawnSync', () => { calls++; throw new Error('ARTIFICIAL_GIT_GATE'); });
+    syncBuiltinESMExports(); t.after(() => { t.mock.restoreAll(); syncBuiltinESMExports(); });
+    const publishRel = 'sync/profiles/artificial/tool.' + ext;
+    fs.mkdirSync(path.dirname(path.join(root, publishRel)), { recursive: true }); fs.writeFileSync(path.join(root, publishRel), safe);
+    assert.throws(() => publishDevicePaths(root, 'https://github.com/example/unused', [publishRel]), /ARTIFICIAL_GIT_GATE/);
+    const before = fs.readFileSync(path.join(target.codexHome, 'uagent-device-state/profile-baseline.json'));
+    const failures: string[] = [];
+    const check = (name: string, fn: () => void) => { try { fn(); } catch { failures.push(name); } };
+    fs.writeFileSync(path.join(source.codexHome, rel), bad);
+    check('collect rejection', () => assert.throws(() => createCodexProfile({ source, snapshotDir: path.join(root, 'blocked'), components: ['skills'] }), /sensitive-assignment@4/));
+    check('no snapshot', () => assert.equal(fs.existsSync(path.join(root, 'blocked')), false));
+    fs.writeFileSync(path.join(snapshotDir, 'files/codex', rel), bad);
+    const manifestFile = path.join(snapshotDir, 'manifest.json'), manifest = JSON.parse(fs.readFileSync(manifestFile, 'utf8'));
+    manifest.files[0].sha256 = createHash('sha256').update(bad).digest('hex'); fs.writeFileSync(manifestFile, JSON.stringify(manifest));
+    check('restore rejection', () => assert.throws(() => restoreCodexProfile({ target, snapshotDir }), /sensitive-assignment@4/));
+    check('target unchanged', () => assert.equal(fs.readFileSync(path.join(target.codexHome, rel), 'utf8'), safe));
+    check('baseline unchanged', () => assert.deepEqual(fs.readFileSync(path.join(target.codexHome, 'uagent-device-state/profile-baseline.json')), before));
+    fs.writeFileSync(path.join(root, publishRel), bad);
+    check('publish rejection', () => assert.throws(() => publishDevicePaths(root, 'https://github.com/example/unused', [publishRel]), /sensitive-assignment@4/));
+    check('no added Git call', () => assert.equal(calls, 1));
+    assert.equal(fs.existsSync(path.join(root, '.git')), false); assert.deepEqual(failures, []);
+  });
+}

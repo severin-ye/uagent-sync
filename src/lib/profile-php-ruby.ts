@@ -59,6 +59,10 @@ function lexExample(content: string, region: Region): { tokens: Token[]; comment
         i++;
       }
       if (!closed) return undefined;
+    } else if (php && content.startsWith('Anthropic\\Client', i)) {
+      // One exact qualified identifier; no escape decoding or general imports.
+      i += 'Anthropic\\Client'.length;
+      if (i < region.end && /[A-Za-z0-9_\\]/.test(content[i])) return undefined;
     } else if (/[$A-Za-z_]/.test(c)) {
       i++; while (i < region.end && /[A-Za-z0-9_]/.test(content[i])) i++;
     } else if (content.startsWith('::', i)) i += 2;
@@ -84,16 +88,23 @@ export function recognizePhpRubyExamples(content: string, source: string): { nor
       ? ['$client', '=', 'new', 'Client', '(', 'apiKey', ':', '', ')', ';']
       : ['client', '=', 'Anthropic', '::', 'Client', '.', 'new', '(', 'api_key', ':', '', ')'];
     const valueIndex = region.language === 'php' ? 7 : 10;
-    const matches = parsed && parsed.tokens.length === pattern.length && pattern.every((text, i) => i === valueIndex
-      ? /^(?:"your-api-key"|'your-api-key')$/.test(parsed.tokens[i].text)
-      : parsed.tokens[i].text === text);
-    if (!matches) {
+    // Collapse only repeated statement terminators (blank/comment-only lines).
+    // Token positions remain original; no line is classified or masked alone.
+    const tokens = parsed?.tokens.filter((token, i, all) => token.text !== '\n' || all[i - 1]?.text !== '\n') ?? [];
+    const prefixes = region.language === 'php'
+      ? [['use', 'Anthropic\\Client', ';', '$client', '=', 'new', 'Client', '(', ')', ';']]
+      : ['"anthropic"', "'anthropic'"].map(name => ['require', name, '\n', 'client', '=', 'Anthropic', '::', 'Client', '.', 'new', '\n']);
+    const patterns = [{ pattern, valueIndex }, ...prefixes.map(prefix => ({ pattern: [...prefix, ...pattern], valueIndex: prefix.length + valueIndex }))];
+    const match = parsed && patterns.find(candidate => tokens.length === candidate.pattern.length && candidate.pattern.every((text, i) => i === candidate.valueIndex
+      ? /^(?:"your-api-key"|'your-api-key')$/.test(tokens[i].text)
+      : tokens[i].text === text));
+    if (!match) {
       // No partial masks: an adjacent unknown statement cannot ride along with
       // a newly allowed example. This guard is conservative, not string decoding.
       for (const match of content.slice(region.start, region.end).matchAll(/\b(?:apiKey|api_key)\b/g)) reject(region.start + match.index!);
       continue;
     }
-    const literal = parsed.tokens[valueIndex];
+    const literal = tokens[match.valueIndex];
     for (let p = literal.start; p < literal.end; p++) output[p] = ' ';
     // Comments remain raw. Also reject assignment-like sensitive comment text
     // even when a value prefix would evade the baseline line-oriented rule.
