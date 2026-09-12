@@ -1,0 +1,1 @@
+{"name":"hp-m2-g0-synthetic","version":"0.0.1","type":"module","exports":"./index.mjs","files":["index.mjs","provider.mjs","parser.mjs"],"scripts":{"test":"node --test test.mjs"},"dependencies":{"@lezer/python":"1.1.18"}}

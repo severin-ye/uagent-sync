@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {analyze,createProvider,PARSER_VERSION} from 'hp-m2-g0-synthetic';
+const actual=JSON.parse(fs.readFileSync('node_modules/@lezer/python/package.json','utf8'));
+assert.equal(actual.version,'1.1.18');assert.equal(PARSER_VERSION,actual.version);
+const o={schemaVersion:1,policyVersion:'m2-python-doc-v1',parserVersion:PARSER_VERSION,entries:['alpha','beta','gamma'].map((x,i)=>({id:`D${i+1}`,field:'api_key',description:`Synthetic description ${x}`}))};
+const op=await createProvider(async()=>new TextEncoder().encode(JSON.stringify(o))).begin();
+const text='def sample(api_key=None):\n    """\n    Args:\n        api_key: Synthetic description alpha\n    """\n    pass\n';
+assert.equal(analyze(text,op.template).spans.length,1);
+assert.equal(analyze(text+'broken = "unfinished\n',op.template).spans.length,0);
+assert.equal(analyze(text,null).spans.length,0);
+const nested=text.replace('        api_key:','        Example:\n            api_key:');
+const unknown=text.replace('        api_key:','        Unknown paragraph\n        api_key:');
+for(const bad of [nested,unknown,text+nested.replace('sample','later')])assert.equal(analyze(bad,op.template).spans.length,0);
+assert.equal(analyze(text.replace('    """\n    pass','    Returns:\n        str: Synthetic result\n    """\n    pass'),op.template).spans.length,1);
+console.log(JSON.stringify({node:process.version,import:'packed package',parserVersion:actual.version,allow:true,rawRefusal:true,missingRefusal:true}));
