@@ -1,0 +1,83 @@
+{
+  "productionDiffEmpty": true,
+  "honorRowsUnchanged": true,
+  "scope": "documents-only",
+  "jsonValid": true,
+  "commands": [
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "output": "40febddab4a2c78aa80da278108951d8591bc38a"
+    },
+    {
+      "command": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "40febddab4a2c78aa80da278108951d8591bc38a",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "70428520228adcac3ac66a2cfb857667b7b69aed",
+        "--",
+        "src",
+        "test",
+        "scripts",
+        "package.json",
+        "package-lock.json"
+      ],
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--cached",
+        "--name-only"
+      ],
+      "exitCode": 0,
+      "output": "docs/DEVICE-SYNC-TODO.md\ndocs/validation/hp-2026-09-13-m2-integration-final/README.md\ndocs/validation/hp-2026-09-13-m2-integration-final/RESULT.json\ndocs/validation/hp-2026-09-13-m2-integration-scope/ACCEPTANCE.md\ndocs/validation/hp-2026-09-13-m2-integration-scope/GATES.md\ndocs/validation/hp-2026-09-13-m2-integration-scope/README.md\ndocs/validation/hp-2026-09-13-m2-integration-scope/SCAN-ORDER.md"
+    },
+    {
+      "command": [
+        "git",
+        "show",
+        "40febddab4a2c78aa80da278108951d8591bc38a:docs/DEVICE-SYNC-TODO.md"
+      ],
+      "exitCode": 0,
+      "output": "Honor task rows match exactly; original content omitted"
+    }
+  ],
+  "index": {
+    "exitCode": 0,
+    "limitations": "Large historical additional-syntax JSON skipped; bounded call graph warnings retained locally. Not proof of complete code coverage."
+  },
+  "detectChanges": {
+    "exitCode": 0,
+    "changedSymbols": 17,
+    "affectedFlows": 0,
+    "meaning": "Documentation sections only; direct Git diff independently establishes production unchanged"
+  },
+  "testsExecuted": false
+}

@@ -1,5 +1,7 @@
 # 惠普 HP-03-M2-INTEGRATION-SCOPE
 
+2026-09-13更新：RY-16已接受，C1–C3已一次性纳入[范围定稿](../hp-2026-09-13-m2-integration-final/README.md)。当前等待用户明确实施指令，不再重复同一方案复核。以下提案过程与原RESULT属于历史记录；GATES/ACCEPTANCE/SCAN-ORDER已按定稿更新。
+
 已形成生产接入范围提案，供荣耀复核；未实现或授权实现。核对交接d219ea66ca6c3b145b35124103dc30381341921e，生产源码仍70428520228adcac3ac66a2cfb857667b7b69aed，人工参考仍eaf93ff1c2f51038bb00a8a6c963727d386f3c26。
 
 本轮读取荣耀指定材料及replay/logs共60份证据，核对生产及原型目录差异为空；用GitNexus query/context加源码逐段检查扫描和副作用顺序。未重跑82项或附加8项，未重做172项分析，没有新运行验收结果。荣耀通过仅作为既有人工证据引用。

@@ -1,0 +1,29 @@
+{
+  "task": "HP-03-M2-INTEGRATION-SCOPE",
+  "status": "scope-final-awaiting-explicit-implementation-instruction",
+  "inputHandoff": "40febddab4a2c78aa80da278108951d8591bc38a",
+  "production": "70428520228adcac3ac66a2cfb857667b7b69aed",
+  "independentFixSha": null,
+  "accepted": [
+    "C1",
+    "C2",
+    "C3"
+  ],
+  "externalReplacement": "isolated worker pre-import interception; unmatched calls fail; no production seam",
+  "hostPlugin": "1.18.15",
+  "hostSdk": "1.18.15",
+  "runtimeValidationExecuted": false,
+  "implementationAuthorized": false,
+  "realTemplatesRead": false,
+  "realFilesRescanned": false,
+  "remainingBlocked": [
+    "M2",
+    "HP-006",
+    "HP-022/023",
+    "172 unknown findings",
+    "RY-03"
+  ],
+  "hp03Complete": false,
+  "hp04Complete": false,
+  "migrationComplete": false
+}
