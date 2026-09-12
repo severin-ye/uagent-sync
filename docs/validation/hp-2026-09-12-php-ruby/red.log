@@ -1,0 +1,359 @@
+✖ PHP/Ruby bounded allow php exact (4.9467ms)
+✖ PHP/Ruby bounded allow php single (0.3285ms)
+✖ PHP/Ruby bounded allow php multiline (0.1595ms)
+✖ PHP/Ruby bounded allow php comment (0.1203ms)
+✖ PHP/Ruby closed language fence php (0.5213ms)
+✔ PHP/Ruby value refusal php 0 (0.3876ms)
+✔ PHP/Ruby value refusal php 1 (0.1089ms)
+✔ PHP/Ruby value refusal php 2 (0.0886ms)
+✔ PHP/Ruby value refusal php 3 (0.1262ms)
+✔ PHP/Ruby value refusal php 4 (0.1623ms)
+✔ PHP/Ruby value refusal php 5 (0.1326ms)
+✔ PHP/Ruby value refusal php 6 (0.1462ms)
+✔ PHP/Ruby value refusal php 7 (0.0724ms)
+✔ PHP/Ruby value refusal php 8 (0.0839ms)
+✔ PHP/Ruby full statement boundary php (0.2718ms)
+✔ PHP/Ruby embedded examples never masked php (0.3225ms)
+✔ PHP/Ruby comments and adjacent fields retain lines php (0.822ms)
+✖ PHP/Ruby bounded allow rb exact (0.365ms)
+✖ PHP/Ruby bounded allow rb single (0.2474ms)
+✖ PHP/Ruby bounded allow rb multiline (0.1792ms)
+✖ PHP/Ruby bounded allow rb comment (0.2055ms)
+✖ PHP/Ruby closed language fence rb (0.3098ms)
+✔ PHP/Ruby value refusal rb 0 (0.2214ms)
+✔ PHP/Ruby value refusal rb 1 (0.081ms)
+✔ PHP/Ruby value refusal rb 2 (0.0991ms)
+✔ PHP/Ruby value refusal rb 3 (0.0799ms)
+✔ PHP/Ruby value refusal rb 4 (0.0727ms)
+✔ PHP/Ruby value refusal rb 5 (0.0681ms)
+✔ PHP/Ruby value refusal rb 6 (0.0831ms)
+✔ PHP/Ruby value refusal rb 7 (0.2918ms)
+✔ PHP/Ruby value refusal rb 8 (0.1601ms)
+✔ PHP/Ruby full statement boundary rb (0.2091ms)
+✔ PHP/Ruby embedded examples never masked rb (0.1993ms)
+✔ PHP/Ruby comments and adjacent fields retain lines rb (0.1899ms)
+✖ PHP/Ruby three gates php (20.4695ms)
+✖ PHP/Ruby three gates rb (13.9431ms)
+ℹ tests 36
+ℹ suites 0
+ℹ pass 24
+ℹ fail 12
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 862.9931
+
+✖ failing tests:
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:1278
+✖ PHP/Ruby bounded allow php exact (4.9467ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked fixture.php: sensitive-assignment@1"
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:29:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked fixture.php: sensitive-assignment@1
+        at assertProfileContentSafe (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:29:33)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:29:14)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.start (node:internal/test_runner/test:1242:17)
+        at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:1278
+✖ PHP/Ruby bounded allow php single (0.3285ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked fixture.php: sensitive-assignment@1"
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:29:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked fixture.php: sensitive-assignment@1
+        at assertProfileContentSafe (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:29:33)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:29:14)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:1278
+✖ PHP/Ruby bounded allow php multiline (0.1595ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked fixture.php: sensitive-assignment@2"
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:29:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked fixture.php: sensitive-assignment@2
+        at assertProfileContentSafe (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:29:33)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:29:14)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:1278
+✖ PHP/Ruby bounded allow php comment (0.1203ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked fixture.php: sensitive-assignment@2"
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:29:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked fixture.php: sensitive-assignment@2
+        at assertProfileContentSafe (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:29:33)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:29:14)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:1870
+✖ PHP/Ruby closed language fence php (0.5213ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked README.md: sensitive-assignment@3"
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:40:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked README.md: sensitive-assignment@3
+        at assertProfileContentSafe (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:40:31)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:40:12)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:1278
+✖ PHP/Ruby bounded allow rb exact (0.365ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked fixture.rb: sensitive-assignment@1"
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:29:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked fixture.rb: sensitive-assignment@1
+        at assertProfileContentSafe (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:29:33)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:29:14)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:1278
+✖ PHP/Ruby bounded allow rb single (0.2474ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked fixture.rb: sensitive-assignment@1"
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:29:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked fixture.rb: sensitive-assignment@1
+        at assertProfileContentSafe (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:29:33)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:29:14)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:1278
+✖ PHP/Ruby bounded allow rb multiline (0.1792ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked fixture.rb: sensitive-assignment@2"
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:29:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked fixture.rb: sensitive-assignment@2
+        at assertProfileContentSafe (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:29:33)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:29:14)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:1278
+✖ PHP/Ruby bounded allow rb comment (0.2055ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked fixture.rb: sensitive-assignment@2"
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:29:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked fixture.rb: sensitive-assignment@2
+        at assertProfileContentSafe (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:29:33)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:29:14)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:1870
+✖ PHP/Ruby closed language fence rb (0.3098ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked README.md: sensitive-assignment@3"
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:40:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked README.md: sensitive-assignment@3
+        at assertProfileContentSafe (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:40:31)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:40:12)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:4293
+✖ PHP/Ruby three gates php (20.4695ms)
+  Error: Profile collection blocked:
+  Secret scan blocked codex/skills/artificial/tool.php: sensitive-assignment@1
+      at createCodexProfile (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\src\lib\codex-profile.ts:118:28)
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:94:3)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:4293
+✖ PHP/Ruby three gates rb (13.9431ms)
+  Error: Profile collection blocked:
+  Secret scan blocked codex/skills/artificial/tool.rb: sensitive-assignment@1
+      at createCodexProfile (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\src\lib\codex-profile.ts:118:28)
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:94:3)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)

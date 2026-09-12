@@ -1,0 +1,70 @@
+✖ PHP closing tag inside line comments cannot expose HTML as code (5.8426ms)
+✔ PHP opening tag and Ruby in-argument comments preserve exact spans (1.4676ms)
+✔ PHP/Ruby unsupported lexical modes before or after a candidate invalidate the region (1.7752ms)
+✔ PHP/Ruby bounded allow php exact (0.4392ms)
+✔ PHP/Ruby bounded allow php single (0.2327ms)
+✔ PHP/Ruby bounded allow php multiline (0.2507ms)
+✔ PHP/Ruby bounded allow php comment (0.2368ms)
+✔ PHP/Ruby closed language fence php (0.581ms)
+✔ PHP/Ruby value refusal php 0 (0.3985ms)
+✔ PHP/Ruby value refusal php 1 (0.3693ms)
+✔ PHP/Ruby value refusal php 2 (0.2241ms)
+✔ PHP/Ruby value refusal php 3 (0.2549ms)
+✔ PHP/Ruby value refusal php 4 (0.1826ms)
+✔ PHP/Ruby value refusal php 5 (0.3397ms)
+✔ PHP/Ruby value refusal php 6 (0.207ms)
+✔ PHP/Ruby value refusal php 7 (0.4612ms)
+✔ PHP/Ruby value refusal php 8 (0.1727ms)
+✔ PHP/Ruby full statement boundary php (0.7009ms)
+✔ PHP/Ruby embedded examples never masked php (0.4455ms)
+✔ PHP/Ruby comments and adjacent fields retain lines php (0.8091ms)
+✔ PHP/Ruby bounded allow rb exact (0.2524ms)
+✔ PHP/Ruby bounded allow rb single (0.1525ms)
+✔ PHP/Ruby bounded allow rb multiline (0.1403ms)
+✔ PHP/Ruby bounded allow rb comment (0.1618ms)
+✔ PHP/Ruby closed language fence rb (0.2153ms)
+✔ PHP/Ruby value refusal rb 0 (0.1006ms)
+✔ PHP/Ruby value refusal rb 1 (0.0856ms)
+✔ PHP/Ruby value refusal rb 2 (0.1287ms)
+✔ PHP/Ruby value refusal rb 3 (0.1211ms)
+✔ PHP/Ruby value refusal rb 4 (0.083ms)
+✔ PHP/Ruby value refusal rb 5 (0.0735ms)
+✔ PHP/Ruby value refusal rb 6 (0.082ms)
+✔ PHP/Ruby value refusal rb 7 (0.2377ms)
+✔ PHP/Ruby value refusal rb 8 (0.1341ms)
+✔ PHP/Ruby full statement boundary rb (0.4424ms)
+✔ PHP/Ruby embedded examples never masked rb (1.1777ms)
+✔ PHP/Ruby comments and adjacent fields retain lines rb (0.2627ms)
+✔ PHP/Ruby three gates php (80.5618ms)
+✔ PHP/Ruby three gates rb (69.413ms)
+ℹ tests 39
+ℹ suites 0
+ℹ pass 38
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 521.4402
+
+✖ failing tests:
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:1028
+✖ PHP closing tag inside line comments cannot expose HTML as code (5.8426ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+[sanitized assertion actual: placeholder span replaced by 14 spaces]
+[sanitized assertion fixture: exact placeholder versus 14-space mask; raw evidence hash retained]
+
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-php-ruby\test\profile-secret-scan-php-ruby.test.ts:24:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+[sanitized assertion actual: placeholder span replaced by 14 spaces]
+[sanitized assertion fixture: exact placeholder versus 14-space mask; raw evidence hash retained]
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

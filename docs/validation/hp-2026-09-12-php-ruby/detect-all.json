@@ -1,0 +1,489 @@
+{
+  "summary": {
+    "changed_count": 27,
+    "affected_count": 18,
+    "changed_files": 4,
+    "risk_level": "critical"
+  },
+  "changed_symbols": [
+    {
+      "id": "Function:src/lib/profile-expressions.ts:recognizeProfileExpressions",
+      "name": "recognizeProfileExpressions",
+      "type": "Function",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "TypeAlias:src/lib/profile-php-ruby.ts:Language",
+      "name": "Language",
+      "type": "TypeAlias",
+      "filePath": "src/lib/profile-php-ruby.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Interface:src/lib/profile-php-ruby.ts:Region",
+      "name": "Region",
+      "type": "Interface",
+      "filePath": "src/lib/profile-php-ruby.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-php-ruby.ts:Region.end",
+      "name": "end",
+      "type": "Property",
+      "filePath": "src/lib/profile-php-ruby.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-php-ruby.ts:Region.language",
+      "name": "language",
+      "type": "Property",
+      "filePath": "src/lib/profile-php-ruby.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-php-ruby.ts:Region.start",
+      "name": "start",
+      "type": "Property",
+      "filePath": "src/lib/profile-php-ruby.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Interface:src/lib/profile-php-ruby.ts:Token",
+      "name": "Token",
+      "type": "Interface",
+      "filePath": "src/lib/profile-php-ruby.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-php-ruby.ts:Token.end",
+      "name": "end",
+      "type": "Property",
+      "filePath": "src/lib/profile-php-ruby.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-php-ruby.ts:Token.start",
+      "name": "start",
+      "type": "Property",
+      "filePath": "src/lib/profile-php-ruby.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-php-ruby.ts:Token.text",
+      "name": "text",
+      "type": "Property",
+      "filePath": "src/lib/profile-php-ruby.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/lib/profile-php-ruby.ts:exampleRegions",
+      "name": "exampleRegions",
+      "type": "Function",
+      "filePath": "src/lib/profile-php-ruby.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/lib/profile-php-ruby.ts:lexExample",
+      "name": "lexExample",
+      "type": "Function",
+      "filePath": "src/lib/profile-php-ruby.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/lib/profile-php-ruby.ts:lexExample.comments@27:2",
+      "name": "comments",
+      "type": "Const",
+      "filePath": "src/lib/profile-php-ruby.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/lib/profile-php-ruby.ts:lexExample.c@31:4",
+      "name": "c",
+      "type": "Const",
+      "filePath": "src/lib/profile-php-ruby.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-php-ruby.ts:lexExample.comments@72:19",
+      "name": "comments",
+      "type": "Property",
+      "filePath": "src/lib/profile-php-ruby.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-php-ruby.ts:lexExample.tokens@72:11",
+      "name": "tokens",
+      "type": "Property",
+      "filePath": "src/lib/profile-php-ruby.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/lib/profile-php-ruby.ts:recognizePhpRubyExamples",
+      "name": "recognizePhpRubyExamples",
+      "type": "Function",
+      "filePath": "src/lib/profile-php-ruby.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/lib/profile-php-ruby.ts:recognizePhpRubyExamples.rejectedLines@76:2",
+      "name": "rejectedLines",
+      "type": "Const",
+      "filePath": "src/lib/profile-php-ruby.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/lib/profile-php-ruby.ts:recognizePhpRubyExamples.reject@77:2",
+      "name": "reject",
+      "type": "Function",
+      "filePath": "src/lib/profile-php-ruby.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-php-ruby.ts:recognizePhpRubyExamples.normalized@101:11",
+      "name": "normalized",
+      "type": "Property",
+      "filePath": "src/lib/profile-php-ruby.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-php-ruby.ts:recognizePhpRubyExamples.rejectedLines@101:40",
+      "name": "rejectedLines",
+      "type": "Property",
+      "filePath": "src/lib/profile-php-ruby.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:test/profile-secret-scan-php-ruby.test.ts:php",
+      "name": "php",
+      "type": "Const",
+      "filePath": "test/profile-secret-scan-php-ruby.test.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:test/profile-secret-scan-php-ruby.test.ts:ruby",
+      "name": "ruby",
+      "type": "Const",
+      "filePath": "test/profile-secret-scan-php-ruby.test.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:test/profile-secret-scan-php-ruby.test.ts:variants",
+      "name": "variants",
+      "type": "Const",
+      "filePath": "test/profile-secret-scan-php-ruby.test.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:test/profile-secret-scan-php-ruby.test.ts:fn@107:89.device@110:2",
+      "name": "device",
+      "type": "Function",
+      "filePath": "test/profile-secret-scan-php-ruby.test.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:test/profile-secret-scan-php-ruby.test.ts:fn@107:89.target@111:2",
+      "name": "target",
+      "type": "Const",
+      "filePath": "test/profile-secret-scan-php-ruby.test.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:test/profile-secret-scan-php-ruby.test.ts:fn@107:89.check@134:2",
+      "name": "check",
+      "type": "Function",
+      "filePath": "test/profile-secret-scan-php-ruby.test.ts",
+      "change_type": "touched"
+    }
+  ],
+  "affected_processes": [
+    {
+      "id": "proc_6_restorecodexprofile",
+      "name": "RestoreCodexProfile → ExampleRegions",
+      "process_type": "cross_community",
+      "step_count": 7,
+      "changed_steps": [
+        {
+          "symbol": "recognizePhpRubyExamples",
+          "step": 6
+        },
+        {
+          "symbol": "exampleRegions",
+          "step": 7
+        },
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        }
+      ]
+    },
+    {
+      "id": "proc_7_restorecodexprofile",
+      "name": "RestoreCodexProfile → LexExample",
+      "process_type": "cross_community",
+      "step_count": 7,
+      "changed_steps": [
+        {
+          "symbol": "recognizePhpRubyExamples",
+          "step": 6
+        },
+        {
+          "symbol": "lexExample",
+          "step": 7
+        },
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        }
+      ]
+    },
+    {
+      "id": "proc_8_restorecodexprofile",
+      "name": "RestoreCodexProfile → Reject",
+      "process_type": "cross_community",
+      "step_count": 7,
+      "changed_steps": [
+        {
+          "symbol": "reject",
+          "step": 7
+        },
+        {
+          "symbol": "recognizePhpRubyExamples",
+          "step": 6
+        },
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        }
+      ]
+    },
+    {
+      "id": "proc_16_restorecodexprofile",
+      "name": "RestoreCodexProfile → CodeRegions",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        }
+      ]
+    },
+    {
+      "id": "proc_17_restorecodexprofile",
+      "name": "RestoreCodexProfile → Lex",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        }
+      ]
+    },
+    {
+      "id": "proc_18_restorecodexprofile",
+      "name": "RestoreCodexProfile → TypescriptPlaceholders",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        }
+      ]
+    },
+    {
+      "id": "proc_122_walk",
+      "name": "Walk → ExampleRegions",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "recognizePhpRubyExamples",
+          "step": 4
+        },
+        {
+          "symbol": "exampleRegions",
+          "step": 5
+        },
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_123_walk",
+      "name": "Walk → LexExample",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "recognizePhpRubyExamples",
+          "step": 4
+        },
+        {
+          "symbol": "lexExample",
+          "step": 5
+        },
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_124_walk",
+      "name": "Walk → Reject",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "reject",
+          "step": 5
+        },
+        {
+          "symbol": "recognizePhpRubyExamples",
+          "step": 4
+        },
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_129_walk",
+      "name": "Walk → CodeRegions",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_130_walk",
+      "name": "Walk → Lex",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_131_walk",
+      "name": "Walk → TypescriptPlaceholders",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_183_scan",
+      "name": "Scan → ExampleRegions",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "recognizePhpRubyExamples",
+          "step": 4
+        },
+        {
+          "symbol": "exampleRegions",
+          "step": 5
+        },
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_184_scan",
+      "name": "Scan → LexExample",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "recognizePhpRubyExamples",
+          "step": 4
+        },
+        {
+          "symbol": "lexExample",
+          "step": 5
+        },
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_185_scan",
+      "name": "Scan → Reject",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "reject",
+          "step": 5
+        },
+        {
+          "symbol": "recognizePhpRubyExamples",
+          "step": 4
+        },
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_190_scan",
+      "name": "Scan → CodeRegions",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_191_scan",
+      "name": "Scan → Lex",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_192_scan",
+      "name": "Scan → TypescriptPlaceholders",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        }
+      ]
+    }
+  ]
+}

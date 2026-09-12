@@ -1,0 +1,35 @@
+{
+  "inputSha": "2adfbcc3cdacd79681f97955041dd989cf66d4f8",
+  "baselineCodeSha": "c96ee5bb130ad89e31f3d37724161c6ac80c2983",
+  "inputSourceDiff": [],
+  "codeSha": "e3153d9075bfc19219071e3cfd87a5f7ed2ab38f",
+  "red": {
+    "total": 36,
+    "pass": 24,
+    "expectedFailures": 12,
+    "exit": 1
+  },
+  "lexicalRed": {
+    "total": 39,
+    "pass": 38,
+    "expectedFailures": 1,
+    "exit": 1
+  },
+  "focused": {
+    "pass": 178,
+    "exit": 0
+  },
+  "full": {
+    "pass": 596,
+    "exit": 0
+  },
+  "historicalForms": [
+    "HP-001",
+    "HP-004",
+    "HP-005"
+  ],
+  "realFilesRescanned": false,
+  "hp03Complete": false,
+  "migrationComplete": false,
+  "honorReview": "pending"
+}

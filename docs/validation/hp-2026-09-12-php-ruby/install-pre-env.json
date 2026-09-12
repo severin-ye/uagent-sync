@@ -1,0 +1,15 @@
+{
+  "USERPROFILE": "<USER_ROOT>/AppData/Local/Temp/uagent-hp-pr-home",
+  "HOME": "<USER_ROOT>/AppData/Local/Temp/uagent-hp-pr-home",
+  "APPDATA": "<USER_ROOT>/AppData/Local/Temp/uagent-hp-pr-home/AppData/Roaming",
+  "LOCALAPPDATA": "<USER_ROOT>/AppData/Local/Temp/uagent-hp-pr-home/AppData/Local",
+  "CODEX_HOME": "<USER_ROOT>/AppData/Local/Temp/uagent-hp-pr-home/.codex",
+  "XDG_CONFIG_HOME": "<USER_ROOT>/AppData/Local/Temp/uagent-hp-pr-home/.config",
+  "TEMP": "<USER_ROOT>/AppData/Local/Temp/uagent-hp-pr-home/tmp",
+  "TMP": "<USER_ROOT>/AppData/Local/Temp/uagent-hp-pr-home/tmp",
+  "npm_config_cache": "<USER_ROOT>/AppData/Local/Temp/uagent-hp-pr-home/npm-cache",
+  "npm_config_userconfig": "<USER_ROOT>/AppData/Local/Temp/uagent-hp-pr-home/npmrc",
+  "npm_config_globalconfig": "<USER_ROOT>/AppData/Local/Temp/uagent-hp-pr-home/npm-globalrc",
+  "UAGENT_SYNC_WORKSPACE_ROOT": null,
+  "OPENCODE_SYNC_WORKSPACE_ROOT": "<USER_ROOT>/AppData/Local/Temp/uagent-hp-php-ruby"
+}

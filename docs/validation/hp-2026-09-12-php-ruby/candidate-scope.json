@@ -1,0 +1,34 @@
+{
+  "placeholderSpelling": "your-api-key",
+  "candidates": [
+    {
+      "id": "HP-001",
+      "language": "PHP",
+      "form": "$client = new Client(apiKey: <EXACT_QUOTED_PLACEHOLDER>);"
+    },
+    {
+      "id": "HP-004",
+      "language": "Ruby",
+      "form": "client = Anthropic::Client.new(api_key: <EXACT_QUOTED_PLACEHOLDER>)"
+    },
+    {
+      "id": "HP-005",
+      "language": "Ruby",
+      "sameGrammarAs": "HP-004"
+    }
+  ],
+  "scope": "Exactly one complete constructor statement per language region; comments may surround/separate tokens; no additional executable statements or parameters",
+  "sources": [
+    ".php fragment",
+    ".rb fragment",
+    "closed php or ruby Markdown fence"
+  ],
+  "deferredStructures": [
+    "multi-statement regions, imports plus constructor, other calls or variable names",
+    "heredoc/nowdoc, percent strings, document blocks, interpolation and explicit line continuations",
+    "additional parameters, trailing commas, concatenation/fallback, unclosed or mismatched structures",
+    "PHP closing-tag transitions and attributes"
+  ],
+  "realFilesRescanned": false,
+  "missingForBroaderScope": "A reviewed language-specific parser for additional statement/lexical modes with refusal-first tests; do not alias JS/Python lexers"
+}

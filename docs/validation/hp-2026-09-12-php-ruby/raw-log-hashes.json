@@ -1,0 +1,54 @@
+[
+  {
+    "label": "install",
+    "rawSha256": "dc62d9ae1717b0e135b2e9e42c17ea902a27e73c96d695d67973433403b630f7"
+  },
+  {
+    "label": "baseline-build",
+    "rawSha256": "64c6d7b272796b56fe8cee8f55ec0795f28db8c3701fc8163f40fe2a7de87890"
+  },
+  {
+    "label": "index",
+    "rawSha256": "f210e3f4edb726c02cea326d6e2056e9fc6ee9250b40fd0743727cb1b29c7206"
+  },
+  {
+    "label": "impact",
+    "rawSha256": "8d3aee4bce1f925781392c3d7328e76e0673213d850f35e8b3e8334d915850a4"
+  },
+  {
+    "label": "impact-test",
+    "rawSha256": "f05d61ed734e62054b0659d54601f68ac45a576c7db8d1a5f06ffe42476b80a4"
+  },
+  {
+    "label": "red",
+    "rawSha256": "39e0c954cc9d0cb30d3ae56ac12d68945ece6340fe02188deb68439c821219ad"
+  },
+  {
+    "label": "focused",
+    "rawSha256": "cb25517218273a406918541aa9c2d0a878bbf4358995bf8d730f309f50d57f79"
+  },
+  {
+    "label": "lexical-red",
+    "rawSha256": "e20b3f5a06e9610dae0d1d40c18fef421449fd509c2999788d5d1fe4b907e7bb"
+  },
+  {
+    "label": "reindex",
+    "rawSha256": "b969ba091acafed60ef1b7e73afb13415780f3c704f3c28c5dc2ae97d5700216"
+  },
+  {
+    "label": "impact-lexer",
+    "rawSha256": "c131064bbb75cace7b741b738d73554d6aff1d3687c6cb11535d9cb614794007"
+  },
+  {
+    "label": "focused-final",
+    "rawSha256": "7f8456ed9027d348bf2826931b8e44f8ac6107b757e80a905837354494b46dc1"
+  },
+  {
+    "label": "full",
+    "rawSha256": "675584a0dcccc85292e7777b147ef770ec41527979416a8313c15ee300487494"
+  },
+  {
+    "label": "detect",
+    "rawSha256": "bf917314fff80d915c807465bc2b9f99a7d39830c4b5eb6e1aeb807d5deedce3"
+  }
+]
