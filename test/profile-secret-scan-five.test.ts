@@ -78,12 +78,10 @@ test('M3 TS comments and adjacent credentials retain original lines', () => {
   }
 });
 
-test('M3 PHP and Ruby remain deferred including continuations and embedded examples', () => {
+test('M3 PHP and Ruby continuations and embedded examples remain blocked', () => {
   for (const [source, text] of [
-    ['fixture.php', '$client = new Client(apiKey: "your-api-key");'],
     ['fixture.php', '$client = new Client(apiKey: "your-api-key"\n . "SYNTHETIC_NONEMPTY");'],
     ['fixture.php', '$text = <<<DOC\n$client = new Client(apiKey: "your-api-key");\nDOC;'],
-    ['fixture.rb', 'client = Anthropic::Client.new(api_key: "your-api-key")'],
     ['fixture.rb', 'client = Anthropic::Client.new(api_key: "your-api-key" +\n "SYNTHETIC_NONEMPTY")'],
     ['fixture.rb', '%q{client = Anthropic::Client.new(api_key: "your-api-key")}'],
   ]) assert.throws(() => assertProfileContentSafe(text, source), /Secret scan blocked/);

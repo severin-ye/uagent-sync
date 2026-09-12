@@ -1,3 +1,5 @@
+import { recognizePhpRubyExamples } from './profile-php-ruby.js';
+
 /** A bounded lexical recognizer, not a general source-language parser. */
 interface Token { text: string; start: number; end: number; depth: number; call: boolean; close?: string }
 interface Region { start: number; end: number; language: string }
@@ -138,8 +140,9 @@ function typescriptPlaceholders(content: string, source: string, region: Region,
 
 export function recognizeProfileExpressions(content: string, source: string): { normalized: string; rejectedLines: number[] } {
   // split('') retains UTF-16 code units; do not replace code points or line breaks.
-  const output = content.split('');
-  const rejectedLines = new Set<number>();
+  const examples = recognizePhpRubyExamples(content, source);
+  const output = examples.normalized.split('');
+  const rejectedLines = new Set<number>(examples.rejectedLines);
   for (const region of codeRegions(content, source)) {
     const tokens = lex(content, region);
     const placeholders = typescriptPlaceholders(content, source, region, tokens);
