@@ -1,0 +1,19 @@
+{
+  "task": "HP-03-M2-PRE",
+  "inputSha": "78e120b3367de2cd11f56faa1d52c05a5de160fa",
+  "unchangedSource": "70428520228adcac3ac66a2cfb857667b7b69aed",
+  "status": "plan-ready-for-Honor-review",
+  "files": 2,
+  "candidates": 4,
+  "baselineMatches": 2,
+  "drift": 0,
+  "beforeAfterMatches": 2,
+  "docstrings": 4,
+  "descriptionGroups": 3,
+  "implemented": false,
+  "m2Allowed": false,
+  "newSecurityTestsExecuted": false,
+  "hp03Complete": false,
+  "hp04Complete": false,
+  "migrationComplete": false
+}

@@ -1,0 +1,13 @@
+import ast,json,pathlib,hashlib,re
+root=pathlib.Path('<USER_ROOT>/hpm2');ev=pathlib.Path('<USER_ROOT>/hpm2e');o=json.loads((ev/'structure.json').read_text(encoding='utf-8'));phrases=[]
+for c in o['candidates']:
+ p=pathlib.Path('<USER_ROOT>/.agents/skills')/c['path'].removeprefix('agents/skills/');b=p.read_bytes();s=b.decode('utf-8');lines=s.splitlines();tree=ast.parse(s)
+ fn=next(n for n in ast.walk(tree) if isinstance(n,ast.FunctionDef) and n.lineno==c['chain'][2]['startLine'])
+ c['allFormalParameters']=[a.arg for a in fn.args.posonlyargs+fn.args.args+fn.args.kwonlyargs]
+ line=lines[c['candidateLine']-1];m=re.fullmatch(r'(\s*)(api_key)(:)(\s+)(.*)',line);assert m
+ phrase=m[5]
+ if phrase not in phrases:phrases.append(phrase)
+ c['entry']={'field':'api_key','sectionHeader':'Args' if any(re.fullmatch(r'\s*Args:\s*',l) for l in lines[c['tokenSpan']['start'][0]-1:c['candidateLine']-1]) else 'unconfirmed','matchesFormalParameter':'api_key' in c['allFormalParameters'],'descriptionGroup':'D'+str(phrases.index(phrase)+1),'descriptionLength':len(phrase),'entryStartColumn':len(m[1]),'entryEndColumn':len(line),'hasAssignmentOperatorInDescription':'=' in phrase,'hasInterpolationMarkers':any(x in phrase for x in ['{','}','%','${']),'containsQuotedText':any(x in phrase for x in ['"',"'"]),'containsBackslash':'\\' in phrase}
+ c['functionParameterDefaultTypes']=[type(v).__name__ for v in fn.args.defaults]+[type(v).__name__ if v else None for v in fn.args.kw_defaults]
+ c['beforeAfterSecondInspectionMatches']=hashlib.sha256(b).digest()==hashlib.sha256(p.read_bytes()).digest()
+(ev/'structure.json').write_text(json.dumps(o,ensure_ascii=False,indent=2),encoding='utf-8');print(json.dumps(o,ensure_ascii=False))

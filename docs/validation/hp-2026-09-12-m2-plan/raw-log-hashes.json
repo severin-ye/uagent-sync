@@ -1,0 +1,26 @@
+[
+  {
+    "label": "structure",
+    "rawSha256": "53034711e56c9244389a0454185f6781b6ad9a121b6bbabc8e4968ba6a5e54b7"
+  },
+  {
+    "label": "details",
+    "rawSha256": "ed1ef01570e7cb22c47847b0d09357f53446bc3f016b33462727242077a2f85a"
+  },
+  {
+    "label": "inspect-command",
+    "rawSha256": "53034711e56c9244389a0454185f6781b6ad9a121b6bbabc8e4968ba6a5e54b7"
+  },
+  {
+    "label": "details-command",
+    "rawSha256": "c9d0a9851385ba2cf1148885b0467d6b4be909f3ef51fa831e42b54b7da03fc5"
+  },
+  {
+    "label": "spans-command",
+    "rawSha256": "4e0e11193a126ab7775dcdf41923c76f04eae95f2c0367b6dc8417fc640483ed"
+  },
+  {
+    "label": "spans-final",
+    "rawSha256": "b20b8076e3566e049f44117103f5729cae3aba6ab4588c52bce9b60ac7466763"
+  }
+]

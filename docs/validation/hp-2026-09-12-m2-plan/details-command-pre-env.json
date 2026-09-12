@@ -1,0 +1,15 @@
+{
+  "USERPROFILE": "<USER_ROOT>/hpm2h",
+  "HOME": "<USER_ROOT>/hpm2h",
+  "APPDATA": "<USER_ROOT>/hpm2h/AppData/Roaming",
+  "LOCALAPPDATA": "<USER_ROOT>/hpm2h/AppData/Local",
+  "CODEX_HOME": "<USER_ROOT>/hpm2h/.codex",
+  "XDG_CONFIG_HOME": "<USER_ROOT>/hpm2h/.config",
+  "TEMP": "<USER_ROOT>/hpm2h/tmp",
+  "TMP": "<USER_ROOT>/hpm2h/tmp",
+  "npm_config_cache": "<USER_ROOT>/hpm2h/npm-cache",
+  "npm_config_userconfig": "<USER_ROOT>/hpm2h/npmrc",
+  "npm_config_globalconfig": "<USER_ROOT>/hpm2h/npm-globalrc",
+  "UAGENT_SYNC_WORKSPACE_ROOT": null,
+  "OPENCODE_SYNC_WORKSPACE_ROOT": "<USER_ROOT>/hpm2"
+}

@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "<USER_ROOT>\hpm2e\details.py", line 3, in <module>
+    for c in o['candidates']:
+             ~^^^^^^^^^^^^^^
+KeyError: 'candidates'

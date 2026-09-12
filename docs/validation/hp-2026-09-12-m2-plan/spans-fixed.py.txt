@@ -1,0 +1,6 @@
+import json,pathlib,ast,tokenize,io
+p=pathlib.Path('<USER_ROOT>/hpm2e/structure.json');o=json.loads(p.read_text(encoding='utf-8'))
+for c in o['candidates']:
+ s=(pathlib.Path('<USER_ROOT>/.agents/skills')/c['path'].removeprefix('agents/skills/')).read_text(encoding='utf-8');lines=s.splitlines();span=c['tokenSpan'];lo=tuple(span['start']);hi=tuple(span['end']);ts=list(tokenize.generate_tokens(io.StringIO(s).readline));c['stringTokensInLiteralSpan']=sum(t.type==tokenize.STRING and lo<=t.start and t.end<=hi for t in ts)
+ following=lines[c['candidateLine']];c['entry']['nextLineIndent']=len(following)-len(following.lstrip());c['entry']['nextLineEmpty']=not following.strip();c['entry']['nextLineMoreIndented']=bool(following.strip()) and c['entry']['nextLineIndent']>c['entry']['entryStartColumn'];c['entry']['proposedMask']={'startLine':c['candidateLine'],'startColumn':c['entry']['entryStartColumn'],'lengthUtf16':7,'contentRole':'parameter name only; colon and description retained'}
+p.write_text(json.dumps(o,ensure_ascii=False,indent=2),encoding='utf-8');print(json.dumps([{'id':c['id'],'entry':c['entry'],'literalTokens':c['stringTokensInLiteralSpan']} for c in o['candidates']],ensure_ascii=False))

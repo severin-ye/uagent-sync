@@ -1,0 +1,29 @@
+import ast,io,tokenize,json,hashlib,pathlib
+root=pathlib.Path('<USER_ROOT>/hpm2'); ev=pathlib.Path('<USER_ROOT>/hpm2e')
+old=json.loads((root/'docs/validation/hp-2026-09-11-scan-plan/hp-findings.json').read_text(encoding='utf-8'))
+ids={'HP-009','HP-010','HP-013','HP-018'}
+results=[]; files=[]
+for rel in sorted({h['path'] for h in old['hits'] if h['id'] in ids}):
+    p=pathlib.Path('<USER_ROOT>/.agents/skills')/rel.removeprefix('agents/skills/')
+    b=p.read_bytes(); text=b.decode('utf-8'); digest=hashlib.sha256(b).hexdigest()
+    expected=next(f['current_sha256'] for f in old['files'] if f['path']==rel)
+    tree=ast.parse(text); tokens=list(tokenize.generate_tokens(io.StringIO(text).readline)); parents={c:n for n in ast.walk(tree) for c in ast.iter_child_nodes(n)}
+    for h in [h for h in old['hits'] if h['id'] in ids and h['path']==rel]:
+        line=h['line']; literals=[n for n in ast.walk(tree) if isinstance(n,(ast.Constant,ast.JoinedStr)) and getattr(n,'lineno',0)<=line<=getattr(n,'end_lineno',0)]
+        chain=[]
+        n=min(literals,key=lambda n:(n.end_lineno-n.lineno,n.end_col_offset-n.col_offset)) if literals else None
+        literal=n
+        while n is not None:
+            item={'type':type(n).__name__,'startLine':getattr(n,'lineno',None),'endLine':getattr(n,'end_lineno',None)}
+            if isinstance(n,ast.keyword):item['parameter']=n.arg
+            if isinstance(n,(ast.FunctionDef,ast.AsyncFunctionDef)):item['formalParameters']=[a.arg for a in n.args.args]
+            if isinstance(n,ast.Call):item['calleeShape']=ast.dump(n.func,include_attributes=False);item['argumentTypes']=[type(a).__name__ for a in n.args];item['keywords']=[k.arg for k in n.keywords]
+            chain.append(item);n=parents.get(n)
+        containing=[t for t in tokens if t.type==tokenize.STRING and t.start[0]<=line<=t.end[0]]
+        string_token=containing[0] if len(containing)==1 else None
+        docstring=bool(literal and isinstance(parents.get(literal),ast.Expr) and isinstance(parents.get(parents.get(literal)),(ast.FunctionDef,ast.AsyncFunctionDef,ast.ClassDef,ast.Module)) and parents[parents[literal]].body[0] is parents[literal])
+        result={'id':h['id'],'path':rel,'candidateLine':line,'baselineHashMatches':digest==expected,'chain':chain,'isDocstring':docstring,'literalType':type(literal).__name__ if literal else None,'stringTokenCountContainingLine':len(containing),'tokenSpan':{'start':string_token.start,'end':string_token.end} if string_token else None,'stringPrefix':string_token.string[:string_token.string.index('"')] if string_token and '"' in string_token.string[:4] else (string_token.string[:string_token.string.index("'")] if string_token and "'" in string_token.string[:4] else None),'quoteWidth':3 if string_token and ('"""' in string_token.string[:5] or "'''" in string_token.string[:5]) else 1,'containsEscape':bool(string_token and '\\' in string_token.string),'isInterpolation':isinstance(literal,ast.JoinedStr)}
+        results.append(result)
+    files.append({'path':rel,'baselineHashMatches':digest==expected,'beforeAfterHashMatches':digest==hashlib.sha256(p.read_bytes()).hexdigest(),'astParsed':True})
+output={'files':files,'candidates':results,'executedSource':False,'method':'Python ast.parse and tokenize only; no eval/import/exec of inspected code'}
+(ev/'structure.json').write_text(json.dumps(output,ensure_ascii=False,indent=2),encoding='utf-8');print(json.dumps(output,ensure_ascii=False))

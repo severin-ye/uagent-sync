@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "<USER_ROOT>\hpm2e\spans.py", line 4, in <module>
+    s=(pathlib.Path('<USER_ROOT>/.agents/skills')/c['path'].removeprefix('agents/skills/')).read_text(encoding='utf-8');lines=s.splitlines();span=c['tokenSpan'];lo=tuple(span['start']);hi=tuple(span['end']);ts=list(tokenize.generate_tokens(io.StringIO(s).readline()));c['stringTokensInLiteralSpan']=sum(t.type==tokenize.STRING and lo<=t.start and t.end<=hi for t in ts)
+                                                                                                                                                                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\tokenize.py", line 454, in _tokenize
+    line = readline()
+           ^^^^^^^^^^
+TypeError: 'str' object is not callable

@@ -1,0 +1,68 @@
+[
+  {
+    "label": "structure",
+    "cmd": "python",
+    "args": [
+      "<USER_ROOT>/hpm2e/inspect.py"
+    ],
+    "status": 0,
+    "log": "structure.log",
+    "preEnv": "structure-pre-env.json",
+    "metadataNote": "Initial command metadata was overwritten by later regenerated structure.json; command and exit reconstructed from recorded tool output. Original initial log and environment retained."
+  },
+  {
+    "label": "details",
+    "cmd": "python",
+    "args": [
+      "<USER_ROOT>/hpm2e/details.py"
+    ],
+    "status": 1,
+    "signal": null,
+    "log": "details.log",
+    "preEnv": "details-pre-env.json"
+  },
+  {
+    "label": "inspect-command",
+    "cmd": "python",
+    "args": [
+      "<USER_ROOT>/hpm2e/inspect.py"
+    ],
+    "status": 0,
+    "signal": null,
+    "log": "inspect-command.log",
+    "preEnv": "inspect-command-pre-env.json"
+  },
+  {
+    "label": "details-command",
+    "cmd": "python",
+    "args": [
+      "<USER_ROOT>/hpm2e/details.py"
+    ],
+    "status": 0,
+    "signal": null,
+    "log": "details-command.log",
+    "preEnv": "details-command-pre-env.json"
+  },
+  {
+    "label": "spans-command",
+    "cmd": "python",
+    "args": [
+      "<USER_ROOT>/hpm2e/spans.py"
+    ],
+    "status": 1,
+    "signal": null,
+    "log": "spans-command.log",
+    "preEnv": "spans-command-pre-env.json"
+  },
+  {
+    "label": "spans-final",
+    "cmd": "python",
+    "args": [
+      "<USER_ROOT>/hpm2e/spans-fixed.py"
+    ],
+    "status": 0,
+    "signal": null,
+    "log": "spans-final.log",
+    "preEnv": "spans-final-pre-env.json"
+  }
+]
