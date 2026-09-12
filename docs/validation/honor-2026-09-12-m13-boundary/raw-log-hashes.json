@@ -1,0 +1,11 @@
+{
+  "npm-ci.log": "54a09a001bcbffdd50df287671c226760235467e833bf4006fe04bdd0f898839",
+  "npm-build.log": "ac0f02160e4f4e848179339f5bc74262de46982ca26e9938bd36427bdad79683",
+  "npm-test-full.log": "81869d8aa670088eca2e068b95b0f98358e5dc3cea7bfa29266f40026429ab0c",
+  "targeted-four-files-90.log": "71d7ed39b14a01ebdf31b45cfeed0a0d34011c7a455842263eddb24d2c91ab56",
+  "targeted-profile-secret-scan-m13.log": "236d466ae55711b88c1a9c6f20a010f461fbc663c12ea8f28451d06ff3074fd7",
+  "explicit-focused.log": "9c05da3dd1bbf3dd4fa6d389e56e7af29c9181db5ae53a9697cf34397532adaa",
+  "explicit-full.log": "8502d8ad50d92cda3e299550d5ca5515de3c4611ad48004d8ef34acbffb96c9f",
+  "explicit-pre-env.json": "c3d9ce9950259c02ec6c64b7c34fec16160eac5bb5463ba07879cb8dd21cdbc7",
+  "explicit-results.json": "c7609b2ba22d624cefa518960346d77b964b4fa80e0831e5fb55b1708c7b7a47"
+}

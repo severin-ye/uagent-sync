@@ -1,0 +1,42 @@
+B1 independent verification evidence
+HEAD=1ad915b9b9a45289dd9540408907ce593982e227
+CLONE_COMMAND=git clone --no-hardlinks --no-checkout <HONOR_USER>\Codelib-severin\2_Business\uagent-sync <TEMP>\repo
+CHECKOUT_COMMAND=git -C <TEMP>\repo checkout --detach 1ad915b9b9a45289dd9540408907ce593982e227
+NPM_CI_COMMAND=npm ci --ignore-scripts
+NPM_CI_EXIT=0
+BUILD_COMMAND=npm run build
+BUILD_EXIT=0
+EXTRA_TARGETED_COMMAND=node --import tsx --test test/profile-secret-scan-m13.test.ts
+EXTRA_TARGETED_RESULT=41/41 pass
+EXTRA_TARGETED_EXIT=0
+FULL_TEST_COMMAND=npm test
+FULL_TEST_RESULT=508/508 pass; 0 fail; 0 skipped
+FULL_TEST_EXIT=0
+TARGETED_COMMAND=node --import tsx --test test/profile-secret-scan-boundary.test.ts test/profile-secret-scan-m13.test.ts test/profile-secret-scan.test.ts test/secret-scan-m0.test.ts
+TARGETED_RESULT=90/90 pass; 0 fail; 0 skipped
+TARGETED_EXIT=0
+USERPROFILE=<ISOLATED_ROOT>\isolated\user
+HOME=<ISOLATED_ROOT>\isolated\user
+APPDATA=<ISOLATED_ROOT>\isolated\appdata
+LOCALAPPDATA=<ISOLATED_ROOT>\isolated\localappdata
+CODEX_HOME=<ISOLATED_ROOT>\isolated\codex
+XDG_CONFIG_HOME=<ISOLATED_ROOT>\isolated\xdg
+TMP=<ISOLATED_ROOT>\isolated\tmp
+TEMP=<ISOLATED_ROOT>\isolated\tmp
+NPM_CONFIG_CACHE=<ISOLATED_ROOT>\isolated\npm-cache
+NPM_CONFIG_USERCONFIG=<ISOLATED_ROOT>\isolated\npm-config\user.npmrc
+NPM_CONFIG_GLOBALCONFIG=<ISOLATED_ROOT>\isolated\npm-config\global.npmrc
+UAGENT_SYNC_WORKSPACE_ROOT_WRAPPER_ACTION=not explicitly unset or assigned by the executed verification commands
+UAGENT_SYNC_WORKSPACE_ROOT_OBSERVED_AFTER=<ABSENT>
+OPENCODE_SYNC_WORKSPACE_ROOT_WRAPPER_ACTION=not explicitly unset or assigned by the executed verification commands
+OPENCODE_SYNC_WORKSPACE_ROOT_OBSERVED_AFTER=<ABSENT>
+WORKSPACE_ROOT_FIXTURE_NOTE=individual tests may set process-local fixture values; those do not establish a wrapper-level value
+LOGS=
+<ISOLATED_ROOT>\npm-ci.log bytes=730
+<ISOLATED_ROOT>\npm-build.log bytes=132
+<ISOLATED_ROOT>\targeted-profile-secret-scan-m13.log bytes=2214
+<ISOLATED_ROOT>\npm-test-full.log bytes=47847
+<ISOLATED_ROOT>\targeted-four-files-90.log bytes=5293
+WORKTREE_STATUS_BEGIN
+ M src/dashboard/i18n.js
+WORKTREE_STATUS_END

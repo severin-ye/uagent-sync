@@ -1,0 +1,46 @@
+{
+  "chronological": [
+    {
+      "command": "npm ci --ignore-scripts",
+      "exitCode": 0,
+      "tests": null
+    },
+    {
+      "command": "npm run build",
+      "exitCode": 0,
+      "tests": null
+    },
+    {
+      "command": "node --import tsx --test test/profile-secret-scan-m13.test.ts",
+      "exitCode": 0,
+      "tests": 41
+    },
+    {
+      "command": "npm test",
+      "exitCode": 0,
+      "tests": 508
+    },
+    {
+      "command": "node --import tsx --test test/profile-secret-scan-boundary.test.ts test/profile-secret-scan-m13.test.ts test/profile-secret-scan.test.ts test/secret-scan-m0.test.ts",
+      "exitCode": 0,
+      "tests": 90
+    },
+    {
+      "command": "Explicit isolated environment assignments; Remove-Item Env:UAGENT_SYNC_WORKSPACE_ROOT; Remove-Item Env:OPENCODE_SYNC_WORKSPACE_ROOT; save explicit-pre-env.json",
+      "purpose": "close pre-run environment evidence gap"
+    },
+    {
+      "command": "node --import tsx --test test/profile-secret-scan-boundary.test.ts test/profile-secret-scan-m13.test.ts test/profile-secret-scan.test.ts test/secret-scan-m0.test.ts",
+      "tests": 90,
+      "exitCode": 0,
+      "log": "explicit-focused.log"
+    },
+    {
+      "command": "npm test",
+      "tests": 508,
+      "exitCode": 0,
+      "log": "explicit-full.log"
+    }
+  ],
+  "note": "Initial 41-file-subset run is additional evidence; required four-file 90 run followed full regression, no source changes between runs."
+}

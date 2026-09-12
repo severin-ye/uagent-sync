@@ -1,0 +1,27 @@
+{
+  "observedEvidence": {
+    "USERPROFILE": "<ISOLATED_ROOT>\\isolated\\user",
+    "HOME": "<ISOLATED_ROOT>\\isolated\\user",
+    "APPDATA": "<ISOLATED_ROOT>\\isolated\\appdata",
+    "LOCALAPPDATA": "<ISOLATED_ROOT>\\isolated\\localappdata",
+    "CODEX_HOME": "<ISOLATED_ROOT>\\isolated\\codex",
+    "XDG_CONFIG_HOME": "<ISOLATED_ROOT>\\isolated\\xdg",
+    "TMP": "<ISOLATED_ROOT>\\isolated\\tmp",
+    "TEMP": "<ISOLATED_ROOT>\\isolated\\tmp",
+    "NPM_CONFIG_CACHE": "<ISOLATED_ROOT>\\isolated\\npm-cache",
+    "NPM_CONFIG_USERCONFIG": "<ISOLATED_ROOT>\\isolated\\npm-config\\user.npmrc",
+    "NPM_CONFIG_GLOBALCONFIG": "<ISOLATED_ROOT>\\isolated\\npm-config\\global.npmrc",
+    "UAGENT_SYNC_WORKSPACE_ROOT_WRAPPER_ACTION": "not explicitly unset or assigned by the executed verification commands",
+    "UAGENT_SYNC_WORKSPACE_ROOT_OBSERVED_AFTER": "<ABSENT>",
+    "OPENCODE_SYNC_WORKSPACE_ROOT_WRAPPER_ACTION": "not explicitly unset or assigned by the executed verification commands",
+    "OPENCODE_SYNC_WORKSPACE_ROOT_OBSERVED_AFTER": "<ABSENT>",
+    "WORKSPACE_ROOT_FIXTURE_NOTE": "individual tests may set process-local fixture values; those do not establish a wrapper-level value"
+  },
+  "qualification": "Workspace root variables were not explicitly removed by wrapper. Both absent in inherited host environment in after-run observation. No pre-run environment snapshot; fixtures may set their own values.",
+  "explicitRepeat": {
+    "UAGENT_SYNC_WORKSPACE_ROOT": null,
+    "OPENCODE_SYNC_WORKSPACE_ROOT": null,
+    "action": "Both removed explicitly before targeted and full tests; all other isolated assignments repeated; fixtures may override",
+    "evidence": "explicit-pre-env.json"
+  }
+}

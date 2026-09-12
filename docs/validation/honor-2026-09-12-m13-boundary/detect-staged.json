@@ -1,0 +1,13 @@
+{
+  "scope": "staged",
+  "repo": "uagent-sync",
+  "summary": {
+    "changed_count": 0,
+    "affected_count": 0,
+    "changed_files": 19,
+    "risk_level": "low"
+  },
+  "changed_symbols": [],
+  "affected_processes": [],
+  "note": "Observed GitNexus result before this evidence file was staged; documentation only."
+}

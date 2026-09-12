@@ -1,0 +1,30 @@
+{
+  "task": "RY-09",
+  "sourceSha": "1ad915b9b9a45289dd9540408907ce593982e227",
+  "handoffSha": "240c0b454ff173389fe2450c7d25d34680332ab6",
+  "result": "passed_within_limited_scope",
+  "buildExit": 0,
+  "focused": {
+    "pass": 90,
+    "fail": 0,
+    "exit": 0
+  },
+  "full": {
+    "pass": 508,
+    "fail": 0,
+    "exit": 0
+  },
+  "issue": "RY-M13-01 fixed within reviewed scope",
+  "realCollection": false,
+  "migrationComplete": false,
+  "deferred": [
+    "HP-001",
+    "HP-004",
+    "HP-005",
+    "HP-007",
+    "HP-008",
+    "M2",
+    "172 unknown-source findings",
+    "RY-03"
+  ]
+}
