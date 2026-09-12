@@ -2,7 +2,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createHash, randomUUID } from 'node:crypto';
 import { parse, stringify } from 'smol-toml';
-import { assertProfileContentSafe as assertNoSecrets } from './profile-secret-scan.js';
+import { assertProfileBytesSafe } from './profile-secret-scan.js';
+import type { ProfileM2Context } from './profile-m2-provider.js';
 
 export interface ProfileDevice { deviceId: string; userHome: string; codexHome: string; workspaceRoot: string }
 interface ProfileFile { root: 'codex' | 'agents'; path: string; sha256: string }
@@ -80,6 +81,10 @@ function portableConfig(bytes: Buffer, d: ProfileDevice, excluded: string[]): Bu
   return Buffer.from(stringify(transform(selected, d, false, excluded)));
 }
 export function createCodexProfile(options: CreateOptions): CodexProfileManifest {
+  return createCodexProfileWithContext(options);
+}
+/** @internal Not exported from the root API. */
+export function createCodexProfileWithContext(options: CreateOptions, context?: ProfileM2Context): CodexProfileManifest {
   const { source, snapshotDir } = options; separate(snapshotDir, source);
   if (fs.existsSync(snapshotDir)) throw new Error('Snapshot path already exists; create a new immutable snapshot');
   if (!source.deviceId) throw new Error('Source device ID required');
@@ -105,7 +110,7 @@ export function createCodexProfile(options: CreateOptions): CodexProfileManifest
     const afterRead = fs.statSync(abs);
     if (afterRead.size !== stat.size || afterRead.mtimeMs !== stat.mtimeMs) throw new Error('Source changed while collecting: ' + relative);
     if (root === 'codex' && relative === 'config.toml') bytes = portableConfig(bytes, source, manifest.excluded);
-    assertNoSecrets(bytes.toString('utf8'), `${root}/${relative}`);
+    assertProfileBytesSafe(bytes, `${root}/${relative}`, context);
     manifest.files.push({ root, path: relative, sha256: digest(bytes) }); payloads.set(`${root}/${relative}`, bytes);
   }
   const components = options.components ?? ['config', 'rules', 'skills', 'memories'];
@@ -122,7 +127,7 @@ export function createCodexProfile(options: CreateOptions): CodexProfileManifest
   atomically(path.join(snapshotDir, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
   return manifest;
 }
-function readSnapshot(snapshotDir: string): CodexProfileManifest {
+function readSnapshot(snapshotDir: string, context?: ProfileM2Context): CodexProfileManifest {
   noLinks(snapshotDir);
   const value = JSON.parse(fs.readFileSync(contained(snapshotDir, 'manifest.json'), 'utf8'));
   if (value.schemaVersion !== 1 || typeof value.id !== 'string' || typeof value.sourceDeviceId !== 'string' || !Array.isArray(value.files) || !Array.isArray(value.excluded)) throw new Error('Invalid profile schema');
@@ -135,7 +140,7 @@ function readSnapshot(snapshotDir: string): CodexProfileManifest {
     const key = keyOf(f); if (seen.has(key.toLowerCase())) throw new Error('Duplicate profile path'); seen.add(key.toLowerCase());
     const payload = contained(path.join(snapshotDir, 'files'), key);
     if (hashFile(payload) !== f.sha256) throw new Error('Profile content checksum mismatch: ' + key);
-    assertNoSecrets(fs.readFileSync(payload, 'utf8'), key);
+    assertProfileBytesSafe(fs.readFileSync(payload), key, context);
   }
   return value;
 }
@@ -162,8 +167,12 @@ function desiredBytes(snapshotDir: string, f: ProfileFile, d: ProfileDevice, tar
   return Buffer.from(stringify(merge(existing, restored)));
 }
 export function planCodexProfileRestore(options: RestoreOptions): ProfilePlan {
+  return planCodexProfileRestoreWithContext(options);
+}
+/** @internal Not exported from the root API. */
+export function planCodexProfileRestoreWithContext(options: RestoreOptions, context?: ProfileM2Context): ProfilePlan {
   const { target, snapshotDir } = options; separate(snapshotDir, target);
-  const manifest = readSnapshot(snapshotDir), baseline = readBaseline(target), base = roots(target);
+  const manifest = readSnapshot(snapshotDir, context), baseline = readBaseline(target), base = roots(target);
   if (options.preferSource && Object.keys(baseline.files).length) throw new Error('Source preference is only allowed for the first restore');
   const items: RestoreItem[] = manifest.files.map(f => {
     const targetPath = contained(base[f.root], f.path), before = hashFile(targetPath), after = digest(desiredBytes(snapshotDir, f, target, targetPath));
@@ -179,7 +188,11 @@ export function planCodexProfileRestore(options: RestoreOptions): ProfilePlan {
   return { snapshotId: manifest.id, items, conflicts: items.filter(x => x.action === 'conflict').map(x => `${x.root}/${x.path}`), sourceDeletionsRetained: Object.keys(baseline.files).filter(x => !present.has(x)), excluded: manifest.excluded };
 }
 export function restoreCodexProfile(options: RestoreOptions): ProfilePlan & { backupDir: string } {
-  const plan = planCodexProfileRestore(options);
+  return restoreCodexProfileWithContext(options);
+}
+/** @internal Not exported from the root API. */
+export function restoreCodexProfileWithContext(options: RestoreOptions, context?: ProfileM2Context): ProfilePlan & { backupDir: string } {
+  const plan = planCodexProfileRestoreWithContext(options, context);
   if (plan.conflicts.length) throw new Error('Profile conflicts: ' + plan.conflicts.join(', '));
   const old = readBaseline(options.target);
   const backupDir = path.join(options.target.codexHome, 'uagent-device-state', 'backups', randomUUID());

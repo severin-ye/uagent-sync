@@ -1,7 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
-import { assertProfileContentSafe as assertNoSecrets } from './profile-secret-scan.js';
+import { assertProfileBytesSafe } from './profile-secret-scan.js';
+import type { ProfileM2Context } from './profile-m2-provider.js';
 
 function git(cwd: string, args: string[]): string {
   const result = spawnSync('git', ['-C', cwd, ...args], { encoding: 'utf8', windowsHide: true, timeout: 120000, maxBuffer: 16 * 1024 * 1024 });
@@ -24,6 +25,10 @@ export function fetchDeviceRegistry(registry: string, expectedRemote: string): {
   return { head: git(registry, ['rev-parse', 'HEAD']) };
 }
 export function publishDevicePaths(registry: string, expectedRemote: string, relativePaths: string[]): { head: string; pushed: boolean } {
+  return publishDevicePathsWithContext(registry, expectedRemote, relativePaths);
+}
+/** @internal Not exported from the root API. */
+export function publishDevicePathsWithContext(registry: string, expectedRemote: string, relativePaths: string[], context?: ProfileM2Context): { head: string; pushed: boolean } {
   if (!relativePaths.length) throw new Error('Explicit registry paths required');
   const root = fs.realpathSync(registry);
   function scan(absolute: string): void {
@@ -31,7 +36,7 @@ export function publishDevicePaths(registry: string, expectedRemote: string, rel
     if (stat.isSymbolicLink()) throw new Error('Registry symlinks are not publishable');
     if (stat.isDirectory()) { for (const entry of fs.readdirSync(absolute)) scan(path.join(absolute, entry)); return; }
     if (!stat.isFile() || stat.size > 100 * 1024 * 1024) throw new Error('Unsupported registry file');
-    assertNoSecrets(fs.readFileSync(absolute, 'utf8'), path.relative(root, absolute));
+    assertProfileBytesSafe(fs.readFileSync(absolute), path.relative(root, absolute), context);
   }
   for (const relative of relativePaths) {
     if (!/^sync\/(?:devices|profiles)\//.test(relative) || relative.includes('\\') || relative.includes(':') || relative.split('/').some(x => !x || x === '.' || x === '..')) throw new Error('Only explicit device/profile paths may be published');

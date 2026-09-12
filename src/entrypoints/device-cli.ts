@@ -4,11 +4,12 @@ import os from 'node:os';
 import { randomUUID } from 'node:crypto';
 import { runDeviceRegistryCli } from './device-registry-cli.js';
 import { readDeviceConnection, loadDeviceProfiles, resolveDevice } from '../lib/device-registry.js';
-import { createCodexProfile, planCodexProfileRestore, restoreCodexProfile } from '../lib/codex-profile.js';
+import { createProfileOperations, type ProfileOperations } from '../lib/profile-scan-operations.js';
 import { auditDeviceWorkspace } from '../lib/device-workspace-audit.js';
-import { fetchDeviceRegistry, publishDevicePaths } from '../lib/device-git-transport.js';
+import { fetchDeviceRegistry } from '../lib/device-git-transport.js';
 
-export async function runDeviceCli(args: string[]): Promise<number> {
+export function createDeviceCliHandler({profileOperations}: {profileOperations: ProfileOperations}) {
+  return async function deviceCliHandler(args: string[]): Promise<number> {
   if (['register', 'list', 'show', 'rename', 'reconnect'].includes(args[0])) return runDeviceRegistryCli(args);
   try {
     const action = args[0];
@@ -26,7 +27,7 @@ export async function runDeviceCli(args: string[]): Promise<number> {
     const device = resolveDevice(loadDeviceProfiles(connection.registryCheckout), connection.deviceId);
     let value: unknown;
     if (action === 'fetch') value = fetchDeviceRegistry(connection.registryCheckout, connection.registryRemote);
-    else if (action === 'publish') value = publishDevicePaths(connection.registryCheckout, connection.registryRemote, flags.get('path') ?? []);
+    else if (action === 'publish') value = await profileOperations.publish(connection.registryCheckout, connection.registryRemote, flags.get('path') ?? []);
     else {
       const ids = Object.keys(device.workspaces);
       const id = one('workspace-id') ?? (ids.length === 1 ? ids[0] : undefined);
@@ -38,12 +39,12 @@ export async function runDeviceCli(args: string[]): Promise<number> {
       } else if (action === 'snapshot') {
         const snapshotDir = one('output') ?? path.join(connection.registryCheckout, 'sync/profiles', device.deviceId, randomUUID());
         const components = one('components')?.split(',') as ('config' | 'rules' | 'skills' | 'memories')[] | undefined;
-        const manifest = createCodexProfile({ source: target, snapshotDir, components });
+        const manifest = await profileOperations.create({ source: target, snapshotDir, components });
         value = { snapshotDir, manifest, scope: 'codex-personal-files', environmentComplete: false, remaining: ['workspace files and dependencies', 'plugin installation and runtime validation', 'excluded device-local settings listed in manifest'] };
       } else if (action === 'restore') {
         const snapshotDir = one('snapshot'); if (!snapshotDir) throw new Error('--snapshot is required');
         const options = { target, snapshotDir, preferSource: one('prefer-source') === 'true' };
-        const result = one('apply') === 'true' ? restoreCodexProfile(options) : planCodexProfileRestore(options);
+        const result = one('apply') === 'true' ? await profileOperations.restore(options) : await profileOperations.plan(options);
         value = { ...result, applied: one('apply') === 'true', environmentComplete: false };
         console.log(JSON.stringify({ ok: result.conflicts.length === 0, value }, null, 2)); return result.conflicts.length ? 1 : 0;
       } else throw new Error('Unknown device command; use device help');
@@ -53,3 +54,7 @@ export async function runDeviceCli(args: string[]): Promise<number> {
     console.error(JSON.stringify({ ok: false, error: error instanceof Error ? error.message : String(error) })); return 1;
   }
 }
+
+}
+const defaultHandler = createDeviceCliHandler({profileOperations:createProfileOperations()});
+export async function runDeviceCli(args: string[]): Promise<number> { return defaultHandler(args); }
