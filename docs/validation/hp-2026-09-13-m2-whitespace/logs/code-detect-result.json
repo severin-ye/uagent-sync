@@ -1,0 +1,376 @@
+{
+  "summary": {
+    "changed_count": 4,
+    "affected_count": 28,
+    "changed_files": 2,
+    "risk_level": "critical"
+  },
+  "changed_symbols": [
+    {
+      "id": "Function:src/lib/profile-secret-scan.ts:scanProfileContent",
+      "name": "scanProfileContent",
+      "type": "Function",
+      "filePath": "src/lib/profile-secret-scan.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:test/profile-m2-whitespace.test.ts:safe",
+      "name": "safe",
+      "type": "Const",
+      "filePath": "test/profile-m2-whitespace.test.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:test/profile-m2-whitespace.test.ts:context",
+      "name": "context",
+      "type": "Const",
+      "filePath": "test/profile-m2-whitespace.test.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:test/profile-m2-whitespace.test.ts:fn@14:55.legacy@15:4",
+      "name": "legacy",
+      "type": "Const",
+      "filePath": "test/profile-m2-whitespace.test.ts",
+      "change_type": "touched"
+    }
+  ],
+  "affected_processes": [
+    {
+      "id": "proc_1_create",
+      "name": "Create → ExampleRegions",
+      "process_type": "cross_community",
+      "step_count": 10,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 7
+        }
+      ]
+    },
+    {
+      "id": "proc_2_create",
+      "name": "Create → LexExample",
+      "process_type": "cross_community",
+      "step_count": 10,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 7
+        }
+      ]
+    },
+    {
+      "id": "proc_3_create",
+      "name": "Create → Reject",
+      "process_type": "cross_community",
+      "step_count": 10,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 7
+        }
+      ]
+    },
+    {
+      "id": "proc_4_create",
+      "name": "Create → CodeRegions",
+      "process_type": "cross_community",
+      "step_count": 9,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 7
+        }
+      ]
+    },
+    {
+      "id": "proc_7_createcodexprofilewi",
+      "name": "CreateCodexProfileWithContext → Lex",
+      "process_type": "cross_community",
+      "step_count": 8,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_8_createcodexprofilewi",
+      "name": "CreateCodexProfileWithContext → TypescriptPlaceholders",
+      "process_type": "cross_community",
+      "step_count": 8,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_9_publishdevicepathswi",
+      "name": "PublishDevicePathsWithContext → Children",
+      "process_type": "cross_community",
+      "step_count": 8,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 5
+        }
+      ]
+    },
+    {
+      "id": "proc_12_publish",
+      "name": "Publish → IsTrustedTemplate",
+      "process_type": "cross_community",
+      "step_count": 8,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_15_publishdevicepathswi",
+      "name": "PublishDevicePathsWithContext → RawClosed",
+      "process_type": "cross_community",
+      "step_count": 7,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 5
+        }
+      ]
+    },
+    {
+      "id": "proc_137_restore",
+      "name": "Restore → ExampleRegions",
+      "process_type": "cross_community",
+      "step_count": 10,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 7
+        }
+      ]
+    },
+    {
+      "id": "proc_138_restore",
+      "name": "Restore → LexExample",
+      "process_type": "cross_community",
+      "step_count": 10,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 7
+        }
+      ]
+    },
+    {
+      "id": "proc_139_restore",
+      "name": "Restore → Reject",
+      "process_type": "cross_community",
+      "step_count": 10,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 7
+        }
+      ]
+    },
+    {
+      "id": "proc_140_restore",
+      "name": "Restore → CodeRegions",
+      "process_type": "cross_community",
+      "step_count": 9,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 7
+        }
+      ]
+    },
+    {
+      "id": "proc_143_restorecodexprofilew",
+      "name": "RestoreCodexProfileWithContext → Lex",
+      "process_type": "cross_community",
+      "step_count": 8,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_144_restorecodexprofilew",
+      "name": "RestoreCodexProfileWithContext → TypescriptPlaceholders",
+      "process_type": "cross_community",
+      "step_count": 8,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_150_readsnapshot",
+      "name": "ReadSnapshot → RawClosed",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_207_plan",
+      "name": "Plan → ExampleRegions",
+      "process_type": "cross_community",
+      "step_count": 9,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_208_plan",
+      "name": "Plan → LexExample",
+      "process_type": "cross_community",
+      "step_count": 9,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_209_plan",
+      "name": "Plan → Reject",
+      "process_type": "cross_community",
+      "step_count": 9,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_210_plan",
+      "name": "Plan → CodeRegions",
+      "process_type": "cross_community",
+      "step_count": 8,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_213_publish",
+      "name": "Publish → Lex",
+      "process_type": "cross_community",
+      "step_count": 8,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_214_publish",
+      "name": "Publish → TypescriptPlaceholders",
+      "process_type": "cross_community",
+      "step_count": 8,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_259_publish",
+      "name": "Publish → ExampleRegions",
+      "process_type": "cross_community",
+      "step_count": 9,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_260_publish",
+      "name": "Publish → LexExample",
+      "process_type": "cross_community",
+      "step_count": 9,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_261_publish",
+      "name": "Publish → Reject",
+      "process_type": "cross_community",
+      "step_count": 9,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_262_publish",
+      "name": "Publish → CodeRegions",
+      "process_type": "cross_community",
+      "step_count": 8,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_266_walk",
+      "name": "Walk → IsTrustedTemplate",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_295_readsnapshot",
+      "name": "ReadSnapshot → IsTrustedTemplate",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "scanProfileContent",
+          "step": 4
+        }
+      ]
+    }
+  ]
+}

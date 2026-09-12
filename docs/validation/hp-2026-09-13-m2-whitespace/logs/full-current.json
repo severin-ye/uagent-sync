@@ -1,0 +1,9 @@
+{
+  "cwd": "<CHECKOUT>",
+  "cmd": "npm.cmd",
+  "args": [
+    "test"
+  ],
+  "status": 0,
+  "signal": null
+}

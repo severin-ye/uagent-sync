@@ -1,0 +1,66 @@
+{
+  "HOME": {
+    "present": true,
+    "value": "<ISOLATED_ROOT>/home/h"
+  },
+  "USERPROFILE": {
+    "present": true,
+    "value": "<ISOLATED_ROOT>/home/h"
+  },
+  "APPDATA": {
+    "present": true,
+    "value": "<ISOLATED_ROOT>/home/a"
+  },
+  "LOCALAPPDATA": {
+    "present": true,
+    "value": "<ISOLATED_ROOT>/home/l"
+  },
+  "CODEX_HOME": {
+    "present": true,
+    "value": "<ISOLATED_ROOT>/home/c"
+  },
+  "XDG_CONFIG_HOME": {
+    "present": true,
+    "value": "<ISOLATED_ROOT>/home/x"
+  },
+  "TEMP": {
+    "present": true,
+    "value": "<ISOLATED_ROOT>/home/t"
+  },
+  "TMP": {
+    "present": true,
+    "value": "<ISOLATED_ROOT>/home/t"
+  },
+  "npm_config_cache": {
+    "present": true,
+    "value": "<ISOLATED_ROOT>/home/n"
+  },
+  "npm_config_prefix": {
+    "present": true,
+    "value": "<ISOLATED_ROOT>/home/prefix"
+  },
+  "npm_config_userconfig": {
+    "present": true,
+    "value": "<ISOLATED_ROOT>/home/npm_config_userconfig.rc"
+  },
+  "npm_config_globalconfig": {
+    "present": true,
+    "value": "<ISOLATED_ROOT>/home/npm_config_globalconfig.rc"
+  },
+  "UAGENT_SYNC_WORKSPACE_ROOT": {
+    "present": false,
+    "value": null
+  },
+  "OPENCODE_SYNC_WORKSPACE_ROOT": {
+    "present": false,
+    "value": null
+  },
+  "NODE_PATH": {
+    "present": false,
+    "value": null
+  },
+  "NODE_OPTIONS": {
+    "present": false,
+    "value": null
+  }
+}

@@ -1,0 +1,387 @@
+[
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/artificial/current-formal-honor-formfeed-gates.json",
+    "sha256": "87788797aea31709a43e1021f49d4d1127971fbe103f3025a78080123dc24588",
+    "summary": {
+      "pass": 4,
+      "fail": 2
+    }
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/artificial/current-formal-honor-residual.json",
+    "sha256": "c09e8f57f003a1707db600924fa6e6e42323404024c25a1e67c3fd18f1711754",
+    "summary": {
+      "pass": 16,
+      "fail": 8
+    }
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/artificial/current-formal-probe-commands.json",
+    "sha256": "18067a2f06f03e2aaa74c6cec1dca9b8d2e0788168edd857c7886e912e4c974d",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/artificial/current-formal-probe-pre-env.json",
+    "sha256": "1a52e325d2b768b8692da6bfdce7ffd2be42354e267884e56090903506f7640c",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/artificial/current-verified-child-absence.json",
+    "sha256": "4295ce028de0a4bf00bb7d17dba976559bc99c11c6732d4a3c57a4182b0c3032",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/artificial/current-verified-honor-formfeed-gates.json",
+    "sha256": "87788797aea31709a43e1021f49d4d1127971fbe103f3025a78080123dc24588",
+    "summary": {
+      "pass": 4,
+      "fail": 2
+    }
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/artificial/current-verified-honor-residual.json",
+    "sha256": "c09e8f57f003a1707db600924fa6e6e42323404024c25a1e67c3fd18f1711754",
+    "summary": {
+      "pass": 16,
+      "fail": 8
+    }
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/artificial/current-verified-probe-commands.json",
+    "sha256": "be9190580110a7f8765a53ad80f8820b2cc0c4bc49a173906eda47954f9487ae",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/artificial/current-verified-probe-pre-env.json",
+    "sha256": "1c1ed5f83714f5c6854ef12922309e9d863be84f3458e016296e364049fd94b6",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/artificial/formfeed-python-syntax.json",
+    "sha256": "10deb7885dc3e7dab48b13aa2a9a743f77b4a7704765f7152b0d699b51551870",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/artificial/honor-formfeed-gates.mjs",
+    "sha256": "bc7a68ceb34129b38b4ab6f042181dbef037ec5515e2f979b9aa6f56aaf7c01f"
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/artificial/honor-residual.mjs",
+    "sha256": "837fac816e26fc9a656bf958b3849932f5a8faedff66a618d854a78d74b5833b"
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/artificial/node18-verified-child-absence.json",
+    "sha256": "4295ce028de0a4bf00bb7d17dba976559bc99c11c6732d4a3c57a4182b0c3032",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/artificial/node18-verified-honor-formfeed-gates.json",
+    "sha256": "bc0d62d697504f7ea607951222a41bd81b2e94deb1e0e06c4f55446dc746058f",
+    "summary": {
+      "pass": 4,
+      "fail": 2
+    }
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/artificial/node18-verified-honor-residual.json",
+    "sha256": "037abc52812bcc883cc06aa8e43a2d4e5693529ac350828d468c962e42131191",
+    "summary": {
+      "pass": 16,
+      "fail": 8
+    }
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/artificial/node18-verified-probe-commands.json",
+    "sha256": "63b2e4d21a1b7de4d9e9483ceb1a1cf63c746d9625e9758bf0ef6bbc7bba61d8",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/artificial/node18-verified-probe-pre-env.json",
+    "sha256": "2439cadba7bb3601b119fa18d41f3476d5f4d192cdd294dd6e5e3822abf12981",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/artificial/run-honor-probes.ps1",
+    "sha256": "cba76933cb5c32cac5632795fa5038758503298fedc1fcea3fa1cf774a9b142d"
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/build-preenv.json",
+    "sha256": "ae1e8c53cdd4359ccc49d97f4b22f91794afc4732fa0395620d50d60c1a5662e",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/build.json",
+    "sha256": "d9c9faccdeab53e9dfc677d29ca545562df8164cbb4d64a47505c99ee913c97a",
+    "summary": {
+      "status": 0
+    }
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/build.log",
+    "sha256": "bd6fb11bb949073c27d89778bdf4a408d6e092cdb0c317284da169c1695157f1",
+    "testSummary": []
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/ci-preenv.json",
+    "sha256": "471523441b0256a8aca8285918cc1817441d5635573438e3e2e37a7491e25fa0",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/ci.json",
+    "sha256": "a4fc79047d87e82cbc9d86bda06e69b1cd786ae0f583680c82c1d68934066081",
+    "summary": {
+      "status": 0
+    }
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/ci.log",
+    "sha256": "e61fb8213f839195b4efc946607312d8b481edb786b547a560adc828e6ce6b4f",
+    "testSummary": []
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/consumer-ancestors.json",
+    "sha256": "4235ef1cfcc6d01463e9feda9ddcc09e910ad2b8fe8e2f5f150108846f4888ad",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/consumer-check.mjs",
+    "sha256": "aa2cb6c8064808e4e3d78c175ba72898ca6353984c79b9141dc1a175f956502c"
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/consumer-host-current-preenv.json",
+    "sha256": "17659ba4b917f145fc267c0eeefcc9b64f02ea0f515497cd62d99614a39ce4f5",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/consumer-host-current.json",
+    "sha256": "a8048b84425a490fb50b3a721e7cf877b7ad430eaa81f4bc08b2ab1137cb9bff",
+    "summary": {
+      "status": 0
+    }
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/consumer-host-current.log",
+    "sha256": "193a57828c8cac00bfd41171cac3ba8bf14fc7469de7e26655230e9d2c3de92c",
+    "testSummary": []
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/consumer-host-install-preenv.json",
+    "sha256": "17659ba4b917f145fc267c0eeefcc9b64f02ea0f515497cd62d99614a39ce4f5",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/consumer-host-install.json",
+    "sha256": "ca488359b7b327f18c153fb08ef085d4bb77cfc02ab54ffffcd0a4e0c2b6cbb8",
+    "summary": {
+      "status": 0
+    }
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/consumer-host-install.log",
+    "sha256": "88a3a630c3ed16f78ce34af0f667236ce55ebcd61330c62209ccde840d765d0f",
+    "testSummary": []
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/consumer-host-node18-preenv.json",
+    "sha256": "17659ba4b917f145fc267c0eeefcc9b64f02ea0f515497cd62d99614a39ce4f5",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/consumer-host-node18.json",
+    "sha256": "eab8e8bf4d0214d5bbabe8d5dc7655f56b6bad179cfae903afd11b55479e0a5e",
+    "summary": {
+      "status": 0
+    }
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/consumer-host-node18.log",
+    "sha256": "32b6e10e56e017e512fe851465950c9f9b91db0ef4f686ec084121ec73595b05",
+    "testSummary": []
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/consumer-pure-current-preenv.json",
+    "sha256": "708cc36be06c3e7ec2cbfe44852201ed46bf09a74f1c1002434a62b7aa0247e4",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/consumer-pure-current.json",
+    "sha256": "cd5dde0e410a72f5c681f3a31750db87d881064ad1a955589a4b685c984d72be",
+    "summary": {
+      "status": 0
+    }
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/consumer-pure-current.log",
+    "sha256": "6a217c63c97c9a0c7e5c687e7f5cdb0281da7679286e2e6d1fd8f70d923c83a1",
+    "testSummary": []
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/consumer-pure-install-preenv.json",
+    "sha256": "708cc36be06c3e7ec2cbfe44852201ed46bf09a74f1c1002434a62b7aa0247e4",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/consumer-pure-install.json",
+    "sha256": "036176a06d9719d13d8c83005866e4638adc86f0df50cc58530aacb770bb784b",
+    "summary": {
+      "status": 0
+    }
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/consumer-pure-install.log",
+    "sha256": "4cc0cddf7ec213ef8333767578b44d8805fc68dec410b5c6094d40992f543525",
+    "testSummary": []
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/consumer-pure-node18-preenv.json",
+    "sha256": "708cc36be06c3e7ec2cbfe44852201ed46bf09a74f1c1002434a62b7aa0247e4",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/consumer-pure-node18.json",
+    "sha256": "157458fe0e54b119012c0a1fccfade5e4160c36cb4860a801ab9e55eb579428d",
+    "summary": {
+      "status": 0
+    }
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/consumer-pure-node18.log",
+    "sha256": "1f2c910eff62543471c87c5c81f499b43f0d2536a09b766d5e1f9c81ebbb5655",
+    "testSummary": []
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/focused-current-preenv.json",
+    "sha256": "ae1e8c53cdd4359ccc49d97f4b22f91794afc4732fa0395620d50d60c1a5662e",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/focused-current.json",
+    "sha256": "a0e2554eb191ae64443d0c99e6251d84cb93d1fcdcb8ad498bc02294e5c85c46",
+    "summary": {
+      "status": 0
+    }
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/focused-current.log",
+    "sha256": "0990bbae32b5ebe44c0e09e548b54b371d9fec176866469a65927fc485877f5c",
+    "testSummary": [
+      "ℹ tests 115",
+      "ℹ pass 115",
+      "ℹ fail 0",
+      "ℹ cancelled 0"
+    ]
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/focused-node18-preenv.json",
+    "sha256": "b0068db6e094f8db5da9864fa36a339c4ee78c6a4616273640bb49faafb7a83a",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/focused-node18.json",
+    "sha256": "e406c0854ba5407498c0ae8b96061bac6d7975c8ae44b3def7e0acdf15dc616e",
+    "summary": {
+      "status": 0
+    }
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/focused-node18.log",
+    "sha256": "18775c2115a101ac815cf1b3ec426e9a591563ba364e8d97ba0e38831edcdd96",
+    "testSummary": [
+      "# tests 115",
+      "# pass 115",
+      "# fail 0",
+      "# cancelled 0"
+    ]
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/full-current-preenv.json",
+    "sha256": "ae1e8c53cdd4359ccc49d97f4b22f91794afc4732fa0395620d50d60c1a5662e",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/full-current-retry-preenv.json",
+    "sha256": "ae1e8c53cdd4359ccc49d97f4b22f91794afc4732fa0395620d50d60c1a5662e",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/full-current-retry.json",
+    "sha256": "f9fd50444d6c6fd801d09d561ae3e319c191eeb224214315b751da12eccbc215",
+    "summary": {
+      "status": 0
+    }
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/full-current-retry.log",
+    "sha256": "6c656116f754d87562a6465670ce29469682bfbd2cd69bba3030592a240e8ae2",
+    "testSummary": [
+      "ℹ tests 819",
+      "ℹ pass 819",
+      "ℹ fail 0",
+      "ℹ cancelled 0"
+    ]
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/full-node18-preenv.json",
+    "sha256": "b0068db6e094f8db5da9864fa36a339c4ee78c6a4616273640bb49faafb7a83a",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/full-node18.json",
+    "sha256": "008134bf893dc3bf50559367783c04984014ce06a54ba7e2f16ec20c61ea222f",
+    "summary": {
+      "status": 1
+    }
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/full-node18.log",
+    "sha256": "98abc0b2a5665a2115f7b10689397b2d5cacbe5ac3d88a2b4b7f9ede4e69076f",
+    "testSummary": [
+      "# tests 705",
+      "# pass 682",
+      "# fail 19",
+      "# cancelled 4"
+    ]
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/node18-comparison.json",
+    "sha256": "cf2fdd4c38ad1c7ab1c6bee358a8ae8d6a1debb4e01e51b358f7596c958d4449",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/pack-preenv.json",
+    "sha256": "b0068db6e094f8db5da9864fa36a339c4ee78c6a4616273640bb49faafb7a83a",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/pack.json",
+    "sha256": "b5b0009d84ded4503fa5bbf05c8b5e8b78841b4e55d845a9e9d8e21e32dba526",
+    "summary": {
+      "status": 0
+    }
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/pack.log",
+    "sha256": "70918ccd23a2ebaa47f738d8ddd6ddd2ce49203be60dc745a16b12ca346c93ec",
+    "testSummary": []
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/package-summary.json",
+    "sha256": "00baf5a143ffabe5a61208f559161a58ce009e95bbfcb6faed6a9477fd97431d",
+    "summary": {}
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/run-isolated.mjs",
+    "sha256": "00bb2514277486833c7ac2ad7bf3ed415e7375fc68d7212c86367876ff6dfb3d"
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/run-main.mjs",
+    "sha256": "102370e934ced88d98d6854c5f9a6e93c707cabbde5a40b796dc7ce9ad083624"
+  },
+  {
+    "path": "docs/validation/honor-2026-09-13-m2-integration/runtime/source-checks.json",
+    "sha256": "b1c74412861e13a4486b14b33bdff0e4043713b753ed6f4c83d6e6dd089c50ba",
+    "summary": {
+      "status": " M src/dashboard/i18n.js\n"
+    }
+  }
+]

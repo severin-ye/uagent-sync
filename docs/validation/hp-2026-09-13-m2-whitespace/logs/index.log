@@ -1,0 +1,17 @@
+[2K  Skipped 1 large files (>512KB, likely generated/vendored)
+[2K  - docs/validation/honor-2026-09-11-plan-review/additional-syntax.json
+[2K  Set GITNEXUS_MAX_FILE_SIZE=<KB> to include files above the default cap.
+
+  Repository indexed successfully (56.0s)
+
+  6,357 nodes | 13,870 edges | 165 clusters | 413 flows
+  <CHECKOUT>
+
+
+  GitNexus Analyzer (1.6.11)
+
+  GitNexus Analyzer (1.6.11)
+(node:79840) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+{"level":40,"time":1789236015774,"name":"gitnexus","msg":"[scope-resolution] 443 property read/write site(s) name a field that IS defined in this workspace, but only in another language, so per-language inference declined to link them. Queries for these fields return an empty result that does NOT mean \"unused\" — it means the definition anchor is in a different language. Affected: analysisId (javascript), content (javascript), counts (javascript), stagedDecisions (javascript), OPENCODE_SYNC_WORKSPACE_ROOT (typescript), UAGENT_SYNC_WORKSPACE_ROOT (typescript), action (typescript), actions (typescript), activeState (typescript), agent (typescript), …"}
+{"level":40,"time":1789236015914,"name":"gitnexus","truncation":{"truncated":true,"entryPointCandidatesDropped":161,"entryPointsUnexplored":5,"walksCutByBudget":43,"tracesDepthCapped":0,"calleesDropped":2089,"processesDropped":0},"msg":"[processes] 413 flows reported, but whole flows are MISSING: 161 of 361 candidate entry point(s) never ranked in, 5 ranked entry point(s) never traced, 0 deduplicated flow(s) dropped at maxProcesses, 0 trace(s) cut at maxTraceDepth, 2089 callee(s) skipped at maxBranching, 43 walk(s) cut by the per-entry trace budget. An absent flow does NOT mean the code path does not exist."}

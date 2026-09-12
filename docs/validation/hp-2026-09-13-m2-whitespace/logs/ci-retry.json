@@ -1,0 +1,15 @@
+{
+  "cwd": "<CHECKOUT>",
+  "cmd": "npm.cmd",
+  "args": [
+    "ci",
+    "--prefix",
+    "<CHECKOUT>",
+    "--ignore-scripts",
+    "--include=optional",
+    "--no-audit",
+    "--no-fund"
+  ],
+  "status": 0,
+  "signal": null
+}

@@ -1,0 +1,12 @@
+{
+  "cwd": "<CHECKOUT>",
+  "cmd": "C:/node.exe",
+  "args": [
+    "--import",
+    "tsx",
+    "--test",
+    "test/profile-m2-whitespace.test.ts"
+  ],
+  "status": 1,
+  "signal": null
+}

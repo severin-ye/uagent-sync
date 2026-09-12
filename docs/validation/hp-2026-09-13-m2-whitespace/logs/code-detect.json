@@ -1,0 +1,10 @@
+{
+  "cwd": "<CHECKOUT>",
+  "cmd": "C:/node.exe",
+  "args": [
+    "<ISOLATED_ROOT>/detect.mjs",
+    "code"
+  ],
+  "status": 0,
+  "signal": null
+}

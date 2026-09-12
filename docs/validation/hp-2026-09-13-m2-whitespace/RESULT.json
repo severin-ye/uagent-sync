@@ -1,0 +1,85 @@
+{
+  "task": "HP-03-M2-WS",
+  "status": "HP limited fix passed; Honor independent review pending",
+  "inputHandoff": "d7fede87513d699a55a0b55f2b90b63982a4690f",
+  "baseline": "416120afbf2446463864e8292d1423e493055944",
+  "codeSha": "57b852f788e6ee4a9fcba7f0cda3c9f713a1e8ce",
+  "productionFiles": [
+    "src/lib/profile-secret-scan.ts"
+  ],
+  "testFiles": [
+    "test/profile-m2-whitespace.test.ts"
+  ],
+  "runtimes": [
+    "v24.19.0",
+    "v18.20.8"
+  ],
+  "red": {
+    "originalEachRuntime": {
+      "pure": {
+        "pass": 16,
+        "fail": 8,
+        "exit": 1
+      },
+      "gates": {
+        "pass": 4,
+        "fail": 2,
+        "exit": 1
+      }
+    },
+    "newAssertionTests": {
+      "pass": 2,
+      "fail": 31,
+      "exit": 1
+    }
+  },
+  "green": {
+    "originalEachRuntime": {
+      "pure": {
+        "pass": 24,
+        "fail": 0,
+        "exit": 0
+      },
+      "gates": {
+        "pass": 6,
+        "fail": 0,
+        "exit": 0
+      }
+    },
+    "focusedEachRuntime": {
+      "pass": 148,
+      "fail": 0,
+      "exit": 0
+    },
+    "fullCurrent": {
+      "node": "v24.19.0",
+      "pass": 852,
+      "fail": 0,
+      "cancelled": 0,
+      "exit": 0,
+      "includes": "pretest build and existing package smoke"
+    }
+  },
+  "scope": "Revoke all M2 spans for unsupported ECMAScript whitespace or NEL anywhere in content; no allowed format expansion",
+  "changeDetection": {
+    "changed_count": 4,
+    "affected_count": 28,
+    "changed_files": 2,
+    "risk_level": "critical"
+  },
+  "limitations": [
+    "Node18 full historical 19 failures and 4 cancellations not rerun or resolved",
+    "omit-dev host dependency issue not resolved; separate host consumer validations not rerun",
+    "HP npm user directory incident unresolved; no guessed restoration",
+    "Original parenthesized-value base-scanner blind spot remains distinct from M2 composition bypass",
+    "M2 real four candidates, HP-006, HP-022/023, 172 unknown-origin items and RY-03 remain blocked",
+    "HP-03, HP-04 and migration incomplete"
+  ],
+  "prohibitedOperationsExecuted": false,
+  "reportChangeDetection": {
+    "changed_count": 7,
+    "affected_count": 0,
+    "changed_files": 82,
+    "risk_level": "low"
+  }
+}

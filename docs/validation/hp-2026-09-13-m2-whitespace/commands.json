@@ -1,0 +1,151 @@
+[
+  {
+    "label": "ci-retry",
+    "cwd": "<CHECKOUT>",
+    "cmd": "npm.cmd",
+    "args": [
+      "ci",
+      "--prefix",
+      "<CHECKOUT>",
+      "--ignore-scripts",
+      "--include=optional",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "ci",
+    "cwd": "<CHECKOUT>",
+    "cmd": "npm.cmd",
+    "args": [
+      "ci",
+      "--prefix",
+      "<CHECKOUT>",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "code-detect",
+    "cwd": "<CHECKOUT>",
+    "cmd": "C:/node.exe",
+    "args": [
+      "<ISOLATED_ROOT>/detect.mjs",
+      "code"
+    ],
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "focused-current",
+    "cwd": "<CHECKOUT>",
+    "cmd": "C:/node.exe",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-m2-whitespace.test.ts",
+      "test/profile-m2-composition.test.ts",
+      "test/profile-m2-integration.test.ts",
+      "test/profile-m2-operations.test.ts",
+      "test/profile-m2-gates.test.ts",
+      "test/profile-m2-parser.test.ts",
+      "test/profile-m2-args.test.ts",
+      "test/profile-m2-honor.test.ts",
+      "test/profile-m2-honor-boundary.test.ts"
+    ],
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "focused-node18",
+    "cwd": "<CHECKOUT>",
+    "cmd": "<USER_HOME>/m2g0e/runtime18/node-v18.20.8-win-x64/node.exe",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-m2-whitespace.test.ts",
+      "test/profile-m2-composition.test.ts",
+      "test/profile-m2-integration.test.ts",
+      "test/profile-m2-operations.test.ts",
+      "test/profile-m2-gates.test.ts",
+      "test/profile-m2-parser.test.ts",
+      "test/profile-m2-args.test.ts",
+      "test/profile-m2-honor.test.ts",
+      "test/profile-m2-honor-boundary.test.ts"
+    ],
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "full-current",
+    "cwd": "<CHECKOUT>",
+    "cmd": "npm.cmd",
+    "args": [
+      "test"
+    ],
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "index",
+    "cwd": "<CHECKOUT>",
+    "cmd": "C:/node.exe",
+    "args": [
+      "<USER_HOME>/AppData/Local/pnpm/store/v11/links/@/gitnexus/1.6.11/b5f5e5dfb93e9c782cd6bd8d226b0a45a779732252e19e5b493352f6b71ca9e6/node_modules/gitnexus/dist/cli/index.js",
+      "analyze",
+      "--index-only",
+      "--name",
+      "hp-ff",
+      "--workers",
+      "2"
+    ],
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "red-assertions",
+    "cwd": "<CHECKOUT>",
+    "cmd": "C:/node.exe",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-m2-whitespace.test.ts"
+    ],
+    "status": 1,
+    "signal": null
+  },
+  {
+    "label": "red-regression-ready",
+    "cwd": "<CHECKOUT>",
+    "cmd": "node",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-m2-whitespace.test.ts"
+    ],
+    "status": 1,
+    "signal": null
+  },
+  {
+    "label": "red-regression",
+    "cwd": "<CHECKOUT>",
+    "cmd": "node",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-m2-whitespace.test.ts"
+    ],
+    "status": 1,
+    "signal": null
+  }
+]

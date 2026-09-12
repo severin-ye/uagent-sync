@@ -1,0 +1,687 @@
+{
+  "runtime": "v24.19.0",
+  "pass": 16,
+  "fail": 8,
+  "results": [
+    {
+      "id": "safe",
+      "newline": "LF",
+      "expectedBlocked": false,
+      "passed": true,
+      "findings": [],
+      "withoutM2": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "m2": "ok",
+      "spans": [
+        {
+          "from": 52,
+          "to": 59,
+          "line": 4
+        }
+      ],
+      "parseReason": "ok",
+      "source": "def sample(api_key=None):\n    \"\"\"\n    Args:\n        api_key: Synthetic description alpha\n    \"\"\"\n    pass\n"
+    },
+    {
+      "id": "safe",
+      "newline": "CRLF",
+      "expectedBlocked": false,
+      "passed": true,
+      "findings": [],
+      "withoutM2": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "m2": "ok",
+      "spans": [
+        {
+          "from": 55,
+          "to": 62,
+          "line": 4
+        }
+      ],
+      "parseReason": "ok",
+      "source": "def sample(api_key=None):\r\n    \"\"\"\r\n    Args:\r\n        api_key: Synthetic description alpha\r\n    \"\"\"\r\n    pass\r\n"
+    },
+    {
+      "id": "paren-space",
+      "newline": "LF",
+      "expectedBlocked": true,
+      "passed": true,
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "withoutM2": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "m2": "unavailable",
+      "spans": [
+        {
+          "from": 52,
+          "to": 59,
+          "line": 4
+        }
+      ],
+      "parseReason": "ok",
+      "source": "def sample(api_key=None):\n    \"\"\"\n    Args:\n        api_key: Synthetic description alpha\n    \"\"\"\n    pass\nPASSWORD = (\"SYNTHETIC_NONEMPTY\")\n"
+    },
+    {
+      "id": "paren-space",
+      "newline": "CRLF",
+      "expectedBlocked": true,
+      "passed": true,
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "withoutM2": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "m2": "unavailable",
+      "spans": [
+        {
+          "from": 55,
+          "to": 62,
+          "line": 4
+        }
+      ],
+      "parseReason": "ok",
+      "source": "def sample(api_key=None):\r\n    \"\"\"\r\n    Args:\r\n        api_key: Synthetic description alpha\r\n    \"\"\"\r\n    pass\r\nPASSWORD = (\"SYNTHETIC_NONEMPTY\")\r\n"
+    },
+    {
+      "id": "formfeed-before-equals",
+      "newline": "LF",
+      "expectedBlocked": true,
+      "passed": false,
+      "findings": [],
+      "withoutM2": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "m2": "ok",
+      "spans": [
+        {
+          "from": 52,
+          "to": 59,
+          "line": 4
+        }
+      ],
+      "parseReason": "ok",
+      "source": "def sample(api_key=None):\n    \"\"\"\n    Args:\n        api_key: Synthetic description alpha\n    \"\"\"\n    pass\nPASSWORD\f=(\"SYNTHETIC_NONEMPTY\")\n"
+    },
+    {
+      "id": "formfeed-before-equals",
+      "newline": "CRLF",
+      "expectedBlocked": true,
+      "passed": false,
+      "findings": [],
+      "withoutM2": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "m2": "ok",
+      "spans": [
+        {
+          "from": 55,
+          "to": 62,
+          "line": 4
+        }
+      ],
+      "parseReason": "ok",
+      "source": "def sample(api_key=None):\r\n    \"\"\"\r\n    Args:\r\n        api_key: Synthetic description alpha\r\n    \"\"\"\r\n    pass\r\nPASSWORD\f=(\"SYNTHETIC_NONEMPTY\")\r\n"
+    },
+    {
+      "id": "formfeed-after-equals",
+      "newline": "LF",
+      "expectedBlocked": true,
+      "passed": false,
+      "findings": [],
+      "withoutM2": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "m2": "ok",
+      "spans": [
+        {
+          "from": 52,
+          "to": 59,
+          "line": 4
+        }
+      ],
+      "parseReason": "ok",
+      "source": "def sample(api_key=None):\n    \"\"\"\n    Args:\n        api_key: Synthetic description alpha\n    \"\"\"\n    pass\nPASSWORD=\f(\"SYNTHETIC_NONEMPTY\")\n"
+    },
+    {
+      "id": "formfeed-after-equals",
+      "newline": "CRLF",
+      "expectedBlocked": true,
+      "passed": false,
+      "findings": [],
+      "withoutM2": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "m2": "ok",
+      "spans": [
+        {
+          "from": 55,
+          "to": 62,
+          "line": 4
+        }
+      ],
+      "parseReason": "ok",
+      "source": "def sample(api_key=None):\r\n    \"\"\"\r\n    Args:\r\n        api_key: Synthetic description alpha\r\n    \"\"\"\r\n    pass\r\nPASSWORD=\f(\"SYNTHETIC_NONEMPTY\")\r\n"
+    },
+    {
+      "id": "formfeed-comment",
+      "newline": "LF",
+      "expectedBlocked": true,
+      "passed": false,
+      "findings": [],
+      "withoutM2": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "m2": "ok",
+      "spans": [
+        {
+          "from": 52,
+          "to": 59,
+          "line": 4
+        }
+      ],
+      "parseReason": "ok",
+      "source": "def sample(api_key=None):\n    \"\"\"\n    Args:\n        api_key: Synthetic description alpha\n    \"\"\"\n    pass\ntoken=None # PASSWORD\f=(\"SYNTHETIC_NONEMPTY\")\n"
+    },
+    {
+      "id": "formfeed-comment",
+      "newline": "CRLF",
+      "expectedBlocked": true,
+      "passed": false,
+      "findings": [],
+      "withoutM2": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "m2": "ok",
+      "spans": [
+        {
+          "from": 55,
+          "to": 62,
+          "line": 4
+        }
+      ],
+      "parseReason": "ok",
+      "source": "def sample(api_key=None):\r\n    \"\"\"\r\n    Args:\r\n        api_key: Synthetic description alpha\r\n    \"\"\"\r\n    pass\r\ntoken=None # PASSWORD\f=(\"SYNTHETIC_NONEMPTY\")\r\n"
+    },
+    {
+      "id": "formfeed-signature",
+      "newline": "LF",
+      "expectedBlocked": true,
+      "passed": false,
+      "findings": [],
+      "withoutM2": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "m2": "ok",
+      "spans": [
+        {
+          "from": 86,
+          "to": 93,
+          "line": 4
+        }
+      ],
+      "parseReason": "ok",
+      "source": "def sample(api_key=None, password\f=(\"SYNTHETIC_NONEMPTY\")):\n    \"\"\"\n    Args:\n        api_key: Synthetic description alpha\n    \"\"\"\n    pass\n"
+    },
+    {
+      "id": "formfeed-signature",
+      "newline": "CRLF",
+      "expectedBlocked": true,
+      "passed": false,
+      "findings": [],
+      "withoutM2": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "m2": "ok",
+      "spans": [
+        {
+          "from": 89,
+          "to": 96,
+          "line": 4
+        }
+      ],
+      "parseReason": "ok",
+      "source": "def sample(api_key=None, password\f=(\"SYNTHETIC_NONEMPTY\")):\r\n    \"\"\"\r\n    Args:\r\n        api_key: Synthetic description alpha\r\n    \"\"\"\r\n    pass\r\n"
+    },
+    {
+      "id": "tab-paren",
+      "newline": "LF",
+      "expectedBlocked": true,
+      "passed": true,
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "withoutM2": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "m2": "unavailable",
+      "spans": [
+        {
+          "from": 52,
+          "to": 59,
+          "line": 4
+        }
+      ],
+      "parseReason": "ok",
+      "source": "def sample(api_key=None):\n    \"\"\"\n    Args:\n        api_key: Synthetic description alpha\n    \"\"\"\n    pass\nPASSWORD=\t(\"SYNTHETIC_NONEMPTY\")\n"
+    },
+    {
+      "id": "tab-paren",
+      "newline": "CRLF",
+      "expectedBlocked": true,
+      "passed": true,
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "withoutM2": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "m2": "unavailable",
+      "spans": [
+        {
+          "from": 55,
+          "to": 62,
+          "line": 4
+        }
+      ],
+      "parseReason": "ok",
+      "source": "def sample(api_key=None):\r\n    \"\"\"\r\n    Args:\r\n        api_key: Synthetic description alpha\r\n    \"\"\"\r\n    pass\r\nPASSWORD=\t(\"SYNTHETIC_NONEMPTY\")\r\n"
+    },
+    {
+      "id": "None-second",
+      "newline": "LF",
+      "expectedBlocked": true,
+      "passed": true,
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "withoutM2": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "m2": "unavailable",
+      "spans": [
+        {
+          "from": 52,
+          "to": 59,
+          "line": 4
+        }
+      ],
+      "parseReason": "ok",
+      "source": "def sample(api_key=None):\n    \"\"\"\n    Args:\n        api_key: Synthetic description alpha\n    \"\"\"\n    pass\ntoken=None # PASSWORD=(\"SYNTHETIC_NONEMPTY\")\n"
+    },
+    {
+      "id": "None-second",
+      "newline": "CRLF",
+      "expectedBlocked": true,
+      "passed": true,
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "withoutM2": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "m2": "unavailable",
+      "spans": [
+        {
+          "from": 55,
+          "to": 62,
+          "line": 4
+        }
+      ],
+      "parseReason": "ok",
+      "source": "def sample(api_key=None):\r\n    \"\"\"\r\n    Args:\r\n        api_key: Synthetic description alpha\r\n    \"\"\"\r\n    pass\r\ntoken=None # PASSWORD=(\"SYNTHETIC_NONEMPTY\")\r\n"
+    },
+    {
+      "id": "explicit-continuation",
+      "newline": "LF",
+      "expectedBlocked": true,
+      "passed": true,
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "withoutM2": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "m2": "unavailable",
+      "spans": [
+        {
+          "from": 52,
+          "to": 59,
+          "line": 4
+        }
+      ],
+      "parseReason": "ok",
+      "source": "def sample(api_key=None):\n    \"\"\"\n    Args:\n        api_key: Synthetic description alpha\n    \"\"\"\n    pass\nPASSWORD=\\\n(\"SYNTHETIC_NONEMPTY\")\n"
+    },
+    {
+      "id": "explicit-continuation",
+      "newline": "CRLF",
+      "expectedBlocked": true,
+      "passed": true,
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "withoutM2": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "m2": "unavailable",
+      "spans": [
+        {
+          "from": 55,
+          "to": 62,
+          "line": 4
+        }
+      ],
+      "parseReason": "ok",
+      "source": "def sample(api_key=None):\r\n    \"\"\"\r\n    Args:\r\n        api_key: Synthetic description alpha\r\n    \"\"\"\r\n    pass\r\nPASSWORD=\\\r\n(\"SYNTHETIC_NONEMPTY\")\r\n"
+    },
+    {
+      "id": "annotation",
+      "newline": "LF",
+      "expectedBlocked": true,
+      "passed": true,
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "withoutM2": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "m2": "unavailable",
+      "spans": [
+        {
+          "from": 52,
+          "to": 59,
+          "line": 4
+        }
+      ],
+      "parseReason": "ok",
+      "source": "def sample(api_key=None):\n    \"\"\"\n    Args:\n        api_key: Synthetic description alpha\n    \"\"\"\n    pass\npassword: str = (\"SYNTHETIC_NONEMPTY\")\n"
+    },
+    {
+      "id": "annotation",
+      "newline": "CRLF",
+      "expectedBlocked": true,
+      "passed": true,
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "withoutM2": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        }
+      ],
+      "m2": "unavailable",
+      "spans": [
+        {
+          "from": 55,
+          "to": 62,
+          "line": 4
+        }
+      ],
+      "parseReason": "ok",
+      "source": "def sample(api_key=None):\r\n    \"\"\"\r\n    Args:\r\n        api_key: Synthetic description alpha\r\n    \"\"\"\r\n    pass\r\npassword: str = (\"SYNTHETIC_NONEMPTY\")\r\n"
+    },
+    {
+      "id": "prefix",
+      "newline": "LF",
+      "expectedBlocked": true,
+      "passed": true,
+      "findings": [
+        {
+          "rule": "known-token-prefix",
+          "line": 7,
+          "evidence": "<redacted>"
+        }
+      ],
+      "withoutM2": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        },
+        {
+          "rule": "known-token-prefix",
+          "line": 7,
+          "evidence": "<redacted>"
+        }
+      ],
+      "m2": "ok",
+      "spans": [
+        {
+          "from": 52,
+          "to": 59,
+          "line": 4
+        }
+      ],
+      "parseReason": "ok",
+      "source": "def sample(api_key=None):\n    \"\"\"\n    Args:\n        api_key: Synthetic description alpha\n    \"\"\"\n    pass\n# ghp_SYNTHETIC_NONEMPTY_VALUE_123\n"
+    },
+    {
+      "id": "prefix",
+      "newline": "CRLF",
+      "expectedBlocked": true,
+      "passed": true,
+      "findings": [
+        {
+          "rule": "known-token-prefix",
+          "line": 7,
+          "evidence": "<redacted>"
+        }
+      ],
+      "withoutM2": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        },
+        {
+          "rule": "known-token-prefix",
+          "line": 7,
+          "evidence": "<redacted>"
+        }
+      ],
+      "m2": "ok",
+      "spans": [
+        {
+          "from": 55,
+          "to": 62,
+          "line": 4
+        }
+      ],
+      "parseReason": "ok",
+      "source": "def sample(api_key=None):\r\n    \"\"\"\r\n    Args:\r\n        api_key: Synthetic description alpha\r\n    \"\"\"\r\n    pass\r\n# ghp_SYNTHETIC_NONEMPTY_VALUE_123\r\n"
+    },
+    {
+      "id": "bearer",
+      "newline": "LF",
+      "expectedBlocked": true,
+      "passed": true,
+      "findings": [
+        {
+          "rule": "authorization-bearer",
+          "line": 7,
+          "evidence": "<redacted>"
+        }
+      ],
+      "withoutM2": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        },
+        {
+          "rule": "authorization-bearer",
+          "line": 7,
+          "evidence": "<redacted>"
+        }
+      ],
+      "m2": "ok",
+      "spans": [
+        {
+          "from": 52,
+          "to": 59,
+          "line": 4
+        }
+      ],
+      "parseReason": "ok",
+      "source": "def sample(api_key=None):\n    \"\"\"\n    Args:\n        api_key: Synthetic description alpha\n    \"\"\"\n    pass\n# Bearer SYNTHETIC_NONEMPTY_VALUE_123\n"
+    },
+    {
+      "id": "bearer",
+      "newline": "CRLF",
+      "expectedBlocked": true,
+      "passed": true,
+      "findings": [
+        {
+          "rule": "authorization-bearer",
+          "line": 7,
+          "evidence": "<redacted>"
+        }
+      ],
+      "withoutM2": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 4,
+          "evidence": "<redacted>"
+        },
+        {
+          "rule": "authorization-bearer",
+          "line": 7,
+          "evidence": "<redacted>"
+        }
+      ],
+      "m2": "ok",
+      "spans": [
+        {
+          "from": 55,
+          "to": 62,
+          "line": 4
+        }
+      ],
+      "parseReason": "ok",
+      "source": "def sample(api_key=None):\r\n    \"\"\"\r\n    Args:\r\n        api_key: Synthetic description alpha\r\n    \"\"\"\r\n    pass\r\n# Bearer SYNTHETIC_NONEMPTY_VALUE_123\r\n"
+    }
+  ]
+}

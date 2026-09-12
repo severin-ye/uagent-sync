@@ -1,0 +1,9 @@
+{
+  "reason": "Original environment-failure commands emitted no JSON; empty stdout retained as text, not fabricated results",
+  "files": [
+    "red-current-honor-formfeed-gates.json",
+    "red-current-honor-residual.json",
+    "red-node18-honor-formfeed-gates.json",
+    "red-node18-honor-residual.json"
+  ]
+}

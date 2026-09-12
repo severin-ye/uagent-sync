@@ -1,0 +1,19 @@
+{
+  "HOME": "<ISOLATED_ROOT>\\probe-red-ready-current\\home",
+  "USERPROFILE": "<ISOLATED_ROOT>\\probe-red-ready-current\\home",
+  "APPDATA": "<ISOLATED_ROOT>\\probe-red-ready-current\\app",
+  "LOCALAPPDATA": "<ISOLATED_ROOT>\\probe-red-ready-current\\local",
+  "CODEX_HOME": "<ISOLATED_ROOT>\\probe-red-ready-current\\codex",
+  "XDG_CONFIG_HOME": "<ISOLATED_ROOT>\\probe-red-ready-current\\xdg",
+  "TMP": "<ISOLATED_ROOT>\\probe-red-ready-current\\tmp",
+  "TEMP": "<ISOLATED_ROOT>\\probe-red-ready-current\\tmp",
+  "npm_config_cache": "<ISOLATED_ROOT>\\probe-red-ready-current\\npm-cache",
+  "npm_config_prefix": "<ISOLATED_ROOT>\\probe-red-ready-current\\npm-prefix",
+  "npm_config_userconfig": "<ISOLATED_ROOT>\\probe-red-ready-current\\npm_config_userconfig.rc",
+  "npm_config_globalconfig": "<ISOLATED_ROOT>\\probe-red-ready-current\\npm_config_globalconfig.rc",
+  "UAGENT_SYNC_WORKSPACE_ROOT": null,
+  "OPENCODE_SYNC_WORKSPACE_ROOT": null,
+  "NODE_OPTIONS": null,
+  "NODE_PATH": null,
+  "HONOR_M2_SOURCE": "<CHECKOUT>"
+}

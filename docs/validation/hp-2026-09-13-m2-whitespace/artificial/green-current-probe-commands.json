@@ -1,0 +1,24 @@
+[
+  {
+    "stdout": "<ISOLATED_ROOT>\\green-current-honor-residual.json",
+    "node": "C:/node.exe",
+    "arguments": [
+      "--import",
+      "file:///<CHECKOUT>/node_modules/tsx/dist/loader.mjs",
+      "<ISOLATED_ROOT>\\honor-residual.mjs"
+    ],
+    "exitCode": 0,
+    "stderr": "<ISOLATED_ROOT>\\green-current-honor-residual.stderr.log"
+  },
+  {
+    "stdout": "<ISOLATED_ROOT>\\green-current-honor-formfeed-gates.json",
+    "node": "C:/node.exe",
+    "arguments": [
+      "--import",
+      "file:///<CHECKOUT>/node_modules/tsx/dist/loader.mjs",
+      "<ISOLATED_ROOT>\\honor-formfeed-gates.mjs"
+    ],
+    "exitCode": 0,
+    "stderr": "<ISOLATED_ROOT>\\green-current-honor-formfeed-gates.stderr.log"
+  }
+]

@@ -1,0 +1,85 @@
+{
+  "scriptHashes": [
+    {
+      "name": "honor-residual.mjs",
+      "original": "837fac816e26fc9a656bf958b3849932f5a8faedff66a618d854a78d74b5833b",
+      "replayed": "837fac816e26fc9a656bf958b3849932f5a8faedff66a618d854a78d74b5833b"
+    },
+    {
+      "name": "honor-formfeed-gates.mjs",
+      "original": "bc7a68ceb34129b38b4ab6f042181dbef037ec5515e2f979b9aa6f56aaf7c01f",
+      "replayed": "bc7a68ceb34129b38b4ab6f042181dbef037ec5515e2f979b9aa6f56aaf7c01f"
+    },
+    {
+      "name": "run-honor-probes.ps1",
+      "original": "cba76933cb5c32cac5632795fa5038758503298fedc1fcea3fa1cf774a9b142d",
+      "replayed": "cba76933cb5c32cac5632795fa5038758503298fedc1fcea3fa1cf774a9b142d"
+    }
+  ],
+  "runs": [
+    {
+      "label": "red-ready-current",
+      "kind": "honor-residual",
+      "node": "v24.19.0",
+      "pass": 16,
+      "fail": 8,
+      "exitCode": 1
+    },
+    {
+      "label": "red-ready-current",
+      "kind": "honor-formfeed-gates",
+      "node": "v24.19.0",
+      "pass": 4,
+      "fail": 2,
+      "exitCode": 1
+    },
+    {
+      "label": "red-ready-node18",
+      "kind": "honor-residual",
+      "node": "v18.20.8",
+      "pass": 16,
+      "fail": 8,
+      "exitCode": 1
+    },
+    {
+      "label": "red-ready-node18",
+      "kind": "honor-formfeed-gates",
+      "node": "v18.20.8",
+      "pass": 4,
+      "fail": 2,
+      "exitCode": 1
+    },
+    {
+      "label": "green-current",
+      "kind": "honor-residual",
+      "node": "v24.19.0",
+      "pass": 24,
+      "fail": 0,
+      "exitCode": 0
+    },
+    {
+      "label": "green-current",
+      "kind": "honor-formfeed-gates",
+      "node": "v24.19.0",
+      "pass": 6,
+      "fail": 0,
+      "exitCode": 0
+    },
+    {
+      "label": "green-node18",
+      "kind": "honor-residual",
+      "node": "v18.20.8",
+      "pass": 24,
+      "fail": 0,
+      "exitCode": 0
+    },
+    {
+      "label": "green-node18",
+      "kind": "honor-formfeed-gates",
+      "node": "v18.20.8",
+      "pass": 6,
+      "fail": 0,
+      "exitCode": 0
+    }
+  ]
+}

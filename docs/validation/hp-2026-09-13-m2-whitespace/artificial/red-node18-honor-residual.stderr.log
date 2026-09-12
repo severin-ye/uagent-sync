@@ -1,0 +1,22 @@
+
+node:internal/process/esm_loader:40
+      internalBinding('errors').triggerUncaughtException(
+                                ^
+Error [TransformError]: The package "@esbuild/win32-x64" could not be found, and is needed by esbuild.
+
+If you are installing esbuild with npm, make sure that you don't specify the
+"--no-optional" or "--omit=optional" flags. The "optionalDependencies" feature
+of "package.json" is used by esbuild to install the correct binary executable
+for your current platform.
+    at generateBinPath (<CHECKOUT>\node_modules\esbuild\lib\main.js:2040:15)
+    at esbuildCommandAndArgs (<CHECKOUT>\node_modules\esbuild\lib\main.js:2110:33)
+    at ensureServiceIsRunning (<CHECKOUT>\node_modules\esbuild\lib\main.js:2267:25)
+    at transform (<CHECKOUT>\node_modules\esbuild\lib\main.js:2168:37)
+    at file:///<CHECKOUT>/node_modules/tsx/dist/index-XurvG3JN.mjs:14:3037
+    at applyTransformers (file:///<CHECKOUT>/node_modules/tsx/dist/index-XurvG3JN.mjs:14:1266)
+    at transform (file:///<CHECKOUT>/node_modules/tsx/dist/index-XurvG3JN.mjs:14:2984)
+    at load2 (file:///<CHECKOUT>/node_modules/tsx/dist/register-CqMfTiWi.mjs:2:4935)
+    at async nextLoad (node:internal/modules/esm/hooks:864:22)
+    at async Hooks.load (node:internal/modules/esm/hooks:447:20)
+
+Node.js v18.20.8

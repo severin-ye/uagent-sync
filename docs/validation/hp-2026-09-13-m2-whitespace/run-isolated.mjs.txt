@@ -1,0 +1,10 @@
+import fs from 'node:fs';import {spawnSync} from 'node:child_process';
+const base='<ISOLATED_ROOT>',home=base+'/home',ev=base+'/e';fs.mkdirSync(ev,{recursive:true});
+const [label,cmd,...args]=process.argv.slice(2),env={...process.env};
+for(const [key,relative] of Object.entries({HOME:'h',USERPROFILE:'h',APPDATA:'a',LOCALAPPDATA:'l',CODEX_HOME:'c',XDG_CONFIG_HOME:'x',TEMP:'t',TMP:'t',npm_config_cache:'n',npm_config_prefix:'prefix'})){env[key]=home+'/'+relative;fs.mkdirSync(env[key],{recursive:true});}
+for(const key of ['npm_config_userconfig','npm_config_globalconfig']){env[key]=home+'/'+key+'.rc';fs.writeFileSync(env[key],'');}
+for(const key of ['UAGENT_SYNC_WORKSPACE_ROOT','OPENCODE_SYNC_WORKSPACE_ROOT','NODE_PATH','NODE_OPTIONS','HONOR_M2_SOURCE','HONOR_PROBE_ROOT'])delete env[key];
+const keys=['HOME','USERPROFILE','APPDATA','LOCALAPPDATA','CODEX_HOME','XDG_CONFIG_HOME','TEMP','TMP','npm_config_cache','npm_config_prefix','npm_config_userconfig','npm_config_globalconfig','UAGENT_SYNC_WORKSPACE_ROOT','OPENCODE_SYNC_WORKSPACE_ROOT','NODE_PATH','NODE_OPTIONS'];
+fs.writeFileSync(ev+'/'+label+'-pre-env.json',JSON.stringify(Object.fromEntries(keys.map(k=>[k,{present:Object.hasOwn(env,k),value:env[k]??null}])),null,2));
+const r=spawnSync(cmd,args,{cwd:base+'/src',env,encoding:'utf8',shell:cmd.endsWith('.cmd'),maxBuffer:64*1024*1024});
+fs.writeFileSync(ev+'/'+label+'.log',(r.stdout??'')+(r.stderr??''));fs.writeFileSync(ev+'/'+label+'.json',JSON.stringify({cwd:base+'/src',cmd,args,status:r.status,signal:r.signal,error:r.error?.message},null,2));console.log(JSON.stringify({label,status:r.status,tail:((r.stdout??'')+(r.stderr??'')).slice(-1700)}));process.exitCode=r.status??1;

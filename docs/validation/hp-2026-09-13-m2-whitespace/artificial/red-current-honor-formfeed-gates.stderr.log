@@ -1,0 +1,24 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+Error: The package "@esbuild/win32-x64" could not be found, and is needed by esbuild.
+
+If you are installing esbuild with npm, make sure that you don't specify the
+"--no-optional" or "--omit=optional" flags. The "optionalDependencies" feature
+of "package.json" is used by esbuild to install the correct binary executable
+for your current platform.
+    at generateBinPath (<CHECKOUT>\node_modules\esbuild\lib\main.js:2040:15)
+    at esbuildCommandAndArgs (<CHECKOUT>\node_modules\esbuild\lib\main.js:2110:33)
+    at ensureServiceIsRunning (<CHECKOUT>\node_modules\esbuild\lib\main.js:2267:25)
+    at startSyncServiceWorker (<CHECKOUT>\node_modules\esbuild\lib\main.js:2474:19)
+    at Object.<anonymous> (<CHECKOUT>\node_modules\esbuild\lib\main.js:2515:3)
+    at Module._compile (node:internal/modules/cjs/loader:1872:14)
+    at Object..js (node:internal/modules/cjs/loader:2003:10)
+    at Module.load (node:internal/modules/cjs/loader:1594:32)
+    at Module._load (node:internal/modules/cjs/loader:1396:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19) {
+  name: 'TransformError'
+}
+
+Node.js v24.19.0

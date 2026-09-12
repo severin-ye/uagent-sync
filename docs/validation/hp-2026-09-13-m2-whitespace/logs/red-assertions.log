@@ -1,0 +1,932 @@
+✖ RY-M2-01 beforeEquals "\n" (9.8068ms)
+✖ RY-M2-01 beforeValue "\n" (1.1955ms)
+✖ RY-M2-01 commentSecond "\n" (0.8992ms)
+✖ RY-M2-01 parameter "\n" (0.8314ms)
+✔ space/tab and inert None controls "\n" (3.1736ms)
+✖ RY-M2-01 beforeEquals "\r\n" (0.626ms)
+✖ RY-M2-01 beforeValue "\r\n" (0.6403ms)
+✖ RY-M2-01 commentSecond "\r\n" (0.5449ms)
+✖ RY-M2-01 parameter "\r\n" (1.4766ms)
+✔ space/tab and inert None controls "\r\n" (2.4809ms)
+✖ unsupported whitespace U+b (0.5266ms)
+✖ unsupported whitespace U+c (0.4703ms)
+✖ unsupported whitespace U+85 (0.8234ms)
+✖ unsupported whitespace U+a0 (0.419ms)
+✖ unsupported whitespace U+1680 (1.2284ms)
+✖ unsupported whitespace U+2000 (0.4632ms)
+✖ unsupported whitespace U+2001 (0.4355ms)
+✖ unsupported whitespace U+2002 (0.4057ms)
+✖ unsupported whitespace U+2003 (0.4009ms)
+✖ unsupported whitespace U+2004 (0.3414ms)
+✖ unsupported whitespace U+2005 (0.3313ms)
+✖ unsupported whitespace U+2006 (0.3398ms)
+✖ unsupported whitespace U+2007 (0.3525ms)
+✖ unsupported whitespace U+2008 (0.382ms)
+✖ unsupported whitespace U+2009 (0.3218ms)
+✖ unsupported whitespace U+200a (0.3084ms)
+✖ unsupported whitespace U+2028 (0.3586ms)
+✖ unsupported whitespace U+2029 (0.3393ms)
+✖ unsupported whitespace U+202f (0.3642ms)
+✖ unsupported whitespace U+205f (1.2504ms)
+✖ unsupported whitespace U+3000 (0.357ms)
+✖ unsupported whitespace U+feff (0.3322ms)
+✖ ordinary Unicode is not blanket-rejected and preserves original line (0.6925ms)
+ℹ tests 33
+ℹ suites 0
+ℹ pass 2
+ℹ fail 31
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 322.2674
+
+✖ failing tests:
+
+test at test\profile-m2-whitespace.test.ts:1:943
+✖ RY-M2-01 beforeEquals "\n" (9.8068ms)
+  AssertionError [ERR_ASSERTION]: all M2 spans must be revoked without changing original findings/lines
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 4,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:18:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 4, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:1:943
+✖ RY-M2-01 beforeValue "\n" (1.1955ms)
+  AssertionError [ERR_ASSERTION]: all M2 spans must be revoked without changing original findings/lines
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 4,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:18:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 4, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:1:943
+✖ RY-M2-01 commentSecond "\n" (0.8992ms)
+  AssertionError [ERR_ASSERTION]: all M2 spans must be revoked without changing original findings/lines
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 4,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:18:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 4, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:1:943
+✖ RY-M2-01 parameter "\n" (0.8314ms)
+  AssertionError [ERR_ASSERTION]: all M2 spans must be revoked without changing original findings/lines
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 4,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:18:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 4, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:1:943
+✖ RY-M2-01 beforeEquals "\r\n" (0.626ms)
+  AssertionError [ERR_ASSERTION]: all M2 spans must be revoked without changing original findings/lines
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 4,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:18:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 4, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:1:943
+✖ RY-M2-01 beforeValue "\r\n" (0.6403ms)
+  AssertionError [ERR_ASSERTION]: all M2 spans must be revoked without changing original findings/lines
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 4,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:18:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 4, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:1:943
+✖ RY-M2-01 commentSecond "\r\n" (0.5449ms)
+  AssertionError [ERR_ASSERTION]: all M2 spans must be revoked without changing original findings/lines
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 4,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:18:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 4, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:1:943
+✖ RY-M2-01 parameter "\r\n" (1.4766ms)
+  AssertionError [ERR_ASSERTION]: all M2 spans must be revoked without changing original findings/lines
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 4,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:18:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 4, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:3:311
+✖ unsupported whitespace U+b (0.5266ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 5,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:28:70)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:3:311
+✖ unsupported whitespace U+c (0.4703ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 5,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:28:70)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:3:311
+✖ unsupported whitespace U+85 (0.8234ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 5,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:28:70)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:3:311
+✖ unsupported whitespace U+a0 (0.419ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 5,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:28:70)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:3:311
+✖ unsupported whitespace U+1680 (1.2284ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 5,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:28:70)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:3:311
+✖ unsupported whitespace U+2000 (0.4632ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 5,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:28:70)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:3:311
+✖ unsupported whitespace U+2001 (0.4355ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 5,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:28:70)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:3:311
+✖ unsupported whitespace U+2002 (0.4057ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 5,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:28:70)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:3:311
+✖ unsupported whitespace U+2003 (0.4009ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 5,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:28:70)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:3:311
+✖ unsupported whitespace U+2004 (0.3414ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 5,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:28:70)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:3:311
+✖ unsupported whitespace U+2005 (0.3313ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 5,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:28:70)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:3:311
+✖ unsupported whitespace U+2006 (0.3398ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 5,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:28:70)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:3:311
+✖ unsupported whitespace U+2007 (0.3525ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 5,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:28:70)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:3:311
+✖ unsupported whitespace U+2008 (0.382ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 5,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:28:70)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:3:311
+✖ unsupported whitespace U+2009 (0.3218ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 5,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:28:70)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:3:311
+✖ unsupported whitespace U+200a (0.3084ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 5,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:28:70)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:3:311
+✖ unsupported whitespace U+2028 (0.3586ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 5,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:28:70)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:3:311
+✖ unsupported whitespace U+2029 (0.3393ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 5,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:28:70)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:3:311
+✖ unsupported whitespace U+202f (0.3642ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 5,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:28:70)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:3:311
+✖ unsupported whitespace U+205f (1.2504ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 5,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:28:70)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:3:311
+✖ unsupported whitespace U+3000 (0.357ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 5,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:28:70)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:3:311
+✖ unsupported whitespace U+feff (0.3322ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   {
+  -     evidence: '<redacted>',
+  -     line: 5,
+  -     rule: 'sensitive-assignment'
+  -   }
+  - ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:28:70)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-whitespace.test.ts:3:566
+✖ ordinary Unicode is not blanket-rejected and preserves original line (0.6925ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  undefined !== 5
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-whitespace.test.ts:33:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 5,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

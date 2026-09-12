@@ -1,0 +1,24 @@
+[
+  {
+    "node": "<USER_HOME>/m2g0e/runtime18/node-v18.20.8-win-x64/node.exe",
+    "stderr": "<ISOLATED_ROOT>\\red-ready-node18-honor-residual.stderr.log",
+    "stdout": "<ISOLATED_ROOT>\\red-ready-node18-honor-residual.json",
+    "arguments": [
+      "--import",
+      "file:///<CHECKOUT>/node_modules/tsx/dist/loader.mjs",
+      "<ISOLATED_ROOT>\\honor-residual.mjs"
+    ],
+    "exitCode": 1
+  },
+  {
+    "node": "<USER_HOME>/m2g0e/runtime18/node-v18.20.8-win-x64/node.exe",
+    "stderr": "<ISOLATED_ROOT>\\red-ready-node18-honor-formfeed-gates.stderr.log",
+    "stdout": "<ISOLATED_ROOT>\\red-ready-node18-honor-formfeed-gates.json",
+    "arguments": [
+      "--import",
+      "file:///<CHECKOUT>/node_modules/tsx/dist/loader.mjs",
+      "<ISOLATED_ROOT>\\honor-formfeed-gates.mjs"
+    ],
+    "exitCode": 1
+  }
+]

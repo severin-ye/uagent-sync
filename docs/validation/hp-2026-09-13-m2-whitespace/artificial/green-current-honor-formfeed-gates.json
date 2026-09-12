@@ -1,0 +1,164 @@
+{
+  "runtime": "v24.19.0",
+  "rows": [
+    {
+      "id": "safe",
+      "nl": "LF",
+      "expectBlocked": false,
+      "create": {
+        "rejected": false
+      },
+      "plan": {
+        "rejected": false
+      },
+      "restore": {
+        "rejected": false
+      },
+      "publish": {
+        "rejected": true,
+        "error": "SYNTHETIC_EXTERNAL_STOP"
+      },
+      "newExternalCalls": 1,
+      "created": true,
+      "targetWritten": true,
+      "baselineWritten": true,
+      "sourceUnchanged": true,
+      "passed": true
+    },
+    {
+      "id": "safe",
+      "nl": "CRLF",
+      "expectBlocked": false,
+      "create": {
+        "rejected": false
+      },
+      "plan": {
+        "rejected": false
+      },
+      "restore": {
+        "rejected": false
+      },
+      "publish": {
+        "rejected": true,
+        "error": "SYNTHETIC_EXTERNAL_STOP"
+      },
+      "newExternalCalls": 1,
+      "created": true,
+      "targetWritten": true,
+      "baselineWritten": true,
+      "sourceUnchanged": true,
+      "passed": true
+    },
+    {
+      "id": "space",
+      "nl": "LF",
+      "expectBlocked": true,
+      "create": {
+        "rejected": true,
+        "error": "Profile collection blocked:\nSecret scan blocked codex/skills/a.py: sensitive-assignment@4"
+      },
+      "plan": {
+        "rejected": true,
+        "error": "Secret scan blocked codex/skills/a.py: sensitive-assignment@4"
+      },
+      "restore": {
+        "rejected": true,
+        "error": "Secret scan blocked codex/skills/a.py: sensitive-assignment@4"
+      },
+      "publish": {
+        "rejected": true,
+        "error": "Secret scan blocked sync\\profiles\\synthetic\\a.py: sensitive-assignment@4"
+      },
+      "newExternalCalls": 0,
+      "created": false,
+      "targetWritten": false,
+      "baselineWritten": false,
+      "sourceUnchanged": true,
+      "passed": true
+    },
+    {
+      "id": "space",
+      "nl": "CRLF",
+      "expectBlocked": true,
+      "create": {
+        "rejected": true,
+        "error": "Profile collection blocked:\nSecret scan blocked codex/skills/a.py: sensitive-assignment@4"
+      },
+      "plan": {
+        "rejected": true,
+        "error": "Secret scan blocked codex/skills/a.py: sensitive-assignment@4"
+      },
+      "restore": {
+        "rejected": true,
+        "error": "Secret scan blocked codex/skills/a.py: sensitive-assignment@4"
+      },
+      "publish": {
+        "rejected": true,
+        "error": "Secret scan blocked sync\\profiles\\synthetic\\a.py: sensitive-assignment@4"
+      },
+      "newExternalCalls": 0,
+      "created": false,
+      "targetWritten": false,
+      "baselineWritten": false,
+      "sourceUnchanged": true,
+      "passed": true
+    },
+    {
+      "id": "formfeed",
+      "nl": "LF",
+      "expectBlocked": true,
+      "create": {
+        "rejected": true,
+        "error": "Profile collection blocked:\nSecret scan blocked codex/skills/a.py: sensitive-assignment@4"
+      },
+      "plan": {
+        "rejected": true,
+        "error": "Secret scan blocked codex/skills/a.py: sensitive-assignment@4"
+      },
+      "restore": {
+        "rejected": true,
+        "error": "Secret scan blocked codex/skills/a.py: sensitive-assignment@4"
+      },
+      "publish": {
+        "rejected": true,
+        "error": "Secret scan blocked sync\\profiles\\synthetic\\a.py: sensitive-assignment@4"
+      },
+      "newExternalCalls": 0,
+      "created": false,
+      "targetWritten": false,
+      "baselineWritten": false,
+      "sourceUnchanged": true,
+      "passed": true
+    },
+    {
+      "id": "formfeed",
+      "nl": "CRLF",
+      "expectBlocked": true,
+      "create": {
+        "rejected": true,
+        "error": "Profile collection blocked:\nSecret scan blocked codex/skills/a.py: sensitive-assignment@4"
+      },
+      "plan": {
+        "rejected": true,
+        "error": "Secret scan blocked codex/skills/a.py: sensitive-assignment@4"
+      },
+      "restore": {
+        "rejected": true,
+        "error": "Secret scan blocked codex/skills/a.py: sensitive-assignment@4"
+      },
+      "publish": {
+        "rejected": true,
+        "error": "Secret scan blocked sync\\profiles\\synthetic\\a.py: sensitive-assignment@4"
+      },
+      "newExternalCalls": 0,
+      "created": false,
+      "targetWritten": false,
+      "baselineWritten": false,
+      "sourceUnchanged": true,
+      "passed": true
+    }
+  ],
+  "pass": 6,
+  "fail": 0,
+  "allExternalCallsIntercepted": true
+}
