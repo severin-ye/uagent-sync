@@ -1,0 +1,17 @@
+{
+  "task": "RY-14",
+  "inputSha": "76b5456025f5f3e003cf8e3dd3387210a1d4894e",
+  "sourceSha": "70428520228adcac3ac66a2cfb857667b7b69aed",
+  "conclusion": "conditionally-accepted-for-separate-synthetic-prototype",
+  "sourceDiffPaths": [],
+  "upstreamSourceRead": true,
+  "upstreamRuntimeTest": false,
+  "dependenciesInstalled": false,
+  "realFilesReread": false,
+  "realTemplatesPrepared": false,
+  "scannerChanged": false,
+  "m2Allowed": false,
+  "hp03Complete": false,
+  "hp04Complete": false,
+  "migrationComplete": false
+}

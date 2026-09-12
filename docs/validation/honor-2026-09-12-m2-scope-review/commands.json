@@ -1,0 +1,21 @@
+[
+  {
+    "command": "git fetch origin codex/device-sync-validation",
+    "exitCode": 0
+  },
+  {
+    "command": "git merge --ff-only origin/codex/device-sync-validation",
+    "exitCode": 0
+  },
+  {
+    "output": "empty",
+    "command": "git diff 70428520228adcac3ac66a2cfb857667b7b69aed HEAD --stat -- src test scripts package.json package-lock.json",
+    "exitCode": 0
+  },
+  {
+    "argumentsFrom": "SOURCES.json",
+    "command": "gh api repos/lezer-parser/<repo>/contents/<file>?ref=<commit> -H Accept:application/vnd.github.raw+json",
+    "note": "read-only upstream source; no package install or execution",
+    "exitCode": 0
+  }
+]

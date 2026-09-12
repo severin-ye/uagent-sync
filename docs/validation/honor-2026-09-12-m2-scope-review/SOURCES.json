@@ -1,0 +1,38 @@
+[
+  {
+    "commit": "091aab4b36d8e430053ee5603db170cd4eaec776",
+    "facts": [
+      "version and ESM declaration",
+      "grammar shape only, not emitted tree",
+      "short String newline stringEnd at tokens.js 192-198; runtime behavior untested"
+    ],
+    "files": [
+      "package.json",
+      "src/python.grammar",
+      "src/tokens.js"
+    ],
+    "repo": "python"
+  },
+  {
+    "commit": "ed59b8b9c0c26164d6483f4c881a8c200184894e",
+    "facts": [
+      "strict config and stuck-parser SyntaxError source"
+    ],
+    "files": [
+      "src/parse.ts"
+    ],
+    "repo": "lr"
+  },
+  {
+    "commit": "d87b56cbe3d6f54edb5b8343ee794f8f96f9c86c",
+    "facts": [
+      "StringInput declaration",
+      "isError and IncludeAnonymous source"
+    ],
+    "files": [
+      "src/parse.ts",
+      "src/tree.ts"
+    ],
+    "repo": "common"
+  }
+]
