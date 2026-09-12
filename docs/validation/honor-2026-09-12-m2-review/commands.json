@@ -1,0 +1,47 @@
+{
+  "actualExecution": {
+    "executable": "python",
+    "arguments": [
+      "<TEMP>/collect_m2.py",
+      "--baseline",
+      "<REPO>/docs/validation/hp-2026-09-11-scan-plan/hp-findings.json",
+      "--plan",
+      "<REPO>/docs/validation/hp-2026-09-12-m2-plan/structure.json",
+      "--out",
+      "<TEMP>/public",
+      "--source",
+      "<USER_ROOT>/.agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+      "--source",
+      "<USER_ROOT>/.agents/skills/openfda-database/scripts/openfda_query.py",
+      "--execution-meta",
+      "<TEMP>/execution-meta.json"
+    ],
+    "pathValuesRedacted": true,
+    "preEnv": {
+      "USERPROFILE": "<TEMP>/CodexTMPnpm",
+      "APPDATA": "<TEMP>/CodexTMPnpm/AppData/Roaming",
+      "LOCALAPPDATA": "<TEMP>/CodexTMPnpm/AppData/Local",
+      "npm_config_cache": "<TEMP>/CodexTMPnpm/npm-cache",
+      "npm_config_prefix": "<TEMP>/CodexTMPnpm/npm-prefix",
+      "npm_config_userconfig": "<TEMP>/CodexTMPnpm/.npmrc",
+      "UAGENT_SYNC_WORKSPACE_ROOT": "<SET_BEFORE_COLLECTOR_POP>"
+    },
+    "startedUtc": "2026-09-12T14:22:33.9049171Z",
+    "exitCode": 0,
+    "completedUtc": "2026-09-12T14:22:34.1750707Z"
+  },
+  "pythonAstAndTokenizeOnly": true,
+  "sourceFilesExecuted": false,
+  "scannerExecuted": false,
+  "npmExecuted": false,
+  "isolatedUserApplicationDirectoryName": "CodexTMPnpm",
+  "isolatedNpmCacheDirectoryName": "npm-cache",
+  "workspaceOverrideRemovedInsideCollector": true,
+  "sourceReadMethod": "read_bytes+utf8_decode_no_newline_normalization",
+  "outputFiles": [
+    "public/structure.json",
+    "public/comparison.json",
+    "public/commands.json"
+  ],
+  "exitStatus": 0
+}

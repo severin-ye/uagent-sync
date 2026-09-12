@@ -1,0 +1,633 @@
+{
+  "schemaVersion": 1,
+  "files": [
+    {
+      "fileId": "F1",
+      "oldSummaryHashMatchesCurrent": true,
+      "utf8Decoded": true,
+      "astParsed": true,
+      "beforeAfterReadMatches": true
+    },
+    {
+      "fileId": "F2",
+      "oldSummaryHashMatchesCurrent": true,
+      "utf8Decoded": true,
+      "astParsed": true,
+      "beforeAfterReadMatches": true
+    }
+  ],
+  "candidates": [
+    {
+      "id": "HP-009",
+      "fileId": "F1",
+      "candidateLine": 100,
+      "oldSummaryMappedOnlyAfterNoDrift": true,
+      "functionSpan": {
+        "lineColumn": [
+          [
+            92,
+            0
+          ],
+          [
+            109,
+            74
+          ]
+        ],
+        "unicodeCodePointHalfOpen": [
+          2190,
+          2837
+        ],
+        "utf8ByteHalfOpen": [
+          2190,
+          2837
+        ],
+        "utf16CodeUnitHalfOpen": [
+          2190,
+          2837
+        ]
+      },
+      "signatureSpan": {
+        "lineColumn": [
+          [
+            92,
+            0
+          ],
+          [
+            92,
+            66
+          ]
+        ],
+        "unicodeCodePointHalfOpen": [
+          2190,
+          2256
+        ],
+        "utf8ByteHalfOpen": [
+          2190,
+          2256
+        ],
+        "utf16CodeUnitHalfOpen": [
+          2190,
+          2256
+        ]
+      },
+      "docstring": {
+        "isFirstStatement": true,
+        "isConstantString": true,
+        "isOrdinaryTripleQuoted": true,
+        "prefixAbsent": true,
+        "quoteWidth": 3,
+        "singleStringToken": true,
+        "tokenSpan": {
+          "lineColumn": [
+            [
+              93,
+              2
+            ],
+            [
+              105,
+              5
+            ]
+          ],
+          "unicodeCodePointHalfOpen": [
+            2260,
+            2684
+          ],
+          "utf8ByteHalfOpen": [
+            2260,
+            2684
+          ],
+          "utf16CodeUnitHalfOpen": [
+            2260,
+            2684
+          ]
+        }
+      },
+      "parameters": {
+        "countsByKind": {
+          "positionalOnly": 0,
+          "positionalOrKeyword": 2,
+          "varPositional": 0,
+          "keywordOnly": 0,
+          "varKeyword": 0
+        },
+        "targetPresentExactlyOnce": true,
+        "targetKind": "positionalOrKeyword"
+      },
+      "argsOwnership": {
+        "headerLine": 98,
+        "headerIndentUnicode": 2,
+        "entryStartLine": 100,
+        "entryEndLine": 100,
+        "entryIndentUnicode": 6,
+        "withinOwningDocstring": true,
+        "sectionEndLine": 101,
+        "immediateNextLine": 101,
+        "immediateNextLineEmpty": true,
+        "immediateNextLineIsIndentedContinuation": false,
+        "nextNonblankLine": 102,
+        "nextNonblankIndentUnicode": 2,
+        "nextNonblankWouldMatchContinuationIndent": false,
+        "nextNonblankBelongsToEntry": false,
+        "blankLineTerminatesEntryBeforeNextNonblank": true
+      },
+      "targetFieldSpan": {
+        "lineColumnUnicode": [
+          [
+            100,
+            6
+          ],
+          [
+            100,
+            13
+          ]
+        ],
+        "unicodeCodePointHalfOpen": [
+          2525,
+          2532
+        ],
+        "utf8ByteHalfOpen": [
+          2525,
+          2532
+        ],
+        "utf16CodeUnitHalfOpen": [
+          2525,
+          2532
+        ]
+      },
+      "targetFieldLength": {
+        "unicodeCodePoints": 7,
+        "utf8Bytes": 7,
+        "utf16CodeUnits": 7
+      },
+      "descriptionGroup": "D1"
+    },
+    {
+      "id": "HP-010",
+      "fileId": "F1",
+      "candidateLine": 125,
+      "oldSummaryMappedOnlyAfterNoDrift": true,
+      "functionSpan": {
+        "lineColumn": [
+          [
+            112,
+            0
+          ],
+          [
+            171,
+            15
+          ]
+        ],
+        "unicodeCodePointHalfOpen": [
+          2843,
+          5114
+        ],
+        "utf8ByteHalfOpen": [
+          2843,
+          5114
+        ],
+        "utf16CodeUnitHalfOpen": [
+          2843,
+          5114
+        ]
+      },
+      "signatureSpan": {
+        "lineColumn": [
+          [
+            112,
+            0
+          ],
+          [
+            119,
+            27
+          ]
+        ],
+        "unicodeCodePointHalfOpen": [
+          2843,
+          3075
+        ],
+        "utf8ByteHalfOpen": [
+          2843,
+          3075
+        ],
+        "utf16CodeUnitHalfOpen": [
+          2843,
+          3075
+        ]
+      },
+      "docstring": {
+        "isFirstStatement": true,
+        "isConstantString": true,
+        "isOrdinaryTripleQuoted": true,
+        "prefixAbsent": true,
+        "quoteWidth": 3,
+        "singleStringToken": true,
+        "tokenSpan": {
+          "lineColumn": [
+            [
+              120,
+              2
+            ],
+            [
+              133,
+              5
+            ]
+          ],
+          "unicodeCodePointHalfOpen": [
+            3079,
+            3595
+          ],
+          "utf8ByteHalfOpen": [
+            3079,
+            3595
+          ],
+          "utf16CodeUnitHalfOpen": [
+            3079,
+            3595
+          ]
+        }
+      },
+      "parameters": {
+        "countsByKind": {
+          "positionalOnly": 0,
+          "positionalOrKeyword": 6,
+          "varPositional": 0,
+          "keywordOnly": 0,
+          "varKeyword": 0
+        },
+        "targetPresentExactlyOnce": true,
+        "targetKind": "positionalOrKeyword"
+      },
+      "argsOwnership": {
+        "headerLine": 122,
+        "headerIndentUnicode": 2,
+        "entryStartLine": 125,
+        "entryEndLine": 125,
+        "entryIndentUnicode": 6,
+        "withinOwningDocstring": true,
+        "sectionEndLine": 130,
+        "immediateNextLine": 126,
+        "immediateNextLineEmpty": false,
+        "immediateNextLineIsIndentedContinuation": false,
+        "nextNonblankLine": 126,
+        "nextNonblankIndentUnicode": 6,
+        "nextNonblankWouldMatchContinuationIndent": false,
+        "nextNonblankBelongsToEntry": false,
+        "blankLineTerminatesEntryBeforeNextNonblank": false
+      },
+      "targetFieldSpan": {
+        "lineColumnUnicode": [
+          [
+            125,
+            6
+          ],
+          [
+            125,
+            13
+          ]
+        ],
+        "unicodeCodePointHalfOpen": [
+          3233,
+          3240
+        ],
+        "utf8ByteHalfOpen": [
+          3233,
+          3240
+        ],
+        "utf16CodeUnitHalfOpen": [
+          3233,
+          3240
+        ]
+      },
+      "targetFieldLength": {
+        "unicodeCodePoints": 7,
+        "utf8Bytes": 7,
+        "utf16CodeUnits": 7
+      },
+      "descriptionGroup": "D2"
+    },
+    {
+      "id": "HP-013",
+      "fileId": "F1",
+      "candidateLine": 344,
+      "oldSummaryMappedOnlyAfterNoDrift": true,
+      "functionSpan": {
+        "lineColumn": [
+          [
+            332,
+            0
+          ],
+          [
+            379,
+            14
+          ]
+        ],
+        "unicodeCodePointHalfOpen": [
+          10041,
+          11812
+        ],
+        "utf8ByteHalfOpen": [
+          10041,
+          11812
+        ],
+        "utf16CodeUnitHalfOpen": [
+          10041,
+          11812
+        ]
+      },
+      "signatureSpan": {
+        "lineColumn": [
+          [
+            332,
+            0
+          ],
+          [
+            334,
+            10
+          ]
+        ],
+        "unicodeCodePointHalfOpen": [
+          10041,
+          10138
+        ],
+        "utf8ByteHalfOpen": [
+          10041,
+          10138
+        ],
+        "utf16CodeUnitHalfOpen": [
+          10041,
+          10138
+        ]
+      },
+      "docstring": {
+        "isFirstStatement": true,
+        "isConstantString": true,
+        "isOrdinaryTripleQuoted": true,
+        "prefixAbsent": true,
+        "quoteWidth": 3,
+        "singleStringToken": true,
+        "tokenSpan": {
+          "lineColumn": [
+            [
+              335,
+              2
+            ],
+            [
+              348,
+              5
+            ]
+          ],
+          "unicodeCodePointHalfOpen": [
+            10142,
+            10656
+          ],
+          "utf8ByteHalfOpen": [
+            10142,
+            10656
+          ],
+          "utf16CodeUnitHalfOpen": [
+            10142,
+            10656
+          ]
+        }
+      },
+      "parameters": {
+        "countsByKind": {
+          "positionalOnly": 0,
+          "positionalOrKeyword": 3,
+          "varPositional": 0,
+          "keywordOnly": 0,
+          "varKeyword": 0
+        },
+        "targetPresentExactlyOnce": true,
+        "targetKind": "positionalOrKeyword"
+      },
+      "argsOwnership": {
+        "headerLine": 341,
+        "headerIndentUnicode": 2,
+        "entryStartLine": 344,
+        "entryEndLine": 344,
+        "entryIndentUnicode": 6,
+        "withinOwningDocstring": true,
+        "sectionEndLine": 345,
+        "immediateNextLine": 345,
+        "immediateNextLineEmpty": true,
+        "immediateNextLineIsIndentedContinuation": false,
+        "nextNonblankLine": 346,
+        "nextNonblankIndentUnicode": 2,
+        "nextNonblankWouldMatchContinuationIndent": false,
+        "nextNonblankBelongsToEntry": false,
+        "blankLineTerminatesEntryBeforeNextNonblank": true
+      },
+      "targetFieldSpan": {
+        "lineColumnUnicode": [
+          [
+            344,
+            6
+          ],
+          [
+            344,
+            13
+          ]
+        ],
+        "unicodeCodePointHalfOpen": [
+          10523,
+          10530
+        ],
+        "utf8ByteHalfOpen": [
+          10523,
+          10530
+        ],
+        "utf16CodeUnitHalfOpen": [
+          10523,
+          10530
+        ]
+      },
+      "targetFieldLength": {
+        "unicodeCodePoints": 7,
+        "utf8Bytes": 7,
+        "utf16CodeUnits": 7
+      },
+      "descriptionGroup": "D2"
+    },
+    {
+      "id": "HP-018",
+      "fileId": "F2",
+      "candidateLine": 158,
+      "oldSummaryMappedOnlyAfterNoDrift": true,
+      "functionSpan": {
+        "lineColumn": [
+          [
+            137,
+            0
+          ],
+          [
+            179,
+            31
+          ]
+        ],
+        "unicodeCodePointHalfOpen": [
+          3764,
+          5010
+        ],
+        "utf8ByteHalfOpen": [
+          3764,
+          5010
+        ],
+        "utf16CodeUnitHalfOpen": [
+          3764,
+          5010
+        ]
+      },
+      "signatureSpan": {
+        "lineColumn": [
+          [
+            137,
+            0
+          ],
+          [
+            147,
+            9
+          ]
+        ],
+        "unicodeCodePointHalfOpen": [
+          3764,
+          4012
+        ],
+        "utf8ByteHalfOpen": [
+          3764,
+          4012
+        ],
+        "utf16CodeUnitHalfOpen": [
+          3764,
+          4012
+        ]
+      },
+      "docstring": {
+        "isFirstStatement": true,
+        "isConstantString": true,
+        "isOrdinaryTripleQuoted": true,
+        "prefixAbsent": true,
+        "quoteWidth": 3,
+        "singleStringToken": true,
+        "tokenSpan": {
+          "lineColumn": [
+            [
+              148,
+              2
+            ],
+            [
+              162,
+              5
+            ]
+          ],
+          "unicodeCodePointHalfOpen": [
+            4016,
+            4566
+          ],
+          "utf8ByteHalfOpen": [
+            4016,
+            4566
+          ],
+          "utf16CodeUnitHalfOpen": [
+            4016,
+            4566
+          ]
+        }
+      },
+      "parameters": {
+        "countsByKind": {
+          "positionalOnly": 0,
+          "positionalOrKeyword": 0,
+          "varPositional": 0,
+          "keywordOnly": 8,
+          "varKeyword": 0
+        },
+        "targetPresentExactlyOnce": true,
+        "targetKind": "keywordOnly"
+      },
+      "argsOwnership": {
+        "headerLine": 150,
+        "headerIndentUnicode": 2,
+        "entryStartLine": 158,
+        "entryEndLine": 158,
+        "entryIndentUnicode": 4,
+        "withinOwningDocstring": true,
+        "sectionEndLine": 159,
+        "immediateNextLine": 159,
+        "immediateNextLineEmpty": true,
+        "immediateNextLineIsIndentedContinuation": false,
+        "nextNonblankLine": 160,
+        "nextNonblankIndentUnicode": 2,
+        "nextNonblankWouldMatchContinuationIndent": false,
+        "nextNonblankBelongsToEntry": false,
+        "blankLineTerminatesEntryBeforeNextNonblank": true
+      },
+      "targetFieldSpan": {
+        "lineColumnUnicode": [
+          [
+            158,
+            4
+          ],
+          [
+            158,
+            11
+          ]
+        ],
+        "unicodeCodePointHalfOpen": [
+          4471,
+          4478
+        ],
+        "utf8ByteHalfOpen": [
+          4471,
+          4478
+        ],
+        "utf16CodeUnitHalfOpen": [
+          4471,
+          4478
+        ]
+      },
+      "targetFieldLength": {
+        "unicodeCodePoints": 7,
+        "utf8Bytes": 7,
+        "utf16CodeUnits": 7
+      },
+      "descriptionGroup": "D3"
+    }
+  ],
+  "descriptionEquality": [
+    {
+      "left": "HP-009",
+      "right": "HP-010",
+      "exactlyEqual": false
+    },
+    {
+      "left": "HP-009",
+      "right": "HP-013",
+      "exactlyEqual": false
+    },
+    {
+      "left": "HP-009",
+      "right": "HP-018",
+      "exactlyEqual": false
+    },
+    {
+      "left": "HP-010",
+      "right": "HP-013",
+      "exactlyEqual": true
+    },
+    {
+      "left": "HP-010",
+      "right": "HP-018",
+      "exactlyEqual": false
+    },
+    {
+      "left": "HP-013",
+      "right": "HP-018",
+      "exactlyEqual": false
+    }
+  ],
+  "descriptionGroupsMatchExactEquality": true,
+  "sourceExecuted": false,
+  "scannerExecuted": false,
+  "productionDependenciesLoaded": false
+}

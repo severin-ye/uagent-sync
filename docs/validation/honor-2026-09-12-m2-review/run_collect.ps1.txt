@@ -1,0 +1,63 @@
+param(
+  [Parameter(Mandatory=$true)][string]$Collector,
+  [Parameter(Mandatory=$true)][string]$Baseline,
+  [Parameter(Mandatory=$true)][string]$Plan,
+  [Parameter(Mandatory=$true)][string]$Out,
+  [Parameter(Mandatory=$true)][string[]]$Sources,
+  [Parameter(Mandatory=$true)][string]$IsolationRoot
+)
+
+$ErrorActionPreference = 'Stop'
+New-Item -ItemType Directory -Force -Path $IsolationRoot,($IsolationRoot+'\AppData\Roaming'),($IsolationRoot+'\AppData\Local'),($IsolationRoot+'\npm-cache'),($IsolationRoot+'\npm-prefix') | Out-Null
+$env:USERPROFILE = $IsolationRoot
+$env:APPDATA = $IsolationRoot + '\AppData\Roaming'
+$env:LOCALAPPDATA = $IsolationRoot + '\AppData\Local'
+$env:npm_config_cache = $IsolationRoot + '\npm-cache'
+$env:npm_config_prefix = $IsolationRoot + '\npm-prefix'
+$env:npm_config_userconfig = $IsolationRoot + '\.npmrc'
+$env:UAGENT_SYNC_WORKSPACE_ROOT = 'SET_FOR_VERIFIED_POP'
+
+$metaPath = Join-Path (Split-Path -Parent $Out) 'execution-meta.json'
+$preEnv = [ordered]@{
+  USERPROFILE = '<TEMP>/CodexTMPnpm'
+  APPDATA = '<TEMP>/CodexTMPnpm/AppData/Roaming'
+  LOCALAPPDATA = '<TEMP>/CodexTMPnpm/AppData/Local'
+  npm_config_cache = '<TEMP>/CodexTMPnpm/npm-cache'
+  npm_config_prefix = '<TEMP>/CodexTMPnpm/npm-prefix'
+  npm_config_userconfig = '<TEMP>/CodexTMPnpm/.npmrc'
+  UAGENT_SYNC_WORKSPACE_ROOT = '<SET_BEFORE_COLLECTOR_POP>'
+}
+$redactedArgs = @(
+  '<TEMP>/collect_m2.py', '--baseline', '<REPO>/docs/validation/hp-2026-09-11-scan-plan/hp-findings.json',
+  '--plan', '<REPO>/docs/validation/hp-2026-09-12-m2-plan/structure.json', '--out', '<TEMP>/public',
+  '--source', '<USER_ROOT>/.agents/skills/literature-search-openalex/scripts/openalex_cli.py',
+  '--source', '<USER_ROOT>/.agents/skills/openfda-database/scripts/openfda_query.py',
+  '--execution-meta', '<TEMP>/execution-meta.json'
+)
+$meta = [ordered]@{
+  executable = 'python'
+  arguments = $redactedArgs
+  pathValuesRedacted = $true
+  preEnv = $preEnv
+  startedUtc = [DateTime]::UtcNow.ToString('o')
+  exitCode = $null
+}
+$meta | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $metaPath -Encoding utf8
+
+$actualArgs = @($Collector, '--baseline', $Baseline, '--plan', $Plan, '--out', $Out)
+foreach ($source in $Sources) { $actualArgs += @('--source', $source) }
+$actualArgs += @('--execution-meta', $metaPath)
+& python @actualArgs
+$exitCode = $LASTEXITCODE
+
+$meta.exitCode = $exitCode
+$meta.completedUtc = [DateTime]::UtcNow.ToString('o')
+$meta | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $metaPath -Encoding utf8
+if ($exitCode -eq 0) {
+  $commandsPath = Join-Path $Out 'commands.json'
+  $commands = Get-Content -Raw -LiteralPath $commandsPath | ConvertFrom-Json
+  $commands.actualExecution = $meta
+  $commands.exitStatus = $exitCode
+  $commands | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $commandsPath -Encoding utf8
+}
+exit $exitCode

@@ -1,0 +1,16 @@
+{
+  "handoff": "55e089a6c8893750704c139481c863108c09147a",
+  "unchangedSource": "70428520228adcac3ac66a2cfb857667b7b69aed",
+  "changedSourcePaths": [],
+  "sourceDiffExit": 0,
+  "packageRuntime": "node >=18",
+  "declaredRuntimeDependencies": [
+    "smol-toml",
+    "zod"
+  ],
+  "productionParserSelected": false,
+  "pythonRuntimeApproved": false,
+  "buildExecuted": false,
+  "securityTestsExecuted": false,
+  "scannerExecuted": false
+}

@@ -1,0 +1,329 @@
+import argparse
+import ast
+import hashlib
+import io
+import json
+import os
+import re
+import sys
+import tokenize
+from pathlib import Path
+
+IDS = ("HP-009", "HP-010", "HP-013", "HP-018")
+FIELD = "api_key"
+
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def u16len(text):
+    return len(text.encode("utf-16-le")) // 2
+
+
+def offsets(text, cp_start, cp_end):
+    return {
+        "unicodeCodePointHalfOpen": [cp_start, cp_end],
+        "utf8ByteHalfOpen": [len(text[:cp_start].encode("utf-8")), len(text[:cp_end].encode("utf-8"))],
+        "utf16CodeUnitHalfOpen": [u16len(text[:cp_start]), u16len(text[:cp_end])],
+    }
+
+
+def line_starts(text):
+    out = [0]
+    for m in re.finditer(r"\n", text):
+        out.append(m.end())
+    return out
+
+
+def cp_col_from_utf8(line, byte_col):
+    return len(line.encode("utf-8")[:byte_col].decode("utf-8"))
+
+
+def span_from_ast(text, lines, starts, node):
+    sc = cp_col_from_utf8(lines[node.lineno - 1], node.col_offset)
+    ec = cp_col_from_utf8(lines[node.end_lineno - 1], node.end_col_offset)
+    a = starts[node.lineno - 1] + sc
+    b = starts[node.end_lineno - 1] + ec
+    return {"lineColumn": [[node.lineno, sc], [node.end_lineno, ec]], **offsets(text, a, b)}
+
+
+def token_abs_span(text, starts, tok):
+    a = starts[tok.start[0] - 1] + tok.start[1]
+    b = starts[tok.end[0] - 1] + tok.end[1]
+    return {"lineColumn": [list(tok.start), list(tok.end)], **offsets(text, a, b)}
+
+
+def signature_span(text, starts, toks, fn):
+    seq = [t for t in toks if t.start >= (fn.lineno, 0)]
+    def_i = next(i for i, t in enumerate(seq) if t.type == tokenize.NAME and t.string in ("def", "async"))
+    if seq[def_i].string == "async":
+        def_i = next(i for i in range(def_i + 1, len(seq)) if seq[i].type == tokenize.NAME and seq[i].string == "def")
+    depth = 0
+    colon = None
+    for t in seq[def_i:]:
+        if t.type == tokenize.OP and t.string in "([{":
+            depth += 1
+        elif t.type == tokenize.OP and t.string in ")]}":
+            depth -= 1
+        elif t.type == tokenize.OP and t.string == ":" and depth == 0:
+            colon = t
+            break
+    if colon is None:
+        raise AssertionError("signature colon not found")
+    a = starts[seq[def_i].start[0] - 1] + seq[def_i].start[1]
+    b = starts[colon.end[0] - 1] + colon.end[1]
+    return {"lineColumn": [list(seq[def_i].start), list(colon.end)], **offsets(text, a, b)}
+
+
+def parameter_facts(fn):
+    kinds = []
+    for a in fn.args.posonlyargs:
+        kinds.append((a.arg, "positionalOnly"))
+    for a in fn.args.args:
+        kinds.append((a.arg, "positionalOrKeyword"))
+    if fn.args.vararg:
+        kinds.append((fn.args.vararg.arg, "varPositional"))
+    for a in fn.args.kwonlyargs:
+        kinds.append((a.arg, "keywordOnly"))
+    if fn.args.kwarg:
+        kinds.append((fn.args.kwarg.arg, "varKeyword"))
+    counts = {k: sum(1 for _, v in kinds if v == k) for k in
+              ("positionalOnly", "positionalOrKeyword", "varPositional", "keywordOnly", "varKeyword")}
+    target = [kind for name, kind in kinds if name == FIELD]
+    return counts, target[0] if len(target) == 1 else "missingOrDuplicate"
+
+
+def owning_function(tree, line):
+    found = []
+    for n in ast.walk(tree):
+        if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)) and n.lineno <= line <= n.end_lineno:
+            found.append(n)
+    if not found:
+        raise AssertionError("candidate not owned by function")
+    return min(found, key=lambda n: (n.end_lineno - n.lineno, n.lineno))
+
+
+def analyze_candidate(hit, plan, source_bytes, file_id):
+    text = source_bytes.decode("utf-8")
+    lines = text.splitlines(keepends=True)
+    plain_lines = [x.rstrip("\r\n") for x in lines]
+    starts = line_starts(text)
+    tree = ast.parse(text)
+    toks = list(tokenize.generate_tokens(io.StringIO(text).readline))
+    line = int(hit["line"])
+    fn = owning_function(tree, line)
+    first = fn.body[0] if fn.body else None
+    is_doc = isinstance(first, ast.Expr) and isinstance(first.value, ast.Constant) and isinstance(first.value.value, str)
+    if not is_doc:
+        raise AssertionError("first statement is not a plain Constant docstring")
+    doc = first.value
+    string_toks = [t for t in toks if t.type == tokenize.STRING and
+                   (doc.lineno, 0) <= t.start and t.end <= (doc.end_lineno, 10**9)]
+    containing = [t for t in string_toks if t.start[0] <= line <= t.end[0]]
+    if len(string_toks) != 1 or len(containing) != 1:
+        raise AssertionError("docstring is not one STRING token")
+    tok = containing[0]
+    q = re.match(r"(?i)^([rubf]*)(\"\"\"|''')", tok.string)
+    if not q:
+        raise AssertionError("not triple quoted")
+    prefix, quote = q.group(1), q.group(2)
+    target_line = plain_lines[line - 1]
+    em = re.fullmatch(r"(\s*)" + FIELD + r"(\s*):(.*)", target_line)
+    if not em:
+        raise AssertionError("target entry shape not found")
+    indent = len(em.group(1))
+    desc = em.group(3).lstrip()
+    header_line = None
+    for n in range(line - 1, tok.start[0] - 1, -1):
+        if re.fullmatch(r"\s*Args:\s*", plain_lines[n - 1]):
+            header_line = n
+            break
+    if header_line is None:
+        raise AssertionError("Args header not found in owning docstring")
+    header_indent = len(plain_lines[header_line - 1]) - len(plain_lines[header_line - 1].lstrip())
+    section_end = tok.end[0]
+    for n in range(header_line + 1, tok.end[0] + 1):
+        s = plain_lines[n - 1]
+        if s.strip() and (len(s) - len(s.lstrip())) <= header_indent and n > line:
+            section_end = n - 1
+            break
+    next_line = line + 1 if line < tok.end[0] else None
+    next_empty = bool(next_line and not plain_lines[next_line - 1].strip())
+    next_nonblank = None
+    if next_line:
+        for n in range(next_line, tok.end[0] + 1):
+            if plain_lines[n - 1].strip():
+                next_nonblank = n
+                break
+    nn_indent = None
+    if next_nonblank:
+        s = plain_lines[next_nonblank - 1]
+        nn_indent = len(s) - len(s.lstrip())
+    immediate = plain_lines[next_line - 1] if next_line else ""
+    immediate_indent = len(immediate) - len(immediate.lstrip()) if immediate.strip() else None
+    continuation_lines = []
+    for n in range(line + 1, section_end + 1):
+        s = plain_lines[n - 1]
+        if not s.strip():
+            break
+        si = len(s) - len(s.lstrip())
+        if si <= indent:
+            break
+        continuation_lines.append(n)
+    field_col = indent
+    line_cp = starts[line - 1]
+    fa = line_cp + field_col
+    fb = fa + len(FIELD)
+    counts, target_kind = parameter_facts(fn)
+    function_span = span_from_ast(text, plain_lines, starts, fn)
+    entry_end = continuation_lines[-1] if continuation_lines else line
+    raw_token_no_prefix = tok.string[len(prefix):]
+    ordinary = prefix == "" and raw_token_no_prefix.startswith(quote) and raw_token_no_prefix.endswith(quote)
+    result = {
+        "id": hit["id"],
+        "fileId": file_id,
+        "candidateLine": line,
+        "oldSummaryMappedOnlyAfterNoDrift": True,
+        "functionSpan": function_span,
+        "signatureSpan": signature_span(text, starts, toks, fn),
+        "docstring": {
+            "isFirstStatement": True,
+            "isConstantString": True,
+            "isOrdinaryTripleQuoted": ordinary,
+            "prefixAbsent": prefix == "",
+            "quoteWidth": len(quote),
+            "singleStringToken": len(string_toks) == 1,
+            "tokenSpan": token_abs_span(text, starts, tok),
+        },
+        "parameters": {"countsByKind": counts, "targetPresentExactlyOnce": target_kind != "missingOrDuplicate", "targetKind": target_kind},
+        "argsOwnership": {
+            "headerLine": header_line,
+            "headerIndentUnicode": header_indent,
+            "entryStartLine": line,
+            "entryEndLine": entry_end,
+            "entryIndentUnicode": indent,
+            "withinOwningDocstring": tok.start[0] <= header_line < line <= tok.end[0],
+            "sectionEndLine": section_end,
+            "immediateNextLine": next_line,
+            "immediateNextLineEmpty": next_empty,
+            "immediateNextLineIsIndentedContinuation": bool(immediate.strip() and immediate_indent > indent),
+            "nextNonblankLine": next_nonblank,
+            "nextNonblankIndentUnicode": nn_indent,
+            "nextNonblankWouldMatchContinuationIndent": bool(nn_indent is not None and nn_indent > indent),
+            "nextNonblankBelongsToEntry": bool(continuation_lines and next_nonblank in continuation_lines),
+            "blankLineTerminatesEntryBeforeNextNonblank": bool(next_empty and next_nonblank is not None),
+        },
+        "targetFieldSpan": {"lineColumnUnicode": [[line, field_col], [line, field_col + len(FIELD)]], **offsets(text, fa, fb)},
+        "targetFieldLength": {"unicodeCodePoints": len(FIELD), "utf8Bytes": len(FIELD.encode("utf-8")), "utf16CodeUnits": u16len(FIELD)},
+        "descriptionGroup": plan["entry"]["descriptionGroup"],
+        "_description": desc,
+    }
+    return result
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--baseline", required=True)
+    ap.add_argument("--plan", required=True)
+    ap.add_argument("--out", required=True)
+    ap.add_argument("--source", action="append", required=True)
+    ap.add_argument("--execution-meta", required=True)
+    args = ap.parse_args()
+    removed = os.environ.pop("UAGENT_SYNC_WORKSPACE_ROOT", None) is not None
+    out = Path(args.out)
+    out.mkdir(parents=True, exist_ok=True)
+    baseline = json.loads(Path(args.baseline).read_text(encoding="utf-8"))
+    plan = json.loads(Path(args.plan).read_text(encoding="utf-8"))
+    plan_by_id = {x["id"]: x for x in plan["candidates"] if x["id"] in IDS}
+    hit_by_id = {x["id"]: x for x in baseline["hits"] if x["id"] in IDS}
+    if set(plan_by_id) != set(IDS) or set(hit_by_id) != set(IDS):
+        raise AssertionError("target IDs incomplete")
+    sources = [Path(x).resolve() for x in args.source]
+    source_by_name = {p.name: p for p in sources}
+    file_ids = {p.name: f"F{i+1}" for i, p in enumerate(sorted(sources, key=lambda x: x.name))}
+    before = {p.name: p.read_bytes() for p in sources}
+    file_rows = []
+    results = []
+    for name, data in before.items():
+        related = [h for h in hit_by_id.values() if Path(h["path"]).name == name]
+        expected = {h["current_sha256"] for h in related}
+        no_drift = len(expected) == 1 and sha(data) in expected
+        file_rows.append({"fileId": file_ids[name], "oldSummaryHashMatchesCurrent": no_drift, "utf8Decoded": True, "astParsed": bool(ast.parse(data.decode("utf-8")))})
+        if not no_drift:
+            raise AssertionError("old summary drift blocks mapping")
+    for ident in IDS:
+        hit = hit_by_id[ident]
+        p = source_by_name[Path(hit["path"]).name]
+        if int(hit["line"]) != int(plan_by_id[ident]["candidateLine"]):
+            raise AssertionError("old and plan line mismatch")
+        results.append(analyze_candidate(hit, plan_by_id[ident], before[p.name], file_ids[p.name]))
+    after = {p.name: p.read_bytes() for p in sources}
+    for row in file_rows:
+        name = next(n for n, fid in file_ids.items() if fid == row["fileId"])
+        row["beforeAfterReadMatches"] = sha(before[name]) == sha(after[name])
+    descriptions = {r["id"]: r.pop("_description") for r in results}
+    equality = []
+    for i, a in enumerate(IDS):
+        for b in IDS[i + 1:]:
+            equality.append({"left": a, "right": b, "exactlyEqual": descriptions[a] == descriptions[b]})
+    groups_consistent = all((descriptions[a] == descriptions[b]) == (plan_by_id[a]["entry"]["descriptionGroup"] == plan_by_id[b]["entry"]["descriptionGroup"]) for i, a in enumerate(IDS) for b in IDS[i+1:])
+    structure = {
+        "schemaVersion": 1,
+        "files": sorted(file_rows, key=lambda x: x["fileId"]),
+        "candidates": results,
+        "descriptionEquality": equality,
+        "descriptionGroupsMatchExactEquality": groups_consistent,
+        "sourceExecuted": False,
+        "scannerExecuted": False,
+        "productionDependenciesLoaded": False,
+    }
+    comparisons = []
+    for r in results:
+        p = plan_by_id[r["id"]]
+        checks = {
+            "candidateLine": r["candidateLine"] == p["candidateLine"],
+            "docstringFirst": r["docstring"]["isFirstStatement"] == p["isDocstring"],
+            "singleStringToken": r["docstring"]["singleStringToken"] == (p["stringTokensInLiteralSpan"] == 1),
+            "tokenLineColumn": r["docstring"]["tokenSpan"]["lineColumn"] == [p["tokenSpan"]["start"], p["tokenSpan"]["end"]],
+            "ordinaryPrefix": r["docstring"]["prefixAbsent"] == (p["stringPrefix"] == ""),
+            "quoteWidth": r["docstring"]["quoteWidth"] == p["quoteWidth"],
+            "targetFormalParameter": r["parameters"]["targetPresentExactlyOnce"] == p["entry"]["matchesFormalParameter"],
+            "argsHeader": p["entry"]["sectionHeader"] == "Args" and r["argsOwnership"]["withinOwningDocstring"],
+            "entryStartColumn": r["targetFieldSpan"]["lineColumnUnicode"][0][1] == p["entry"]["entryStartColumn"],
+            "fieldLengthUtf16": r["targetFieldLength"]["utf16CodeUnits"] == p["entry"]["proposedMask"]["lengthUtf16"],
+            "descriptionGroup": r["descriptionGroup"] == p["entry"]["descriptionGroup"],
+        }
+        comparisons.append({"id": r["id"], "checks": checks, "allComparedFieldsMatch": all(checks.values())})
+    comparison = {
+        "oldSummaryMappedAfterHashGate": all(x["oldSummaryHashMatchesCurrent"] for x in file_rows),
+        "independentVsHpPlan": comparisons,
+        "allComparedFieldsMatch": all(x["allComparedFieldsMatch"] for x in comparisons),
+        "addedIndependentChecks": [
+            "completeFunctionSpanInThreeOffsetConventions",
+            "completeSignatureSpanInThreeOffsetConventions",
+            "parameterKindIncludingKeywordOnly",
+            "entryTerminationAfterBlankAndNextNonblank",
+            "exactDescriptionEqualityMatrix",
+        ],
+    }
+    execution_meta = json.loads(Path(args.execution_meta).read_text(encoding="utf-8"))
+    commands = {
+        "actualExecution": execution_meta,
+        "pythonAstAndTokenizeOnly": True,
+        "sourceFilesExecuted": False,
+        "scannerExecuted": False,
+        "npmExecuted": False,
+        "isolatedUserApplicationDirectoryName": Path(os.environ.get("USERPROFILE", "")).name,
+        "isolatedNpmCacheDirectoryName": Path(os.environ.get("npm_config_cache", "")).name,
+        "workspaceOverrideRemovedInsideCollector": removed,
+        "sourceReadMethod": "read_bytes+utf8_decode_no_newline_normalization",
+        "outputFiles": ["public/structure.json", "public/comparison.json", "public/commands.json"],
+        "exitStatus": 0,
+    }
+    for name, obj in (("structure.json", structure), ("comparison.json", comparison), ("commands.json", commands)):
+        (out / name).write_text(json.dumps(obj, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+if __name__ == "__main__":
+    main()

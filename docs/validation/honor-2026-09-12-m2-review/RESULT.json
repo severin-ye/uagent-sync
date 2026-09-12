@@ -1,0 +1,18 @@
+{
+  "task": "RY-13",
+  "inputSha": "55e089a6c8893750704c139481c863108c09147a",
+  "sourceSha": "70428520228adcac3ac66a2cfb857667b7b69aed",
+  "planReview": "accepted-with-two-unresolved-implementation-decisions",
+  "files": 2,
+  "candidates": 4,
+  "baselineMatches": 2,
+  "beforeAfterMatches": 2,
+  "drift": 0,
+  "hpStructureMatches": 4,
+  "descriptionGroups": 3,
+  "implemented": false,
+  "m2Allowed": false,
+  "hp03Complete": false,
+  "hp04Complete": false,
+  "migrationComplete": false
+}

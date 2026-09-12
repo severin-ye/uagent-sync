@@ -1,0 +1,81 @@
+{
+  "oldSummaryMappedAfterHashGate": true,
+  "independentVsHpPlan": [
+    {
+      "id": "HP-009",
+      "checks": {
+        "candidateLine": true,
+        "docstringFirst": true,
+        "singleStringToken": true,
+        "tokenLineColumn": true,
+        "ordinaryPrefix": true,
+        "quoteWidth": true,
+        "targetFormalParameter": true,
+        "argsHeader": true,
+        "entryStartColumn": true,
+        "fieldLengthUtf16": true,
+        "descriptionGroup": true
+      },
+      "allComparedFieldsMatch": true
+    },
+    {
+      "id": "HP-010",
+      "checks": {
+        "candidateLine": true,
+        "docstringFirst": true,
+        "singleStringToken": true,
+        "tokenLineColumn": true,
+        "ordinaryPrefix": true,
+        "quoteWidth": true,
+        "targetFormalParameter": true,
+        "argsHeader": true,
+        "entryStartColumn": true,
+        "fieldLengthUtf16": true,
+        "descriptionGroup": true
+      },
+      "allComparedFieldsMatch": true
+    },
+    {
+      "id": "HP-013",
+      "checks": {
+        "candidateLine": true,
+        "docstringFirst": true,
+        "singleStringToken": true,
+        "tokenLineColumn": true,
+        "ordinaryPrefix": true,
+        "quoteWidth": true,
+        "targetFormalParameter": true,
+        "argsHeader": true,
+        "entryStartColumn": true,
+        "fieldLengthUtf16": true,
+        "descriptionGroup": true
+      },
+      "allComparedFieldsMatch": true
+    },
+    {
+      "id": "HP-018",
+      "checks": {
+        "candidateLine": true,
+        "docstringFirst": true,
+        "singleStringToken": true,
+        "tokenLineColumn": true,
+        "ordinaryPrefix": true,
+        "quoteWidth": true,
+        "targetFormalParameter": true,
+        "argsHeader": true,
+        "entryStartColumn": true,
+        "fieldLengthUtf16": true,
+        "descriptionGroup": true
+      },
+      "allComparedFieldsMatch": true
+    }
+  ],
+  "allComparedFieldsMatch": true,
+  "addedIndependentChecks": [
+    "completeFunctionSpanInThreeOffsetConventions",
+    "completeSignatureSpanInThreeOffsetConventions",
+    "parameterKindIncludingKeywordOnly",
+    "entryTerminationAfterBlankAndNextNonblank",
+    "exactDescriptionEqualityMatrix"
+  ]
+}
