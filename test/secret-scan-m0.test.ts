@@ -63,11 +63,12 @@ test('M0 scans past display windows and returns no credential text', () => {
   assert.ok(!JSON.stringify(findings).includes(credential));
 });
 
-test('M0 does not introduce M1, M2 or M3 allowances', () => {
+test('M0 base scanner retains its rules independently of M13 profile allowances', () => {
   for (const content of ['api_key=args.api_key', 'api_key=os.environ.get("KEY", "")',
     'api_key="your-api-key"', 'api_key: description_of_parameter']) {
-    assert.throws(() => assertProfileContentSafe(content, 'test/fixture.py'), /Secret/);
+    assert.throws(() => assertNoSecrets(content, 'test/fixture.py'), /Secret/);
   }
+  assert.throws(() => assertProfileContentSafe('api_key: description_of_parameter', 'test/fixture.py'), /Secret/);
 });
 
 test('M0 profile collection, restore and publish reject the same fixture before effects', t => {
