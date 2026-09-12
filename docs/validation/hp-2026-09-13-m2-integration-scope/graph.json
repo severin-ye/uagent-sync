@@ -1,0 +1,1605 @@
+{
+  "query": {
+    "processes": [
+      {
+        "id": "proc_136_restorecodexprofile",
+        "summary": "RestoreCodexProfile → ExampleRegions",
+        "priority": 0.108,
+        "symbol_count": 2,
+        "process_type": "cross_community",
+        "step_count": 7
+      },
+      {
+        "id": "proc_137_restorecodexprofile",
+        "summary": "RestoreCodexProfile → LexExample",
+        "priority": 0.108,
+        "symbol_count": 2,
+        "process_type": "cross_community",
+        "step_count": 7
+      },
+      {
+        "id": "proc_138_restorecodexprofile",
+        "summary": "RestoreCodexProfile → Reject",
+        "priority": 0.108,
+        "symbol_count": 2,
+        "process_type": "cross_community",
+        "step_count": 7
+      },
+      {
+        "id": "proc_143_restorecodexprofile",
+        "summary": "RestoreCodexProfile → CodeRegions",
+        "priority": 0.108,
+        "symbol_count": 2,
+        "process_type": "cross_community",
+        "step_count": 6
+      },
+      {
+        "id": "proc_144_restorecodexprofile",
+        "summary": "RestoreCodexProfile → Lex",
+        "priority": 0.108,
+        "symbol_count": 2,
+        "process_type": "cross_community",
+        "step_count": 6
+      }
+    ],
+    "process_symbols": [
+      {
+        "id": "Function:src/lib/codex-profile.ts:restoreCodexProfile",
+        "name": "restoreCodexProfile",
+        "filePath": "src/lib/codex-profile.ts",
+        "startLine": 181,
+        "endLine": 220,
+        "module": "Cluster_55",
+        "process_id": "proc_136_restorecodexprofile",
+        "step_index": 1
+      },
+      {
+        "id": "Function:src/lib/profile-secret-scan.ts:assertProfileContentSafe",
+        "name": "assertProfileContentSafe",
+        "filePath": "src/lib/profile-secret-scan.ts",
+        "startLine": 5,
+        "endLine": 16,
+        "module": "Test",
+        "process_id": "proc_136_restorecodexprofile",
+        "step_index": 4
+      }
+    ],
+    "definitions": [
+      {
+        "id": "Function:test/profile-secret-scan-sequence.test.ts:checkMasked",
+        "name": "checkMasked",
+        "filePath": "test/profile-secret-scan-sequence.test.ts",
+        "startLine": 21,
+        "endLine": 26,
+        "module": "Test"
+      },
+      {
+        "id": "File:test/profile-secret-scan-sequence.test.ts",
+        "name": "profile-secret-scan-sequence.test.ts",
+        "filePath": "test/profile-secret-scan-sequence.test.ts"
+      },
+      {
+        "id": "File:docs/validation/hp-2026-09-12-m13/impact.log",
+        "name": "impact.log",
+        "filePath": "docs/validation/hp-2026-09-12-m13/impact.log"
+      },
+      {
+        "id": "File:docs/validation/hp-2026-09-12-m0/impact.log",
+        "name": "impact.log",
+        "filePath": "docs/validation/hp-2026-09-12-m0/impact.log"
+      },
+      {
+        "id": "Property:test/codex-profile.test.ts:fn@43:80.snapshotDir@46:23",
+        "name": "snapshotDir",
+        "filePath": "test/codex-profile.test.ts",
+        "startLine": 47,
+        "endLine": 47
+      },
+      {
+        "id": "File:test/codex-profile.test.ts",
+        "name": "codex-profile.test.ts",
+        "filePath": "test/codex-profile.test.ts"
+      },
+      {
+        "id": "File:src/entrypoints/device-cli.ts",
+        "name": "device-cli.ts",
+        "filePath": "src/entrypoints/device-cli.ts"
+      },
+      {
+        "id": "File:test/profile-secret-scan-quoted.test.ts",
+        "name": "profile-secret-scan-quoted.test.ts",
+        "filePath": "test/profile-secret-scan-quoted.test.ts"
+      },
+      {
+        "id": "File:test/profile-secret-scan-boundary.test.ts",
+        "name": "profile-secret-scan-boundary.test.ts",
+        "filePath": "test/profile-secret-scan-boundary.test.ts"
+      },
+      {
+        "id": "File:docs/validation/hp-2026-09-12-m13-boundary/impact.log",
+        "name": "impact.log",
+        "filePath": "docs/validation/hp-2026-09-12-m13-boundary/impact.log"
+      },
+      {
+        "id": "File:test/profile-secret-scan-php-ruby.test.ts",
+        "name": "profile-secret-scan-php-ruby.test.ts",
+        "filePath": "test/profile-secret-scan-php-ruby.test.ts"
+      },
+      {
+        "id": "File:test/profile-secret-scan-m13.test.ts",
+        "name": "profile-secret-scan-m13.test.ts",
+        "filePath": "test/profile-secret-scan-m13.test.ts"
+      },
+      {
+        "id": "File:test/profile-secret-scan-five.test.ts",
+        "name": "profile-secret-scan-five.test.ts",
+        "filePath": "test/profile-secret-scan-five.test.ts"
+      },
+      {
+        "id": "File:docs/validation/honor-2026-09-12-five-candidates/three-gates.test.ts",
+        "name": "three-gates.test.ts",
+        "filePath": "docs/validation/honor-2026-09-12-five-candidates/three-gates.test.ts"
+      },
+      {
+        "id": "File:docs/validation/honor-2026-09-12-php-ruby/three-gates.test.ts",
+        "name": "three-gates.test.ts",
+        "filePath": "docs/validation/honor-2026-09-12-php-ruby/three-gates.test.ts"
+      },
+      {
+        "id": "File:docs/validation/hp-2026-09-12-m13/detect.log",
+        "name": "detect.log",
+        "filePath": "docs/validation/hp-2026-09-12-m13/detect.log"
+      },
+      {
+        "id": "File:test/secret-scan-m0.test.ts",
+        "name": "secret-scan-m0.test.ts",
+        "filePath": "test/secret-scan-m0.test.ts"
+      },
+      {
+        "id": "File:docs/validation/honor-2026-09-12-sequence/baseline-source-diff.log",
+        "name": "baseline-source-diff.log",
+        "filePath": "docs/validation/honor-2026-09-12-sequence/baseline-source-diff.log"
+      },
+      {
+        "id": "File:docs/validation/honor-2026-09-12-php-ruby-comments/source-diff.log",
+        "name": "source-diff.log",
+        "filePath": "docs/validation/honor-2026-09-12-php-ruby-comments/source-diff.log"
+      },
+      {
+        "id": "File:docs/validation/hp-2026-09-12-m13/detect-all.json",
+        "name": "detect-all.json",
+        "filePath": "docs/validation/hp-2026-09-12-m13/detect-all.json"
+      }
+    ],
+    "timing": {
+      "vector": 11.4,
+      "bm25": 373.3,
+      "merge": 0.1,
+      "symbol_lookup": 23.4,
+      "ranking": 0.1,
+      "formatting": 0.1,
+      "wall": 399.9
+    }
+  },
+  "assertProfileContentSafe": {
+    "status": "found",
+    "symbol": {
+      "uid": "Function:src/lib/profile-secret-scan.ts:assertProfileContentSafe",
+      "name": "assertProfileContentSafe",
+      "kind": "Function",
+      "filePath": "src/lib/profile-secret-scan.ts",
+      "startLine": 5,
+      "endLine": 16
+    },
+    "epistemic": "exact",
+    "incoming": {
+      "calls": [
+        {
+          "uid": "File:test/profile-secret-scan-boundary.test.ts",
+          "name": "profile-secret-scan-boundary.test.ts",
+          "filePath": "test/profile-secret-scan-boundary.test.ts"
+        },
+        {
+          "uid": "File:test/profile-secret-scan-five.test.ts",
+          "name": "profile-secret-scan-five.test.ts",
+          "filePath": "test/profile-secret-scan-five.test.ts"
+        },
+        {
+          "uid": "File:test/profile-secret-scan-m13.test.ts",
+          "name": "profile-secret-scan-m13.test.ts",
+          "filePath": "test/profile-secret-scan-m13.test.ts"
+        },
+        {
+          "uid": "File:test/profile-secret-scan-php-ruby.test.ts",
+          "name": "profile-secret-scan-php-ruby.test.ts",
+          "filePath": "test/profile-secret-scan-php-ruby.test.ts"
+        },
+        {
+          "uid": "File:test/profile-secret-scan-quoted.test.ts",
+          "name": "profile-secret-scan-quoted.test.ts",
+          "filePath": "test/profile-secret-scan-quoted.test.ts"
+        },
+        {
+          "uid": "File:test/profile-secret-scan-sequence.test.ts",
+          "name": "profile-secret-scan-sequence.test.ts",
+          "filePath": "test/profile-secret-scan-sequence.test.ts"
+        },
+        {
+          "uid": "File:test/profile-secret-scan.test.ts",
+          "name": "profile-secret-scan.test.ts",
+          "filePath": "test/profile-secret-scan.test.ts"
+        },
+        {
+          "uid": "File:test/secret-scan-m0.test.ts",
+          "name": "secret-scan-m0.test.ts",
+          "filePath": "test/secret-scan-m0.test.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:createCodexProfile.walk@92:2",
+          "name": "walk",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:readSnapshot",
+          "name": "readSnapshot",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/device-git-transport.ts:publishDevicePaths.scan@28:2",
+          "name": "scan",
+          "filePath": "src/lib/device-git-transport.ts"
+        },
+        {
+          "uid": "Function:test/profile-secret-scan-sequence.test.ts:checkMasked",
+          "name": "checkMasked",
+          "filePath": "test/profile-secret-scan-sequence.test.ts"
+        }
+      ]
+    },
+    "outgoing": {
+      "calls": [
+        {
+          "uid": "Function:src/lib/profile-expressions.ts:recognizeProfileExpressions",
+          "name": "recognizeProfileExpressions",
+          "filePath": "src/lib/profile-expressions.ts"
+        },
+        {
+          "uid": "Function:src/lib/secret-scan.ts:scanForSecrets",
+          "name": "scanForSecrets",
+          "filePath": "src/lib/secret-scan.ts"
+        }
+      ]
+    },
+    "processes": [
+      {
+        "id": "proc_136_restorecodexprofile",
+        "name": "RestoreCodexProfile → ExampleRegions",
+        "step_index": 4,
+        "step_count": 7
+      },
+      {
+        "id": "proc_137_restorecodexprofile",
+        "name": "RestoreCodexProfile → LexExample",
+        "step_index": 4,
+        "step_count": 7
+      },
+      {
+        "id": "proc_138_restorecodexprofile",
+        "name": "RestoreCodexProfile → Reject",
+        "step_index": 4,
+        "step_count": 7
+      },
+      {
+        "id": "proc_143_restorecodexprofile",
+        "name": "RestoreCodexProfile → CodeRegions",
+        "step_index": 4,
+        "step_count": 6
+      },
+      {
+        "id": "proc_144_restorecodexprofile",
+        "name": "RestoreCodexProfile → Lex",
+        "step_index": 4,
+        "step_count": 6
+      },
+      {
+        "id": "proc_145_restorecodexprofile",
+        "name": "RestoreCodexProfile → TypescriptPlaceholders",
+        "step_index": 4,
+        "step_count": 6
+      },
+      {
+        "id": "proc_153_restorecodexprofile",
+        "name": "RestoreCodexProfile → ScanForSecrets",
+        "step_index": 4,
+        "step_count": 5
+      },
+      {
+        "id": "proc_17_createcodexprofile",
+        "name": "CreateCodexProfile → CodeRegions",
+        "step_index": 4,
+        "step_count": 6
+      },
+      {
+        "id": "proc_18_createcodexprofile",
+        "name": "CreateCodexProfile → Lex",
+        "step_index": 4,
+        "step_count": 6
+      },
+      {
+        "id": "proc_19_createcodexprofile",
+        "name": "CreateCodexProfile → TypescriptPlaceholders",
+        "step_index": 4,
+        "step_count": 6
+      },
+      {
+        "id": "proc_202_scan",
+        "name": "Scan → ExampleRegions",
+        "step_index": 2,
+        "step_count": 5
+      },
+      {
+        "id": "proc_203_scan",
+        "name": "Scan → LexExample",
+        "step_index": 2,
+        "step_count": 5
+      },
+      {
+        "id": "proc_204_scan",
+        "name": "Scan → Reject",
+        "step_index": 2,
+        "step_count": 5
+      },
+      {
+        "id": "proc_209_scan",
+        "name": "Scan → CodeRegions",
+        "step_index": 2,
+        "step_count": 4
+      },
+      {
+        "id": "proc_210_scan",
+        "name": "Scan → Lex",
+        "step_index": 2,
+        "step_count": 4
+      },
+      {
+        "id": "proc_211_scan",
+        "name": "Scan → TypescriptPlaceholders",
+        "step_index": 2,
+        "step_count": 4
+      },
+      {
+        "id": "proc_218_scan",
+        "name": "Scan → ScanForSecrets",
+        "step_index": 2,
+        "step_count": 3
+      },
+      {
+        "id": "proc_30_createcodexprofile",
+        "name": "CreateCodexProfile → ScanForSecrets",
+        "step_index": 4,
+        "step_count": 5
+      },
+      {
+        "id": "proc_7_createcodexprofile",
+        "name": "CreateCodexProfile → ExampleRegions",
+        "step_index": 4,
+        "step_count": 7
+      },
+      {
+        "id": "proc_8_createcodexprofile",
+        "name": "CreateCodexProfile → LexExample",
+        "step_index": 4,
+        "step_count": 7
+      },
+      {
+        "id": "proc_9_createcodexprofile",
+        "name": "CreateCodexProfile → Reject",
+        "step_index": 4,
+        "step_count": 7
+      }
+    ]
+  },
+  "createCodexProfile": {
+    "status": "found",
+    "symbol": {
+      "uid": "Function:src/lib/codex-profile.ts:createCodexProfile",
+      "name": "createCodexProfile",
+      "kind": "Function",
+      "filePath": "src/lib/codex-profile.ts",
+      "startLine": 82,
+      "endLine": 124
+    },
+    "epistemic": "exact",
+    "incoming": {
+      "calls": [
+        {
+          "uid": "File:docs/validation/honor-2026-09-12-five-candidates/three-gates.test.ts",
+          "name": "three-gates.test.ts",
+          "filePath": "docs/validation/honor-2026-09-12-five-candidates/three-gates.test.ts"
+        },
+        {
+          "uid": "File:docs/validation/honor-2026-09-12-php-ruby/three-gates.test.ts",
+          "name": "three-gates.test.ts",
+          "filePath": "docs/validation/honor-2026-09-12-php-ruby/three-gates.test.ts"
+        },
+        {
+          "uid": "File:test/codex-profile.test.ts",
+          "name": "codex-profile.test.ts",
+          "filePath": "test/codex-profile.test.ts"
+        },
+        {
+          "uid": "File:test/profile-secret-scan-boundary.test.ts",
+          "name": "profile-secret-scan-boundary.test.ts",
+          "filePath": "test/profile-secret-scan-boundary.test.ts"
+        },
+        {
+          "uid": "File:test/profile-secret-scan-five.test.ts",
+          "name": "profile-secret-scan-five.test.ts",
+          "filePath": "test/profile-secret-scan-five.test.ts"
+        },
+        {
+          "uid": "File:test/profile-secret-scan-m13.test.ts",
+          "name": "profile-secret-scan-m13.test.ts",
+          "filePath": "test/profile-secret-scan-m13.test.ts"
+        },
+        {
+          "uid": "File:test/profile-secret-scan-php-ruby.test.ts",
+          "name": "profile-secret-scan-php-ruby.test.ts",
+          "filePath": "test/profile-secret-scan-php-ruby.test.ts"
+        },
+        {
+          "uid": "File:test/profile-secret-scan-quoted.test.ts",
+          "name": "profile-secret-scan-quoted.test.ts",
+          "filePath": "test/profile-secret-scan-quoted.test.ts"
+        },
+        {
+          "uid": "File:test/profile-secret-scan-sequence.test.ts",
+          "name": "profile-secret-scan-sequence.test.ts",
+          "filePath": "test/profile-secret-scan-sequence.test.ts"
+        },
+        {
+          "uid": "File:test/secret-scan-m0.test.ts",
+          "name": "secret-scan-m0.test.ts",
+          "filePath": "test/secret-scan-m0.test.ts"
+        },
+        {
+          "uid": "Function:src/entrypoints/device-cli.ts:runDeviceCli",
+          "name": "runDeviceCli",
+          "filePath": "src/entrypoints/device-cli.ts"
+        }
+      ]
+    },
+    "outgoing": {
+      "calls": [
+        {
+          "uid": "Function:src/lib/codex-profile.ts:atomically",
+          "name": "atomically",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:contained",
+          "name": "contained",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:createCodexProfile.collect@89:2",
+          "name": "collect",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:roots",
+          "name": "roots",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:separate",
+          "name": "separate",
+          "filePath": "src/lib/codex-profile.ts"
+        }
+      ],
+      "uses": [
+        {
+          "uid": "Interface:src/lib/codex-profile.ts:CodexProfileManifest",
+          "name": "CodexProfileManifest",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Interface:src/lib/codex-profile.ts:CodexProfileManifest",
+          "name": "CodexProfileManifest",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Interface:src/lib/codex-profile.ts:CreateOptions",
+          "name": "CreateOptions",
+          "filePath": "src/lib/codex-profile.ts"
+        }
+      ],
+      "accesses": [
+        {
+          "uid": "Property:src/lib/codex-profile.ts:CodexProfileManifest.excluded",
+          "name": "excluded",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-profile.ts:CodexProfileManifest.files",
+          "name": "files",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-profile.ts:CreateOptions.components",
+          "name": "components",
+          "filePath": "src/lib/codex-profile.ts"
+        }
+      ]
+    },
+    "processes": [
+      {
+        "id": "proc_168_createcodexprofile",
+        "name": "CreateCodexProfile → Roots",
+        "step_index": 1,
+        "step_count": 3
+      },
+      {
+        "id": "proc_17_createcodexprofile",
+        "name": "CreateCodexProfile → CodeRegions",
+        "step_index": 1,
+        "step_count": 6
+      },
+      {
+        "id": "proc_18_createcodexprofile",
+        "name": "CreateCodexProfile → Lex",
+        "step_index": 1,
+        "step_count": 6
+      },
+      {
+        "id": "proc_19_createcodexprofile",
+        "name": "CreateCodexProfile → TypescriptPlaceholders",
+        "step_index": 1,
+        "step_count": 6
+      },
+      {
+        "id": "proc_29_createcodexprofile",
+        "name": "CreateCodexProfile → NoLinks",
+        "step_index": 1,
+        "step_count": 5
+      },
+      {
+        "id": "proc_30_createcodexprofile",
+        "name": "CreateCodexProfile → ScanForSecrets",
+        "step_index": 1,
+        "step_count": 5
+      },
+      {
+        "id": "proc_6_createcodexprofile",
+        "name": "CreateCodexProfile → Mappings",
+        "step_index": 1,
+        "step_count": 7
+      },
+      {
+        "id": "proc_7_createcodexprofile",
+        "name": "CreateCodexProfile → ExampleRegions",
+        "step_index": 1,
+        "step_count": 7
+      },
+      {
+        "id": "proc_8_createcodexprofile",
+        "name": "CreateCodexProfile → LexExample",
+        "step_index": 1,
+        "step_count": 7
+      },
+      {
+        "id": "proc_9_createcodexprofile",
+        "name": "CreateCodexProfile → Reject",
+        "step_index": 1,
+        "step_count": 7
+      }
+    ]
+  },
+  "planCodexProfileRestore": {
+    "status": "found",
+    "symbol": {
+      "uid": "Function:src/lib/codex-profile.ts:planCodexProfileRestore",
+      "name": "planCodexProfileRestore",
+      "kind": "Function",
+      "filePath": "src/lib/codex-profile.ts",
+      "startLine": 164,
+      "endLine": 180
+    },
+    "epistemic": "exact",
+    "incoming": {
+      "calls": [
+        {
+          "uid": "File:test/codex-profile.test.ts",
+          "name": "codex-profile.test.ts",
+          "filePath": "test/codex-profile.test.ts"
+        },
+        {
+          "uid": "File:test/secret-scan-m0.test.ts",
+          "name": "secret-scan-m0.test.ts",
+          "filePath": "test/secret-scan-m0.test.ts"
+        },
+        {
+          "uid": "Function:src/entrypoints/device-cli.ts:runDeviceCli",
+          "name": "runDeviceCli",
+          "filePath": "src/entrypoints/device-cli.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:restoreCodexProfile",
+          "name": "restoreCodexProfile",
+          "filePath": "src/lib/codex-profile.ts"
+        }
+      ]
+    },
+    "outgoing": {
+      "calls": [
+        {
+          "uid": "Function:src/lib/codex-profile.ts:contained",
+          "name": "contained",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:desiredBytes",
+          "name": "desiredBytes",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:digest",
+          "name": "digest",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:hashFile",
+          "name": "hashFile",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:keyOf",
+          "name": "keyOf",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:readBaseline",
+          "name": "readBaseline",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:readSnapshot",
+          "name": "readSnapshot",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:roots",
+          "name": "roots",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:separate",
+          "name": "separate",
+          "filePath": "src/lib/codex-profile.ts"
+        }
+      ],
+      "accesses": [
+        {
+          "uid": "Function:src/lib/codex-profile.ts:keyOf",
+          "name": "keyOf",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-profile.ts:Baseline.files",
+          "name": "files",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-profile.ts:Baseline.files",
+          "name": "files",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-profile.ts:Baseline.files",
+          "name": "files",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-profile.ts:CodexProfileManifest.excluded",
+          "name": "excluded",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-profile.ts:CodexProfileManifest.files",
+          "name": "files",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-profile.ts:CodexProfileManifest.files",
+          "name": "files",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-profile.ts:CodexProfileManifest.id",
+          "name": "id",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-profile.ts:RestoreOptions.preferSource",
+          "name": "preferSource",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-profile.ts:RestoreOptions.preferSource",
+          "name": "preferSource",
+          "filePath": "src/lib/codex-profile.ts"
+        }
+      ],
+      "uses": [
+        {
+          "uid": "Interface:src/lib/codex-profile.ts:ProfilePlan",
+          "name": "ProfilePlan",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Interface:src/lib/codex-profile.ts:RestoreOptions",
+          "name": "RestoreOptions",
+          "filePath": "src/lib/codex-profile.ts"
+        }
+      ]
+    },
+    "processes": [
+      {
+        "id": "proc_136_restorecodexprofile",
+        "name": "RestoreCodexProfile → ExampleRegions",
+        "step_index": 2,
+        "step_count": 7
+      },
+      {
+        "id": "proc_137_restorecodexprofile",
+        "name": "RestoreCodexProfile → LexExample",
+        "step_index": 2,
+        "step_count": 7
+      },
+      {
+        "id": "proc_138_restorecodexprofile",
+        "name": "RestoreCodexProfile → Reject",
+        "step_index": 2,
+        "step_count": 7
+      },
+      {
+        "id": "proc_143_restorecodexprofile",
+        "name": "RestoreCodexProfile → CodeRegions",
+        "step_index": 2,
+        "step_count": 6
+      },
+      {
+        "id": "proc_144_restorecodexprofile",
+        "name": "RestoreCodexProfile → Lex",
+        "step_index": 2,
+        "step_count": 6
+      },
+      {
+        "id": "proc_145_restorecodexprofile",
+        "name": "RestoreCodexProfile → TypescriptPlaceholders",
+        "step_index": 2,
+        "step_count": 6
+      },
+      {
+        "id": "proc_152_restorecodexprofile",
+        "name": "RestoreCodexProfile → NoLinks",
+        "step_index": 2,
+        "step_count": 5
+      },
+      {
+        "id": "proc_153_restorecodexprofile",
+        "name": "RestoreCodexProfile → ScanForSecrets",
+        "step_index": 2,
+        "step_count": 5
+      },
+      {
+        "id": "proc_56_restorecodexprofile",
+        "name": "RestoreCodexProfile → Roots",
+        "step_index": 2,
+        "step_count": 4
+      }
+    ]
+  },
+  "restoreCodexProfile": {
+    "status": "found",
+    "symbol": {
+      "uid": "Function:src/lib/codex-profile.ts:restoreCodexProfile",
+      "name": "restoreCodexProfile",
+      "kind": "Function",
+      "filePath": "src/lib/codex-profile.ts",
+      "startLine": 181,
+      "endLine": 220
+    },
+    "epistemic": "exact",
+    "incoming": {
+      "calls": [
+        {
+          "uid": "File:docs/validation/honor-2026-09-12-five-candidates/three-gates.test.ts",
+          "name": "three-gates.test.ts",
+          "filePath": "docs/validation/honor-2026-09-12-five-candidates/three-gates.test.ts"
+        },
+        {
+          "uid": "File:docs/validation/honor-2026-09-12-php-ruby/three-gates.test.ts",
+          "name": "three-gates.test.ts",
+          "filePath": "docs/validation/honor-2026-09-12-php-ruby/three-gates.test.ts"
+        },
+        {
+          "uid": "File:test/codex-profile.test.ts",
+          "name": "codex-profile.test.ts",
+          "filePath": "test/codex-profile.test.ts"
+        },
+        {
+          "uid": "File:test/profile-secret-scan-boundary.test.ts",
+          "name": "profile-secret-scan-boundary.test.ts",
+          "filePath": "test/profile-secret-scan-boundary.test.ts"
+        },
+        {
+          "uid": "File:test/profile-secret-scan-five.test.ts",
+          "name": "profile-secret-scan-five.test.ts",
+          "filePath": "test/profile-secret-scan-five.test.ts"
+        },
+        {
+          "uid": "File:test/profile-secret-scan-m13.test.ts",
+          "name": "profile-secret-scan-m13.test.ts",
+          "filePath": "test/profile-secret-scan-m13.test.ts"
+        },
+        {
+          "uid": "File:test/profile-secret-scan-php-ruby.test.ts",
+          "name": "profile-secret-scan-php-ruby.test.ts",
+          "filePath": "test/profile-secret-scan-php-ruby.test.ts"
+        },
+        {
+          "uid": "File:test/profile-secret-scan-quoted.test.ts",
+          "name": "profile-secret-scan-quoted.test.ts",
+          "filePath": "test/profile-secret-scan-quoted.test.ts"
+        },
+        {
+          "uid": "File:test/profile-secret-scan-sequence.test.ts",
+          "name": "profile-secret-scan-sequence.test.ts",
+          "filePath": "test/profile-secret-scan-sequence.test.ts"
+        },
+        {
+          "uid": "File:test/secret-scan-m0.test.ts",
+          "name": "secret-scan-m0.test.ts",
+          "filePath": "test/secret-scan-m0.test.ts"
+        },
+        {
+          "uid": "Function:src/entrypoints/device-cli.ts:runDeviceCli",
+          "name": "runDeviceCli",
+          "filePath": "src/entrypoints/device-cli.ts"
+        }
+      ]
+    },
+    "outgoing": {
+      "calls": [
+        {
+          "uid": "Function:src/lib/codex-profile.ts:atomically",
+          "name": "atomically",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:baselinePath",
+          "name": "baselinePath",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:contained",
+          "name": "contained",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:desiredBytes",
+          "name": "desiredBytes",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:digest",
+          "name": "digest",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:hashFile",
+          "name": "hashFile",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:hashFile",
+          "name": "hashFile",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:hashFile",
+          "name": "hashFile",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:hashFile",
+          "name": "hashFile",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:hashFile",
+          "name": "hashFile",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:noLinks",
+          "name": "noLinks",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:planCodexProfileRestore",
+          "name": "planCodexProfileRestore",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:readBaseline",
+          "name": "readBaseline",
+          "filePath": "src/lib/codex-profile.ts"
+        }
+      ],
+      "uses": [
+        {
+          "uid": "Interface:src/lib/codex-profile.ts:Baseline",
+          "name": "Baseline",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Interface:src/lib/codex-profile.ts:RestoreOptions",
+          "name": "RestoreOptions",
+          "filePath": "src/lib/codex-profile.ts"
+        }
+      ],
+      "accesses": [
+        {
+          "uid": "Property:src/lib/codex-profile.ts:Baseline.files",
+          "name": "files",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-profile.ts:Baseline.files",
+          "name": "files",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-profile.ts:ProfilePlan.conflicts",
+          "name": "conflicts",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-profile.ts:ProfilePlan.conflicts",
+          "name": "conflicts",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-profile.ts:ProfilePlan.items",
+          "name": "items",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-profile.ts:ProfilePlan.items",
+          "name": "items",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-profile.ts:ProfilePlan.items",
+          "name": "items",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-profile.ts:RestoreOptions.snapshotDir",
+          "name": "snapshotDir",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-profile.ts:RestoreOptions.snapshotDir",
+          "name": "snapshotDir",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-profile.ts:RestoreOptions.target",
+          "name": "target",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-profile.ts:RestoreOptions.target",
+          "name": "target",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-profile.ts:RestoreOptions.target",
+          "name": "target",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-profile.ts:RestoreOptions.target",
+          "name": "target",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-profile.ts:RestoreOptions.target",
+          "name": "target",
+          "filePath": "src/lib/codex-profile.ts"
+        }
+      ]
+    },
+    "processes": [
+      {
+        "id": "proc_136_restorecodexprofile",
+        "name": "RestoreCodexProfile → ExampleRegions",
+        "step_index": 1,
+        "step_count": 7
+      },
+      {
+        "id": "proc_137_restorecodexprofile",
+        "name": "RestoreCodexProfile → LexExample",
+        "step_index": 1,
+        "step_count": 7
+      },
+      {
+        "id": "proc_138_restorecodexprofile",
+        "name": "RestoreCodexProfile → Reject",
+        "step_index": 1,
+        "step_count": 7
+      },
+      {
+        "id": "proc_143_restorecodexprofile",
+        "name": "RestoreCodexProfile → CodeRegions",
+        "step_index": 1,
+        "step_count": 6
+      },
+      {
+        "id": "proc_144_restorecodexprofile",
+        "name": "RestoreCodexProfile → Lex",
+        "step_index": 1,
+        "step_count": 6
+      },
+      {
+        "id": "proc_145_restorecodexprofile",
+        "name": "RestoreCodexProfile → TypescriptPlaceholders",
+        "step_index": 1,
+        "step_count": 6
+      },
+      {
+        "id": "proc_152_restorecodexprofile",
+        "name": "RestoreCodexProfile → NoLinks",
+        "step_index": 1,
+        "step_count": 5
+      },
+      {
+        "id": "proc_153_restorecodexprofile",
+        "name": "RestoreCodexProfile → ScanForSecrets",
+        "step_index": 1,
+        "step_count": 5
+      },
+      {
+        "id": "proc_56_restorecodexprofile",
+        "name": "RestoreCodexProfile → Roots",
+        "step_index": 1,
+        "step_count": 4
+      }
+    ]
+  },
+  "publishDevicePaths": {
+    "status": "found",
+    "symbol": {
+      "uid": "Function:src/lib/device-git-transport.ts:publishDevicePaths",
+      "name": "publishDevicePaths",
+      "kind": "Function",
+      "filePath": "src/lib/device-git-transport.ts",
+      "startLine": 26,
+      "endLine": 54
+    },
+    "epistemic": "exact",
+    "incoming": {
+      "calls": [
+        {
+          "uid": "File:docs/validation/honor-2026-09-12-five-candidates/three-gates.test.ts",
+          "name": "three-gates.test.ts",
+          "filePath": "docs/validation/honor-2026-09-12-five-candidates/three-gates.test.ts"
+        },
+        {
+          "uid": "File:docs/validation/honor-2026-09-12-php-ruby/three-gates.test.ts",
+          "name": "three-gates.test.ts",
+          "filePath": "docs/validation/honor-2026-09-12-php-ruby/three-gates.test.ts"
+        },
+        {
+          "uid": "File:test/device-git-transport.test.ts",
+          "name": "device-git-transport.test.ts",
+          "filePath": "test/device-git-transport.test.ts"
+        },
+        {
+          "uid": "File:test/profile-secret-scan-boundary.test.ts",
+          "name": "profile-secret-scan-boundary.test.ts",
+          "filePath": "test/profile-secret-scan-boundary.test.ts"
+        },
+        {
+          "uid": "File:test/profile-secret-scan-five.test.ts",
+          "name": "profile-secret-scan-five.test.ts",
+          "filePath": "test/profile-secret-scan-five.test.ts"
+        },
+        {
+          "uid": "File:test/profile-secret-scan-m13.test.ts",
+          "name": "profile-secret-scan-m13.test.ts",
+          "filePath": "test/profile-secret-scan-m13.test.ts"
+        },
+        {
+          "uid": "File:test/profile-secret-scan-php-ruby.test.ts",
+          "name": "profile-secret-scan-php-ruby.test.ts",
+          "filePath": "test/profile-secret-scan-php-ruby.test.ts"
+        },
+        {
+          "uid": "File:test/profile-secret-scan-quoted.test.ts",
+          "name": "profile-secret-scan-quoted.test.ts",
+          "filePath": "test/profile-secret-scan-quoted.test.ts"
+        },
+        {
+          "uid": "File:test/profile-secret-scan-sequence.test.ts",
+          "name": "profile-secret-scan-sequence.test.ts",
+          "filePath": "test/profile-secret-scan-sequence.test.ts"
+        },
+        {
+          "uid": "File:test/secret-scan-m0.test.ts",
+          "name": "secret-scan-m0.test.ts",
+          "filePath": "test/secret-scan-m0.test.ts"
+        },
+        {
+          "uid": "Function:src/entrypoints/device-cli.ts:runDeviceCli",
+          "name": "runDeviceCli",
+          "filePath": "src/entrypoints/device-cli.ts"
+        }
+      ]
+    },
+    "outgoing": {
+      "calls": [
+        {
+          "uid": "Function:src/lib/device-git-transport.ts:assertPrivateGitHub",
+          "name": "assertPrivateGitHub",
+          "filePath": "src/lib/device-git-transport.ts"
+        },
+        {
+          "uid": "Function:src/lib/device-git-transport.ts:git",
+          "name": "git",
+          "filePath": "src/lib/device-git-transport.ts"
+        },
+        {
+          "uid": "Function:src/lib/device-git-transport.ts:publishDevicePaths.scan@28:2",
+          "name": "scan",
+          "filePath": "src/lib/device-git-transport.ts"
+        }
+      ]
+    },
+    "processes": []
+  },
+  "restoreCodexExtensions": {
+    "status": "found",
+    "symbol": {
+      "uid": "Function:src/lib/codex-restore.ts:restoreCodexExtensions",
+      "name": "restoreCodexExtensions",
+      "kind": "Function",
+      "filePath": "src/lib/codex-restore.ts",
+      "startLine": 226,
+      "endLine": 433
+    },
+    "epistemic": "exact",
+    "incoming": {
+      "calls": [
+        {
+          "uid": "File:test/secret-scan-m0.test.ts",
+          "name": "secret-scan-m0.test.ts",
+          "filePath": "test/secret-scan-m0.test.ts"
+        },
+        {
+          "uid": "Function:src/lib/workspace.ts:setupWorkspace",
+          "name": "setupWorkspace",
+          "filePath": "src/lib/workspace.ts"
+        }
+      ]
+    },
+    "outgoing": {
+      "calls": [
+        {
+          "uid": "Function:src/lib/codex-restore.ts:bounded",
+          "name": "bounded",
+          "filePath": "src/lib/codex-restore.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-restore.ts:installedSkillSourceInventory",
+          "name": "installedSkillSourceInventory",
+          "filePath": "src/lib/codex-restore.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-restore.ts:key",
+          "name": "key",
+          "filePath": "src/lib/codex-restore.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-restore.ts:permanentSkillFailure",
+          "name": "permanentSkillFailure",
+          "filePath": "src/lib/codex-restore.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-restore.ts:restoreCodexExtensions.emitProgress@246:2",
+          "name": "emitProgress",
+          "filePath": "src/lib/codex-restore.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-restore.ts:restoreCodexExtensions.emitProgress@246:2",
+          "name": "emitProgress",
+          "filePath": "src/lib/codex-restore.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-restore.ts:restoreCodexExtensions.emitProgress@246:2",
+          "name": "emitProgress",
+          "filePath": "src/lib/codex-restore.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-restore.ts:restoreCodexExtensions.emitProgress@246:2",
+          "name": "emitProgress",
+          "filePath": "src/lib/codex-restore.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-restore.ts:restoreCodexExtensions.emitProgress@246:2",
+          "name": "emitProgress",
+          "filePath": "src/lib/codex-restore.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-restore.ts:retryableSkillFailure",
+          "name": "retryableSkillFailure",
+          "filePath": "src/lib/codex-restore.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-restore.ts:safeError",
+          "name": "safeError",
+          "filePath": "src/lib/codex-restore.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-restore.ts:safePath",
+          "name": "safePath",
+          "filePath": "src/lib/codex-restore.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-restore.ts:safeSkillDiagnostic",
+          "name": "safeSkillDiagnostic",
+          "filePath": "src/lib/codex-restore.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-restore.ts:skillFailureStage",
+          "name": "skillFailureStage",
+          "filePath": "src/lib/codex-restore.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-restore.ts:skillLastMeaningfulLine",
+          "name": "skillLastMeaningfulLine",
+          "filePath": "src/lib/codex-restore.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-restore.ts:writeSkillRecoveryReport",
+          "name": "writeSkillRecoveryReport",
+          "filePath": "src/lib/codex-restore.ts"
+        },
+        {
+          "uid": "Function:src/lib/recovery-manifest.ts:classifyExtensions",
+          "name": "classifyExtensions",
+          "filePath": "src/lib/recovery-manifest.ts"
+        },
+        {
+          "uid": "Function:src/lib/recovery-manifest.ts:normalizeExtensionSource",
+          "name": "normalizeExtensionSource",
+          "filePath": "src/lib/recovery-manifest.ts"
+        },
+        {
+          "uid": "Function:src/lib/secret-scan.ts:scanForSecrets",
+          "name": "scanForSecrets",
+          "filePath": "src/lib/secret-scan.ts"
+        },
+        {
+          "uid": "Function:src/lib/tombstones.ts:mergePermanentTombstones",
+          "name": "mergePermanentTombstones",
+          "filePath": "src/lib/tombstones.ts"
+        }
+      ],
+      "accesses": [
+        {
+          "uid": "Function:src/lib/codex-restore.ts:defaultExecute",
+          "name": "defaultExecute",
+          "filePath": "src/lib/codex-restore.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-restore.ts:defaultSleep",
+          "name": "defaultSleep",
+          "filePath": "src/lib/codex-restore.ts"
+        },
+        {
+          "uid": "Property:src/lib/codex-restore.ts:CodexRestoreResult.errors",
+          "name": "errors",
+          "filePath": "src/lib/codex-restore.ts"
+        }
+      ],
+      "uses": [
+        {
+          "uid": "Interface:src/lib/codex-restore.ts:CodexRestoreResult",
+          "name": "CodexRestoreResult",
+          "filePath": "src/lib/codex-restore.ts"
+        },
+        {
+          "uid": "Interface:src/lib/codex-restore.ts:CodexRestoreResult",
+          "name": "CodexRestoreResult",
+          "filePath": "src/lib/codex-restore.ts"
+        },
+        {
+          "uid": "Interface:src/lib/codex-restore.ts:CommandResult",
+          "name": "CommandResult",
+          "filePath": "src/lib/codex-restore.ts"
+        },
+        {
+          "uid": "Interface:src/lib/codex-restore.ts:SkillProgressEvent",
+          "name": "SkillProgressEvent",
+          "filePath": "src/lib/codex-restore.ts"
+        },
+        {
+          "uid": "Interface:src/lib/codex-restore.ts:SkillRecoveryOptions",
+          "name": "SkillRecoveryOptions",
+          "filePath": "src/lib/codex-restore.ts"
+        },
+        {
+          "uid": "Interface:src/lib/codex-restore.ts:SkillRecoveryOptions",
+          "name": "SkillRecoveryOptions",
+          "filePath": "src/lib/codex-restore.ts"
+        },
+        {
+          "uid": "Interface:src/lib/codex-restore.ts:SkillSourceSummary",
+          "name": "SkillSourceSummary",
+          "filePath": "src/lib/codex-restore.ts"
+        }
+      ]
+    },
+    "processes": [
+      {
+        "id": "proc_12_setupworkspace",
+        "name": "SetupWorkspace → Key",
+        "step_index": 4,
+        "step_count": 6
+      },
+      {
+        "id": "proc_13_setupworkspace",
+        "name": "SetupWorkspace → NormalizeExtensionSource",
+        "step_index": 4,
+        "step_count": 6
+      },
+      {
+        "id": "proc_14_setupworkspace",
+        "name": "SetupWorkspace → NormalizeExtensionVersion",
+        "step_index": 4,
+        "step_count": 6
+      },
+      {
+        "id": "proc_23_setupworkspace",
+        "name": "SetupWorkspace → Bounded",
+        "step_index": 4,
+        "step_count": 5
+      },
+      {
+        "id": "proc_24_setupworkspace",
+        "name": "SetupWorkspace → Key",
+        "step_index": 4,
+        "step_count": 5
+      },
+      {
+        "id": "proc_25_setupworkspace",
+        "name": "SetupWorkspace → MergePermanentTombstones",
+        "step_index": 4,
+        "step_count": 5
+      }
+    ]
+  },
+  "runDeviceCli": {
+    "status": "found",
+    "symbol": {
+      "uid": "Function:src/entrypoints/device-cli.ts:runDeviceCli",
+      "name": "runDeviceCli",
+      "kind": "Function",
+      "filePath": "src/entrypoints/device-cli.ts",
+      "startLine": 11,
+      "endLine": 55
+    },
+    "epistemic": "exact",
+    "incoming": {
+      "calls": [
+        {
+          "uid": "Function:src/cli.ts:main",
+          "name": "main",
+          "filePath": "src/cli.ts"
+        }
+      ]
+    },
+    "outgoing": {
+      "calls": [
+        {
+          "uid": "Function:src/entrypoints/device-cli.ts:runDeviceCli.one@23:4",
+          "name": "one",
+          "filePath": "src/entrypoints/device-cli.ts"
+        },
+        {
+          "uid": "Function:src/entrypoints/device-cli.ts:runDeviceCli.one@23:4",
+          "name": "one",
+          "filePath": "src/entrypoints/device-cli.ts"
+        },
+        {
+          "uid": "Function:src/entrypoints/device-cli.ts:runDeviceCli.one@23:4",
+          "name": "one",
+          "filePath": "src/entrypoints/device-cli.ts"
+        },
+        {
+          "uid": "Function:src/entrypoints/device-cli.ts:runDeviceCli.one@23:4",
+          "name": "one",
+          "filePath": "src/entrypoints/device-cli.ts"
+        },
+        {
+          "uid": "Function:src/entrypoints/device-cli.ts:runDeviceCli.one@23:4",
+          "name": "one",
+          "filePath": "src/entrypoints/device-cli.ts"
+        },
+        {
+          "uid": "Function:src/entrypoints/device-cli.ts:runDeviceCli.one@23:4",
+          "name": "one",
+          "filePath": "src/entrypoints/device-cli.ts"
+        },
+        {
+          "uid": "Function:src/entrypoints/device-cli.ts:runDeviceCli.one@23:4",
+          "name": "one",
+          "filePath": "src/entrypoints/device-cli.ts"
+        },
+        {
+          "uid": "Function:src/entrypoints/device-cli.ts:runDeviceCli.one@23:4",
+          "name": "one",
+          "filePath": "src/entrypoints/device-cli.ts"
+        },
+        {
+          "uid": "Function:src/entrypoints/device-cli.ts:runDeviceCli.one@23:4",
+          "name": "one",
+          "filePath": "src/entrypoints/device-cli.ts"
+        },
+        {
+          "uid": "Function:src/entrypoints/device-cli.ts:runDeviceCli.one@23:4",
+          "name": "one",
+          "filePath": "src/entrypoints/device-cli.ts"
+        },
+        {
+          "uid": "Function:src/entrypoints/device-registry-cli.ts:runDeviceRegistryCli",
+          "name": "runDeviceRegistryCli",
+          "filePath": "src/entrypoints/device-registry-cli.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:createCodexProfile",
+          "name": "createCodexProfile",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:planCodexProfileRestore",
+          "name": "planCodexProfileRestore",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/codex-profile.ts:restoreCodexProfile",
+          "name": "restoreCodexProfile",
+          "filePath": "src/lib/codex-profile.ts"
+        },
+        {
+          "uid": "Function:src/lib/device-git-transport.ts:fetchDeviceRegistry",
+          "name": "fetchDeviceRegistry",
+          "filePath": "src/lib/device-git-transport.ts"
+        },
+        {
+          "uid": "Function:src/lib/device-git-transport.ts:publishDevicePaths",
+          "name": "publishDevicePaths",
+          "filePath": "src/lib/device-git-transport.ts"
+        },
+        {
+          "uid": "Function:src/lib/device-registry.ts:loadDeviceProfiles",
+          "name": "loadDeviceProfiles",
+          "filePath": "src/lib/device-registry.ts"
+        },
+        {
+          "uid": "Function:src/lib/device-registry.ts:readDeviceConnection",
+          "name": "readDeviceConnection",
+          "filePath": "src/lib/device-registry.ts"
+        },
+        {
+          "uid": "Function:src/lib/device-registry.ts:resolveDevice",
+          "name": "resolveDevice",
+          "filePath": "src/lib/device-registry.ts"
+        },
+        {
+          "uid": "Function:src/lib/device-workspace-audit.ts:auditDeviceWorkspace",
+          "name": "auditDeviceWorkspace",
+          "filePath": "src/lib/device-workspace-audit.ts"
+        }
+      ],
+      "accesses": [
+        {
+          "uid": "Property:src/lib/device-registry.ts:DeviceConnection.deviceId",
+          "name": "deviceId",
+          "filePath": "src/lib/device-registry.ts"
+        },
+        {
+          "uid": "Property:src/lib/device-registry.ts:DeviceConnection.registryCheckout",
+          "name": "registryCheckout",
+          "filePath": "src/lib/device-registry.ts"
+        },
+        {
+          "uid": "Property:src/lib/device-registry.ts:DeviceConnection.registryCheckout",
+          "name": "registryCheckout",
+          "filePath": "src/lib/device-registry.ts"
+        },
+        {
+          "uid": "Property:src/lib/device-registry.ts:DeviceConnection.registryCheckout",
+          "name": "registryCheckout",
+          "filePath": "src/lib/device-registry.ts"
+        },
+        {
+          "uid": "Property:src/lib/device-registry.ts:DeviceConnection.registryCheckout",
+          "name": "registryCheckout",
+          "filePath": "src/lib/device-registry.ts"
+        },
+        {
+          "uid": "Property:src/lib/device-registry.ts:DeviceConnection.registryRemote",
+          "name": "registryRemote",
+          "filePath": "src/lib/device-registry.ts"
+        },
+        {
+          "uid": "Property:src/lib/device-registry.ts:DeviceConnection.registryRemote",
+          "name": "registryRemote",
+          "filePath": "src/lib/device-registry.ts"
+        },
+        {
+          "uid": "Property:src/lib/device-registry.ts:DeviceProfile.deviceId",
+          "name": "deviceId",
+          "filePath": "src/lib/device-registry.ts"
+        },
+        {
+          "uid": "Property:src/lib/device-registry.ts:DeviceProfile.deviceId",
+          "name": "deviceId",
+          "filePath": "src/lib/device-registry.ts"
+        },
+        {
+          "uid": "Property:src/lib/device-registry.ts:DeviceProfile.paths",
+          "name": "paths",
+          "filePath": "src/lib/device-registry.ts"
+        }
+      ]
+    },
+    "processes": [
+      {
+        "id": "proc_16_rundevicecli",
+        "name": "RunDeviceCli → IsRecord",
+        "step_index": 1,
+        "step_count": 6
+      },
+      {
+        "id": "proc_27_rundevicecli",
+        "name": "RunDeviceCli → One",
+        "step_index": 1,
+        "step_count": 5
+      },
+      {
+        "id": "proc_2_rundevicecli",
+        "name": "RunDeviceCli → Error",
+        "step_index": 1,
+        "step_count": 8
+      },
+      {
+        "id": "proc_5_rundevicecli",
+        "name": "RunDeviceCli → IsAbsolutePath",
+        "step_index": 1,
+        "step_count": 7
+      },
+      {
+        "id": "proc_99_rundevicecli",
+        "name": "RunDeviceCli → ParseArgs",
+        "step_index": 1,
+        "step_count": 3
+      }
+    ]
+  }
+}

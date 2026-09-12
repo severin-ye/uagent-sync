@@ -1,0 +1,8 @@
+{
+  "scope": "documentation-only",
+  "filesChecked": 34,
+  "productionChanges": [],
+  "historicalEvidenceChanges": [],
+  "checks": "JSON, local-path and supplemental credential pattern, changed paths, git diff --check",
+  "runtimeTestsExecuted": false
+}

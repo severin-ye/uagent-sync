@@ -1,0 +1,15 @@
+{
+  "cmd": "node",
+  "args": [
+    "<LOCAL>/AppData/Local/pnpm/store/v11/links/@/gitnexus/1.6.11/b5f5e5dfb93e9c782cd6bd8d226b0a45a779732252e19e5b493352f6b71ca9e6/node_modules/gitnexus/dist/cli/index.js",
+    "analyze",
+    "--index-only",
+    "--name",
+    "hp-is",
+    "--workers",
+    "2"
+  ],
+  "cwd": "<LOCAL>/hpis",
+  "status": 0,
+  "signal": null
+}

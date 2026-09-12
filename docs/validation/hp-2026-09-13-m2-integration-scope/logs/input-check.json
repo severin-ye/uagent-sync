@@ -1,0 +1,9 @@
+{
+  "cmd": "node",
+  "args": [
+    "<LOCAL>/m2ise/audit.mjs"
+  ],
+  "cwd": "<LOCAL>/hpis",
+  "status": 1,
+  "signal": null
+}

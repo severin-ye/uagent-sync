@@ -1,0 +1,9 @@
+{
+  "cmd": "node",
+  "args": [
+    "<LOCAL>/m2ise/graph.mjs"
+  ],
+  "cwd": "<LOCAL>/hpis",
+  "status": 0,
+  "signal": null
+}
