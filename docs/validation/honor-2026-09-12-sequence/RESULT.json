@@ -1,0 +1,53 @@
+{
+  "task": "RY-12",
+  "status": "passed-limited-sequence-review-with-residual-blockers",
+  "source": "70428520228adcac3ac66a2cfb857667b7b69aed",
+  "base": "af3f79c2c66a3d3c17fea20de0b12cc5577faf0f",
+  "input": "d4a77e64c067c36c275cd4fec98b8dccd3223089",
+  "counts": {
+    "focused": {
+      "tests": 286,
+      "pass": 286,
+      "fail": 0,
+      "skipped": 0
+    },
+    "full": {
+      "tests": 704,
+      "pass": 704,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "initialFull": {
+    "tests": 704,
+    "pass": 681,
+    "fail": 23,
+    "cause": "empty UAGENT variable overrides fixture"
+  },
+  "scan": {
+    "files": 13,
+    "present": 13,
+    "missingOrUnreadable": 0,
+    "utf8Valid": 13,
+    "baselineMatches": 13,
+    "drifted": 0,
+    "passed": 8,
+    "blocked": 5,
+    "findings": 7,
+    "beforeAfterMatches": 13
+  },
+  "remainingIds": [
+    "HP-006",
+    "HP-009",
+    "HP-010",
+    "HP-013",
+    "HP-018",
+    "HP-022",
+    "HP-023"
+  ],
+  "matchesHP": true,
+  "realSnapshotCreated": false,
+  "hp03Complete": false,
+  "hp04Complete": false,
+  "migrationComplete": false
+}

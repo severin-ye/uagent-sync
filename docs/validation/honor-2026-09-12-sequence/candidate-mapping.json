@@ -1,0 +1,186 @@
+[
+  {
+    "id": "HP-001",
+    "path": "agents/skills/claude-api/php/managed-agents/README.md",
+    "rule": "sensitive-assignment",
+    "line": 22,
+    "baselineMatches": true,
+    "stillReported": false
+  },
+  {
+    "id": "HP-002",
+    "path": "agents/skills/claude-api/python/claude-api/README.md",
+    "rule": "sensitive-assignment",
+    "line": 20,
+    "baselineMatches": true,
+    "stillReported": false
+  },
+  {
+    "id": "HP-003",
+    "path": "agents/skills/claude-api/python/managed-agents/README.md",
+    "rule": "sensitive-assignment",
+    "line": 24,
+    "baselineMatches": true,
+    "stillReported": false
+  },
+  {
+    "id": "HP-004",
+    "path": "agents/skills/claude-api/ruby/claude-api/README.md",
+    "rule": "sensitive-assignment",
+    "line": 20,
+    "baselineMatches": true,
+    "stillReported": false
+  },
+  {
+    "id": "HP-005",
+    "path": "agents/skills/claude-api/ruby/managed-agents/README.md",
+    "rule": "sensitive-assignment",
+    "line": 22,
+    "baselineMatches": true,
+    "stillReported": false
+  },
+  {
+    "id": "HP-006",
+    "path": "agents/skills/claude-api/shared/managed-agents-tools.md",
+    "rule": "known-token-prefix",
+    "line": 263,
+    "baselineMatches": true,
+    "stillReported": true
+  },
+  {
+    "id": "HP-007",
+    "path": "agents/skills/claude-api/typescript/claude-api/README.md",
+    "rule": "sensitive-assignment",
+    "line": 26,
+    "baselineMatches": true,
+    "stillReported": false
+  },
+  {
+    "id": "HP-008",
+    "path": "agents/skills/claude-api/typescript/managed-agents/README.md",
+    "rule": "sensitive-assignment",
+    "line": 24,
+    "baselineMatches": true,
+    "stillReported": false
+  },
+  {
+    "id": "HP-009",
+    "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+    "rule": "sensitive-assignment",
+    "line": 100,
+    "baselineMatches": true,
+    "stillReported": true
+  },
+  {
+    "id": "HP-010",
+    "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+    "rule": "sensitive-assignment",
+    "line": 125,
+    "baselineMatches": true,
+    "stillReported": true
+  },
+  {
+    "id": "HP-011",
+    "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+    "rule": "sensitive-assignment",
+    "line": 219,
+    "baselineMatches": true,
+    "stillReported": false
+  },
+  {
+    "id": "HP-012",
+    "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+    "rule": "sensitive-assignment",
+    "line": 278,
+    "baselineMatches": true,
+    "stillReported": false
+  },
+  {
+    "id": "HP-013",
+    "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+    "rule": "sensitive-assignment",
+    "line": 344,
+    "baselineMatches": true,
+    "stillReported": true
+  },
+  {
+    "id": "HP-014",
+    "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+    "rule": "sensitive-assignment",
+    "line": 478,
+    "baselineMatches": true,
+    "stillReported": false
+  },
+  {
+    "id": "HP-015",
+    "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+    "rule": "sensitive-assignment",
+    "line": 492,
+    "baselineMatches": true,
+    "stillReported": false
+  },
+  {
+    "id": "HP-016",
+    "path": "agents/skills/ncbi-sequence-fetch/scripts/ncbi_fetch.py",
+    "rule": "sensitive-assignment",
+    "line": 124,
+    "baselineMatches": true,
+    "stillReported": false
+  },
+  {
+    "id": "HP-017",
+    "path": "agents/skills/ncbi-sequence-fetch/scripts/ncbi_fetch.py",
+    "rule": "sensitive-assignment",
+    "line": 143,
+    "baselineMatches": true,
+    "stillReported": false
+  },
+  {
+    "id": "HP-018",
+    "path": "agents/skills/openfda-database/scripts/openfda_query.py",
+    "rule": "sensitive-assignment",
+    "line": 158,
+    "baselineMatches": true,
+    "stillReported": true
+  },
+  {
+    "id": "HP-019",
+    "path": "agents/skills/openfda-database/scripts/openfda_query.py",
+    "rule": "sensitive-assignment",
+    "line": 240,
+    "baselineMatches": true,
+    "stillReported": false
+  },
+  {
+    "id": "HP-020",
+    "path": "agents/skills/openfda-database/scripts/openfda_query.py",
+    "rule": "sensitive-assignment",
+    "line": 278,
+    "baselineMatches": true,
+    "stillReported": false
+  },
+  {
+    "id": "HP-021",
+    "path": "agents/skills/openfda-database/scripts/openfda_query.py",
+    "rule": "sensitive-assignment",
+    "line": 339,
+    "baselineMatches": true,
+    "stillReported": false
+  },
+  {
+    "id": "HP-022",
+    "path": "agents/skills/pdf/SKILL.md",
+    "rule": "sensitive-assignment",
+    "line": 216,
+    "baselineMatches": true,
+    "stillReported": true
+  },
+  {
+    "id": "HP-023",
+    "path": "agents/skills/pdf/reference.md",
+    "rule": "sensitive-assignment",
+    "line": 340,
+    "baselineMatches": true,
+    "stillReported": true
+  }
+]

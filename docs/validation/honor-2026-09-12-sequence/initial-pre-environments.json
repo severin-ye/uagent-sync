@@ -1,0 +1,139 @@
+{
+  "build-pre-env.json": {
+    "label": "build",
+    "cwd": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\c",
+    "command": "C:\\Program Files\\nodejs\\node.exe",
+    "arguments": [
+      "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+      "run",
+      "build"
+    ],
+    "selectedIsolationEnv": {
+      "USERPROFILE": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\u",
+      "HOME": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\u",
+      "APPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\a",
+      "LOCALAPPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\l",
+      "CODEX_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\cx",
+      "XDG_CONFIG_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\x",
+      "TMP": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\t",
+      "TEMP": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\t",
+      "NPM_CONFIG_CACHE": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\nc",
+      "NPM_CONFIG_USERCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\npmrc-user",
+      "NPM_CONFIG_GLOBALCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\npmrc-global"
+    },
+    "removedVariables": {
+      "UAGENT_SYNC_WORKSPACE_ROOT": "",
+      "OPENCODE_SYNC_WORKSPACE_ROOT": "",
+      "OPENCODE_WORKSPACE_ROOT": "",
+      "OPENCODE_WORKSPACE": "",
+      "OPENCODE_CONFIG": "",
+      "OPENCODE_CONFIG_HOME": "",
+      "OPENCODE_HOME": ""
+    }
+  },
+  "focused-pre-env.json": {
+    "label": "focused",
+    "cwd": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\c",
+    "command": "C:\\Program Files\\nodejs\\node.exe",
+    "arguments": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-secret-scan-php-ruby.test.ts",
+      "test/profile-secret-scan-quoted.test.ts",
+      "test/profile-secret-scan-five.test.ts",
+      "test/profile-secret-scan-boundary.test.ts",
+      "test/profile-secret-scan-m13.test.ts",
+      "test/profile-secret-scan.test.ts",
+      "test/secret-scan-m0.test.ts",
+      "test/profile-secret-scan-sequence.test.ts"
+    ],
+    "selectedIsolationEnv": {
+      "USERPROFILE": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\u",
+      "HOME": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\u",
+      "APPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\a",
+      "LOCALAPPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\l",
+      "CODEX_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\cx",
+      "XDG_CONFIG_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\x",
+      "TMP": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\t",
+      "TEMP": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\t",
+      "NPM_CONFIG_CACHE": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\nc",
+      "NPM_CONFIG_USERCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\npmrc-user",
+      "NPM_CONFIG_GLOBALCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\npmrc-global"
+    },
+    "removedVariables": {
+      "UAGENT_SYNC_WORKSPACE_ROOT": "",
+      "OPENCODE_SYNC_WORKSPACE_ROOT": "",
+      "OPENCODE_WORKSPACE_ROOT": "",
+      "OPENCODE_WORKSPACE": "",
+      "OPENCODE_CONFIG": "",
+      "OPENCODE_CONFIG_HOME": "",
+      "OPENCODE_HOME": ""
+    }
+  },
+  "full-pre-env.json": {
+    "label": "full",
+    "cwd": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\c",
+    "command": "C:\\Program Files\\nodejs\\node.exe",
+    "arguments": [
+      "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+      "test"
+    ],
+    "selectedIsolationEnv": {
+      "USERPROFILE": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\u",
+      "HOME": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\u",
+      "APPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\a",
+      "LOCALAPPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\l",
+      "CODEX_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\cx",
+      "XDG_CONFIG_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\x",
+      "TMP": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\t",
+      "TEMP": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\t",
+      "NPM_CONFIG_CACHE": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\nc",
+      "NPM_CONFIG_USERCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\npmrc-user",
+      "NPM_CONFIG_GLOBALCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\npmrc-global"
+    },
+    "removedVariables": {
+      "UAGENT_SYNC_WORKSPACE_ROOT": "",
+      "OPENCODE_SYNC_WORKSPACE_ROOT": "",
+      "OPENCODE_WORKSPACE_ROOT": "",
+      "OPENCODE_WORKSPACE": "",
+      "OPENCODE_CONFIG": "",
+      "OPENCODE_CONFIG_HOME": "",
+      "OPENCODE_HOME": ""
+    }
+  },
+  "install-pre-env.json": {
+    "label": "install",
+    "cwd": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\c",
+    "command": "C:\\Program Files\\nodejs\\node.exe",
+    "arguments": [
+      "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+      "ci",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "selectedIsolationEnv": {
+      "USERPROFILE": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\u",
+      "HOME": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\u",
+      "APPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\a",
+      "LOCALAPPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\l",
+      "CODEX_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\cx",
+      "XDG_CONFIG_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\x",
+      "TMP": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\t",
+      "TEMP": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\t",
+      "NPM_CONFIG_CACHE": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\nc",
+      "NPM_CONFIG_USERCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\npmrc-user",
+      "NPM_CONFIG_GLOBALCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\e\\npmrc-global"
+    },
+    "removedVariables": {
+      "UAGENT_SYNC_WORKSPACE_ROOT": "",
+      "OPENCODE_SYNC_WORKSPACE_ROOT": "",
+      "OPENCODE_WORKSPACE_ROOT": "",
+      "OPENCODE_WORKSPACE": "",
+      "OPENCODE_CONFIG": "",
+      "OPENCODE_CONFIG_HOME": "",
+      "OPENCODE_HOME": ""
+    }
+  }
+}

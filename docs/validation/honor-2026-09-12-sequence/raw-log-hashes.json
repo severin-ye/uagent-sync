@@ -1,0 +1,50 @@
+[
+  {
+    "file": "build.log",
+    "sha256": "64c6d7b272796b56fe8cee8f55ec0795f28db8c3701fc8163f40fe2a7de87890"
+  },
+  {
+    "file": "child-env-check.log",
+    "sha256": "3aeecb65e1e63b6a7d9d3cc1578f5b80a3bf2bc24a59fec037bdc06b024c630c"
+  },
+  {
+    "file": "focused.log",
+    "sha256": "cc4adb4cdae8740a19adb72da87f51c59e08f88181d306029f668dd35b09c4ef"
+  },
+  {
+    "file": "full.log",
+    "sha256": "ca0b53becb0c5fc76293c99da7254532f9405a7116a184b36a0dff6d2ff2f2dd"
+  },
+  {
+    "file": "head.log",
+    "sha256": "8e57a4636a0e35f4e4884842ff2b0302ff8e69248500665afcb6e23c8075a88c"
+  },
+  {
+    "file": "scan.log",
+    "sha256": "243ab071bbc6daec080781ff0f9f52cf9be74bdf496a7590a4136418057ae4d9"
+  },
+  {
+    "file": "source-diff.log",
+    "sha256": "9c79d7e17392202ac3ce0c5d3449e8e5c60e323ff2c22822677295fd9e2dc6d3"
+  },
+  {
+    "file": "status.log",
+    "sha256": "3aeb12d181e674a88aaa899a36e5e82ff3780bd09ea821ef8015cd3fc72bab03"
+  },
+  {
+    "file": "initial-build.log",
+    "sha256": "ac0f02160e4f4e848179339f5bc74262de46982ca26e9938bd36427bdad79683"
+  },
+  {
+    "file": "initial-focused.log",
+    "sha256": "f85decbda0f3cf3fad02935782c005d80bb57867b1e210fef95a90c3054b0f2b"
+  },
+  {
+    "file": "initial-full.log",
+    "sha256": "714e8544061429c657c26f680b28a8c21b5ea53212976085f456179f7f38b482"
+  },
+  {
+    "file": "initial-install.log",
+    "sha256": "27a26f942f3d186bee6361054130e307a4ec090f3aef630beabe8c6033521667"
+  }
+]

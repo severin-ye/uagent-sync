@@ -1,0 +1,170 @@
+{
+  "hpHashes": [
+    {
+      "file": ".gitattributes",
+      "matches": true
+    },
+    {
+      "file": "README.md",
+      "matches": true
+    },
+    {
+      "file": "RESULT.json",
+      "matches": true
+    },
+    {
+      "file": "build-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "build.log",
+      "matches": true
+    },
+    {
+      "file": "commands.json",
+      "matches": true
+    },
+    {
+      "file": "detect-all.json",
+      "matches": true
+    },
+    {
+      "file": "detect-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "detect.log",
+      "matches": true
+    },
+    {
+      "file": "executed-wrapper.txt",
+      "matches": true
+    },
+    {
+      "file": "focused-new-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "focused-new.log",
+      "matches": true
+    },
+    {
+      "file": "focused-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "focused.log",
+      "matches": true
+    },
+    {
+      "file": "full-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "full.log",
+      "matches": true
+    },
+    {
+      "file": "impact-lex-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "impact-lex.log",
+      "matches": true
+    },
+    {
+      "file": "impact-recognize-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "impact-recognize.log",
+      "matches": true
+    },
+    {
+      "file": "index-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "index.log",
+      "matches": true
+    },
+    {
+      "file": "install-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "install.log",
+      "matches": true
+    },
+    {
+      "file": "namespace-check-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "namespace-check.json",
+      "matches": true
+    },
+    {
+      "file": "namespace-check.log",
+      "matches": true
+    },
+    {
+      "file": "raw-log-hashes.json",
+      "matches": true
+    },
+    {
+      "file": "red-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "red.log",
+      "matches": true
+    },
+    {
+      "file": "scan-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "scan-result.json",
+      "matches": true
+    },
+    {
+      "file": "scan-script.txt",
+      "matches": true
+    },
+    {
+      "file": "scan.log",
+      "matches": true
+    }
+  ],
+  "counts": {
+    "red.log": {
+      "tests": 70,
+      "pass": 54,
+      "fail": 16,
+      "skipped": 0
+    },
+    "focused.log": {
+      "tests": 286,
+      "pass": 286,
+      "fail": 0,
+      "skipped": 0
+    },
+    "full.log": {
+      "tests": 704,
+      "pass": 704,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "handoffAncestor": 0,
+  "sourceEqualHandoff": 0,
+  "honorNamespace": {
+    "baselineMatches": true,
+    "line": 16,
+    "separatorCodePoints": [
+      92
+    ],
+    "noDecoding": true
+  }
+}

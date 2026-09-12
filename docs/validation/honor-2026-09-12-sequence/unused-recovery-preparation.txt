@@ -1,0 +1,92 @@
+$ErrorActionPreference = 'Stop'
+
+$root = '<USER_HOME>\AppData\Local\Temp\sq-cb159636'
+$repo = Join-Path $root 'c'
+$evidence = Join-Path $root 'evidence'
+$envRoot = Join-Path $root 'e'
+$node = 'C:\Program Files\nodejs\node.exe'
+$npmCli = 'C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js'
+$selected = [ordered]@{
+  USERPROFILE = Join-Path $envRoot 'u'
+  HOME = Join-Path $envRoot 'u'
+  APPDATA = Join-Path $envRoot 'a'
+  LOCALAPPDATA = Join-Path $envRoot 'l'
+  CODEX_HOME = Join-Path $envRoot 'cx'
+  XDG_CONFIG_HOME = Join-Path $envRoot 'x'
+  TMP = Join-Path $envRoot 't'
+  TEMP = Join-Path $envRoot 't'
+  NPM_CONFIG_CACHE = Join-Path $envRoot 'nc'
+  NPM_CONFIG_USERCONFIG = Join-Path $envRoot 'npmrc-user'
+  NPM_CONFIG_GLOBALCONFIG = Join-Path $envRoot 'npmrc-global'
+}
+foreach ($entry in $selected.GetEnumerator()) {
+  [Environment]::SetEnvironmentVariable($entry.Key, $entry.Value, 'Process')
+}
+$removedNames = @(
+  'UAGENT_SYNC_WORKSPACE_ROOT',
+  'OPENCODE_SYNC_WORKSPACE_ROOT',
+  'OPENCODE_WORKSPACE_ROOT',
+  'OPENCODE_WORKSPACE',
+  'OPENCODE_CONFIG',
+  'OPENCODE_CONFIG_DIR',
+  'OPENCODE_CONFIG_HOME',
+  'OPENCODE_HOME'
+)
+$beforeUnset = [ordered]@{}
+foreach ($name in $removedNames) {
+  $beforeUnset[$name] = [Environment]::GetEnvironmentVariable($name, 'Process')
+  [Environment]::SetEnvironmentVariable($name, $null, 'Process')
+}
+$afterUnset = [ordered]@{}
+foreach ($name in $removedNames) {
+  $afterUnset[$name] = [Environment]::GetEnvironmentVariable($name, 'Process')
+}
+$processEnv = [Environment]::GetEnvironmentVariables('Process')
+$containsAfterUnset = [ordered]@{}
+foreach ($name in $removedNames) {
+  $containsAfterUnset[$name] = $processEnv.Contains($name)
+}
+[ordered]@{
+  purpose = 'Supplement original wrapper evidence for OPENCODE_CONFIG_DIR and all removed workspace/config/home variables'
+  originalWrapper = (Join-Path $root 'run-validation.ps1')
+  beforeUnset = $beforeUnset
+  afterUnset = $afterUnset
+  processEnvironmentContainsKeyAfterUnset = $containsAfterUnset
+} | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $evidence 'opencode-config-dir-supplement.json') -Encoding utf8
+
+[ordered]@{
+  label = 'child-env-check'
+  cwd = $repo
+  command = $node
+  arguments = @('-e', '<boolean-only child env key check>')
+  selectedIsolationEnv = $selected
+  removedVariables = $afterUnset
+} | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $evidence 'child-env-check-pre-env.json') -Encoding utf8
+$childCheckScript = @"
+const names = ['UAGENT_SYNC_WORKSPACE_ROOT','OPENCODE_SYNC_WORKSPACE_ROOT','OPENCODE_WORKSPACE_ROOT','OPENCODE_WORKSPACE','OPENCODE_CONFIG','OPENCODE_CONFIG_DIR','OPENCODE_CONFIG_HOME','OPENCODE_HOME'];
+console.log(JSON.stringify(Object.fromEntries(names.map((name) => [name, Object.prototype.hasOwnProperty.call(process.env, name)]))));
+"@
+& $node -e $childCheckScript | Set-Content -LiteralPath (Join-Path $evidence 'child-env-check.json') -Encoding utf8
+if ($LASTEXITCODE -ne 0) { throw 'CHILD_ENV_CHECK_FAILED' }
+
+[ordered]@{
+  label = 'full-recovery'
+  cwd = $repo
+  command = $node
+  arguments = @($npmCli, 'test')
+  selectedIsolationEnv = $selected
+  removedVariables = $afterUnset
+  infrastructureRecovery = 'Added TEMP-only ancestor .gitmodules marker because full tests depend on upward workspace discovery; no workspace env override used.'
+} | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $evidence 'full-recovery-pre-env.json') -Encoding utf8
+
+$logPreference = 'Continue'
+Push-Location $repo
+try {
+  & $node $npmCli test *> (Join-Path $evidence 'full-recovery.log')
+  $exitCode = $LASTEXITCODE
+} finally {
+  Pop-Location
+}
+[ordered]@{ label = 'full-recovery'; exitCode = $exitCode; log = (Join-Path $evidence 'full-recovery.log'); preEnv = (Join-Path $evidence 'full-recovery-pre-env.json') } | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath (Join-Path $evidence 'full-recovery-result.json') -Encoding utf8
+Write-Output "FULL_RECOVERY_EXIT=$exitCode"
+exit $exitCode

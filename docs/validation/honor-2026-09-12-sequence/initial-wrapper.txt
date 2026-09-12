@@ -1,0 +1,103 @@
+$ErrorActionPreference = 'Stop'
+
+$root = '<USER_HOME>\AppData\Local\Temp\sq-cb159636'
+$repo = Join-Path $root 'c'
+$evidence = Join-Path $root 'evidence'
+$envRoot = Join-Path $root 'e'
+$node = 'C:\Program Files\nodejs\node.exe'
+$npmCli = 'C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js'
+
+$selected = [ordered]@{
+  USERPROFILE = Join-Path $envRoot 'u'
+  HOME = Join-Path $envRoot 'u'
+  APPDATA = Join-Path $envRoot 'a'
+  LOCALAPPDATA = Join-Path $envRoot 'l'
+  CODEX_HOME = Join-Path $envRoot 'cx'
+  XDG_CONFIG_HOME = Join-Path $envRoot 'x'
+  TMP = Join-Path $envRoot 't'
+  TEMP = Join-Path $envRoot 't'
+  NPM_CONFIG_CACHE = Join-Path $envRoot 'nc'
+  NPM_CONFIG_USERCONFIG = Join-Path $envRoot 'npmrc-user'
+  NPM_CONFIG_GLOBALCONFIG = Join-Path $envRoot 'npmrc-global'
+}
+
+New-Item -ItemType Directory -Force -Path $evidence | Out-Null
+foreach ($entry in $selected.GetEnumerator()) {
+  if ($entry.Key -like 'NPM_CONFIG_*CONFIG') {
+    New-Item -ItemType File -Force -Path $entry.Value | Out-Null
+  } else {
+    New-Item -ItemType Directory -Force -Path $entry.Value | Out-Null
+  }
+  [Environment]::SetEnvironmentVariable($entry.Key, $entry.Value, 'Process')
+}
+foreach ($name in @(
+  'UAGENT_SYNC_WORKSPACE_ROOT',
+  'OPENCODE_SYNC_WORKSPACE_ROOT',
+  'OPENCODE_WORKSPACE_ROOT',
+  'OPENCODE_WORKSPACE',
+  'OPENCODE_CONFIG',
+  'OPENCODE_CONFIG_HOME',
+  'OPENCODE_HOME'
+)) {
+  [Environment]::SetEnvironmentVariable($name, $null, 'Process')
+}
+
+function Save-PreEnv([string]$label, [string]$command, [string[]]$arguments) {
+  $removed = [ordered]@{}
+  foreach ($name in @(
+    'UAGENT_SYNC_WORKSPACE_ROOT',
+    'OPENCODE_SYNC_WORKSPACE_ROOT',
+    'OPENCODE_WORKSPACE_ROOT',
+    'OPENCODE_WORKSPACE',
+    'OPENCODE_CONFIG',
+    'OPENCODE_CONFIG_HOME',
+    'OPENCODE_HOME'
+  )) { $removed[$name] = [Environment]::GetEnvironmentVariable($name, 'Process') }
+  [ordered]@{
+    label = $label
+    cwd = $repo
+    command = $command
+    arguments = $arguments
+    selectedIsolationEnv = $selected
+    removedVariables = $removed
+  } | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $evidence "$label-pre-env.json") -Encoding utf8
+}
+
+function Invoke-Recorded([string]$label, [string]$command, [string[]]$arguments) {
+  Save-PreEnv $label $command $arguments
+  $log = Join-Path $evidence "$label.log"
+  Push-Location $repo
+  try {
+    & $command @arguments *> $log
+    $exitCode = $LASTEXITCODE
+  } finally {
+    Pop-Location
+  }
+  return [ordered]@{ label = $label; exitCode = $exitCode; log = $log; preEnv = (Join-Path $evidence "$label-pre-env.json") }
+}
+
+$results = @()
+$results += Invoke-Recorded 'install' $node @($npmCli, 'ci', '--ignore-scripts', '--no-audit', '--no-fund')
+if ($results[-1].exitCode -eq 0) {
+  $results += Invoke-Recorded 'build' $node @($npmCli, 'run', 'build')
+}
+if ($results[-1].exitCode -eq 0) {
+  $results += Invoke-Recorded 'focused' $node @(
+    '--import', 'tsx', '--test',
+    'test/profile-secret-scan-php-ruby.test.ts',
+    'test/profile-secret-scan-quoted.test.ts',
+    'test/profile-secret-scan-five.test.ts',
+    'test/profile-secret-scan-boundary.test.ts',
+    'test/profile-secret-scan-m13.test.ts',
+    'test/profile-secret-scan.test.ts',
+    'test/secret-scan-m0.test.ts',
+    'test/profile-secret-scan-sequence.test.ts'
+  )
+}
+if ($results[-1].exitCode -eq 0) {
+  $results += Invoke-Recorded 'full' $node @($npmCli, 'test')
+}
+
+$results | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath (Join-Path $evidence 'command-results.json') -Encoding utf8
+$results | ConvertTo-Json -Depth 4
+if ($results.Where({ $_.exitCode -ne 0 }).Count -gt 0) { exit 1 }

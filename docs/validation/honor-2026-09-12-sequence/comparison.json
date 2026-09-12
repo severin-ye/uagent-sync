@@ -1,0 +1,188 @@
+{
+  "previousFiles": 13,
+  "currentFiles": 13,
+  "allPathsAccountedFor": true,
+  "allStatusesMatch": true,
+  "allBaselineHashBooleansMatch": true,
+  "allFindingKeysMatch": true,
+  "files": [
+    {
+      "path": "agents/skills/claude-api/php/managed-agents/README.md",
+      "previousPresent": true,
+      "sameStatus": true,
+      "sameBaselineHashMatch": true,
+      "sameFindingKeys": true,
+      "currentStatus": "passed",
+      "currentFindingKeys": [],
+      "currentCandidateIds": [
+        "HP-001"
+      ]
+    },
+    {
+      "path": "agents/skills/claude-api/python/claude-api/README.md",
+      "previousPresent": true,
+      "sameStatus": true,
+      "sameBaselineHashMatch": true,
+      "sameFindingKeys": true,
+      "currentStatus": "passed",
+      "currentFindingKeys": [],
+      "currentCandidateIds": [
+        "HP-002"
+      ]
+    },
+    {
+      "path": "agents/skills/claude-api/python/managed-agents/README.md",
+      "previousPresent": true,
+      "sameStatus": true,
+      "sameBaselineHashMatch": true,
+      "sameFindingKeys": true,
+      "currentStatus": "passed",
+      "currentFindingKeys": [],
+      "currentCandidateIds": [
+        "HP-003"
+      ]
+    },
+    {
+      "path": "agents/skills/claude-api/ruby/claude-api/README.md",
+      "previousPresent": true,
+      "sameStatus": true,
+      "sameBaselineHashMatch": true,
+      "sameFindingKeys": true,
+      "currentStatus": "passed",
+      "currentFindingKeys": [],
+      "currentCandidateIds": [
+        "HP-004"
+      ]
+    },
+    {
+      "path": "agents/skills/claude-api/ruby/managed-agents/README.md",
+      "previousPresent": true,
+      "sameStatus": true,
+      "sameBaselineHashMatch": true,
+      "sameFindingKeys": true,
+      "currentStatus": "passed",
+      "currentFindingKeys": [],
+      "currentCandidateIds": [
+        "HP-005"
+      ]
+    },
+    {
+      "path": "agents/skills/claude-api/shared/managed-agents-tools.md",
+      "previousPresent": true,
+      "sameStatus": true,
+      "sameBaselineHashMatch": true,
+      "sameFindingKeys": true,
+      "currentStatus": "blocked",
+      "currentFindingKeys": [
+        "known-token-prefix@263"
+      ],
+      "currentCandidateIds": [
+        "HP-006"
+      ]
+    },
+    {
+      "path": "agents/skills/claude-api/typescript/claude-api/README.md",
+      "previousPresent": true,
+      "sameStatus": true,
+      "sameBaselineHashMatch": true,
+      "sameFindingKeys": true,
+      "currentStatus": "passed",
+      "currentFindingKeys": [],
+      "currentCandidateIds": [
+        "HP-007"
+      ]
+    },
+    {
+      "path": "agents/skills/claude-api/typescript/managed-agents/README.md",
+      "previousPresent": true,
+      "sameStatus": true,
+      "sameBaselineHashMatch": true,
+      "sameFindingKeys": true,
+      "currentStatus": "passed",
+      "currentFindingKeys": [],
+      "currentCandidateIds": [
+        "HP-008"
+      ]
+    },
+    {
+      "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+      "previousPresent": true,
+      "sameStatus": true,
+      "sameBaselineHashMatch": true,
+      "sameFindingKeys": true,
+      "currentStatus": "blocked",
+      "currentFindingKeys": [
+        "sensitive-assignment@100",
+        "sensitive-assignment@125",
+        "sensitive-assignment@344"
+      ],
+      "currentCandidateIds": [
+        "HP-009",
+        "HP-010",
+        "HP-011",
+        "HP-012",
+        "HP-013",
+        "HP-014",
+        "HP-015"
+      ]
+    },
+    {
+      "path": "agents/skills/ncbi-sequence-fetch/scripts/ncbi_fetch.py",
+      "previousPresent": true,
+      "sameStatus": true,
+      "sameBaselineHashMatch": true,
+      "sameFindingKeys": true,
+      "currentStatus": "passed",
+      "currentFindingKeys": [],
+      "currentCandidateIds": [
+        "HP-016",
+        "HP-017"
+      ]
+    },
+    {
+      "path": "agents/skills/openfda-database/scripts/openfda_query.py",
+      "previousPresent": true,
+      "sameStatus": true,
+      "sameBaselineHashMatch": true,
+      "sameFindingKeys": true,
+      "currentStatus": "blocked",
+      "currentFindingKeys": [
+        "sensitive-assignment@158"
+      ],
+      "currentCandidateIds": [
+        "HP-018",
+        "HP-019",
+        "HP-020",
+        "HP-021"
+      ]
+    },
+    {
+      "path": "agents/skills/pdf/SKILL.md",
+      "previousPresent": true,
+      "sameStatus": true,
+      "sameBaselineHashMatch": true,
+      "sameFindingKeys": true,
+      "currentStatus": "blocked",
+      "currentFindingKeys": [
+        "sensitive-assignment@216"
+      ],
+      "currentCandidateIds": [
+        "HP-022"
+      ]
+    },
+    {
+      "path": "agents/skills/pdf/reference.md",
+      "previousPresent": true,
+      "sameStatus": true,
+      "sameBaselineHashMatch": true,
+      "sameFindingKeys": true,
+      "currentStatus": "blocked",
+      "currentFindingKeys": [
+        "sensitive-assignment@340"
+      ],
+      "currentCandidateIds": [
+        "HP-023"
+      ]
+    }
+  ]
+}

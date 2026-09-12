@@ -1,0 +1,26 @@
+[
+  {
+    "label": "install",
+    "exitCode": 0,
+    "log": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\evidence\\install.log",
+    "preEnv": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\evidence\\install-pre-env.json"
+  },
+  {
+    "label": "build",
+    "exitCode": 0,
+    "log": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\evidence\\build.log",
+    "preEnv": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\evidence\\build-pre-env.json"
+  },
+  {
+    "label": "focused",
+    "exitCode": 0,
+    "log": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\evidence\\focused.log",
+    "preEnv": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\evidence\\focused-pre-env.json"
+  },
+  {
+    "label": "full",
+    "exitCode": 1,
+    "log": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\evidence\\full.log",
+    "preEnv": "<USER_HOME>\\AppData\\Local\\Temp\\sq-cb159636\\evidence\\full-pre-env.json"
+  }
+]

@@ -1,0 +1,25 @@
+from pathlib import Path
+import os,json,subprocess
+r=Path(r'<USER_HOME>\AppData\Local\Temp\sq-cb159636');c=r/'c';v=r/'honor-recovery';v.mkdir(exist_ok=True)
+marker=r/'.gitmodules'
+if marker.exists():marker.rename(r/'ancestor-marker-prepared-not-used.txt')
+def rd(p):
+ b=p.read_bytes();return b.decode('utf-16') if b.startswith(b'\xff\xfe') else b.decode('utf-8-sig')
+pre=json.loads(rd(r/'evidence/full-pre-env.json'));e=dict(os.environ);e.update(pre['selectedIsolationEnv'])
+removed=list(pre['removedVariables'])+['OPENCODE_CONFIG_DIR']
+for k in removed:e.pop(k,None)
+node=r'C:\Program Files\nodejs\node.exe';npm=r'C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js';cmd=[]
+def run(label,args):
+ rec=dict(label=label,command=args,cwd=str(c),environment={k:e.get(k) for k in list(pre['selectedIsolationEnv'])+removed})
+ (v/(label+'-pre-env.json')).write_text(json.dumps(rec,indent=2))
+ with (v/(label+'.log')).open('w',encoding='utf8') as f:p=subprocess.run(args,cwd=c,env=e,stdout=f,stderr=subprocess.STDOUT)
+ rec['exitCode']=p.returncode;cmd.append(rec);(v/'commands.json').write_text(json.dumps(cmd,indent=2));print(label,p.returncode,flush=True);return p.returncode
+check="const names="+json.dumps(removed)+"; const result=Object.fromEntries(names.map(n=>[n,Object.hasOwn(process.env,n)])); console.log(JSON.stringify(result)); if(Object.values(result).some(Boolean))process.exit(1);"
+assert run('child-env-check',[node,'-e',check])==0
+assert run('build',[node,npm,'run','build'])==0
+hp=json.loads(Path('docs/validation/hp-2026-09-12-sequence/commands.json').read_text());a=next(x['args'] for x in hp if x['label']=='focused')
+run('focused',[node]+a)
+run('full',[node,npm,'test'])
+script=Path('docs/validation/honor-2026-09-12-readonly-rescan/scan-script.txt').read_text().replace('af3f79c2c66a3d3c17fea20de0b12cc5577faf0f','70428520228adcac3ac66a2cfb857667b7b69aed');(v/'scan.mjs').write_text(script)
+run('scan',[node,str(v/'scan.mjs'),'--repo',str(c),'--skills-root',r'<USER_HOME>\.agents\skills','--old',str(Path('docs/validation/hp-2026-09-11-scan-plan/hp-findings.json').resolve()),'--previous',str(Path('docs/validation/hp-2026-09-12-sequence/scan-result.json').resolve()),'--public-dir',str(v/'public'),'--private-dir',str(v/'private')])
+run('head',['git','rev-parse','HEAD']);run('source-diff',['git','diff','HEAD','--','src','test','package.json','package-lock.json']);run('status',['git','status','--short'])
