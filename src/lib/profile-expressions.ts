@@ -115,14 +115,45 @@ function terminated(tokens: Token[], end: number, key: Token): boolean {
   return key.depth > 0 && next.text === key.close;
 }
 
+/** Only the observed, complete TS constructor statement; no generic object exemption. */
+function typescriptPlaceholders(content: string, source: string, region: Region, tokens: Token[]): Map<Token, Token> | undefined {
+  const ts = /\.ts$/i.test(source) || (/\.md$/i.test(source)
+    && /(?:^|\n) {0,3}(?:`{3,}|~{3,})(?:ts|typescript)[ \t]*\r?\n$/i.test(content.slice(0, region.start)));
+  if (!ts || region.language !== 'js') return undefined;
+  const accepted = new Map<Token, Token>();
+  const significant = tokens.filter(t => t.text !== '\n');
+  const pattern = ['const', 'client', '=', 'new', 'Anthropic', '(', '{', 'apiKey', ':', '', '}', ')', ';'];
+  for (let i = 0; i < significant.length; i++) {
+    const first = significant[i];
+    // Start of an unnested physical line: never match a fragment in another
+    // expression, a same-line regex, or a surrounding string/template token.
+    if (first.depth !== 0 || !/^[ \t]*$/.test(content.slice(Math.max(region.start, content.lastIndexOf('\n', first.start - 1) + 1), first.start))) continue;
+    if (!pattern.every((text, j) => j === 9
+      ? /^(?:"your-api-key"|'your-api-key')$/.test(significant[i + j]?.text ?? '')
+      : significant[i + j]?.text === text)) continue;
+    accepted.set(significant[i + 7], significant[i + 9]);
+  }
+  return accepted;
+}
+
 export function recognizeProfileExpressions(content: string, source: string): { normalized: string; rejectedLines: number[] } {
   // split('') retains UTF-16 code units; do not replace code points or line breaks.
   const output = content.split('');
   const rejectedLines = new Set<number>();
   for (const region of codeRegions(content, source)) {
     const tokens = lex(content, region);
+    const placeholders = typescriptPlaceholders(content, source, region, tokens);
     for (let i = 0; i < tokens.length; i++) {
       const key = tokens[i];
+      if (placeholders && key.text === 'apiKey' && tokens[i + 1]?.text === ':') {
+        const literal = placeholders.get(key);
+        if (literal) {
+          // Only the exact literal is masked; comments and neighboring fields
+          // remain visible to the original scanners with their original lines.
+          for (let p = literal.start; p < literal.end; p++) output[p] = ' ';
+        } else rejectedLines.add(content.slice(0, key.start).split('\n').length);
+        continue;
+      }
       if (!/^(?:token|secret|password|api_key|apiKey)$/i.test(key.text) || tokens[i - 1]?.text === '.' || tokens[i + 1]?.text !== '=') continue;
       const start = i + 2;
       let value = atom(tokens, start, region.language, key);
