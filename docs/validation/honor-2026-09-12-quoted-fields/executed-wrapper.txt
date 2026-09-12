@@ -1,0 +1,113 @@
+$ErrorActionPreference = 'Stop'
+
+$RunRoot = '<ISOLATED_ROOT>'
+$SourceRepo = '<HONOR_USER>\Codelib-severin\2_Business\uagent-sync'
+$Clone = Join-Path $RunRoot 'clone'
+$Logs = Join-Path $RunRoot 'logs'
+$Iso = Join-Path $RunRoot 'isolated-profile'
+
+New-Item -ItemType Directory -Force -Path $Logs, $Iso | Out-Null
+foreach ($dir in @('home', 'appdata', 'localappdata', 'codex', 'xdg', 'tmp', 'npm-cache')) {
+    New-Item -ItemType Directory -Force -Path (Join-Path $Iso $dir) | Out-Null
+}
+
+$env:USERPROFILE = Join-Path $Iso 'home'
+$env:HOME = Join-Path $Iso 'home'
+$env:APPDATA = Join-Path $Iso 'appdata'
+$env:LOCALAPPDATA = Join-Path $Iso 'localappdata'
+$env:CODEX_HOME = Join-Path $Iso 'codex'
+$env:XDG_CONFIG_HOME = Join-Path $Iso 'xdg'
+$env:TMP = Join-Path $Iso 'tmp'
+$env:TEMP = Join-Path $Iso 'tmp'
+$env:NPM_CONFIG_CACHE = Join-Path $Iso 'npm-cache'
+$env:NPM_CONFIG_USERCONFIG = Join-Path $Iso 'user.npmrc'
+$env:NPM_CONFIG_GLOBALCONFIG = Join-Path $Iso 'global.npmrc'
+Remove-Item Env:UAGENT_SYNC_WORKSPACE_ROOT -ErrorAction SilentlyContinue
+Remove-Item Env:OPENCODE_SYNC_WORKSPACE_ROOT -ErrorAction SilentlyContinue
+Remove-Item Env:OPENCODE_CONFIG_DIR -ErrorAction SilentlyContinue
+Remove-Item Env:OPENCODE_HOME -ErrorAction SilentlyContinue
+
+$TrackedEnv = @(
+    'USERPROFILE', 'HOME', 'APPDATA', 'LOCALAPPDATA', 'CODEX_HOME',
+    'XDG_CONFIG_HOME', 'TMP', 'TEMP', 'NPM_CONFIG_CACHE',
+    'NPM_CONFIG_USERCONFIG', 'NPM_CONFIG_GLOBALCONFIG',
+    'UAGENT_SYNC_WORKSPACE_ROOT', 'OPENCODE_SYNC_WORKSPACE_ROOT',
+    'OPENCODE_CONFIG_DIR', 'OPENCODE_HOME'
+)
+$script:Sequence = 0
+$script:Results = @()
+
+function Save-EnvironmentSnapshot([string]$Prefix) {
+    $snapshot = [ordered]@{}
+    foreach ($name in $TrackedEnv) {
+        $item = Get-Item -LiteralPath ("Env:" + $name) -ErrorAction SilentlyContinue
+        $snapshot[$name] = if ($null -eq $item) { $null } else { $item.Value }
+    }
+    $snapshot | ConvertTo-Json -Depth 3 | Out-File -LiteralPath ($Prefix + '.env.json') -Encoding utf8
+}
+
+function Invoke-Logged([string]$Label, [string]$Display, [string]$Exe, [string[]]$Arguments, [string]$WorkingDirectory) {
+    $script:Sequence++
+    $safeLabel = $Label -replace '[^A-Za-z0-9._-]', '_'
+    $prefix = Join-Path $Logs ('{0:D2}-{1}' -f $script:Sequence, $safeLabel)
+    Save-EnvironmentSnapshot $prefix
+    $Display | Out-File -LiteralPath ($prefix + '.command.txt') -Encoding utf8
+    $WorkingDirectory | Out-File -LiteralPath ($prefix + '.cwd.txt') -Encoding utf8
+    Push-Location -LiteralPath $WorkingDirectory
+    try {
+        & $Exe @Arguments 1> ($prefix + '.stdout.log') 2> ($prefix + '.stderr.log')
+        $exitCode = $LASTEXITCODE
+    }
+    finally {
+        Pop-Location
+    }
+    if ($null -eq $exitCode) { $exitCode = 0 }
+    [string]$exitCode | Out-File -LiteralPath ($prefix + '.exit.txt') -Encoding ascii
+    $script:Results += [pscustomobject]@{
+        sequence = $script:Sequence
+        label = $Label
+        command = $Display
+        cwd = $WorkingDirectory
+        exitCode = $exitCode
+        stdout = ($prefix + '.stdout.log')
+        stderr = ($prefix + '.stderr.log')
+        environment = ($prefix + '.env.json')
+    }
+    $script:Results | ConvertTo-Json -Depth 5 | Out-File -LiteralPath (Join-Path $RunRoot 'command-results.json') -Encoding utf8
+    if ($exitCode -ne 0) { throw "Command failed ($exitCode): $Display" }
+}
+
+try {
+    Invoke-Logged 'clone' "git clone --no-hardlinks --no-checkout $SourceRepo $Clone" 'git' @('clone', '--no-hardlinks', '--no-checkout', '--', $SourceRepo, $Clone) $RunRoot
+    Invoke-Logged 'checkout' 'git checkout --detach c96ee5bb130ad89e31f3d37724161c6ac80c2983' 'git' @('checkout', '--detach', 'c96ee5bb130ad89e31f3d37724161c6ac80c2983') $Clone
+    Invoke-Logged 'head' 'git rev-parse HEAD' 'git' @('rev-parse', 'HEAD') $Clone
+    Invoke-Logged 'diff-name-status' 'git diff --name-status 04672a6314d66c745bb11819e90f71b5ced0d3d0..HEAD' 'git' @('diff', '--name-status', '04672a6314d66c745bb11819e90f71b5ced0d3d0..HEAD') $Clone
+    Invoke-Logged 'diff-stat' 'git diff --stat 04672a6314d66c745bb11819e90f71b5ced0d3d0..HEAD' 'git' @('diff', '--stat', '04672a6314d66c745bb11819e90f71b5ced0d3d0..HEAD') $Clone
+
+    $OldTestRelative = 'docs/validation/honor-2026-09-12-five-candidates/three-gates.test.ts'
+    $OldTest = Join-Path $Clone $OldTestRelative
+    if (-not (Test-Path -LiteralPath $OldTest)) {
+        $OldTestSource = Join-Path $SourceRepo $OldTestRelative
+        $OldTestDir = Split-Path -Parent $OldTest
+        New-Item -ItemType Directory -Force -Path $OldTestDir | Out-Null
+        Copy-Item -LiteralPath $OldTestSource -Destination $OldTest
+        "Copied from $OldTestSource" | Out-File -LiteralPath (Join-Path $Logs 'old-test-source.txt') -Encoding utf8
+    }
+    else {
+        'Present in fixed source commit; no copy performed.' | Out-File -LiteralPath (Join-Path $Logs 'old-test-source.txt') -Encoding utf8
+    }
+
+    Invoke-Logged 'npm-ci' 'npm ci --ignore-scripts --no-audit --no-fund' 'npm.cmd' @('ci', '--ignore-scripts', '--no-audit', '--no-fund') $Clone
+    Invoke-Logged 'build' 'npm run build' 'npm.cmd' @('run', 'build') $Clone
+    Invoke-Logged 'quoted-six-files' 'node --import tsx --test test/profile-secret-scan-quoted.test.ts test/profile-secret-scan-five.test.ts test/profile-secret-scan-boundary.test.ts test/profile-secret-scan-m13.test.ts test/profile-secret-scan.test.ts test/secret-scan-m0.test.ts' 'node.exe' @('--import', 'tsx', '--test', 'test/profile-secret-scan-quoted.test.ts', 'test/profile-secret-scan-five.test.ts', 'test/profile-secret-scan-boundary.test.ts', 'test/profile-secret-scan-m13.test.ts', 'test/profile-secret-scan.test.ts', 'test/secret-scan-m0.test.ts') $Clone
+    Invoke-Logged 'npm-test' 'npm test' 'npm.cmd' @('test') $Clone
+    Invoke-Logged 'old-three-gates-on-current-code' 'node --import tsx --test docs/validation/honor-2026-09-12-five-candidates/three-gates.test.ts' 'node.exe' @('--import', 'tsx', '--test', 'docs/validation/honor-2026-09-12-five-candidates/three-gates.test.ts') $Clone
+    Invoke-Logged 'final-status' 'git status --short --branch' 'git' @('status', '--short', '--branch') $Clone
+    Invoke-Logged 'final-diff' 'git diff --no-ext-diff --binary' 'git' @('diff', '--no-ext-diff', '--binary') $Clone
+    'PASS' | Out-File -LiteralPath (Join-Path $RunRoot 'terminal-state.txt') -Encoding ascii
+}
+catch {
+    $_ | Out-String | Out-File -LiteralPath (Join-Path $RunRoot 'wrapper-error.log') -Encoding utf8
+    'FAIL' | Out-File -LiteralPath (Join-Path $RunRoot 'terminal-state.txt') -Encoding ascii
+    throw
+}

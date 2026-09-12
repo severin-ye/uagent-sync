@@ -1,0 +1,38 @@
+{
+  "task": "RY-10",
+  "inputSha": "445142e0dc99bcc583bdd72b2d201ccd854ebecb",
+  "sourceSha": "c96ee5bb130ad89e31f3d37724161c6ac80c2983",
+  "baselineSha": "04672a6314d66c745bb11819e90f71b5ced0d3d0",
+  "result": "passed_within_limited_scope",
+  "finding": "RY-C5-01 fixed within exact quoted-field scope",
+  "buildExit": 0,
+  "focused": {
+    "pass": 139,
+    "fail": 0,
+    "exit": 0
+  },
+  "full": {
+    "pass": 557,
+    "fail": 0,
+    "exit": 0
+  },
+  "oldReproductionOnCurrentCode": {
+    "pass": 2,
+    "fail": 0,
+    "exit": 0
+  },
+  "allowScopeExpanded": false,
+  "realCollection": false,
+  "realRestore": false,
+  "installation": false,
+  "hp03Complete": false,
+  "migrationComplete": false,
+  "remaining": [
+    "HP-001",
+    "HP-004",
+    "HP-005",
+    "M2",
+    "172 unknown-source findings",
+    "RY-03"
+  ]
+}

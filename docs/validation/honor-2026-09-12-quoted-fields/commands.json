@@ -1,0 +1,122 @@
+[
+  {
+    "sequence": 1,
+    "label": "clone",
+    "command": "git clone --no-hardlinks --no-checkout <HONOR_USER>\\Codelib-severin\\2_Business\\uagent-sync <ISOLATED_ROOT>\\clone",
+    "cwd": "<ISOLATED_ROOT>",
+    "exitCode": 0,
+    "stdout": "<ISOLATED_ROOT>\\logs\\01-clone.stdout.log",
+    "stderr": "<ISOLATED_ROOT>\\logs\\01-clone.stderr.log",
+    "environment": "<ISOLATED_ROOT>\\logs\\01-clone.env.json"
+  },
+  {
+    "sequence": 2,
+    "label": "checkout",
+    "command": "git checkout --detach c96ee5bb130ad89e31f3d37724161c6ac80c2983",
+    "cwd": "<ISOLATED_ROOT>\\clone",
+    "exitCode": 0,
+    "stdout": "<ISOLATED_ROOT>\\logs\\02-checkout.stdout.log",
+    "stderr": "<ISOLATED_ROOT>\\logs\\02-checkout.stderr.log",
+    "environment": "<ISOLATED_ROOT>\\logs\\02-checkout.env.json"
+  },
+  {
+    "sequence": 3,
+    "label": "head",
+    "command": "git rev-parse HEAD",
+    "cwd": "<ISOLATED_ROOT>\\clone",
+    "exitCode": 0,
+    "stdout": "<ISOLATED_ROOT>\\logs\\03-head.stdout.log",
+    "stderr": "<ISOLATED_ROOT>\\logs\\03-head.stderr.log",
+    "environment": "<ISOLATED_ROOT>\\logs\\03-head.env.json"
+  },
+  {
+    "sequence": 4,
+    "label": "diff-name-status",
+    "command": "git diff --name-status 04672a6314d66c745bb11819e90f71b5ced0d3d0..HEAD",
+    "cwd": "<ISOLATED_ROOT>\\clone",
+    "exitCode": 0,
+    "stdout": "<ISOLATED_ROOT>\\logs\\04-diff-name-status.stdout.log",
+    "stderr": "<ISOLATED_ROOT>\\logs\\04-diff-name-status.stderr.log",
+    "environment": "<ISOLATED_ROOT>\\logs\\04-diff-name-status.env.json"
+  },
+  {
+    "sequence": 5,
+    "label": "diff-stat",
+    "command": "git diff --stat 04672a6314d66c745bb11819e90f71b5ced0d3d0..HEAD",
+    "cwd": "<ISOLATED_ROOT>\\clone",
+    "exitCode": 0,
+    "stdout": "<ISOLATED_ROOT>\\logs\\05-diff-stat.stdout.log",
+    "stderr": "<ISOLATED_ROOT>\\logs\\05-diff-stat.stderr.log",
+    "environment": "<ISOLATED_ROOT>\\logs\\05-diff-stat.env.json"
+  },
+  {
+    "sequence": 6,
+    "label": "npm-ci",
+    "command": "npm ci --ignore-scripts --no-audit --no-fund",
+    "cwd": "<ISOLATED_ROOT>\\clone",
+    "exitCode": 0,
+    "stdout": "<ISOLATED_ROOT>\\logs\\06-npm-ci.stdout.log",
+    "stderr": "<ISOLATED_ROOT>\\logs\\06-npm-ci.stderr.log",
+    "environment": "<ISOLATED_ROOT>\\logs\\06-npm-ci.env.json"
+  },
+  {
+    "sequence": 7,
+    "label": "build",
+    "command": "npm run build",
+    "cwd": "<ISOLATED_ROOT>\\clone",
+    "exitCode": 0,
+    "stdout": "<ISOLATED_ROOT>\\logs\\07-build.stdout.log",
+    "stderr": "<ISOLATED_ROOT>\\logs\\07-build.stderr.log",
+    "environment": "<ISOLATED_ROOT>\\logs\\07-build.env.json"
+  },
+  {
+    "sequence": 8,
+    "label": "quoted-six-files",
+    "command": "node --import tsx --test test/profile-secret-scan-quoted.test.ts test/profile-secret-scan-five.test.ts test/profile-secret-scan-boundary.test.ts test/profile-secret-scan-m13.test.ts test/profile-secret-scan.test.ts test/secret-scan-m0.test.ts",
+    "cwd": "<ISOLATED_ROOT>\\clone",
+    "exitCode": 0,
+    "stdout": "<ISOLATED_ROOT>\\logs\\08-quoted-six-files.stdout.log",
+    "stderr": "<ISOLATED_ROOT>\\logs\\08-quoted-six-files.stderr.log",
+    "environment": "<ISOLATED_ROOT>\\logs\\08-quoted-six-files.env.json"
+  },
+  {
+    "sequence": 9,
+    "label": "npm-test",
+    "command": "npm test",
+    "cwd": "<ISOLATED_ROOT>\\clone",
+    "exitCode": 0,
+    "stdout": "<ISOLATED_ROOT>\\logs\\09-npm-test.stdout.log",
+    "stderr": "<ISOLATED_ROOT>\\logs\\09-npm-test.stderr.log",
+    "environment": "<ISOLATED_ROOT>\\logs\\09-npm-test.env.json"
+  },
+  {
+    "sequence": 10,
+    "label": "old-three-gates-on-current-code",
+    "command": "node --import tsx --test docs/validation/honor-2026-09-12-five-candidates/three-gates.test.ts",
+    "cwd": "<ISOLATED_ROOT>\\clone",
+    "exitCode": 0,
+    "stdout": "<ISOLATED_ROOT>\\logs\\10-old-three-gates-on-current-code.stdout.log",
+    "stderr": "<ISOLATED_ROOT>\\logs\\10-old-three-gates-on-current-code.stderr.log",
+    "environment": "<ISOLATED_ROOT>\\logs\\10-old-three-gates-on-current-code.env.json"
+  },
+  {
+    "sequence": 11,
+    "label": "final-status",
+    "command": "git status --short --branch",
+    "cwd": "<ISOLATED_ROOT>\\clone",
+    "exitCode": 0,
+    "stdout": "<ISOLATED_ROOT>\\logs\\11-final-status.stdout.log",
+    "stderr": "<ISOLATED_ROOT>\\logs\\11-final-status.stderr.log",
+    "environment": "<ISOLATED_ROOT>\\logs\\11-final-status.env.json"
+  },
+  {
+    "sequence": 12,
+    "label": "final-diff",
+    "command": "git diff --no-ext-diff --binary",
+    "cwd": "<ISOLATED_ROOT>\\clone",
+    "exitCode": 0,
+    "stdout": "<ISOLATED_ROOT>\\logs\\12-final-diff.stdout.log",
+    "stderr": "<ISOLATED_ROOT>\\logs\\12-final-diff.stderr.log",
+    "environment": "<ISOLATED_ROOT>\\logs\\12-final-diff.env.json"
+  }
+]

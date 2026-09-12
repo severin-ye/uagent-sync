@@ -1,0 +1,12 @@
+{"variant":"quoted-comment","expectedRefusalFailures":[],"calls":1}
+{"variant":"quoted-template","expectedRefusalFailures":[],"calls":1}
+✔ RY-C5-01 quoted-comment (126.4038ms)
+✔ RY-C5-01 quoted-template (93.9883ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 659.2808
