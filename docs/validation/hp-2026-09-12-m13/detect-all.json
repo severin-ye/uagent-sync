@@ -1,0 +1,620 @@
+{
+  "summary": {
+    "changed_count": 44,
+    "affected_count": 15,
+    "changed_files": 4,
+    "risk_level": "high"
+  },
+  "changed_symbols": [
+    {
+      "id": "Interface:src/lib/profile-expressions.ts:Token",
+      "name": "Token",
+      "type": "Interface",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:Token.call",
+      "name": "call",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:Token.depth",
+      "name": "depth",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:Token.end",
+      "name": "end",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:Token.start",
+      "name": "start",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:Token.text",
+      "name": "text",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Interface:src/lib/profile-expressions.ts:Region",
+      "name": "Region",
+      "type": "Interface",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:Region.end",
+      "name": "end",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:Region.language",
+      "name": "language",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:Region.start",
+      "name": "start",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/lib/profile-expressions.ts:languages",
+      "name": "languages",
+      "type": "Const",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:languages.cs",
+      "name": "cs",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:languages.csharp",
+      "name": "csharp",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:languages.java",
+      "name": "java",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:languages.javascript",
+      "name": "javascript",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:languages.js",
+      "name": "js",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:languages.py",
+      "name": "py",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:languages.python",
+      "name": "python",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:languages.ts",
+      "name": "ts",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:languages.typescript",
+      "name": "typescript",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/lib/profile-expressions.ts:codeRegions",
+      "name": "codeRegions",
+      "type": "Function",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/lib/profile-expressions.ts:lex",
+      "name": "lex",
+      "type": "Function",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/lib/profile-expressions.ts:lex.c@30:4",
+      "name": "c",
+      "type": "Const",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/lib/profile-expressions.ts:atom",
+      "name": "atom",
+      "type": "Function",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/lib/profile-expressions.ts:atom.text@75:2",
+      "name": "text",
+      "type": "Function",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/lib/profile-expressions.ts:atom.sequence@76:2",
+      "name": "sequence",
+      "type": "Function",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:atom.end@78:53",
+      "name": "end",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:atom.env@78:69",
+      "name": "env",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:atom.end@79:92",
+      "name": "end",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:atom.env@79:108",
+      "name": "env",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:atom.end@81:128",
+      "name": "end",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:atom.env@81:144",
+      "name": "env",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:atom.end@92:36",
+      "name": "end",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:atom.env@92:50",
+      "name": "env",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/lib/profile-expressions.ts:terminated",
+      "name": "terminated",
+      "type": "Function",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/lib/profile-expressions.ts:recognizeProfileExpressions",
+      "name": "recognizeProfileExpressions",
+      "type": "Function",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:recognizeProfileExpressions.normalized@145:11",
+      "name": "normalized",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/lib/profile-expressions.ts:recognizeProfileExpressions.rejectedLines@145:40",
+      "name": "rejectedLines",
+      "type": "Property",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/lib/profile-secret-scan.ts:assertProfileContentSafe",
+      "name": "assertProfileContentSafe",
+      "type": "Function",
+      "filePath": "src/lib/profile-secret-scan.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/lib/profile-secret-scan.ts:assertProfileContentSafe.documented@5:2",
+      "name": "documented",
+      "type": "Function",
+      "filePath": "src/lib/profile-secret-scan.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:test/profile-secret-scan-m13.test.ts:allow",
+      "name": "allow",
+      "type": "Const",
+      "filePath": "test/profile-secret-scan-m13.test.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:test/profile-secret-scan-m13.test.ts:deny",
+      "name": "deny",
+      "type": "Const",
+      "filePath": "test/profile-secret-scan-m13.test.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:test/profile-secret-scan-m13.test.ts:fn@89:86.device@92:2",
+      "name": "device",
+      "type": "Function",
+      "filePath": "test/profile-secret-scan-m13.test.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:test/profile-secret-scan-m13.test.ts:fn@89:86.target@93:2",
+      "name": "target",
+      "type": "Const",
+      "filePath": "test/profile-secret-scan-m13.test.ts",
+      "change_type": "touched"
+    }
+  ],
+  "affected_processes": [
+    {
+      "id": "proc_3_createcodexprofile",
+      "name": "CreateCodexProfile → Text",
+      "process_type": "cross_community",
+      "step_count": 8,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        },
+        {
+          "symbol": "sequence",
+          "step": 7
+        },
+        {
+          "symbol": "text",
+          "step": 8
+        },
+        {
+          "symbol": "atom",
+          "step": 6
+        },
+        {
+          "symbol": "assertProfileContentSafe",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_15_createcodexprofile",
+      "name": "CreateCodexProfile → CodeRegions",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        },
+        {
+          "symbol": "codeRegions",
+          "step": 6
+        },
+        {
+          "symbol": "assertProfileContentSafe",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_16_createcodexprofile",
+      "name": "CreateCodexProfile → Lex",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        },
+        {
+          "symbol": "lex",
+          "step": 6
+        },
+        {
+          "symbol": "assertProfileContentSafe",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_17_createcodexprofile",
+      "name": "CreateCodexProfile → Terminated",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        },
+        {
+          "symbol": "terminated",
+          "step": 6
+        },
+        {
+          "symbol": "assertProfileContentSafe",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_28_createcodexprofile",
+      "name": "CreateCodexProfile → ScanForSecrets",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "assertProfileContentSafe",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_113_restorecodexprofile",
+      "name": "RestoreCodexProfile → Text",
+      "process_type": "cross_community",
+      "step_count": 8,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        },
+        {
+          "symbol": "sequence",
+          "step": 7
+        },
+        {
+          "symbol": "text",
+          "step": 8
+        },
+        {
+          "symbol": "atom",
+          "step": 6
+        },
+        {
+          "symbol": "assertProfileContentSafe",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_122_restorecodexprofile",
+      "name": "RestoreCodexProfile → CodeRegions",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        },
+        {
+          "symbol": "codeRegions",
+          "step": 6
+        },
+        {
+          "symbol": "assertProfileContentSafe",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_123_restorecodexprofile",
+      "name": "RestoreCodexProfile → Lex",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        },
+        {
+          "symbol": "lex",
+          "step": 6
+        },
+        {
+          "symbol": "assertProfileContentSafe",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_124_restorecodexprofile",
+      "name": "RestoreCodexProfile → Terminated",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        },
+        {
+          "symbol": "terminated",
+          "step": 6
+        },
+        {
+          "symbol": "assertProfileContentSafe",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_132_restorecodexprofile",
+      "name": "RestoreCodexProfile → ScanForSecrets",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "assertProfileContentSafe",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_172_scan",
+      "name": "Scan → Text",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        },
+        {
+          "symbol": "sequence",
+          "step": 5
+        },
+        {
+          "symbol": "text",
+          "step": 6
+        },
+        {
+          "symbol": "atom",
+          "step": 4
+        },
+        {
+          "symbol": "assertProfileContentSafe",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_180_scan",
+      "name": "Scan → CodeRegions",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        },
+        {
+          "symbol": "codeRegions",
+          "step": 4
+        },
+        {
+          "symbol": "assertProfileContentSafe",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_181_scan",
+      "name": "Scan → Lex",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        },
+        {
+          "symbol": "lex",
+          "step": 4
+        },
+        {
+          "symbol": "assertProfileContentSafe",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_182_scan",
+      "name": "Scan → Terminated",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        },
+        {
+          "symbol": "terminated",
+          "step": 4
+        },
+        {
+          "symbol": "assertProfileContentSafe",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_189_scan",
+      "name": "Scan → ScanForSecrets",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "assertProfileContentSafe",
+          "step": 2
+        }
+      ]
+    }
+  ]
+}

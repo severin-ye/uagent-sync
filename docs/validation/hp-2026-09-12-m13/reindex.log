@@ -1,0 +1,20 @@
+  Skipped 1 large files (>512KB, likely generated/vendored)
+  - docs/validation/honor-2026-09-11-plan-review/additional-syntax.json
+  Set GITNEXUS_MAX_FILE_SIZE=<KB> to include files above the default cap.
+Incremental: changed=3, added=1, deleted=0 (skipping wipe + 271 unchanged file rows preserved)
+Incremental: +7 importer(s) added to writable set (BFS depth ≤ 4)
+Parse cache: pruned 5 stale chunk entries
+
+  Repository indexed successfully (16.6s)
+
+  4,563 nodes | 10,259 edges | 122 clusters | 330 flows
+  <USER_ROOT>/AppData/Local/Temp/uagent-hp-m13-9fbde13
+
+
+  GitNexus Analyzer (1.6.11)
+
+  GitNexus Analyzer (1.6.11)
+(node:54656) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+{"level":40,"time":1789181694737,"name":"gitnexus","msg":"[scope-resolution] 343 property read/write site(s) name a field that IS defined in this workspace, but only in another language, so per-language inference declined to link them. Queries for these fields return an empty result that does NOT mean /"unused/" — it means the definition anchor is in a different language. Affected: analysisId (javascript), content (javascript), counts (javascript), stagedDecisions (javascript), OPENCODE_SYNC_WORKSPACE_ROOT (typescript), action (typescript), actions (typescript), activeState (typescript), agent (typescript), allowed (typescript), …"}
+{"level":40,"time":1789181694847,"name":"gitnexus","truncation":{"truncated":true,"entryPointCandidatesDropped":126,"entryPointsUnexplored":63,"walksCutByBudget":32,"tracesDepthCapped":0,"calleesDropped":1778,"processesDropped":0},"msg":"[processes] 330 flows reported, but whole flows are MISSING: 126 of 326 candidate entry point(s) never ranked in, 63 ranked entry point(s) never traced, 0 deduplicated flow(s) dropped at maxProcesses, 0 trace(s) cut at maxTraceDepth, 1778 callee(s) skipped at maxBranching, 32 walk(s) cut by the per-entry trace budget. An absent flow does NOT mean the code path does not exist."}

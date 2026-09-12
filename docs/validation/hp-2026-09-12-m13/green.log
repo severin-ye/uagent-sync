@@ -1,0 +1,42 @@
+✔ M13 bounded Python allow 1 (2.8238ms)
+✔ M13 bounded Python allow 2 (0.5894ms)
+✔ M13 bounded Python allow 3 (0.2678ms)
+✔ M13 bounded Python allow 4 (0.1897ms)
+✔ M13 bounded Python allow 5 (0.1451ms)
+✔ M13 bounded Python allow 6 (0.1446ms)
+✔ M13 bounded Python allow 7 (0.1643ms)
+✔ M13 bounded Python allow 8 (0.1302ms)
+✔ M13 Python boundary refusal 1 (0.7458ms)
+✔ M13 Python boundary refusal 2 (0.3203ms)
+✔ M13 Python boundary refusal 3 (0.2495ms)
+✔ M13 Python boundary refusal 4 (0.1779ms)
+✔ M13 Python boundary refusal 5 (0.192ms)
+✔ M13 Python boundary refusal 6 (0.1987ms)
+✔ M13 Python boundary refusal 7 (0.1731ms)
+✔ M13 Python boundary refusal 8 (0.1355ms)
+✔ M13 Python boundary refusal 9 (0.1332ms)
+✔ M13 Python boundary refusal 10 (0.1127ms)
+✔ M13 Python boundary refusal 11 (0.0961ms)
+✔ M13 Python boundary refusal 12 (0.1082ms)
+✔ M13 Python boundary refusal 13 (0.1062ms)
+✔ M13 Python boundary refusal 14 (0.1014ms)
+✔ M13 Python boundary refusal 15 (0.0957ms)
+✔ M13 Python boundary refusal 16 (0.0643ms)
+✔ M13 Python boundary refusal 17 (0.0521ms)
+✔ M13 Python boundary refusal 18 (0.0635ms)
+✔ M13 Python boundary refusal 19 (0.0548ms)
+✔ M13 Python boundary refusal 20 (0.0717ms)
+✔ M13 Markdown requires a Python fence, not a directory or document exception (0.4852ms)
+✔ M13 legacy JS environment expressions cannot swallow newline suffixes (0.3175ms)
+✔ M13 original line numbers survive multiline allowed expressions and comments (0.6035ms)
+✔ M13 adjacent real-shaped artificial credentials are never masked (0.4985ms)
+✔ M13 all three profile gates agree on allows and refusals without real effects (77.2077ms)
+✔ source environment references are portable but literal tokens remain blocked (5.2793ms)
+ℹ tests 34
+ℹ suites 0
+ℹ pass 34
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 387.6387

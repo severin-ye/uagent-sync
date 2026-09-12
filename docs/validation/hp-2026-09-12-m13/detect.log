@@ -1,0 +1,36 @@
+Changes: 4 files, 44 symbols
+Affected processes: 15
+Risk level: high
+
+Changed symbols:
+  Interface Token → src/lib/profile-expressions.ts
+  Property call → src/lib/profile-expressions.ts
+  Property depth → src/lib/profile-expressions.ts
+  Property end → src/lib/profile-expressions.ts
+  Property start → src/lib/profile-expressions.ts
+  Property text → src/lib/profile-expressions.ts
+  Interface Region → src/lib/profile-expressions.ts
+  Property end → src/lib/profile-expressions.ts
+  Property language → src/lib/profile-expressions.ts
+  Property start → src/lib/profile-expressions.ts
+  Const languages → src/lib/profile-expressions.ts
+  Property cs → src/lib/profile-expressions.ts
+  Property csharp → src/lib/profile-expressions.ts
+  Property java → src/lib/profile-expressions.ts
+  Property javascript → src/lib/profile-expressions.ts
+... and 29 more
+
+Affected execution flows:
+  • CreateCodexProfile → Text (8 steps) — changed: recognizeProfileExpressions, sequence, text, atom, assertProfileContentSafe
+  • CreateCodexProfile → CodeRegions (6 steps) — changed: recognizeProfileExpressions, codeRegions, assertProfileContentSafe
+  • CreateCodexProfile → Lex (6 steps) — changed: recognizeProfileExpressions, lex, assertProfileContentSafe
+  • CreateCodexProfile → Terminated (6 steps) — changed: recognizeProfileExpressions, terminated, assertProfileContentSafe
+  • CreateCodexProfile → ScanForSecrets (5 steps) — changed: assertProfileContentSafe
+  • RestoreCodexProfile → Text (8 steps) — changed: recognizeProfileExpressions, sequence, text, atom, assertProfileContentSafe
+  • RestoreCodexProfile → CodeRegions (6 steps) — changed: recognizeProfileExpressions, codeRegions, assertProfileContentSafe
+  • RestoreCodexProfile → Lex (6 steps) — changed: recognizeProfileExpressions, lex, assertProfileContentSafe
+  • RestoreCodexProfile → Terminated (6 steps) — changed: recognizeProfileExpressions, terminated, assertProfileContentSafe
+  • RestoreCodexProfile → ScanForSecrets (5 steps) — changed: assertProfileContentSafe
+... and 5 more
+
+  GitNexus Detect Changes (1.6.11)

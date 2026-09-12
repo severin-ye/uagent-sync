@@ -1,0 +1,10 @@
+{
+  "handoff_baseline": "9fbde1326eac7ccdf1793c5bec1c314fdc0acb7a",
+  "m0_baseline": "11237d974ce42f3377cf06faf01e351b8f20cc3d",
+  "source_test_build_dependency_diff": [],
+  "initial_red_test_sha256": "afd7a64b48398fa60a234d0c9388a87a8221d4f9b3e006f09b137842f0ecaf1d",
+  "final_test_sha256": "8438db5978d03fc8cfa661b767208b7a02297fcaae0d50753308594c806712fc",
+  "node": "v24.19.0",
+  "platform": "win32",
+  "exit": 0
+}

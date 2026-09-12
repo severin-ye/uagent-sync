@@ -1,0 +1,380 @@
+{
+  "target": {
+    "id": "Function:src/lib/profile-secret-scan.ts:assertProfileContentSafe",
+    "name": "assertProfileContentSafe",
+    "type": "Function",
+    "filePath": "src/lib/profile-secret-scan.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 11,
+  "risk": "HIGH",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 3,
+    "processes_affected": 4,
+    "modules_affected": 4
+  },
+  "byDepthCounts": {
+    "1": 3,
+    "2": 3,
+    "3": 3,
+    "4": 1,
+    "5": 1
+  },
+  "affected_processes": [
+    {
+      "name": "restoreCodexProfile",
+      "type": "Function",
+      "filePath": "src/lib/codex-profile.ts",
+      "affected_process_count": 5,
+      "total_hits": 13,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "createCodexProfile",
+      "type": "Function",
+      "filePath": "src/lib/codex-profile.ts",
+      "affected_process_count": 4,
+      "total_hits": 10,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "runDeviceCli",
+      "type": "Function",
+      "filePath": "src/entrypoints/device-cli.ts",
+      "affected_process_count": 5,
+      "total_hits": 5,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "scan",
+      "type": "Function",
+      "filePath": "src/lib/device-git-transport.ts",
+      "affected_process_count": 1,
+      "total_hits": 1,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Cluster_43",
+      "hits": 4,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_44",
+      "hits": 2,
+      "impact": "indirect"
+    },
+    {
+      "name": "Cluster_50",
+      "hits": 2,
+      "impact": "direct"
+    },
+    {
+      "name": "Entrypoints",
+      "hits": 2,
+      "impact": "indirect"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/lib/codex-profile.ts:createCodexProfile.walk@92:2",
+        "name": "walk",
+        "filePath": "src/lib/codex-profile.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_23_createcodexprofile",
+            "label": "CreateCodexProfile → NoLinks",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_6_createcodexprofile",
+            "label": "CreateCodexProfile → Mappings",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_24_createcodexprofile",
+            "label": "CreateCodexProfile → ScanForSecrets",
+            "processType": "cross_community",
+            "step": 3
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/codex-profile.ts:readSnapshot",
+        "name": "readSnapshot",
+        "filePath": "src/lib/codex-profile.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_128_restorecodexprofile",
+            "label": "RestoreCodexProfile → NoLinks",
+            "processType": "intra_community",
+            "step": 3
+          },
+          {
+            "id": "proc_46_restorecodexprofile",
+            "label": "RestoreCodexProfile → KeyOf",
+            "processType": "intra_community",
+            "step": 3
+          },
+          {
+            "id": "proc_129_restorecodexprofile",
+            "label": "RestoreCodexProfile → ScanForSecrets",
+            "processType": "cross_community",
+            "step": 3
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/device-git-transport.ts:publishDevicePaths.scan@28:2",
+        "name": "scan",
+        "filePath": "src/lib/device-git-transport.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_183_scan",
+            "label": "Scan → ScanForSecrets",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/lib/codex-profile.ts:createCodexProfile.collect@89:2",
+        "name": "collect",
+        "filePath": "src/lib/codex-profile.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_6_createcodexprofile",
+            "label": "CreateCodexProfile → Mappings",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_23_createcodexprofile",
+            "label": "CreateCodexProfile → NoLinks",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_24_createcodexprofile",
+            "label": "CreateCodexProfile → ScanForSecrets",
+            "processType": "cross_community",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/codex-profile.ts:planCodexProfileRestore",
+        "name": "planCodexProfileRestore",
+        "filePath": "src/lib/codex-profile.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_45_restorecodexprofile",
+            "label": "RestoreCodexProfile → BaselinePath",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_47_restorecodexprofile",
+            "label": "RestoreCodexProfile → Roots",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_129_restorecodexprofile",
+            "label": "RestoreCodexProfile → ScanForSecrets",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_46_restorecodexprofile",
+            "label": "RestoreCodexProfile → KeyOf",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_128_restorecodexprofile",
+            "label": "RestoreCodexProfile → NoLinks",
+            "processType": "intra_community",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/device-git-transport.ts:publishDevicePaths",
+        "name": "publishDevicePaths",
+        "filePath": "src/lib/device-git-transport.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/device-cli.ts:runDeviceCli",
+        "name": "runDeviceCli",
+        "filePath": "src/entrypoints/device-cli.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_13_rundevicecli",
+            "label": "RunDeviceCli → IsRecord",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_2_rundevicecli",
+            "label": "RunDeviceCli → Error",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_5_rundevicecli",
+            "label": "RunDeviceCli → IsAbsolutePath",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_86_rundevicecli",
+            "label": "RunDeviceCli → ParseArgs",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_21_rundevicecli",
+            "label": "RunDeviceCli → One",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/codex-profile.ts:createCodexProfile",
+        "name": "createCodexProfile",
+        "filePath": "src/lib/codex-profile.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_143_createcodexprofile",
+            "label": "CreateCodexProfile → Roots",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_6_createcodexprofile",
+            "label": "CreateCodexProfile → Mappings",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_24_createcodexprofile",
+            "label": "CreateCodexProfile → ScanForSecrets",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_23_createcodexprofile",
+            "label": "CreateCodexProfile → NoLinks",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/codex-profile.ts:restoreCodexProfile",
+        "name": "restoreCodexProfile",
+        "filePath": "src/lib/codex-profile.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_47_restorecodexprofile",
+            "label": "RestoreCodexProfile → Roots",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_45_restorecodexprofile",
+            "label": "RestoreCodexProfile → BaselinePath",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_46_restorecodexprofile",
+            "label": "RestoreCodexProfile → KeyOf",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_128_restorecodexprofile",
+            "label": "RestoreCodexProfile → NoLinks",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_129_restorecodexprofile",
+            "label": "RestoreCodexProfile → ScanForSecrets",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      }
+    ],
+    "4": [
+      {
+        "depth": 4,
+        "id": "Function:src/cli.ts:main",
+        "name": "main",
+        "filePath": "src/cli.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "5": [
+      {
+        "depth": 5,
+        "id": "File:src/cli.ts",
+        "name": "cli.ts",
+        "filePath": "src/cli.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}
+
+  GitNexus Impact (1.6.11)

@@ -1,0 +1,152 @@
+{
+  "total_candidates": 16,
+  "bounded_python_forms": 11,
+  "deferred_other_languages": 5,
+  "candidates": [
+    {
+      "id": "HP-001",
+      "path": "agents/skills/claude-api/php/managed-agents/README.md",
+      "line": 22,
+      "category": "API_EXAMPLE",
+      "implementation": "DEFERRED_UNSUPPORTED_LANGUAGE",
+      "real_file_rescanned": false,
+      "evidence_scope": "Historical classification plus artificial syntax tests; not current snapshot acceptance"
+    },
+    {
+      "id": "HP-002",
+      "path": "agents/skills/claude-api/python/claude-api/README.md",
+      "line": 20,
+      "category": "API_EXAMPLE",
+      "implementation": "BOUNDED_PYTHON_FORM",
+      "real_file_rescanned": false,
+      "evidence_scope": "Historical classification plus artificial syntax tests; not current snapshot acceptance"
+    },
+    {
+      "id": "HP-003",
+      "path": "agents/skills/claude-api/python/managed-agents/README.md",
+      "line": 24,
+      "category": "API_EXAMPLE",
+      "implementation": "BOUNDED_PYTHON_FORM",
+      "real_file_rescanned": false,
+      "evidence_scope": "Historical classification plus artificial syntax tests; not current snapshot acceptance"
+    },
+    {
+      "id": "HP-004",
+      "path": "agents/skills/claude-api/ruby/claude-api/README.md",
+      "line": 20,
+      "category": "API_EXAMPLE",
+      "implementation": "DEFERRED_UNSUPPORTED_LANGUAGE",
+      "real_file_rescanned": false,
+      "evidence_scope": "Historical classification plus artificial syntax tests; not current snapshot acceptance"
+    },
+    {
+      "id": "HP-005",
+      "path": "agents/skills/claude-api/ruby/managed-agents/README.md",
+      "line": 22,
+      "category": "API_EXAMPLE",
+      "implementation": "DEFERRED_UNSUPPORTED_LANGUAGE",
+      "real_file_rescanned": false,
+      "evidence_scope": "Historical classification plus artificial syntax tests; not current snapshot acceptance"
+    },
+    {
+      "id": "HP-007",
+      "path": "agents/skills/claude-api/typescript/claude-api/README.md",
+      "line": 26,
+      "category": "API_EXAMPLE",
+      "implementation": "DEFERRED_UNSUPPORTED_LANGUAGE",
+      "real_file_rescanned": false,
+      "evidence_scope": "Historical classification plus artificial syntax tests; not current snapshot acceptance"
+    },
+    {
+      "id": "HP-008",
+      "path": "agents/skills/claude-api/typescript/managed-agents/README.md",
+      "line": 24,
+      "category": "API_EXAMPLE",
+      "implementation": "DEFERRED_UNSUPPORTED_LANGUAGE",
+      "real_file_rescanned": false,
+      "evidence_scope": "Historical classification plus artificial syntax tests; not current snapshot acceptance"
+    },
+    {
+      "id": "HP-011",
+      "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+      "line": 219,
+      "category": "ARGUMENT_REF",
+      "implementation": "BOUNDED_PYTHON_FORM",
+      "real_file_rescanned": false,
+      "evidence_scope": "Historical classification plus artificial syntax tests; not current snapshot acceptance"
+    },
+    {
+      "id": "HP-012",
+      "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+      "line": 278,
+      "category": "ARGUMENT_REF",
+      "implementation": "BOUNDED_PYTHON_FORM",
+      "real_file_rescanned": false,
+      "evidence_scope": "Historical classification plus artificial syntax tests; not current snapshot acceptance"
+    },
+    {
+      "id": "HP-014",
+      "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+      "line": 478,
+      "category": "ARGUMENT_REF",
+      "implementation": "BOUNDED_PYTHON_FORM",
+      "real_file_rescanned": false,
+      "evidence_scope": "Historical classification plus artificial syntax tests; not current snapshot acceptance"
+    },
+    {
+      "id": "HP-015",
+      "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+      "line": 492,
+      "category": "ARGUMENT_REF",
+      "implementation": "BOUNDED_PYTHON_FORM",
+      "real_file_rescanned": false,
+      "evidence_scope": "Historical classification plus artificial syntax tests; not current snapshot acceptance"
+    },
+    {
+      "id": "HP-016",
+      "path": "agents/skills/ncbi-sequence-fetch/scripts/ncbi_fetch.py",
+      "line": 124,
+      "category": "ENV_EMPTY_DEFAULT",
+      "implementation": "BOUNDED_PYTHON_FORM",
+      "real_file_rescanned": false,
+      "evidence_scope": "Historical classification plus artificial syntax tests; not current snapshot acceptance"
+    },
+    {
+      "id": "HP-017",
+      "path": "agents/skills/ncbi-sequence-fetch/scripts/ncbi_fetch.py",
+      "line": 143,
+      "category": "ENV_EMPTY_DEFAULT",
+      "implementation": "BOUNDED_PYTHON_FORM",
+      "real_file_rescanned": false,
+      "evidence_scope": "Historical classification plus artificial syntax tests; not current snapshot acceptance"
+    },
+    {
+      "id": "HP-019",
+      "path": "agents/skills/openfda-database/scripts/openfda_query.py",
+      "line": 240,
+      "category": "ARGUMENT_REF",
+      "implementation": "BOUNDED_PYTHON_FORM",
+      "real_file_rescanned": false,
+      "evidence_scope": "Historical classification plus artificial syntax tests; not current snapshot acceptance"
+    },
+    {
+      "id": "HP-020",
+      "path": "agents/skills/openfda-database/scripts/openfda_query.py",
+      "line": 278,
+      "category": "ARGUMENT_REF",
+      "implementation": "BOUNDED_PYTHON_FORM",
+      "real_file_rescanned": false,
+      "evidence_scope": "Historical classification plus artificial syntax tests; not current snapshot acceptance"
+    },
+    {
+      "id": "HP-021",
+      "path": "agents/skills/openfda-database/scripts/openfda_query.py",
+      "line": 339,
+      "category": "ARGUMENT_REF",
+      "implementation": "BOUNDED_PYTHON_FORM",
+      "real_file_rescanned": false,
+      "evidence_scope": "Historical classification plus artificial syntax tests; not current snapshot acceptance"
+    }
+  ],
+  "remaining": "M2 and M4 unchanged; 172 unknown Honor items not automatically allowed. No real collection."
+}

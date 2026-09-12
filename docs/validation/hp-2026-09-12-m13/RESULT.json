@@ -1,0 +1,41 @@
+{
+  "code_sha": "ec827170ec24d78fd27e213d3cc3ff1d678a6377",
+  "handoff_input": "9fbde1326eac7ccdf1793c5bec1c314fdc0acb7a",
+  "focused": {
+    "tests": 56,
+    "passed": 56,
+    "failed": 0
+  },
+  "full": {
+    "tests": 474,
+    "passed": 474,
+    "failed": 0,
+    "skipped": 0
+  },
+  "initial_red": {
+    "tests": 33,
+    "passed": 21,
+    "failed": 12,
+    "exit": 1
+  },
+  "implementation_boundary_red": {
+    "tests": 38,
+    "passed": 33,
+    "failed": 5,
+    "exit": 1
+  },
+  "implementation_scope_red": {
+    "tests": 41,
+    "passed": 38,
+    "failed": 3,
+    "exit": 1
+  },
+  "implementation_candidates": 11,
+  "deferred_candidates": 5,
+  "real_files_rescanned": false,
+  "real_restore": false,
+  "plugin_install": false,
+  "source_tree_unchanged_since_tests": true,
+  "publication_scan_files": 20,
+  "publication_scan_findings": 0
+}
