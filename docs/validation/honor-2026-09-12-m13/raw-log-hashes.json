@@ -1,0 +1,46 @@
+[
+  {
+    "published": "01-clone.log",
+    "raw_sha256": "bda8d45597d8505e268a77888d314c932c5f6b15d9d2e6acf37cc25619443376"
+  },
+  {
+    "published": "02-checkout.log",
+    "raw_sha256": "4a0c88a02ccb3474ed06377fefd2eff000f5ec3f664dbf677f1ed3abad3d0a84"
+  },
+  {
+    "published": "03-scope.log",
+    "raw_sha256": "b684dd1005ae3f9cdf7e3e02b2b3958ca11e29987d4dc940e8e58fb94cad885c"
+  },
+  {
+    "published": "04-npm-ci.log",
+    "raw_sha256": "27a26f942f3d186bee6361054130e307a4ec090f3aef630beabe8c6033521667"
+  },
+  {
+    "published": "05-build.log",
+    "raw_sha256": "ac0f02160e4f4e848179339f5bc74262de46982ca26e9938bd36427bdad79683"
+  },
+  {
+    "published": "06-manual-probe.log",
+    "raw_sha256": "7d89adde884cf66f765f57fb2cc338a97f090bbf948884ce2309662d08d1cc31"
+  },
+  {
+    "published": "07-targeted-tests.log",
+    "raw_sha256": "6885cd400e1ed8c3752361e8bfdbc9278d1bfbb441c6e054feddaf128fb08bdd"
+  },
+  {
+    "published": "08-npm-test.log",
+    "raw_sha256": "1fb16dccc2a6624eb26cb724f92a9885246f9155a0146c96b20727949ea4479e"
+  },
+  {
+    "published": "09-three-gates-probe.log",
+    "raw_sha256": "e6accd43f475e39fafaee133b9e0ac83f600d81219eb5ceb5bb5f769eabe84ce"
+  },
+  {
+    "published": "10-final-scope.log",
+    "raw_sha256": "91834a93f7842567b0160e1fa5896f1e17be6eb2547daf2b9d587fc1724195dc"
+  },
+  {
+    "published": "11-confirmed-gates.log",
+    "raw_sha256": "913895b19934ea33b1f9b2cd812900cd9dec88762baa15dedd4d086136019c07"
+  }
+]

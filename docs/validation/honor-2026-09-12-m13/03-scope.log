@@ -1,0 +1,7 @@
+HEAD=ec827170ec24d78fd27e213d3cc3ff1d678a6377
+STATUS:
+CHANGED_FILES_PARENT:
+A	src/lib/profile-expressions.ts
+M	src/lib/profile-secret-scan.ts
+A	test/profile-secret-scan-m13.test.ts
+M	test/secret-scan-m0.test.ts

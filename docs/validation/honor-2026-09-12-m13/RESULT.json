@@ -1,0 +1,116 @@
+{
+  "fixedSha": "ec827170ec24d78fd27e213d3cc3ff1d678a6377",
+  "headVerified": true,
+  "commitFileCount": 4,
+  "commitFiles": [
+    "A src/lib/profile-expressions.ts",
+    "M src/lib/profile-secret-scan.ts",
+    "A test/profile-secret-scan-m13.test.ts",
+    "M test/secret-scan-m0.test.ts"
+  ],
+  "reviewOutcome": "failed",
+  "failureReason": "A syntax-valid JavaScript assignment with a newline before && and a nonempty literal suffix passed the profile secret scanner and all three profile gates.",
+  "commands": [
+    {
+      "id": "clone",
+      "command": "git clone --no-hardlinks --no-checkout <USER_ROOT>\\Codelib-severin\\2_Business\\uagent-sync <temp>\\repo",
+      "exitCode": 0,
+      "log": "01-clone.raw.log"
+    },
+    {
+      "id": "checkout",
+      "command": "git checkout --detach ec827170ec24d78fd27e213d3cc3ff1d678a6377",
+      "exitCode": 0,
+      "log": "02-checkout.raw.log"
+    },
+    {
+      "id": "scope",
+      "command": "git rev-parse HEAD; git status --short; git diff-tree --no-commit-id --name-status -r HEAD",
+      "exitCode": 0,
+      "log": "03-scope.raw.log"
+    },
+    {
+      "id": "npm-ci",
+      "command": "npm ci --ignore-scripts --no-audit --no-fund",
+      "exitCode": 0,
+      "log": "04-npm-ci.raw.log"
+    },
+    {
+      "id": "build",
+      "command": "npm run build",
+      "exitCode": 0,
+      "log": "05-build.raw.log"
+    },
+    {
+      "id": "manual-probe",
+      "command": "node <temp>\\m13-manual-probe.mjs",
+      "exitCode": 0,
+      "observations": [
+        "M13-P1 blocked=false",
+        "M13-P2 blocked=true",
+        "M13-P3 blocked=true"
+      ],
+      "log": "06-manual-probe.raw.log"
+    },
+    {
+      "id": "targeted-tests",
+      "command": "node --import tsx --test test/profile-secret-scan-m13.test.ts test/profile-secret-scan.test.ts test/secret-scan-m0.test.ts",
+      "exitCode": 0,
+      "tests": 56,
+      "pass": 56,
+      "fail": 0,
+      "log": "07-targeted-tests.raw.log"
+    },
+    {
+      "id": "npm-test",
+      "command": "npm test",
+      "exitCode": 0,
+      "tests": 474,
+      "suites": 85,
+      "pass": 474,
+      "fail": 0,
+      "log": "08-npm-test.raw.log"
+    },
+    {
+      "id": "three-gates-probe",
+      "command": "node <temp>\\m13-three-gates-probe.mjs",
+      "exitCode": 0,
+      "observations": [
+        "M13-G1 blocked=false",
+        "M13-G2 blocked=false",
+        "M13-G3 blocked=false"
+      ],
+      "log": "09-three-gates-probe.raw.log"
+    },
+    {
+      "id": "final-scope",
+      "command": "git rev-parse HEAD; git diff-tree --no-commit-id --name-status -r HEAD; git status --short",
+      "exitCode": 0,
+      "worktreeStatus": [
+        "M src/dashboard/i18n.js"
+      ],
+      "log": "10-final-scope.raw.log"
+    },
+    {
+      "id": "confirmed-three-gates",
+      "command": "node <VALIDATION_ROOT>/m13-three-gates-confirmed.mjs",
+      "exitCode": 0,
+      "log": "11-confirmed-gates.log",
+      "role": "diagnostic assertions prove bug present, not acceptance pass"
+    }
+  ],
+  "isolation": {
+    "USERPROFILE": "<temp>\\env\\userprofile",
+    "HOME": "<temp>\\env\\home",
+    "APPDATA": "<temp>\\env\\appdata",
+    "LOCALAPPDATA": "<temp>\\env\\localappdata",
+    "CODEX_HOME": "<temp>\\env\\codex",
+    "XDG_CONFIG_HOME": "<temp>\\env\\xdg",
+    "TMP": "<temp>\\env\\tmp",
+    "TEMP": "<temp>\\env\\tmp",
+    "NPM_CONFIG_CACHE": "<temp>\\env\\npm-cache",
+    "NPM_CONFIG_USERCONFIG": "<temp>\\env\\npmrc",
+    "UAGENT_SYNC_WORKSPACE_ROOT": "unset",
+    "OPENCODE_SYNC_WORKSPACE_ROOT": "<temp>\\repo"
+  }
+}

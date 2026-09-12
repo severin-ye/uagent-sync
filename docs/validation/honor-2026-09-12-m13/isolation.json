@@ -1,0 +1,14 @@
+{
+  "USERPROFILE": "<temp>\\env\\userprofile",
+  "HOME": "<temp>\\env\\home",
+  "APPDATA": "<temp>\\env\\appdata",
+  "LOCALAPPDATA": "<temp>\\env\\localappdata",
+  "CODEX_HOME": "<temp>\\env\\codex",
+  "XDG_CONFIG_HOME": "<temp>\\env\\xdg",
+  "TMP": "<temp>\\env\\tmp",
+  "TEMP": "<temp>\\env\\tmp",
+  "NPM_CONFIG_CACHE": "<temp>\\env\\npm-cache",
+  "NPM_CONFIG_USERCONFIG": "<temp>\\env\\npmrc",
+  "UAGENT_SYNC_WORKSPACE_ROOT": "unset",
+  "OPENCODE_SYNC_WORKSPACE_ROOT": "<temp>\\repo"
+}
