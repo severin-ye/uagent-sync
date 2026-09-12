@@ -1,0 +1,86 @@
+{
+  "hpPublicHashes": [
+    {
+      "file": ".gitattributes",
+      "matches": true
+    },
+    {
+      "file": "README.md",
+      "matches": true
+    },
+    {
+      "file": "RESULT.json",
+      "matches": true
+    },
+    {
+      "file": "build-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "build.log",
+      "matches": true
+    },
+    {
+      "file": "commands.json",
+      "matches": true
+    },
+    {
+      "file": "detect-all.json",
+      "matches": true
+    },
+    {
+      "file": "detect-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "detect.log",
+      "matches": true
+    },
+    {
+      "file": "executed-wrapper.txt",
+      "matches": true
+    },
+    {
+      "file": "install-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "install.log",
+      "matches": true
+    },
+    {
+      "file": "raw-log-hashes.json",
+      "matches": true
+    },
+    {
+      "file": "region-summary.json",
+      "matches": true
+    },
+    {
+      "file": "scan-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "scan-result.json",
+      "matches": true
+    },
+    {
+      "file": "scan-script.txt",
+      "matches": true
+    },
+    {
+      "file": "scan.log",
+      "matches": true
+    },
+    {
+      "file": "source-equivalence-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "source-equivalence.log",
+      "matches": true
+    }
+  ],
+  "handoffAncestor": 0,
+  "sourceEqual": 0
+}

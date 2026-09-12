@@ -1,0 +1,170 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { createHash } from 'node:crypto';
+import { pathToFileURL } from 'node:url';
+import { TextDecoder } from 'node:util';
+
+const args = new Map();
+for (let i = 2; i < process.argv.length; i += 2) args.set(process.argv[i], process.argv[i + 1]);
+const repoRoot = path.resolve(args.get('--repo'));
+const skillsRoot = path.resolve(args.get('--skills-root'));
+const oldPath = path.resolve(args.get('--old'));
+const previousPath = path.resolve(args.get('--previous'));
+const publicDir = path.resolve(args.get('--public-dir'));
+const privateDir = path.resolve(args.get('--private-dir'));
+const expectedSourceSha = 'af3f79c2c66a3d3c17fea20de0b12cc5577faf0f';
+const prefix = 'agents/skills/';
+
+fs.mkdirSync(publicDir, { recursive: true });
+fs.mkdirSync(privateDir, { recursive: true });
+
+const { assertProfileContentSafe } = await import(
+  pathToFileURL(path.join(repoRoot, 'dist/lib/profile-secret-scan.js')).href
+);
+if (typeof assertProfileContentSafe !== 'function') throw new Error('SCAN_ENTRY_NOT_FUNCTION');
+
+const old = JSON.parse(fs.readFileSync(oldPath, 'utf8'));
+const previous = JSON.parse(fs.readFileSync(previousPath, 'utf8'));
+if (!Array.isArray(old.files) || old.files.length !== 13) throw new Error('EXPECTED_EXACTLY_13_FILES');
+if (!Array.isArray(old.hits)) throw new Error('OLD_HITS_NOT_ARRAY');
+
+const digest = (bytes) => createHash('sha256').update(bytes).digest('hex');
+const decoder = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true });
+const files = [];
+const privateFileEvidence = [];
+
+for (const record of old.files) {
+  const relativePath = String(record.path);
+  if (!relativePath.startsWith(prefix)) throw new Error('OUT_OF_SCOPE_PATH_PREFIX');
+  const mapped = relativePath.slice(prefix.length).replaceAll('/', path.sep);
+  if (!mapped || path.isAbsolute(mapped) || mapped.split(path.sep).includes('..')) {
+    throw new Error('OUT_OF_SCOPE_PATH_SHAPE');
+  }
+  const sourcePath = path.resolve(skillsRoot, mapped);
+  const rootWithSeparator = skillsRoot.endsWith(path.sep) ? skillsRoot : skillsRoot + path.sep;
+  if (!sourcePath.startsWith(rootWithSeparator)) throw new Error('OUT_OF_SCOPE_RESOLUTION');
+
+  let bytes;
+  try {
+    bytes = fs.readFileSync(sourcePath);
+  } catch (error) {
+    const errorCode = typeof error?.code === 'string' ? error.code : 'UNEXPECTED_READ_ERROR';
+    files.push({ path: relativePath, present: false, baselineHashMatches: false, beforeAfterHashMatches: false, status: 'missing-or-unreadable', errorCode, findings: [], candidateIds: [] });
+    privateFileEvidence.push({ path: sourcePath, relativePath, present: false, errorCode, baselineSha256: record.current_sha256 });
+    continue;
+  }
+
+  const before = digest(bytes);
+  const baselineHashMatches = before === record.current_sha256;
+  let content;
+  try {
+    content = decoder.decode(bytes);
+  } catch {
+    const after = digest(fs.readFileSync(sourcePath));
+    files.push({ path: relativePath, present: true, utf8Valid: false, baselineHashMatches, beforeAfterHashMatches: before === after, status: 'invalid-utf8', findings: [], candidateIds: [] });
+    privateFileEvidence.push({ path: sourcePath, relativePath, present: true, beforeSha256: before, afterSha256: after, baselineSha256: record.current_sha256 });
+    continue;
+  }
+
+  let status = 'passed';
+  let findings = [];
+  try {
+    assertProfileContentSafe(content, relativePath);
+  } catch (error) {
+    const message = String(error?.message ?? '');
+    if (!message.startsWith(`Secret scan blocked ${relativePath}: `)) throw error;
+    status = 'blocked';
+    findings = [...message.matchAll(/(authorization-bearer|known-token-prefix|sensitive-assignment)@(\d+)/g)]
+      .map((match) => ({ rule: match[1], line: Number(match[2]) }));
+  }
+
+  const after = digest(fs.readFileSync(sourcePath));
+  const oldHitsForFile = old.hits.filter((hit) => hit.path === relativePath);
+  const publicFindings = findings.map((finding) => ({
+    rule: finding.rule,
+    line: finding.line,
+    candidateIds: baselineHashMatches
+      ? oldHitsForFile.filter((hit) => hit.rule === finding.rule && hit.line === finding.line).map((hit) => hit.id)
+      : [],
+  }));
+  const candidateIds = baselineHashMatches ? oldHitsForFile.map((hit) => hit.id) : [];
+  files.push({
+    path: relativePath,
+    present: true,
+    utf8Valid: true,
+    baselineHashMatches,
+    beforeAfterHashMatches: before === after,
+    status: baselineHashMatches ? status : 'drifted',
+    findings: publicFindings,
+    candidateIds,
+  });
+  privateFileEvidence.push({
+    path: sourcePath,
+    relativePath,
+    present: true,
+    beforeSha256: before,
+    afterSha256: after,
+    baselineSha256: record.current_sha256,
+  });
+}
+
+const summary = {
+  files: files.length,
+  present: files.filter((file) => file.present).length,
+  missingOrUnreadable: files.filter((file) => !file.present).length,
+  utf8Valid: files.filter((file) => file.utf8Valid).length,
+  baselineMatches: files.filter((file) => file.baselineHashMatches).length,
+  drifted: files.filter((file) => file.present && !file.baselineHashMatches).length,
+  passed: files.filter((file) => file.status === 'passed').length,
+  blocked: files.filter((file) => file.status === 'blocked').length,
+  findings: files.reduce((sum, file) => sum + file.findings.length, 0),
+  beforeAfterMatches: files.filter((file) => file.beforeAfterHashMatches).length,
+};
+
+const result = {
+  expectedSourceRevision: expectedSourceSha,
+  scannerEntry: 'assertProfileContentSafe(full UTF-8 content, original relative path)',
+  scopeExactOldFileList: true,
+  summary,
+  files,
+};
+
+const previousByPath = new Map(previous.files.map((file) => [file.path, file]));
+const comparisonFiles = files.map((file) => {
+  const prior = previousByPath.get(file.path);
+  const currentFindingKeys = file.findings.map((finding) => `${finding.rule}@${finding.line}`).sort();
+  const priorFindingKeys = Array.isArray(prior?.findings)
+    ? prior.findings.map((finding) => `${finding.rule}@${finding.line}`).sort()
+    : [];
+  return {
+    path: file.path,
+    previousPresent: Boolean(prior),
+    sameStatus: Boolean(prior) && prior.status === file.status,
+    sameBaselineHashMatch: Boolean(prior) && prior.baselineHashMatches === file.baselineHashMatches,
+    sameFindingKeys: Boolean(prior) && JSON.stringify(priorFindingKeys) === JSON.stringify(currentFindingKeys),
+    currentStatus: file.status,
+    currentFindingKeys,
+    currentCandidateIds: file.candidateIds,
+  };
+});
+
+const comparison = {
+  previousFiles: Array.isArray(previous.files) ? previous.files.length : 0,
+  currentFiles: files.length,
+  allPathsAccountedFor: comparisonFiles.every((item) => item.previousPresent),
+  allStatusesMatch: comparisonFiles.every((item) => item.sameStatus),
+  allBaselineHashBooleansMatch: comparisonFiles.every((item) => item.sameBaselineHashMatch),
+  allFindingKeysMatch: comparisonFiles.every((item) => item.sameFindingKeys),
+  files: comparisonFiles,
+};
+
+fs.writeFileSync(path.join(privateDir, 'private-file-evidence.json'), JSON.stringify(privateFileEvidence, null, 2));
+fs.writeFileSync(path.join(publicDir, 'scan-result.json'), JSON.stringify(result, null, 2));
+fs.writeFileSync(path.join(publicDir, 'comparison.json'), JSON.stringify(comparison, null, 2));
+console.log(JSON.stringify({ summary, comparison: {
+  allPathsAccountedFor: comparison.allPathsAccountedFor,
+  allStatusesMatch: comparison.allStatusesMatch,
+  allBaselineHashBooleansMatch: comparison.allBaselineHashBooleansMatch,
+  allFindingKeysMatch: comparison.allFindingKeysMatch,
+} }));
+process.exitCode = files.some((file) => !file.present || !file.utf8Valid || !file.beforeAfterHashMatches) ? 1 : 0;

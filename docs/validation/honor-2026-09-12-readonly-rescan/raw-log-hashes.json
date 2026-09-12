@@ -1,0 +1,50 @@
+[
+  {
+    "file": "01-git-clone.log",
+    "sha256": "bba7c312cbe4cf237bef36ae4fc90921f8456d52d0331edc3b6052b6e0f9c4d2"
+  },
+  {
+    "file": "02-git-checkout.log",
+    "sha256": "6c340270fb0030d6427bbacce0aa1f612968eae803bf2018ed1c469afc28f83e"
+  },
+  {
+    "file": "04-head-before-build.log",
+    "sha256": "8428a3e13ec852196de5d50babe5c6e346a575bf4e5ccdb1260296ad54746b38"
+  },
+  {
+    "file": "05-npm-ci.log",
+    "sha256": "6b2d0b840c8300d49055a6fdb74afdba906b43fa40bf4b0c50d0c917715821c8"
+  },
+  {
+    "file": "06-npm-build.log",
+    "sha256": "ac0f02160e4f4e848179339f5bc74262de46982ca26e9938bd36427bdad79683"
+  },
+  {
+    "file": "07-input-commit-exists.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "file": "08-input-docs-match.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "file": "09-single-scan.log",
+    "sha256": "7f1674a75d81fc4045ccb7b2730c28c6a64be823016b7aa3d770cdb6efebcca7"
+  },
+  {
+    "file": "10-head-after-scan.log",
+    "sha256": "8428a3e13ec852196de5d50babe5c6e346a575bf4e5ccdb1260296ad54746b38"
+  },
+  {
+    "file": "11-working-diff.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "file": "12-working-status.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "file": "13-public-command-index.log",
+    "sha256": "26ea77703590ff1c94c433ea86c63a8e40ed65020e54446a9c4c3e4b4b73816e"
+  }
+]

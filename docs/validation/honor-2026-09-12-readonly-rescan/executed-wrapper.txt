@@ -1,0 +1,84 @@
+param(
+  [Parameter(Mandatory=$true)][string]$Name,
+  [Parameter(Mandatory=$true)][string]$Executable,
+  [Parameter(Mandatory=$true)][string[]]$ArgumentList,
+  [Parameter(Mandatory=$true)][string]$WorkingDirectory
+)
+
+$ErrorActionPreference = 'Stop'
+$Root = Split-Path -Parent $MyInvocation.MyCommand.Path
+$Logs = Join-Path $Root 'private-logs'
+$Isolated = Join-Path $Root 'isolated-profile'
+New-Item -ItemType Directory -Path $Logs -Force | Out-Null
+foreach ($relative in @('home','appdata','localappdata','codex','xdg','tmp','npm-cache')) {
+  New-Item -ItemType Directory -Path (Join-Path $Isolated $relative) -Force | Out-Null
+}
+
+$env:USERPROFILE = Join-Path $Isolated 'home'
+$env:HOME = Join-Path $Isolated 'home'
+$env:APPDATA = Join-Path $Isolated 'appdata'
+$env:LOCALAPPDATA = Join-Path $Isolated 'localappdata'
+$env:CODEX_HOME = Join-Path $Isolated 'codex'
+$env:XDG_CONFIG_HOME = Join-Path $Isolated 'xdg'
+$env:TEMP = Join-Path $Isolated 'tmp'
+$env:TMP = Join-Path $Isolated 'tmp'
+$env:npm_config_cache = Join-Path $Isolated 'npm-cache'
+$env:npm_config_userconfig = Join-Path $Isolated 'npm-userconfig'
+$env:npm_config_globalconfig = Join-Path $Isolated 'npm-globalconfig'
+$env:GIT_CONFIG_GLOBAL = Join-Path $Isolated 'gitconfig'
+$env:GIT_CONFIG_NOSYSTEM = '1'
+
+foreach ($item in @(Get-ChildItem Env:)) {
+  if ($item.Name -eq 'UAGENT_SYNC_WORKSPACE_ROOT' -or $item.Name -match '^OPENCODE.*(WORKSPACE|CONFIG|HOME)') {
+    Remove-Item -Path ('Env:' + $item.Name) -ErrorAction SilentlyContinue
+  }
+}
+
+$safeEnvironment = [ordered]@{
+  USERPROFILE = $env:USERPROFILE
+  HOME = $env:HOME
+  APPDATA = $env:APPDATA
+  LOCALAPPDATA = $env:LOCALAPPDATA
+  CODEX_HOME = $env:CODEX_HOME
+  XDG_CONFIG_HOME = $env:XDG_CONFIG_HOME
+  TEMP = $env:TEMP
+  TMP = $env:TMP
+  npm_config_cache = $env:npm_config_cache
+  npm_config_userconfig = $env:npm_config_userconfig
+  npm_config_globalconfig = $env:npm_config_globalconfig
+  GIT_CONFIG_GLOBAL = $env:GIT_CONFIG_GLOBAL
+  GIT_CONFIG_NOSYSTEM = $env:GIT_CONFIG_NOSYSTEM
+  UAGENT_SYNC_WORKSPACE_ROOT_present = [bool](Test-Path Env:UAGENT_SYNC_WORKSPACE_ROOT)
+  OPENCODE_scoped_vars_remaining = @((Get-ChildItem Env: | Where-Object { $_.Name -match '^OPENCODE.*(WORKSPACE|CONFIG|HOME)' } | Select-Object -ExpandProperty Name))
+}
+
+$logPath = Join-Path $Logs ($Name + '.log')
+$entryPath = Join-Path $Logs ($Name + '.command.json')
+$entry = [ordered]@{
+  name = $Name
+  startedAt = (Get-Date).ToUniversalTime().ToString('o')
+  workingDirectory = $WorkingDirectory
+  executable = $Executable
+  arguments = $ArgumentList
+  environment = $safeEnvironment
+  log = $logPath
+  exitCode = $null
+}
+$entry | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $entryPath -Encoding utf8
+
+Push-Location -LiteralPath $WorkingDirectory
+try {
+  & $Executable @ArgumentList *> $logPath
+  $code = $LASTEXITCODE
+  if ($null -eq $code) { $code = 0 }
+} catch {
+  $_ | Out-String | Add-Content -LiteralPath $logPath -Encoding utf8
+  $code = 1
+} finally {
+  Pop-Location
+}
+$entry.exitCode = $code
+$entry.finishedAt = (Get-Date).ToUniversalTime().ToString('o')
+$entry | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $entryPath -Encoding utf8
+Write-Output (ConvertTo-Json ([ordered]@{name=$Name;exitCode=$code;log=$logPath}) -Compress)
+exit $code

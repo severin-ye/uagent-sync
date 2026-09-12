@@ -1,0 +1,263 @@
+{
+  "expectedSourceRevision": "af3f79c2c66a3d3c17fea20de0b12cc5577faf0f",
+  "scannerEntry": "assertProfileContentSafe(full UTF-8 content, original relative path)",
+  "scopeExactOldFileList": true,
+  "summary": {
+    "files": 13,
+    "present": 13,
+    "missingOrUnreadable": 0,
+    "utf8Valid": 13,
+    "baselineMatches": 13,
+    "drifted": 0,
+    "passed": 5,
+    "blocked": 8,
+    "findings": 10,
+    "beforeAfterMatches": 13
+  },
+  "files": [
+    {
+      "path": "agents/skills/claude-api/php/managed-agents/README.md",
+      "present": true,
+      "utf8Valid": true,
+      "baselineHashMatches": true,
+      "beforeAfterHashMatches": true,
+      "status": "blocked",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 22,
+          "candidateIds": [
+            "HP-001"
+          ]
+        }
+      ],
+      "candidateIds": [
+        "HP-001"
+      ]
+    },
+    {
+      "path": "agents/skills/claude-api/python/claude-api/README.md",
+      "present": true,
+      "utf8Valid": true,
+      "baselineHashMatches": true,
+      "beforeAfterHashMatches": true,
+      "status": "passed",
+      "findings": [],
+      "candidateIds": [
+        "HP-002"
+      ]
+    },
+    {
+      "path": "agents/skills/claude-api/python/managed-agents/README.md",
+      "present": true,
+      "utf8Valid": true,
+      "baselineHashMatches": true,
+      "beforeAfterHashMatches": true,
+      "status": "passed",
+      "findings": [],
+      "candidateIds": [
+        "HP-003"
+      ]
+    },
+    {
+      "path": "agents/skills/claude-api/ruby/claude-api/README.md",
+      "present": true,
+      "utf8Valid": true,
+      "baselineHashMatches": true,
+      "beforeAfterHashMatches": true,
+      "status": "blocked",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 20,
+          "candidateIds": [
+            "HP-004"
+          ]
+        }
+      ],
+      "candidateIds": [
+        "HP-004"
+      ]
+    },
+    {
+      "path": "agents/skills/claude-api/ruby/managed-agents/README.md",
+      "present": true,
+      "utf8Valid": true,
+      "baselineHashMatches": true,
+      "beforeAfterHashMatches": true,
+      "status": "blocked",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 22,
+          "candidateIds": [
+            "HP-005"
+          ]
+        }
+      ],
+      "candidateIds": [
+        "HP-005"
+      ]
+    },
+    {
+      "path": "agents/skills/claude-api/shared/managed-agents-tools.md",
+      "present": true,
+      "utf8Valid": true,
+      "baselineHashMatches": true,
+      "beforeAfterHashMatches": true,
+      "status": "blocked",
+      "findings": [
+        {
+          "rule": "known-token-prefix",
+          "line": 263,
+          "candidateIds": [
+            "HP-006"
+          ]
+        }
+      ],
+      "candidateIds": [
+        "HP-006"
+      ]
+    },
+    {
+      "path": "agents/skills/claude-api/typescript/claude-api/README.md",
+      "present": true,
+      "utf8Valid": true,
+      "baselineHashMatches": true,
+      "beforeAfterHashMatches": true,
+      "status": "passed",
+      "findings": [],
+      "candidateIds": [
+        "HP-007"
+      ]
+    },
+    {
+      "path": "agents/skills/claude-api/typescript/managed-agents/README.md",
+      "present": true,
+      "utf8Valid": true,
+      "baselineHashMatches": true,
+      "beforeAfterHashMatches": true,
+      "status": "passed",
+      "findings": [],
+      "candidateIds": [
+        "HP-008"
+      ]
+    },
+    {
+      "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+      "present": true,
+      "utf8Valid": true,
+      "baselineHashMatches": true,
+      "beforeAfterHashMatches": true,
+      "status": "blocked",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 100,
+          "candidateIds": [
+            "HP-009"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 125,
+          "candidateIds": [
+            "HP-010"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 344,
+          "candidateIds": [
+            "HP-013"
+          ]
+        }
+      ],
+      "candidateIds": [
+        "HP-009",
+        "HP-010",
+        "HP-011",
+        "HP-012",
+        "HP-013",
+        "HP-014",
+        "HP-015"
+      ]
+    },
+    {
+      "path": "agents/skills/ncbi-sequence-fetch/scripts/ncbi_fetch.py",
+      "present": true,
+      "utf8Valid": true,
+      "baselineHashMatches": true,
+      "beforeAfterHashMatches": true,
+      "status": "passed",
+      "findings": [],
+      "candidateIds": [
+        "HP-016",
+        "HP-017"
+      ]
+    },
+    {
+      "path": "agents/skills/openfda-database/scripts/openfda_query.py",
+      "present": true,
+      "utf8Valid": true,
+      "baselineHashMatches": true,
+      "beforeAfterHashMatches": true,
+      "status": "blocked",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 158,
+          "candidateIds": [
+            "HP-018"
+          ]
+        }
+      ],
+      "candidateIds": [
+        "HP-018",
+        "HP-019",
+        "HP-020",
+        "HP-021"
+      ]
+    },
+    {
+      "path": "agents/skills/pdf/SKILL.md",
+      "present": true,
+      "utf8Valid": true,
+      "baselineHashMatches": true,
+      "beforeAfterHashMatches": true,
+      "status": "blocked",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 216,
+          "candidateIds": [
+            "HP-022"
+          ]
+        }
+      ],
+      "candidateIds": [
+        "HP-022"
+      ]
+    },
+    {
+      "path": "agents/skills/pdf/reference.md",
+      "present": true,
+      "utf8Valid": true,
+      "baselineHashMatches": true,
+      "beforeAfterHashMatches": true,
+      "status": "blocked",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 340,
+          "candidateIds": [
+            "HP-023"
+          ]
+        }
+      ],
+      "candidateIds": [
+        "HP-023"
+      ]
+    }
+  ]
+}

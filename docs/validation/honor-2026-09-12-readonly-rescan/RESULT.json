@@ -1,0 +1,30 @@
+{
+  "task": "RY-04-PRE",
+  "status": "readonly-comparison-completed-with-blockers",
+  "source": "af3f79c2c66a3d3c17fea20de0b12cc5577faf0f",
+  "input": "02c2a7d32bd5ea65b5afd3b0e9ed56d9c23efe68",
+  "summary": {
+    "files": 13,
+    "present": 13,
+    "missingOrUnreadable": 0,
+    "utf8Valid": 13,
+    "baselineMatches": 13,
+    "drifted": 0,
+    "passed": 5,
+    "blocked": 8,
+    "findings": 10,
+    "beforeAfterMatches": 13
+  },
+  "ruleCounts": {
+    "sensitive-assignment": 9,
+    "known-token-prefix": 1
+  },
+  "oldCandidates": 23,
+  "notReported": 13,
+  "matchesHP": true,
+  "realSnapshotCreated": false,
+  "parserModified": false,
+  "hp03Complete": false,
+  "hp04Complete": false,
+  "migrationComplete": false
+}
