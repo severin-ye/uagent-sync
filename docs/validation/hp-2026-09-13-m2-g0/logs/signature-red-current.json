@@ -1,0 +1,9 @@
+{
+  "cmd": "npm.cmd",
+  "args": [
+    "test"
+  ],
+  "cwd": "<LOCAL>/m2g0p",
+  "status": 1,
+  "signal": null
+}

@@ -1,0 +1,59 @@
+
+> hp-m2-g0-synthetic@0.0.1 test
+> node --test test.mjs
+
+✔ safe exact field with original UTF16 span and LF/CRLF (7.9458ms)
+✔ abstain shortBefore (1.2057ms)
+✔ abstain shortAfter (1.5089ms)
+✔ abstain tripleBefore (0.8632ms)
+✔ abstain tripleAfter (0.6705ms)
+✔ abstain syntaxAfter (0.8241ms)
+✔ abstain defaultOrder (1.3971ms)
+✔ abstain bareStar (0.7005ms)
+✔ abstain defaultName (0.6595ms)
+✔ abstain generic (1.6804ms)
+✔ abstain comma (0.6048ms)
+✔ abstain unknownDescription (0.4677ms)
+✔ abstain unicodeMismatch (0.3714ms)
+✔ abstain blankContinuation (0.541ms)
+✔ abstain duplicateArgs (0.668ms)
+✔ abstain wrongOwner (0.3311ms)
+✔ abstain adjacentFunction (0.8588ms)
+✔ abstain formatString (0.5432ms)
+✔ abstain escapedDoc (0.5274ms)
+✔ abstain prefixedDoc (0.3356ms)
+✔ abstain bom (0.1797ms)
+✔ abstain loneCR (0.2513ms)
+✔ keyword-only required after default is allowed (0.3135ms)
+✔ raw quote boundary escapes and EOF (0.1843ms)
+✔ valid final string EOF and literal replacement character (0.3531ms)
+✔ missing and untrusted plain template fail closed (0.1024ms)
+✔ closed provider topExtra (0.3094ms)
+✔ closed provider entryExtra (0.1757ms)
+✔ closed provider version (0.1275ms)
+✔ closed provider policy (0.1334ms)
+✔ closed provider parser (0.1574ms)
+✔ closed provider id (0.1092ms)
+✔ closed provider field (0.0934ms)
+✔ closed provider duplicateId (0.1109ms)
+✔ closed provider duplicateDescription (0.0988ms)
+✔ closed provider missingGroup (0.0929ms)
+✔ closed provider whitespace (0.0916ms)
+✔ closed provider newline (0.1224ms)
+✔ JSON rejection duplicateTop (0.0967ms)
+✔ JSON rejection escapedDuplicate (0.0704ms)
+✔ JSON rejection duplicateEntry (0.0679ms)
+✔ JSON rejection nonJSONWhitespace (0.0992ms)
+✔ JSON rejection bom (0.0746ms)
+✔ JSON rejection trailing (0.0915ms)
+✔ invalid UTF8, absent source and read failure (0.2078ms)
+✔ deep freeze and one load per operation (0.8372ms)
+✔ concurrent operation isolation and copied bytes (0.4868ms)
+ℹ tests 47
+ℹ suites 0
+ℹ pass 47
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 149.3399

@@ -1,0 +1,11 @@
+{
+  "cmd": "node",
+  "args": [
+    "probe.mjs",
+    "<LOCAL>/m2g0e/trees-current.json",
+    "--expect-raw-rejection"
+  ],
+  "cwd": "<LOCAL>/m2g0p",
+  "status": 1,
+  "signal": null
+}

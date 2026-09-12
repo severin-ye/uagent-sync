@@ -1,0 +1,9 @@
+{
+  "cmd": "node",
+  "args": [
+    "<LOCAL>/m2g0e/runtime-check.mjs"
+  ],
+  "cwd": "<LOCAL>/m2g0p",
+  "status": 0,
+  "signal": null
+}

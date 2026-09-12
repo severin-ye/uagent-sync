@@ -1,0 +1,10 @@
+{
+  "scope": "documents-and-isolated-synthetic-artifact-only",
+  "inputSha": "1e46e346579de0e9f8ee69b042cdffabb4c5ac42",
+  "productionSourceSha": "70428520228adcac3ac66a2cfb857667b7b69aed",
+  "productionDiffPaths": [],
+  "publicFileCount": 75,
+  "jsonParseAndPathCredentialPatternCheck": "pass",
+  "manualSourceReview": "only synthetic fixtures and metadata; no real templates read",
+  "notClaimed": "general secret-proof or production scan; pattern check is supplemental"
+}

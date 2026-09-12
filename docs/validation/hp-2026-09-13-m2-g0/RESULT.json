@@ -1,0 +1,52 @@
+{
+  "task": "HP-03-M2-G0",
+  "inputSha": "1e46e346579de0e9f8ee69b042cdffabb4c5ac42",
+  "productionSourceSha": "70428520228adcac3ac66a2cfb857667b7b69aed",
+  "conclusion": "synthetic-prototype-gates-passed-pending-honor-review",
+  "runtimes": [
+    {
+      "version": "v24.19.0",
+      "tests": 57,
+      "pass": 57,
+      "exit": 0,
+      "packedImportExit": 0
+    },
+    {
+      "version": "v18.20.8",
+      "tests": 57,
+      "pass": 57,
+      "exit": 0,
+      "packedImportExit": 0
+    }
+  ],
+  "strictOnlyHypothesis": {
+    "exit": 1,
+    "acceptedUnterminatedShortStrings": 2,
+    "errorNodes": 0,
+    "reproducedOnBothRuntimes": true
+  },
+  "initialProvider": {
+    "tests": 47,
+    "pass": 45,
+    "fail": 2,
+    "exit": 1
+  },
+  "signatureGap": {
+    "tests": 57,
+    "pass": 56,
+    "fail": 1,
+    "exit": 1,
+    "reproducedOnBothRuntimes": true
+  },
+  "sourceDiffPaths": [],
+  "productionDependencyChanged": false,
+  "scannerChanged": false,
+  "threeEntrypointsChanged": false,
+  "realFilesRead": false,
+  "realTemplatesPrepared": false,
+  "realScan": false,
+  "m2Allowed": false,
+  "hp03Complete": false,
+  "hp04Complete": false,
+  "migrationComplete": false
+}

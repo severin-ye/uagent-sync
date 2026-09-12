@@ -1,0 +1,118 @@
+✔ safe exact field with original UTF16 span and LF/CRLF (6.864ms)
+✔ abstain shortBefore (1.0458ms)
+✔ abstain shortAfter (1.2979ms)
+✔ abstain tripleBefore (0.9788ms)
+✔ abstain tripleAfter (0.9458ms)
+✔ abstain syntaxAfter (0.6237ms)
+✔ abstain defaultOrder (1.112ms)
+✔ abstain bareStar (0.545ms)
+✔ abstain defaultName (0.5582ms)
+✔ abstain generic (1.279ms)
+✔ abstain comma (0.5214ms)
+✔ abstain unknownDescription (0.4889ms)
+✔ abstain unicodeMismatch (0.3745ms)
+✔ abstain blankContinuation (0.577ms)
+✔ abstain duplicateArgs (0.3307ms)
+✔ abstain wrongOwner (0.3096ms)
+✔ abstain adjacentFunction (0.4153ms)
+✔ abstain formatString (0.352ms)
+✔ abstain escapedDoc (0.4001ms)
+✔ abstain prefixedDoc (0.3115ms)
+✔ abstain bom (0.146ms)
+✔ abstain loneCR (0.1364ms)
+✔ keyword-only required after default is allowed (0.2333ms)
+✔ raw quote boundary escapes and EOF (0.114ms)
+✔ valid final string EOF and literal replacement character (0.2485ms)
+✖ missing and untrusted plain template fail closed (1.3864ms)
+✔ closed provider topExtra (0.2838ms)
+✔ closed provider entryExtra (0.2549ms)
+✔ closed provider version (0.2698ms)
+✔ closed provider policy (0.1485ms)
+✔ closed provider parser (0.0889ms)
+✔ closed provider id (0.1129ms)
+✔ closed provider field (0.0831ms)
+✔ closed provider duplicateId (0.0789ms)
+✔ closed provider duplicateDescription (0.0893ms)
+✔ closed provider missingGroup (0.0895ms)
+✔ closed provider whitespace (0.1004ms)
+✔ closed provider newline (0.1115ms)
+✔ JSON rejection duplicateTop (0.0886ms)
+✔ JSON rejection escapedDuplicate (0.0474ms)
+✔ JSON rejection duplicateEntry (0.0502ms)
+✖ JSON rejection nonJSONWhitespace (0.842ms)
+✔ JSON rejection bom (0.1424ms)
+✔ JSON rejection trailing (0.0895ms)
+✔ invalid UTF8, absent source and read failure (0.2402ms)
+✔ deep freeze and one load per operation (0.6578ms)
+✔ concurrent operation isolation and copied bytes (0.4848ms)
+ℹ tests 47
+ℹ suites 0
+ℹ pass 45
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 137.0051
+
+✖ failing tests:
+
+test at test.mjs:19:1
+✖ missing and untrusted plain template fail closed (1.3864ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 0
+
+      at TestContext.<anonymous> (file:///<LOCAL>/m2g0p/test.mjs:19:122)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test.mjs:21:477
+✖ JSON rejection nonJSONWhitespace (0.842ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + {
+  +   entries: [
+  +     {
+  +       description: 'Synthetic description alpha',
+  +       field: 'api_key',
+  +       id: 'D1'
+  +     },
+  +     {
+  +       description: 'Synthetic description beta',
+  +       field: 'api_key',
+  +       id: 'D2'
+  +     },
+  +     {
+  +       description: 'Synthetic description gamma',
+  +       field: 'api_key',
+  +       id: 'D3'
+  +     }
+  +   ],
+  +   parserVersion: '1.1.18',
+  +   policyVersion: 'm2-python-doc-v1',
+  +   schemaVersion: 1
+  + }
+  - null
+
+      at TestContext.<anonymous> (file:///<LOCAL>/m2g0p/test.mjs:21:521)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { schemaVersion: 1, policyVersion: 'm2-python-doc-v1', parserVersion: '1.1.18', entries: [ [Object], [Object], [Object] ] },
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

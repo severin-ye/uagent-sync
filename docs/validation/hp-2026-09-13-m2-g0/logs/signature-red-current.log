@@ -1,0 +1,88 @@
+
+> hp-m2-g0-synthetic@0.0.1 test
+> node --test test.mjs
+
+✔ safe exact field with original UTF16 span and LF/CRLF (10.8477ms)
+✔ abstain shortBefore (1.1928ms)
+✔ abstain shortAfter (1.1654ms)
+✔ abstain tripleBefore (0.9231ms)
+✔ abstain tripleAfter (0.8788ms)
+✔ abstain syntaxAfter (0.6265ms)
+✔ abstain defaultOrder (2.0594ms)
+✔ abstain bareStar (1.0317ms)
+✔ abstain defaultName (0.7184ms)
+✔ abstain generic (1.7769ms)
+✔ abstain comma (0.5895ms)
+✔ abstain unknownDescription (0.6075ms)
+✔ abstain unicodeMismatch (0.3746ms)
+✔ abstain blankContinuation (0.5151ms)
+✔ abstain duplicateArgs (0.3747ms)
+✔ abstain wrongOwner (0.3229ms)
+✔ abstain adjacentFunction (0.692ms)
+✔ abstain formatString (0.4482ms)
+✔ abstain escapedDoc (0.422ms)
+✔ abstain prefixedDoc (0.4211ms)
+✔ abstain bom (0.1457ms)
+✔ abstain loneCR (0.1385ms)
+✔ keyword-only required after default is allowed (0.2872ms)
+✔ raw quote boundary escapes and EOF (0.1511ms)
+✔ valid final string EOF and literal replacement character (0.3472ms)
+✔ missing and untrusted plain template fail closed (0.0942ms)
+✔ closed provider topExtra (0.1394ms)
+✔ closed provider entryExtra (0.1666ms)
+✔ closed provider version (0.594ms)
+✔ closed provider policy (0.092ms)
+✔ closed provider parser (0.0759ms)
+✔ closed provider id (0.0809ms)
+✔ closed provider field (0.079ms)
+✔ closed provider duplicateId (0.0748ms)
+✔ closed provider duplicateDescription (0.0832ms)
+✔ closed provider missingGroup (0.0871ms)
+✔ closed provider whitespace (0.0754ms)
+✔ closed provider newline (0.0947ms)
+✔ JSON rejection duplicateTop (0.0742ms)
+✔ JSON rejection escapedDuplicate (0.0447ms)
+✔ JSON rejection duplicateEntry (0.0662ms)
+✔ JSON rejection nonJSONWhitespace (0.0951ms)
+✔ JSON rejection bom (0.0761ms)
+✔ JSON rejection trailing (0.1132ms)
+✔ invalid UTF8, absent source and read failure (0.2016ms)
+✔ deep freeze and one load per operation (0.6495ms)
+✔ concurrent operation isolation and copied bytes (0.3844ms)
+✔ copy failure returns no partial template (0.1365ms)
+✔ JSON group order and exact Unicode description (0.3105ms)
+✔ later invalid candidate clears earlier pending (0.5154ms)
+✔ default expression names are not added to parameter set (0.3113ms)
+✔ actual parameter sibling accepted (0.5973ms)
+✔ byte validation is separate from string positions (0.2157ms)
+✔ resource limits are refusal gates (0.4147ms)
+✔ annotated parameter with nested default expression (0.3423ms)
+✖ unsupported signatures stay empty (1.281ms)
+✔ synthetic neighboring assignment remains outside the only span (0.4374ms)
+ℹ tests 57
+ℹ suites 0
+ℹ pass 56
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 159.105
+
+✖ failing tests:
+
+test at test.mjs:33:1
+✖ unsupported signatures stay empty (1.281ms)
+  AssertionError [ERR_ASSERTION]: api_key, /
+
+  1 !== 0
+
+      at TestContext.<anonymous> (file:///<LOCAL>/m2g0p/test.mjs:33:170)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

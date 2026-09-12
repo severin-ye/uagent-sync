@@ -1,0 +1,9 @@
+{
+  "cmd": "<LOCAL>/m2g0e/runtime18/node-v18.20.8-win-x64/node.exe",
+  "args": [
+    "smoke.mjs"
+  ],
+  "cwd": "<LOCAL>/m2g0c2",
+  "status": 0,
+  "signal": null
+}

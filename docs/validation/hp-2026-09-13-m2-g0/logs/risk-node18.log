@@ -1,0 +1,19 @@
+[{"id":"safe","accepted":true,"errorNodes":0,"tree":"Script(FunctionDefinition(def,VariableName,ParamList(\"(\",VariableName,AssignOp,None,\")\"),Body(\":\",ExpressionStatement(String),PassStatement(pass))))"},{"id":"shortBefore","accepted":true,"errorNodes":0,"tree":"Script(AssignStatement(VariableName,AssignOp,String),FunctionDefinition(def,VariableName,ParamList(\"(\",VariableName,AssignOp,None,\")\"),Body(\":\",ExpressionStatement(String),PassStatement(pass))))"},{"id":"shortAfter","accepted":true,"errorNodes":0,"tree":"Script(FunctionDefinition(def,VariableName,ParamList(\"(\",VariableName,AssignOp,None,\")\"),Body(\":\",ExpressionStatement(String),PassStatement(pass))),AssignStatement(VariableName,AssignOp,String))"},{"id":"tripleBefore","accepted":false},{"id":"tripleAfter","accepted":false},{"id":"defaultOrder","accepted":true,"errorNodes":0,"tree":"Script(FunctionDefinition(def,VariableName,ParamList(\"(\",VariableName,AssignOp,Number,\",\",VariableName,\")\"),Body(\":\",PassStatement(pass))))"},{"id":"bareStar","accepted":true,"errorNodes":0,"tree":"Script(FunctionDefinition(def,VariableName,ParamList(\"(\",VariableName,\",\",\"*\",\")\"),Body(\":\",PassStatement(pass))))"},{"id":"defaultName","accepted":true,"errorNodes":0,"tree":"Script(FunctionDefinition(def,VariableName,ParamList(\"(\",VariableName,AssignOp,VariableName,\")\"),Body(\":\",PassStatement(pass))))"},{"id":"generic","accepted":true,"errorNodes":0,"tree":"Script(FunctionDefinition(def,VariableName,TypeParamList(\"[\",TypeParam(VariableName),\"]\"),ParamList(\"(\",VariableName,\")\"),Body(\":\",PassStatement(pass))))"},{"id":"comma","accepted":true,"errorNodes":0,"tree":"Script(FunctionDefinition(def,VariableName,ParamList(\"(\",VariableName,AssignOp,None,\")\"),Body(\":\",ExpressionStatement(String,\",\"),PassStatement(pass))))"}]
+node:internal/process/esm_loader:40
+      internalBinding('errors').triggerUncaughtException(
+                                ^
+
+AssertionError [ERR_ASSERTION]: strict alone must reject every unterminated short string (safety hypothesis)
+    at file:///<LOCAL>/m2g0p/probe.mjs:12:60
+    at ModuleJob.run (node:internal/modules/esm/module_job:195:25)
+    at async ModuleLoader.import (node:internal/modules/esm/loader:337:24)
+    at async loadESM (node:internal/process/esm_loader:34:7)
+    at async handleMainPromise (node:internal/modules/run_main:106:12) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 2,
+  expected: 0,
+  operator: 'strictEqual'
+}
+
+Node.js v18.20.8

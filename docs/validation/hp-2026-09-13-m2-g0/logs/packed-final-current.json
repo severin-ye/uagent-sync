@@ -1,0 +1,9 @@
+{
+  "cmd": "node",
+  "args": [
+    "smoke.mjs"
+  ],
+  "cwd": "<LOCAL>/m2g0c2",
+  "status": 0,
+  "signal": null
+}

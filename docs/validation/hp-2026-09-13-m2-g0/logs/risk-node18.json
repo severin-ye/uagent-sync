@@ -1,0 +1,11 @@
+{
+  "cmd": "<LOCAL>/m2g0e/runtime18/node-v18.20.8-win-x64/node.exe",
+  "args": [
+    "probe.mjs",
+    "<LOCAL>/m2g0e/trees-node18.json",
+    "--expect-raw-rejection"
+  ],
+  "cwd": "<LOCAL>/m2g0p",
+  "status": 1,
+  "signal": null
+}

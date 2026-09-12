@@ -1,0 +1,166 @@
+[
+  {
+    "label": "install",
+    "cmd": "npm.cmd",
+    "args": [
+      "install",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "cwd": "<LOCAL>/m2g0p",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "risk-current",
+    "cmd": "node",
+    "args": [
+      "probe.mjs",
+      "<LOCAL>/m2g0e/trees-current.json",
+      "--expect-raw-rejection"
+    ],
+    "cwd": "<LOCAL>/m2g0p",
+    "status": 1,
+    "signal": null
+  },
+  {
+    "label": "risk-node18",
+    "cmd": "<LOCAL>/m2g0e/runtime18/node-v18.20.8-win-x64/node.exe",
+    "args": [
+      "probe.mjs",
+      "<LOCAL>/m2g0e/trees-node18.json",
+      "--expect-raw-rejection"
+    ],
+    "cwd": "<LOCAL>/m2g0p",
+    "status": 1,
+    "signal": null
+  },
+  {
+    "label": "prototype-initial",
+    "cmd": "node",
+    "args": [
+      "--test",
+      "test.mjs"
+    ],
+    "cwd": "<LOCAL>/m2g0p",
+    "status": 1,
+    "signal": null
+  },
+  {
+    "label": "focused-current",
+    "cmd": "npm.cmd",
+    "args": [
+      "test"
+    ],
+    "cwd": "<LOCAL>/m2g0p",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "signature-red-current",
+    "cmd": "npm.cmd",
+    "args": [
+      "test"
+    ],
+    "cwd": "<LOCAL>/m2g0p",
+    "status": 1,
+    "signal": null
+  },
+  {
+    "label": "signature-red-node18",
+    "cmd": "<LOCAL>/m2g0e/runtime18/node-v18.20.8-win-x64/node.exe",
+    "args": [
+      "--test",
+      "test.mjs"
+    ],
+    "cwd": "<LOCAL>/m2g0p",
+    "status": 1,
+    "signal": null
+  },
+  {
+    "label": "final-current",
+    "cmd": "npm.cmd",
+    "args": [
+      "test"
+    ],
+    "cwd": "<LOCAL>/m2g0p",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "final-node18",
+    "cmd": "<LOCAL>/m2g0e/runtime18/node-v18.20.8-win-x64/node.exe",
+    "args": [
+      "--test",
+      "test.mjs"
+    ],
+    "cwd": "<LOCAL>/m2g0p",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "inventory",
+    "cmd": "node",
+    "args": [
+      "inventory.mjs"
+    ],
+    "cwd": "<LOCAL>/m2g0p",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "pack-final",
+    "cmd": "npm.cmd",
+    "args": [
+      "pack",
+      "--json"
+    ],
+    "cwd": "<LOCAL>/m2g0p",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "consumer-final-install",
+    "cmd": "npm.cmd",
+    "args": [
+      "install",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "cwd": "<LOCAL>/m2g0c2",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "packed-final-current",
+    "cmd": "node",
+    "args": [
+      "smoke.mjs"
+    ],
+    "cwd": "<LOCAL>/m2g0c2",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "packed-final-node18",
+    "cmd": "<LOCAL>/m2g0e/runtime18/node-v18.20.8-win-x64/node.exe",
+    "args": [
+      "smoke.mjs"
+    ],
+    "cwd": "<LOCAL>/m2g0c2",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "runtime-check",
+    "cmd": "node",
+    "args": [
+      "<LOCAL>/m2g0e/runtime-check.mjs"
+    ],
+    "cwd": "<LOCAL>/m2g0p",
+    "status": 0,
+    "signal": null
+  }
+]

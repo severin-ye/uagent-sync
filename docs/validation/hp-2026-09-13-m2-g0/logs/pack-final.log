@@ -1,0 +1,36 @@
+[
+  {
+    "id": "hp-m2-g0-synthetic@0.0.1",
+    "name": "hp-m2-g0-synthetic",
+    "version": "0.0.1",
+    "size": 3386,
+    "unpackedSize": 8460,
+    "shasum": "db7af49103edd330a482595f24d017c1755dbb02",
+    "integrity": "sha512-7LtYjK+ELVzlrpUZiVfAHe6osGhzI/b4EUdnb/du+B7ng7RtbjJAHjGt/1go/MxDp1Dmn7mmY/qIMTDDpCy1iA==",
+    "filename": "hp-m2-g0-synthetic-0.0.1.tgz",
+    "files": [
+      {
+        "path": "index.mjs",
+        "size": 110,
+        "mode": 420
+      },
+      {
+        "path": "package.json",
+        "size": 222,
+        "mode": 420
+      },
+      {
+        "path": "parser.mjs",
+        "size": 5015,
+        "mode": 420
+      },
+      {
+        "path": "provider.mjs",
+        "size": 3113,
+        "mode": 420
+      }
+    ],
+    "entryCount": 4,
+    "bundled": []
+  }
+]

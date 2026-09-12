@@ -1,0 +1,10 @@
+{
+  "cmd": "<LOCAL>/m2g0e/runtime18/node-v18.20.8-win-x64/node.exe",
+  "args": [
+    "--test",
+    "test.mjs"
+  ],
+  "cwd": "<LOCAL>/m2g0p",
+  "status": 1,
+  "signal": null
+}
