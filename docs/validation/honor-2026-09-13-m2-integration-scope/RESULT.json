@@ -1,0 +1,16 @@
+{
+  "task": "RY-16",
+  "handoff": "c51d6e9f633da5563d043557c7a7cfe673e787bc",
+  "production": "70428520228adcac3ac66a2cfb857667b7b69aed",
+  "prototype": "eaf93ff1c2f51038bb00a8a6c963727d386f3c26",
+  "review": "accepted direction with C1-C3 contract clarifications",
+  "productionDiffEmpty": true,
+  "runtimeValidationExecuted": false,
+  "productionImplementationAuthorizedByThisReview": false,
+  "realTemplatesRead": false,
+  "realFilesRescanned": false,
+  "remainingBlocked": ["M2", "HP-006", "HP-022/023", "172 unknown findings", "RY-03"],
+  "hp03Complete": false,
+  "hp04Complete": false,
+  "migrationComplete": false
+}
