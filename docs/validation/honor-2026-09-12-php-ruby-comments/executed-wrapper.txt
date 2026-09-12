@@ -1,0 +1,111 @@
+import json
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(r"<USER_HOME>\AppData\Local\Temp\prc-5e3f42cb")
+CLONE = ROOT / "c"
+ENVROOT = ROOT / "e"
+SOURCE = r"<USER_HOME>\Codelib-severin\2_Business\uagent-sync"
+HEAD_SHA = "af3f79c2c66a3d3c17fea20de0b12cc5577faf0f"
+BASE_SHA = "e3153d9075bfc19219071e3cfd87a5f7ed2ab38f"
+NODE = r"C:\Program Files\nodejs\node.exe"
+NPM_CLI = r"C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js"
+
+for sub in ["h", "a", "l", "x", "g", "t", "n"]:
+    (ENVROOT / sub).mkdir(parents=True, exist_ok=True)
+(ENVROOT / "u.rc").write_text("", encoding="utf-8")
+(ENVROOT / "g.rc").write_text("", encoding="utf-8")
+
+env = os.environ.copy()
+env.update({
+    "USERPROFILE": str(ENVROOT / "h"),
+    "HOME": str(ENVROOT / "h"),
+    "APPDATA": str(ENVROOT / "a"),
+    "LOCALAPPDATA": str(ENVROOT / "l"),
+    "CODEX_HOME": str(ENVROOT / "x"),
+    "XDG_CONFIG_HOME": str(ENVROOT / "g"),
+    "TMP": str(ENVROOT / "t"),
+    "TEMP": str(ENVROOT / "t"),
+    "NPM_CONFIG_CACHE": str(ENVROOT / "n"),
+    "NPM_CONFIG_USERCONFIG": str(ENVROOT / "u.rc"),
+    "NPM_CONFIG_GLOBALCONFIG": str(ENVROOT / "g.rc"),
+})
+for key in [
+    "UAGENT_SYNC_WORKSPACE_ROOT",
+    "OPENCODE_SYNC_WORKSPACE_ROOT",
+    "OPENCODE_CONFIG_DIR",
+    "OPENCODE_HOME",
+]:
+    env.pop(key, None)
+
+selected_keys = [
+    "USERPROFILE", "HOME", "APPDATA", "LOCALAPPDATA", "CODEX_HOME",
+    "XDG_CONFIG_HOME", "TMP", "TEMP", "NPM_CONFIG_CACHE",
+    "NPM_CONFIG_USERCONFIG", "NPM_CONFIG_GLOBALCONFIG",
+    "UAGENT_SYNC_WORKSPACE_ROOT", "OPENCODE_SYNC_WORKSPACE_ROOT",
+    "OPENCODE_CONFIG_DIR", "OPENCODE_HOME",
+]
+
+results = []
+
+def run(label, args, cwd):
+    record = {
+        "label": label,
+        "cwd": str(cwd),
+        "command": [str(x) for x in args],
+        "selectedEnv": {key: env.get(key) for key in selected_keys},
+    }
+    (ROOT / f"{label}-pre-env.json").write_text(
+        json.dumps(record["selectedEnv"], indent=2), encoding="utf-8"
+    )
+    (ROOT / f"{label}-command.json").write_text(
+        json.dumps({"cwd": record["cwd"], "command": record["command"]}, indent=2),
+        encoding="utf-8",
+    )
+    proc = subprocess.run(
+        record["command"], cwd=str(cwd), env=env,
+        stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+        text=True, encoding="utf-8", errors="replace",
+    )
+    (ROOT / f"{label}.log").write_text(proc.stdout, encoding="utf-8")
+    record["exitCode"] = proc.returncode
+    record["log"] = f"{label}.log"
+    (ROOT / f"{label}-result.json").write_text(
+        json.dumps(record, indent=2), encoding="utf-8"
+    )
+    results.append(record)
+    print(f"{label}: {proc.returncode}", flush=True)
+    return proc.returncode
+
+def stop_if_failed(label, code):
+    if code != 0:
+        (ROOT / "summary.json").write_text(json.dumps(results, indent=2), encoding="utf-8")
+        raise SystemExit(f"{label} failed with exit code {code}")
+
+stop_if_failed("clone", run("clone", ["git", "clone", "--no-hardlinks", "--no-checkout", SOURCE, str(CLONE)], ROOT))
+stop_if_failed("checkout", run("checkout", ["git", "checkout", "--detach", HEAD_SHA], CLONE))
+stop_if_failed("install", run("install", [NODE, NPM_CLI, "ci", "--ignore-scripts", "--no-audit", "--no-fund"], CLONE))
+stop_if_failed("build", run("build", [NODE, NPM_CLI, "run", "build"], CLONE))
+
+focused = [
+    "test/profile-secret-scan-php-ruby.test.ts",
+    "test/profile-secret-scan-quoted.test.ts",
+    "test/profile-secret-scan-five.test.ts",
+    "test/profile-secret-scan-boundary.test.ts",
+    "test/profile-secret-scan-m13.test.ts",
+    "test/profile-secret-scan.test.ts",
+    "test/secret-scan-m0.test.ts",
+]
+run("focused", [NODE, "--import", "tsx", "--test", *focused], CLONE)
+run("full", [NODE, NPM_CLI, "test"], CLONE)
+run("honor-gates", [NODE, "--import", "tsx", "--test", "docs/validation/honor-2026-09-12-php-ruby/three-gates.test.ts"], CLONE)
+run("final-head", ["git", "rev-parse", "HEAD"], CLONE)
+run("final-diff", ["git", "diff", BASE_SHA, "--", "src", "test", "package.json", "package-lock.json"], CLONE)
+run("final-diff-name-status", ["git", "diff", "--name-status", BASE_SHA, "--", "src", "test", "package.json", "package-lock.json"], CLONE)
+run("final-status", ["git", "status", "--short"], CLONE)
+
+(ROOT / "summary.json").write_text(json.dumps(results, indent=2), encoding="utf-8")
+test_codes = {r["label"]: r["exitCode"] for r in results if r["label"] in ["focused", "full", "honor-gates"]}
+raise SystemExit(0 if all(v == 0 for v in test_codes.values()) else 1)

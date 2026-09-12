@@ -1,0 +1,39 @@
+{
+  "task": "RY-11",
+  "status": "passed-limited-fix-review",
+  "finding": "RY-PR-01",
+  "source": "af3f79c2c66a3d3c17fea20de0b12cc5577faf0f",
+  "base": "e3153d9075bfc19219071e3cfd87a5f7ed2ab38f",
+  "input": "027840fa91973c982bd423fa2e54f0c208868017",
+  "counts": {
+    "focused": {
+      "tests": 216,
+      "pass": 216,
+      "fail": 0,
+      "skipped": 0
+    },
+    "full": {
+      "tests": 634,
+      "pass": 634,
+      "fail": 0,
+      "skipped": 0
+    },
+    "honor-gates": {
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "allRecordedCommandsExitZero": true,
+  "realFilesTested": false,
+  "realCollection": false,
+  "migrationComplete": false,
+  "remaining": [
+    "M2",
+    "172 unknown-source findings",
+    "RY-03",
+    "multi-statement/import regions",
+    "real-file acceptance and migration"
+  ]
+}

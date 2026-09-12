@@ -1,0 +1,50 @@
+[
+  {
+    "file": "build.log",
+    "sha256": "ac0f02160e4f4e848179339f5bc74262de46982ca26e9938bd36427bdad79683"
+  },
+  {
+    "file": "checkout.log",
+    "sha256": "6c340270fb0030d6427bbacce0aa1f612968eae803bf2018ed1c469afc28f83e"
+  },
+  {
+    "file": "clone.log",
+    "sha256": "2ba46b237ff8c3db532a330a0fa9f79458b4aed7d4c302fb53a7b02076f3c7fe"
+  },
+  {
+    "file": "final-diff-name-status.log",
+    "sha256": "caead25d50b6e50dc0ef5fa495fc4a620536ae772f4cb302ff5ee8f0763ded99"
+  },
+  {
+    "file": "final-diff.log",
+    "sha256": "2db0d20a9758fc413d8fe9992c5b73c6200b26baee62f6a616c2365896eff3fe"
+  },
+  {
+    "file": "final-head.log",
+    "sha256": "8428a3e13ec852196de5d50babe5c6e346a575bf4e5ccdb1260296ad54746b38"
+  },
+  {
+    "file": "final-status.log",
+    "sha256": "53b63a9d00100c820b9c17e2c0b6934c4c9c93161d41d8140d7be230a54ba31e"
+  },
+  {
+    "file": "focused.log",
+    "sha256": "e1a43f323f5d522eb546a0b8799a9d52ead02e4b62337e0a43a9916526ccb843"
+  },
+  {
+    "file": "full.log",
+    "sha256": "724f2d8b1dbab05e21ffe472adf4dd9b5716b156b965d0926ad405fd33583c16"
+  },
+  {
+    "file": "honor-gates.log",
+    "sha256": "a3ecde26abd9677fc083e0e9a3f2c9652cb9215d46dc9617807fe485bcba2a44"
+  },
+  {
+    "file": "install.log",
+    "sha256": "1136b0bb491ec0bd561195fefb74dca16c568a4d1d1dfc6166ebf6c36ea46acb"
+  },
+  {
+    "file": "head-clean.log",
+    "sha256": "5adc109116e525db322b4e868d673918c62ffc7b510a462775e6da7a6269291d"
+  }
+]

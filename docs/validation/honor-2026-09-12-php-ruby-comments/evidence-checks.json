@@ -1,0 +1,132 @@
+{
+  "hpEvidenceChecks": [
+    {
+      "file": ".gitattributes",
+      "matches": true
+    },
+    {
+      "file": "README.md",
+      "matches": true
+    },
+    {
+      "file": "RESULT.json",
+      "matches": true
+    },
+    {
+      "file": "build-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "build.log",
+      "matches": true
+    },
+    {
+      "file": "commands.json",
+      "matches": true
+    },
+    {
+      "file": "detect-all.json",
+      "matches": true
+    },
+    {
+      "file": "detect-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "detect.log",
+      "matches": true
+    },
+    {
+      "file": "executed-wrapper.txt",
+      "matches": true
+    },
+    {
+      "file": "focused-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "focused.log",
+      "matches": true
+    },
+    {
+      "file": "full-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "full.log",
+      "matches": true
+    },
+    {
+      "file": "honor-gates-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "honor-gates.log",
+      "matches": true
+    },
+    {
+      "file": "impact-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "impact.log",
+      "matches": true
+    },
+    {
+      "file": "index-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "index.log",
+      "matches": true
+    },
+    {
+      "file": "install-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "install.log",
+      "matches": true
+    },
+    {
+      "file": "raw-log-hashes.json",
+      "matches": true
+    },
+    {
+      "file": "red-pre-env.json",
+      "matches": true
+    },
+    {
+      "file": "red.log",
+      "matches": true
+    }
+  ],
+  "hpReportedCounts": {
+    "red.log": {
+      "tests": 77,
+      "pass": 49,
+      "fail": 28,
+      "skipped": 0
+    },
+    "focused.log": {
+      "tests": 216,
+      "pass": 216,
+      "fail": 0,
+      "skipped": 0
+    },
+    "full.log": {
+      "tests": 634,
+      "pass": 634,
+      "fail": 0,
+      "skipped": 0
+    },
+    "honor-gates.log": {
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "handoffAncestor": 0,
+  "sourceEqualHandoff": 0
+}

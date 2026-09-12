@@ -1,0 +1,339 @@
+[
+  {
+    "label": "clone",
+    "cwd": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb",
+    "command": [
+      "git",
+      "clone",
+      "--no-hardlinks",
+      "--no-checkout",
+      "<USER_HOME>\\Codelib-severin\\2_Business\\uagent-sync",
+      "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\c"
+    ],
+    "selectedEnv": {
+      "USERPROFILE": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\h",
+      "HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\h",
+      "APPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\a",
+      "LOCALAPPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\l",
+      "CODEX_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\x",
+      "XDG_CONFIG_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\g",
+      "TMP": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\t",
+      "TEMP": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\t",
+      "NPM_CONFIG_CACHE": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\n",
+      "NPM_CONFIG_USERCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\u.rc",
+      "NPM_CONFIG_GLOBALCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\g.rc",
+      "UAGENT_SYNC_WORKSPACE_ROOT": null,
+      "OPENCODE_SYNC_WORKSPACE_ROOT": null,
+      "OPENCODE_CONFIG_DIR": null,
+      "OPENCODE_HOME": null
+    },
+    "exitCode": 0,
+    "log": "clone.log"
+  },
+  {
+    "label": "checkout",
+    "cwd": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\c",
+    "command": [
+      "git",
+      "checkout",
+      "--detach",
+      "af3f79c2c66a3d3c17fea20de0b12cc5577faf0f"
+    ],
+    "selectedEnv": {
+      "USERPROFILE": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\h",
+      "HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\h",
+      "APPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\a",
+      "LOCALAPPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\l",
+      "CODEX_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\x",
+      "XDG_CONFIG_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\g",
+      "TMP": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\t",
+      "TEMP": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\t",
+      "NPM_CONFIG_CACHE": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\n",
+      "NPM_CONFIG_USERCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\u.rc",
+      "NPM_CONFIG_GLOBALCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\g.rc",
+      "UAGENT_SYNC_WORKSPACE_ROOT": null,
+      "OPENCODE_SYNC_WORKSPACE_ROOT": null,
+      "OPENCODE_CONFIG_DIR": null,
+      "OPENCODE_HOME": null
+    },
+    "exitCode": 0,
+    "log": "checkout.log"
+  },
+  {
+    "label": "install",
+    "cwd": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\c",
+    "command": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+      "ci",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "selectedEnv": {
+      "USERPROFILE": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\h",
+      "HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\h",
+      "APPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\a",
+      "LOCALAPPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\l",
+      "CODEX_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\x",
+      "XDG_CONFIG_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\g",
+      "TMP": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\t",
+      "TEMP": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\t",
+      "NPM_CONFIG_CACHE": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\n",
+      "NPM_CONFIG_USERCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\u.rc",
+      "NPM_CONFIG_GLOBALCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\g.rc",
+      "UAGENT_SYNC_WORKSPACE_ROOT": null,
+      "OPENCODE_SYNC_WORKSPACE_ROOT": null,
+      "OPENCODE_CONFIG_DIR": null,
+      "OPENCODE_HOME": null
+    },
+    "exitCode": 0,
+    "log": "install.log"
+  },
+  {
+    "label": "build",
+    "cwd": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\c",
+    "command": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+      "run",
+      "build"
+    ],
+    "selectedEnv": {
+      "USERPROFILE": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\h",
+      "HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\h",
+      "APPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\a",
+      "LOCALAPPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\l",
+      "CODEX_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\x",
+      "XDG_CONFIG_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\g",
+      "TMP": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\t",
+      "TEMP": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\t",
+      "NPM_CONFIG_CACHE": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\n",
+      "NPM_CONFIG_USERCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\u.rc",
+      "NPM_CONFIG_GLOBALCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\g.rc",
+      "UAGENT_SYNC_WORKSPACE_ROOT": null,
+      "OPENCODE_SYNC_WORKSPACE_ROOT": null,
+      "OPENCODE_CONFIG_DIR": null,
+      "OPENCODE_HOME": null
+    },
+    "exitCode": 0,
+    "log": "build.log"
+  },
+  {
+    "label": "focused",
+    "cwd": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\c",
+    "command": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-secret-scan-php-ruby.test.ts",
+      "test/profile-secret-scan-quoted.test.ts",
+      "test/profile-secret-scan-five.test.ts",
+      "test/profile-secret-scan-boundary.test.ts",
+      "test/profile-secret-scan-m13.test.ts",
+      "test/profile-secret-scan.test.ts",
+      "test/secret-scan-m0.test.ts"
+    ],
+    "selectedEnv": {
+      "USERPROFILE": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\h",
+      "HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\h",
+      "APPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\a",
+      "LOCALAPPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\l",
+      "CODEX_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\x",
+      "XDG_CONFIG_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\g",
+      "TMP": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\t",
+      "TEMP": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\t",
+      "NPM_CONFIG_CACHE": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\n",
+      "NPM_CONFIG_USERCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\u.rc",
+      "NPM_CONFIG_GLOBALCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\g.rc",
+      "UAGENT_SYNC_WORKSPACE_ROOT": null,
+      "OPENCODE_SYNC_WORKSPACE_ROOT": null,
+      "OPENCODE_CONFIG_DIR": null,
+      "OPENCODE_HOME": null
+    },
+    "exitCode": 0,
+    "log": "focused.log"
+  },
+  {
+    "label": "full",
+    "cwd": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\c",
+    "command": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+      "test"
+    ],
+    "selectedEnv": {
+      "USERPROFILE": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\h",
+      "HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\h",
+      "APPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\a",
+      "LOCALAPPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\l",
+      "CODEX_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\x",
+      "XDG_CONFIG_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\g",
+      "TMP": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\t",
+      "TEMP": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\t",
+      "NPM_CONFIG_CACHE": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\n",
+      "NPM_CONFIG_USERCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\u.rc",
+      "NPM_CONFIG_GLOBALCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\g.rc",
+      "UAGENT_SYNC_WORKSPACE_ROOT": null,
+      "OPENCODE_SYNC_WORKSPACE_ROOT": null,
+      "OPENCODE_CONFIG_DIR": null,
+      "OPENCODE_HOME": null
+    },
+    "exitCode": 0,
+    "log": "full.log"
+  },
+  {
+    "label": "honor-gates",
+    "cwd": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\c",
+    "command": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "--import",
+      "tsx",
+      "--test",
+      "docs/validation/honor-2026-09-12-php-ruby/three-gates.test.ts"
+    ],
+    "selectedEnv": {
+      "USERPROFILE": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\h",
+      "HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\h",
+      "APPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\a",
+      "LOCALAPPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\l",
+      "CODEX_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\x",
+      "XDG_CONFIG_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\g",
+      "TMP": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\t",
+      "TEMP": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\t",
+      "NPM_CONFIG_CACHE": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\n",
+      "NPM_CONFIG_USERCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\u.rc",
+      "NPM_CONFIG_GLOBALCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\g.rc",
+      "UAGENT_SYNC_WORKSPACE_ROOT": null,
+      "OPENCODE_SYNC_WORKSPACE_ROOT": null,
+      "OPENCODE_CONFIG_DIR": null,
+      "OPENCODE_HOME": null
+    },
+    "exitCode": 0,
+    "log": "honor-gates.log"
+  },
+  {
+    "label": "final-head",
+    "cwd": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\c",
+    "command": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "selectedEnv": {
+      "USERPROFILE": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\h",
+      "HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\h",
+      "APPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\a",
+      "LOCALAPPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\l",
+      "CODEX_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\x",
+      "XDG_CONFIG_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\g",
+      "TMP": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\t",
+      "TEMP": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\t",
+      "NPM_CONFIG_CACHE": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\n",
+      "NPM_CONFIG_USERCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\u.rc",
+      "NPM_CONFIG_GLOBALCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\g.rc",
+      "UAGENT_SYNC_WORKSPACE_ROOT": null,
+      "OPENCODE_SYNC_WORKSPACE_ROOT": null,
+      "OPENCODE_CONFIG_DIR": null,
+      "OPENCODE_HOME": null
+    },
+    "exitCode": 0,
+    "log": "final-head.log"
+  },
+  {
+    "label": "final-diff",
+    "cwd": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\c",
+    "command": [
+      "git",
+      "diff",
+      "e3153d9075bfc19219071e3cfd87a5f7ed2ab38f",
+      "--",
+      "src",
+      "test",
+      "package.json",
+      "package-lock.json"
+    ],
+    "selectedEnv": {
+      "USERPROFILE": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\h",
+      "HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\h",
+      "APPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\a",
+      "LOCALAPPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\l",
+      "CODEX_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\x",
+      "XDG_CONFIG_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\g",
+      "TMP": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\t",
+      "TEMP": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\t",
+      "NPM_CONFIG_CACHE": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\n",
+      "NPM_CONFIG_USERCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\u.rc",
+      "NPM_CONFIG_GLOBALCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\g.rc",
+      "UAGENT_SYNC_WORKSPACE_ROOT": null,
+      "OPENCODE_SYNC_WORKSPACE_ROOT": null,
+      "OPENCODE_CONFIG_DIR": null,
+      "OPENCODE_HOME": null
+    },
+    "exitCode": 0,
+    "log": "final-diff.log"
+  },
+  {
+    "label": "final-diff-name-status",
+    "cwd": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\c",
+    "command": [
+      "git",
+      "diff",
+      "--name-status",
+      "e3153d9075bfc19219071e3cfd87a5f7ed2ab38f",
+      "--",
+      "src",
+      "test",
+      "package.json",
+      "package-lock.json"
+    ],
+    "selectedEnv": {
+      "USERPROFILE": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\h",
+      "HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\h",
+      "APPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\a",
+      "LOCALAPPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\l",
+      "CODEX_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\x",
+      "XDG_CONFIG_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\g",
+      "TMP": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\t",
+      "TEMP": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\t",
+      "NPM_CONFIG_CACHE": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\n",
+      "NPM_CONFIG_USERCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\u.rc",
+      "NPM_CONFIG_GLOBALCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\g.rc",
+      "UAGENT_SYNC_WORKSPACE_ROOT": null,
+      "OPENCODE_SYNC_WORKSPACE_ROOT": null,
+      "OPENCODE_CONFIG_DIR": null,
+      "OPENCODE_HOME": null
+    },
+    "exitCode": 0,
+    "log": "final-diff-name-status.log"
+  },
+  {
+    "label": "final-status",
+    "cwd": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\c",
+    "command": [
+      "git",
+      "status",
+      "--short"
+    ],
+    "selectedEnv": {
+      "USERPROFILE": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\h",
+      "HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\h",
+      "APPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\a",
+      "LOCALAPPDATA": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\l",
+      "CODEX_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\x",
+      "XDG_CONFIG_HOME": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\g",
+      "TMP": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\t",
+      "TEMP": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\t",
+      "NPM_CONFIG_CACHE": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\n",
+      "NPM_CONFIG_USERCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\u.rc",
+      "NPM_CONFIG_GLOBALCONFIG": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\e\\g.rc",
+      "UAGENT_SYNC_WORKSPACE_ROOT": null,
+      "OPENCODE_SYNC_WORKSPACE_ROOT": null,
+      "OPENCODE_CONFIG_DIR": null,
+      "OPENCODE_HOME": null
+    },
+    "exitCode": 0,
+    "log": "final-status.log"
+  }
+]

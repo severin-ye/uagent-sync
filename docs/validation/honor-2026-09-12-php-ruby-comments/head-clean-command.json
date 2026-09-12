@@ -1,0 +1,13 @@
+{
+  "cwd": "<USER_HOME>\\AppData\\Local\\Temp\\prc-5e3f42cb\\c",
+  "command": [
+    "git",
+    "diff",
+    "HEAD",
+    "--",
+    "src",
+    "test",
+    "package.json",
+    "package-lock.json"
+  ]
+}

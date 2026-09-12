@@ -1,0 +1,52 @@
+import json
+import os
+import subprocess
+from pathlib import Path
+
+root = Path(r"<USER_HOME>\AppData\Local\Temp\prc-5e3f42cb")
+clone = root / "c"
+envroot = root / "e"
+env = os.environ.copy()
+env.update({
+    "USERPROFILE": str(envroot / "h"),
+    "HOME": str(envroot / "h"),
+    "APPDATA": str(envroot / "a"),
+    "LOCALAPPDATA": str(envroot / "l"),
+    "CODEX_HOME": str(envroot / "x"),
+    "XDG_CONFIG_HOME": str(envroot / "g"),
+    "TMP": str(envroot / "t"),
+    "TEMP": str(envroot / "t"),
+    "NPM_CONFIG_CACHE": str(envroot / "n"),
+    "NPM_CONFIG_USERCONFIG": str(envroot / "u.rc"),
+    "NPM_CONFIG_GLOBALCONFIG": str(envroot / "g.rc"),
+})
+for key in [
+    "UAGENT_SYNC_WORKSPACE_ROOT",
+    "OPENCODE_SYNC_WORKSPACE_ROOT",
+    "OPENCODE_CONFIG_DIR",
+    "OPENCODE_HOME",
+]:
+    env.pop(key, None)
+keys = [
+    "USERPROFILE", "HOME", "APPDATA", "LOCALAPPDATA", "CODEX_HOME",
+    "XDG_CONFIG_HOME", "TMP", "TEMP", "NPM_CONFIG_CACHE",
+    "NPM_CONFIG_USERCONFIG", "NPM_CONFIG_GLOBALCONFIG",
+    "UAGENT_SYNC_WORKSPACE_ROOT", "OPENCODE_SYNC_WORKSPACE_ROOT",
+    "OPENCODE_CONFIG_DIR", "OPENCODE_HOME",
+]
+cmd = ["git", "diff", "HEAD", "--", "src", "test", "package.json", "package-lock.json"]
+(root / "head-clean-pre-env.json").write_text(
+    json.dumps({k: env.get(k) for k in keys}, indent=2), encoding="utf-8"
+)
+(root / "head-clean-command.json").write_text(
+    json.dumps({"cwd": str(clone), "command": cmd}, indent=2), encoding="utf-8"
+)
+p = subprocess.run(
+    cmd, cwd=str(clone), env=env, stdout=subprocess.PIPE,
+    stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace"
+)
+(root / "head-clean.log").write_text(p.stdout, encoding="utf-8")
+(root / "head-clean-result.json").write_text(
+    json.dumps({"exitCode": p.returncode, "log": "head-clean.log"}, indent=2), encoding="utf-8"
+)
+raise SystemExit(p.returncode)
