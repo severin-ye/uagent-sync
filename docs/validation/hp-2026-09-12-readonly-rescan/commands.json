@@ -1,0 +1,70 @@
+[
+  {
+    "label": "install",
+    "cmd": "npm.cmd",
+    "args": [
+      "ci",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "status": 0,
+    "signal": null,
+    "preEnv": "install-pre-env.json",
+    "log": "install.log"
+  },
+  {
+    "label": "build",
+    "cmd": "npm.cmd",
+    "args": [
+      "run",
+      "build"
+    ],
+    "status": 0,
+    "signal": null,
+    "preEnv": "build-pre-env.json",
+    "log": "build.log"
+  },
+  {
+    "label": "scan",
+    "cmd": "node",
+    "args": [
+      "<USER_ROOT>/hppe/scan.mjs"
+    ],
+    "status": 0,
+    "signal": null,
+    "preEnv": "scan-pre-env.json",
+    "log": "scan.log"
+  },
+  {
+    "label": "detect",
+    "cmd": "node",
+    "args": [
+      "<USER_ROOT>/hppe/detect-all.mjs"
+    ],
+    "status": 0,
+    "signal": null,
+    "log": "detect.log",
+    "preEnv": "detect-pre-env.json"
+  },
+  {
+    "label": "source-equivalence",
+    "cmd": "git",
+    "args": [
+      "diff",
+      "--exit-code",
+      "af3f79c2c66a3d3c17fea20de0b12cc5577faf0f",
+      "HEAD",
+      "--",
+      "src",
+      "test",
+      "scripts",
+      "package.json",
+      "package-lock.json"
+    ],
+    "status": 0,
+    "signal": null,
+    "log": "source-equivalence.log",
+    "preEnv": "source-equivalence-pre-env.json"
+  }
+]

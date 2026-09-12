@@ -1,0 +1,30 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {createHash} from 'node:crypto';
+import {assertProfileContentSafe} from 'file:///<USER_ROOT>/hppre/dist/lib/profile-secret-scan.js';
+const root='<USER_ROOT>/hppre/', ev='<USER_ROOT>/hppe/';
+const old=JSON.parse(fs.readFileSync(root+'docs/validation/hp-2026-09-11-scan-plan/hp-findings.json','utf8'));
+const digest=b=>createHash('sha256').update(b).digest('hex');
+const files=[], privateHashes=[];
+for(const record of old.files) {
+ const source=path.join('<USER_ROOT>/.agents/skills',record.path.replace(/^agents\/skills\//,''));
+ try {
+ const bytes=fs.readFileSync(source), hash=digest(bytes), content=bytes.toString('utf8');
+ const unchanged=hash===record.current_sha256;
+ let findings=[],status='passed';
+ try {assertProfileContentSafe(content,record.path);} catch(e) {
+   if(!String(e.message).startsWith('Secret scan blocked '+record.path+': ')) throw e;
+   status='blocked'; findings=[...e.message.matchAll(/(authorization-bearer|known-token-prefix|sensitive-assignment)@(\d+)/g)].map(m=>({rule:m[1],line:Number(m[2])}));
+ }
+ const after=digest(fs.readFileSync(source));
+ privateHashes.push({path:source,before:hash,after,old:record.current_sha256});
+ const candidates=old.hits.filter(h=>h.path===record.path).map(h=>({id:h.id,oldLine:h.line,rule:h.rule,category:h.category,mapping:unchanged?'exact-byte-baseline':'unconfirmed-file-drift',currentHitAtOldLine:findings.some(f=>f.line===h.line&&f.rule===h.rule),result:unchanged?(findings.some(f=>f.line===h.line&&f.rule===h.rule)?'still-blocked':'old-hit-not-reported'):'drift-needs-remapping'}));
+ for(const f of findings) f.candidateIds=unchanged?candidates.filter(c=>c.oldLine===f.line&&c.rule===f.rule).map(c=>c.id):[];
+ files.push({path:record.path,bytes:bytes.length,baselineHashMatches:unchanged,beforeAfterHashMatches:hash===after,status,findings,candidates});
+ }catch(e){files.push({path:record.path,status:'unreadable',errorCode:e.code??'UNEXPECTED_SCAN_ERROR'});}
+}
+fs.writeFileSync(ev+'private-hashes.json',JSON.stringify(privateHashes,null,2));
+const result={sourceSha:'af3f79c2c66a3d3c17fea20de0b12cc5577faf0f',entry:'assertProfileContentSafe(full UTF-8 content, original relative path)',summary:{files:files.length,read:files.filter(f=>f.status!=='unreadable').length,baselineMatches:files.filter(f=>f.baselineHashMatches).length,drift:files.filter(f=>f.baselineHashMatches===false).length,passed:files.filter(f=>f.status==='passed').length,blocked:files.filter(f=>f.status==='blocked').length,hits:files.reduce((n,f)=>n+(f.findings?.length??0),0),beforeAfterMatches:files.filter(f=>f.beforeAfterHashMatches).length},files};
+fs.writeFileSync(ev+'scan-result.json',JSON.stringify(result,null,2));
+console.log(JSON.stringify(result));
+process.exitCode=files.some(f=>f.status==='unreadable'||!f.beforeAfterHashMatches)?1:0;

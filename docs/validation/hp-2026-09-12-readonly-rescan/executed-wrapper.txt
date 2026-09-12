@@ -1,0 +1,14 @@
+import { spawnSync } from 'node:child_process';
+import fs from 'node:fs';
+const root='<USER_ROOT>/hppre';
+const home='<USER_ROOT>/hpph';
+const evidence='<USER_ROOT>/hppe';
+const env={...process.env,USERPROFILE:home,HOME:home,APPDATA:home+'/AppData/Roaming',LOCALAPPDATA:home+'/AppData/Local',CODEX_HOME:home+'/.codex',XDG_CONFIG_HOME:home+'/.config',OPENCODE_SYNC_WORKSPACE_ROOT:root};
+for(const p of [home,env.APPDATA,env.LOCALAPPDATA,env.CODEX_HOME,env.XDG_CONFIG_HOME])fs.mkdirSync(p,{recursive:true});
+env.TEMP=home+'/tmp'; env.TMP=env.TEMP; fs.mkdirSync(env.TEMP,{recursive:true}); delete env.UAGENT_SYNC_WORKSPACE_ROOT; delete env.OPENCODE_CONFIG_DIR; delete env.OPENCODE_HOME; env.npm_config_cache=home+'/npm-cache'; env.npm_config_userconfig=home+'/npmrc'; env.npm_config_globalconfig=home+'/npm-globalrc'; const [label,cmd,...args]=process.argv.slice(2);
+fs.writeFileSync(evidence+'/'+label+'-pre-env.json',JSON.stringify(Object.fromEntries(['USERPROFILE','HOME','APPDATA','LOCALAPPDATA','CODEX_HOME','XDG_CONFIG_HOME','TEMP','TMP','npm_config_cache','npm_config_userconfig','npm_config_globalconfig','UAGENT_SYNC_WORKSPACE_ROOT','OPENCODE_SYNC_WORKSPACE_ROOT'].map(k=>[k,env[k]??null])),null,2));
+const r=spawnSync(cmd,args,{cwd:root,env,encoding:'utf8',maxBuffer:64*1024*1024,shell:cmd.endsWith('.cmd')});
+fs.writeFileSync(evidence+'/'+label+'.log',(r.stdout??'')+(r.stderr??''));
+fs.writeFileSync(evidence+'/'+label+'.json',JSON.stringify({cmd,args,status:r.status,error:r.error?.message,signal:r.signal},null,2));
+console.log(JSON.stringify({label,status:r.status,error:r.error?.message,tail:((r.stdout??'')+(r.stderr??'')).slice(-4500)}));
+process.exitCode=r.status??1;

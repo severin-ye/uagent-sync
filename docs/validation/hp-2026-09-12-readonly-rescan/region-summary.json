@@ -1,0 +1,35 @@
+[
+  {
+    "id": "HP-001",
+    "fence": [
+      15,
+      23
+    ],
+    "importLine": 16,
+    "defaultClientLine": 19,
+    "explicitClientLine": 22,
+    "reason": "PHP use plus default client plus explicit client in same region"
+  },
+  {
+    "id": "HP-004",
+    "fence": [
+      13,
+      21
+    ],
+    "importLine": 14,
+    "defaultClientLine": 17,
+    "explicitClientLine": 20,
+    "reason": "Ruby require plus default client plus explicit client in same region"
+  },
+  {
+    "id": "HP-005",
+    "fence": [
+      15,
+      23
+    ],
+    "importLine": 16,
+    "defaultClientLine": 19,
+    "explicitClientLine": 22,
+    "reason": "Ruby require plus default client plus explicit client in same region"
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "label": "install",
+    "rawSha256": "dc62d9ae1717b0e135b2e9e42c17ea902a27e73c96d695d67973433403b630f7"
+  },
+  {
+    "label": "build",
+    "rawSha256": "64c6d7b272796b56fe8cee8f55ec0795f28db8c3701fc8163f40fe2a7de87890"
+  },
+  {
+    "label": "scan",
+    "rawSha256": "77e9d3e30571d42e5c0ca48e2bcb5cb91d0eedbb8d3b31f8aa421504f527ca1e"
+  }
+]

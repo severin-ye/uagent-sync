@@ -1,0 +1,49 @@
+{
+  "task": "HP-04-PRE",
+  "status": "readonly-rescan-completed-with-blockers",
+  "inputSha": "552f3471f9da3f799dee860621809ca38a37ca20",
+  "fixedSource": "af3f79c2c66a3d3c17fea20de0b12cc5577faf0f",
+  "summary": {
+    "files": 13,
+    "read": 13,
+    "baselineMatches": 13,
+    "drift": 0,
+    "passed": 5,
+    "blocked": 8,
+    "hits": 10,
+    "beforeAfterMatches": 13
+  },
+  "ruleCounts": {
+    "sensitive-assignment": 9,
+    "known-token-prefix": 1
+  },
+  "removedOldHits": 13,
+  "newUnmappedHits": 0,
+  "python11": {
+    "oldHitsNoLongerReported": 11,
+    "containingFiles": 5,
+    "passedFiles": 3,
+    "blockedFilesDueToM2": 2
+  },
+  "ts2": {
+    "oldHitsNoLongerReported": 2,
+    "passedFiles": 2
+  },
+  "phpRuby3": {
+    "remainingHits": 3,
+    "blockedFiles": 3,
+    "reason": "multi-statement constructor fence with import/use/require and default client"
+  },
+  "classification": {
+    "complexRegion": 3,
+    "M2ParameterDocs": 4,
+    "unconfirmedTokenSource": 1,
+    "fixedPasswordExamples": 2,
+    "drift": 0
+  },
+  "realSnapshotCreated": false,
+  "fullRegressionRerun": false,
+  "hp03Complete": false,
+  "hp04Complete": false,
+  "migrationComplete": false
+}
