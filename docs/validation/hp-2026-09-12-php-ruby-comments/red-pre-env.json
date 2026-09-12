@@ -1,0 +1,15 @@
+{
+  "USERPROFILE": "<USER_ROOT>/prch",
+  "HOME": "<USER_ROOT>/prch",
+  "APPDATA": "<USER_ROOT>/prch/AppData/Roaming",
+  "LOCALAPPDATA": "<USER_ROOT>/prch/AppData/Local",
+  "CODEX_HOME": "<USER_ROOT>/prch/.codex",
+  "XDG_CONFIG_HOME": "<USER_ROOT>/prch/.config",
+  "TEMP": "<USER_ROOT>/prch/tmp",
+  "TMP": "<USER_ROOT>/prch/tmp",
+  "npm_config_cache": "<USER_ROOT>/prch/npm-cache",
+  "npm_config_userconfig": "<USER_ROOT>/prch/npmrc",
+  "npm_config_globalconfig": "<USER_ROOT>/prch/npm-globalrc",
+  "UAGENT_SYNC_WORKSPACE_ROOT": null,
+  "OPENCODE_SYNC_WORKSPACE_ROOT": "<USER_ROOT>/prc"
+}

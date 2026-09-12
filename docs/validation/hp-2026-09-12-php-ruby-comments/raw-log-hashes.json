@@ -1,0 +1,38 @@
+[
+  {
+    "label": "install",
+    "sha256": "5520b835e798828e31ad60b969a2dee9c3e8929ade01f76ae67254d46041220d"
+  },
+  {
+    "label": "index",
+    "sha256": "0f44c28104a61033f32c5e8b432b47299c16d427eb87b999957e4b2f7908bc9c"
+  },
+  {
+    "label": "red",
+    "sha256": "7487d5579369617dc0118115fa4cbe7f338ecaa08ac4cdbbd1f461a9189341d3"
+  },
+  {
+    "label": "impact",
+    "sha256": "1c65419edca962a7b8f018bf9d53ba5a6d443949eef8aa7e793cee5b460edc98"
+  },
+  {
+    "label": "build",
+    "sha256": "64c6d7b272796b56fe8cee8f55ec0795f28db8c3701fc8163f40fe2a7de87890"
+  },
+  {
+    "label": "focused",
+    "sha256": "5ec47ff079e30fc30ecbcaa30902f146fed6c239816d3473e16872b4034530a9"
+  },
+  {
+    "label": "full",
+    "sha256": "02af21edfbf8d1bdd3810528e2354d4f47e19c15c6f3f355bb2f568a64bdf757"
+  },
+  {
+    "label": "honor-gates",
+    "sha256": "66bb21c1e3655f43c99a41c69c57f36027b93de37f0c6d875beb431234da3bd6"
+  },
+  {
+    "label": "detect",
+    "sha256": "79dd2b0677f14094c5ca4ec2a6fd288ce97fb209f50fcda6f7843b417056c2ef"
+  }
+]

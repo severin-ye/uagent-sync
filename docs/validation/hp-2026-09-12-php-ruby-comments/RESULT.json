@@ -1,0 +1,31 @@
+{
+  "task": "HP-03-M13-PR-C",
+  "input": "4b84b57da303f8e3a984ebaa1b4578fcfb1d0976",
+  "baseline": "e3153d9075bfc19219071e3cfd87a5f7ed2ab38f",
+  "inputCodeDiff": [],
+  "codeSha": "af3f79c2c66a3d3c17fea20de0b12cc5577faf0f",
+  "red": {
+    "tests": 77,
+    "pass": 49,
+    "expectedFailures": 28,
+    "exit": 1
+  },
+  "focused": {
+    "tests": 216,
+    "pass": 216,
+    "exit": 0
+  },
+  "full": {
+    "tests": 634,
+    "pass": 634,
+    "exit": 0
+  },
+  "honorOriginalGates": {
+    "tests": 2,
+    "pass": 2,
+    "exit": 0
+  },
+  "honorReview": "pending",
+  "realCollection": false,
+  "migrationComplete": false
+}

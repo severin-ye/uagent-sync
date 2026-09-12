@@ -1,0 +1,155 @@
+{
+  "summary": {
+    "changed_count": 5,
+    "affected_count": 9,
+    "changed_files": 2,
+    "risk_level": "high"
+  },
+  "changed_symbols": [
+    {
+      "id": "Function:src/lib/profile-php-ruby.ts:recognizePhpRubyExamples",
+      "name": "recognizePhpRubyExamples",
+      "type": "Function",
+      "filePath": "src/lib/profile-php-ruby.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:test/profile-secret-scan-php-ruby.test.ts:commentVariants",
+      "name": "commentVariants",
+      "type": "Const",
+      "filePath": "test/profile-secret-scan-php-ruby.test.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:test/profile-secret-scan-php-ruby.test.ts:fn@171:96.device@174:2",
+      "name": "device",
+      "type": "Function",
+      "filePath": "test/profile-secret-scan-php-ruby.test.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:test/profile-secret-scan-php-ruby.test.ts:fn@171:96.target@175:2",
+      "name": "target",
+      "type": "Const",
+      "filePath": "test/profile-secret-scan-php-ruby.test.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:test/profile-secret-scan-php-ruby.test.ts:fn@171:96.check@198:2",
+      "name": "check",
+      "type": "Function",
+      "filePath": "test/profile-secret-scan-php-ruby.test.ts",
+      "change_type": "touched"
+    }
+  ],
+  "affected_processes": [
+    {
+      "id": "proc_6_restorecodexprofile",
+      "name": "RestoreCodexProfile → ExampleRegions",
+      "process_type": "cross_community",
+      "step_count": 7,
+      "changed_steps": [
+        {
+          "symbol": "recognizePhpRubyExamples",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_7_restorecodexprofile",
+      "name": "RestoreCodexProfile → LexExample",
+      "process_type": "cross_community",
+      "step_count": 7,
+      "changed_steps": [
+        {
+          "symbol": "recognizePhpRubyExamples",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_8_restorecodexprofile",
+      "name": "RestoreCodexProfile → Reject",
+      "process_type": "cross_community",
+      "step_count": 7,
+      "changed_steps": [
+        {
+          "symbol": "recognizePhpRubyExamples",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_124_walk",
+      "name": "Walk → ExampleRegions",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "recognizePhpRubyExamples",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_125_walk",
+      "name": "Walk → LexExample",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "recognizePhpRubyExamples",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_126_walk",
+      "name": "Walk → Reject",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "recognizePhpRubyExamples",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_185_scan",
+      "name": "Scan → ExampleRegions",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "recognizePhpRubyExamples",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_186_scan",
+      "name": "Scan → LexExample",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "recognizePhpRubyExamples",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_187_scan",
+      "name": "Scan → Reject",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "recognizePhpRubyExamples",
+          "step": 4
+        }
+      ]
+    }
+  ]
+}

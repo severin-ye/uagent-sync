@@ -1,0 +1,619 @@
+{"extension":"php","failures":["collect rejection","collect no artifact","restore rejection","restore bytes unchanged","restore baseline unchanged","publish rejection","publish no additional Git calls"],"calls":2}
+{"extension":"rb","failures":["collect rejection","collect no artifact","restore rejection","restore bytes unchanged","restore baseline unchanged","publish rejection","publish no additional Git calls"],"calls":2}
+✔ PHP closing tag inside line comments cannot expose HTML as code (2.8959ms)
+✔ PHP opening tag and Ruby in-argument comments preserve exact spans (0.4169ms)
+✔ PHP/Ruby unsupported lexical modes before or after a candidate invalidate the region (1.2613ms)
+✔ PHP/Ruby bounded allow php exact (0.228ms)
+✔ PHP/Ruby bounded allow php single (0.1436ms)
+✔ PHP/Ruby bounded allow php multiline (0.1204ms)
+✔ PHP/Ruby bounded allow php comment (0.1727ms)
+✔ PHP/Ruby closed language fence php (0.3149ms)
+✔ PHP/Ruby value refusal php 0 (0.1503ms)
+✔ PHP/Ruby value refusal php 1 (0.1511ms)
+✔ PHP/Ruby value refusal php 2 (0.0846ms)
+✔ PHP/Ruby value refusal php 3 (0.0674ms)
+✔ PHP/Ruby value refusal php 4 (0.0587ms)
+✔ PHP/Ruby value refusal php 5 (0.0595ms)
+✔ PHP/Ruby value refusal php 6 (0.0584ms)
+✔ PHP/Ruby value refusal php 7 (0.0746ms)
+✔ PHP/Ruby value refusal php 8 (0.0896ms)
+✔ PHP/Ruby full statement boundary php (0.5042ms)
+✔ PHP/Ruby embedded examples never masked php (0.289ms)
+✔ PHP/Ruby comments and adjacent fields retain lines php (0.5353ms)
+✔ PHP/Ruby bounded allow rb exact (0.1232ms)
+✔ PHP/Ruby bounded allow rb single (0.1399ms)
+✔ PHP/Ruby bounded allow rb multiline (0.1762ms)
+✔ PHP/Ruby bounded allow rb comment (0.2312ms)
+✔ PHP/Ruby closed language fence rb (0.1857ms)
+✔ PHP/Ruby value refusal rb 0 (0.072ms)
+✔ PHP/Ruby value refusal rb 1 (0.0683ms)
+✔ PHP/Ruby value refusal rb 2 (0.0797ms)
+✔ PHP/Ruby value refusal rb 3 (0.0807ms)
+✔ PHP/Ruby value refusal rb 4 (0.0701ms)
+✔ PHP/Ruby value refusal rb 5 (0.0651ms)
+✔ PHP/Ruby value refusal rb 6 (0.062ms)
+✔ PHP/Ruby value refusal rb 7 (0.0612ms)
+✔ PHP/Ruby value refusal rb 8 (0.0583ms)
+✔ PHP/Ruby full statement boundary rb (0.2343ms)
+✔ PHP/Ruby embedded examples never masked rb (0.2265ms)
+✔ PHP/Ruby comments and adjacent fields retain lines rb (0.22ms)
+✔ PHP/Ruby three gates php (70.9017ms)
+✔ PHP/Ruby three gates rb (55.4882ms)
+✖ RY-PR-01 comment key php apikey (2.5964ms)
+✔ RY-PR-01 comment key php apiKey (0.5537ms)
+✖ RY-PR-01 comment key php APIKEY (0.3358ms)
+✔ RY-PR-01 comment key php api_key (0.6626ms)
+✖ RY-PR-01 comment key php API_KEY (0.265ms)
+✖ RY-PR-01 comment key php api-key (0.1852ms)
+✖ RY-PR-01 comment key php API-KEY (0.1835ms)
+✔ RY-PR-01 comment key php token (0.3933ms)
+✖ RY-PR-01 comment key php TOKEN (0.1773ms)
+✖ RY-PR-01 comment key php ToKeN (0.1774ms)
+✔ RY-PR-01 comment key php secret (0.2853ms)
+✖ RY-PR-01 comment key php SECRET (0.1532ms)
+✔ RY-PR-01 comment key php password (0.2757ms)
+✖ RY-PR-01 comment key php PASSWORD (0.1725ms)
+✖ RY-PR-01 comment key php PaSsWoRd (0.195ms)
+✖ RY-PR-01 comment key php authorization (0.1556ms)
+✖ RY-PR-01 comment key php AUTHORIZATION (0.1521ms)
+✖ RY-PR-01 comment key php AuThOrIzAtIoN (0.1501ms)
+✖ RY-PR-01 comment key rb apikey (0.1478ms)
+✔ RY-PR-01 comment key rb apiKey (0.2867ms)
+✖ RY-PR-01 comment key rb APIKEY (0.1458ms)
+✔ RY-PR-01 comment key rb api_key (0.2822ms)
+✖ RY-PR-01 comment key rb API_KEY (0.1448ms)
+✖ RY-PR-01 comment key rb api-key (0.1411ms)
+✖ RY-PR-01 comment key rb API-KEY (0.1503ms)
+✔ RY-PR-01 comment key rb token (0.2836ms)
+✖ RY-PR-01 comment key rb TOKEN (0.1439ms)
+✖ RY-PR-01 comment key rb ToKeN (0.1411ms)
+✔ RY-PR-01 comment key rb secret (0.2797ms)
+✖ RY-PR-01 comment key rb SECRET (0.1473ms)
+✔ RY-PR-01 comment key rb password (0.3119ms)
+✖ RY-PR-01 comment key rb PASSWORD (0.8354ms)
+✖ RY-PR-01 comment key rb PaSsWoRd (0.1688ms)
+✖ RY-PR-01 comment key rb authorization (0.1233ms)
+✖ RY-PR-01 comment key rb AUTHORIZATION (0.1133ms)
+✖ RY-PR-01 comment key rb AuThOrIzAtIoN (0.1229ms)
+✖ RY-PR-01 three gates php (81.3699ms)
+✖ RY-PR-01 three gates rb (90.5883ms)
+ℹ tests 77
+ℹ suites 0
+ℹ pass 49
+ℹ fail 28
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1201.2125
+
+✖ failing tests:
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key php apikey (2.5964ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key php APIKEY (0.3358ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key php API_KEY (0.265ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key php api-key (0.1852ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key php API-KEY (0.1835ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key php TOKEN (0.1773ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key php ToKeN (0.1774ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key php SECRET (0.1532ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key php PASSWORD (0.1725ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key php PaSsWoRd (0.195ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key php authorization (0.1556ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key php AUTHORIZATION (0.1521ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key php AuThOrIzAtIoN (0.1501ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key rb apikey (0.1478ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key rb APIKEY (0.1458ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key rb API_KEY (0.1448ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key rb api-key (0.1411ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key rb API-KEY (0.1503ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key rb TOKEN (0.1439ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key rb ToKeN (0.1411ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key rb SECRET (0.1473ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key rb PASSWORD (0.8354ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key rb PaSsWoRd (0.1688ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key rb authorization (0.1233ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key rb AUTHORIZATION (0.1133ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:8536
+✖ RY-PR-01 comment key rb AuThOrIzAtIoN (0.1229ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:165:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /sensitive-assignment@2/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:9293
+✖ RY-PR-01 three gates php (81.3699ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + [
+  +   'collect rejection',
+  +   'collect no artifact',
+  +   'restore rejection',
+  +   'restore bytes unchanged',
+  +   'restore baseline unchanged',
+  +   'publish rejection',
+  +   'publish no additional Git calls'
+  + ]
+  - []
+
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:215:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'collect rejection', 'collect no artifact', 'restore rejection', 'restore bytes unchanged', 'restore baseline unchanged', 'publish rejection', 'publish no additional Git calls' ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-php-ruby.test.ts:1:9293
+✖ RY-PR-01 three gates rb (90.5883ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + [
+  +   'collect rejection',
+  +   'collect no artifact',
+  +   'restore rejection',
+  +   'restore bytes unchanged',
+  +   'restore baseline unchanged',
+  +   'publish rejection',
+  +   'publish no additional Git calls'
+  + ]
+  - []
+
+      at TestContext.<anonymous> (<USER_ROOT>\prc\test\profile-secret-scan-php-ruby.test.ts:215:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'collect rejection', 'collect no artifact', 'restore rejection', 'restore bytes unchanged', 'restore baseline unchanged', 'publish rejection', 'publish no additional Git calls' ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
