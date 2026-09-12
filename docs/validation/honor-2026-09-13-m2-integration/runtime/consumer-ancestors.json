@@ -1,0 +1,32 @@
+[
+  {
+    "hostSdkDirectoryExists": false,
+    "ancestor": "<RUN>",
+    "consumer": "consumer-pure"
+  },
+  {
+    "hostSdkDirectoryExists": false,
+    "ancestor": "C:\\uagent-review",
+    "consumer": "consumer-pure"
+  },
+  {
+    "hostSdkDirectoryExists": false,
+    "ancestor": "C:\\",
+    "consumer": "consumer-pure"
+  },
+  {
+    "hostSdkDirectoryExists": false,
+    "ancestor": "<RUN>",
+    "consumer": "consumer-host"
+  },
+  {
+    "hostSdkDirectoryExists": false,
+    "ancestor": "C:\\uagent-review",
+    "consumer": "consumer-host"
+  },
+  {
+    "hostSdkDirectoryExists": false,
+    "ancestor": "C:\\",
+    "consumer": "consumer-host"
+  }
+]

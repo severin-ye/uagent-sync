@@ -1,0 +1,12 @@
+{
+  "label": "build",
+  "cmd": "npm.cmd",
+  "args": [
+    "run",
+    "build"
+  ],
+  "cwd": "<RUN>\\src",
+  "status": 0,
+  "signal": null,
+  "error": null
+}

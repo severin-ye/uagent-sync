@@ -1,0 +1,11 @@
+{
+  "npmCurrent": "12.0.2",
+  "codeSha": "416120afbf2446463864e8292d1423e493055944",
+  "consumerManifests": {
+    "pure": true,
+    "host": true
+  },
+  "packageSHA256": "4B66C57DBB87E0FF62637AF1D966EF4823B1F71EEA2E539BE7A53811279005FA",
+  "node18": "v18.20.8",
+  "current": "v24.16.0"
+}

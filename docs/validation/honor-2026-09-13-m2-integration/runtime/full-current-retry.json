@@ -1,0 +1,13 @@
+{
+  "label": "full-current-retry",
+  "cmd": "npm.cmd",
+  "args": [
+    "test",
+    "--prefix",
+    "<RUN>\\src"
+  ],
+  "cwd": "<RUN>\\src",
+  "status": 0,
+  "signal": null,
+  "error": null
+}

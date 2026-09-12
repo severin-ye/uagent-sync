@@ -1,0 +1,16 @@
+{
+  "label": "ci",
+  "cmd": "npm.cmd",
+  "args": [
+    "ci",
+    "--prefix",
+    "<RUN>\\src",
+    "--ignore-scripts",
+    "--no-audit",
+    "--no-fund"
+  ],
+  "cwd": "<RUN>",
+  "status": 0,
+  "signal": null,
+  "error": null
+}

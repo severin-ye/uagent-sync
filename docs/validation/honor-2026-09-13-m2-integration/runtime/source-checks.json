@@ -1,0 +1,11 @@
+{
+  "head": "416120afbf2446463864e8292d1423e493055944",
+  "status": " M src/dashboard/i18n.js\n",
+  "generatedI18n": {
+    "byteEqual": true,
+    "normalizedLFEqual": true,
+    "headSHA256": "d1fdaad1c7db9d1fe641a4f4fe16524d9909fc47fa4d724a9a86c8d374c925ce",
+    "workSHA256": "d1fdaad1c7db9d1fe641a4f4fe16524d9909fc47fa4d724a9a86c8d374c925ce"
+  },
+  "coreDiff": ""
+}

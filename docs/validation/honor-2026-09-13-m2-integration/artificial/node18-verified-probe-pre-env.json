@@ -1,0 +1,19 @@
+{
+  "HOME": "<PROBE>\\probe-node18-verified\\home",
+  "USERPROFILE": "<PROBE>\\probe-node18-verified\\home",
+  "APPDATA": "<PROBE>\\probe-node18-verified\\app",
+  "LOCALAPPDATA": "<PROBE>\\probe-node18-verified\\local",
+  "CODEX_HOME": "<PROBE>\\probe-node18-verified\\codex",
+  "XDG_CONFIG_HOME": "<PROBE>\\probe-node18-verified\\xdg",
+  "TMP": "<PROBE>\\probe-node18-verified\\tmp",
+  "TEMP": "<PROBE>\\probe-node18-verified\\tmp",
+  "npm_config_cache": "<PROBE>\\probe-node18-verified\\npm-cache",
+  "npm_config_prefix": "<PROBE>\\probe-node18-verified\\npm-prefix",
+  "npm_config_userconfig": "<PROBE>\\probe-node18-verified\\npm_config_userconfig.rc",
+  "npm_config_globalconfig": "<PROBE>\\probe-node18-verified\\npm_config_globalconfig.rc",
+  "UAGENT_SYNC_WORKSPACE_ROOT": null,
+  "OPENCODE_SYNC_WORKSPACE_ROOT": null,
+  "NODE_OPTIONS": null,
+  "NODE_PATH": null,
+  "HONOR_M2_SOURCE": "<PROBE>\\src"
+}

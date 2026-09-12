@@ -1,0 +1,16 @@
+{
+  "label": "pack",
+  "cmd": "npm.cmd",
+  "args": [
+    "pack",
+    "--prefix",
+    "<RUN>\\src",
+    "--pack-destination",
+    "<RUN>\\packages",
+    "--json"
+  ],
+  "cwd": "<RUN>\\src",
+  "status": 0,
+  "signal": null,
+  "error": null
+}

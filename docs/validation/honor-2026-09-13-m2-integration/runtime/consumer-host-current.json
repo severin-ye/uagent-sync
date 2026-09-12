@@ -1,0 +1,12 @@
+{
+  "label": "consumer-host-current",
+  "cmd": "node",
+  "args": [
+    "<RUN>\\consumer-check.mjs",
+    "--host"
+  ],
+  "cwd": "<RUN>\\consumer-host",
+  "status": 0,
+  "signal": null,
+  "error": null
+}

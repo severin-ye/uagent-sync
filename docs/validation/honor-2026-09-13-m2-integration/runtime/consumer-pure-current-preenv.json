@@ -1,0 +1,41 @@
+{
+  "cwd": "<RUN>\\consumer-pure",
+  "selected": {
+    "USERPROFILE": "<RUN>/home",
+    "HOME": "<RUN>/home",
+    "APPDATA": "<RUN>/home/appdata",
+    "LOCALAPPDATA": "<RUN>/home/localappdata",
+    "CODEX_HOME": "<RUN>/home/codex",
+    "XDG_CONFIG_HOME": "<RUN>/home/xdg",
+    "TEMP": "<RUN>/temp",
+    "TMP": "<RUN>/temp",
+    "npm_config_cache": "<RUN>/npm-cache",
+    "npm_config_userconfig": "<RUN>/npm-user.rc",
+    "npm_config_globalconfig": "<RUN>/npm-global.rc",
+    "npm_config_prefix": "<RUN>/npm-prefix",
+    "UAGENT_SYNC_WORKSPACE_ROOT": null,
+    "OPENCODE_SYNC_WORKSPACE_ROOT": null,
+    "NODE_OPTIONS": null,
+    "NODE_PATH": null,
+    "PATH": null
+  },
+  "hasOwn": {
+    "USERPROFILE": true,
+    "HOME": true,
+    "APPDATA": true,
+    "LOCALAPPDATA": true,
+    "CODEX_HOME": true,
+    "XDG_CONFIG_HOME": true,
+    "TEMP": true,
+    "TMP": true,
+    "npm_config_cache": true,
+    "npm_config_userconfig": true,
+    "npm_config_globalconfig": true,
+    "npm_config_prefix": true,
+    "UAGENT_SYNC_WORKSPACE_ROOT": false,
+    "OPENCODE_SYNC_WORKSPACE_ROOT": false,
+    "NODE_OPTIONS": false,
+    "NODE_PATH": false,
+    "PATH": false
+  }
+}

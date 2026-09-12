@@ -1,0 +1,42 @@
+[
+  {
+    "id": "formfeed-before-equals",
+    "newline": "LF",
+    "python_ast_valid": true
+  },
+  {
+    "id": "formfeed-before-equals",
+    "newline": "CRLF",
+    "python_ast_valid": true
+  },
+  {
+    "id": "formfeed-after-equals",
+    "newline": "LF",
+    "python_ast_valid": true
+  },
+  {
+    "id": "formfeed-after-equals",
+    "newline": "CRLF",
+    "python_ast_valid": true
+  },
+  {
+    "id": "formfeed-comment",
+    "newline": "LF",
+    "python_ast_valid": true
+  },
+  {
+    "id": "formfeed-comment",
+    "newline": "CRLF",
+    "python_ast_valid": true
+  },
+  {
+    "id": "formfeed-signature",
+    "newline": "LF",
+    "python_ast_valid": true
+  },
+  {
+    "id": "formfeed-signature",
+    "newline": "CRLF",
+    "python_ast_valid": true
+  }
+]

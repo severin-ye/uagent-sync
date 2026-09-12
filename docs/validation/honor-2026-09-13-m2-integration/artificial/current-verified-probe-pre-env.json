@@ -1,0 +1,19 @@
+{
+  "HOME": "<PROBE>\\probe-current-verified\\home",
+  "USERPROFILE": "<PROBE>\\probe-current-verified\\home",
+  "APPDATA": "<PROBE>\\probe-current-verified\\app",
+  "LOCALAPPDATA": "<PROBE>\\probe-current-verified\\local",
+  "CODEX_HOME": "<PROBE>\\probe-current-verified\\codex",
+  "XDG_CONFIG_HOME": "<PROBE>\\probe-current-verified\\xdg",
+  "TMP": "<PROBE>\\probe-current-verified\\tmp",
+  "TEMP": "<PROBE>\\probe-current-verified\\tmp",
+  "npm_config_cache": "<PROBE>\\probe-current-verified\\npm-cache",
+  "npm_config_prefix": "<PROBE>\\probe-current-verified\\npm-prefix",
+  "npm_config_userconfig": "<PROBE>\\probe-current-verified\\npm_config_userconfig.rc",
+  "npm_config_globalconfig": "<PROBE>\\probe-current-verified\\npm_config_globalconfig.rc",
+  "UAGENT_SYNC_WORKSPACE_ROOT": null,
+  "OPENCODE_SYNC_WORKSPACE_ROOT": null,
+  "NODE_OPTIONS": null,
+  "NODE_PATH": null,
+  "HONOR_M2_SOURCE": "<PROBE>\\src"
+}

@@ -1,0 +1,24 @@
+[
+  {
+    "stdout": "<PROBE>\\current-formal-honor-residual.json",
+    "node": "C:\\Program Files\\nodejs\\node.exe",
+    "exitCode": 1,
+    "stderr": "<PROBE>\\current-formal-honor-residual.stderr.log",
+    "arguments": [
+      "--import",
+      "file:///<PROBE>/src/node_modules/tsx/dist/loader.mjs",
+      "<PROBE>\\honor-residual.mjs"
+    ]
+  },
+  {
+    "stdout": "<PROBE>\\current-formal-honor-formfeed-gates.json",
+    "node": "C:\\Program Files\\nodejs\\node.exe",
+    "exitCode": 1,
+    "stderr": "<PROBE>\\current-formal-honor-formfeed-gates.stderr.log",
+    "arguments": [
+      "--import",
+      "file:///<PROBE>/src/node_modules/tsx/dist/loader.mjs",
+      "<PROBE>\\honor-formfeed-gates.mjs"
+    ]
+  }
+]
