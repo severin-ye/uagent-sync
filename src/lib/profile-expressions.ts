@@ -101,9 +101,13 @@ function terminated(tokens: Token[], end: number, key: Token): boolean {
   if (next.text === '\n') {
     let pos = end;
     while (tokens[pos]?.text === '\n') pos++;
-    // JS automatic semicolon insertion and unknown continuations are fail-closed.
+    // A newline is not a terminator before a binary/conditional operator,
+    // member/call/index/tag tail, or an unproven TS type continuation.
+    // Include operator families (not just ||/??): &&, bitwise, comparison,
+    // equality, shifts and remainder can all continue a JS expression.
     const following = tokens[pos]?.text ?? '';
-    return !/^[.([+*\/|?`"'-]/.test(following) && !['or', 'and'].includes(following);
+    return !/^[.([+*\/|?`"'&^%<>=!,-]/.test(following)
+      && !['or', 'and', 'in', 'instanceof', 'as', 'satisfies'].includes(following);
   }
   if (next.depth !== key.depth) return false;
   if (next.text === ',') return key.call; // Otherwise this may be a tuple RHS.
