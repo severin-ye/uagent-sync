@@ -1,0 +1,22 @@
+{
+  "task": "HP-03-M2-SCOPE",
+  "inputSha": "1803001ea50b0b5b5456c297ece60a62fc156645",
+  "sourceSha": "70428520228adcac3ac66a2cfb857667b7b69aed",
+  "recommendation": "pinned pure-Node Lezer strict full-file parse plus explicitly provisioned private exact templates",
+  "parserCandidate": "@lezer/python@1.1.18",
+  "implemented": false,
+  "dependenciesInstalled": false,
+  "realFilesReread": false,
+  "newTestsExecuted": false,
+  "templatesProvisioned": false,
+  "m2Allowed": false,
+  "hp03Complete": false,
+  "hp04Complete": false,
+  "migrationComplete": false,
+  "remainingInputs": [
+    "Honor review of node/parameter/Args/failure contracts",
+    "explicit future approval of dependency adoption and Node18/package probe",
+    "explicit private template provisioning instructions and reviewed exact contents; no public original text",
+    "separate explicit implementation task after scope acceptance"
+  ]
+}

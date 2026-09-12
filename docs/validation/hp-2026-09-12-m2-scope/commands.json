@@ -1,0 +1,31 @@
+[
+  {
+    "label": "detect",
+    "cmd": "node",
+    "args": [
+      "<USER_ROOT>/hpm2se/detect-all.mjs"
+    ],
+    "status": 0,
+    "signal": null,
+    "log": "detect.log"
+  },
+  {
+    "label": "source-check",
+    "cmd": "git",
+    "args": [
+      "diff",
+      "--exit-code",
+      "70428520228adcac3ac66a2cfb857667b7b69aed",
+      "HEAD",
+      "--",
+      "src",
+      "test",
+      "scripts",
+      "package.json",
+      "package-lock.json"
+    ],
+    "status": 0,
+    "signal": null,
+    "log": "source-check.log"
+  }
+]

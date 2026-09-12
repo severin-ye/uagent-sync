@@ -1,0 +1,39 @@
+[
+  {
+    "title": "Python grammar/package",
+    "url": "https://github.com/lezer-parser/python/tree/091aab4b36d8e430053ee5603db170cd4eaec776",
+    "package": "@lezer/python",
+    "version": "1.1.18",
+    "files": [
+      "package.json",
+      "src/python.grammar"
+    ],
+    "facts": [
+      "ESM and CJS distribution exports",
+      "FunctionDefinition ParamList Body ExpressionStatement String grammar",
+      "MIT; dependencies common/lr/highlight"
+    ]
+  },
+  {
+    "title": "LR parser strict configuration",
+    "url": "https://github.com/lezer-parser/lr/blob/ed59b8b9c0c26164d6483f4c881a8c200184894e/src/parse.ts",
+    "packageVersionAtInspection": "1.4.8",
+    "facts": [
+      "configure strict option",
+      "strict parse throws SyntaxError instead of recovery"
+    ]
+  },
+  {
+    "title": "Common node and input contracts",
+    "url": "https://github.com/lezer-parser/common/tree/d87b56cbe3d6f54edb5b8343ee794f8f96f9c86c/src",
+    "packageVersionAtInspection": "1.5.2",
+    "files": [
+      "parse.ts",
+      "tree.ts"
+    ],
+    "facts": [
+      "type.isError",
+      "StringInput uses JavaScript string length and slice"
+    ]
+  }
+]
