@@ -1,0 +1,12 @@
+from pathlib import Path
+import os,json,subprocess,tempfile
+r=Path(r'<USER_HOME>\AppData\Local\Temp\uagent-sync-hp-php-ruby-20260912-205344-d2186d14');l=r/'honor-recovery';e=dict(os.environ)
+for k,v in json.loads((l/'full-pre-env.json').read_text()).items():
+ if v is None:e.pop(k,None)
+ else:e[k]=v
+short=Path(tempfile.mkdtemp(prefix='pr-'))
+e['TMP']=e['TEMP']=str(short)
+(l/'full-short-pre-env.json').write_text(json.dumps({k:e.get(k) for k in json.loads((l/'full-pre-env.json').read_text())},indent=2))
+a=[r'C:\Program Files\nodejs\node.exe',r'C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js','test']
+with (l/'full-short.log').open('w',encoding='utf8') as f:p=subprocess.run(a,cwd=r/'clone',env=e,stdout=f,stderr=subprocess.STDOUT)
+(l/'full-short-command.json').write_text(json.dumps(dict(args=a,cwd=str(r/'clone'),exitCode=p.returncode),indent=2));print(p.returncode)

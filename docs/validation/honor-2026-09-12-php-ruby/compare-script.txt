@@ -1,0 +1,12 @@
+import { assertProfileContentSafe as oldScan } from 'file:///<USER_HOME>/AppData/Local/Temp/uagent-sync-hp-php-ruby-20260912-205344-d2186d14/honor-recovery/baseline/profile-secret-scan.ts';
+import { assertProfileContentSafe as scan } from 'file:///<USER_HOME>/AppData/Local/Temp/uagent-sync-hp-php-ruby-20260912-205344-d2186d14/clone/src/lib/profile-secret-scan.ts';
+import { recognizeProfileExpressions } from 'file:///<USER_HOME>/AppData/Local/Temp/uagent-sync-hp-php-ruby-20260912-205344-d2186d14/clone/src/lib/profile-expressions.ts';
+const rows=[];
+for(const [ext,safe,comment] of [['php','$client = new Client(apiKey: "your-api-key");','//'],['rb','client = Anthropic::Client.new(api_key: "your-api-key")','#']]) {
+ for(const key of ['password','PASSWORD','authorization','api-key']) for(const nl of ['\n','\r\n']) {
+ const tail=comment+' '+key+'=("SYNTHETIC_NONEMPTY")'; const combined=safe+nl+tail;
+ const result=(fn,text)=>{try{fn(text,'fixture.'+ext);return 'ALLOWED'}catch(e){return e.message}};
+ const normalized=recognizeProfileExpressions(combined,'fixture.'+ext).normalized;
+ rows.push({ext,key,newline:nl==='\n'?'LF':'CRLF',oldTail:result(oldScan,tail),oldCombined:result(oldScan,combined),currentCombined:result(scan,combined),tailPreserved:normalized.endsWith(tail),lengthPreserved:normalized.length===combined.length});
+ }}
+console.log(JSON.stringify(rows,null,2));

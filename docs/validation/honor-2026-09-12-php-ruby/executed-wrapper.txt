@@ -1,0 +1,39 @@
+from pathlib import Path
+import os,json,subprocess
+r=Path(r'<USER_HOME>\AppData\Local\Temp\uagent-sync-hp-php-ruby-20260912-205344-d2186d14')
+c=r/'clone'; l=r/'honor-recovery'; l.mkdir(exist_ok=True)
+e=dict(os.environ)
+keys=['USERPROFILE','HOME','APPDATA','LOCALAPPDATA','CODEX_HOME','XDG_CONFIG_HOME','TMP','TEMP','NPM_CONFIG_CACHE']
+for k in keys:
+ p=l/'isolated'/k;p.mkdir(parents=True,exist_ok=True);e[k]=str(p)
+for k in ['NPM_CONFIG_USERCONFIG','NPM_CONFIG_GLOBALCONFIG']:
+ p=l/'isolated'/k;p.write_text('');e[k]=str(p)
+for k in ['UAGENT_SYNC_WORKSPACE_ROOT','OPENCODE_SYNC_WORKSPACE_ROOT','OPENCODE_CONFIG_DIR','OPENCODE_HOME','OPENCODE']:
+ e.pop(k,None);keys.append(k)
+keys+=['NPM_CONFIG_USERCONFIG','NPM_CONFIG_GLOBALCONFIG']
+node=r'C:\Program Files\nodejs\node.exe';npm=r'C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js'
+commands=[]
+def run(label,args):
+ (l/(label+'-pre-env.json')).write_text(json.dumps({k:e.get(k) for k in keys},indent=2))
+ with (l/(label+'.log')).open('w',encoding='utf8') as f:
+  p=subprocess.run(args,cwd=c,env=e,stdout=f,stderr=subprocess.STDOUT)
+ commands.append(dict(label=label,args=args,cwd=str(c),exitCode=p.returncode))
+ (l/'commands.json').write_text(json.dumps(commands,indent=2))
+ print(label,p.returncode,flush=True)
+ return p.returncode
+if run('install',[node,npm,'ci','--ignore-scripts','--no-audit','--no-fund']):raise SystemExit(1)
+if run('build',[node,npm,'run','build']):raise SystemExit(1)
+files=['php-ruby','quoted','five','boundary','m13']
+run('focused',[node,'--import','tsx','--test']+['test/profile-secret-scan-'+s+'.test.ts' for s in files]+['test/profile-secret-scan.test.ts','test/secret-scan-m0.test.ts'])
+run('full',[node,npm,'test'])
+s=(c/'test/profile-secret-scan-php-ruby.test.ts').read_text()
+prefix=s[:s.index('const php =')]
+for name in ['profile-secret-scan','codex-profile','device-git-transport','profile-expressions']:
+ prefix=prefix.replace('../src/lib/'+name+'.js',(c/('src/lib/'+name+'.ts')).as_uri())
+variants='''const php = '$client = new Client(apiKey: "your-api-key");';
+const ruby = 'client = Anthropic::Client.new(api_key: "your-api-key")';
+const variants = [['php', php, php+'\\n// PASSWORD=("SYNTHETIC_NONEMPTY")'], ['rb', ruby, ruby+'\\n# PASSWORD=("SYNTHETIC_NONEMPTY")']] as const;
+'''
+body=s[s.index("for (const [extension, safe, bad] of variants) test"):].replace('PHP/Ruby three gates','RY-PR-01 three gates').replace('assert.deepEqual(failures, []);','console.log(JSON.stringify({extension,failures,calls}));\n  assert.deepEqual(failures, []);')
+probe=l/'three-gates.test.ts';probe.write_text(prefix+variants+body)
+run('three-gates',[node,'--import','tsx','--test',str(probe)])

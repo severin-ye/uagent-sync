@@ -1,0 +1,51 @@
+{
+  "task": "RY-11",
+  "status": "failed-independent-review",
+  "inputHandoff": "cfa09505be09d549474c3c0a0be1b29d0b95a1f4",
+  "source": "e3153d9075bfc19219071e3cfd87a5f7ed2ab38f",
+  "base": "c96ee5bb130ad89e31f3d37724161c6ac80c2983",
+  "build": {
+    "exitCode": 0
+  },
+  "focused": {
+    "tests": 178,
+    "passCount": 178,
+    "fail": 0,
+    "exitCode": 0
+  },
+  "fullInitial": {
+    "tests": 596,
+    "passCount": 595,
+    "fail": 1,
+    "exitCode": 1,
+    "cause": "isolated TEMP Git filename too long"
+  },
+  "fullShortTemp": {
+    "tests": 596,
+    "passCount": 596,
+    "fail": 0,
+    "exitCode": 0
+  },
+  "manualThreeGates": {
+    "tests": 2,
+    "passCount": 0,
+    "fail": 2,
+    "exitCode": 1,
+    "failedAssertionsPerLanguage": 7,
+    "finding": "RY-PR-01"
+  },
+  "review": {
+    "formSyntax": "supported only in bounded single-statement forms",
+    "realFiles": "not tested",
+    "migration": "not complete"
+  },
+  "blocked": [
+    "RY-PR-01",
+    "M2",
+    "172 unknown-source findings",
+    "RY-03",
+    "multi-statement/import real regions"
+  ],
+  "nextOwner": "HP",
+  "nextTaskProposal": "HP-03-M13-PR-C"
+}

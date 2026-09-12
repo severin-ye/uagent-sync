@@ -1,0 +1,162 @@
+[
+  {
+    "ext": "php",
+    "key": "password",
+    "newline": "LF",
+    "oldTail": "ALLOWED",
+    "oldCombined": "Secret scan blocked fixture.php: sensitive-assignment@1",
+    "currentCombined": "Secret scan blocked fixture.php: sensitive-assignment@2",
+    "tailPreserved": true,
+    "lengthPreserved": true
+  },
+  {
+    "ext": "php",
+    "key": "password",
+    "newline": "CRLF",
+    "oldTail": "ALLOWED",
+    "oldCombined": "Secret scan blocked fixture.php: sensitive-assignment@1",
+    "currentCombined": "Secret scan blocked fixture.php: sensitive-assignment@2",
+    "tailPreserved": true,
+    "lengthPreserved": true
+  },
+  {
+    "ext": "php",
+    "key": "PASSWORD",
+    "newline": "LF",
+    "oldTail": "ALLOWED",
+    "oldCombined": "Secret scan blocked fixture.php: sensitive-assignment@1",
+    "currentCombined": "ALLOWED",
+    "tailPreserved": true,
+    "lengthPreserved": true
+  },
+  {
+    "ext": "php",
+    "key": "PASSWORD",
+    "newline": "CRLF",
+    "oldTail": "ALLOWED",
+    "oldCombined": "Secret scan blocked fixture.php: sensitive-assignment@1",
+    "currentCombined": "ALLOWED",
+    "tailPreserved": true,
+    "lengthPreserved": true
+  },
+  {
+    "ext": "php",
+    "key": "authorization",
+    "newline": "LF",
+    "oldTail": "ALLOWED",
+    "oldCombined": "Secret scan blocked fixture.php: sensitive-assignment@1",
+    "currentCombined": "ALLOWED",
+    "tailPreserved": true,
+    "lengthPreserved": true
+  },
+  {
+    "ext": "php",
+    "key": "authorization",
+    "newline": "CRLF",
+    "oldTail": "ALLOWED",
+    "oldCombined": "Secret scan blocked fixture.php: sensitive-assignment@1",
+    "currentCombined": "ALLOWED",
+    "tailPreserved": true,
+    "lengthPreserved": true
+  },
+  {
+    "ext": "php",
+    "key": "api-key",
+    "newline": "LF",
+    "oldTail": "ALLOWED",
+    "oldCombined": "Secret scan blocked fixture.php: sensitive-assignment@1",
+    "currentCombined": "ALLOWED",
+    "tailPreserved": true,
+    "lengthPreserved": true
+  },
+  {
+    "ext": "php",
+    "key": "api-key",
+    "newline": "CRLF",
+    "oldTail": "ALLOWED",
+    "oldCombined": "Secret scan blocked fixture.php: sensitive-assignment@1",
+    "currentCombined": "ALLOWED",
+    "tailPreserved": true,
+    "lengthPreserved": true
+  },
+  {
+    "ext": "rb",
+    "key": "password",
+    "newline": "LF",
+    "oldTail": "ALLOWED",
+    "oldCombined": "Secret scan blocked fixture.rb: sensitive-assignment@1",
+    "currentCombined": "Secret scan blocked fixture.rb: sensitive-assignment@2",
+    "tailPreserved": true,
+    "lengthPreserved": true
+  },
+  {
+    "ext": "rb",
+    "key": "password",
+    "newline": "CRLF",
+    "oldTail": "ALLOWED",
+    "oldCombined": "Secret scan blocked fixture.rb: sensitive-assignment@1",
+    "currentCombined": "Secret scan blocked fixture.rb: sensitive-assignment@2",
+    "tailPreserved": true,
+    "lengthPreserved": true
+  },
+  {
+    "ext": "rb",
+    "key": "PASSWORD",
+    "newline": "LF",
+    "oldTail": "ALLOWED",
+    "oldCombined": "Secret scan blocked fixture.rb: sensitive-assignment@1",
+    "currentCombined": "ALLOWED",
+    "tailPreserved": true,
+    "lengthPreserved": true
+  },
+  {
+    "ext": "rb",
+    "key": "PASSWORD",
+    "newline": "CRLF",
+    "oldTail": "ALLOWED",
+    "oldCombined": "Secret scan blocked fixture.rb: sensitive-assignment@1",
+    "currentCombined": "ALLOWED",
+    "tailPreserved": true,
+    "lengthPreserved": true
+  },
+  {
+    "ext": "rb",
+    "key": "authorization",
+    "newline": "LF",
+    "oldTail": "ALLOWED",
+    "oldCombined": "Secret scan blocked fixture.rb: sensitive-assignment@1",
+    "currentCombined": "ALLOWED",
+    "tailPreserved": true,
+    "lengthPreserved": true
+  },
+  {
+    "ext": "rb",
+    "key": "authorization",
+    "newline": "CRLF",
+    "oldTail": "ALLOWED",
+    "oldCombined": "Secret scan blocked fixture.rb: sensitive-assignment@1",
+    "currentCombined": "ALLOWED",
+    "tailPreserved": true,
+    "lengthPreserved": true
+  },
+  {
+    "ext": "rb",
+    "key": "api-key",
+    "newline": "LF",
+    "oldTail": "ALLOWED",
+    "oldCombined": "Secret scan blocked fixture.rb: sensitive-assignment@1",
+    "currentCombined": "ALLOWED",
+    "tailPreserved": true,
+    "lengthPreserved": true
+  },
+  {
+    "ext": "rb",
+    "key": "api-key",
+    "newline": "CRLF",
+    "oldTail": "ALLOWED",
+    "oldCombined": "Secret scan blocked fixture.rb: sensitive-assignment@1",
+    "currentCombined": "ALLOWED",
+    "tailPreserved": true,
+    "lengthPreserved": true
+  }
+]

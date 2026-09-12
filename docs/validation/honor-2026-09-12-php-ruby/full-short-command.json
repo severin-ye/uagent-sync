@@ -1,0 +1,9 @@
+{
+  "args": [
+    "C:\\Program Files\\nodejs\\node.exe",
+    "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+    "test"
+  ],
+  "cwd": "<USER_HOME>\\AppData\\Local\\Temp\\uagent-sync-hp-php-ruby-20260912-205344-d2186d14\\clone",
+  "exitCode": 0
+}

@@ -1,0 +1,17 @@
+{
+  "handoff-ancestor": {
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "source-ancestor": {
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "source-equal-handoff": {
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "file": "install.log",
+    "sha256": "3ecfc484bb41409fb781eb82dd54c25de5106b935144d73c12cb576bb260fcf9"
+  },
+  {
+    "file": "build.log",
+    "sha256": "64c6d7b272796b56fe8cee8f55ec0795f28db8c3701fc8163f40fe2a7de87890"
+  },
+  {
+    "file": "focused.log",
+    "sha256": "283cfcf18a70da5fc88321b9370599d828925db6532372deebb0aa0a5312464b"
+  },
+  {
+    "file": "full.log",
+    "sha256": "2267b83c7c1a5fab8ac11af7b895cd47fda732bd8bcc4eba83d41a40d1f6a648"
+  },
+  {
+    "file": "three-gates.log",
+    "sha256": "d20ae6cf5233e639d6a763316d199be6348eb99b0d14407e41c08fb98b38b286"
+  },
+  {
+    "file": "compare.json",
+    "sha256": "de83f026c5390e0d406a30e3db99eee8f11e342c3218d2646bb81ea4c8364917"
+  },
+  {
+    "file": "commands.json",
+    "sha256": "ee735b0bb4fa6ac0f3db12b3503201ee14b533e823db8222b2fca289cff0aa35"
+  },
+  {
+    "file": "full-short.log",
+    "sha256": "6cc2353bca64b6588c715af945e7694bd0b0588e3428e50dcbaccc05d5d0e4bc"
+  },
+  {
+    "file": "full-short-command.json",
+    "sha256": "d94e6f3ae5f1e1cd5c0a11ec1e6460eab450bf775f6dbed828ba4d2b01c3d8b0"
+  },
+  {
+    "file": "full-short-pre-env.json",
+    "sha256": "6fd898d5895b832c8cd3cc985ff17e4e8071d6af22b1c63164c1338bd8ae5c4e"
+  }
+]

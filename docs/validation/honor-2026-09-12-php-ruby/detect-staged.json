@@ -1,0 +1,1 @@
+{"tool":"gitnexus.detect_changes","scope":"staged","summary":{"changed_count":0,"affected_count":0,"changed_files":28,"risk_level":"low"},"changed_symbols":[],"affected_processes":[],"note":"Observed before adding this evidence file; final staged check also required."}

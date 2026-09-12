@@ -1,0 +1,20 @@
+{
+  "install-command.json": {
+    "label": "install",
+    "workingDirectory": "<USER_HOME>\\AppData\\Local\\Temp\\uagent-sync-hp-php-ruby-20260912-205344-d2186d14\\clone",
+    "file": "npm.cmd",
+    "args": [
+      "ci",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "rendered": "npm.cmd \"ci\" \"--ignore-scripts\" \"--no-audit\" \"--no-fund\""
+  },
+  "install-exit.json": {
+    "label": "install",
+    "exitCode": 1,
+    "completedAt": "2026-09-12T20:56:49.4475582+09:00"
+  },
+  "install-stderr.log": "node:internal/modules/cjs/loader:1503\n  throw err;\n  ^\n\nError: Cannot find module '<USER_HOME>\\AppData\\Local\\Temp\\uagent-sync-hp-php-ruby-20260912-205344-d2186d14\\clone\\node_modules\\npm\\bin\\npm-prefix.js'\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1500:15)\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1071:27)\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1095:10)\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1116:12)\n    at Module._load (node:internal/modules/cjs/loader:1285:25)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\n    at node:internal/main/run_main_module:33:47 {\n  code: 'MODULE_NOT_FOUND',\n  requireStack: []\n}\n\nNode.js v24.16.0\nnode:internal/modules/cjs/loader:1503\n  throw err;\n  ^\n\nError: Cannot find module '<USER_HOME>\\AppData\\Local\\Temp\\uagent-sync-hp-php-ruby-20260912-205344-d2186d14\\clone\\node_modules\\npm\\bin\\npm-cli.js'\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1500:15)\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1071:27)\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1095:10)\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1116:12)\n    at Module._load (node:internal/modules/cjs/loader:1285:25)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\n    at node:internal/main/run_main_module:33:47 {\n  code: 'MODULE_NOT_FOUND',\n  requireStack: []\n}\n\nNode.js v24.16.0\n"
+}
