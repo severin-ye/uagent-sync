@@ -1,0 +1,37 @@
+{
+  "inputSha": "d654053f50aeeb268d685eeda9f1233eaf6ae18f",
+  "baselineCodeSha": "1ad915b9b9a45289dd9540408907ce593982e227",
+  "inputProductionDiff": [],
+  "codeSha": "04672a6314d66c745bb11819e90f71b5ced0d3d0",
+  "red": {
+    "total": 28,
+    "pass": 21,
+    "fail": 7,
+    "exit": 1
+  },
+  "focused": {
+    "pass": 121,
+    "exit": 0
+  },
+  "full": {
+    "pass": 539,
+    "exit": 0
+  },
+  "implementedForms": [
+    "HP-007",
+    "HP-008"
+  ],
+  "deferred": [
+    "HP-001",
+    "HP-004",
+    "HP-005"
+  ],
+  "priorPythonForms": 11,
+  "realFilesRescanned": false,
+  "realCollection": false,
+  "installation": false,
+  "realRestore": false,
+  "linkOperations": false,
+  "hp03Complete": false,
+  "migrationComplete": false
+}

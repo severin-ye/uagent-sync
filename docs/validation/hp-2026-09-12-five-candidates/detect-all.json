@@ -1,0 +1,210 @@
+{
+  "summary": {
+    "changed_count": 6,
+    "affected_count": 12,
+    "changed_files": 2,
+    "risk_level": "high"
+  },
+  "changed_symbols": [
+    {
+      "id": "Function:src/lib/profile-expressions.ts:typescriptPlaceholders",
+      "name": "typescriptPlaceholders",
+      "type": "Function",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/lib/profile-expressions.ts:recognizeProfileExpressions",
+      "name": "recognizeProfileExpressions",
+      "type": "Function",
+      "filePath": "src/lib/profile-expressions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:test/profile-secret-scan-five.test.ts:exact",
+      "name": "exact",
+      "type": "Const",
+      "filePath": "test/profile-secret-scan-five.test.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:test/profile-secret-scan-five.test.ts:fn@91:68.device@94:2",
+      "name": "device",
+      "type": "Function",
+      "filePath": "test/profile-secret-scan-five.test.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:test/profile-secret-scan-five.test.ts:fn@91:68.target@95:2",
+      "name": "target",
+      "type": "Const",
+      "filePath": "test/profile-secret-scan-five.test.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:test/profile-secret-scan-five.test.ts:fn@91:68.check@119:2",
+      "name": "check",
+      "type": "Function",
+      "filePath": "test/profile-secret-scan-five.test.ts",
+      "change_type": "touched"
+    }
+  ],
+  "affected_processes": [
+    {
+      "id": "proc_3_createcodexprofile",
+      "name": "CreateCodexProfile → Text",
+      "process_type": "cross_community",
+      "step_count": 8,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        }
+      ]
+    },
+    {
+      "id": "proc_15_createcodexprofile",
+      "name": "CreateCodexProfile → CodeRegions",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        }
+      ]
+    },
+    {
+      "id": "proc_16_createcodexprofile",
+      "name": "CreateCodexProfile → Lex",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        }
+      ]
+    },
+    {
+      "id": "proc_17_createcodexprofile",
+      "name": "CreateCodexProfile → TypescriptPlaceholders",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        },
+        {
+          "symbol": "typescriptPlaceholders",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_116_restorecodexprofile",
+      "name": "RestoreCodexProfile → Text",
+      "process_type": "cross_community",
+      "step_count": 8,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        }
+      ]
+    },
+    {
+      "id": "proc_125_restorecodexprofile",
+      "name": "RestoreCodexProfile → CodeRegions",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        }
+      ]
+    },
+    {
+      "id": "proc_126_restorecodexprofile",
+      "name": "RestoreCodexProfile → Lex",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        }
+      ]
+    },
+    {
+      "id": "proc_127_restorecodexprofile",
+      "name": "RestoreCodexProfile → TypescriptPlaceholders",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 5
+        },
+        {
+          "symbol": "typescriptPlaceholders",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_175_scan",
+      "name": "Scan → Text",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_183_scan",
+      "name": "Scan → CodeRegions",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_184_scan",
+      "name": "Scan → Lex",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_185_scan",
+      "name": "Scan → TypescriptPlaceholders",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "recognizeProfileExpressions",
+          "step": 3
+        },
+        {
+          "symbol": "typescriptPlaceholders",
+          "step": 4
+        }
+      ]
+    }
+  ]
+}

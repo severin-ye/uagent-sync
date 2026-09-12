@@ -1,0 +1,46 @@
+{
+  "placeholderSpelling": "your-api-key",
+  "candidates": [
+    {
+      "id": "HP-001",
+      "language": "PHP",
+      "status": "deferred",
+      "desiredShape": "new Client named argument apiKey, exact quoted placeholder as complete value",
+      "gap": "No PHP lexer; heredoc/nowdoc, # and block comments, interpolation and dot concatenation are not safely handled by the current recognizer. Requires bounded lexer and named-argument boundary tests before an allowance."
+    },
+    {
+      "id": "HP-004",
+      "language": "Ruby",
+      "status": "deferred",
+      "desiredShape": "Anthropic::Client.new keyword api_key, exact quoted placeholder as complete value",
+      "gap": "No Ruby lexer; percent strings, heredoc, =begin/=end comments, interpolation and keyword argument continuations need dedicated refusal tests and a bounded recognizer."
+    },
+    {
+      "id": "HP-005",
+      "language": "Ruby",
+      "status": "deferred",
+      "sameGrammarAs": "HP-004"
+    },
+    {
+      "id": "HP-007",
+      "language": "TypeScript",
+      "status": "bounded-form-implemented",
+      "shape": "const client = new Anthropic({ apiKey: <EXACT_QUOTED_PLACEHOLDER> });"
+    },
+    {
+      "id": "HP-008",
+      "language": "TypeScript",
+      "status": "bounded-form-implemented",
+      "sameGrammarAs": "HP-007"
+    }
+  ],
+  "boundaries": [
+    ".ts or closed ts/typescript Markdown fence only",
+    "unnested physical line start; exact identifiers and full statement with semicolon",
+    "single/double quotes only; comments and whitespace may separate tokens",
+    "no extra properties, trailing comma, constructor suffix, generic object, changed identifiers, template values or value continuation",
+    "only literal token masked; unrecognized apiKey colon tokens in eligible TS regions rejected conservatively"
+  ],
+  "evidence": "Historical hp-findings.json syntax classification plus artificial fixtures; no real current files collected or rescanned",
+  "nextDeferredGate": "Before PHP/Ruby implementation, red tests must distinguish literal code from heredoc/percent strings/comments, validate full named argument value and original spans, pair nonempty continuation/adjacent credential refusal and all three gates. Do not reuse JS or Python lexing by extension alias alone."
+}

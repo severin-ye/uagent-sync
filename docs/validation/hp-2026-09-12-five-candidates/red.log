@@ -1,0 +1,229 @@
+✖ M3 TS precise constructor allow double (3.9059ms)
+✖ M3 TS precise constructor allow single (0.3983ms)
+✖ M3 TS precise constructor allow multiline (0.1732ms)
+✔ M3 TS precise constructor allow comments (0.1754ms)
+✖ M3 TS precise constructor allow fence (0.3224ms)
+✖ M3 TS precise constructor allow tilde fence (0.1959ms)
+✔ M3 TS value refusal 1 (0.3764ms)
+✔ M3 TS value refusal 2 (0.1163ms)
+✔ M3 TS value refusal 3 (0.1217ms)
+✔ M3 TS value refusal 4 (0.1581ms)
+✔ M3 TS value refusal 5 (0.1336ms)
+✔ M3 TS value refusal 6 (0.1428ms)
+✔ M3 TS value refusal 7 (0.1062ms)
+✔ M3 TS value refusal 8 (0.1029ms)
+✔ M3 TS value refusal 9 (0.1178ms)
+✔ M3 TS value refusal 10 (0.0959ms)
+✔ M3 TS value refusal 11 (0.0907ms)
+✔ M3 TS value refusal 12 (0.0924ms)
+✔ M3 TS value refusal 13 (0.0965ms)
+✖ M3 TS value refusal 14 (0.19ms)
+✔ M3 TS value refusal 15 (0.1116ms)
+✔ M3 TS value refusal 16 (0.0813ms)
+✔ M3 TS value refusal 17 (0.0764ms)
+✔ M3 TS value refusal 18 (0.0667ms)
+✖ M3 TS constructor context is narrow, not a generic placeholder exception (1.3837ms)
+✔ M3 TS comments and adjacent credentials retain original lines (1.8717ms)
+✔ M3 PHP and Ruby remain deferred including continuations and embedded examples (0.4544ms)
+✖ M3 TS constructor three gates preserve refusal side effects (18.8088ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 20
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 929.5314
+
+✖ failing tests:
+
+test at test\profile-secret-scan-five.test.ts:1:1102
+✖ M3 TS precise constructor allow double (3.9059ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked fixture.ts: sensitive-assignment@1"
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-five-candidates\test\profile-secret-scan-five.test.ts:22:64)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked fixture.ts: sensitive-assignment@1
+        at assertProfileContentSafe (<USER_ROOT>\AppData\Local\Temp\uagent-hp-five-candidates\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-five-candidates\test\profile-secret-scan-five.test.ts:22:83)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-five-candidates\test\profile-secret-scan-five.test.ts:22:64)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.start (node:internal/test_runner/test:1242:17)
+        at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-five.test.ts:1:1102
+✖ M3 TS precise constructor allow single (0.3983ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked fixture.ts: sensitive-assignment@1"
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-five-candidates\test\profile-secret-scan-five.test.ts:22:64)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked fixture.ts: sensitive-assignment@1
+        at assertProfileContentSafe (<USER_ROOT>\AppData\Local\Temp\uagent-hp-five-candidates\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-five-candidates\test\profile-secret-scan-five.test.ts:22:83)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-five-candidates\test\profile-secret-scan-five.test.ts:22:64)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-five.test.ts:1:1102
+✖ M3 TS precise constructor allow multiline (0.1732ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked fixture.ts: sensitive-assignment@2"
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-five-candidates\test\profile-secret-scan-five.test.ts:22:64)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked fixture.ts: sensitive-assignment@2
+        at assertProfileContentSafe (<USER_ROOT>\AppData\Local\Temp\uagent-hp-five-candidates\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-five-candidates\test\profile-secret-scan-five.test.ts:22:83)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-five-candidates\test\profile-secret-scan-five.test.ts:22:64)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-five.test.ts:1:1102
+✖ M3 TS precise constructor allow fence (0.3224ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked README.md: sensitive-assignment@3"
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-five-candidates\test\profile-secret-scan-five.test.ts:22:64)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked README.md: sensitive-assignment@3
+        at assertProfileContentSafe (<USER_ROOT>\AppData\Local\Temp\uagent-hp-five-candidates\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-five-candidates\test\profile-secret-scan-five.test.ts:22:83)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-five-candidates\test\profile-secret-scan-five.test.ts:22:64)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-five.test.ts:1:1102
+✖ M3 TS precise constructor allow tilde fence (0.1959ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked README.md: sensitive-assignment@2"
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-five-candidates\test\profile-secret-scan-five.test.ts:22:64)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked README.md: sensitive-assignment@2
+        at assertProfileContentSafe (<USER_ROOT>\AppData\Local\Temp\uagent-hp-five-candidates\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-five-candidates\test\profile-secret-scan-five.test.ts:22:83)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-five-candidates\test\profile-secret-scan-five.test.ts:22:64)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-five.test.ts:1:1834
+✖ M3 TS value refusal 14 (0.19ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-five-candidates\test\profile-secret-scan-five.test.ts:39:55)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Secret scan blocked/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-five.test.ts:1:1991
+✖ M3 TS constructor context is narrow, not a generic placeholder exception (1.3837ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-five-candidates\test\profile-secret-scan-five.test.ts:49:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Secret scan blocked/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-five.test.ts:1:4209
+✖ M3 TS constructor three gates preserve refusal side effects (18.8088ms)
+  Error: Profile collection blocked:
+  Secret scan blocked codex/skills/artificial/tool.ts: sensitive-assignment@1
+      at createCodexProfile (<USER_ROOT>\AppData\Local\Temp\uagent-hp-five-candidates\src\lib\codex-profile.ts:118:28)
+      at TestContext.<anonymous> (<USER_ROOT>\AppData\Local\Temp\uagent-hp-five-candidates\test\profile-secret-scan-five.test.ts:90:3)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
