@@ -1,0 +1,16 @@
+✔ two valid functions retain both exact spans (4.5289ms)
+✔ preamble revokes earlier valid candidate under conservative scope (1.587ms)
+✔ duplicateSection revokes earlier valid candidate under conservative scope (0.915ms)
+✔ reverseSections revokes earlier valid candidate under conservative scope (1.2611ms)
+✔ multilineReturn revokes earlier valid candidate under conservative scope (0.5688ms)
+✔ bodyOnClosingLine revokes earlier valid candidate under conservative scope (0.6052ms)
+✔ tabEntry revokes earlier valid candidate under conservative scope (0.5099ms)
+✔ empty Returns and Raises are allowed as specified (0.7107ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 128.0134

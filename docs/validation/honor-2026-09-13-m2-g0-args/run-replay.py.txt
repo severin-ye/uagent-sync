@@ -1,0 +1,261 @@
+from __future__ import annotations
+
+import datetime as dt
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import shutil
+import subprocess
+
+
+ROOT = Path(__file__).resolve().parent
+P = ROOT / "p"
+C = ROOT / "c"
+H = ROOT / "h"
+LOGS = ROOT / "logs"
+ARTIFACTS = ROOT / "artifacts"
+NODE18 = ROOT / "runtime18" / "node-v18.20.8-win-x64" / "node.exe"
+NODE18_ZIP = ROOT / "runtime18" / "node-v18.20.8-win-x64.zip"
+SHASUMS = ROOT / "runtime18" / "SHASUMS256.txt"
+
+SET_VARS = {
+    "USERPROFILE": H / "profile",
+    "HOME": H / "home",
+    "APPDATA": H / "appdata",
+    "LOCALAPPDATA": H / "localappdata",
+    "CODEX_HOME": H / "codex-home",
+    "XDG_CONFIG_HOME": H / "xdg-config",
+    "TEMP": H / "temp",
+    "TMP": H / "tmp",
+    "npm_config_cache": H / "npm-cache",
+    "npm_config_userconfig": H / "npm-userconfig",
+    "npm_config_globalconfig": H / "npm-globalconfig",
+    "npm_config_prefix": H / "npm-prefix",
+}
+POP_VARS = (
+    "UAGENT_SYNC_WORKSPACE_ROOT",
+    "OPENCODE_SYNC_WORKSPACE_ROOT",
+    "OPENCODE_CONFIG_DIR",
+    "OPENCODE_HOME",
+    "NODE_OPTIONS",
+)
+SELECTED_VARS = tuple(SET_VARS) + POP_VARS + ("HONOR_G0_MODULE",)
+
+
+def normalize(text: str) -> str:
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+    return "\n".join(line.rstrip() for line in text.split("\n")).rstrip() + "\n"
+
+
+def public(value: str) -> str:
+    result = value
+    for needle in (str(ROOT), str(ROOT).replace("\\", "/")):
+        result = result.replace(needle, "<LOCAL>")
+    for needle in (r"<USER_ROOT>", "<USER_ROOT>"):
+        result = result.replace(needle, "<USER>")
+    return result
+
+
+def write_text(path: Path, value: str) -> None:
+    path.write_text(normalize(value), encoding="utf-8", newline="\n")
+
+
+def write_json(path: Path, value: object) -> None:
+    write_text(path, json.dumps(value, indent=2, ensure_ascii=False))
+
+
+def pop_case_insensitive(env: dict[str, str], names: tuple[str, ...]) -> None:
+    blocked = {name.casefold() for name in names}
+    for key in list(env):
+        if key.casefold() in blocked:
+            env.pop(key, None)
+
+
+def isolated_env() -> dict[str, str]:
+    env = dict(os.environ)
+    pop_case_insensitive(env, POP_VARS)
+    for key, path in SET_VARS.items():
+        path.mkdir(parents=True, exist_ok=True)
+        env[key] = str(path)
+    env["HONOR_G0_MODULE"] = str((P / "index.mjs").resolve())
+    return env
+
+
+def snapshot(label: str, env: dict[str, str], cwd: Path, argv: list[str]) -> None:
+    selected = {}
+    for wanted in SELECTED_VARS:
+        matches = [(key, value) for key, value in env.items() if key.casefold() == wanted.casefold()]
+        selected[wanted] = {
+            "exists": bool(matches),
+            "actualKeys": [key for key, _ in matches],
+            "values": [public(value) for _, value in matches],
+        }
+    write_json(LOGS / f"{label}-pre-env.json", {
+        "label": label,
+        "cwd": public(str(cwd)),
+        "argv": [public(item) for item in argv],
+        "selected": selected,
+    })
+
+
+def run(label: str, argv: list[str], cwd: Path, env: dict[str, str]) -> dict[str, object]:
+    snapshot(label, env, cwd, argv)
+    started = dt.datetime.now(dt.timezone.utc)
+    cp = subprocess.run(
+        argv, cwd=cwd, env=env, text=True, encoding="utf-8",
+        errors="replace", capture_output=True,
+    )
+    finished = dt.datetime.now(dt.timezone.utc)
+    combined = cp.stdout + ("\n[stderr]\n" + cp.stderr if cp.stderr else "")
+    write_text(LOGS / f"{label}.log", public(combined))
+    result = {
+        "label": label,
+        "cmd": public(argv[0]),
+        "args": [public(item) for item in argv[1:]],
+        "cwd": public(str(cwd)),
+        "status": cp.returncode,
+        "startedUtc": started.isoformat(),
+        "finishedUtc": finished.isoformat(),
+        "log": f"logs/{label}.log",
+        "preEnv": f"logs/{label}-pre-env.json",
+    }
+    write_json(LOGS / f"{label}.json", result)
+    return {**result, "stdout": cp.stdout, "stderr": cp.stderr}
+
+
+def copied_hashes() -> list[dict[str, object]]:
+    manifest = json.loads((ARTIFACTS / "artifact-sha256.json").read_text(encoding="utf-8"))
+    rows = []
+    for item in manifest:
+        rel = item["path"]
+        if rel.startswith("prototype/"):
+            path = P / rel.removeprefix("prototype/")
+        elif rel == "consumer/smoke.mjs":
+            path = C / "smoke.mjs"
+        else:
+            raise RuntimeError(f"unexpected manifest path: {rel}")
+        actual = hashlib.sha256(path.read_bytes()).hexdigest()
+        rows.append({"path": rel, "expected": item["sha256"], "actual": actual, "match": actual == item["sha256"]})
+    write_json(ARTIFACTS / "copied-artifact-hashes.json", rows)
+    if len(rows) != 11 or not all(row["match"] for row in rows):
+        raise RuntimeError("copied artifact hash mismatch")
+    return rows
+
+
+def count_ok(output: str, tests: int, passed: int, failed: int) -> bool:
+    return all(
+        re.search(rf"(?:#|ℹ)\s+{field}\s+{count}(?:\s|$)", output)
+        for field, count in (("tests", tests), ("pass", passed), ("fail", failed))
+    )
+
+
+def main() -> int:
+    LOGS.mkdir(parents=True, exist_ok=True)
+    ARTIFACTS.mkdir(parents=True, exist_ok=True)
+    hashes = copied_hashes()
+    env = isolated_env()
+    current_node = shutil.which("node")
+    npm_cmd = shutil.which("npm.cmd")
+    if not current_node or not npm_cmd or not NODE18.is_file() or not NODE18_ZIP.is_file():
+        raise RuntimeError("required runtime is missing")
+
+    commands: list[dict[str, object]] = []
+    failures: list[str] = []
+
+    def execute(label: str, argv: list[str], cwd: Path, expected: int = 0) -> dict[str, object]:
+        result = run(label, argv, cwd, env)
+        commands.append({key: value for key, value in result.items() if key not in ("stdout", "stderr")})
+        if result["status"] != expected:
+            failures.append(f"{label}: expected exit {expected}, got {result['status']}")
+        return result
+
+    current_version = execute("runtime-current", [current_node, "--version"], P)
+    node18_version = execute("runtime-node18", [str(NODE18), "--version"], P)
+    execute("ci", [npm_cmd, "ci", "--ignore-scripts", "--no-audit", "--no-fund"], P)
+    inventory = execute("inventory", [current_node, "inventory.mjs"], P)
+
+    npm_test = execute("npm-test", [npm_cmd, "test"], P)
+    all_current = execute("all-current", [current_node, "--test", "test.mjs", "additional-review.test.mjs", "args-pairs.test.mjs"], P)
+    all_node18 = execute("all-node18", [str(NODE18), "--test", "test.mjs", "additional-review.test.mjs", "args-pairs.test.mjs"], P)
+    honor_current = execute("honor-current", [current_node, "--test", "additional-review.test.mjs"], P)
+    honor_node18 = execute("honor-node18", [str(NODE18), "--test", "additional-review.test.mjs"], P)
+
+    for label, result, expected in (
+        ("npm-test", npm_test, (57, 57, 0)),
+        ("all-current", all_current, (82, 82, 0)),
+        ("all-node18", all_node18, (82, 82, 0)),
+        ("honor-current", honor_current, (7, 7, 0)),
+        ("honor-node18", honor_node18, (7, 7, 0)),
+    ):
+        output = str(result["stdout"]) + str(result["stderr"])
+        if not count_ok(output, *expected):
+            failures.append(f"{label}: reporter output did not prove {expected[1]}/{expected[0]} with fail {expected[2]}")
+
+    pack = execute("pack", [npm_cmd, "pack", "--json"], P)
+    tgz = None
+    try:
+        tgz = (P / json.loads(str(pack["stdout"]))[0]["filename"]).resolve()
+        if not tgz.is_file():
+            raise FileNotFoundError(tgz)
+    except Exception as exc:
+        failures.append(f"pack: cannot resolve tgz: {exc}")
+
+    consumer = {}
+    if tgz:
+        write_json(C / "package.json", {
+            "name": "g0-args-isolated-consumer",
+            "version": "0.0.0",
+            "private": True,
+            "type": "module",
+            "dependencies": {"hp-m2-g0-synthetic": f"file:{tgz.as_posix()}"},
+        })
+        execute("consumer-install", [npm_cmd, "install", "--ignore-scripts", "--no-audit", "--no-fund"], C)
+        execute("consumer-current", [current_node, "smoke.mjs"], C)
+        execute("consumer-node18", [str(NODE18), "smoke.mjs"], C)
+        consumer = {
+            "tgz": public(str(tgz)),
+            "tgzSha256": hashlib.sha256(tgz.read_bytes()).hexdigest(),
+            "lockSha256": hashlib.sha256((C / "package-lock.json").read_bytes()).hexdigest(),
+        }
+        write_json(ARTIFACTS / "consumer-result.json", consumer)
+
+    zip_hash = hashlib.sha256(NODE18_ZIP.read_bytes()).hexdigest()
+    official_hash = None
+    if SHASUMS.is_file():
+        for line in SHASUMS.read_text(encoding="utf-8", errors="replace").splitlines():
+            if line.strip().endswith("node-v18.20.8-win-x64.zip"):
+                official_hash = line.split()[0].lower()
+                break
+    runtime = {
+        "currentNode": str(current_version["stdout"]).strip(),
+        "node18": str(node18_version["stdout"]).strip(),
+        "node18ZipSha256": zip_hash,
+        "officialZipSha256": official_hash,
+        "matchesOfficial": official_hash == zip_hash if official_hash else None,
+        "node18Exe": public(str(NODE18)),
+    }
+    if official_hash and official_hash != zip_hash:
+        failures.append("Node 18 zip does not match bundled SHASUMS256.txt")
+    write_json(ARTIFACTS / "runtime-source.json", runtime)
+    write_json(ARTIFACTS / "commands.json", commands)
+    summary = {
+        "result": "pass" if not failures else "fail",
+        "failures": failures,
+        "copiedHashChecks": len(hashes),
+        "commands": len(commands),
+        "expected": {"npmTest": "57/57", "allEachRuntime": "82/82", "honorEachRuntime": "7/7", "consumerEachRuntimeExit": 0},
+        "runtime": runtime,
+        "consumer": consumer,
+        "inventoryOutput": public(str(inventory["stdout"])),
+        "honorModule": public(env["HONOR_G0_MODULE"]),
+        "removedCaseInsensitive": list(POP_VARS),
+    }
+    write_json(ARTIFACTS / "summary.json", summary)
+    print(json.dumps({"result": summary["result"], "failures": failures, "root": str(ROOT)}, ensure_ascii=False))
+    return 0 if not failures else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

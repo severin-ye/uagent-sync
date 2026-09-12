@@ -1,0 +1,186 @@
+[
+  {
+    "label": "runtime-current",
+    "cmd": "C:\\Program Files\\nodejs\\node.EXE",
+    "args": [
+      "--version"
+    ],
+    "cwd": "<LOCAL>\\p",
+    "status": 0,
+    "startedUtc": "2026-09-12T15:33:48.894254+00:00",
+    "finishedUtc": "2026-09-12T15:33:48.955759+00:00",
+    "log": "logs/runtime-current.log",
+    "preEnv": "logs/runtime-current-pre-env.json"
+  },
+  {
+    "label": "runtime-node18",
+    "cmd": "<LOCAL>\\runtime18\\node-v18.20.8-win-x64\\node.exe",
+    "args": [
+      "--version"
+    ],
+    "cwd": "<LOCAL>\\p",
+    "status": 0,
+    "startedUtc": "2026-09-12T15:33:48.959321+00:00",
+    "finishedUtc": "2026-09-12T15:33:49.013295+00:00",
+    "log": "logs/runtime-node18.log",
+    "preEnv": "logs/runtime-node18-pre-env.json"
+  },
+  {
+    "label": "ci",
+    "cmd": "C:\\Program Files\\nodejs\\npm.cmd",
+    "args": [
+      "ci",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "cwd": "<LOCAL>\\p",
+    "status": 0,
+    "startedUtc": "2026-09-12T15:33:49.015605+00:00",
+    "finishedUtc": "2026-09-12T15:33:51.504760+00:00",
+    "log": "logs/ci.log",
+    "preEnv": "logs/ci-pre-env.json"
+  },
+  {
+    "label": "inventory",
+    "cmd": "C:\\Program Files\\nodejs\\node.EXE",
+    "args": [
+      "inventory.mjs"
+    ],
+    "cwd": "<LOCAL>\\p",
+    "status": 0,
+    "startedUtc": "2026-09-12T15:33:51.506837+00:00",
+    "finishedUtc": "2026-09-12T15:33:51.596821+00:00",
+    "log": "logs/inventory.log",
+    "preEnv": "logs/inventory-pre-env.json"
+  },
+  {
+    "label": "npm-test",
+    "cmd": "C:\\Program Files\\nodejs\\npm.cmd",
+    "args": [
+      "test"
+    ],
+    "cwd": "<LOCAL>\\p",
+    "status": 0,
+    "startedUtc": "2026-09-12T15:33:51.599361+00:00",
+    "finishedUtc": "2026-09-12T15:33:53.349927+00:00",
+    "log": "logs/npm-test.log",
+    "preEnv": "logs/npm-test-pre-env.json"
+  },
+  {
+    "label": "all-current",
+    "cmd": "C:\\Program Files\\nodejs\\node.EXE",
+    "args": [
+      "--test",
+      "test.mjs",
+      "additional-review.test.mjs",
+      "args-pairs.test.mjs"
+    ],
+    "cwd": "<LOCAL>\\p",
+    "status": 0,
+    "startedUtc": "2026-09-12T15:33:53.352397+00:00",
+    "finishedUtc": "2026-09-12T15:33:53.667785+00:00",
+    "log": "logs/all-current.log",
+    "preEnv": "logs/all-current-pre-env.json"
+  },
+  {
+    "label": "all-node18",
+    "cmd": "<LOCAL>\\runtime18\\node-v18.20.8-win-x64\\node.exe",
+    "args": [
+      "--test",
+      "test.mjs",
+      "additional-review.test.mjs",
+      "args-pairs.test.mjs"
+    ],
+    "cwd": "<LOCAL>\\p",
+    "status": 0,
+    "startedUtc": "2026-09-12T15:33:53.670175+00:00",
+    "finishedUtc": "2026-09-12T15:33:54.045407+00:00",
+    "log": "logs/all-node18.log",
+    "preEnv": "logs/all-node18-pre-env.json"
+  },
+  {
+    "label": "honor-current",
+    "cmd": "C:\\Program Files\\nodejs\\node.EXE",
+    "args": [
+      "--test",
+      "additional-review.test.mjs"
+    ],
+    "cwd": "<LOCAL>\\p",
+    "status": 0,
+    "startedUtc": "2026-09-12T15:33:54.046847+00:00",
+    "finishedUtc": "2026-09-12T15:33:54.258836+00:00",
+    "log": "logs/honor-current.log",
+    "preEnv": "logs/honor-current-pre-env.json"
+  },
+  {
+    "label": "honor-node18",
+    "cmd": "<LOCAL>\\runtime18\\node-v18.20.8-win-x64\\node.exe",
+    "args": [
+      "--test",
+      "additional-review.test.mjs"
+    ],
+    "cwd": "<LOCAL>\\p",
+    "status": 0,
+    "startedUtc": "2026-09-12T15:33:54.260211+00:00",
+    "finishedUtc": "2026-09-12T15:33:54.491537+00:00",
+    "log": "logs/honor-node18.log",
+    "preEnv": "logs/honor-node18-pre-env.json"
+  },
+  {
+    "label": "pack",
+    "cmd": "C:\\Program Files\\nodejs\\npm.cmd",
+    "args": [
+      "pack",
+      "--json"
+    ],
+    "cwd": "<LOCAL>\\p",
+    "status": 0,
+    "startedUtc": "2026-09-12T15:33:54.496175+00:00",
+    "finishedUtc": "2026-09-12T15:33:55.895351+00:00",
+    "log": "logs/pack.log",
+    "preEnv": "logs/pack-pre-env.json"
+  },
+  {
+    "label": "consumer-install",
+    "cmd": "C:\\Program Files\\nodejs\\npm.cmd",
+    "args": [
+      "install",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "cwd": "<LOCAL>\\c",
+    "status": 0,
+    "startedUtc": "2026-09-12T15:33:55.898685+00:00",
+    "finishedUtc": "2026-09-12T15:33:57.761342+00:00",
+    "log": "logs/consumer-install.log",
+    "preEnv": "logs/consumer-install-pre-env.json"
+  },
+  {
+    "label": "consumer-current",
+    "cmd": "C:\\Program Files\\nodejs\\node.EXE",
+    "args": [
+      "smoke.mjs"
+    ],
+    "cwd": "<LOCAL>\\c",
+    "status": 0,
+    "startedUtc": "2026-09-12T15:33:57.762662+00:00",
+    "finishedUtc": "2026-09-12T15:33:57.886150+00:00",
+    "log": "logs/consumer-current.log",
+    "preEnv": "logs/consumer-current-pre-env.json"
+  },
+  {
+    "label": "consumer-node18",
+    "cmd": "<LOCAL>\\runtime18\\node-v18.20.8-win-x64\\node.exe",
+    "args": [
+      "smoke.mjs"
+    ],
+    "cwd": "<LOCAL>\\c",
+    "status": 0,
+    "startedUtc": "2026-09-12T15:33:57.887746+00:00",
+    "finishedUtc": "2026-09-12T15:33:58.024225+00:00",
+    "log": "logs/consumer-node18.log",
+    "preEnv": "logs/consumer-node18-pre-env.json"
+  }
+]

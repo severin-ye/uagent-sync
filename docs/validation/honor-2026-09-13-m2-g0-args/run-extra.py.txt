@@ -1,0 +1,26 @@
+import os, sys, json, subprocess
+from pathlib import Path
+root=Path(__file__).parent
+runtime=sys.argv[1]
+label=sys.argv[2]
+module=sys.argv[3]
+h=root/'h'; h.mkdir(exist_ok=True)
+env=os.environ.copy()
+paths={'USERPROFILE':h,'HOME':h,'APPDATA':h/'roaming','LOCALAPPDATA':h/'local','CODEX_HOME':h/'codex','XDG_CONFIG_HOME':h/'xdg','TMP':h/'tmp','TEMP':h/'tmp','npm_config_cache':h/'npm-cache','npm_config_prefix':h/'npm-prefix'}
+for k,v in paths.items():v.mkdir(parents=True,exist_ok=True);env[k]=str(v)
+for k in ['npm_config_userconfig','npm_config_globalconfig']:
+    p=h/(k+'.ini');p.touch(exist_ok=True);env[k]=str(p)
+removed=['UAGENT_SYNC_WORKSPACE_ROOT','OPENCODE_SYNC_WORKSPACE_ROOT','OPENCODE_CONFIG_DIR','OPENCODE_HOME','NODE_OPTIONS']
+for k in list(env):
+    if k.upper() in removed: env.pop(k)
+env['HONOR_G0_MODULE']=module
+def redact(s):
+    return s.replace(str(root),'<EXTRA>').replace(str(Path(module).parent.parent),'<REPLAY>').replace(str(Path.home()),'<USER_ROOT>')
+meta={'runtime':redact(runtime),'command':[redact(runtime),'--test','additional-review.test.mjs'],'cwd':'<EXTRA>','preEnv':{k:redact(env[k]) for k in [*paths,'npm_config_userconfig','npm_config_globalconfig','HONOR_G0_MODULE']},'removedPresent':{k:any(x.upper()==k for x in env) for k in removed}}
+(root/(label+'-pre-env.json')).write_text(json.dumps(meta,indent=2),encoding='utf-8')
+r=subprocess.run([runtime,'--test','additional-review.test.mjs'],cwd=root,env=env,capture_output=True,text=True,encoding='utf-8',errors='replace')
+(root/(label+'-raw.log')).write_text(r.stdout+r.stderr,encoding='utf-8')
+(root/(label+'.log')).write_text(redact(r.stdout+r.stderr),encoding='utf-8')
+meta['exitCode']=r.returncode
+(root/(label+'.json')).write_text(json.dumps(meta,indent=2),encoding='utf-8')
+print(json.dumps({'label':label,'exitCode':r.returncode,'log':str(root/(label+'.log'))}))

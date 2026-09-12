@@ -1,0 +1,16 @@
+{
+  "label": "all-node18",
+  "cmd": "<LOCAL>\\runtime18\\node-v18.20.8-win-x64\\node.exe",
+  "args": [
+    "--test",
+    "test.mjs",
+    "additional-review.test.mjs",
+    "args-pairs.test.mjs"
+  ],
+  "cwd": "<LOCAL>\\p",
+  "status": 0,
+  "startedUtc": "2026-09-12T15:33:53.670175+00:00",
+  "finishedUtc": "2026-09-12T15:33:54.045407+00:00",
+  "log": "logs/all-node18.log",
+  "preEnv": "logs/all-node18-pre-env.json"
+}

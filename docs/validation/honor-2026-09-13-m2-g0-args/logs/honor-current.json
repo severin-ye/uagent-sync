@@ -1,0 +1,14 @@
+{
+  "label": "honor-current",
+  "cmd": "C:\\Program Files\\nodejs\\node.EXE",
+  "args": [
+    "--test",
+    "additional-review.test.mjs"
+  ],
+  "cwd": "<LOCAL>\\p",
+  "status": 0,
+  "startedUtc": "2026-09-12T15:33:54.046847+00:00",
+  "finishedUtc": "2026-09-12T15:33:54.258836+00:00",
+  "log": "logs/honor-current.log",
+  "preEnv": "logs/honor-current-pre-env.json"
+}

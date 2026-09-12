@@ -1,0 +1,16 @@
+{
+  "label": "ci",
+  "cmd": "C:\\Program Files\\nodejs\\npm.cmd",
+  "args": [
+    "ci",
+    "--ignore-scripts",
+    "--no-audit",
+    "--no-fund"
+  ],
+  "cwd": "<LOCAL>\\p",
+  "status": 0,
+  "startedUtc": "2026-09-12T15:33:49.015605+00:00",
+  "finishedUtc": "2026-09-12T15:33:51.504760+00:00",
+  "log": "logs/ci.log",
+  "preEnv": "logs/ci-pre-env.json"
+}

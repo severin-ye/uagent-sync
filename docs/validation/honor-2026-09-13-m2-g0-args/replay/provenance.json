@@ -1,0 +1,12 @@
+{
+  "repositoryHead": "a8c250ebc2f454cfcde1495ca3e34dd5b6e6f379",
+  "prototypeFixSha": "eaf93ff1c2f51038bb00a8a6c963727d386f3c26",
+  "fixIsAncestorOfHead": true,
+  "manifestAttachmentCount": 11,
+  "headAndFixBlobMatches": 11,
+  "headAndFixBlobMismatches": 0,
+  "manifestSha256Matches": 11,
+  "manifestSha256Mismatches": 0,
+  "scope": "artifact-sha256.json paths only",
+  "note": "The enclosing validation directory tree differs because HEAD contains later validation metadata; every fixed prototype and consumer attachment listed by the manifest is byte-identical to the fix commit."
+}

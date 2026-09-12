@@ -1,0 +1,15 @@
+✔ control: exact synthetic entry remains supported (5.0118ms)
+✔ postSyntax: LF and CRLF must return no M2 spans (0.9719ms)
+✔ postShortString: LF and CRLF must return no M2 spans (1.2577ms)
+✔ postBadSignature: LF and CRLF must return no M2 spans (1.6127ms)
+✔ nestedExample: LF and CRLF must return no M2 spans (0.4813ms)
+✔ unknownParagraph: LF and CRLF must return no M2 spans (0.5272ms)
+✔ priorThenNested: LF and CRLF must return no M2 spans (0.5054ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 129.2463

@@ -1,0 +1,13 @@
+{
+  "label": "inventory",
+  "cmd": "C:\\Program Files\\nodejs\\node.EXE",
+  "args": [
+    "inventory.mjs"
+  ],
+  "cwd": "<LOCAL>\\p",
+  "status": 0,
+  "startedUtc": "2026-09-12T15:33:51.506837+00:00",
+  "finishedUtc": "2026-09-12T15:33:51.596821+00:00",
+  "log": "logs/inventory.log",
+  "preEnv": "logs/inventory-pre-env.json"
+}

@@ -1,0 +1,32 @@
+{
+  "runtime": "<REPLAY>/runtime18/node-v18.20.8-win-x64/node.exe",
+  "command": [
+    "<REPLAY>/runtime18/node-v18.20.8-win-x64/node.exe",
+    "--test",
+    "additional-review.test.mjs"
+  ],
+  "cwd": "<EXTRA>",
+  "preEnv": {
+    "USERPROFILE": "<EXTRA>\\h",
+    "HOME": "<EXTRA>\\h",
+    "APPDATA": "<EXTRA>\\h\\roaming",
+    "LOCALAPPDATA": "<EXTRA>\\h\\local",
+    "CODEX_HOME": "<EXTRA>\\h\\codex",
+    "XDG_CONFIG_HOME": "<EXTRA>\\h\\xdg",
+    "TMP": "<EXTRA>\\h\\tmp",
+    "TEMP": "<EXTRA>\\h\\tmp",
+    "npm_config_cache": "<EXTRA>\\h\\npm-cache",
+    "npm_config_prefix": "<EXTRA>\\h\\npm-prefix",
+    "npm_config_userconfig": "<EXTRA>\\h\\npm_config_userconfig.ini",
+    "npm_config_globalconfig": "<EXTRA>\\h\\npm_config_globalconfig.ini",
+    "HONOR_G0_MODULE": "<REPLAY>/p/index.mjs"
+  },
+  "removedPresent": {
+    "UAGENT_SYNC_WORKSPACE_ROOT": false,
+    "OPENCODE_SYNC_WORKSPACE_ROOT": false,
+    "OPENCODE_CONFIG_DIR": false,
+    "OPENCODE_HOME": false,
+    "NODE_OPTIONS": false
+  },
+  "exitCode": 0
+}

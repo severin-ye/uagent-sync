@@ -1,0 +1,153 @@
+{
+  "label": "pack",
+  "cwd": "<LOCAL>\\p",
+  "argv": [
+    "C:\\Program Files\\nodejs\\npm.cmd",
+    "pack",
+    "--json"
+  ],
+  "selected": {
+    "USERPROFILE": {
+      "exists": true,
+      "actualKeys": [
+        "USERPROFILE"
+      ],
+      "values": [
+        "<LOCAL>\\h\\profile"
+      ]
+    },
+    "HOME": {
+      "exists": true,
+      "actualKeys": [
+        "HOME"
+      ],
+      "values": [
+        "<LOCAL>\\h\\home"
+      ]
+    },
+    "APPDATA": {
+      "exists": true,
+      "actualKeys": [
+        "APPDATA"
+      ],
+      "values": [
+        "<LOCAL>\\h\\appdata"
+      ]
+    },
+    "LOCALAPPDATA": {
+      "exists": true,
+      "actualKeys": [
+        "LOCALAPPDATA"
+      ],
+      "values": [
+        "<LOCAL>\\h\\localappdata"
+      ]
+    },
+    "CODEX_HOME": {
+      "exists": true,
+      "actualKeys": [
+        "CODEX_HOME"
+      ],
+      "values": [
+        "<LOCAL>\\h\\codex-home"
+      ]
+    },
+    "XDG_CONFIG_HOME": {
+      "exists": true,
+      "actualKeys": [
+        "XDG_CONFIG_HOME"
+      ],
+      "values": [
+        "<LOCAL>\\h\\xdg-config"
+      ]
+    },
+    "TEMP": {
+      "exists": true,
+      "actualKeys": [
+        "TEMP"
+      ],
+      "values": [
+        "<LOCAL>\\h\\temp"
+      ]
+    },
+    "TMP": {
+      "exists": true,
+      "actualKeys": [
+        "TMP"
+      ],
+      "values": [
+        "<LOCAL>\\h\\tmp"
+      ]
+    },
+    "npm_config_cache": {
+      "exists": true,
+      "actualKeys": [
+        "npm_config_cache"
+      ],
+      "values": [
+        "<LOCAL>\\h\\npm-cache"
+      ]
+    },
+    "npm_config_userconfig": {
+      "exists": true,
+      "actualKeys": [
+        "npm_config_userconfig"
+      ],
+      "values": [
+        "<LOCAL>\\h\\npm-userconfig"
+      ]
+    },
+    "npm_config_globalconfig": {
+      "exists": true,
+      "actualKeys": [
+        "npm_config_globalconfig"
+      ],
+      "values": [
+        "<LOCAL>\\h\\npm-globalconfig"
+      ]
+    },
+    "npm_config_prefix": {
+      "exists": true,
+      "actualKeys": [
+        "npm_config_prefix"
+      ],
+      "values": [
+        "<LOCAL>\\h\\npm-prefix"
+      ]
+    },
+    "UAGENT_SYNC_WORKSPACE_ROOT": {
+      "exists": false,
+      "actualKeys": [],
+      "values": []
+    },
+    "OPENCODE_SYNC_WORKSPACE_ROOT": {
+      "exists": false,
+      "actualKeys": [],
+      "values": []
+    },
+    "OPENCODE_CONFIG_DIR": {
+      "exists": false,
+      "actualKeys": [],
+      "values": []
+    },
+    "OPENCODE_HOME": {
+      "exists": false,
+      "actualKeys": [],
+      "values": []
+    },
+    "NODE_OPTIONS": {
+      "exists": false,
+      "actualKeys": [],
+      "values": []
+    },
+    "HONOR_G0_MODULE": {
+      "exists": true,
+      "actualKeys": [
+        "HONOR_G0_MODULE"
+      ],
+      "values": [
+        "<LOCAL>\\p\\index.mjs"
+      ]
+    }
+  }
+}

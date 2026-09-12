@@ -1,0 +1,50 @@
+TAP version 13
+# Subtest: two valid functions retain both exact spans
+ok 1 - two valid functions retain both exact spans
+  ---
+  duration_ms: 6.2527
+  ...
+# Subtest: preamble revokes earlier valid candidate under conservative scope
+ok 2 - preamble revokes earlier valid candidate under conservative scope
+  ---
+  duration_ms: 2.0373
+  ...
+# Subtest: duplicateSection revokes earlier valid candidate under conservative scope
+ok 3 - duplicateSection revokes earlier valid candidate under conservative scope
+  ---
+  duration_ms: 1.1074
+  ...
+# Subtest: reverseSections revokes earlier valid candidate under conservative scope
+ok 4 - reverseSections revokes earlier valid candidate under conservative scope
+  ---
+  duration_ms: 1.1431
+  ...
+# Subtest: multilineReturn revokes earlier valid candidate under conservative scope
+ok 5 - multilineReturn revokes earlier valid candidate under conservative scope
+  ---
+  duration_ms: 1.1014
+  ...
+# Subtest: bodyOnClosingLine revokes earlier valid candidate under conservative scope
+ok 6 - bodyOnClosingLine revokes earlier valid candidate under conservative scope
+  ---
+  duration_ms: 0.9252
+  ...
+# Subtest: tabEntry revokes earlier valid candidate under conservative scope
+ok 7 - tabEntry revokes earlier valid candidate under conservative scope
+  ---
+  duration_ms: 0.8449
+  ...
+# Subtest: empty Returns and Raises are allowed as specified
+ok 8 - empty Returns and Raises are allowed as specified
+  ---
+  duration_ms: 0.3683
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 144.2264

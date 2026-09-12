@@ -1,0 +1,420 @@
+TAP version 13
+# Subtest: control: exact synthetic entry remains supported
+ok 1 - control: exact synthetic entry remains supported
+  ---
+  duration_ms: 6.5879
+  ...
+# Subtest: postSyntax: LF and CRLF must return no M2 spans
+ok 2 - postSyntax: LF and CRLF must return no M2 spans
+  ---
+  duration_ms: 1.2608
+  ...
+# Subtest: postShortString: LF and CRLF must return no M2 spans
+ok 3 - postShortString: LF and CRLF must return no M2 spans
+  ---
+  duration_ms: 1.1657
+  ...
+# Subtest: postBadSignature: LF and CRLF must return no M2 spans
+ok 4 - postBadSignature: LF and CRLF must return no M2 spans
+  ---
+  duration_ms: 1.9053
+  ...
+# Subtest: nestedExample: LF and CRLF must return no M2 spans
+ok 5 - nestedExample: LF and CRLF must return no M2 spans
+  ---
+  duration_ms: 0.867
+  ...
+# Subtest: unknownParagraph: LF and CRLF must return no M2 spans
+ok 6 - unknownParagraph: LF and CRLF must return no M2 spans
+  ---
+  duration_ms: 0.8591
+  ...
+# Subtest: priorThenNested: LF and CRLF must return no M2 spans
+ok 7 - priorThenNested: LF and CRLF must return no M2 spans
+  ---
+  duration_ms: 2.37
+  ...
+# Subtest: allow multiple preserves LF CRLF UTF16 positions
+ok 8 - allow multiple preserves LF CRLF UTF16 positions
+  ---
+  duration_ms: 9.4058
+  ...
+# Subtest: allow returns preserves LF CRLF UTF16 positions
+ok 9 - allow returns preserves LF CRLF UTF16 positions
+  ---
+  duration_ms: 2.7985
+  ...
+# Subtest: allow raises preserves LF CRLF UTF16 positions
+ok 10 - allow raises preserves LF CRLF UTF16 positions
+  ---
+  duration_ms: 1.8524
+  ...
+# Subtest: allow both preserves LF CRLF UTF16 positions
+ok 11 - allow both preserves LF CRLF UTF16 positions
+  ---
+  duration_ms: 1.1383
+  ...
+# Subtest: allow blanks preserves LF CRLF UTF16 positions
+ok 12 - allow blanks preserves LF CRLF UTF16 positions
+  ---
+  duration_ms: 1.041
+  ...
+# Subtest: allow differentIndent preserves LF CRLF UTF16 positions
+ok 13 - allow differentIndent preserves LF CRLF UTF16 positions
+  ---
+  duration_ms: 1.1581
+  ...
+# Subtest: abstain afterSibling also revokes prior candidate
+ok 14 - abstain afterSibling also revokes prior candidate
+  ---
+  duration_ms: 2.8516
+  ...
+# Subtest: abstain nestedAfterSibling also revokes prior candidate
+ok 15 - abstain nestedAfterSibling also revokes prior candidate
+  ---
+  duration_ms: 1.9505
+  ...
+# Subtest: abstain beforeWithBlank also revokes prior candidate
+ok 16 - abstain beforeWithBlank also revokes prior candidate
+  ---
+  duration_ms: 1.3491
+  ...
+# Subtest: abstain unknownParameter also revokes prior candidate
+ok 17 - abstain unknownParameter also revokes prior candidate
+  ---
+  duration_ms: 2.4003
+  ...
+# Subtest: abstain duplicateSibling also revokes prior candidate
+ok 18 - abstain duplicateSibling also revokes prior candidate
+  ---
+  duration_ms: 1.3136
+  ...
+# Subtest: abstain indentationChange also revokes prior candidate
+ok 19 - abstain indentationChange also revokes prior candidate
+  ---
+  duration_ms: 0.9399
+  ...
+# Subtest: abstain targetUnderReturns also revokes prior candidate
+ok 20 - abstain targetUnderReturns also revokes prior candidate
+  ---
+  duration_ms: 1.1517
+  ...
+# Subtest: abstain unknownSection also revokes prior candidate
+ok 21 - abstain unknownSection also revokes prior candidate
+  ---
+  duration_ms: 0.9389
+  ...
+# Subtest: abstain indentedHeader also revokes prior candidate
+ok 22 - abstain indentedHeader also revokes prior candidate
+  ---
+  duration_ms: 1.1869
+  ...
+# Subtest: abstain headerWithinExample also revokes prior candidate
+ok 23 - abstain headerWithinExample also revokes prior candidate
+  ---
+  duration_ms: 0.6316
+  ...
+# Subtest: abstain continuation also revokes prior candidate
+ok 24 - abstain continuation also revokes prior candidate
+  ---
+  duration_ms: 0.6636
+  ...
+# Subtest: abstain afterSections also revokes prior candidate
+ok 25 - abstain afterSections also revokes prior candidate
+  ---
+  duration_ms: 0.715
+  ...
+# Subtest: safe exact field with original UTF16 span and LF/CRLF
+ok 26 - safe exact field with original UTF16 span and LF/CRLF
+  ---
+  duration_ms: 9.2752
+  ...
+# Subtest: abstain shortBefore
+ok 27 - abstain shortBefore
+  ---
+  duration_ms: 1.8969
+  ...
+# Subtest: abstain shortAfter
+ok 28 - abstain shortAfter
+  ---
+  duration_ms: 1.0249
+  ...
+# Subtest: abstain tripleBefore
+ok 29 - abstain tripleBefore
+  ---
+  duration_ms: 0.5795
+  ...
+# Subtest: abstain tripleAfter
+ok 30 - abstain tripleAfter
+  ---
+  duration_ms: 0.9033
+  ...
+# Subtest: abstain syntaxAfter
+ok 31 - abstain syntaxAfter
+  ---
+  duration_ms: 0.5551
+  ...
+# Subtest: abstain defaultOrder
+ok 32 - abstain defaultOrder
+  ---
+  duration_ms: 2.2283
+  ...
+# Subtest: abstain bareStar
+ok 33 - abstain bareStar
+  ---
+  duration_ms: 1.1278
+  ...
+# Subtest: abstain defaultName
+ok 34 - abstain defaultName
+  ---
+  duration_ms: 0.7783
+  ...
+# Subtest: abstain generic
+ok 35 - abstain generic
+  ---
+  duration_ms: 0.6984
+  ...
+# Subtest: abstain comma
+ok 36 - abstain comma
+  ---
+  duration_ms: 0.6291
+  ...
+# Subtest: abstain unknownDescription
+ok 37 - abstain unknownDescription
+  ---
+  duration_ms: 0.8613
+  ...
+# Subtest: abstain unicodeMismatch
+ok 38 - abstain unicodeMismatch
+  ---
+  duration_ms: 1.2082
+  ...
+# Subtest: abstain blankContinuation
+ok 39 - abstain blankContinuation
+  ---
+  duration_ms: 0.7024
+  ...
+# Subtest: abstain duplicateArgs
+ok 40 - abstain duplicateArgs
+  ---
+  duration_ms: 0.9595
+  ...
+# Subtest: abstain wrongOwner
+ok 41 - abstain wrongOwner
+  ---
+  duration_ms: 0.932
+  ...
+# Subtest: abstain adjacentFunction
+ok 42 - abstain adjacentFunction
+  ---
+  duration_ms: 1.1727
+  ...
+# Subtest: abstain formatString
+ok 43 - abstain formatString
+  ---
+  duration_ms: 1.0672
+  ...
+# Subtest: abstain escapedDoc
+ok 44 - abstain escapedDoc
+  ---
+  duration_ms: 0.8091
+  ...
+# Subtest: abstain prefixedDoc
+ok 45 - abstain prefixedDoc
+  ---
+  duration_ms: 0.5587
+  ...
+# Subtest: abstain bom
+ok 46 - abstain bom
+  ---
+  duration_ms: 0.1995
+  ...
+# Subtest: abstain loneCR
+ok 47 - abstain loneCR
+  ---
+  duration_ms: 0.1402
+  ...
+# Subtest: keyword-only required after default is allowed
+ok 48 - keyword-only required after default is allowed
+  ---
+  duration_ms: 0.5337
+  ...
+# Subtest: raw quote boundary escapes and EOF
+ok 49 - raw quote boundary escapes and EOF
+  ---
+  duration_ms: 0.1242
+  ...
+# Subtest: valid final string EOF and literal replacement character
+ok 50 - valid final string EOF and literal replacement character
+  ---
+  duration_ms: 0.3188
+  ...
+# Subtest: missing and untrusted plain template fail closed
+ok 51 - missing and untrusted plain template fail closed
+  ---
+  duration_ms: 0.0706
+  ...
+# Subtest: closed provider topExtra
+ok 52 - closed provider topExtra
+  ---
+  duration_ms: 0.1574
+  ...
+# Subtest: closed provider entryExtra
+ok 53 - closed provider entryExtra
+  ---
+  duration_ms: 0.1018
+  ...
+# Subtest: closed provider version
+ok 54 - closed provider version
+  ---
+  duration_ms: 0.0789
+  ...
+# Subtest: closed provider policy
+ok 55 - closed provider policy
+  ---
+  duration_ms: 0.0865
+  ...
+# Subtest: closed provider parser
+ok 56 - closed provider parser
+  ---
+  duration_ms: 0.061
+  ...
+# Subtest: closed provider id
+ok 57 - closed provider id
+  ---
+  duration_ms: 0.1307
+  ...
+# Subtest: closed provider field
+ok 58 - closed provider field
+  ---
+  duration_ms: 0.2072
+  ...
+# Subtest: closed provider duplicateId
+ok 59 - closed provider duplicateId
+  ---
+  duration_ms: 0.4005
+  ...
+# Subtest: closed provider duplicateDescription
+ok 60 - closed provider duplicateDescription
+  ---
+  duration_ms: 0.1287
+  ...
+# Subtest: closed provider missingGroup
+ok 61 - closed provider missingGroup
+  ---
+  duration_ms: 0.2039
+  ...
+# Subtest: closed provider whitespace
+ok 62 - closed provider whitespace
+  ---
+  duration_ms: 0.2279
+  ...
+# Subtest: closed provider newline
+ok 63 - closed provider newline
+  ---
+  duration_ms: 0.3843
+  ...
+# Subtest: JSON rejection duplicateTop
+ok 64 - JSON rejection duplicateTop
+  ---
+  duration_ms: 0.106
+  ...
+# Subtest: JSON rejection escapedDuplicate
+ok 65 - JSON rejection escapedDuplicate
+  ---
+  duration_ms: 0.0558
+  ...
+# Subtest: JSON rejection duplicateEntry
+ok 66 - JSON rejection duplicateEntry
+  ---
+  duration_ms: 0.0733
+  ...
+# Subtest: JSON rejection nonJSONWhitespace
+ok 67 - JSON rejection nonJSONWhitespace
+  ---
+  duration_ms: 0.0477
+  ...
+# Subtest: JSON rejection bom
+ok 68 - JSON rejection bom
+  ---
+  duration_ms: 0.5259
+  ...
+# Subtest: JSON rejection trailing
+ok 69 - JSON rejection trailing
+  ---
+  duration_ms: 0.1753
+  ...
+# Subtest: invalid UTF8, absent source and read failure
+ok 70 - invalid UTF8, absent source and read failure
+  ---
+  duration_ms: 0.344
+  ...
+# Subtest: deep freeze and one load per operation
+ok 71 - deep freeze and one load per operation
+  ---
+  duration_ms: 0.7834
+  ...
+# Subtest: concurrent operation isolation and copied bytes
+ok 72 - concurrent operation isolation and copied bytes
+  ---
+  duration_ms: 0.414
+  ...
+# Subtest: copy failure returns no partial template
+ok 73 - copy failure returns no partial template
+  ---
+  duration_ms: 0.1483
+  ...
+# Subtest: JSON group order and exact Unicode description
+ok 74 - JSON group order and exact Unicode description
+  ---
+  duration_ms: 0.3965
+  ...
+# Subtest: later invalid candidate clears earlier pending
+ok 75 - later invalid candidate clears earlier pending
+  ---
+  duration_ms: 0.2633
+  ...
+# Subtest: default expression names are not added to parameter set
+ok 76 - default expression names are not added to parameter set
+  ---
+  duration_ms: 0.2263
+  ...
+# Subtest: actual parameter sibling accepted
+ok 77 - actual parameter sibling accepted
+  ---
+  duration_ms: 0.2045
+  ...
+# Subtest: byte validation is separate from string positions
+ok 78 - byte validation is separate from string positions
+  ---
+  duration_ms: 0.0942
+  ...
+# Subtest: resource limits are refusal gates
+ok 79 - resource limits are refusal gates
+  ---
+  duration_ms: 0.3206
+  ...
+# Subtest: annotated parameter with nested default expression
+ok 80 - annotated parameter with nested default expression
+  ---
+  duration_ms: 0.2172
+  ...
+# Subtest: unsupported signatures stay empty
+ok 81 - unsupported signatures stay empty
+  ---
+  duration_ms: 0.6569
+  ...
+# Subtest: synthetic neighboring assignment remains outside the only span
+ok 82 - synthetic neighboring assignment remains outside the only span
+  ---
+  duration_ms: 0.287
+  ...
+1..82
+# tests 82
+# suites 0
+# pass 82
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 281.5578

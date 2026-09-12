@@ -1,0 +1,44 @@
+{
+  "node": "v24.16.0",
+  "platform": "win32",
+  "arch": "x64",
+  "lockSha256": "18c9198030a21e9c85f952c94bcb0d036cec0a4010e4a04dcc74233d44a6784b",
+  "packages": [
+    {
+      "path": "node_modules/@lezer/common",
+      "name": "@lezer/common",
+      "version": "1.5.2",
+      "lockedVersion": "1.5.2",
+      "license": "MIT",
+      "resolved": "https://registry.npmjs.org/@lezer/common/-/common-1.5.2.tgz",
+      "integrity": "sha512-sxQE460fPZyU3sdc8lafxiPwJHBzZRy/udNFynGQky1SePYBdhkBl1kOagA9uT3pxR8K09bOrmTUqA9wb/PjSQ=="
+    },
+    {
+      "path": "node_modules/@lezer/highlight",
+      "name": "@lezer/highlight",
+      "version": "1.2.3",
+      "lockedVersion": "1.2.3",
+      "license": "MIT",
+      "resolved": "https://registry.npmjs.org/@lezer/highlight/-/highlight-1.2.3.tgz",
+      "integrity": "sha512-qXdH7UqTvGfdVBINrgKhDsVTJTxactNNxLk7+UMwZhU13lMHaOBlJe9Vqp907ya56Y3+ed2tlqzys7jDkTmW0g=="
+    },
+    {
+      "path": "node_modules/@lezer/lr",
+      "name": "@lezer/lr",
+      "version": "1.4.10",
+      "lockedVersion": "1.4.10",
+      "license": "MIT",
+      "resolved": "https://registry.npmjs.org/@lezer/lr/-/lr-1.4.10.tgz",
+      "integrity": "sha512-rnCpTIBafOx4mRp43xOxDJbFipJm/c0cia/V5TiGlhmMa+wsSdoGmUN3w5Bqrks/09Q/D4tNAmWaT8p6NRi77A=="
+    },
+    {
+      "path": "node_modules/@lezer/python",
+      "name": "@lezer/python",
+      "version": "1.1.18",
+      "lockedVersion": "1.1.18",
+      "license": "MIT",
+      "resolved": "https://registry.npmjs.org/@lezer/python/-/python-1.1.18.tgz",
+      "integrity": "sha512-31FiUrU7z9+d/ElGQLJFXl+dKOdx0jALlP3KEOsGTex8mvj+SoE1FgItcHWK/axkxCHGUSpqIHt6JAWfWu9Rhg=="
+    }
+  ]
+}
