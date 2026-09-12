@@ -1,0 +1,8 @@
+{
+  "jsonParsePassed": true,
+  "sanitizedPaths": true,
+  "noBinarySnapshots": true,
+  "honorRowsUnchanged": true,
+  "files": 102,
+  "codeSha": "416120afbf2446463864e8292d1423e493055944"
+}

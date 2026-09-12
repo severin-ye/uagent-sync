@@ -1,0 +1,28 @@
+{
+  "codeSha": "416120afbf2446463864e8292d1423e493055944",
+  "detectChangesExitCode": 0,
+  "changedSymbols": 253,
+  "affectedFlows": 54,
+  "files": [
+    "package-lock.json",
+    "package.json",
+    "src/entrypoints/device-cli.ts",
+    "src/lib/codex-profile.ts",
+    "src/lib/device-git-transport.ts",
+    "src/lib/profile-m2-docstrings.ts",
+    "src/lib/profile-m2-provider.ts",
+    "src/lib/profile-scan-operations.ts",
+    "src/lib/profile-secret-scan.ts",
+    "test/fixtures/m2-operation-worker.ts",
+    "test/helpers/m2-external-sandbox.ts",
+    "test/profile-m2-args.test.ts",
+    "test/profile-m2-composition.test.ts",
+    "test/profile-m2-gates.test.ts",
+    "test/profile-m2-honor-boundary.test.ts",
+    "test/profile-m2-honor.test.ts",
+    "test/profile-m2-integration.test.ts",
+    "test/profile-m2-operations.test.ts",
+    "test/profile-m2-parser.test.ts"
+  ],
+  "noBaseScannerChange": true
+}

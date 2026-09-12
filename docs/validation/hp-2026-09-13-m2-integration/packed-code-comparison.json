@@ -1,0 +1,40 @@
+{
+  "codeSha": "416120afbf2446463864e8292d1423e493055944",
+  "files": [
+    {
+      "file": "lib/profile-m2-provider.js",
+      "equal": true,
+      "sha256": "db283f0b0f105eab0f5a7b6a69add07dfd153bec1a89139f881aa65691f2ffb8"
+    },
+    {
+      "file": "lib/profile-m2-docstrings.js",
+      "equal": true,
+      "sha256": "fafdf5e10619fca43585d253cd2366883b700b7c1b280d2e69e4be5dc3f5a720"
+    },
+    {
+      "file": "lib/profile-secret-scan.js",
+      "equal": true,
+      "sha256": "3136f817111725400baed49da7c6a30424d0beb21ac8e44d4c7469ccfa8ed039"
+    },
+    {
+      "file": "lib/profile-scan-operations.js",
+      "equal": true,
+      "sha256": "15785c7547ecee7adcf4e7acd77021a8752f31ffc685de25ba3e129e042eea41"
+    },
+    {
+      "file": "lib/codex-profile.js",
+      "equal": true,
+      "sha256": "11c48bc74692f7275ae1f0395c3502ef8c14d4ef8dbd98d9382dcf25060753ea"
+    },
+    {
+      "file": "lib/device-git-transport.js",
+      "equal": true,
+      "sha256": "97abedd5b0cebd48c318864f2ad8c6a570c9a7abc90d4ee99575d9de6d4cf012"
+    },
+    {
+      "file": "entrypoints/device-cli.js",
+      "equal": true,
+      "sha256": "7320d81d98f6f0383b7387c29e2f954a71d74dcb8f38c19b3e20ad09ac149662"
+    }
+  ]
+}

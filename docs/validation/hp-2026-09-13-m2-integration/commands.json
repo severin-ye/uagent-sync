@@ -1,0 +1,599 @@
+[
+  {
+    "label": "s1-ci",
+    "cmd": "npm.cmd",
+    "args": [
+      "ci",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s1-impact-fresh",
+    "cmd": "node",
+    "args": [
+      "<USER_HOME>/m2ise/impact-s1.mjs"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s1-impact",
+    "cmd": "node",
+    "args": [
+      "<USER_HOME>/m2ise/impact-s1.mjs"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s1-index",
+    "cmd": "node",
+    "args": [
+      "<USER_HOME>/AppData/Local/pnpm/store/v11/links/@/gitnexus/1.6.11/b5f5e5dfb93e9c782cd6bd8d226b0a45a779732252e19e5b493352f6b71ca9e6/node_modules/gitnexus/dist/cli/index.js",
+      "analyze",
+      "--index-only",
+      "--name",
+      "hp-is",
+      "--workers",
+      "2"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s1-red-content-ready",
+    "cmd": "node",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-m2-integration.test.ts"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 1,
+    "signal": null
+  },
+  {
+    "label": "s1-red-content",
+    "cmd": "node",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-m2-integration.test.ts"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 1,
+    "signal": null
+  },
+  {
+    "label": "s1-red-operations",
+    "cmd": "node",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-m2-operations.test.ts"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 1,
+    "signal": null
+  },
+  {
+    "label": "s2-baseline-ci",
+    "cmd": "npm.cmd",
+    "args": [
+      "ci",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "cwd": "<BASELINE>",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-baseline-full-node18",
+    "cmd": "node",
+    "args": [
+      "<USER_HOME>/m2ise/runtime18.mjs",
+      "<USER_HOME>/m2g0e/runtime18/node-v18.20.8-win-x64/node_modules/npm/bin/npm-cli.js",
+      "test"
+    ],
+    "cwd": "<BASELINE>",
+    "status": 1,
+    "signal": null
+  },
+  {
+    "label": "s2-build",
+    "cmd": "npm.cmd",
+    "args": [
+      "run",
+      "build"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-code-detect",
+    "cmd": "node",
+    "args": [
+      "<USER_HOME>/m2ise/detect-all.mjs"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-complete-focused",
+    "cmd": "node",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-m2-composition.test.ts",
+      "test/profile-m2-integration.test.ts",
+      "test/profile-m2-operations.test.ts",
+      "test/profile-m2-gates.test.ts",
+      "test/profile-m2-parser.test.ts",
+      "test/profile-m2-args.test.ts",
+      "test/profile-m2-honor.test.ts",
+      "test/profile-m2-honor-boundary.test.ts",
+      "test/profile-secret-scan.test.ts",
+      "test/profile-secret-scan-m13.test.ts",
+      "test/profile-secret-scan-boundary.test.ts",
+      "test/profile-secret-scan-five.test.ts",
+      "test/profile-secret-scan-quoted.test.ts",
+      "test/profile-secret-scan-php-ruby.test.ts",
+      "test/profile-secret-scan-sequence.test.ts",
+      "test/codex-profile.test.ts",
+      "test/device-git-transport.test.ts",
+      "test/codex-restore.test.ts"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-composition-corrected",
+    "cmd": "node",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-m2-composition.test.ts",
+      "test/profile-m2-honor-boundary.test.ts"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 1,
+    "signal": null
+  },
+  {
+    "label": "s2-composition",
+    "cmd": "node",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-m2-composition.test.ts"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 1,
+    "signal": null
+  },
+  {
+    "label": "s2-consumer-current",
+    "cmd": "node",
+    "args": [
+      "<USER_HOME>/m2ise/consumer-check.mjs"
+    ],
+    "cwd": "<PUBLIC_TEMP>/u2pc-20260913",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-consumer-install",
+    "cmd": "npm.cmd",
+    "args": [
+      "install",
+      "--omit=dev",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund",
+      "<USER_HOME>/m2pack/uagent-sync-2.1.1.tgz"
+    ],
+    "cwd": "<USER_HOME>/m2pc",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-consumer-node18",
+    "cmd": "node",
+    "args": [
+      "<USER_HOME>/m2ise/runtime18.mjs",
+      "<USER_HOME>/m2ise/consumer-check.mjs"
+    ],
+    "cwd": "<PUBLIC_TEMP>/u2pc-20260913",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-consumer-prefix-install",
+    "cmd": "npm.cmd",
+    "args": [
+      "install",
+      "--prefix",
+      "<USER_HOME>/m2pc",
+      "--omit=dev",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund",
+      "<USER_HOME>/m2pack/uagent-sync-2.1.1.tgz"
+    ],
+    "cwd": "<USER_HOME>/m2pc",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-consumer-public-install",
+    "cmd": "npm.cmd",
+    "args": [
+      "install",
+      "--prefix",
+      "<PUBLIC_TEMP>/u2pc-20260913",
+      "--omit=dev",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund",
+      "<USER_HOME>/m2pack/uagent-sync-2.1.1.tgz"
+    ],
+    "cwd": "<PUBLIC_TEMP>/u2pc-20260913",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-final-focused-node18",
+    "cmd": "node",
+    "args": [
+      "<USER_HOME>/m2ise/runtime18.mjs",
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-m2-composition.test.ts",
+      "test/profile-m2-integration.test.ts",
+      "test/profile-m2-operations.test.ts",
+      "test/profile-m2-gates.test.ts",
+      "test/profile-m2-parser.test.ts",
+      "test/profile-m2-args.test.ts",
+      "test/profile-m2-honor.test.ts",
+      "test/profile-m2-honor-boundary.test.ts"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-first-green",
+    "cmd": "node",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-m2-integration.test.ts",
+      "test/profile-m2-operations.test.ts"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-focused-node18",
+    "cmd": "node",
+    "args": [
+      "<USER_HOME>/m2ise/runtime18.mjs",
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-m2-composition.test.ts",
+      "test/profile-m2-integration.test.ts",
+      "test/profile-m2-operations.test.ts",
+      "test/profile-m2-gates.test.ts",
+      "test/profile-m2-parser.test.ts",
+      "test/profile-m2-args.test.ts",
+      "test/profile-m2-honor.test.ts",
+      "test/profile-m2-honor-boundary.test.ts"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 1,
+    "signal": null
+  },
+  {
+    "label": "s2-full-current-final",
+    "cmd": "npm.cmd",
+    "args": [
+      "test"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-full-current",
+    "cmd": "npm.cmd",
+    "args": [
+      "test"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-full-node18",
+    "cmd": "node",
+    "args": [
+      "<USER_HOME>/m2ise/runtime18.mjs",
+      "<USER_HOME>/m2g0e/runtime18/node-v18.20.8-win-x64/node_modules/npm/bin/npm-cli.js",
+      "test"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 1,
+    "signal": null
+  },
+  {
+    "label": "s2-gates-final",
+    "cmd": "node",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-m2-gates.test.ts"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 1,
+    "signal": null
+  },
+  {
+    "label": "s2-gates-source-fixed",
+    "cmd": "node",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-m2-gates.test.ts"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-gates",
+    "cmd": "node",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-m2-gates.test.ts"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-host-current",
+    "cmd": "node",
+    "args": [
+      "<USER_HOME>/m2ise/consumer-check.mjs",
+      "--host"
+    ],
+    "cwd": "<PUBLIC_TEMP>/u2ph-20260913",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-host-install",
+    "cmd": "npm.cmd",
+    "args": [
+      "install",
+      "--omit=dev",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund",
+      "--save-exact",
+      "<USER_HOME>/m2pack/uagent-sync-2.1.1.tgz",
+      "@opencode-ai/plugin@1.18.15",
+      "@opencode-ai/sdk@1.18.15"
+    ],
+    "cwd": "<USER_HOME>/m2ph",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-host-node18",
+    "cmd": "node",
+    "args": [
+      "<USER_HOME>/m2ise/runtime18.mjs",
+      "<USER_HOME>/m2ise/consumer-check.mjs",
+      "--host"
+    ],
+    "cwd": "<PUBLIC_TEMP>/u2ph-20260913",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-host-prefix-install",
+    "cmd": "npm.cmd",
+    "args": [
+      "install",
+      "--prefix",
+      "<USER_HOME>/m2ph",
+      "--omit=dev",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund",
+      "--save-exact",
+      "<USER_HOME>/m2pack/uagent-sync-2.1.1.tgz",
+      "@opencode-ai/plugin@1.18.15",
+      "@opencode-ai/sdk@1.18.15"
+    ],
+    "cwd": "<USER_HOME>/m2ph",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-host-public-install",
+    "cmd": "npm.cmd",
+    "args": [
+      "install",
+      "--prefix",
+      "<PUBLIC_TEMP>/u2ph-20260913",
+      "--omit=dev",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund",
+      "--save-exact",
+      "<USER_HOME>/m2pack/uagent-sync-2.1.1.tgz",
+      "@opencode-ai/plugin@1.18.15",
+      "@opencode-ai/sdk@1.18.15"
+    ],
+    "cwd": "<PUBLIC_TEMP>/u2ph-20260913",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-index-retry",
+    "cmd": "node",
+    "args": [
+      "<USER_HOME>/AppData/Local/pnpm/store/v11/links/@/gitnexus/1.6.11/b5f5e5dfb93e9c782cd6bd8d226b0a45a779732252e19e5b493352f6b71ca9e6/node_modules/gitnexus/dist/cli/index.js",
+      "analyze",
+      "--index-only",
+      "--name",
+      "hp-is",
+      "--workers",
+      "2"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-index",
+    "cmd": "node",
+    "args": [
+      "<USER_HOME>/AppData/Local/pnpm/store/v11/links/@/gitnexus/1.6.11/b5f5e5dfb93e9c782cd6bd8d226b0a45a779732252e19e5b493352f6b71ca9e6/node_modules/gitnexus/dist/cli/index.js",
+      "analyze",
+      "--index-only",
+      "--name",
+      "hp-is",
+      "--workers",
+      "2"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 1,
+    "signal": null
+  },
+  {
+    "label": "s2-lezer",
+    "cmd": "npm.cmd",
+    "args": [
+      "install",
+      "--save-exact",
+      "@lezer/python@1.1.18",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-pack",
+    "cmd": "npm.cmd",
+    "args": [
+      "pack",
+      "--json",
+      "--pack-destination",
+      "<USER_HOME>/m2pack"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-ported",
+    "cmd": "node",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-m2-parser.test.ts",
+      "test/profile-m2-args.test.ts",
+      "test/profile-m2-honor.test.ts"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-residual-green",
+    "cmd": "node",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-m2-composition.test.ts",
+      "test/profile-m2-integration.test.ts",
+      "test/profile-m2-operations.test.ts",
+      "test/profile-m2-gates.test.ts"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-residual-second-green",
+    "cmd": "node",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-m2-composition.test.ts"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 0,
+    "signal": null
+  },
+  {
+    "label": "s2-residual-second-red",
+    "cmd": "node",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-m2-composition.test.ts"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 1,
+    "signal": null
+  },
+  {
+    "label": "s2-type",
+    "cmd": "npm.cmd",
+    "args": [
+      "run",
+      "typecheck"
+    ],
+    "cwd": "<CHECKOUT>",
+    "status": 2,
+    "signal": null
+  }
+]

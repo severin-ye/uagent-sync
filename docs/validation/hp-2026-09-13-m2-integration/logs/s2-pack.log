@@ -1,0 +1,1763 @@
+[
+  {
+    "id": "uagent-sync@2.1.1",
+    "name": "uagent-sync",
+    "version": "2.1.1",
+    "size": 332353,
+    "unpackedSize": 1861259,
+    "shasum": "709f8611dece993a7332c6e3624276a76700bd17",
+    "integrity": "sha512-zbk3wlyFEocSQxcva/B6RakwqMBBeTK4HDB0QbcKUSTBueV+yT3cZckxGsBq+rSj8b1JrmIJmHliKIKm0qP6mQ==",
+    "filename": "uagent-sync-2.1.1.tgz",
+    "files": [
+      {
+        "path": ".claude-plugin/marketplace.json",
+        "size": 428,
+        "mode": 420
+      },
+      {
+        "path": ".codex-plugin/plugin.json",
+        "size": 1448,
+        "mode": 420
+      },
+      {
+        "path": "LICENSE",
+        "size": 1115,
+        "mode": 420
+      },
+      {
+        "path": "README.md",
+        "size": 16887,
+        "mode": 420
+      },
+      {
+        "path": "README.zh-CN.md",
+        "size": 16861,
+        "mode": 420
+      },
+      {
+        "path": "data/known-mcps.json",
+        "size": 4897,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/agents/codex-adapter.d.ts",
+        "size": 185,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/agents/codex-adapter.d.ts.map",
+        "size": 216,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/agents/codex-adapter.js",
+        "size": 169,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/agents/codex-adapter.js.map",
+        "size": 263,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/agents/deepseek-adapter.d.ts",
+        "size": 203,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/agents/deepseek-adapter.d.ts.map",
+        "size": 222,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/agents/deepseek-adapter.js",
+        "size": 187,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/agents/deepseek-adapter.js.map",
+        "size": 269,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/agents/opencode-adapter.d.ts",
+        "size": 203,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/agents/opencode-adapter.d.ts.map",
+        "size": 222,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/agents/opencode-adapter.js",
+        "size": 187,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/agents/opencode-adapter.js.map",
+        "size": 269,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/agents/registry.d.ts",
+        "size": 939,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/agents/registry.d.ts.map",
+        "size": 738,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/agents/registry.js",
+        "size": 810,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/agents/registry.js.map",
+        "size": 715,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/infrastructure/git-cli.d.ts",
+        "size": 352,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/infrastructure/git-cli.d.ts.map",
+        "size": 248,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/infrastructure/git-cli.js",
+        "size": 616,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/infrastructure/git-cli.js.map",
+        "size": 806,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/infrastructure/node-file-system.d.ts",
+        "size": 281,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/infrastructure/node-file-system.d.ts.map",
+        "size": 189,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/infrastructure/node-file-system.js",
+        "size": 384,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/infrastructure/node-file-system.js.map",
+        "size": 590,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/infrastructure/system-process-runner.d.ts",
+        "size": 367,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/infrastructure/system-process-runner.d.ts.map",
+        "size": 333,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/infrastructure/system-process-runner.js",
+        "size": 264,
+        "mode": 420
+      },
+      {
+        "path": "dist/adapters/infrastructure/system-process-runner.js.map",
+        "size": 331,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/default-workspace-application.d.ts",
+        "size": 1696,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/default-workspace-application.d.ts.map",
+        "size": 1390,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/default-workspace-application.js",
+        "size": 2853,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/default-workspace-application.js.map",
+        "size": 2056,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/export-workspace.d.ts",
+        "size": 822,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/export-workspace.d.ts.map",
+        "size": 790,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/export-workspace.js",
+        "size": 1559,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/export-workspace.js.map",
+        "size": 1661,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/import-workspace.d.ts",
+        "size": 1330,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/import-workspace.d.ts.map",
+        "size": 1254,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/import-workspace.js",
+        "size": 1844,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/import-workspace.js.map",
+        "size": 2087,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/pull-workspace.d.ts",
+        "size": 1047,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/pull-workspace.d.ts.map",
+        "size": 979,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/pull-workspace.js",
+        "size": 2864,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/pull-workspace.js.map",
+        "size": 2933,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/push-workspace.d.ts",
+        "size": 913,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/push-workspace.d.ts.map",
+        "size": 897,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/push-workspace.js",
+        "size": 2764,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/push-workspace.js.map",
+        "size": 2734,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/result.d.ts",
+        "size": 261,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/result.d.ts.map",
+        "size": 380,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/result.js",
+        "size": 45,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/result.js.map",
+        "size": 119,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/setup-workspace.d.ts",
+        "size": 955,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/setup-workspace.d.ts.map",
+        "size": 965,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/setup-workspace.js",
+        "size": 1271,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/setup-workspace.js.map",
+        "size": 1599,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/update-workspace.d.ts",
+        "size": 823,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/update-workspace.d.ts.map",
+        "size": 811,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/update-workspace.js",
+        "size": 6032,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/update-workspace.js.map",
+        "size": 6521,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/verify-workspace.d.ts",
+        "size": 522,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/verify-workspace.d.ts.map",
+        "size": 548,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/verify-workspace.js",
+        "size": 1010,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/verify-workspace.js.map",
+        "size": 1212,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/workspace-operation-capabilities.d.ts",
+        "size": 604,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/workspace-operation-capabilities.d.ts.map",
+        "size": 629,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/workspace-operation-capabilities.js",
+        "size": 657,
+        "mode": 420
+      },
+      {
+        "path": "dist/application/workspace-operation-capabilities.js.map",
+        "size": 536,
+        "mode": 420
+      },
+      {
+        "path": "dist/artifacts/migrations/v1-to-v2.d.ts",
+        "size": 176,
+        "mode": 420
+      },
+      {
+        "path": "dist/artifacts/migrations/v1-to-v2.d.ts.map",
+        "size": 248,
+        "mode": 420
+      },
+      {
+        "path": "dist/artifacts/migrations/v1-to-v2.js",
+        "size": 719,
+        "mode": 420
+      },
+      {
+        "path": "dist/artifacts/migrations/v1-to-v2.js.map",
+        "size": 897,
+        "mode": 420
+      },
+      {
+        "path": "dist/artifacts/migrations/v2-to-v3.d.ts",
+        "size": 176,
+        "mode": 420
+      },
+      {
+        "path": "dist/artifacts/migrations/v2-to-v3.d.ts.map",
+        "size": 248,
+        "mode": 420
+      },
+      {
+        "path": "dist/artifacts/migrations/v2-to-v3.js",
+        "size": 719,
+        "mode": 420
+      },
+      {
+        "path": "dist/artifacts/migrations/v2-to-v3.js.map",
+        "size": 897,
+        "mode": 420
+      },
+      {
+        "path": "dist/artifacts/workspace-state-codec.d.ts",
+        "size": 389691,
+        "mode": 420
+      },
+      {
+        "path": "dist/artifacts/workspace-state-codec.d.ts.map",
+        "size": 7559,
+        "mode": 420
+      },
+      {
+        "path": "dist/artifacts/workspace-state-codec.js",
+        "size": 7393,
+        "mode": 420
+      },
+      {
+        "path": "dist/artifacts/workspace-state-codec.js.map",
+        "size": 8248,
+        "mode": 420
+      },
+      {
+        "path": "dist/cli.d.ts",
+        "size": 64,
+        "mode": 420
+      },
+      {
+        "path": "dist/cli.d.ts.map",
+        "size": 100,
+        "mode": 420
+      },
+      {
+        "path": "dist/cli.js",
+        "size": 35455,
+        "mode": 420
+      },
+      {
+        "path": "dist/cli.js.map",
+        "size": 36373,
+        "mode": 420
+      },
+      {
+        "path": "dist/dashboard/app.js",
+        "size": 28841,
+        "mode": 420
+      },
+      {
+        "path": "dist/dashboard/i18n.js",
+        "size": 24806,
+        "mode": 420
+      },
+      {
+        "path": "dist/dashboard/index.html",
+        "size": 11078,
+        "mode": 420
+      },
+      {
+        "path": "dist/dashboard/migration-analysis.js",
+        "size": 1275,
+        "mode": 420
+      },
+      {
+        "path": "dist/dashboard/styles.css",
+        "size": 11903,
+        "mode": 420
+      },
+      {
+        "path": "dist/entrypoints/device-cli.d.ts",
+        "size": 342,
+        "mode": 420
+      },
+      {
+        "path": "dist/entrypoints/device-cli.d.ts.map",
+        "size": 385,
+        "mode": 420
+      },
+      {
+        "path": "dist/entrypoints/device-cli.js",
+        "size": 5283,
+        "mode": 420
+      },
+      {
+        "path": "dist/entrypoints/device-cli.js.map",
+        "size": 4942,
+        "mode": 420
+      },
+      {
+        "path": "dist/entrypoints/device-registry-cli.d.ts",
+        "size": 128,
+        "mode": 420
+      },
+      {
+        "path": "dist/entrypoints/device-registry-cli.d.ts.map",
+        "size": 223,
+        "mode": 420
+      },
+      {
+        "path": "dist/entrypoints/device-registry-cli.js",
+        "size": 6078,
+        "mode": 420
+      },
+      {
+        "path": "dist/entrypoints/device-registry-cli.js.map",
+        "size": 6362,
+        "mode": 420
+      },
+      {
+        "path": "dist/entrypoints/result-formatters.d.ts",
+        "size": 1306,
+        "mode": 420
+      },
+      {
+        "path": "dist/entrypoints/result-formatters.d.ts.map",
+        "size": 1341,
+        "mode": 420
+      },
+      {
+        "path": "dist/entrypoints/result-formatters.js",
+        "size": 1974,
+        "mode": 420
+      },
+      {
+        "path": "dist/entrypoints/result-formatters.js.map",
+        "size": 2174,
+        "mode": 420
+      },
+      {
+        "path": "dist/i18n/index.d.ts",
+        "size": 1456,
+        "mode": 420
+      },
+      {
+        "path": "dist/i18n/index.d.ts.map",
+        "size": 906,
+        "mode": 420
+      },
+      {
+        "path": "dist/i18n/index.js",
+        "size": 2467,
+        "mode": 420
+      },
+      {
+        "path": "dist/i18n/index.js.map",
+        "size": 2117,
+        "mode": 420
+      },
+      {
+        "path": "dist/i18n/messages.d.ts",
+        "size": 524,
+        "mode": 420
+      },
+      {
+        "path": "dist/i18n/messages.d.ts.map",
+        "size": 387,
+        "mode": 420
+      },
+      {
+        "path": "dist/i18n/messages.js",
+        "size": 83847,
+        "mode": 420
+      },
+      {
+        "path": "dist/i18n/messages.js.map",
+        "size": 29382,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/adapters/codex.d.ts",
+        "size": 225,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/adapters/codex.d.ts.map",
+        "size": 271,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/adapters/codex.js",
+        "size": 1028,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/adapters/codex.js.map",
+        "size": 1286,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/adapters/deepseek.d.ts",
+        "size": 231,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/adapters/deepseek.d.ts.map",
+        "size": 279,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/adapters/deepseek.js",
+        "size": 2448,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/adapters/deepseek.js.map",
+        "size": 2591,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/adapters/opencode.d.ts",
+        "size": 231,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/adapters/opencode.d.ts.map",
+        "size": 277,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/adapters/opencode.js",
+        "size": 981,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/adapters/opencode.js.map",
+        "size": 1244,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/agent-inventory-types.d.ts",
+        "size": 1933,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/agent-inventory-types.d.ts.map",
+        "size": 1953,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/agent-inventory-types.js",
+        "size": 60,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/agent-inventory-types.js.map",
+        "size": 141,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/agent-inventory.d.ts",
+        "size": 771,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/agent-inventory.d.ts.map",
+        "size": 686,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/agent-inventory.js",
+        "size": 3132,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/agent-inventory.js.map",
+        "size": 3999,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/agent-paths.d.ts",
+        "size": 602,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/agent-paths.d.ts.map",
+        "size": 521,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/agent-paths.js",
+        "size": 875,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/agent-paths.js.map",
+        "size": 974,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/agent-scan-utils.d.ts",
+        "size": 923,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/agent-scan-utils.d.ts.map",
+        "size": 696,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/agent-scan-utils.js",
+        "size": 2738,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/agent-scan-utils.js.map",
+        "size": 2850,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/cache.d.ts",
+        "size": 1271,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/cache.d.ts.map",
+        "size": 685,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/cache.js",
+        "size": 10375,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/cache.js.map",
+        "size": 9439,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/capability-id.d.ts",
+        "size": 327,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/capability-id.d.ts.map",
+        "size": 329,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/capability-id.js",
+        "size": 474,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/capability-id.js.map",
+        "size": 540,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/codex-profile.d.ts",
+        "size": 2022,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/codex-profile.d.ts.map",
+        "size": 1791,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/codex-profile.js",
+        "size": 15874,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/codex-profile.js.map",
+        "size": 18120,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/codex-restore.d.ts",
+        "size": 2526,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/codex-restore.d.ts.map",
+        "size": 2637,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/codex-restore.js",
+        "size": 24658,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/codex-restore.js.map",
+        "size": 24288,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/crystallize-commit.d.ts",
+        "size": 1142,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/crystallize-commit.d.ts.map",
+        "size": 630,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/crystallize-commit.js",
+        "size": 9164,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/crystallize-commit.js.map",
+        "size": 6385,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/dashboard-server.d.ts",
+        "size": 400,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/dashboard-server.d.ts.map",
+        "size": 493,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/dashboard-server.js",
+        "size": 14975,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/dashboard-server.js.map",
+        "size": 14652,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/device-git-transport.d.ts",
+        "size": 624,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/device-git-transport.d.ts.map",
+        "size": 632,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/device-git-transport.js",
+        "size": 4586,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/device-git-transport.js.map",
+        "size": 4762,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/device-registry.d.ts",
+        "size": 1933,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/device-registry.d.ts.map",
+        "size": 1945,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/device-registry.js",
+        "size": 16956,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/device-registry.js.map",
+        "size": 16501,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/device-workspace-audit.d.ts",
+        "size": 795,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/device-workspace-audit.d.ts.map",
+        "size": 800,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/device-workspace-audit.js",
+        "size": 4303,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/device-workspace-audit.js.map",
+        "size": 4781,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/dotfiles.d.ts",
+        "size": 704,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/dotfiles.d.ts.map",
+        "size": 341,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/dotfiles.js",
+        "size": 898,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/dotfiles.js.map",
+        "size": 619,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/extension-conflicts/index.d.ts",
+        "size": 26041,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/extension-conflicts/index.d.ts.map",
+        "size": 4427,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/extension-conflicts/index.js",
+        "size": 29248,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/extension-conflicts/index.js.map",
+        "size": 32853,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/github.d.ts",
+        "size": 259,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/github.d.ts.map",
+        "size": 333,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/github.js",
+        "size": 1859,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/github.js.map",
+        "size": 1710,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/guide.d.ts",
+        "size": 1059,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/guide.d.ts.map",
+        "size": 1054,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/guide.js",
+        "size": 21414,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/guide.js.map",
+        "size": 23398,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/init-state.d.ts",
+        "size": 602,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/init-state.d.ts.map",
+        "size": 595,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/init-state.js",
+        "size": 2242,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/init-state.js.map",
+        "size": 2384,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/keys.d.ts",
+        "size": 354,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/keys.d.ts.map",
+        "size": 427,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/keys.js",
+        "size": 4117,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/keys.js.map",
+        "size": 4528,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/log.d.ts",
+        "size": 479,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/log.d.ts.map",
+        "size": 464,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/log.js",
+        "size": 2916,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/log.js.map",
+        "size": 3822,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-analysis/context.d.ts",
+        "size": 1214,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-analysis/context.d.ts.map",
+        "size": 920,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-analysis/context.js",
+        "size": 2631,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-analysis/context.js.map",
+        "size": 2704,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-analysis/index.d.ts",
+        "size": 1572,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-analysis/index.d.ts.map",
+        "size": 1348,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-analysis/index.js",
+        "size": 19500,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-analysis/index.js.map",
+        "size": 22357,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-analysis/relations.d.ts",
+        "size": 1058,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-analysis/relations.d.ts.map",
+        "size": 725,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-analysis/relations.js",
+        "size": 6442,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-analysis/relations.js.map",
+        "size": 6996,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-analysis/transaction.d.ts",
+        "size": 959,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-analysis/transaction.d.ts.map",
+        "size": 989,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-analysis/transaction.js",
+        "size": 17100,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-analysis/transaction.js.map",
+        "size": 19863,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-analysis/types.d.ts",
+        "size": 4054,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-analysis/types.d.ts.map",
+        "size": 3277,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-analysis/types.js",
+        "size": 3507,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-analysis/types.js.map",
+        "size": 3405,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-engine.d.ts",
+        "size": 333,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-engine.d.ts.map",
+        "size": 326,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-engine.js",
+        "size": 6937,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-engine.js.map",
+        "size": 6644,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-types.d.ts",
+        "size": 2562,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-types.d.ts.map",
+        "size": 1978,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-types.js",
+        "size": 54,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/migration-types.js.map",
+        "size": 129,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/portable.d.ts",
+        "size": 969,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/portable.d.ts.map",
+        "size": 544,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/portable.js",
+        "size": 2093,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/portable.js.map",
+        "size": 1519,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/profile-expressions.d.ts",
+        "size": 193,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/profile-expressions.d.ts.map",
+        "size": 270,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/profile-expressions.js",
+        "size": 11257,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/profile-expressions.js.map",
+        "size": 12602,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/profile-m2-docstrings.d.ts",
+        "size": 340,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/profile-m2-docstrings.d.ts.map",
+        "size": 442,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/profile-m2-docstrings.js",
+        "size": 7701,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/profile-m2-docstrings.js.map",
+        "size": 9072,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/profile-m2-provider.d.ts",
+        "size": 1124,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/profile-m2-provider.d.ts.map",
+        "size": 995,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/profile-m2-provider.js",
+        "size": 5606,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/profile-m2-provider.js.map",
+        "size": 6365,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/profile-php-ruby.d.ts",
+        "size": 187,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/profile-php-ruby.d.ts.map",
+        "size": 264,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/profile-php-ruby.js",
+        "size": 7249,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/profile-php-ruby.js.map",
+        "size": 8011,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/profile-scan-operations.d.ts",
+        "size": 1068,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/profile-scan-operations.d.ts.map",
+        "size": 578,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/profile-scan-operations.js",
+        "size": 1130,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/profile-scan-operations.js.map",
+        "size": 1012,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/profile-secret-scan.d.ts",
+        "size": 801,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/profile-secret-scan.d.ts.map",
+        "size": 654,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/profile-secret-scan.js",
+        "size": 4575,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/profile-secret-scan.js.map",
+        "size": 4443,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/recovery-manifest.d.ts",
+        "size": 836,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/recovery-manifest.d.ts.map",
+        "size": 833,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/recovery-manifest.js",
+        "size": 3325,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/recovery-manifest.js.map",
+        "size": 3714,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/redact.d.ts",
+        "size": 773,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/redact.d.ts.map",
+        "size": 301,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/redact.js",
+        "size": 2228,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/redact.js.map",
+        "size": 1492,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/run.d.ts",
+        "size": 534,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/run.d.ts.map",
+        "size": 455,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/run.js",
+        "size": 1224,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/run.js.map",
+        "size": 1413,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/scope.d.ts",
+        "size": 1031,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/scope.d.ts.map",
+        "size": 242,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/scope.js",
+        "size": 1175,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/scope.js.map",
+        "size": 472,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/secret-scan.d.ts",
+        "size": 289,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/secret-scan.d.ts.map",
+        "size": 350,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/secret-scan.js",
+        "size": 1058,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/secret-scan.js.map",
+        "size": 1008,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/skills.d.ts",
+        "size": 275,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/skills.d.ts.map",
+        "size": 346,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/skills.js",
+        "size": 2758,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/skills.js.map",
+        "size": 1882,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/state.d.ts",
+        "size": 719,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/state.d.ts.map",
+        "size": 682,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/state.js",
+        "size": 21805,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/state.js.map",
+        "size": 22972,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/tombstones.d.ts",
+        "size": 270,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/tombstones.d.ts.map",
+        "size": 287,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/tombstones.js",
+        "size": 451,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/tombstones.js.map",
+        "size": 569,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/types.d.ts",
+        "size": 5148,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/types.d.ts.map",
+        "size": 5503,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/types.js",
+        "size": 44,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/types.js.map",
+        "size": 109,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/unified-snapshot.d.ts",
+        "size": 2736,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/unified-snapshot.d.ts.map",
+        "size": 2297,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/unified-snapshot.js",
+        "size": 8080,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/unified-snapshot.js.map",
+        "size": 8202,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/update.d.ts",
+        "size": 3184,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/update.d.ts.map",
+        "size": 3051,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/update.js",
+        "size": 33380,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/update.js.map",
+        "size": 32309,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/workspace.d.ts",
+        "size": 993,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/workspace.d.ts.map",
+        "size": 1025,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/workspace.js",
+        "size": 28861,
+        "mode": 420
+      },
+      {
+        "path": "dist/lib/workspace.js.map",
+        "size": 28540,
+        "mode": 420
+      },
+      {
+        "path": "dist/plugin.d.ts",
+        "size": 613,
+        "mode": 420
+      },
+      {
+        "path": "dist/plugin.d.ts.map",
+        "size": 235,
+        "mode": 420
+      },
+      {
+        "path": "dist/plugin.js",
+        "size": 39251,
+        "mode": 420
+      },
+      {
+        "path": "dist/plugin.js.map",
+        "size": 27838,
+        "mode": 420
+      },
+      {
+        "path": "dist/ports/agent-adapter.d.ts",
+        "size": 356,
+        "mode": 420
+      },
+      {
+        "path": "dist/ports/agent-adapter.d.ts.map",
+        "size": 355,
+        "mode": 420
+      },
+      {
+        "path": "dist/ports/agent-adapter.js",
+        "size": 52,
+        "mode": 420
+      },
+      {
+        "path": "dist/ports/agent-adapter.js.map",
+        "size": 127,
+        "mode": 420
+      },
+      {
+        "path": "dist/ports/file-system.d.ts",
+        "size": 325,
+        "mode": 420
+      },
+      {
+        "path": "dist/ports/file-system.d.ts.map",
+        "size": 377,
+        "mode": 420
+      },
+      {
+        "path": "dist/ports/file-system.js",
+        "size": 50,
+        "mode": 420
+      },
+      {
+        "path": "dist/ports/file-system.js.map",
+        "size": 123,
+        "mode": 420
+      },
+      {
+        "path": "dist/ports/git.d.ts",
+        "size": 438,
+        "mode": 420
+      },
+      {
+        "path": "dist/ports/git.d.ts.map",
+        "size": 386,
+        "mode": 420
+      },
+      {
+        "path": "dist/ports/git.js",
+        "size": 42,
+        "mode": 420
+      },
+      {
+        "path": "dist/ports/git.js.map",
+        "size": 107,
+        "mode": 420
+      },
+      {
+        "path": "dist/ports/process-runner.d.ts",
+        "size": 484,
+        "mode": 420
+      },
+      {
+        "path": "dist/ports/process-runner.d.ts.map",
+        "size": 554,
+        "mode": 420
+      },
+      {
+        "path": "dist/ports/process-runner.js",
+        "size": 53,
+        "mode": 420
+      },
+      {
+        "path": "dist/ports/process-runner.js.map",
+        "size": 129,
+        "mode": 420
+      },
+      {
+        "path": "dist/sync.d.ts",
+        "size": 4973,
+        "mode": 420
+      },
+      {
+        "path": "dist/sync.d.ts.map",
+        "size": 3281,
+        "mode": 420
+      },
+      {
+        "path": "dist/sync.js",
+        "size": 2670,
+        "mode": 420
+      },
+      {
+        "path": "dist/sync.js.map",
+        "size": 1824,
+        "mode": 420
+      },
+      {
+        "path": "docs/DEVICE-SYNC-USAGE.md",
+        "size": 5776,
+        "mode": 420
+      },
+      {
+        "path": "hooks/hooks-codex.json",
+        "size": 313,
+        "mode": 420
+      },
+      {
+        "path": "hooks/run-hook.cmd",
+        "size": 1309,
+        "mode": 420
+      },
+      {
+        "path": "hooks/session-start",
+        "size": 1466,
+        "mode": 420
+      },
+      {
+        "path": "package.json",
+        "size": 1699,
+        "mode": 420
+      },
+      {
+        "path": "scripts/bootstrap.ps1",
+        "size": 21920,
+        "mode": 420
+      },
+      {
+        "path": "scripts/copy-offline-workspace.ps1",
+        "size": 4594,
+        "mode": 420
+      },
+      {
+        "path": "skills/uagent-sync-backup/SKILL.md",
+        "size": 2231,
+        "mode": 420
+      },
+      {
+        "path": "skills/uagent-sync-crystallize/agents/openai.yaml",
+        "size": 307,
+        "mode": 420
+      },
+      {
+        "path": "skills/uagent-sync-crystallize/SKILL.md",
+        "size": 3043,
+        "mode": 420
+      },
+      {
+        "path": "skills/uagent-sync-device/SKILL.md",
+        "size": 3725,
+        "mode": 420
+      },
+      {
+        "path": "skills/uagent-sync-restore/SKILL.md",
+        "size": 2123,
+        "mode": 420
+      },
+      {
+        "path": "skills/uagent-sync-update/SKILL.md",
+        "size": 2666,
+        "mode": 420
+      }
+    ],
+    "entryCount": 348,
+    "bundled": []
+  }
+]
+
+> uagent-sync@2.1.1 prepack
+> npm run build
+
+
+> uagent-sync@2.1.1 build
+> rimraf dist && tsc && node scripts/generate-dashboard-i18n.mjs && node scripts/copy-dashboard.mjs

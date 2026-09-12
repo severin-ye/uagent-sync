@@ -1,0 +1,3804 @@
+
+> uagent-sync@2.1.1 pretest
+> npm run build
+
+
+> uagent-sync@2.1.1 build
+> rimraf dist && tsc && node scripts/generate-dashboard-i18n.mjs && node scripts/copy-dashboard.mjs
+
+
+> uagent-sync@2.1.1 test
+> node scripts/run-tests.mjs
+
+TAP version 13
+# Subtest: AgentAdapter contract
+    # Subtest: scans exactly the injected adapters, in injection order
+    ok 1 - scans exactly the injected adapters, in injection order
+      ---
+      duration_ms: 2.0427
+      ...
+    # Subtest: keeps DeepSeek inventory and target ids explicitly distinct
+    ok 2 - keeps DeepSeek inventory and target ids explicitly distinct
+      ---
+      duration_ms: 0.1079
+      ...
+    1..2
+ok 1 - AgentAdapter contract
+  ---
+  duration_ms: 3.2743
+  type: 'suite'
+  ...
+# Subtest: portability classification
+    # Subtest: classifies shared assets and platform state honestly
+    ok 1 - classifies shared assets and platform state honestly
+      ---
+      duration_ms: 0.6106
+      ...
+    # Subtest: redacts nested values before display
+    ok 2 - redacts nested values before display
+      ---
+      duration_ms: 0.7833
+      ...
+    1..2
+ok 2 - portability classification
+  ---
+  duration_ms: 2.4932
+  type: 'suite'
+  ...
+# Subtest: agent adapters
+    # Subtest: detects all three agents and shared skills without exposing secrets
+    ok 1 - detects all three agents and shared skills without exposing secrets
+      ---
+      duration_ms: 22.2645
+      ...
+    # Subtest: reports an absent DeepSeek Harness without failing the inventory
+    ok 2 - reports an absent DeepSeek Harness without failing the inventory
+      ---
+      duration_ms: 15.9389
+      ...
+    1..2
+ok 3 - agent adapters
+  ---
+  duration_ms: 38.4533
+  type: 'suite'
+  ...
+# Subtest: workspace inventory
+    # Subtest: returns stable agents, coverage, drift, migration actions, and security flags
+    ok 1 - returns stable agents, coverage, drift, migration actions, and security flags
+      ---
+      duration_ms: 16.5142
+      ...
+    1..1
+ok 4 - workspace inventory
+  ---
+  duration_ms: 17.1079
+  type: 'suite'
+  ...
+# Subtest: Application operation x target capability gate
+    # Subtest: publishes the complete 7 operations x 4 targets matrix
+    ok 1 - publishes the complete 7 operations x 4 targets matrix
+      ---
+      duration_ms: 3.4782
+      ...
+    # Subtest: every unsupported operation fails closed before invoking any dependency
+    ok 2 - every unsupported operation fails closed before invoking any dependency
+      ---
+      duration_ms: 1.2549
+      ...
+    1..2
+ok 5 - Application operation x target capability gate
+  ---
+  duration_ms: 6.2342
+  type: 'suite'
+  ...
+# node:internal/errors:496
+#     ErrorCaptureStackTrace(err);
+#     ^
+# TypeError [ERR_INVALID_ARG_TYPE]: The "paths[0]" argument must be of type string. Received undefined
+#     at __node_internal_captureLargerStackTrace (node:internal/errors:496:5)
+#     at new NodeError (node:internal/errors:405:5)
+#     at validateString (node:internal/validators:162:11)
+#     at Object.resolve (node:path:168:9)
+#     at <anonymous> (<BASELINE>\\test\\architecture-boundaries.test.ts:15:19)
+#     at ModuleJob.run (node:internal/modules/esm/module_job:195:25)
+#     at async ModuleLoader.import (node:internal/modules/esm/loader:337:24)
+#     at async loadESM (node:internal/process/esm_loader:34:7)
+#     at async handleMainPromise (node:internal/modules/run_main:106:12) {
+#   code: 'ERR_INVALID_ARG_TYPE'
+# }
+# Node.js v18.20.8
+# Subtest: <BASELINE>\\test\\architecture-boundaries.test.ts
+not ok 4 - <BASELINE>\\test\\architecture-boundaries.test.ts
+  ---
+  duration_ms: 1031.5048
+  location: '<BASELINE>\\test\\architecture-boundaries.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: unified dashboard backend contract
+    # Subtest: serves a cached unified snapshot and carries its identity into analysis
+    ok 1 - serves a cached unified snapshot and carries its identity into analysis
+      ---
+      duration_ms: 5106.4104
+      ...
+    # Subtest: keeps agent-browser, browser, and chrome in one canonical group with one action per implementation
+    ok 2 - keeps agent-browser, browser, and chrome in one canonical group with one action per implementation
+      ---
+      duration_ms: 34.0071
+      ...
+    # Subtest: allows non-Codex and cross-agent decisions in ledger-only mode without config writes
+    ok 3 - allows non-Codex and cross-agent decisions in ledger-only mode without config writes
+      ---
+      duration_ms: 5052.0929
+      ...
+    # Subtest: returns populated and internally consistent cross-agent sections
+    ok 4 - returns populated and internally consistent cross-agent sections
+      ---
+      duration_ms: 5046.0935
+      ...
+    # Subtest: discovers DeepSeek profile bundles from the repository-standard profile manifest
+    ok 5 - discovers DeepSeek profile bundles from the repository-standard profile manifest
+      ---
+      duration_ms: 24.5938
+      ...
+    # Subtest: returns 410 for legacy business APIs and keeps public DTOs path-free
+    ok 6 - returns 410 for legacy business APIs and keeps public DTOs path-free
+      ---
+      duration_ms: 5038.5726
+      ...
+    # Subtest: verify performs a fresh scan and reports external configuration drift
+    ok 7 - verify performs a fresh scan and reports external configuration drift
+      ---
+      duration_ms: 5033.7013
+      ...
+    # Subtest: keeps external ledger changes cached until refresh and then adopts them
+    ok 8 - keeps external ledger changes cached until refresh and then adopts them
+      ---
+      duration_ms: 5035.9911
+      ...
+    1..8
+ok 7 - unified dashboard backend contract
+  ---
+  duration_ms: 30373.6916
+  type: 'suite'
+  ...
+# node:internal/errors:496
+#     ErrorCaptureStackTrace(err);
+#     ^
+# TypeError [ERR_INVALID_ARG_TYPE]: The "path" argument must be of type string. Received undefined
+#     at __node_internal_captureLargerStackTrace (node:internal/errors:496:5)
+#     at new NodeError (node:internal/errors:405:5)
+#     at validateString (node:internal/validators:162:11)
+#     at Module.join (node:path:447:7)
+#     at <anonymous> (<BASELINE>\\test\\bootstrap-script.test.ts:8:19)
+#     at ModuleJob.run (node:internal/modules/esm/module_job:195:25)
+#     at async ModuleLoader.import (node:internal/modules/esm/loader:337:24)
+#     at async loadESM (node:internal/process/esm_loader:34:7)
+#     at async handleMainPromise (node:internal/modules/run_main:106:12) {
+#   code: 'ERR_INVALID_ARG_TYPE'
+# }
+# Node.js v18.20.8
+# Subtest: <BASELINE>\\test\\bootstrap-script.test.ts
+not ok 6 - <BASELINE>\\test\\bootstrap-script.test.ts
+  ---
+  duration_ms: 350.5734
+  location: '<BASELINE>\\test\\bootstrap-script.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: resolveWorkspaceRoot — 非 workspace cwd
+    # Subtest: Codex 作用域使用自己的缓存且不创建 OpenCode 路径
+    ok 1 - Codex 作用域使用自己的缓存且不创建 OpenCode 路径
+      ---
+      duration_ms: 6.6811
+      ...
+    # Subtest: workspace 外启动 + 固定缓存存在 → 直接命中缓存
+    ok 2 - workspace 外启动 + 固定缓存存在 → 直接命中缓存
+      ---
+      duration_ms: 19.8773
+      ...
+    # Subtest: 固定缓存仍指向旧 opencode-dotfiles → 自动改写为 workspace/usync-dotfiles
+    ok 3 - 固定缓存仍指向旧 opencode-dotfiles → 自动改写为 workspace/usync-dotfiles
+      ---
+      duration_ms: 21.107
+      ...
+    # Subtest: OPENCODE_SYNC_WORKSPACE_ROOT 环境变量优先于缓存
+    ok 4 - OPENCODE_SYNC_WORKSPACE_ROOT 环境变量优先于缓存
+      ---
+      duration_ms: 6.5581
+      ...
+    # Subtest: 旧位置缓存（workspace 内 opencode-dotfiles/state/）→ 迁移到固定位置
+    ok 5 - 旧位置缓存（workspace 内 opencode-dotfiles/state/）→ 迁移到固定位置
+      ---
+      duration_ms: 18.5627
+      ...
+    # Subtest: workspace 内启动（无缓存）→ 向上找 .gitmodules 兜底
+    ok 6 - workspace 内启动（无缓存）→ 向上找 .gitmodules 兜底
+      ---
+      duration_ms: 3.7046
+      ...
+    # Subtest: Codex stale cache 指向嵌套插件目录时，改从上层真实 workspace 解析
+    ok 7 - Codex stale cache 指向嵌套插件目录时，改从上层真实 workspace 解析
+      ---
+      duration_ms: 184.3736
+      ...
+    # Subtest: 找不到时错误消息包含引导提示
+    ok 8 - 找不到时错误消息包含引导提示
+      ---
+      duration_ms: 3.4639
+      ...
+    1..8
+ok 9 - resolveWorkspaceRoot — 非 workspace cwd
+  ---
+  duration_ms: 266.3817
+  type: 'suite'
+  ...
+# Subtest: CLI verify preflights dsh/all before OpenCode workspace resolution
+ok 10 - CLI verify preflights dsh/all before OpenCode workspace resolution
+  ---
+  duration_ms: 474.1483
+  ...
+# Subtest: CLI export preflights dsh/all before OpenCode workspace resolution
+ok 11 - CLI export preflights dsh/all before OpenCode workspace resolution
+  ---
+  duration_ms: 457.9209
+  ...
+# Subtest: CLI import preflights dsh/all before OpenCode workspace resolution
+ok 12 - CLI import preflights dsh/all before OpenCode workspace resolution
+  ---
+  duration_ms: 572.6754
+  ...
+# Subtest: CLI setup preflights dsh/all before OpenCode workspace resolution
+ok 13 - CLI setup preflights dsh/all before OpenCode workspace resolution
+  ---
+  duration_ms: 508.1374
+  ...
+# Subtest: CLI update preflights dsh/all before OpenCode workspace resolution
+ok 14 - CLI update preflights dsh/all before OpenCode workspace resolution
+  ---
+  duration_ms: 492.5304
+  ...
+# Subtest: CLI push preflights dsh/all before OpenCode workspace resolution
+ok 15 - CLI push preflights dsh/all before OpenCode workspace resolution
+  ---
+  duration_ms: 490.9627
+  ...
+# Subtest: CLI pull preflights dsh/all before OpenCode workspace resolution
+ok 16 - CLI pull preflights dsh/all before OpenCode workspace resolution
+  ---
+  duration_ms: 482.7636
+  ...
+# Subtest: CLI verify rejects every malformed explicit target before resolution
+ok 17 - CLI verify rejects every malformed explicit target before resolution
+  ---
+  duration_ms: 641.2068
+  ...
+# Subtest: CLI export rejects every malformed explicit target before resolution
+ok 18 - CLI export rejects every malformed explicit target before resolution
+  ---
+  duration_ms: 665.3695
+  ...
+# Subtest: CLI import rejects every malformed explicit target before resolution
+ok 19 - CLI import rejects every malformed explicit target before resolution
+  ---
+  duration_ms: 586.7693
+  ...
+# Subtest: CLI setup rejects every malformed explicit target before resolution
+ok 20 - CLI setup rejects every malformed explicit target before resolution
+  ---
+  duration_ms: 673.5498
+  ...
+# Subtest: CLI update rejects every malformed explicit target before resolution
+ok 21 - CLI update rejects every malformed explicit target before resolution
+  ---
+  duration_ms: 625.8801
+  ...
+# Subtest: CLI push rejects every malformed explicit target before resolution
+ok 22 - CLI push rejects every malformed explicit target before resolution
+  ---
+  duration_ms: 631.8364
+  ...
+# Subtest: CLI pull rejects every malformed explicit target before resolution
+ok 23 - CLI pull rejects every malformed explicit target before resolution
+  ---
+  duration_ms: 635.1355
+  ...
+# Subtest: CLI push failure is structured and deeply redacted
+ok 24 - CLI push failure is structured and deeply redacted
+  ---
+  duration_ms: 176.243
+  ...
+# Subtest: CLI pull failure is structured and deeply redacted
+ok 25 - CLI pull failure is structured and deeply redacted
+  ---
+  duration_ms: 199.1009
+  ...
+# Subtest: CLI import failure is structured and deeply redacted
+ok 26 - CLI import failure is structured and deeply redacted
+  ---
+  duration_ms: 198.002
+  ...
+# Subtest: top-level CLI failures emit one sanitized structured JSON object
+ok 27 - top-level CLI failures emit one sanitized structured JSON object
+  ---
+  duration_ms: 1137.8588
+  ...
+# Subtest: detected OpenCode resolves scope without reading its cache first
+ok 28 - detected OpenCode resolves scope without reading its cache first
+  ---
+  duration_ms: 373.2986
+  ...
+# Subtest: an explicit OpenCode target may still use its cache from outside a workspace
+ok 29 - an explicit OpenCode target may still use its cache from outside a workspace
+  ---
+  duration_ms: 997.1377
+  ...
+# Subtest: detected OpenCode runs normally from a workspace with matching persisted scope
+ok 30 - detected OpenCode runs normally from a workspace with matching persisted scope
+  ---
+  duration_ms: 988.0906
+  ...
+# Subtest: CLI verify keeps one immutable target across detection and init-state
+ok 31 - CLI verify keeps one immutable target across detection and init-state
+  ---
+  duration_ms: 328.7713
+  ...
+# Subtest: CLI export keeps one immutable target across detection and init-state
+ok 32 - CLI export keeps one immutable target across detection and init-state
+  ---
+  duration_ms: 335.2889
+  ...
+# Subtest: CLI import keeps one immutable target across detection and init-state
+ok 33 - CLI import keeps one immutable target across detection and init-state
+  ---
+  duration_ms: 329.4923
+  ...
+# Subtest: CLI setup keeps one immutable target across detection and init-state
+ok 34 - CLI setup keeps one immutable target across detection and init-state
+  ---
+  duration_ms: 372.3977
+  ...
+# Subtest: CLI update keeps one immutable target across detection and init-state
+ok 35 - CLI update keeps one immutable target across detection and init-state
+  ---
+  duration_ms: 349.7954
+  ...
+# Subtest: CLI push keeps one immutable target across detection and init-state
+ok 36 - CLI push keeps one immutable target across detection and init-state
+  ---
+  duration_ms: 355.7469
+  ...
+# Subtest: CLI pull keeps one immutable target across detection and init-state
+ok 37 - CLI pull keeps one immutable target across detection and init-state
+  ---
+  duration_ms: 360.4014
+  ...
+# node:internal/errors:496
+#     ErrorCaptureStackTrace(err);
+#     ^
+# TypeError [ERR_INVALID_ARG_TYPE]: The "path" argument must be of type string. Received undefined
+#     at __node_internal_captureLargerStackTrace (node:internal/errors:496:5)
+#     at new NodeError (node:internal/errors:405:5)
+#     at validateString (node:internal/validators:162:11)
+#     at Module.join (node:path:447:7)
+#     at <anonymous> (<BASELINE>\\test\\cli.test.ts:13:18)
+#     at ModuleJob.run (node:internal/modules/esm/module_job:195:25)
+#     at async ModuleLoader.import (node:internal/modules/esm/loader:337:24)
+#     at async loadESM (node:internal/process/esm_loader:34:7)
+#     at async handleMainPromise (node:internal/modules/run_main:106:12) {
+#   code: 'ERR_INVALID_ARG_TYPE'
+# }
+# Node.js v18.20.8
+# Subtest: <BASELINE>\\test\\cli.test.ts
+not ok 12 - <BASELINE>\\test\\cli.test.ts
+  ---
+  duration_ms: 347.9193
+  location: '<BASELINE>\\test\\cli.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: profile roundtrip preserves memory and maps config without transferring trust or auth
+ok 39 - profile roundtrip preserves memory and maps config without transferring trust or auth
+  ---
+  duration_ms: 87.1136
+  ...
+# Subtest: different existing data conflicts; explicit first restore makes a backup
+ok 40 - different existing data conflicts; explicit first restore makes a backup
+  ---
+  duration_ms: 88.9661
+  ...
+# Subtest: three-way baseline protects edits and allows a subsequent source change
+ok 41 - three-way baseline protects edits and allows a subsequent source change
+  ---
+  duration_ms: 100.6474
+  ...
+# Subtest: tampering and path traversal fail before any target writes
+ok 42 - tampering and path traversal fail before any target writes
+  ---
+  duration_ms: 37.4282
+  ...
+# Subtest: secret values block export without creating an uploadable snapshot
+ok 43 - secret values block export without creating an uploadable snapshot
+  ---
+  duration_ms: 15.201
+  ...
+# Subtest: explicit component selection reports omitted skills and refuses empty component selection
+ok 44 - explicit component selection reports omitted skills and refuses empty component selection
+  ---
+  duration_ms: 24.6049
+  ...
+# Subtest: junctions cannot redirect target writes outside the registered profile
+ok 45 - junctions cannot redirect target writes outside the registered profile
+  ---
+  duration_ms: 38.0564
+  ...
+# Subtest: profile excludes nested Git directories and worktree pointers without changing source
+ok 46 - profile excludes nested Git directories and worktree pointers without changing source
+  ---
+  duration_ms: 75.936
+  ...
+# Subtest: legacy snapshot containing Git metadata is refused before target writes
+ok 47 - legacy snapshot containing Git metadata is refused before target writes
+  ---
+  duration_ms: 44.0966
+  ...
+# [uagent-sync] skill source install still running
+# Subtest: Codex extension restoration
+    # Subtest: restores only selected portable entries and treats an absent tombstone as already satisfied
+    ok 1 - restores only selected portable entries and treats an absent tombstone as already satisfied
+      ---
+      duration_ms: 4.2494
+      ...
+    # Subtest: reports missing sources and secret-bearing MCP configuration as errors
+    ok 2 - reports missing sources and secret-bearing MCP configuration as errors
+      ---
+      duration_ms: 0.6179
+      ...
+    # Subtest: restores a remote MCP bearer token by environment-variable name only
+    ok 3 - restores a remote MCP bearer token by environment-variable name only
+      ---
+      duration_ms: 0.2627
+      ...
+    # Subtest: removes an installed tombstone once and rescans until absence is confirmed
+    ok 4 - removes an installed tombstone once and rescans until absence is confirmed
+      ---
+      duration_ms: 0.9202
+      ...
+    # Subtest: does not hide a real tombstone permission failure
+    ok 5 - does not hide a real tombstone permission failure
+      ---
+      duration_ms: 0.4784
+      ...
+    # Subtest: fails when a successful tombstone command does not actually remove the target
+    ok 6 - fails when a successful tombstone command does not actually remove the target
+      ---
+      duration_ms: 0.3548
+      ...
+    # Subtest: treats a not-found removal response as success only after absence is confirmed
+    ok 7 - treats a not-found removal response as success only after absence is confirmed
+      ---
+      duration_ms: 0.6769
+      ...
+    # Subtest: recognizes the bootstrap-installed Uagent plugin as an existing equivalent source
+    ok 8 - recognizes the bootstrap-installed Uagent plugin as an existing equivalent source
+      ---
+      duration_ms: 0.6555
+      ...
+    # Subtest: reports a supply-chain conflict for genuinely different plugin repositories
+    ok 9 - reports a supply-chain conflict for genuinely different plugin repositories
+      ---
+      duration_ms: 0.2321
+      ...
+    # Subtest: groups skills by normalized source and emits one structured source summary
+    ok 10 - groups skills by normalized source and emits one structured source summary
+      ---
+      duration_ms: 0.7488
+      ...
+    # Subtest: reports one grouped failure for every skill covered by a failed source
+    ok 11 - reports one grouped failure for every skill covered by a failed source
+      ---
+      duration_ms: 0.4264
+      ...
+    # Subtest: retries a reset skill source with a bounded backoff and succeeds on the third attempt
+    ok 12 - retries a reset skill source with a bounded backoff and succeeds on the third attempt
+      ---
+      duration_ms: 0.9314
+      ...
+    # Subtest: stops retrying when a pre-retry scan confirms the whole source is installed
+    ok 13 - stops retrying when a pre-retry scan confirms the whole source is installed
+      ---
+      duration_ms: 0.3211
+      ...
+    # Subtest: fails a 38/39 source after exit zero and names the one source-consistent missing skill
+    ok 14 - fails a 38/39 source after exit zero and names the one source-consistent missing skill
+      ---
+      duration_ms: 1.8419
+      ...
+    # Subtest: treats exit one as idempotent success when the immediate rescan is source-complete
+    ok 15 - treats exit one as idempotent success when the immediate rescan is source-complete
+      ---
+      duration_ms: 0.3348
+      ...
+    # Subtest: retries an exit-one partial install until every selected skill from that source is present
+    ok 16 - retries an exit-one partial install until every selected skill from that source is present
+      ---
+      duration_ms: 0.3316
+      ...
+    # Subtest: does not count a globally same-named skill from a different source
+    ok 17 - does not count a globally same-named skill from a different source
+      ---
+      duration_ms: 0.2389
+      ...
+    # Subtest: keeps one source summary and verifies every selected ID when that source was initially partial
+    ok 18 - keeps one source summary and verifies every selected ID when that source was initially partial
+      ---
+      duration_ms: 0.3589
+      ...
+    # Subtest: retries spinner-only clone failures and writes clean structured decisions
+    ok 19 - retries spinner-only clone failures and writes clean structured decisions
+      ---
+      duration_ms: 6.015
+      ...
+    # Subtest: stops a spinner clone failure immediately when permanent 404 evidence is present
+    ok 20 - stops a spinner clone failure immediately when permanent 404 evidence is present
+      ---
+      duration_ms: 0.4666
+      ...
+    # Subtest: does not start another clone attempt after the source total timeout expires
+    ok 21 - does not start another clone attempt after the source total timeout expires
+      ---
+      duration_ms: 0.3367
+      ...
+    # Subtest: emits already-complete for an initially installed source without duplicating summaries
+    ok 22 - emits already-complete for an initially installed source without duplicating summaries
+      ---
+      duration_ms: 0.2285
+      ...
+    # Subtest: fails non-retryable source errors immediately and keeps full details in an optional report
+    ok 23 - fails non-retryable source errors immediately and keeps full details in an optional report
+      ---
+      duration_ms: 5.4587
+      ...
+    # Subtest: keeps separate redacted stdout and stderr summaries when stdout is long
+    ok 24 - keeps separate redacted stdout and stderr summaries when stdout is long
+      ---
+      duration_ms: 0.5394
+      ...
+    # Subtest: redacts command stderr before adding it to structured recovery errors
+    ok 25 - redacts command stderr before adding it to structured recovery errors
+      ---
+      duration_ms: 8.4342
+      ...
+    # Subtest: aggregates existing skills into one skipped entry per normalized source
+    ok 26 - aggregates existing skills into one skipped entry per normalized source
+      ---
+      duration_ms: 0.4724
+      ...
+    1..26
+ok 48 - Codex extension restoration
+  ---
+  duration_ms: 38.5854
+  type: 'suite'
+  ...
+# Subtest: trusted Windows command execution
+    # Subtest: resolves trusted codex.cmd and npx.cmd shims without executing WindowsApps or shell metacharacters
+    ok 1 - resolves trusted codex.cmd and npx.cmd shims without executing WindowsApps or shell metacharacters
+      ---
+      duration_ms: 179.2335
+      ...
+    # Subtest: emits periodic stderr heartbeats while a real monitored skill command is still running
+    not ok 2 - emits periodic stderr heartbeats while a real monitored skill command is still running
+      ---
+      duration_ms: 5.6847
+      location: 'file:///<BASELINE>/test/codex-restore.test.ts:2:63'
+      failureType: 'testCodeFailure'
+      error: 'The "path" argument must be of type string. Received undefined'
+      code: 'ERR_INVALID_ARG_TYPE'
+      name: 'TypeError'
+      stack: |-
+        __node_internal_captureLargerStackTrace (node:internal/errors:496:5)
+        new NodeError (node:internal/errors:405:5)
+        validateString (node:internal/validators:162:11)
+        Object.join (node:path:447:7)
+        TestContext.<anonymous> (<BASELINE>\test\codex-restore.test.ts:502:42)
+        Test.runInAsyncScope (node:async_hooks:203:9)
+        Test.run (node:internal/test_runner/test:631:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:374:18)
+        Test.postRun (node:internal/test_runner/test:715:19)
+        Test.run (node:internal/test_runner/test:673:12)
+        async Promise.all (index 0)
+        async Suite.run (node:internal/test_runner/test:948:7)
+        async Test.processPendingSubtests (node:internal/test_runner/test:374:7)
+      ...
+    # Subtest: terminates a real monitored skill command at its bounded timeout
+    ok 3 - terminates a real monitored skill command at its bounded timeout
+      ---
+      duration_ms: 380.1175
+      ...
+    # Subtest: retries two real monitored connection resets and succeeds on the third process
+    ok 4 - retries two real monitored connection resets and succeeds on the third process
+      ---
+      duration_ms: 425.62
+      ...
+    1..4
+not ok 49 - trusted Windows command execution
+  ---
+  duration_ms: 991.1264
+  type: 'suite'
+  location: 'file:///<BASELINE>/test/codex-restore.test.ts:1:22694'
+  failureType: 'subtestsFailed'
+  error: '1 subtest failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# node:internal/errors:496
+#     ErrorCaptureStackTrace(err);
+#     ^
+# TypeError [ERR_INVALID_ARG_TYPE]: The "path" argument must be of type string. Received undefined
+#     at __node_internal_captureLargerStackTrace (node:internal/errors:496:5)
+#     at new NodeError (node:internal/errors:405:5)
+#     at validateString (node:internal/validators:162:11)
+#     at Module.join (node:path:447:7)
+#     at <anonymous> (<BASELINE>\\test\\codex-scope.test.ts:12:18)
+#     at ModuleJob.run (node:internal/modules/esm/module_job:195:25)
+#     at async ModuleLoader.import (node:internal/modules/esm/loader:337:24)
+#     at async loadESM (node:internal/process/esm_loader:34:7)
+#     at async handleMainPromise (node:internal/modules/run_main:106:12) {
+#   code: 'ERR_INVALID_ARG_TYPE'
+# }
+# Node.js v18.20.8
+# Subtest: <BASELINE>\\test\\codex-scope.test.ts
+not ok 15 - <BASELINE>\\test\\codex-scope.test.ts
+  ---
+  duration_ms: 380.6608
+  location: '<BASELINE>\\test\\codex-scope.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# node:internal/errors:496
+#     ErrorCaptureStackTrace(err);
+#     ^
+# TypeError [ERR_INVALID_ARG_TYPE]: The "path" argument must be of type string. Received undefined
+#     at __node_internal_captureLargerStackTrace (node:internal/errors:496:5)
+#     at new NodeError (node:internal/errors:405:5)
+#     at validateString (node:internal/validators:162:11)
+#     at Module.join (node:path:447:7)
+#     at <anonymous> (<BASELINE>\\test\\codex-skill-discovery.test.ts:8:19)
+#     at ModuleJob.run (node:internal/modules/esm/module_job:195:25)
+#     at async ModuleLoader.import (node:internal/modules/esm/loader:337:24)
+#     at async loadESM (node:internal/process/esm_loader:34:7)
+#     at async handleMainPromise (node:internal/modules/run_main:106:12) {
+#   code: 'ERR_INVALID_ARG_TYPE'
+# }
+# Node.js v18.20.8
+# Subtest: <BASELINE>\\test\\codex-skill-discovery.test.ts
+not ok 16 - <BASELINE>\\test\\codex-skill-discovery.test.ts
+  ---
+  duration_ms: 300.9996
+  location: '<BASELINE>\\test\\codex-skill-discovery.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# node:internal/errors:496
+#     ErrorCaptureStackTrace(err);
+#     ^
+# TypeError [ERR_INVALID_ARG_TYPE]: The "path" argument must be of type string. Received undefined
+#     at __node_internal_captureLargerStackTrace (node:internal/errors:496:5)
+#     at new NodeError (node:internal/errors:405:5)
+#     at validateString (node:internal/validators:162:11)
+#     at Module.join (node:path:447:7)
+#     at <anonymous> (<BASELINE>\\test\\crystallize-submodule.test.ts:20:18)
+#     at ModuleJob.run (node:internal/modules/esm/module_job:195:25)
+#     at async ModuleLoader.import (node:internal/modules/esm/loader:337:24)
+#     at async loadESM (node:internal/process/esm_loader:34:7)
+#     at async handleMainPromise (node:internal/modules/run_main:106:12) {
+#   code: 'ERR_INVALID_ARG_TYPE'
+# }
+# Node.js v18.20.8
+# Subtest: <BASELINE>\\test\\crystallize-submodule.test.ts
+not ok 17 - <BASELINE>\\test\\crystallize-submodule.test.ts
+  ---
+  duration_ms: 355.3189
+  location: '<BASELINE>\\test\\crystallize-submodule.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# node:internal/errors:496
+#     ErrorCaptureStackTrace(err);
+#     ^
+# TypeError [ERR_INVALID_ARG_TYPE]: The "path" argument must be of type string. Received undefined
+#     at __node_internal_captureLargerStackTrace (node:internal/errors:496:5)
+#     at new NodeError (node:internal/errors:405:5)
+#     at validateString (node:internal/validators:162:11)
+#     at Module.join (node:path:447:7)
+#     at <anonymous> (<BASELINE>\\test\\dashboard-assets.test.ts:7:19)
+#     at ModuleJob.run (node:internal/modules/esm/module_job:195:25)
+#     at async ModuleLoader.import (node:internal/modules/esm/loader:337:24)
+#     at async loadESM (node:internal/process/esm_loader:34:7)
+#     at async handleMainPromise (node:internal/modules/run_main:106:12) {
+#   code: 'ERR_INVALID_ARG_TYPE'
+# }
+# Node.js v18.20.8
+# Subtest: <BASELINE>\\test\\dashboard-assets.test.ts
+not ok 18 - <BASELINE>\\test\\dashboard-assets.test.ts
+  ---
+  duration_ms: 314.7001
+  location: '<BASELINE>\\test\\dashboard-assets.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: dashboard server
+    # Subtest: serves all read-only JSON endpoints without secrets
+    ok 1 - serves all read-only JSON endpoints without secrets
+      ---
+      duration_ms: 5094.0708
+      ...
+    # Subtest: serves the i18n asset required before app initialization
+    not ok 2 - serves the i18n asset required before app initialization
+      ---
+      duration_ms: 5010.5846
+      location: 'file:///<BASELINE>/test/dashboard-server.test.ts:1:1525'
+      failureType: 'testCodeFailure'
+      error: '500 == 200'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: 200
+      actual: 500
+      operator: '=='
+      stack: |-
+        TestContext.<anonymous> (<BASELINE>\test\dashboard-server.test.ts:43:12)
+        process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+        async Test.run (node:internal/test_runner/test:632:9)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:374:7)
+      ...
+    # Subtest: serves extension deduplication from the same dashboard origin
+    ok 3 - serves extension deduplication from the same dashboard origin
+      ---
+      duration_ms: 4068.7826
+      ...
+    # Subtest: rejects unknown routes and write methods
+    ok 4 - rejects unknown routes and write methods
+      ---
+      duration_ms: 5030.8245
+      ...
+    # Subtest: retires the legacy migration-draft API
+    ok 5 - retires the legacy migration-draft API
+      ---
+      duration_ms: 4051.7755
+      ...
+    # Subtest: does not return migration results before an explicit analysis scope
+    ok 6 - does not return migration results before an explicit analysis scope
+      ---
+      duration_ms: 5016.5366
+      ...
+    # Subtest: rejects same-agent analysis and returns one unified scoped result
+    ok 7 - rejects same-agent analysis and returns one unified scoped result
+      ---
+      duration_ms: 4081.7596
+      ...
+    1..7
+not ok 54 - dashboard server
+  ---
+  duration_ms: 32356.7224
+  type: 'suite'
+  location: 'file:///<BASELINE>/test/dashboard-server.test.ts:1:1098'
+  failureType: 'subtestsFailed'
+  error: '1 subtest failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# node:internal/errors:496
+#     ErrorCaptureStackTrace(err);
+#     ^
+# TypeError [ERR_INVALID_ARG_TYPE]: The "path" argument must be of type string. Received undefined
+#     at __node_internal_captureLargerStackTrace (node:internal/errors:496:5)
+#     at new NodeError (node:internal/errors:405:5)
+#     at validateString (node:internal/validators:162:11)
+#     at Module.join (node:path:447:7)
+#     at <anonymous> (<BASELINE>\\test\\dashboard-unified.test.ts:6:19)
+#     at ModuleJob.run (node:internal/modules/esm/module_job:195:25)
+#     at async ModuleLoader.import (node:internal/modules/esm/loader:337:24)
+#     at async loadESM (node:internal/process/esm_loader:34:7)
+#     at async handleMainPromise (node:internal/modules/run_main:106:12) {
+#   code: 'ERR_INVALID_ARG_TYPE'
+# }
+# Node.js v18.20.8
+# Subtest: <BASELINE>\\test\\dashboard-unified.test.ts
+not ok 20 - <BASELINE>\\test\\dashboard-unified.test.ts
+  ---
+  duration_ms: 294.3201
+  location: '<BASELINE>\\test\\dashboard-unified.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: publication refuses traversal and literal credentials before Git/network mutation
+ok 56 - publication refuses traversal and literal credentials before Git/network mutation
+  ---
+  duration_ms: 10.3098
+  ...
+# Subtest: device registry
+    # Subtest: registers one local device with a stable random id on rerun
+    ok 1 - registers one local device with a stable random id on rerun
+      ---
+      duration_ms: 50.4383
+      ...
+    # Subtest: supports multiple devices and rejects an ambiguous alias
+    ok 2 - supports multiple devices and rejects an ambiguous alias
+      ---
+      duration_ms: 35.9516
+      ...
+    # Subtest: renames a device without changing its id
+    ok 3 - renames a device without changing its id
+      ---
+      duration_ms: 33.6336
+      ...
+    # Subtest: reconnects to another checkout only when the same device id is present
+    ok 4 - reconnects to another checkout only when the same device id is present
+      ---
+      duration_ms: 47.0163
+      ...
+    # Subtest: rejects cross-schema and malformed records
+    ok 5 - rejects cross-schema and malformed records
+      ---
+      duration_ms: 16.0985
+      ...
+    # Subtest: rejects path traversal, symlink escape, and a connection inside the registry
+    ok 6 - rejects path traversal, symlink escape, and a connection inside the registry
+      ---
+      duration_ms: 16.2954
+      ...
+    # Subtest: does not overwrite an existing file with a conflicting device identity
+    ok 7 - does not overwrite an existing file with a conflicting device identity
+      ---
+      duration_ms: 15.8622
+      ...
+    # Subtest: CLI emits JSON and does not expose URL credentials
+    ok 8 - CLI emits JSON and does not expose URL credentials
+      ---
+      duration_ms: 31.8865
+      ...
+    1..8
+ok 57 - device registry
+  ---
+  duration_ms: 249.2345
+  type: 'suite'
+  ...
+# Subtest: audit includes ignored and untracked documents without reading credential contents
+ok 58 - audit includes ignored and untracked documents without reading credential contents
+  ---
+  duration_ms: 617.898
+  ...
+# Subtest: dsh plugin schema contract (dsh-tools)
+    # Subtest: apply() registers all 16 sync_* tools against the pinned dsh-tools contract
+    ok 1 - apply() registers all 16 sync_* tools against the pinned dsh-tools contract
+      ---
+      duration_ms: 4.4357
+      ...
+    1..1
+ok 59 - dsh plugin schema contract (dsh-tools)
+  ---
+  duration_ms: 5.4834
+  type: 'suite'
+  ...
+# Subtest: argsToFlags
+    # Subtest: maps string, boolean true, boolean false, arrays, and underscore-to-dash
+    ok 1 - maps string, boolean true, boolean false, arrays, and underscore-to-dash
+      ---
+      duration_ms: 1.1042
+      ...
+    # Subtest: omits undefined/null values and keeps order
+    ok 2 - omits undefined/null values and keeps order
+      ---
+      duration_ms: 0.1806
+      ...
+    1..2
+ok 60 - argsToFlags
+  ---
+  duration_ms: 2.3446
+  type: 'suite'
+  ...
+# Subtest: findWorkspaceRoot
+    # Subtest: walks up from a nested dir to the .gitmodules root
+    ok 1 - walks up from a nested dir to the .gitmodules root
+      ---
+      duration_ms: 6.5782
+      ...
+    # Subtest: returns undefined when no .gitmodules in ancestors
+    ok 2 - returns undefined when no .gitmodules in ancestors
+      ---
+      duration_ms: 2.6366
+      ...
+    1..2
+ok 61 - findWorkspaceRoot
+  ---
+  duration_ms: 9.5524
+  type: 'suite'
+  ...
+# Subtest: findDeep
+    # Subtest: finds uagent-sync/dist/cli.js under the workspace root
+    ok 1 - finds uagent-sync/dist/cli.js under the workspace root
+      ---
+      duration_ms: 6.2382
+      ...
+    # Subtest: skips node_modules and .git
+    ok 2 - skips node_modules and .git
+      ---
+      duration_ms: 4.5454
+      ...
+    # Subtest: returns undefined when nothing matches
+    ok 3 - returns undefined when nothing matches
+      ---
+      duration_ms: 1.6707
+      ...
+    1..3
+ok 62 - findDeep
+  ---
+  duration_ms: 13.0281
+  type: 'suite'
+  ...
+# Subtest: resolveCliPath
+    # Subtest: prefers explicit cliPath when it exists
+    ok 1 - prefers explicit cliPath when it exists
+      ---
+      duration_ms: 2.7869
+      ...
+    # Subtest: ignores explicit cliPath when missing, falls to env var
+    ok 2 - ignores explicit cliPath when missing, falls to env var
+      ---
+      duration_ms: 2.0944
+      ...
+    # Subtest: finds the CLI via workspace recursion when nothing else set
+    ok 3 - finds the CLI via workspace recursion when nothing else set
+      ---
+      duration_ms: 6.3484
+      ...
+    # Subtest: finds the CLI via npm dependency (node_modules/uagent-sync/dist/cli.js) before workspace recursion
+    ok 4 - finds the CLI via npm dependency (node_modules/uagent-sync/dist/cli.js) before workspace recursion
+      ---
+      duration_ms: 6.789
+      ...
+    # Subtest: npm dependency lookup climbs out of nested installs (pnpm-style layout)
+    ok 5 - npm dependency lookup climbs out of nested installs (pnpm-style layout)
+      ---
+      duration_ms: 8.0213
+      ...
+    # Subtest: returns undefined when CLI is nowhere to be found
+    ok 6 - returns undefined when CLI is nowhere to be found
+      ---
+      duration_ms: 1.9965
+      ...
+    # Subtest: cliPathError gives actionable guidance
+    ok 7 - cliPathError gives actionable guidance
+      ---
+      duration_ms: 0.2963
+      ...
+    1..7
+ok 63 - resolveCliPath
+  ---
+  duration_ms: 29.0568
+  type: 'suite'
+  ...
+# Subtest: DSH bundle manifest compatibility
+    # Subtest: never declares required:false (DSH schema rejects it; optional params omit the field)
+    ok 1 - never declares required:false (DSH schema rejects it; optional params omit the field)
+      ---
+      duration_ms: 1.1642
+      ...
+    # Subtest: declares schemastery as a real dependency and host packages as peers
+    ok 2 - declares schemastery as a real dependency and host packages as peers
+      ---
+      duration_ms: 0.2429
+      ...
+    # Subtest: declares uagent-sync as a dependency so the CLI ships with the npm-installed plugin
+    ok 3 - declares uagent-sync as a dependency so the CLI ships with the npm-installed plugin
+      ---
+      duration_ms: 0.1807
+      ...
+    1..3
+ok 64 - DSH bundle manifest compatibility
+  ---
+  duration_ms: 1.9122
+  type: 'suite'
+  ...
+# Subtest: skill bridging
+    # Subtest: parseSkillMd extracts name/description and strips frontmatter
+    ok 1 - parseSkillMd extracts name/description and strips frontmatter
+      ---
+      duration_ms: 0.6135
+      ...
+    # Subtest: parseSkillMd returns null without frontmatter or missing fields
+    ok 2 - parseSkillMd returns null without frontmatter or missing fields
+      ---
+      duration_ms: 0.5139
+      ...
+    # Subtest: resolveSkillsDir derives <checkout>/skills from the CLI path
+    ok 3 - resolveSkillsDir derives <checkout>/skills from the CLI path
+      ---
+      duration_ms: 5.3546
+      ...
+    # Subtest: resolveSkillsDir returns undefined when skills dir missing
+    ok 4 - resolveSkillsDir returns undefined when skills dir missing
+      ---
+      duration_ms: 2.7071
+      ...
+    1..4
+ok 65 - skill bridging
+  ---
+  duration_ms: 9.5947
+  type: 'suite'
+  ...
+# Subtest: runCli + renderResult
+    # Subtest: captures stdout on success
+    ok 1 - captures stdout on success
+      ---
+      duration_ms: 98.3325
+      ...
+    # Subtest: reports exit code and stderr on failure
+    ok 2 - reports exit code and stderr on failure
+      ---
+      duration_ms: 106.3476
+      ...
+    # Subtest: kills on timeout and marks the result
+    ok 3 - kills on timeout and marks the result
+      ---
+      duration_ms: 525.5054
+      ...
+    # Subtest: real CLI without command prints usage and exits 1
+    ok 4 - real CLI without command prints usage and exits 1
+      ---
+      duration_ms: 194.7511
+      ...
+    1..4
+ok 66 - runCli + renderResult
+  ---
+  duration_ms: 925.6967
+  type: 'suite'
+  ...
+# Subtest: DSH target scope forwarding
+    # Subtest: passes --target-agent dsh through all workspace operation tools
+    ok 1 - passes --target-agent dsh through all workspace operation tools
+      ---
+      duration_ms: 677.4413
+      ...
+    1..1
+ok 67 - DSH target scope forwarding
+  ---
+  duration_ms: 677.672
+  type: 'suite'
+  ...
+# Subtest: verify entrypoint parity
+    # Subtest: keeps the existing human and JSON verification output contracts
+    ok 1 - keeps the existing human and JSON verification output contracts
+      ---
+      duration_ms: 1.9285
+      ...
+    # Subtest: routes CLI and plugin verification through the shared workspace application
+    ok 2 - routes CLI and plugin verification through the shared workspace application
+      ---
+      duration_ms: 2.2671
+      ...
+    1..2
+ok 68 - verify entrypoint parity
+  ---
+  duration_ms: 5.5391
+  type: 'suite'
+  ...
+# Subtest: formats Plugin Application results with sanitized structured metadata
+ok 69 - formats Plugin Application results with sanitized structured metadata
+  ---
+  duration_ms: 4.6448
+  ...
+# Subtest: deeply redacts every structured Application result field including URL credentials
+ok 70 - deeply redacts every structured Application result field including URL credentials
+  ---
+  duration_ms: 1.5922
+  ...
+# Subtest: routes CLI failure JSON through the shared structured result formatter
+ok 71 - routes CLI failure JSON through the shared structured result formatter
+  ---
+  duration_ms: 0.9702
+  ...
+# node:internal/errors:496
+#     ErrorCaptureStackTrace(err);
+#     ^
+# TypeError [ERR_INVALID_ARG_TYPE]: The "path" argument must be of type string. Received undefined
+#     at __node_internal_captureLargerStackTrace (node:internal/errors:496:5)
+#     at new NodeError (node:internal/errors:405:5)
+#     at validateString (node:internal/validators:162:11)
+#     at Module.join (node:path:447:7)
+#     at <anonymous> (<BASELINE>\\test\\export-import-use-cases.test.ts:13:29)
+#     at ModuleJob.run (node:internal/modules/esm/module_job:195:25)
+#     at async ModuleLoader.import (node:internal/modules/esm/loader:337:24)
+#     at async loadESM (node:internal/process/esm_loader:34:7)
+#     at async handleMainPromise (node:internal/modules/run_main:106:12) {
+#   code: 'ERR_INVALID_ARG_TYPE'
+# }
+# Node.js v18.20.8
+# Subtest: <BASELINE>\\test\\export-import-use-cases.test.ts
+not ok 27 - <BASELINE>\\test\\export-import-use-cases.test.ts
+  ---
+  duration_ms: 402.6303
+  location: '<BASELINE>\\test\\export-import-use-cases.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: legacy extension conflict API
+    # Subtest: is frozen while the unified migration analysis owns decisions
+    ok 1 - is frozen while the unified migration analysis owns decisions
+      ---
+      duration_ms: 5075.4188
+      ...
+    1..1
+ok 73 - legacy extension conflict API
+  ---
+  duration_ms: 5076.9513
+  type: 'suite'
+  ...
+# Subtest: Codex extension governance
+    # Subtest: normalizes capability IDs neutrally for same-type and cross-type matches
+    ok 1 - normalizes capability IDs neutrally for same-type and cross-type matches
+      ---
+      duration_ms: 0.6424
+      ...
+    # Subtest: discovers only active official extensions in deterministic order
+    ok 2 - discovers only active official extensions in deterministic order
+      ---
+      duration_ms: 15.181
+      ...
+    # Subtest: validates ledger decisions and rejects absolute paths
+    ok 3 - validates ledger decisions and rejects absolute paths
+      ---
+      duration_ms: 3.2225
+      ...
+    # Subtest: does not trust a personal manifest that claims an official source
+    ok 4 - does not trust a personal manifest that claims an official source
+      ---
+      duration_ms: 0.4321
+      ...
+    # Subtest: edits only a unique boolean enabled span while preserving BOM, CRLF, comments, and order
+    ok 5 - edits only a unique boolean enabled span while preserving BOM, CRLF, comments, and order
+      ---
+      duration_ms: 1.5824
+      ...
+    # Subtest: stops an extension block at the next unrelated TOML table
+    ok 6 - stops an extension block at the next unrelated TOML table
+      ---
+      duration_ms: 0.967
+      ...
+    1..6
+ok 74 - Codex extension governance
+  ---
+  duration_ms: 23.4765
+  type: 'suite'
+  ...
+# Subtest: fixture command runner
+    # Subtest: retries one exact environment failure with a fresh fixture
+    ok 1 - retries one exact environment failure with a fresh fixture
+      ---
+      duration_ms: 1.0009
+      ...
+    # Subtest: fails after the single allowed retry when the environment error repeats
+    ok 2 - fails after the single allowed retry when the environment error repeats
+      ---
+      duration_ms: 0.5103
+      ...
+    # Subtest: does not retry ordinary command failures
+    ok 3 - does not retry ordinary command failures
+      ---
+      duration_ms: 0.1689
+      ...
+    # Subtest: selects an absolute trusted Git executable and rejects WindowsApps shims
+    ok 4 - selects an absolute trusted Git executable and rejects WindowsApps shims
+      ---
+      duration_ms: 0.4087
+      ...
+    # Subtest: passes Git arguments as argv, preserving spaces and shell metacharacters
+    ok 5 - passes Git arguments as argv, preserving spaces and shell metacharacters
+      ---
+      duration_ms: 549.1599
+      ...
+    1..5
+ok 75 - fixture command runner
+  ---
+  duration_ms: 552.7375
+  type: 'suite'
+  ...
+# Subtest: importSystemState redacted sentinel guard
+    # Subtest: should keep local real url when synced value contains <hidden>
+    ok 1 - should keep local real url when synced value contains <hidden>
+      ---
+      duration_ms: 4.5708
+      ...
+    # Subtest: should write <hidden> sentinel on a fresh device (no local config)
+    ok 2 - should write <hidden> sentinel on a fresh device (no local config)
+      ---
+      duration_ms: 3.641
+      ...
+    1..2
+ok 76 - importSystemState redacted sentinel guard
+  ---
+  duration_ms: 14.2691
+  type: 'suite'
+  ...
+# Subtest: data-driven MCP detection
+    # Subtest: should load known MCPs from data file
+    not ok 1 - should load known MCPs from data file
+      ---
+      duration_ms: 2.0358
+      location: 'file:///<BASELINE>/test/known-mcp.test.ts:1:852'
+      failureType: 'testCodeFailure'
+      error: 'The "path" argument must be of type string. Received undefined'
+      code: 'ERR_INVALID_ARG_TYPE'
+      name: 'TypeError'
+      stack: |-
+        __node_internal_captureLargerStackTrace (node:internal/errors:496:5)
+        new NodeError (node:internal/errors:405:5)
+        validateString (node:internal/validators:162:11)
+        Module.join (node:path:447:7)
+        loadKnownMcps (<BASELINE>\src\lib\guide.ts:15:10)
+        TestContext.<anonymous> (<BASELINE>\test\known-mcp.test.ts:45:19)
+        Test.runInAsyncScope (node:async_hooks:203:9)
+        Test.run (node:internal/test_runner/test:631:25)
+        async Promise.all (index 0)
+        async Suite.run (node:internal/test_runner/test:948:7)
+        async startSubtest (node:internal/test_runner/harness:214:3)
+      ...
+    # Subtest: should fall back to built-in repo data when workspace has no data file
+    not ok 2 - should fall back to built-in repo data when workspace has no data file
+      ---
+      duration_ms: 0.1731
+      location: 'file:///<BASELINE>/test/known-mcp.test.ts:1:1252'
+      failureType: 'testCodeFailure'
+      error: 'The "path" argument must be of type string. Received undefined'
+      code: 'ERR_INVALID_ARG_TYPE'
+      name: 'TypeError'
+      stack: |-
+        __node_internal_captureLargerStackTrace (node:internal/errors:496:5)
+        new NodeError (node:internal/errors:405:5)
+        validateString (node:internal/validators:162:11)
+        Module.join (node:path:447:7)
+        loadKnownMcps (<BASELINE>\src\lib\guide.ts:15:10)
+        TestContext.<anonymous> (<BASELINE>\test\known-mcp.test.ts:52:19)
+        Test.runInAsyncScope (node:async_hooks:203:9)
+        Test.run (node:internal/test_runner/test:631:25)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:374:7)
+      ...
+    # Subtest: should match by command pattern
+    ok 3 - should match by command pattern
+      ---
+      duration_ms: 0.309
+      ...
+    # Subtest: should match by URL pattern (remote MCPs)
+    ok 4 - should match by URL pattern (remote MCPs)
+      ---
+      duration_ms: 0.0884
+      ...
+    # Subtest: should match by env var patterns
+    ok 5 - should match by env var patterns
+      ---
+      duration_ms: 0.0761
+      ...
+    # Subtest: should analyze MCP with known entry
+    ok 6 - should analyze MCP with known entry
+      ---
+      duration_ms: 0.2319
+      ...
+    # Subtest: should analyze unknown MCP gracefully
+    ok 7 - should analyze unknown MCP gracefully
+      ---
+      duration_ms: 0.0962
+      ...
+    1..7
+not ok 77 - data-driven MCP detection
+  ---
+  duration_ms: 130.9618
+  type: 'suite'
+  location: 'file:///<BASELINE>/test/known-mcp.test.ts:1:282'
+  failureType: 'subtestsFailed'
+  error: '2 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: known-mcps.json data integrity
+    # Subtest: should exist and be valid JSON
+    not ok 1 - should exist and be valid JSON
+      ---
+      duration_ms: 0.2131
+      location: 'file:///<BASELINE>/test/known-mcp.test.ts:1:4540'
+      failureType: 'testCodeFailure'
+      error: 'The "paths[0]" argument must be of type string. Received undefined'
+      code: 'ERR_INVALID_ARG_TYPE'
+      name: 'TypeError'
+      stack: |-
+        __node_internal_captureLargerStackTrace (node:internal/errors:496:5)
+        new NodeError (node:internal/errors:405:5)
+        validateString (node:internal/validators:162:11)
+        Module.resolve (node:path:168:9)
+        TestContext.<anonymous> (<BASELINE>\test\known-mcp.test.ts:194:27)
+        Test.runInAsyncScope (node:async_hooks:203:9)
+        Test.run (node:internal/test_runner/test:631:25)
+        Test.start (node:internal/test_runner/test:542:17)
+        node:internal/test_runner/test:946:71
+        node:internal/per_context/primordials:487:82
+        new Promise (<anonymous>)
+        new SafePromise (node:internal/per_context/primordials:455:29)
+        node:internal/per_context/primordials:487:9
+        Array.map (<anonymous>)
+        arrayToSafePromiseIterable (node:internal/per_context/primordials:484:5)
+        node:internal/per_context/primordials:501:21
+        new Promise (<anonymous>)
+        primordials.SafePromiseAll (node:internal/per_context/primordials:500:3)
+        Suite.run (node:internal/test_runner/test:946:23)
+        async Test.processPendingSubtests (node:internal/test_runner/test:374:7)
+      ...
+    1..1
+not ok 78 - known-mcps.json data integrity
+  ---
+  duration_ms: 0.3583
+  type: 'suite'
+  location: 'file:///<BASELINE>/test/known-mcp.test.ts:1:4493'
+  failureType: 'subtestsFailed'
+  error: '1 subtest failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: migration analysis contract
+    # Subtest: requires an explicit scope and rejects same-agent cross analysis
+    ok 1 - requires an explicit scope and rejects same-agent cross analysis
+      ---
+      duration_ms: 0.6631
+      ...
+    # Subtest: does not create a disable action for cross-agent relations
+    ok 2 - does not create a disable action for cross-agent relations
+      ---
+      duration_ms: 1.0285
+      ...
+    # Subtest: groups multiple relations into one implementation action
+    ok 3 - groups multiple relations into one implementation action
+      ---
+      duration_ms: 14.5952
+      ...
+    # Subtest: never repeats an implementation action across different capability groups
+    ok 4 - never repeats an implementation action across different capability groups
+      ---
+      duration_ms: 0.4849
+      ...
+    1..4
+ok 79 - migration analysis contract
+  ---
+  duration_ms: 18.275
+  type: 'suite'
+  ...
+# Subtest: migration analysis core model
+    # Subtest: uses the same context and relation implementations through every public entrypoint
+    ok 1 - uses the same context and relation implementations through every public entrypoint
+      ---
+      duration_ms: 0.3506
+      ...
+    # Subtest: requires a complete scope and rejects a same-agent route
+    ok 2 - requires a complete scope and rejects a same-agent route
+      ---
+      duration_ms: 0.7943
+      ...
+    # Subtest: allows disable_in_agent only for single-agent Codex analysis
+    ok 3 - allows disable_in_agent only for single-agent Codex analysis
+      ---
+      duration_ms: 0.1556
+      ...
+    # Subtest: derives an implementation id without content fingerprint and validates provenance
+    ok 4 - derives an implementation id without content fingerprint and validates provenance
+      ---
+      duration_ms: 0.589
+      ...
+    # Subtest: validates relation and confidence vocabularies
+    ok 5 - validates relation and confidence vocabularies
+      ---
+      duration_ms: 13.5745
+      ...
+    # Subtest: uses one relation type across the factory and production grouping API
+    ok 6 - uses one relation type across the factory and production grouping API
+      ---
+      duration_ms: 0.7056
+      ...
+    # Subtest: groups equivalent implementations by capability with one action per implementation
+    ok 7 - groups equivalent implementations by capability with one action per implementation
+      ---
+      duration_ms: 0.4891
+      ...
+    # Subtest: sanitizes public output without locators or absolute paths
+    ok 8 - sanitizes public output without locators or absolute paths
+      ---
+      duration_ms: 1.0226
+      ...
+    1..8
+ok 80 - migration analysis core model
+  ---
+  duration_ms: 19.2674
+  type: 'suite'
+  ...
+# Subtest: scoped migration analysis transaction
+    # Subtest: groups an auto-discovered skill once and applies only after exact preview
+    ok 1 - groups an auto-discovered skill once and applies only after exact preview
+      ---
+      duration_ms: 5096.3253
+      ...
+    # Subtest: rejects malformed or future decision ledgers before preview/write
+    ok 2 - rejects malformed or future decision ledgers before preview/write
+      ---
+      duration_ms: 12.1809
+      ...
+    # Subtest: uses the same capability inventory for cross-agent comparisons without write actions
+    ok 3 - uses the same capability inventory for cross-agent comparisons without write actions
+      ---
+      duration_ms: 9.3531
+      ...
+    # Subtest: never re-enables a manually disabled Codex registration
+    ok 4 - never re-enables a manually disabled Codex registration
+      ---
+      duration_ms: 5016.9218
+      ...
+    1..4
+ok 81 - scoped migration analysis transaction
+  ---
+  duration_ms: 10136.3776
+  type: 'suite'
+  ...
+# Subtest: bidirectional migration draft (orthogonal axes)
+    # Subtest: supports all six directions and rejects a same-agent route
+    ok 1 - supports all six directions and rejects a same-agent route
+      ---
+      duration_ms: 2.2912
+      ...
+    # Subtest: classifies a missing portable capability as missing with direct_share
+    ok 2 - classifies a missing portable capability as missing with direct_share
+      ---
+      duration_ms: 0.1614
+      ...
+    # Subtest: classifies same-named capability in a different config file as existing/dual_registered with keep_current
+    ok 3 - classifies same-named capability in a different config file as existing/dual_registered with keep_current
+      ---
+      duration_ms: 0.3507
+      ...
+    # Subtest: classifies target-native overlap as existing/target_native
+    ok 4 - classifies target-native overlap as existing/target_native
+      ---
+      duration_ms: 0.137
+      ...
+    # Subtest: counts same-file shared assets in summary.shared and skips them
+    ok 5 - counts same-file shared assets in summary.shared and skips them
+      ---
+      duration_ms: 0.2189
+      ...
+    # Subtest: keeps same-named skills in different directories as migration items (not shared)
+    ok 6 - keeps same-named skills in different directories as migration items (not shared)
+      ---
+      duration_ms: 0.1473
+      ...
+    # Subtest: defers unverified DeepSeek MCP as missing with defer
+    ok 7 - defers unverified DeepSeek MCP as missing with defer
+      ---
+      duration_ms: 0.1249
+      ...
+    # Subtest: applies a global conflict policy and then an item override with the 4-action set
+    ok 8 - applies a global conflict policy and then an item override with the 4-action set
+      ---
+      duration_ms: 0.169
+      ...
+    # Subtest: maps every policy to one of the four actions
+    ok 9 - maps every policy to one of the four actions
+      ---
+      duration_ms: 0.2326
+      ...
+    # Subtest: keeps the custom adapter as the last, unrecommended candidate
+    ok 10 - keeps the custom adapter as the last, unrecommended candidate
+      ---
+      duration_ms: 0.1965
+      ...
+    1..10
+ok 82 - bidirectional migration draft (orthogonal axes)
+  ---
+  duration_ms: 5.4902
+  type: 'suite'
+  ...
+# Subtest: Windows offline staging previews, verifies, resumes, and refuses overwrites
+ok 83 - Windows offline staging previews, verifies, resumes, and refuses overwrites
+  ---
+  duration_ms: 8945.8582
+  ...
+# node:internal/errors:496
+#     ErrorCaptureStackTrace(err);
+#     ^
+# TypeError [ERR_INVALID_ARG_TYPE]: The "path" argument must be of type string. Received undefined
+#     at __node_internal_captureLargerStackTrace (node:internal/errors:496:5)
+#     at new NodeError (node:internal/errors:405:5)
+#     at validateString (node:internal/validators:162:11)
+#     at Module.join (node:path:447:7)
+#     at <anonymous> (<BASELINE>\\test\\packaged-install.test.ts:9:19)
+#     at ModuleJob.run (node:internal/modules/esm/module_job:195:25)
+#     at async ModuleLoader.import (node:internal/modules/esm/loader:337:24)
+#     at async loadESM (node:internal/process/esm_loader:34:7)
+#     at async handleMainPromise (node:internal/modules/run_main:106:12) {
+#   code: 'ERR_INVALID_ARG_TYPE'
+# }
+# Node.js v18.20.8
+# Subtest: <BASELINE>\\test\\packaged-install.test.ts
+not ok 38 - <BASELINE>\\test\\packaged-install.test.ts
+  ---
+  duration_ms: 447.0346
+  location: '<BASELINE>\\test\\packaged-install.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: stripJsonComments
+    # Subtest: should strip line comments
+    ok 1 - should strip line comments
+      ---
+      duration_ms: 0.9339
+      ...
+    # Subtest: should strip block comments
+    ok 2 - should strip block comments
+      ---
+      duration_ms: 0.1156
+      ...
+    # Subtest: should NOT strip // inside URL strings
+    ok 3 - should NOT strip // inside URL strings
+      ---
+      duration_ms: 0.104
+      ...
+    # Subtest: should NOT strip // inside single-quoted strings
+    ok 4 - should NOT strip // inside single-quoted strings
+      ---
+      duration_ms: 0.1388
+      ...
+    # Subtest: should handle escaped quotes inside strings
+    ok 5 - should handle escaped quotes inside strings
+      ---
+      duration_ms: 0.0836
+      ...
+    # Subtest: should remove multiple mixed comments
+    ok 6 - should remove multiple mixed comments
+      ---
+      duration_ms: 0.5513
+      ...
+    # Subtest: should produce valid JSON from realistic JSONC with URL
+    ok 7 - should produce valid JSON from realistic JSONC with URL
+      ---
+      duration_ms: 0.1489
+      ...
+    # Subtest: should handle mixed comment styles together
+    ok 8 - should handle mixed comment styles together
+      ---
+      duration_ms: 0.0852
+      ...
+    1..8
+ok 85 - stripJsonComments
+  ---
+  duration_ms: 118.0162
+  type: 'suite'
+  ...
+# Subtest: detectPlaywrightMcpConfig
+    # Subtest: should detect playwright with extension + edge + token
+    ok 1 - should detect playwright with extension + edge + token
+      ---
+      duration_ms: 0.5454
+      ...
+    # Subtest: should detect vision capability
+    ok 2 - should detect vision capability
+      ---
+      duration_ms: 0.365
+      ...
+    # Subtest: should detect headless mode
+    ok 3 - should detect headless mode
+      ---
+      duration_ms: 0.1213
+      ...
+    # Subtest: should detect Chrome browser
+    ok 4 - should detect Chrome browser
+      ---
+      duration_ms: 0.2821
+      ...
+    # Subtest: should detect CDP endpoint
+    ok 5 - should detect CDP endpoint
+      ---
+      duration_ms: 0.1298
+      ...
+    # Subtest: should return null when no playwright MCP
+    ok 6 - should return null when no playwright MCP
+      ---
+      duration_ms: 0.1008
+      ...
+    # Subtest: should return null when playwright is disabled
+    ok 7 - should return null when playwright is disabled
+      ---
+      duration_ms: 0.3183
+      ...
+    # Subtest: should detect token via PLAYWRIGHT_MCP_EXTENSION_TOKEN
+    ok 8 - should detect token via PLAYWRIGHT_MCP_EXTENSION_TOKEN
+      ---
+      duration_ms: 0.1124
+      ...
+    # Subtest: should detect token via alternative env var naming
+    ok 9 - should detect token via alternative env var naming
+      ---
+      duration_ms: 0.1229
+      ...
+    # Subtest: should detect missing token
+    ok 10 - should detect missing token
+      ---
+      duration_ms: 0.0996
+      ...
+    # Subtest: should return null when mcp section is missing
+    ok 11 - should return null when mcp section is missing
+      ---
+      duration_ms: 0.0808
+      ...
+    # Subtest: should detect plain playwright without optional flags
+    ok 12 - should detect plain playwright without optional flags
+      ---
+      duration_ms: 0.2942
+      ...
+    1..12
+ok 86 - detectPlaywrightMcpConfig
+  ---
+  duration_ms: 7.8005
+  type: 'suite'
+  ...
+# Subtest: generateSyncGuide — Playwright section
+    # Subtest: should include Playwright install section
+    not ok 1 - should include Playwright install section
+      ---
+      duration_ms: 0
+      location: 'file:///<BASELINE>/test/playwright.test.ts:17:6621'
+      failureType: 'cancelledByParent'
+      error: 'test did not finish before its parent and was cancelled'
+      code: 'ERR_TEST_FAILURE'
+      ...
+    # Subtest: should include multi-model notes
+    not ok 2 - should include multi-model notes
+      ---
+      duration_ms: 0
+      location: 'file:///<BASELINE>/test/playwright.test.ts:26:544'
+      failureType: 'cancelledByParent'
+      error: 'test did not finish before its parent and was cancelled'
+      code: 'ERR_TEST_FAILURE'
+      ...
+    # Subtest: should include known pitfalls
+    not ok 3 - should include known pitfalls
+      ---
+      duration_ms: 0
+      location: 'file:///<BASELINE>/test/playwright.test.ts:33:433'
+      failureType: 'cancelledByParent'
+      error: 'test did not finish before its parent and was cancelled'
+      code: 'ERR_TEST_FAILURE'
+      ...
+    # Subtest: should NOT include Playwright section when not configured
+    not ok 4 - should NOT include Playwright section when not configured
+      ---
+      duration_ms: 0
+      location: 'file:///<BASELINE>/test/playwright.test.ts:40:354'
+      failureType: 'cancelledByParent'
+      error: 'test did not finish before its parent and was cancelled'
+      code: 'ERR_TEST_FAILURE'
+      ...
+    1..4
+not ok 87 - generateSyncGuide — Playwright section
+  ---
+  duration_ms: 7.3168
+  type: 'suite'
+  location: 'file:///<BASELINE>/test/playwright.test.ts:17:4306'
+  failureType: 'hookFailed'
+  error: 'The "paths[0]" argument must be of type string. Received undefined'
+  code: 'ERR_INVALID_ARG_TYPE'
+  name: 'TypeError'
+  stack: |-
+    __node_internal_captureLargerStackTrace (node:internal/errors:496:5)
+    new NodeError (node:internal/errors:405:5)
+    validateString (node:internal/validators:162:11)
+    Module.resolve (node:path:168:9)
+    SuiteContext.<anonymous> (<BASELINE>\test\playwright.test.ts:241:27)
+    async TestHook.run (node:internal/test_runner/test:632:9)
+    async node:internal/test_runner/test:565:9
+    async Suite.runHook (node:internal/test_runner/test:563:7)
+    async Suite.run (node:internal/test_runner/test:942:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:374:7)
+  ...
+# Subtest: Module exports
+    # Subtest: should export new Playwright functions
+    ok 1 - should export new Playwright functions
+      ---
+      duration_ms: 4.8037
+      ...
+    1..1
+ok 88 - Module exports
+  ---
+  duration_ms: 5.0441
+  type: 'suite'
+  ...
+# Subtest: updateExtensions
+    # Subtest: dry-run returns skipped steps without executing any command
+    ok 1 - dry-run returns skipped steps without executing any command
+      ---
+      duration_ms: 639.5335
+      ...
+    # Subtest: does not plan codebase-memory-mcp for default or MCP-only updates
+    ok 2 - does not plan codebase-memory-mcp for default or MCP-only updates
+      ---
+      duration_ms: 260.1178
+      ...
+    # Subtest: emits plan → step-start → step-end → done event flow
+    ok 3 - emits plan → step-start → step-end → done event flow
+      ---
+      duration_ms: 142.1106
+      ...
+    # Subtest: respects explicit components filter
+    ok 4 - respects explicit components filter
+      ---
+      duration_ms: 138.1797
+      ...
+    # Subtest: excludes opencode by default
+    ok 5 - excludes opencode by default
+      ---
+      duration_ms: 211.4668
+      ...
+    # Subtest: includes opencode when explicitly requested
+    ok 6 - includes opencode when explicitly requested
+      ---
+      duration_ms: 144.9086
+      ...
+    # Subtest: plans a complete Codex-only self-update without touching OpenCode
+    ok 7 - plans a complete Codex-only self-update without touching OpenCode
+      ---
+      duration_ms: 147.2367
+      ...
+    # Subtest: does not inspect OpenCode plugin or config directories in the default Codex plan
+    ok 8 - does not inspect OpenCode plugin or config directories in the default Codex plan
+      ---
+      duration_ms: 224.4288
+      ...
+    # Subtest: rejects an explicit OpenCode update inside Codex scope without executing it
+    ok 9 - rejects an explicit OpenCode update inside Codex scope without executing it
+      ---
+      duration_ms: 134.5878
+      ...
+    # Subtest: executes packed CLI installation and verifies the Codex marketplace and plugin version
+    ok 10 - executes packed CLI installation and verifies the Codex marketplace and plugin version
+      ---
+      duration_ms: 1494.3063
+      ...
+    # Subtest: stops before replacing the installed CLI when the required self-test fails
+    ok 11 - stops before replacing the installed CLI when the required self-test fails
+      ---
+      duration_ms: 735.3277
+      ...
+    1..11
+ok 89 - updateExtensions
+  ---
+  duration_ms: 4275.0605
+  type: 'suite'
+  ...
+# Subtest: OpencodeSyncPlugin
+    # Subtest: exposes the full opencode_sync_* tool set
+    ok 1 - exposes the full opencode_sync_* tool set
+      ---
+      duration_ms: 9.131
+      ...
+    1..1
+ok 90 - OpencodeSyncPlugin
+  ---
+  duration_ms: 9.4948
+  type: 'suite'
+  ...
+# Subtest: isMachineSpecificPath
+    # Subtest: should detect Windows absolute user paths
+    ok 1 - should detect Windows absolute user paths
+      ---
+      duration_ms: 0.5082
+      ...
+    # Subtest: should detect Linux absolute home paths
+    ok 2 - should detect Linux absolute home paths
+      ---
+      duration_ms: 0.0932
+      ...
+    # Subtest: should detect macOS absolute user paths
+    ok 3 - should detect macOS absolute user paths
+      ---
+      duration_ms: 0.2053
+      ...
+    # Subtest: should NOT flag workspace-relative paths
+    ok 4 - should NOT flag workspace-relative paths
+      ---
+      duration_ms: 0.0713
+      ...
+    # Subtest: should NOT flag npx commands
+    ok 5 - should NOT flag npx commands
+      ---
+      duration_ms: 0.064
+      ...
+    1..5
+ok 91 - isMachineSpecificPath
+  ---
+  duration_ms: 136.9151
+  type: 'suite'
+  ...
+# Subtest: detectSyncPath
+    # Subtest: should detect workspace-relative sync plugin
+    ok 1 - should detect workspace-relative sync plugin
+      ---
+      duration_ms: 2.6849
+      ...
+    # Subtest: should report published-channel when sync plugin not found
+    ok 2 - should report published-channel when sync plugin not found
+      ---
+      duration_ms: 0.6155
+      ...
+    1..2
+ok 92 - detectSyncPath
+  ---
+  duration_ms: 10.9838
+  type: 'suite'
+  ...
+# Subtest: trackState toggle in export
+    # Subtest: should know the trackState parameter exists in export schema
+    ok 1 - should know the trackState parameter exists in export schema
+      ---
+      duration_ms: 2.0376
+      ...
+    1..1
+ok 93 - trackState toggle in export
+  ---
+  duration_ms: 6.8567
+  type: 'suite'
+  ...
+# Subtest: portable module exports
+    # Subtest: should export all portability functions
+    ok 1 - should export all portability functions
+      ---
+      duration_ms: 1.4675
+      ...
+    1..1
+ok 94 - portable module exports
+  ---
+  duration_ms: 1.6858
+  type: 'suite'
+  ...
+# Subtest: RY-M13-01 three gates reject JS continuation after a safe control
+ok 95 - RY-M13-01 three gates reject JS continuation after a safe control
+  ---
+  duration_ms: 95.6785
+  ...
+# Subtest: RY-M13-01 valid JS continuation 1
+ok 96 - RY-M13-01 valid JS continuation 1
+  ---
+  duration_ms: 1.356
+  ...
+# Subtest: RY-M13-01 valid JS continuation 2
+ok 97 - RY-M13-01 valid JS continuation 2
+  ---
+  duration_ms: 0.3781
+  ...
+# Subtest: RY-M13-01 valid JS continuation 3
+ok 98 - RY-M13-01 valid JS continuation 3
+  ---
+  duration_ms: 0.5023
+  ...
+# Subtest: RY-M13-01 valid JS continuation 4
+ok 99 - RY-M13-01 valid JS continuation 4
+  ---
+  duration_ms: 0.3571
+  ...
+# Subtest: RY-M13-01 valid JS continuation 5
+ok 100 - RY-M13-01 valid JS continuation 5
+  ---
+  duration_ms: 0.3599
+  ...
+# Subtest: RY-M13-01 valid JS continuation 6
+ok 101 - RY-M13-01 valid JS continuation 6
+  ---
+  duration_ms: 0.9294
+  ...
+# Subtest: RY-M13-01 valid JS continuation 7
+ok 102 - RY-M13-01 valid JS continuation 7
+  ---
+  duration_ms: 0.3692
+  ...
+# Subtest: RY-M13-01 valid JS continuation 8
+ok 103 - RY-M13-01 valid JS continuation 8
+  ---
+  duration_ms: 0.4344
+  ...
+# Subtest: RY-M13-01 valid JS continuation 9
+ok 104 - RY-M13-01 valid JS continuation 9
+  ---
+  duration_ms: 0.3427
+  ...
+# Subtest: RY-M13-01 valid JS continuation 10
+ok 105 - RY-M13-01 valid JS continuation 10
+  ---
+  duration_ms: 0.4594
+  ...
+# Subtest: RY-M13-01 valid JS continuation 11
+ok 106 - RY-M13-01 valid JS continuation 11
+  ---
+  duration_ms: 0.4288
+  ...
+# Subtest: RY-M13-01 valid JS continuation 12
+ok 107 - RY-M13-01 valid JS continuation 12
+  ---
+  duration_ms: 0.4581
+  ...
+# Subtest: RY-M13-01 valid JS continuation 13
+ok 108 - RY-M13-01 valid JS continuation 13
+  ---
+  duration_ms: 0.3353
+  ...
+# Subtest: RY-M13-01 valid JS continuation 14
+ok 109 - RY-M13-01 valid JS continuation 14
+  ---
+  duration_ms: 0.3204
+  ...
+# Subtest: RY-M13-01 valid JS continuation 15
+ok 110 - RY-M13-01 valid JS continuation 15
+  ---
+  duration_ms: 0.3318
+  ...
+# Subtest: RY-M13-01 valid JS continuation 16
+ok 111 - RY-M13-01 valid JS continuation 16
+  ---
+  duration_ms: 0.532
+  ...
+# Subtest: RY-M13-01 valid JS continuation 17
+ok 112 - RY-M13-01 valid JS continuation 17
+  ---
+  duration_ms: 0.511
+  ...
+# Subtest: RY-M13-01 valid JS continuation 18
+ok 113 - RY-M13-01 valid JS continuation 18
+  ---
+  duration_ms: 0.3817
+  ...
+# Subtest: RY-M13-01 valid JS continuation 19
+ok 114 - RY-M13-01 valid JS continuation 19
+  ---
+  duration_ms: 0.5306
+  ...
+# Subtest: RY-M13-01 valid JS continuation 20
+ok 115 - RY-M13-01 valid JS continuation 20
+  ---
+  duration_ms: 0.6416
+  ...
+# Subtest: RY-M13-01 valid JS continuation 21
+ok 116 - RY-M13-01 valid JS continuation 21
+  ---
+  duration_ms: 0.7639
+  ...
+# Subtest: RY-M13-01 valid JS continuation 22
+ok 117 - RY-M13-01 valid JS continuation 22
+  ---
+  duration_ms: 0.6393
+  ...
+# Subtest: RY-M13-01 valid JS continuation 23
+ok 118 - RY-M13-01 valid JS continuation 23
+  ---
+  duration_ms: 0.6018
+  ...
+# Subtest: RY-M13-01 valid JS continuation 24
+ok 119 - RY-M13-01 valid JS continuation 24
+  ---
+  duration_ms: 1.3899
+  ...
+# Subtest: RY-M13-01 valid JS continuation 25
+ok 120 - RY-M13-01 valid JS continuation 25
+  ---
+  duration_ms: 0.7499
+  ...
+# Subtest: RY-M13-01 valid JS continuation 26
+ok 121 - RY-M13-01 valid JS continuation 26
+  ---
+  duration_ms: 0.5872
+  ...
+# Subtest: RY-M13-01 valid JS continuation 27
+ok 122 - RY-M13-01 valid JS continuation 27
+  ---
+  duration_ms: 0.5825
+  ...
+# Subtest: RY-M13-01 valid JS continuation 28
+ok 123 - RY-M13-01 valid JS continuation 28
+  ---
+  duration_ms: 0.63
+  ...
+# Subtest: RY-M13-01 valid JS continuation 29
+ok 124 - RY-M13-01 valid JS continuation 29
+  ---
+  duration_ms: 0.5714
+  ...
+# Subtest: RY-M13-01 valid JS continuation 30
+ok 125 - RY-M13-01 valid JS continuation 30
+  ---
+  duration_ms: 0.9428
+  ...
+# Subtest: RY-M13-01 valid JS continuation 31
+ok 126 - RY-M13-01 valid JS continuation 31
+  ---
+  duration_ms: 0.5631
+  ...
+# Subtest: RY-M13-01 explicit terminators and independent statements remain safe
+ok 127 - RY-M13-01 explicit terminators and independent statements remain safe
+  ---
+  duration_ms: 0.6744
+  ...
+# Subtest: RY-M13-01 TS type continuations remain unproven
+ok 128 - RY-M13-01 TS type continuations remain unproven
+  ---
+  duration_ms: 0.6366
+  ...
+# Subtest: M3 TS precise constructor allow double
+ok 129 - M3 TS precise constructor allow double
+  ---
+  duration_ms: 3.6932
+  ...
+# Subtest: M3 TS precise constructor allow single
+ok 130 - M3 TS precise constructor allow single
+  ---
+  duration_ms: 0.587
+  ...
+# Subtest: M3 TS precise constructor allow multiline
+ok 131 - M3 TS precise constructor allow multiline
+  ---
+  duration_ms: 0.3882
+  ...
+# Subtest: M3 TS precise constructor allow comments
+ok 132 - M3 TS precise constructor allow comments
+  ---
+  duration_ms: 0.2107
+  ...
+# Subtest: M3 TS precise constructor allow fence
+ok 133 - M3 TS precise constructor allow fence
+  ---
+  duration_ms: 0.7436
+  ...
+# Subtest: M3 TS precise constructor allow tilde fence
+ok 134 - M3 TS precise constructor allow tilde fence
+  ---
+  duration_ms: 0.5581
+  ...
+# Subtest: M3 TS value refusal 1
+ok 135 - M3 TS value refusal 1
+  ---
+  duration_ms: 0.9559
+  ...
+# Subtest: M3 TS value refusal 2
+ok 136 - M3 TS value refusal 2
+  ---
+  duration_ms: 0.6897
+  ...
+# Subtest: M3 TS value refusal 3
+ok 137 - M3 TS value refusal 3
+  ---
+  duration_ms: 0.3141
+  ...
+# Subtest: M3 TS value refusal 4
+ok 138 - M3 TS value refusal 4
+  ---
+  duration_ms: 0.3017
+  ...
+# Subtest: M3 TS value refusal 5
+ok 139 - M3 TS value refusal 5
+  ---
+  duration_ms: 0.2854
+  ...
+# Subtest: M3 TS value refusal 6
+ok 140 - M3 TS value refusal 6
+  ---
+  duration_ms: 0.906
+  ...
+# Subtest: M3 TS value refusal 7
+ok 141 - M3 TS value refusal 7
+  ---
+  duration_ms: 0.17
+  ...
+# Subtest: M3 TS value refusal 8
+ok 142 - M3 TS value refusal 8
+  ---
+  duration_ms: 0.1204
+  ...
+# Subtest: M3 TS value refusal 9
+ok 143 - M3 TS value refusal 9
+  ---
+  duration_ms: 0.1309
+  ...
+# Subtest: M3 TS value refusal 10
+ok 144 - M3 TS value refusal 10
+  ---
+  duration_ms: 0.1223
+  ...
+# Subtest: M3 TS value refusal 11
+ok 145 - M3 TS value refusal 11
+  ---
+  duration_ms: 0.1053
+  ...
+# Subtest: M3 TS value refusal 12
+ok 146 - M3 TS value refusal 12
+  ---
+  duration_ms: 0.268
+  ...
+# Subtest: M3 TS value refusal 13
+ok 147 - M3 TS value refusal 13
+  ---
+  duration_ms: 0.1264
+  ...
+# Subtest: M3 TS value refusal 14
+ok 148 - M3 TS value refusal 14
+  ---
+  duration_ms: 0.1232
+  ...
+# Subtest: M3 TS value refusal 15
+ok 149 - M3 TS value refusal 15
+  ---
+  duration_ms: 0.1906
+  ...
+# Subtest: M3 TS value refusal 16
+ok 150 - M3 TS value refusal 16
+  ---
+  duration_ms: 0.1045
+  ...
+# Subtest: M3 TS value refusal 17
+ok 151 - M3 TS value refusal 17
+  ---
+  duration_ms: 0.0959
+  ...
+# Subtest: M3 TS value refusal 18
+ok 152 - M3 TS value refusal 18
+  ---
+  duration_ms: 0.0966
+  ...
+# Subtest: M3 TS value refusal 19
+ok 153 - M3 TS value refusal 19
+  ---
+  duration_ms: 0.1049
+  ...
+# Subtest: M3 TS value refusal 20
+ok 154 - M3 TS value refusal 20
+  ---
+  duration_ms: 0.2105
+  ...
+# Subtest: M3 TS value refusal 21
+ok 155 - M3 TS value refusal 21
+  ---
+  duration_ms: 0.1118
+  ...
+# Subtest: M3 TS constructor context is narrow, not a generic placeholder exception
+ok 156 - M3 TS constructor context is narrow, not a generic placeholder exception
+  ---
+  duration_ms: 2.3258
+  ...
+# Subtest: M3 TS comments and adjacent credentials retain original lines
+ok 157 - M3 TS comments and adjacent credentials retain original lines
+  ---
+  duration_ms: 1.5992
+  ...
+# Subtest: M3 PHP and Ruby continuations and embedded examples remain blocked
+ok 158 - M3 PHP and Ruby continuations and embedded examples remain blocked
+  ---
+  duration_ms: 0.3672
+  ...
+# Subtest: M3 TS constructor three gates preserve refusal side effects
+ok 159 - M3 TS constructor three gates preserve refusal side effects
+  ---
+  duration_ms: 92.4979
+  ...
+# Subtest: M13 bounded Python allow 1
+ok 160 - M13 bounded Python allow 1
+  ---
+  duration_ms: 3.604
+  ...
+# Subtest: M13 bounded Python allow 2
+ok 161 - M13 bounded Python allow 2
+  ---
+  duration_ms: 0.4477
+  ...
+# Subtest: M13 bounded Python allow 3
+ok 162 - M13 bounded Python allow 3
+  ---
+  duration_ms: 0.4087
+  ...
+# Subtest: M13 bounded Python allow 4
+ok 163 - M13 bounded Python allow 4
+  ---
+  duration_ms: 0.4719
+  ...
+# Subtest: M13 bounded Python allow 5
+ok 164 - M13 bounded Python allow 5
+  ---
+  duration_ms: 0.1983
+  ...
+# Subtest: M13 bounded Python allow 6
+ok 165 - M13 bounded Python allow 6
+  ---
+  duration_ms: 0.1113
+  ...
+# Subtest: M13 bounded Python allow 7
+ok 166 - M13 bounded Python allow 7
+  ---
+  duration_ms: 0.1123
+  ...
+# Subtest: M13 bounded Python allow 8
+ok 167 - M13 bounded Python allow 8
+  ---
+  duration_ms: 0.1911
+  ...
+# Subtest: M13 bounded Python allow 9
+ok 168 - M13 bounded Python allow 9
+  ---
+  duration_ms: 0.969
+  ...
+# Subtest: M13 Python boundary refusal 1
+ok 169 - M13 Python boundary refusal 1
+  ---
+  duration_ms: 0.6304
+  ...
+# Subtest: M13 Python boundary refusal 2
+ok 170 - M13 Python boundary refusal 2
+  ---
+  duration_ms: 0.1827
+  ...
+# Subtest: M13 Python boundary refusal 3
+ok 171 - M13 Python boundary refusal 3
+  ---
+  duration_ms: 0.1305
+  ...
+# Subtest: M13 Python boundary refusal 4
+ok 172 - M13 Python boundary refusal 4
+  ---
+  duration_ms: 0.1103
+  ...
+# Subtest: M13 Python boundary refusal 5
+ok 173 - M13 Python boundary refusal 5
+  ---
+  duration_ms: 0.2692
+  ...
+# Subtest: M13 Python boundary refusal 6
+ok 174 - M13 Python boundary refusal 6
+  ---
+  duration_ms: 0.2001
+  ...
+# Subtest: M13 Python boundary refusal 7
+ok 175 - M13 Python boundary refusal 7
+  ---
+  duration_ms: 0.1061
+  ...
+# Subtest: M13 Python boundary refusal 8
+ok 176 - M13 Python boundary refusal 8
+  ---
+  duration_ms: 0.0995
+  ...
+# Subtest: M13 Python boundary refusal 9
+ok 177 - M13 Python boundary refusal 9
+  ---
+  duration_ms: 0.3732
+  ...
+# Subtest: M13 Python boundary refusal 10
+ok 178 - M13 Python boundary refusal 10
+  ---
+  duration_ms: 0.1983
+  ...
+# Subtest: M13 Python boundary refusal 11
+ok 179 - M13 Python boundary refusal 11
+  ---
+  duration_ms: 0.1341
+  ...
+# Subtest: M13 Python boundary refusal 12
+ok 180 - M13 Python boundary refusal 12
+  ---
+  duration_ms: 0.2443
+  ...
+# Subtest: M13 Python boundary refusal 13
+ok 181 - M13 Python boundary refusal 13
+  ---
+  duration_ms: 0.1514
+  ...
+# Subtest: M13 Python boundary refusal 14
+ok 182 - M13 Python boundary refusal 14
+  ---
+  duration_ms: 0.1341
+  ...
+# Subtest: M13 Python boundary refusal 15
+ok 183 - M13 Python boundary refusal 15
+  ---
+  duration_ms: 0.1452
+  ...
+# Subtest: M13 Python boundary refusal 16
+ok 184 - M13 Python boundary refusal 16
+  ---
+  duration_ms: 0.1264
+  ...
+# Subtest: M13 Python boundary refusal 17
+ok 185 - M13 Python boundary refusal 17
+  ---
+  duration_ms: 0.1108
+  ...
+# Subtest: M13 Python boundary refusal 18
+ok 186 - M13 Python boundary refusal 18
+  ---
+  duration_ms: 0.12
+  ...
+# Subtest: M13 Python boundary refusal 19
+ok 187 - M13 Python boundary refusal 19
+  ---
+  duration_ms: 0.1085
+  ...
+# Subtest: M13 Python boundary refusal 20
+ok 188 - M13 Python boundary refusal 20
+  ---
+  duration_ms: 0.1407
+  ...
+# Subtest: M13 Python boundary refusal 21
+ok 189 - M13 Python boundary refusal 21
+  ---
+  duration_ms: 0.1225
+  ...
+# Subtest: M13 Python boundary refusal 22
+ok 190 - M13 Python boundary refusal 22
+  ---
+  duration_ms: 0.1431
+  ...
+# Subtest: M13 Python boundary refusal 23
+ok 191 - M13 Python boundary refusal 23
+  ---
+  duration_ms: 0.1427
+  ...
+# Subtest: M13 Python boundary refusal 24
+ok 192 - M13 Python boundary refusal 24
+  ---
+  duration_ms: 0.1252
+  ...
+# Subtest: M13 Python boundary refusal 25
+ok 193 - M13 Python boundary refusal 25
+  ---
+  duration_ms: 0.126
+  ...
+# Subtest: M13 Python boundary refusal 26
+ok 194 - M13 Python boundary refusal 26
+  ---
+  duration_ms: 0.1295
+  ...
+# Subtest: M13 Python boundary refusal 27
+ok 195 - M13 Python boundary refusal 27
+  ---
+  duration_ms: 0.1206
+  ...
+# Subtest: M13 Markdown requires a Python fence, not a directory or document exception
+ok 196 - M13 Markdown requires a Python fence, not a directory or document exception
+  ---
+  duration_ms: 3.2611
+  ...
+# Subtest: M13 legacy JS environment expressions cannot swallow newline suffixes
+ok 197 - M13 legacy JS environment expressions cannot swallow newline suffixes
+  ---
+  duration_ms: 0.6549
+  ...
+# Subtest: M13 original line numbers survive multiline allowed expressions and comments
+ok 198 - M13 original line numbers survive multiline allowed expressions and comments
+  ---
+  duration_ms: 0.8397
+  ...
+# Subtest: M13 adjacent real-shaped artificial credentials are never masked
+ok 199 - M13 adjacent real-shaped artificial credentials are never masked
+  ---
+  duration_ms: 1.2101
+  ...
+# Subtest: M13 all three profile gates agree on allows and refusals without real effects
+ok 200 - M13 all three profile gates agree on allows and refusals without real effects
+  ---
+  duration_ms: 77.6069
+  ...
+# {"extension":"php","failures":[],"calls":1}
+# {"extension":"rb","failures":[],"calls":1}
+# Subtest: PHP closing tag inside line comments cannot expose HTML as code
+ok 201 - PHP closing tag inside line comments cannot expose HTML as code
+  ---
+  duration_ms: 3.958
+  ...
+# Subtest: PHP opening tag and Ruby in-argument comments preserve exact spans
+ok 202 - PHP opening tag and Ruby in-argument comments preserve exact spans
+  ---
+  duration_ms: 0.8218
+  ...
+# Subtest: PHP/Ruby unsupported lexical modes before or after a candidate invalidate the region
+ok 203 - PHP/Ruby unsupported lexical modes before or after a candidate invalidate the region
+  ---
+  duration_ms: 1.1088
+  ...
+# Subtest: PHP/Ruby bounded allow php exact
+ok 204 - PHP/Ruby bounded allow php exact
+  ---
+  duration_ms: 0.2713
+  ...
+# Subtest: PHP/Ruby bounded allow php single
+ok 205 - PHP/Ruby bounded allow php single
+  ---
+  duration_ms: 0.2891
+  ...
+# Subtest: PHP/Ruby bounded allow php multiline
+ok 206 - PHP/Ruby bounded allow php multiline
+  ---
+  duration_ms: 0.1739
+  ...
+# Subtest: PHP/Ruby bounded allow php comment
+ok 207 - PHP/Ruby bounded allow php comment
+  ---
+  duration_ms: 0.3319
+  ...
+# Subtest: PHP/Ruby closed language fence php
+ok 208 - PHP/Ruby closed language fence php
+  ---
+  duration_ms: 0.6166
+  ...
+# Subtest: PHP/Ruby value refusal php 0
+ok 209 - PHP/Ruby value refusal php 0
+  ---
+  duration_ms: 0.2729
+  ...
+# Subtest: PHP/Ruby value refusal php 1
+ok 210 - PHP/Ruby value refusal php 1
+  ---
+  duration_ms: 0.3019
+  ...
+# Subtest: PHP/Ruby value refusal php 2
+ok 211 - PHP/Ruby value refusal php 2
+  ---
+  duration_ms: 0.1926
+  ...
+# Subtest: PHP/Ruby value refusal php 3
+ok 212 - PHP/Ruby value refusal php 3
+  ---
+  duration_ms: 0.1793
+  ...
+# Subtest: PHP/Ruby value refusal php 4
+ok 213 - PHP/Ruby value refusal php 4
+  ---
+  duration_ms: 0.115
+  ...
+# Subtest: PHP/Ruby value refusal php 5
+ok 214 - PHP/Ruby value refusal php 5
+  ---
+  duration_ms: 0.3264
+  ...
+# Subtest: PHP/Ruby value refusal php 6
+ok 215 - PHP/Ruby value refusal php 6
+  ---
+  duration_ms: 0.1931
+  ...
+# Subtest: PHP/Ruby value refusal php 7
+ok 216 - PHP/Ruby value refusal php 7
+  ---
+  duration_ms: 0.1823
+  ...
+# Subtest: PHP/Ruby value refusal php 8
+ok 217 - PHP/Ruby value refusal php 8
+  ---
+  duration_ms: 0.1713
+  ...
+# Subtest: PHP/Ruby full statement boundary php
+ok 218 - PHP/Ruby full statement boundary php
+  ---
+  duration_ms: 1.8618
+  ...
+# Subtest: PHP/Ruby embedded examples never masked php
+ok 219 - PHP/Ruby embedded examples never masked php
+  ---
+  duration_ms: 0.523
+  ...
+# Subtest: PHP/Ruby comments and adjacent fields retain lines php
+ok 220 - PHP/Ruby comments and adjacent fields retain lines php
+  ---
+  duration_ms: 1.2449
+  ...
+# Subtest: PHP/Ruby bounded allow rb exact
+ok 221 - PHP/Ruby bounded allow rb exact
+  ---
+  duration_ms: 0.3514
+  ...
+# Subtest: PHP/Ruby bounded allow rb single
+ok 222 - PHP/Ruby bounded allow rb single
+  ---
+  duration_ms: 0.2022
+  ...
+# Subtest: PHP/Ruby bounded allow rb multiline
+ok 223 - PHP/Ruby bounded allow rb multiline
+  ---
+  duration_ms: 0.2
+  ...
+# Subtest: PHP/Ruby bounded allow rb comment
+ok 224 - PHP/Ruby bounded allow rb comment
+  ---
+  duration_ms: 0.1998
+  ...
+# Subtest: PHP/Ruby closed language fence rb
+ok 225 - PHP/Ruby closed language fence rb
+  ---
+  duration_ms: 0.2072
+  ...
+# Subtest: PHP/Ruby value refusal rb 0
+ok 226 - PHP/Ruby value refusal rb 0
+  ---
+  duration_ms: 0.1265
+  ...
+# Subtest: PHP/Ruby value refusal rb 1
+ok 227 - PHP/Ruby value refusal rb 1
+  ---
+  duration_ms: 0.1163
+  ...
+# Subtest: PHP/Ruby value refusal rb 2
+ok 228 - PHP/Ruby value refusal rb 2
+  ---
+  duration_ms: 0.1143
+  ...
+# Subtest: PHP/Ruby value refusal rb 3
+ok 229 - PHP/Ruby value refusal rb 3
+  ---
+  duration_ms: 0.1235
+  ...
+# Subtest: PHP/Ruby value refusal rb 4
+ok 230 - PHP/Ruby value refusal rb 4
+  ---
+  duration_ms: 0.1153
+  ...
+# Subtest: PHP/Ruby value refusal rb 5
+ok 231 - PHP/Ruby value refusal rb 5
+  ---
+  duration_ms: 0.1108
+  ...
+# Subtest: PHP/Ruby value refusal rb 6
+ok 232 - PHP/Ruby value refusal rb 6
+  ---
+  duration_ms: 0.1186
+  ...
+# Subtest: PHP/Ruby value refusal rb 7
+ok 233 - PHP/Ruby value refusal rb 7
+  ---
+  duration_ms: 0.1169
+  ...
+# Subtest: PHP/Ruby value refusal rb 8
+ok 234 - PHP/Ruby value refusal rb 8
+  ---
+  duration_ms: 0.2211
+  ...
+# Subtest: PHP/Ruby full statement boundary rb
+ok 235 - PHP/Ruby full statement boundary rb
+  ---
+  duration_ms: 0.4116
+  ...
+# Subtest: PHP/Ruby embedded examples never masked rb
+ok 236 - PHP/Ruby embedded examples never masked rb
+  ---
+  duration_ms: 0.3577
+  ...
+# Subtest: PHP/Ruby comments and adjacent fields retain lines rb
+ok 237 - PHP/Ruby comments and adjacent fields retain lines rb
+  ---
+  duration_ms: 0.3372
+  ...
+# Subtest: PHP/Ruby three gates php
+ok 238 - PHP/Ruby three gates php
+  ---
+  duration_ms: 78.4885
+  ...
+# Subtest: PHP/Ruby three gates rb
+ok 239 - PHP/Ruby three gates rb
+  ---
+  duration_ms: 63.3486
+  ...
+# Subtest: RY-PR-01 comment key php apikey
+ok 240 - RY-PR-01 comment key php apikey
+  ---
+  duration_ms: 0.9263
+  ...
+# Subtest: RY-PR-01 comment key php apiKey
+ok 241 - RY-PR-01 comment key php apiKey
+  ---
+  duration_ms: 0.4693
+  ...
+# Subtest: RY-PR-01 comment key php APIKEY
+ok 242 - RY-PR-01 comment key php APIKEY
+  ---
+  duration_ms: 0.5782
+  ...
+# Subtest: RY-PR-01 comment key php api_key
+ok 243 - RY-PR-01 comment key php api_key
+  ---
+  duration_ms: 0.7424
+  ...
+# Subtest: RY-PR-01 comment key php API_KEY
+ok 244 - RY-PR-01 comment key php API_KEY
+  ---
+  duration_ms: 1.0271
+  ...
+# Subtest: RY-PR-01 comment key php api-key
+ok 245 - RY-PR-01 comment key php api-key
+  ---
+  duration_ms: 0.4642
+  ...
+# Subtest: RY-PR-01 comment key php API-KEY
+ok 246 - RY-PR-01 comment key php API-KEY
+  ---
+  duration_ms: 0.3415
+  ...
+# Subtest: RY-PR-01 comment key php token
+ok 247 - RY-PR-01 comment key php token
+  ---
+  duration_ms: 0.3393
+  ...
+# Subtest: RY-PR-01 comment key php TOKEN
+ok 248 - RY-PR-01 comment key php TOKEN
+  ---
+  duration_ms: 0.384
+  ...
+# Subtest: RY-PR-01 comment key php ToKeN
+ok 249 - RY-PR-01 comment key php ToKeN
+  ---
+  duration_ms: 0.4183
+  ...
+# Subtest: RY-PR-01 comment key php secret
+ok 250 - RY-PR-01 comment key php secret
+  ---
+  duration_ms: 0.6014
+  ...
+# Subtest: RY-PR-01 comment key php SECRET
+ok 251 - RY-PR-01 comment key php SECRET
+  ---
+  duration_ms: 0.5799
+  ...
+# Subtest: RY-PR-01 comment key php password
+ok 252 - RY-PR-01 comment key php password
+  ---
+  duration_ms: 0.4384
+  ...
+# Subtest: RY-PR-01 comment key php PASSWORD
+ok 253 - RY-PR-01 comment key php PASSWORD
+  ---
+  duration_ms: 0.3338
+  ...
+# Subtest: RY-PR-01 comment key php PaSsWoRd
+ok 254 - RY-PR-01 comment key php PaSsWoRd
+  ---
+  duration_ms: 0.4785
+  ...
+# Subtest: RY-PR-01 comment key php authorization
+ok 255 - RY-PR-01 comment key php authorization
+  ---
+  duration_ms: 0.5022
+  ...
+# Subtest: RY-PR-01 comment key php AUTHORIZATION
+ok 256 - RY-PR-01 comment key php AUTHORIZATION
+  ---
+  duration_ms: 0.3799
+  ...
+# Subtest: RY-PR-01 comment key php AuThOrIzAtIoN
+ok 257 - RY-PR-01 comment key php AuThOrIzAtIoN
+  ---
+  duration_ms: 0.3583
+  ...
+# Subtest: RY-PR-01 comment key rb apikey
+ok 258 - RY-PR-01 comment key rb apikey
+  ---
+  duration_ms: 0.3812
+  ...
+# Subtest: RY-PR-01 comment key rb apiKey
+ok 259 - RY-PR-01 comment key rb apiKey
+  ---
+  duration_ms: 0.4916
+  ...
+# Subtest: RY-PR-01 comment key rb APIKEY
+ok 260 - RY-PR-01 comment key rb APIKEY
+  ---
+  duration_ms: 0.3794
+  ...
+# Subtest: RY-PR-01 comment key rb api_key
+ok 261 - RY-PR-01 comment key rb api_key
+  ---
+  duration_ms: 0.3825
+  ...
+# Subtest: RY-PR-01 comment key rb API_KEY
+ok 262 - RY-PR-01 comment key rb API_KEY
+  ---
+  duration_ms: 0.3914
+  ...
+# Subtest: RY-PR-01 comment key rb api-key
+ok 263 - RY-PR-01 comment key rb api-key
+  ---
+  duration_ms: 0.8905
+  ...
+# Subtest: RY-PR-01 comment key rb API-KEY
+ok 264 - RY-PR-01 comment key rb API-KEY
+  ---
+  duration_ms: 0.9678
+  ...
+# Subtest: RY-PR-01 comment key rb token
+ok 265 - RY-PR-01 comment key rb token
+  ---
+  duration_ms: 1.2574
+  ...
+# Subtest: RY-PR-01 comment key rb TOKEN
+ok 266 - RY-PR-01 comment key rb TOKEN
+  ---
+  duration_ms: 0.5531
+  ...
+# Subtest: RY-PR-01 comment key rb ToKeN
+ok 267 - RY-PR-01 comment key rb ToKeN
+  ---
+  duration_ms: 0.5128
+  ...
+# Subtest: RY-PR-01 comment key rb secret
+ok 268 - RY-PR-01 comment key rb secret
+  ---
+  duration_ms: 0.489
+  ...
+# Subtest: RY-PR-01 comment key rb SECRET
+ok 269 - RY-PR-01 comment key rb SECRET
+  ---
+  duration_ms: 0.4792
+  ...
+# Subtest: RY-PR-01 comment key rb password
+ok 270 - RY-PR-01 comment key rb password
+  ---
+  duration_ms: 0.4321
+  ...
+# Subtest: RY-PR-01 comment key rb PASSWORD
+ok 271 - RY-PR-01 comment key rb PASSWORD
+  ---
+  duration_ms: 0.3909
+  ...
+# Subtest: RY-PR-01 comment key rb PaSsWoRd
+ok 272 - RY-PR-01 comment key rb PaSsWoRd
+  ---
+  duration_ms: 0.3441
+  ...
+# Subtest: RY-PR-01 comment key rb authorization
+ok 273 - RY-PR-01 comment key rb authorization
+  ---
+  duration_ms: 0.8178
+  ...
+# Subtest: RY-PR-01 comment key rb AUTHORIZATION
+ok 274 - RY-PR-01 comment key rb AUTHORIZATION
+  ---
+  duration_ms: 0.3318
+  ...
+# Subtest: RY-PR-01 comment key rb AuThOrIzAtIoN
+ok 275 - RY-PR-01 comment key rb AuThOrIzAtIoN
+  ---
+  duration_ms: 0.3664
+  ...
+# Subtest: RY-PR-01 three gates php
+ok 276 - RY-PR-01 three gates php
+  ---
+  duration_ms: 70.5616
+  ...
+# Subtest: RY-PR-01 three gates rb
+ok 277 - RY-PR-01 three gates rb
+  ---
+  duration_ms: 78.3317
+  ...
+# {"variant":"quoted-comment","expectedRefusalFailures":[],"calls":1}
+# {"variant":"quoted-comment-single","expectedRefusalFailures":[],"calls":1}
+# {"variant":"quoted-template","expectedRefusalFailures":[],"calls":1}
+# {"variant":"quoted-template-single","expectedRefusalFailures":[],"calls":1}
+# Subtest: RY-C5-01 quoted field " comment
+ok 278 - RY-C5-01 quoted field " comment
+  ---
+  duration_ms: 5.043
+  ...
+# Subtest: RY-C5-01 quoted field " template
+ok 279 - RY-C5-01 quoted field " template
+  ---
+  duration_ms: 0.9819
+  ...
+# Subtest: RY-C5-01 quoted field " newline
+ok 280 - RY-C5-01 quoted field " newline
+  ---
+  duration_ms: 0.7825
+  ...
+# Subtest: RY-C5-01 quoted field " line-comment
+ok 281 - RY-C5-01 quoted field " line-comment
+  ---
+  duration_ms: 1.4776
+  ...
+# Subtest: RY-C5-01 quoted field " interpolation
+ok 282 - RY-C5-01 quoted field " interpolation
+  ---
+  duration_ms: 0.6335
+  ...
+# Subtest: RY-C5-01 quoted field " comment-template
+ok 283 - RY-C5-01 quoted field " comment-template
+  ---
+  duration_ms: 0.54
+  ...
+# Subtest: RY-C5-01 quoted field ' comment
+ok 284 - RY-C5-01 quoted field ' comment
+  ---
+  duration_ms: 0.6429
+  ...
+# Subtest: RY-C5-01 quoted field ' template
+ok 285 - RY-C5-01 quoted field ' template
+  ---
+  duration_ms: 0.4551
+  ...
+# Subtest: RY-C5-01 quoted field ' newline
+ok 286 - RY-C5-01 quoted field ' newline
+  ---
+  duration_ms: 0.6239
+  ...
+# Subtest: RY-C5-01 quoted field ' line-comment
+ok 287 - RY-C5-01 quoted field ' line-comment
+  ---
+  duration_ms: 0.5959
+  ...
+# Subtest: RY-C5-01 quoted field ' interpolation
+ok 288 - RY-C5-01 quoted field ' interpolation
+  ---
+  duration_ms: 0.4796
+  ...
+# Subtest: RY-C5-01 quoted field ' comment-template
+ok 289 - RY-C5-01 quoted field ' comment-template
+  ---
+  duration_ms: 0.4984
+  ...
+# Subtest: RY-C5-01 quoted fields do not gain a placeholder allowance
+ok 290 - RY-C5-01 quoted fields do not gain a placeholder allowance
+  ---
+  duration_ms: 0.4101
+  ...
+# Subtest: RY-C5-01 does not reinterpret string contents or mask comments and neighbors
+ok 291 - RY-C5-01 does not reinterpret string contents or mask comments and neighbors
+  ---
+  duration_ms: 2.096
+  ...
+# Subtest: RY-C5-01 quoted-comment
+ok 292 - RY-C5-01 quoted-comment
+  ---
+  duration_ms: 74.3973
+  ...
+# Subtest: RY-C5-01 quoted-comment-single
+ok 293 - RY-C5-01 quoted-comment-single
+  ---
+  duration_ms: 70.8537
+  ...
+# Subtest: RY-C5-01 quoted-template
+ok 294 - RY-C5-01 quoted-template
+  ---
+  duration_ms: 63.841
+  ...
+# Subtest: RY-C5-01 quoted-template-single
+ok 295 - RY-C5-01 quoted-template-single
+  ---
+  duration_ms: 74.5518
+  ...
+# Subtest: SEQ ordered allow php 1 line 20
+ok 296 - SEQ ordered allow php 1 line 20
+  ---
+  duration_ms: 5.1523
+  ...
+# Subtest: SEQ ordered allow php 1 line 22
+ok 297 - SEQ ordered allow php 1 line 22
+  ---
+  duration_ms: 0.6049
+  ...
+# Subtest: SEQ ordered allow php 2 line 20
+ok 298 - SEQ ordered allow php 2 line 20
+  ---
+  duration_ms: 0.3116
+  ...
+# Subtest: SEQ ordered allow php 2 line 22
+ok 299 - SEQ ordered allow php 2 line 22
+  ---
+  duration_ms: 0.3037
+  ...
+# Subtest: SEQ multiline and multiple fences php
+ok 300 - SEQ multiline and multiple fences php
+  ---
+  duration_ms: 0.6222
+  ...
+# Subtest: SEQ boundary refusal php 0
+ok 301 - SEQ boundary refusal php 0
+  ---
+  duration_ms: 0.9528
+  ...
+# Subtest: SEQ boundary refusal php 1
+ok 302 - SEQ boundary refusal php 1
+  ---
+  duration_ms: 0.3175
+  ...
+# Subtest: SEQ boundary refusal php 2
+ok 303 - SEQ boundary refusal php 2
+  ---
+  duration_ms: 0.3123
+  ...
+# Subtest: SEQ boundary refusal php 3
+ok 304 - SEQ boundary refusal php 3
+  ---
+  duration_ms: 0.4548
+  ...
+# Subtest: SEQ boundary refusal php 4
+ok 305 - SEQ boundary refusal php 4
+  ---
+  duration_ms: 0.456
+  ...
+# Subtest: SEQ boundary refusal php 5
+ok 306 - SEQ boundary refusal php 5
+  ---
+  duration_ms: 0.2336
+  ...
+# Subtest: SEQ boundary refusal php 6
+ok 307 - SEQ boundary refusal php 6
+  ---
+  duration_ms: 0.2109
+  ...
+# Subtest: SEQ boundary refusal php 7
+ok 308 - SEQ boundary refusal php 7
+  ---
+  duration_ms: 0.7804
+  ...
+# Subtest: SEQ boundary refusal php 8
+ok 309 - SEQ boundary refusal php 8
+  ---
+  duration_ms: 0.2719
+  ...
+# Subtest: SEQ boundary refusal php 9
+ok 310 - SEQ boundary refusal php 9
+  ---
+  duration_ms: 0.1201
+  ...
+# Subtest: SEQ boundary refusal php 10
+ok 311 - SEQ boundary refusal php 10
+  ---
+  duration_ms: 0.1005
+  ...
+# Subtest: SEQ boundary refusal php 11
+ok 312 - SEQ boundary refusal php 11
+  ---
+  duration_ms: 0.1133
+  ...
+# Subtest: SEQ boundary refusal php 12
+ok 313 - SEQ boundary refusal php 12
+  ---
+  duration_ms: 0.2638
+  ...
+# Subtest: SEQ boundary refusal php 13
+ok 314 - SEQ boundary refusal php 13
+  ---
+  duration_ms: 0.156
+  ...
+# Subtest: SEQ boundary refusal php 14
+ok 315 - SEQ boundary refusal php 14
+  ---
+  duration_ms: 0.1192
+  ...
+# Subtest: SEQ boundary refusal php 15
+ok 316 - SEQ boundary refusal php 15
+  ---
+  duration_ms: 0.1658
+  ...
+# Subtest: SEQ boundary refusal php 16
+ok 317 - SEQ boundary refusal php 16
+  ---
+  duration_ms: 0.1263
+  ...
+# Subtest: SEQ boundary refusal php 17
+ok 318 - SEQ boundary refusal php 17
+  ---
+  duration_ms: 0.2296
+  ...
+# Subtest: SEQ boundary refusal php 18
+ok 319 - SEQ boundary refusal php 18
+  ---
+  duration_ms: 0.128
+  ...
+# Subtest: SEQ boundary refusal php 19
+ok 320 - SEQ boundary refusal php 19
+  ---
+  duration_ms: 0.1238
+  ...
+# Subtest: SEQ boundary refusal php 20
+ok 321 - SEQ boundary refusal php 20
+  ---
+  duration_ms: 0.1052
+  ...
+# Subtest: SEQ boundary refusal php 21
+ok 322 - SEQ boundary refusal php 21
+  ---
+  duration_ms: 0.1055
+  ...
+# Subtest: SEQ boundary refusal php 22
+ok 323 - SEQ boundary refusal php 22
+  ---
+  duration_ms: 0.1058
+  ...
+# Subtest: SEQ boundary refusal php 23
+ok 324 - SEQ boundary refusal php 23
+  ---
+  duration_ms: 0.1117
+  ...
+# Subtest: SEQ boundary refusal php 24
+ok 325 - SEQ boundary refusal php 24
+  ---
+  duration_ms: 0.1143
+  ...
+# Subtest: SEQ boundary refusal php 25
+ok 326 - SEQ boundary refusal php 25
+  ---
+  duration_ms: 0.1154
+  ...
+# Subtest: SEQ embedded and unsupported contexts php
+ok 327 - SEQ embedded and unsupported contexts php
+  ---
+  duration_ms: 0.4008
+  ...
+# Subtest: SEQ comments and original lines php
+ok 328 - SEQ comments and original lines php
+  ---
+  duration_ms: 6.4438
+  ...
+# Subtest: SEQ three gates php 1
+ok 329 - SEQ three gates php 1
+  ---
+  duration_ms: 78.6992
+  ...
+# Subtest: SEQ three gates php 2
+ok 330 - SEQ three gates php 2
+  ---
+  duration_ms: 63.0673
+  ...
+# Subtest: SEQ ordered allow rb 1 line 20
+ok 331 - SEQ ordered allow rb 1 line 20
+  ---
+  duration_ms: 0.4479
+  ...
+# Subtest: SEQ ordered allow rb 1 line 22
+ok 332 - SEQ ordered allow rb 1 line 22
+  ---
+  duration_ms: 0.2632
+  ...
+# Subtest: SEQ ordered allow rb 2 line 20
+ok 333 - SEQ ordered allow rb 2 line 20
+  ---
+  duration_ms: 0.254
+  ...
+# Subtest: SEQ ordered allow rb 2 line 22
+ok 334 - SEQ ordered allow rb 2 line 22
+  ---
+  duration_ms: 0.2886
+  ...
+# Subtest: SEQ multiline and multiple fences rb
+ok 335 - SEQ multiline and multiple fences rb
+  ---
+  duration_ms: 0.2502
+  ...
+# Subtest: SEQ boundary refusal rb 0
+ok 336 - SEQ boundary refusal rb 0
+  ---
+  duration_ms: 0.1235
+  ...
+# Subtest: SEQ boundary refusal rb 1
+ok 337 - SEQ boundary refusal rb 1
+  ---
+  duration_ms: 0.1289
+  ...
+# Subtest: SEQ boundary refusal rb 2
+ok 338 - SEQ boundary refusal rb 2
+  ---
+  duration_ms: 0.18
+  ...
+# Subtest: SEQ boundary refusal rb 3
+ok 339 - SEQ boundary refusal rb 3
+  ---
+  duration_ms: 0.2811
+  ...
+# Subtest: SEQ boundary refusal rb 4
+ok 340 - SEQ boundary refusal rb 4
+  ---
+  duration_ms: 0.1407
+  ...
+# Subtest: SEQ boundary refusal rb 5
+ok 341 - SEQ boundary refusal rb 5
+  ---
+  duration_ms: 0.13
+  ...
+# Subtest: SEQ boundary refusal rb 6
+ok 342 - SEQ boundary refusal rb 6
+  ---
+  duration_ms: 0.1144
+  ...
+# Subtest: SEQ boundary refusal rb 7
+ok 343 - SEQ boundary refusal rb 7
+  ---
+  duration_ms: 0.111
+  ...
+# Subtest: SEQ boundary refusal rb 8
+ok 344 - SEQ boundary refusal rb 8
+  ---
+  duration_ms: 0.1115
+  ...
+# Subtest: SEQ boundary refusal rb 9
+ok 345 - SEQ boundary refusal rb 9
+  ---
+  duration_ms: 0.1184
+  ...
+# Subtest: SEQ boundary refusal rb 10
+ok 346 - SEQ boundary refusal rb 10
+  ---
+  duration_ms: 0.0932
+  ...
+# Subtest: SEQ boundary refusal rb 11
+ok 347 - SEQ boundary refusal rb 11
+  ---
+  duration_ms: 0.0864
+  ...
+# Subtest: SEQ boundary refusal rb 12
+ok 348 - SEQ boundary refusal rb 12
+  ---
+  duration_ms: 0.1193
+  ...
+# Subtest: SEQ boundary refusal rb 13
+ok 349 - SEQ boundary refusal rb 13
+  ---
+  duration_ms: 0.108
+  ...
+# Subtest: SEQ boundary refusal rb 14
+ok 350 - SEQ boundary refusal rb 14
+  ---
+  duration_ms: 0.131
+  ...
+# Subtest: SEQ boundary refusal rb 15
+ok 351 - SEQ boundary refusal rb 15
+  ---
+  duration_ms: 0.2907
+  ...
+# Subtest: SEQ boundary refusal rb 16
+ok 352 - SEQ boundary refusal rb 16
+  ---
+  duration_ms: 0.1139
+  ...
+# Subtest: SEQ boundary refusal rb 17
+ok 353 - SEQ boundary refusal rb 17
+  ---
+  duration_ms: 0.1234
+  ...
+# Subtest: SEQ boundary refusal rb 18
+ok 354 - SEQ boundary refusal rb 18
+  ---
+  duration_ms: 0.1228
+  ...
+# Subtest: SEQ boundary refusal rb 19
+ok 355 - SEQ boundary refusal rb 19
+  ---
+  duration_ms: 0.1122
+  ...
+# Subtest: SEQ boundary refusal rb 20
+ok 356 - SEQ boundary refusal rb 20
+  ---
+  duration_ms: 0.1073
+  ...
+# Subtest: SEQ boundary refusal rb 21
+ok 357 - SEQ boundary refusal rb 21
+  ---
+  duration_ms: 0.1188
+  ...
+# Subtest: SEQ boundary refusal rb 22
+ok 358 - SEQ boundary refusal rb 22
+  ---
+  duration_ms: 0.5546
+  ...
+# Subtest: SEQ boundary refusal rb 23
+ok 359 - SEQ boundary refusal rb 23
+  ---
+  duration_ms: 0.1055
+  ...
+# Subtest: SEQ boundary refusal rb 24
+ok 360 - SEQ boundary refusal rb 24
+  ---
+  duration_ms: 0.1101
+  ...
+# Subtest: SEQ boundary refusal rb 25
+ok 361 - SEQ boundary refusal rb 25
+  ---
+  duration_ms: 0.1035
+  ...
+# Subtest: SEQ embedded and unsupported contexts rb
+ok 362 - SEQ embedded and unsupported contexts rb
+  ---
+  duration_ms: 0.2312
+  ...
+# Subtest: SEQ comments and original lines rb
+ok 363 - SEQ comments and original lines rb
+  ---
+  duration_ms: 6.469
+  ...
+# Subtest: SEQ three gates rb 1
+ok 364 - SEQ three gates rb 1
+  ---
+  duration_ms: 70.9326
+  ...
+# Subtest: SEQ three gates rb 2
+ok 365 - SEQ three gates rb 2
+  ---
+  duration_ms: 63.4954
+  ...
+# Subtest: source environment references are portable but literal tokens remain blocked
+ok 366 - source environment references are portable but literal tokens remain blocked
+  ---
+  duration_ms: 5.8804
+  ...
+# node:internal/errors:496
+#     ErrorCaptureStackTrace(err);
+#     ^
+# TypeError [ERR_INVALID_ARG_TYPE]: The "path" argument must be of type string. Received undefined
+#     at __node_internal_captureLargerStackTrace (node:internal/errors:496:5)
+#     at new NodeError (node:internal/errors:405:5)
+#     at validateString (node:internal/validators:162:11)
+#     at Module.join (node:path:447:7)
+#     at <anonymous> (<BASELINE>\\test\\push-pull-use-cases.test.ts:8:29)
+#     at ModuleJob.run (node:internal/modules/esm/module_job:195:25)
+#     at async ModuleLoader.import (node:internal/modules/esm/loader:337:24)
+#     at async loadESM (node:internal/process/esm_loader:34:7)
+#     at async handleMainPromise (node:internal/modules/run_main:106:12) {
+#   code: 'ERR_INVALID_ARG_TYPE'
+# }
+# Node.js v18.20.8
+# Subtest: <BASELINE>\\test\\push-pull-use-cases.test.ts
+not ok 49 - <BASELINE>\\test\\push-pull-use-cases.test.ts
+  ---
+  duration_ms: 370.2351
+  location: '<BASELINE>\\test\\push-pull-use-cases.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# node:internal/errors:496
+#     ErrorCaptureStackTrace(err);
+#     ^
+# TypeError [ERR_INVALID_ARG_TYPE]: The "path" argument must be of type string. Received undefined
+#     at __node_internal_captureLargerStackTrace (node:internal/errors:496:5)
+#     at new NodeError (node:internal/errors:405:5)
+#     at validateString (node:internal/validators:162:11)
+#     at Module.join (node:path:447:7)
+#     at <anonymous> (<BASELINE>\\test\\recovery-contract.test.ts:14:18)
+#     at ModuleJob.run (node:internal/modules/esm/module_job:195:25)
+#     at async ModuleLoader.import (node:internal/modules/esm/loader:337:24)
+#     at async loadESM (node:internal/process/esm_loader:34:7)
+#     at async handleMainPromise (node:internal/modules/run_main:106:12) {
+#   code: 'ERR_INVALID_ARG_TYPE'
+# }
+# Node.js v18.20.8
+# Subtest: <BASELINE>\\test\\recovery-contract.test.ts
+not ok 50 - <BASELINE>\\test\\recovery-contract.test.ts
+  ---
+  duration_ms: 412.2424
+  location: '<BASELINE>\\test\\recovery-contract.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: redactString
+    # Subtest: should mask url ?token= but keep base url
+    ok 1 - should mask url ?token= but keep base url
+      ---
+      duration_ms: 0.7071
+      ...
+    # Subtest: should mask &api_key= and other query secret params
+    ok 2 - should mask &api_key= and other query secret params
+      ---
+      duration_ms: 0.5807
+      ...
+    # Subtest: should mask Bearer tokens
+    ok 3 - should mask Bearer tokens
+      ---
+      duration_ms: 0.1288
+      ...
+    # Subtest: should mask well-known token prefixes
+    ok 4 - should mask well-known token prefixes
+      ---
+      duration_ms: 0.133
+      ...
+    # Subtest: should NOT false-positive on ordinary words containing sk-
+    ok 5 - should NOT false-positive on ordinary words containing sk-
+      ---
+      duration_ms: 0.0668
+      ...
+    # Subtest: should leave non-secret strings unchanged
+    ok 6 - should leave non-secret strings unchanged
+      ---
+      duration_ms: 0.0597
+      ...
+    # Subtest: should be idempotent on already-redacted strings
+    ok 7 - should be idempotent on already-redacted strings
+      ---
+      duration_ms: 0.0897
+      ...
+    1..7
+ok 369 - redactString
+  ---
+  duration_ms: 3.2483
+  type: 'suite'
+  ...
+# Subtest: redactSecretsDeep
+    # Subtest: should deep-redact nested objects and arrays without mutating input
+    ok 1 - should deep-redact nested objects and arrays without mutating input
+      ---
+      duration_ms: 0.2932
+      ...
+    # Subtest: should pass through non-string scalars unchanged
+    ok 2 - should pass through non-string scalars unchanged
+      ---
+      duration_ms: 0.0912
+      ...
+    1..2
+ok 370 - redactSecretsDeep
+  ---
+  duration_ms: 0.6734
+  type: 'suite'
+  ...
+# Subtest: generateConfigRefMd redaction (guide layer)
+    # Subtest: should not leak url token into generated config-ref.md
+    ok 1 - should not leak url token into generated config-ref.md
+      ---
+      duration_ms: 0.5839
+      ...
+    1..1
+ok 371 - generateConfigRefMd redaction (guide layer)
+  ---
+  duration_ms: 0.6858
+  type: 'suite'
+  ...
+# Subtest: run-tests propagates a cancelled test hook as a non-zero exit
+not ok 372 - run-tests propagates a cancelled test hook as a non-zero exit
+  ---
+  duration_ms: 4.1739
+  location: 'file:///<BASELINE>/test/run-tests-cancellation.test.ts:1:198'
+  failureType: 'testCodeFailure'
+  error: 'The "path" argument must be of type string. Received undefined'
+  code: 'ERR_INVALID_ARG_TYPE'
+  name: 'TypeError'
+  stack: |-
+    __node_internal_captureLargerStackTrace (node:internal/errors:496:5)
+    new NodeError (node:internal/errors:405:5)
+    validateString (node:internal/validators:162:11)
+    Module.join (node:path:447:7)
+    TestContext.<anonymous> (<BASELINE>\test\run-tests-cancellation.test.ts:15:26)
+    Test.runInAsyncScope (node:async_hooks:203:9)
+    Test.run (node:internal/test_runner/test:631:25)
+    Test.start (node:internal/test_runner/test:542:17)
+    startSubtest (node:internal/test_runner/harness:214:17)
+  ...
+# Subtest: config sanitization for export
+    # Subtest: should strip environment variables from MCP config
+    ok 1 - should strip environment variables from MCP config
+      ---
+      duration_ms: 11.8521
+      ...
+    # Subtest: should strip Authorization headers from MCP config
+    ok 2 - should strip Authorization headers from MCP config
+      ---
+      duration_ms: 3.2869
+      ...
+    # Subtest: should exclude OAuth-based providers
+    ok 3 - should exclude OAuth-based providers
+      ---
+      duration_ms: 7.3147
+      ...
+    # Subtest: should keep plugin list intact
+    ok 4 - should keep plugin list intact
+      ---
+      duration_ms: 5.3809
+      ...
+    # Subtest: should redact tokens inside MCP url query strings
+    ok 5 - should redact tokens inside MCP url query strings
+      ---
+      duration_ms: 3.3
+      ...
+    # Subtest: should redact inline apiKey in provider config
+    ok 6 - should redact inline apiKey in provider config
+      ---
+      duration_ms: 2.8128
+      ...
+    # Subtest: should NOT output empty config sections
+    ok 7 - should NOT output empty config sections
+      ---
+      duration_ms: 2.9725
+      ...
+    1..7
+ok 373 - config sanitization for export
+  ---
+  duration_ms: 186.9304
+  type: 'suite'
+  ...
+# Subtest: ensureSecretGitignore
+    # Subtest: creates .gitignore with keys/ and .env when none exists
+    ok 1 - creates .gitignore with keys/ and .env when none exists
+      ---
+      duration_ms: 13.099
+      ...
+    # Subtest: appends missing rules to an existing .gitignore without touching others
+    ok 2 - appends missing rules to an existing .gitignore without touching others
+      ---
+      duration_ms: 5.6548
+      ...
+    # Subtest: is idempotent when all rules already present
+    ok 3 - is idempotent when all rules already present
+      ---
+      duration_ms: 4.245
+      ...
+    # Subtest: matches a keys/ rule written with a comment header
+    ok 4 - matches a keys/ rule written with a comment header
+      ---
+      duration_ms: 3.4129
+      ...
+    1..4
+ok 374 - ensureSecretGitignore
+  ---
+  duration_ms: 27.7493
+  type: 'suite'
+  ...
+# Subtest: M0 detects known-token-prefix before and after <hidden>
+ok 375 - M0 detects known-token-prefix before and after <hidden>
+  ---
+  duration_ms: 2.0433
+  ...
+# Subtest: M0 detects authorization-bearer before and after <hidden>
+ok 376 - M0 detects authorization-bearer before and after <hidden>
+  ---
+  duration_ms: 0.3719
+  ...
+# Subtest: M0 detects sensitive-assignment before and after <hidden>
+ok 377 - M0 detects sensitive-assignment before and after <hidden>
+  ---
+  duration_ms: 1.1145
+  ...
+# Subtest: M0 detects known-token-prefix before and after <YOUR_API_KEY>
+ok 378 - M0 detects known-token-prefix before and after <YOUR_API_KEY>
+  ---
+  duration_ms: 0.1508
+  ...
+# Subtest: M0 detects authorization-bearer before and after <YOUR_API_KEY>
+ok 379 - M0 detects authorization-bearer before and after <YOUR_API_KEY>
+  ---
+  duration_ms: 0.1159
+  ...
+# Subtest: M0 detects sensitive-assignment before and after <YOUR_API_KEY>
+ok 380 - M0 detects sensitive-assignment before and after <YOUR_API_KEY>
+  ---
+  duration_ms: 0.1178
+  ...
+# Subtest: M0 preserves placeholder-only inputs and one finding per rule per line
+ok 381 - M0 preserves placeholder-only inputs and one finding per rule per line
+  ---
+  duration_ms: 1.1072
+  ...
+# Subtest: M0 marker variants, suffixes and concatenation cannot hide adjacent credentials
+ok 382 - M0 marker variants, suffixes and concatenation cannot hide adjacent credentials
+  ---
+  duration_ms: 0.1954
+  ...
+# Subtest: M0 retains original lines across LF, CRLF, non-BMP and Unicode separators
+ok 383 - M0 retains original lines across LF, CRLF, non-BMP and Unicode separators
+  ---
+  duration_ms: 2.1058
+  ...
+# Subtest: M0 scans past display windows and returns no credential text
+ok 384 - M0 scans past display windows and returns no credential text
+  ---
+  duration_ms: 0.389
+  ...
+# Subtest: M0 base scanner retains its rules independently of M13 profile allowances
+ok 385 - M0 base scanner retains its rules independently of M13 profile allowances
+  ---
+  duration_ms: 1.121
+  ...
+# Subtest: M0 profile collection, restore and publish reject the same fixture before effects
+ok 386 - M0 profile collection, restore and publish reject the same fixture before effects
+  ---
+  duration_ms: 51.4061
+  ...
+# Subtest: M0 Codex MCP recovery rejects a marker alongside a token before executing
+ok 387 - M0 Codex MCP recovery rejects a marker alongside a token before executing
+  ---
+  duration_ms: 0.9654
+  ...
+# Subtest: M0 recovery report refuses residual credentials beside a redaction marker
+ok 388 - M0 recovery report refuses residual credentials beside a redaction marker
+  ---
+  duration_ms: 4.6894
+  ...
+# Subtest: pre-commit secret scanner
+    # Subtest: blocks secret values while allowing variable names and safe placeholders
+    ok 1 - blocks secret values while allowing variable names and safe placeholders
+      ---
+      duration_ms: 6.415
+      ...
+    # Subtest: throws before unsafe serialized state can be written
+    ok 2 - throws before unsafe serialized state can be written
+      ---
+      duration_ms: 1.7651
+      ...
+    1..2
+ok 389 - pre-commit secret scanner
+  ---
+  duration_ms: 9.7065
+  type: 'suite'
+  ...
+# Subtest: setupWorkspace application use case
+    # Subtest: delegates once with an explicit target and aggregates typed setup results
+    ok 1 - delegates once with an explicit target and aggregates typed setup results
+      ---
+      duration_ms: 10.9895
+      ...
+    # Subtest: converts a delegated setup exception into ok=false
+    ok 2 - converts a delegated setup exception into ok=false
+      ---
+      duration_ms: 1.2139
+      ...
+    1..2
+ok 390 - setupWorkspace application use case
+  ---
+  duration_ms: 13.4082
+  type: 'suite'
+  ...
+# Subtest: updateWorkspace application use case
+    # Subtest: redacts every progress string field and all structured result strings
+    ok 1 - redacts every progress string field and all structured result strings
+      ---
+      duration_ms: 8.9717
+      ...
+    # Subtest: passes explicit scope, typed progress and argv process execution to the updater
+    ok 2 - passes explicit scope, typed progress and argv process execution to the updater
+      ---
+      duration_ms: 5.758
+      ...
+    # Subtest: reports every update error as ok=false and preserves the report
+    ok 3 - reports every update error as ok=false and preserves the report
+      ---
+      duration_ms: 2.1749
+      ...
+    # Subtest: converts a delegated update exception into ok=false
+    ok 4 - converts a delegated update exception into ok=false
+      ---
+      duration_ms: 2.8846
+      ...
+    # Subtest: preserves the updater's legacy default executor when no ProcessRunner is injected
+    ok 5 - preserves the updater's legacy default executor when no ProcessRunner is injected
+      ---
+      duration_ms: 1.2874
+      ...
+    # Subtest: streams ordinary output with at most one-event delay and preserves line boundaries
+    ok 6 - streams ordinary output with at most one-event delay and preserves line boundaries
+      ---
+      duration_ms: 3.2391
+      ...
+    # Subtest: streams split-secret output safely without leaking through joined lines
+    ok 7 - streams split-secret output safely without leaking through joined lines
+      ---
+      duration_ms: 1.1979
+      ...
+    1..7
+ok 391 - updateWorkspace application use case
+  ---
+  duration_ms: 27.2275
+  type: 'suite'
+  ...
+# Subtest: setup/update entrypoint delegation
+    # Subtest: routes CLI and Plugin setup/update through the shared application with explicit scope
+    ok 1 - routes CLI and Plugin setup/update through the shared application with explicit scope
+      ---
+      duration_ms: 1.441
+      ...
+    # Subtest: keeps report archival at the CLI edge and exits non-zero if archival fails
+    ok 2 - keeps report archival at the CLI edge and exits non-zero if archival fails
+      ---
+      duration_ms: 537.14
+      ...
+    1..2
+ok 392 - setup/update entrypoint delegation
+  ---
+  duration_ms: 538.8171
+  type: 'suite'
+  ...
+# Subtest: ProcessRunner adapter bridge
+    # Subtest: adapts the argv port without spawning or joining a shell command
+    ok 1 - adapts the argv port without spawning or joining a shell command
+      ---
+      duration_ms: 2.7275
+      ...
+    1..1
+ok 393 - ProcessRunner adapter bridge
+  ---
+  duration_ms: 2.9258
+  type: 'suite'
+  ...
+# Subtest: real Plugin setup failure
+    # Subtest: renders stable redacted result fields with metadata.ok=false
+    ok 1 - renders stable redacted result fields with metadata.ok=false
+      ---
+      duration_ms: 917.2069
+      ...
+    1..1
+ok 394 - real Plugin setup failure
+  ---
+  duration_ms: 917.5101
+  type: 'suite'
+  ...
+# node:internal/errors:496
+#     ErrorCaptureStackTrace(err);
+#     ^
+# TypeError [ERR_INVALID_ARG_TYPE]: The "path" argument must be of type string. Received undefined
+#     at __node_internal_captureLargerStackTrace (node:internal/errors:496:5)
+#     at new NodeError (node:internal/errors:405:5)
+#     at validateString (node:internal/validators:162:11)
+#     at Module.join (node:path:447:7)
+#     at <anonymous> (<BASELINE>\\test\\smoke.test.ts:7:18)
+#     at ModuleJob.run (node:internal/modules/esm/module_job:195:25)
+#     at async ModuleLoader.import (node:internal/modules/esm/loader:337:24)
+#     at async loadESM (node:internal/process/esm_loader:34:7)
+#     at async handleMainPromise (node:internal/modules/run_main:106:12) {
+#   code: 'ERR_INVALID_ARG_TYPE'
+# }
+# Node.js v18.20.8
+# Subtest: <BASELINE>\\test\\smoke.test.ts
+not ok 58 - <BASELINE>\\test\\smoke.test.ts
+  ---
+  duration_ms: 352.9873
+  location: '<BASELINE>\\test\\smoke.test.ts:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: verifyWorkspace
+    # Subtest: passes an explicit Codex scope to the verifier once and aggregates warnings and errors
+    ok 1 - passes an explicit Codex scope to the verifier once and aggregates warnings and errors
+      ---
+      duration_ms: 0.8798
+      ...
+    # Subtest: passes an explicit OpenCode scope without adding Codex-only skips
+    ok 2 - passes an explicit OpenCode scope without adding Codex-only skips
+      ---
+      duration_ms: 0.1719
+      ...
+    1..2
+ok 396 - verifyWorkspace
+  ---
+  duration_ms: 2.2812
+  type: 'suite'
+  ...
+# Subtest: WorkspaceState artifact codec
+    # Subtest: migrates an unversioned v1 artifact and preserves safe legacy fields
+    ok 1 - migrates an unversioned v1 artifact and preserves safe legacy fields
+      ---
+      duration_ms: 2.9256
+      ...
+    # Subtest: migrates a v2 artifact into the validated internal v3 model
+    ok 2 - migrates a v2 artifact into the validated internal v3 model
+      ---
+      duration_ms: 1.1616
+      ...
+    # Subtest: accepts and validates an already-current v3 artifact
+    ok 3 - accepts and validates an already-current v3 artifact
+      ---
+      duration_ms: 1.6504
+      ...
+    # Subtest: rejects future schema versions instead of guessing a migration
+    ok 4 - rejects future schema versions instead of guessing a migration
+      ---
+      duration_ms: 0.2812
+      ...
+    # Subtest: applies permanent and artifact tombstones before exposing selected extensions
+    ok 5 - applies permanent and artifact tombstones before exposing selected extensions
+      ---
+      duration_ms: 0.5072
+      ...
+    # Subtest: removes tombstoned MCPs from every recoverable configuration table without mutating input
+    ok 6 - removes tombstoned MCPs from every recoverable configuration table without mutating input
+      ---
+      duration_ms: 0.4217
+      ...
+    # Subtest: removes tombstoned extensions from recoverable string-array configuration tables
+    ok 7 - removes tombstoned extensions from recoverable string-array configuration tables
+      ---
+      duration_ms: 0.352
+      ...
+    # Subtest: does not echo rejected runtime values in validation errors
+    ok 8 - does not echo rejected runtime values in validation errors
+      ---
+      duration_ms: 0.4847
+      ...
+    # Subtest: accepts JSON text and rejects malformed runtime shapes
+    ok 9 - accepts JSON text and rejects malformed runtime shapes
+      ---
+      duration_ms: 1.3633
+      ...
+    1..9
+ok 397 - WorkspaceState artifact codec
+  ---
+  duration_ms: 11.2288
+  type: 'suite'
+  ...
+# Subtest: MCP security audit
+    # Subtest: should NOT expose tokens in URL query params (default security rule)
+    ok 1 - should NOT expose tokens in URL query params (default security rule)
+      ---
+      duration_ms: 0.5012
+      ...
+    # Subtest: should use Authorization headers for tokens (default security rule)
+    ok 2 - should use Authorization headers for tokens (default security rule)
+      ---
+      duration_ms: 0.2461
+      ...
+    1..2
+ok 398 - MCP security audit
+  ---
+  duration_ms: 129.6911
+  type: 'suite'
+  ...
+# Subtest: zapier-gmail config (ease-of-use exception)
+    # Subtest: should be in the URL_TOKEN_ALLOWED exception list
+    ok 1 - should be in the URL_TOKEN_ALLOWED exception list
+      ---
+      duration_ms: 0.2001
+      ...
+    # Subtest: should have a valid Zapier MCP endpoint URL
+    ok 2 - should have a valid Zapier MCP endpoint URL
+      ---
+      duration_ms: 0.2228
+      ...
+    # Subtest: should have oauth explicitly disabled
+    ok 3 - should have oauth explicitly disabled
+      ---
+      duration_ms: 0.3081
+      ...
+    1..3
+ok 399 - zapier-gmail config (ease-of-use exception)
+  ---
+  duration_ms: 2.6155
+  type: 'suite'
+  ...
+# Subtest: zapier-gmail endpoint
+    # Subtest: should respond to initialize with valid MCP protocol
+    ok 1 - should respond to initialize with valid MCP protocol
+      ---
+      duration_ms: 0.3926
+      ...
+    # Subtest: should list tools successfully
+    ok 2 - should list tools successfully
+      ---
+      duration_ms: 0.2608
+      ...
+    1..2
+ok 400 - zapier-gmail endpoint
+  ---
+  duration_ms: 2.6993
+  type: 'suite'
+  ...
+1..400
+# tests 590
+# suites 57
+# pass 567
+# fail 19
+# cancelled 4
+# skipped 0
+# todo 0
+# duration_ms 138288.4207

@@ -1,0 +1,88 @@
+✖ artificial M2 operation create (17.9943ms)
+✖ artificial M2 operation plan (16.3645ms)
+✖ artificial M2 operation restore (10.5982ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 0
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 481.6533
+
+✖ failing tests:
+
+test at test\profile-m2-operations.test.ts:1:1445
+✖ artificial M2 operation create (17.9943ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted rejection.
+  Actual message: "Profile collection blocked:
+  Secret scan blocked codex/skills/s.py: sensitive-assignment@4"
+      at async TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-operations.test.ts:24:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Profile collection blocked:
+    Secret scan blocked codex/skills/s.py: sensitive-assignment@4
+        at createCodexProfile (<CHECKOUT>\src\lib\codex-profile.ts:118:28)
+        at Object.create (<CHECKOUT>\test\profile-m2-operations.test.ts:12:116)
+        at <anonymous> (<CHECKOUT>\test\profile-m2-operations.test.ts:24:56)
+        at waitForActual (node:assert:632:21)
+        at strict.doesNotReject (node:assert:789:39)
+        at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-operations.test.ts:24:16)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3),
+    expected: undefined,
+    operator: 'doesNotReject',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-operations.test.ts:1:1445
+✖ artificial M2 operation plan (16.3645ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted rejection.
+  Actual message: "Secret scan blocked codex/skills/s.py: sensitive-assignment@4"
+      at async TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-operations.test.ts:24:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked codex/skills/s.py: sensitive-assignment@4
+        at assertProfileContentSafe (<CHECKOUT>\src\lib\profile-secret-scan.ts:15:30)
+        at readSnapshot (<CHECKOUT>\src\lib\codex-profile.ts:138:5)
+        at planCodexProfileRestore (<CHECKOUT>\src\lib\codex-profile.ts:166:20)
+        at Object.plan (<CHECKOUT>\test\profile-m2-operations.test.ts:12:157)
+        at <anonymous> (<CHECKOUT>\test\profile-m2-operations.test.ts:24:124)
+        at waitForActual (node:assert:632:21)
+        at strict.doesNotReject (node:assert:789:39)
+        at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-operations.test.ts:24:16)
+        at async Test.run (node:internal/test_runner/test:1389:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:960:7),
+    expected: undefined,
+    operator: 'doesNotReject',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-operations.test.ts:1:1445
+✖ artificial M2 operation restore (10.5982ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted rejection.
+  Actual message: "Secret scan blocked codex/skills/s.py: sensitive-assignment@4"
+      at async TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-operations.test.ts:24:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked codex/skills/s.py: sensitive-assignment@4
+        at assertProfileContentSafe (<CHECKOUT>\src\lib\profile-secret-scan.ts:15:30)
+        at readSnapshot (<CHECKOUT>\src\lib\codex-profile.ts:138:5)
+        at planCodexProfileRestore (<CHECKOUT>\src\lib\codex-profile.ts:166:20)
+        at restoreCodexProfile (<CHECKOUT>\src\lib\codex-profile.ts:182:16)
+        at Object.restore (<CHECKOUT>\test\profile-m2-operations.test.ts:12:206)
+        at <anonymous> (<CHECKOUT>\test\profile-m2-operations.test.ts:24:124)
+        at waitForActual (node:assert:632:21)
+        at strict.doesNotReject (node:assert:789:39)
+        at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-operations.test.ts:24:16)
+        at async Test.run (node:internal/test_runner/test:1389:7),
+    expected: undefined,
+    operator: 'doesNotReject',
+    diff: 'simple'
+  }

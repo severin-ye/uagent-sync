@@ -1,0 +1,6 @@
+
+> uagent-sync@2.1.1 typecheck
+> tsc --noEmit
+
+src/lib/profile-m2-docstrings.ts(29,80): error TS2322: Type 'Set<unknown>' is not assignable to type 'Set<string>'.
+  Type 'unknown' is not assignable to type 'string'.

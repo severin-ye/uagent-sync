@@ -1,0 +1,17 @@
+✔ M2 exact artificial docstring is allowed "\n" (11.2996ms)
+✔ M2 adjacent credential remains rejected "\n" (1.8088ms)
+✔ M2 exact artificial docstring is allowed "\r\n" (0.895ms)
+✔ M2 adjacent credential remains rejected "\r\n" (0.7558ms)
+✔ missing provider and non-Python remain blocked (0.5853ms)
+✔ unknown Args after candidate revokes pending (0.7712ms)
+✔ artificial M2 operation create (34.1ms)
+✔ artificial M2 operation plan (15.4769ms)
+✔ artificial M2 operation restore (13.634ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 443.3169

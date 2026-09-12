@@ -1,0 +1,51 @@
+✔ composition preserves neighboring credential password (10.4588ms)
+✖ composition preserves neighboring credential PASSWORD=("SYNTHETIC_NONEMPTY") (6.7322ms)
+✔ composition preserves neighboring credential "apiKey": (1.2373ms)
+✔ composition preserves neighboring credential const (1.2027ms)
+✔ composition preserves neighboring credential token (1.8157ms)
+✔ composition preserves neighboring credential Bearer (0.7424ms)
+✔ composition preserves neighboring credential SYNTHETIC_REDACTED_TOKEN (1.0245ms)
+✔ missing and forged contexts exactly preserve old findings (5.5402ms)
+✔ prefix/Bearer inside exact policy text cannot be masked (1.1335ms)
+✔ byte validation precedes lossy decode; actual replacement character is valid UTF8 (1.076ms)
+✔ provider throws, fake sessions and missing source fail closed without leaking errors (0.4735ms)
+✔ factory concurrency, once per operation, previews and apply reload policy (51.8134ms)
+✔ two valid functions retain both exact spans (5.0902ms)
+✔ preamble revokes earlier valid candidate under conservative scope (1.5351ms)
+✔ duplicateSection revokes earlier valid candidate under conservative scope (1.9727ms)
+✔ reverseSections revokes earlier valid candidate under conservative scope (1.4235ms)
+✔ multilineReturn revokes earlier valid candidate under conservative scope (0.8873ms)
+✔ bodyOnClosingLine revokes earlier valid candidate under conservative scope (1.1716ms)
+✔ tabEntry revokes earlier valid candidate under conservative scope (0.8687ms)
+✔ empty Returns and Raises are allowed as specified (0.5342ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 19
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 403.2251
+
+✖ failing tests:
+
+test at test\profile-m2-composition.test.ts:1:2168
+✖ composition preserves neighboring credential PASSWORD=("SYNTHETIC_NONEMPTY") (6.7322ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+    assert.ok(got.length)
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-composition.test.ts:27:11)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

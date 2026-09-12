@@ -1,0 +1,14 @@
+
+  GitNexus Analyzer (1.6.11)
+
+  GitNexus Analyzer (1.6.11)
+file:///<USER_HOME>/AppData/Local/pnpm/store/v11/links/@/gitnexus/1.6.11/b5f5e5dfb93e9c782cd6bd8d226b0a45a779732252e19e5b493352f6b71ca9e6/node_modules/gitnexus/dist/core/analyzer-identity.js:2089
+        throw new Error(`Analyzer dependency runtime changed while its identity was being computed: ${packageRoot}`);
+              ^
+
+Error: Analyzer dependency runtime changed while its identity was being computed: <USER_HOME>\AppData\Local\pnpm\store\v11\links\@\gitnexus\1.6.11\b5f5e5dfb93e9c782cd6bd8d226b0a45a779732252e19e5b493352f6b71ca9e6\node_modules\gitnexus
+    at resolveAnalyzerRunnerIdentity (file:///<USER_HOME>/AppData/Local/pnpm/store/v11/links/@/gitnexus/1.6.11/b5f5e5dfb93e9c782cd6bd8d226b0a45a779732252e19e5b493352f6b71ca9e6/node_modules/gitnexus/dist/core/analyzer-identity.js:2089:15)
+    at Module.captureAnalyzerIdentityBeforeLoad (file:///<USER_HOME>/AppData/Local/pnpm/store/v11/links/@/gitnexus/1.6.11/b5f5e5dfb93e9c782cd6bd8d226b0a45a779732252e19e5b493352f6b71ca9e6/node_modules/gitnexus/dist/core/analyzer-identity.js:2164:28)
+    at Command.<anonymous> (file:///<USER_HOME>/AppData/Local/pnpm/store/v11/links/@/gitnexus/1.6.11/b5f5e5dfb93e9c782cd6bd8d226b0a45a779732252e19e5b493352f6b71ca9e6/node_modules/gitnexus/dist/cli/lazy-action.js:45:47)
+
+Node.js v24.19.0

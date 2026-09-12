@@ -1,0 +1,45 @@
+✖ M2 isolated external gates and CLI propagation (932.8365ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1086.5823
+
+✖ failing tests:
+
+test at test\profile-m2-gates.test.ts:1:186
+✖ M2 isolated external gates and CLI propagation (932.8365ms)
+  AssertionError [ERR_ASSERTION]: node:internal/modules/run_main:107
+      triggerUncaughtException(
+      ^
+
+  AssertionError [ERR_ASSERTION]: [{"step":"Git","status":"ok","detail":"SYNTHETIC_VERSION"},{"step":"GitHub CLI","status":"ok","detail":"SYNTHETIC_VERSION"},{"step":"Node.js and npm","status":"ok","detail":"SYNTHETIC_VERSION"},{"step":"Codex CLI","status":"ok","detail":"SYNTHETIC_VERSION"},{"step":"Uagent Sync Codex plugin","status":"skipped","detail":"install from selected personal marketplace"},{"step":"Selected Codex skills and MCP","status":"skipped","detail":"restore from host-scoped manifest after tombstone filtering"},{"step":"Skip tombstone-satisfied:mcp:codebase-memory-mcp","status":"skipped","detail":"Already present or explicitly deleted"},{"step":"Restore selected Codex extensions","status":"error","detail":"Missing trusted source for mcp:unsafe"}]
+      at <anonymous> (<CHECKOUT>\test\fixtures\m2-operation-worker.ts:79:133) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+  Node.js v24.19.0
+
+
+  1 !== 0
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-gates.test.ts:13:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

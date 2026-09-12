@@ -1,0 +1,138 @@
+✔ composition preserves neighboring credential password (7.9227ms)
+✖ composition preserves neighboring credential PASSWORD=("SYNTHETIC_NONEMPTY") (5.3396ms)
+✖ composition preserves neighboring credential "apiKey": (1.2838ms)
+✖ composition preserves neighboring credential const (0.758ms)
+✔ composition preserves neighboring credential token (1.2349ms)
+✖ composition preserves neighboring credential Bearer (0.5455ms)
+✔ composition preserves neighboring credential SYNTHETIC_REDACTED_TOKEN (1.086ms)
+✔ missing and forged contexts exactly preserve old findings (6.0046ms)
+✔ prefix/Bearer inside exact policy text cannot be masked (1.4299ms)
+✔ byte validation precedes lossy decode; actual replacement character is valid UTF8 (1.1061ms)
+✔ provider throws, fake sessions and missing source fail closed without leaking errors (0.3733ms)
+✔ factory concurrency, once per operation, previews and apply reload policy (54.3728ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 8
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 359.7248
+
+✖ failing tests:
+
+test at test\profile-m2-composition.test.ts:1:2168
+✖ composition preserves neighboring credential PASSWORD=("SYNTHETIC_NONEMPTY") (5.3396ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+    assert.ok(got.length)
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-composition.test.ts:26:11)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-composition.test.ts:1:2168
+✖ composition preserves neighboring credential "apiKey": (1.2838ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + [
+  +   {
+  +     evidence: '<redacted>',
+  +     line: 5,
+  +     rule: 'sensitive-assignment'
+  +   }
+  + ]
+  - []
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-composition.test.ts:26:33)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-composition.test.ts:1:2168
+✖ composition preserves neighboring credential const (0.758ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+    [
+      {
+        evidence: '<redacted>',
+  +     line: 5,
+  +     rule: 'sensitive-assignment'
+  +   },
+  +   {
+  +     evidence: '<redacted>',
+        line: 8,
+        rule: 'sensitive-assignment'
+      }
+    ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-composition.test.ts:26:33)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' }, { rule: 'sensitive-assignment', line: 8, evidence: '<redacted>' } ],
+    expected: [ { rule: 'sensitive-assignment', line: 8, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-composition.test.ts:1:2168
+✖ composition preserves neighboring credential Bearer (0.5455ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+    [
+      {
+        evidence: '<redacted>',
+  +     line: 5,
+  +     rule: 'sensitive-assignment'
+  +   },
+  +   {
+  +     evidence: '<redacted>',
+        line: 8,
+        rule: 'authorization-bearer'
+      }
+    ]
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-composition.test.ts:26:33)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { rule: 'sensitive-assignment', line: 5, evidence: '<redacted>' }, { rule: 'authorization-bearer', line: 8, evidence: '<redacted>' } ],
+    expected: [ { rule: 'authorization-bearer', line: 8, evidence: '<redacted>' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

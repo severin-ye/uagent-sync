@@ -1,0 +1,23 @@
+✔ composition preserves neighboring credential password (9.3309ms)
+✔ composition preserves neighboring credential PASSWORD=("SYNTHETIC_NONEMPTY") (2.6103ms)
+✔ composition preserves neighboring credential "apiKey": (1.2333ms)
+✔ composition preserves neighboring credential const (0.9468ms)
+✔ composition preserves neighboring credential token (1.5271ms)
+✔ composition preserves neighboring credential Bearer (0.7727ms)
+✔ composition preserves neighboring credential SYNTHETIC_REDACTED_TOKEN (1.7521ms)
+✔ composition preserves neighboring credential PASSWORD=None, (1.2573ms)
+✔ missing and forged contexts exactly preserve old findings (6.2705ms)
+✔ prefix/Bearer inside exact policy text cannot be masked (1.8161ms)
+✔ byte validation precedes lossy decode; actual replacement character is valid UTF8 (1.2458ms)
+✔ recognized M13 environment lookup composes; unproven annotations abstain (0.7835ms)
+✔ inert None must not hide a second sensitive value on the same line (0.7663ms)
+✔ provider throws, fake sessions and missing source fail closed without leaking errors (0.3654ms)
+✔ factory concurrency, once per operation, previews and apply reload policy (63.6266ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 370.6083

@@ -1,0 +1,30 @@
+✔ composition preserves neighboring credential password (12.6744ms)
+✔ composition preserves neighboring credential PASSWORD=("SYNTHETIC_NONEMPTY") (2.0524ms)
+✔ composition preserves neighboring credential "apiKey": (1.9305ms)
+✔ composition preserves neighboring credential const (2.8321ms)
+✔ composition preserves neighboring credential token (3.0303ms)
+✔ composition preserves neighboring credential Bearer (1.0637ms)
+✔ composition preserves neighboring credential SYNTHETIC_REDACTED_TOKEN (2.1172ms)
+✔ missing and forged contexts exactly preserve old findings (9.1916ms)
+✔ prefix/Bearer inside exact policy text cannot be masked (1.5028ms)
+✔ byte validation precedes lossy decode; actual replacement character is valid UTF8 (1.1657ms)
+✔ provider throws, fake sessions and missing source fail closed without leaking errors (0.4459ms)
+✔ factory concurrency, once per operation, previews and apply reload policy (73.5278ms)
+✔ M2 isolated external gates and CLI propagation (974.2112ms)
+✔ M2 exact artificial docstring is allowed "\n" (12.422ms)
+✔ M2 adjacent credential remains rejected "\n" (2.0927ms)
+✔ M2 exact artificial docstring is allowed "\r\n" (1.2248ms)
+✔ M2 adjacent credential remains rejected "\r\n" (1.0627ms)
+✔ missing provider and non-Python remain blocked (0.8024ms)
+✔ unknown Args after candidate revokes pending (1.0262ms)
+✔ artificial M2 operation create (32.1899ms)
+✔ artificial M2 operation plan (16.2069ms)
+✔ artificial M2 operation restore (20.2193ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1181.4732

@@ -1,0 +1,65 @@
+{
+  "task": "HP-03-M2-S1-S2",
+  "inputHandoff": "8039d5e65c3a4aa0784ab4e96261cca4fa1a1cac",
+  "baseline": "70428520228adcac3ac66a2cfb857667b7b69aed",
+  "codeSha": "416120afbf2446463864e8292d1423e493055944",
+  "status": "implementation-committed; independent review and compatibility/incident blockers remain",
+  "s1EffectiveRed": true,
+  "s2Implemented": true,
+  "s2AllGatesPassed": false,
+  "currentNode": "v24.19.0",
+  "currentFull": {
+    "pass": 819,
+    "fail": 0,
+    "exitCode": 0
+  },
+  "node18": "v18.20.8",
+  "node18Focused": {
+    "pass": 115,
+    "fail": 0,
+    "exitCode": 0
+  },
+  "node18Full": {
+    "tests": 705,
+    "pass": 682,
+    "fail": 19,
+    "cancelled": 4,
+    "exitCode": 1
+  },
+  "baselineNode18Full": {
+    "tests": 590,
+    "pass": 567,
+    "fail": 19,
+    "cancelled": 4,
+    "exitCode": 1
+  },
+  "sameNode18FailureLabels": true,
+  "packageConsumers": {
+    "pureModules": "passed both runtimes",
+    "omitDevPlugin": "missing host dependency; not standalone plugin success",
+    "explicitHost": "plugin/sdk 1.18.15 imports passed both runtimes"
+  },
+  "realTemplatesRead": false,
+  "realFilesRescanned": false,
+  "realProfileOperationsExecuted": false,
+  "pluginRegistered": false,
+  "snapshotPublished": false,
+  "executionIncident": {
+    "npmPrefixOmitted": true,
+    "userHomePackageFilesModified": true,
+    "originalStateRestored": false,
+    "details": "EXECUTION-INCIDENT.md"
+  },
+  "remainingBlocked": [
+    "M2 real four candidates",
+    "HP-006",
+    "HP-022/023",
+    "172 unknown findings",
+    "RY-03",
+    "Node18 existing full-suite compatibility",
+    "user-home npm execution incident review"
+  ],
+  "hp03Complete": false,
+  "hp04Complete": false,
+  "migrationComplete": false
+}

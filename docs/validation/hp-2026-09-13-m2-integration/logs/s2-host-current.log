@@ -1,0 +1,8 @@
+device register|list|show|rename|reconnect|audit|snapshot|restore|fetch|publish
+Shared: --connection <local-file> --workspace-id <id>
+audit: [--output <new-json-file>]
+snapshot: [--output <new-directory>]
+restore: --snapshot <directory> [--apply] [--prefer-source (first restore only)]
+publish: --path <sync/devices/... or sync/profiles/...> (repeatable)
+Restore transfers personal files only; extension installation and project transfer require separate verification.
+{"node":"v24.19.0","host":true,"versions":{"@lezer/python":"1.1.18","@lezer/common":"1.5.2","@lezer/lr":"1.4.10","@lezer/highlight":"1.2.3","@opencode-ai/plugin":"1.18.15","@opencode-ai/sdk":"1.18.15"},"passed":true}

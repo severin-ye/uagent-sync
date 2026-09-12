@@ -1,0 +1,46 @@
+✔ composition preserves neighboring credential password (8.6604ms)
+✔ composition preserves neighboring credential PASSWORD=("SYNTHETIC_NONEMPTY") (1.629ms)
+✔ composition preserves neighboring credential "apiKey": (1.0374ms)
+✔ composition preserves neighboring credential const (0.9349ms)
+✔ composition preserves neighboring credential token (1.6142ms)
+✔ composition preserves neighboring credential Bearer (1.3778ms)
+✔ composition preserves neighboring credential SYNTHETIC_REDACTED_TOKEN (0.748ms)
+✔ composition preserves neighboring credential PASSWORD=None, (0.9363ms)
+✔ missing and forged contexts exactly preserve old findings (5.6059ms)
+✔ prefix/Bearer inside exact policy text cannot be masked (1.1559ms)
+✔ byte validation precedes lossy decode; actual replacement character is valid UTF8 (1.711ms)
+✔ recognized M13 environment lookup composes; unproven annotations abstain (1.4836ms)
+✖ inert None must not hide a second sensitive value on the same line (6.3872ms)
+✔ provider throws, fake sessions and missing source fail closed without leaking errors (0.3498ms)
+✔ factory concurrency, once per operation, previews and apply reload policy (54.3038ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 14
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 382.9832
+
+✖ failing tests:
+
+test at test\profile-m2-composition.test.ts:1:4321
+✖ inert None must not hide a second sensitive value on the same line (6.3872ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+    assert.ok(scanProfileContent(content,'x.py',session).findings.length)
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-composition.test.ts:54:163)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

@@ -1,0 +1,9 @@
+{
+  "sha256": "4b66c57dbb87e0ff62637af1d966ef4823b1f71eea2e539be7a53811279005fa",
+  "filename": "uagent-sync-2.1.1.tgz",
+  "published": false,
+  "realTemplatesIncluded": false,
+  "consumerLocation": "separate public temporary roots outside user-home ancestry",
+  "omitDevPluginImport": "ERR_MODULE_NOT_FOUND (host dependency absent)",
+  "explicitHostPluginImport": "passed Node 18.20.8 and 24.19.0 with plugin/SDK 1.18.15"
+}

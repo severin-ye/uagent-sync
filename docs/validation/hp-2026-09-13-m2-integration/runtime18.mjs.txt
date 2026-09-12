@@ -1,0 +1,4 @@
+import {spawnSync} from 'node:child_process';
+const runtime='<USER_HOME>/m2g0e/runtime18/node-v18.20.8-win-x64';
+const env={...process.env};for(const key of Object.keys(env))if(key.toLowerCase()==='path')env[key]=runtime+';'+env[key];
+const r=spawnSync(runtime+'/node.exe',process.argv.slice(2),{env,stdio:'inherit'});process.exit(r.status??1);

@@ -1,0 +1,62 @@
+✖ M2 exact artificial docstring is allowed "\n" (4.7878ms)
+✔ M2 adjacent credential remains rejected "\n" (1.1859ms)
+✖ M2 exact artificial docstring is allowed "\r\n" (0.786ms)
+✔ M2 adjacent credential remains rejected "\r\n" (0.357ms)
+✔ missing provider and non-Python remain blocked (0.376ms)
+✔ unknown Args after candidate revokes pending (0.1761ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 4
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 658.7898
+
+✖ failing tests:
+
+test at test\profile-m2-integration.test.ts:7:792
+✖ M2 exact artificial docstring is allowed "\n" (4.7878ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + [
+  +   {
+  +     rule: 'sensitive-assignment'
+  +   }
+  + ]
+  - []
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-integration.test.ts:19:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { rule: 'sensitive-assignment' } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-m2-integration.test.ts:7:792
+✖ M2 exact artificial docstring is allowed "\r\n" (0.786ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + [
+  +   {
+  +     rule: 'sensitive-assignment'
+  +   }
+  + ]
+  - []
+
+      at TestContext.<anonymous> (<CHECKOUT>\test\profile-m2-integration.test.ts:19:12)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { rule: 'sensitive-assignment' } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

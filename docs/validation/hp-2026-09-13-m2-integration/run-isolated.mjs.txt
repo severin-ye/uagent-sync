@@ -1,0 +1,12 @@
+import {spawnSync} from 'node:child_process';
+import fs from 'node:fs';
+const [label,cwd,cmd,...args]=process.argv.slice(2), home='<USER_HOME>/m2ish', ev='<USER_HOME>/m2ise';
+const env={...process.env,USERPROFILE:home,HOME:home,APPDATA:home+'/a',LOCALAPPDATA:home+'/l',CODEX_HOME:home+'/c',XDG_CONFIG_HOME:home+'/x',TEMP:home+'/t',TMP:home+'/t',npm_config_cache:home+'/n',npm_config_userconfig:home+'/u.rc',npm_config_globalconfig:home+'/g.rc',npm_config_prefix:home+'/prefix'};
+for(const k of ['UAGENT_SYNC_WORKSPACE_ROOT','OPENCODE_SYNC_WORKSPACE_ROOT','OPENCODE_CONFIG_DIR','OPENCODE_HOME','NODE_OPTIONS'])delete env[k];
+for(const k of ['HOME','APPDATA','LOCALAPPDATA','CODEX_HOME','XDG_CONFIG_HOME','TEMP','npm_config_cache'])fs.mkdirSync(env[k],{recursive:true});
+const keys=['USERPROFILE','HOME','APPDATA','LOCALAPPDATA','CODEX_HOME','XDG_CONFIG_HOME','TEMP','TMP','npm_config_cache','npm_config_userconfig','npm_config_globalconfig','UAGENT_SYNC_WORKSPACE_ROOT','OPENCODE_SYNC_WORKSPACE_ROOT','OPENCODE_CONFIG_DIR','OPENCODE_HOME'];
+fs.writeFileSync(ev+'/'+label+'-pre-env.json',JSON.stringify({cwd,selected:Object.fromEntries(keys.map(k=>[k,env[k]??null])),hasOwn:Object.fromEntries(keys.map(k=>[k,Object.hasOwn(env,k)]))},null,2));
+const r=spawnSync(cmd,args,{cwd,env,encoding:'utf8',maxBuffer:64*1024*1024,shell:cmd.endsWith('.cmd')});
+fs.writeFileSync(ev+'/'+label+'.log',(r.stdout??'')+(r.stderr??''));
+fs.writeFileSync(ev+'/'+label+'.json',JSON.stringify({cmd,args,cwd,status:r.status,signal:r.signal,error:r.error?.message},null,2));
+console.log(JSON.stringify({label,status:r.status,tail:((r.stdout??'')+(r.stderr??'')).slice(-2600)}));process.exitCode=r.status??1;

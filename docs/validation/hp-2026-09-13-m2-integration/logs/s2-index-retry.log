@@ -1,0 +1,20 @@
+[2Kanalyzer runner identity changed (stamped schema 4, this build uses schema 4); forcing a full rebuild so the index provenance matches the analyzer and dependency/native runtime that produced it.
+[2K  Skipped 1 large files (>512KB, likely generated/vendored)
+[2K  - docs/validation/honor-2026-09-11-plan-review/additional-syntax.json
+[2K  Set GITNEXUS_MAX_FILE_SIZE=<KB> to include files above the default cap.
+[2KRebuilt the graph and FTS while reusing cached parser output for 160 file(s) (parse cache 93+1.6.11). For same-version capture/query development changes, increment SCHEMA_BUMP in src/storage/parse-cache.ts to invalidate parser output.
+[2KParse cache: pruned 9 stale chunk entries
+
+  Repository indexed successfully (27.2s)
+
+  6,100 nodes | 13,437 edges | 158 clusters | 403 flows
+  <CHECKOUT>
+
+
+  GitNexus Analyzer (1.6.11)
+
+  GitNexus Analyzer (1.6.11)
+(node:62476) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+{"level":40,"time":1789232507007,"name":"gitnexus","msg":"[scope-resolution] 410 property read/write site(s) name a field that IS defined in this workspace, but only in another language, so per-language inference declined to link them. Queries for these fields return an empty result that does NOT mean \"unused\" — it means the definition anchor is in a different language. Affected: analysisId (javascript), content (javascript), counts (javascript), stagedDecisions (javascript), OPENCODE_SYNC_WORKSPACE_ROOT (typescript), TMP (typescript), action (typescript), actions (typescript), activeState (typescript), agent (typescript), …"}
+{"level":40,"time":1789232507136,"name":"gitnexus","truncation":{"truncated":true,"entryPointCandidatesDropped":161,"entryPointsUnexplored":17,"walksCutByBudget":43,"tracesDepthCapped":0,"calleesDropped":2049,"processesDropped":0},"msg":"[processes] 403 flows reported, but whole flows are MISSING: 161 of 361 candidate entry point(s) never ranked in, 17 ranked entry point(s) never traced, 0 deduplicated flow(s) dropped at maxProcesses, 0 trace(s) cut at maxTraceDepth, 2049 callee(s) skipped at maxBranching, 43 walk(s) cut by the per-entry trace budget. An absent flow does NOT mean the code path does not exist."}
