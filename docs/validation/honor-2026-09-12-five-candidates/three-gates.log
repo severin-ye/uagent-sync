@@ -1,0 +1,74 @@
+{"variant":"quoted-comment","expectedRefusalFailures":["collect rejection","collect no artifact","restore rejection","restore bytes unchanged","restore baseline unchanged","publish rejection","publish no additional Git calls"],"calls":2}
+{"variant":"quoted-template","expectedRefusalFailures":["collect rejection","collect no artifact","restore rejection","restore bytes unchanged","restore baseline unchanged","publish rejection","publish no additional Git calls"],"calls":2}
+✖ RY-C5-01 quoted-comment (114.2116ms)
+✖ RY-C5-01 quoted-template (69.759ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 0
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 557.1947
+
+✖ failing tests:
+
+test at ..\..\..\AppData\Local\Temp\honor-c5-probe-r4nmi93v\three-gates.test.ts:2:1774
+✖ RY-C5-01 quoted-comment (114.2116ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + [
+  +   'collect rejection',
+  +   'collect no artifact',
+  +   'restore rejection',
+  +   'restore bytes unchanged',
+  +   'restore baseline unchanged',
+  +   'publish rejection',
+  +   'publish no additional Git calls'
+  + ]
+  - []
+
+      at TestContext.<anonymous> (<PROBE_ROOT>\three-gates.test.ts:59:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.start (node:internal/test_runner/test:1177:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'collect rejection', 'collect no artifact', 'restore rejection', 'restore bytes unchanged', 'restore baseline unchanged', 'publish rejection', 'publish no additional Git calls' ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\..\AppData\Local\Temp\honor-c5-probe-r4nmi93v\three-gates.test.ts:2:1774
+✖ RY-C5-01 quoted-template (69.759ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + [
+  +   'collect rejection',
+  +   'collect no artifact',
+  +   'restore rejection',
+  +   'restore bytes unchanged',
+  +   'restore baseline unchanged',
+  +   'publish rejection',
+  +   'publish no additional Git calls'
+  + ]
+  - []
+
+      at TestContext.<anonymous> (<PROBE_ROOT>\three-gates.test.ts:59:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'collect rejection', 'collect no artifact', 'restore rejection', 'restore bytes unchanged', 'restore baseline unchanged', 'publish rejection', 'publish no additional Git calls' ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

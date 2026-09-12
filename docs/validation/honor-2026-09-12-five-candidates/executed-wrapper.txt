@@ -1,0 +1,133 @@
+$ErrorActionPreference = 'Stop'
+
+$RunRoot = '<ISOLATED_ROOT>'
+$SourceRepo = '<HONOR_USER>\Codelib-severin\2_Business\uagent-sync'
+$CloneRoot = Join-Path $RunRoot 'repo'
+$LogRoot = Join-Path $RunRoot 'evidence'
+$IsolatedRoot = Join-Path $RunRoot 'isolated-profile'
+
+[IO.Directory]::CreateDirectory($LogRoot) | Out-Null
+[IO.Directory]::CreateDirectory($IsolatedRoot) | Out-Null
+
+$env:USERPROFILE = $IsolatedRoot
+$env:HOME = $IsolatedRoot
+$env:APPDATA = Join-Path $IsolatedRoot 'AppData\Roaming'
+$env:LOCALAPPDATA = Join-Path $IsolatedRoot 'AppData\Local'
+$env:CODEX_HOME = Join-Path $IsolatedRoot '.codex'
+$env:XDG_CONFIG_HOME = Join-Path $IsolatedRoot '.config'
+$env:TMP = Join-Path $IsolatedRoot 'tmp'
+$env:TEMP = $env:TMP
+$env:NPM_CONFIG_CACHE = Join-Path $IsolatedRoot 'npm-cache'
+$env:NPM_CONFIG_USERCONFIG = Join-Path $IsolatedRoot 'npm-userconfig'
+$env:NPM_CONFIG_GLOBALCONFIG = Join-Path $IsolatedRoot 'npm-globalconfig'
+Remove-Item Env:UAGENT_SYNC_WORKSPACE_ROOT -ErrorAction SilentlyContinue
+Remove-Item Env:OPENCODE_SYNC_WORKSPACE_ROOT -ErrorAction SilentlyContinue
+
+@(
+  $env:APPDATA,
+  $env:LOCALAPPDATA,
+  $env:CODEX_HOME,
+  $env:XDG_CONFIG_HOME,
+  $env:TMP,
+  $env:NPM_CONFIG_CACHE
+) | ForEach-Object { [IO.Directory]::CreateDirectory($_) | Out-Null }
+
+$script:CommandIndex = 0
+$script:CommandRecords = @()
+$Utf8NoBom = [Text.UTF8Encoding]::new($false)
+
+function Quote-Display([string]$Value) {
+  if ($Value -match '[\s\"'']') {
+    return '"' + $Value.Replace('"', '\"') + '"'
+  }
+  return $Value
+}
+
+function Invoke-Captured {
+  param(
+    [Parameter(Mandatory)][string]$Name,
+    [Parameter(Mandatory)][string]$WorkingDirectory,
+    [Parameter(Mandatory)][string]$Executable,
+    [Parameter(Mandatory)][string[]]$Arguments
+  )
+
+  $script:CommandIndex++
+  $Prefix = '{0:D2}-{1}' -f $script:CommandIndex, $Name
+  $StdoutPath = Join-Path $LogRoot ($Prefix + '.stdout.log')
+  $StderrPath = Join-Path $LogRoot ($Prefix + '.stderr.log')
+  $SnapshotPath = Join-Path $LogRoot ($Prefix + '.env.json')
+  $ExitPath = Join-Path $LogRoot ($Prefix + '.exitcode.txt')
+  $CommandPath = Join-Path $LogRoot ($Prefix + '.command.txt')
+  $DisplayCommand = (($Executable) + ' ' + (($Arguments | ForEach-Object { Quote-Display $_ }) -join ' ')).Trim()
+
+  $Snapshot = [ordered]@{
+    timestamp = [DateTimeOffset]::Now.ToString('o')
+    command = $DisplayCommand
+    workingDirectory = $WorkingDirectory
+    USERPROFILE = $env:USERPROFILE
+    HOME = $env:HOME
+    APPDATA = $env:APPDATA
+    LOCALAPPDATA = $env:LOCALAPPDATA
+    CODEX_HOME = $env:CODEX_HOME
+    XDG_CONFIG_HOME = $env:XDG_CONFIG_HOME
+    TMP = $env:TMP
+    TEMP = $env:TEMP
+    NPM_CONFIG_CACHE = $env:NPM_CONFIG_CACHE
+    NPM_CONFIG_USERCONFIG = $env:NPM_CONFIG_USERCONFIG
+    NPM_CONFIG_GLOBALCONFIG = $env:NPM_CONFIG_GLOBALCONFIG
+    UAGENT_SYNC_WORKSPACE_ROOT = [Environment]::GetEnvironmentVariable('UAGENT_SYNC_WORKSPACE_ROOT', 'Process')
+    OPENCODE_SYNC_WORKSPACE_ROOT = [Environment]::GetEnvironmentVariable('OPENCODE_SYNC_WORKSPACE_ROOT', 'Process')
+  }
+  [IO.File]::WriteAllText($SnapshotPath, ($Snapshot | ConvertTo-Json -Depth 4), $Utf8NoBom)
+  [IO.File]::WriteAllText($CommandPath, $DisplayCommand, $Utf8NoBom)
+
+  Push-Location $WorkingDirectory
+  try {
+    & $Executable @Arguments 1> $StdoutPath 2> $StderrPath
+    $ExitCode = $LASTEXITCODE
+  }
+  catch {
+    [IO.File]::AppendAllText($StderrPath, ($_ | Out-String), $Utf8NoBom)
+    $ExitCode = if ($LASTEXITCODE) { $LASTEXITCODE } else { 9001 }
+  }
+  finally {
+    Pop-Location
+  }
+
+  [IO.File]::WriteAllText($ExitPath, [string]$ExitCode, $Utf8NoBom)
+  $script:CommandRecords += [ordered]@{
+    index = $script:CommandIndex
+    name = $Name
+    command = $DisplayCommand
+    workingDirectory = $WorkingDirectory
+    exitCode = $ExitCode
+    stdout = [IO.Path]::GetFileName($StdoutPath)
+    stderr = [IO.Path]::GetFileName($StderrPath)
+    environment = [IO.Path]::GetFileName($SnapshotPath)
+  }
+  Write-Host ("[{0}] exit={1} {2}" -f $Prefix, $ExitCode, $DisplayCommand)
+  return $ExitCode
+}
+
+Invoke-Captured -Name 'clone' -WorkingDirectory $RunRoot -Executable 'git' -Arguments @('clone', '--no-hardlinks', '--no-checkout', $SourceRepo, $CloneRoot) | Out-Null
+Invoke-Captured -Name 'checkout-detach' -WorkingDirectory $CloneRoot -Executable 'git' -Arguments @('checkout', '--detach', '04672a6314d66c745bb11819e90f71b5ced0d3d0') | Out-Null
+Invoke-Captured -Name 'head' -WorkingDirectory $CloneRoot -Executable 'git' -Arguments @('rev-parse', 'HEAD') | Out-Null
+Invoke-Captured -Name 'base' -WorkingDirectory $CloneRoot -Executable 'git' -Arguments @('rev-parse', '1ad915b9b9a45289dd9540408907ce593982e227') | Out-Null
+Invoke-Captured -Name 'diff-name-status' -WorkingDirectory $CloneRoot -Executable 'git' -Arguments @('diff', '--name-status', '1ad915b9b9a45289dd9540408907ce593982e227..HEAD') | Out-Null
+Invoke-Captured -Name 'diff-stat' -WorkingDirectory $CloneRoot -Executable 'git' -Arguments @('diff', '--stat', '1ad915b9b9a45289dd9540408907ce593982e227..HEAD') | Out-Null
+Invoke-Captured -Name 'source-tree-sha' -WorkingDirectory $CloneRoot -Executable 'git' -Arguments @('rev-parse', 'HEAD^{tree}') | Out-Null
+Invoke-Captured -Name 'npm-ci' -WorkingDirectory $CloneRoot -Executable 'npm.cmd' -Arguments @('ci', '--ignore-scripts', '--no-audit', '--no-fund') | Out-Null
+Invoke-Captured -Name 'npm-build' -WorkingDirectory $CloneRoot -Executable 'npm.cmd' -Arguments @('run', 'build') | Out-Null
+Invoke-Captured -Name 'five-files' -WorkingDirectory $CloneRoot -Executable 'node.exe' -Arguments @('--import', 'tsx', '--test', 'test/profile-secret-scan-five.test.ts', 'test/profile-secret-scan-boundary.test.ts', 'test/profile-secret-scan-m13.test.ts', 'test/profile-secret-scan.test.ts', 'test/secret-scan-m0.test.ts') | Out-Null
+Invoke-Captured -Name 'npm-test' -WorkingDirectory $CloneRoot -Executable 'npm.cmd' -Arguments @('test') | Out-Null
+Invoke-Captured -Name 'final-status' -WorkingDirectory $CloneRoot -Executable 'git' -Arguments @('status', '--short', '--branch') | Out-Null
+Invoke-Captured -Name 'final-diff' -WorkingDirectory $CloneRoot -Executable 'git' -Arguments @('diff', '--no-ext-diff') | Out-Null
+
+[IO.File]::WriteAllText((Join-Path $LogRoot 'command-records.json'), ($script:CommandRecords | ConvertTo-Json -Depth 5), $Utf8NoBom)
+Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $LogRoot 'run-regression.ps1') -Force
+
+$Failures = @($script:CommandRecords | Where-Object { $_.exitCode -ne 0 })
+Write-Host ("Evidence: {0}" -f $LogRoot)
+Write-Host ("Commands: {0}; failures: {1}" -f $script:CommandRecords.Count, $Failures.Count)
+if ($Failures.Count -gt 0) { exit 1 }
+exit 0

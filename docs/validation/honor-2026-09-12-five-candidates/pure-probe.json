@@ -1,0 +1,42 @@
+[
+  {
+    "name": "control-safe",
+    "text": "const client = new Anthropic({ apiKey: \"your-api-key\" });",
+    "validJs": true,
+    "blocked": false,
+    "error": "",
+    "normalized": "const client = new Anthropic({ apiKey:                });"
+  },
+  {
+    "name": "unquoted-template",
+    "text": "const client = new Anthropic({ apiKey: \"your-api-key\" });\nconst other={apiKey: `SYNTHETIC_NONEMPTY`};",
+    "validJs": true,
+    "blocked": true,
+    "error": "Secret scan blocked fixture.ts: sensitive-assignment@2",
+    "normalized": "const client = new Anthropic({ apiKey:                });\nconst other={apiKey: `SYNTHETIC_NONEMPTY`};"
+  },
+  {
+    "name": "quoted-template",
+    "text": "const client = new Anthropic({ apiKey: \"your-api-key\" });\nconst other={\"apiKey\": `SYNTHETIC_NONEMPTY`};",
+    "validJs": true,
+    "blocked": false,
+    "error": "",
+    "normalized": "const client = new Anthropic({ apiKey:                });\nconst other={\"apiKey\": `SYNTHETIC_NONEMPTY`};"
+  },
+  {
+    "name": "quoted-comment",
+    "text": "const client = new Anthropic({ apiKey: \"your-api-key\" });\nconst other={\"apiKey\": /* note */ \"SYNTHETIC_NONEMPTY\"};",
+    "validJs": true,
+    "blocked": false,
+    "error": "",
+    "normalized": "const client = new Anthropic({ apiKey:                });\nconst other={\"apiKey\": /* note */ \"SYNTHETIC_NONEMPTY\"};"
+  },
+  {
+    "name": "quoted-simple",
+    "text": "const client = new Anthropic({ apiKey: \"your-api-key\" });\nconst other={\"apiKey\": \"SYNTHETIC_NONEMPTY\"};",
+    "validJs": true,
+    "blocked": true,
+    "error": "Secret scan blocked fixture.ts: sensitive-assignment@2",
+    "normalized": "const client = new Anthropic({ apiKey:                });\nconst other={\"apiKey\": \"SYNTHETIC_NONEMPTY\"};"
+  }
+]

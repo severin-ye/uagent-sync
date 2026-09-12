@@ -1,0 +1,32 @@
+{
+  "task": "RY-10",
+  "sourceSha": "04672a6314d66c745bb11819e90f71b5ced0d3d0",
+  "inputSha": "84e63a2da48876501a214683eebc527fecfb0965",
+  "baselineSha": "1ad915b9b9a45289dd9540408907ce593982e227",
+  "buildExit": 0,
+  "focused": {
+    "pass": 121,
+    "fail": 0,
+    "exit": 0
+  },
+  "full": {
+    "pass": 539,
+    "fail": 0,
+    "exit": 0
+  },
+  "additionalSecurityTests": {
+    "pass": 0,
+    "fail": 2,
+    "exit": 1
+  },
+  "review": "blocked",
+  "finding": "RY-C5-01",
+  "TSForms": "bounded syntax supported; adjacent credential protection incomplete",
+  "deferred": [
+    "HP-001",
+    "HP-004",
+    "HP-005"
+  ],
+  "realCollection": false,
+  "migrationComplete": false
+}

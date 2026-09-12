@@ -1,0 +1,30 @@
+[
+  {
+    "variant": "comment",
+    "scope": "tail-only",
+    "text": "const other={\"apiKey\": /* note */ \"SYNTHETIC_NONEMPTY\"};",
+    "baseline": "allowed",
+    "current": "allowed"
+  },
+  {
+    "variant": "comment",
+    "scope": "with-allowed-form",
+    "text": "const client = new Anthropic({ apiKey: \"your-api-key\" });\nconst other={\"apiKey\": /* note */ \"SYNTHETIC_NONEMPTY\"};",
+    "baseline": "Secret scan blocked fixture.ts: sensitive-assignment@1",
+    "current": "allowed"
+  },
+  {
+    "variant": "template",
+    "scope": "tail-only",
+    "text": "const other={\"apiKey\": `SYNTHETIC_NONEMPTY`};",
+    "baseline": "allowed",
+    "current": "allowed"
+  },
+  {
+    "variant": "template",
+    "scope": "with-allowed-form",
+    "text": "const client = new Anthropic({ apiKey: \"your-api-key\" });\nconst other={\"apiKey\": `SYNTHETIC_NONEMPTY`};",
+    "baseline": "Secret scan blocked fixture.ts: sensitive-assignment@1",
+    "current": "allowed"
+  }
+]

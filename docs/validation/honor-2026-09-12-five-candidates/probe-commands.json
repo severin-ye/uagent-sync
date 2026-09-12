@@ -1,0 +1,23 @@
+{
+  "sourceSha": "04672a6314d66c745bb11819e90f71b5ced0d3d0",
+  "sourceDiffFromMain": [],
+  "pureFunctionProbe": {
+    "exit": 0,
+    "source": "main src verified equal to source SHA"
+  },
+  "baselineComparison": {
+    "exit": 0,
+    "baseSha": "1ad915b9b9a45289dd9540408907ce593982e227",
+    "current": "independent clone source"
+  },
+  "threeGates": {
+    "command": "node --import tsx --test <PROBE_ROOT>/three-gates.test.ts",
+    "exit": 1,
+    "tests": 2,
+    "failed": 2,
+    "source": "independent clone source",
+    "environment": "All user/app/Codex/tmp/npm paths under <PROBE_ROOT>/isolated; UAGENT and OPENCODE root explicitly removed",
+    "network": "mock only"
+  },
+  "evidencePreparationIssue": "Initial script copy used Python temp root unlike Node temp root; source JSON not found. Corrected explicit paths before running tests; no source changes or real-state writes."
+}

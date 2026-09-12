@@ -1,0 +1,132 @@
+[
+  {
+    "index": 1,
+    "name": "clone",
+    "command": "git clone --no-hardlinks --no-checkout <HONOR_USER>\\Codelib-severin\\2_Business\\uagent-sync <ISOLATED_ROOT>\\repo",
+    "workingDirectory": "<ISOLATED_ROOT>",
+    "exitCode": 0,
+    "stdout": "01-clone.stdout.log",
+    "stderr": "01-clone.stderr.log",
+    "environment": "01-clone.env.json"
+  },
+  {
+    "index": 2,
+    "name": "checkout-detach",
+    "command": "git checkout --detach 04672a6314d66c745bb11819e90f71b5ced0d3d0",
+    "workingDirectory": "<ISOLATED_ROOT>\\repo",
+    "exitCode": 0,
+    "stdout": "02-checkout-detach.stdout.log",
+    "stderr": "02-checkout-detach.stderr.log",
+    "environment": "02-checkout-detach.env.json"
+  },
+  {
+    "index": 3,
+    "name": "head",
+    "command": "git rev-parse HEAD",
+    "workingDirectory": "<ISOLATED_ROOT>\\repo",
+    "exitCode": 0,
+    "stdout": "03-head.stdout.log",
+    "stderr": "03-head.stderr.log",
+    "environment": "03-head.env.json"
+  },
+  {
+    "index": 4,
+    "name": "base",
+    "command": "git rev-parse 1ad915b9b9a45289dd9540408907ce593982e227",
+    "workingDirectory": "<ISOLATED_ROOT>\\repo",
+    "exitCode": 0,
+    "stdout": "04-base.stdout.log",
+    "stderr": "04-base.stderr.log",
+    "environment": "04-base.env.json"
+  },
+  {
+    "index": 5,
+    "name": "diff-name-status",
+    "command": "git diff --name-status 1ad915b9b9a45289dd9540408907ce593982e227..HEAD",
+    "workingDirectory": "<ISOLATED_ROOT>\\repo",
+    "exitCode": 0,
+    "stdout": "05-diff-name-status.stdout.log",
+    "stderr": "05-diff-name-status.stderr.log",
+    "environment": "05-diff-name-status.env.json"
+  },
+  {
+    "index": 6,
+    "name": "diff-stat",
+    "command": "git diff --stat 1ad915b9b9a45289dd9540408907ce593982e227..HEAD",
+    "workingDirectory": "<ISOLATED_ROOT>\\repo",
+    "exitCode": 0,
+    "stdout": "06-diff-stat.stdout.log",
+    "stderr": "06-diff-stat.stderr.log",
+    "environment": "06-diff-stat.env.json"
+  },
+  {
+    "index": 7,
+    "name": "source-tree-sha",
+    "command": "git rev-parse HEAD^{tree}",
+    "workingDirectory": "<ISOLATED_ROOT>\\repo",
+    "exitCode": 0,
+    "stdout": "07-source-tree-sha.stdout.log",
+    "stderr": "07-source-tree-sha.stderr.log",
+    "environment": "07-source-tree-sha.env.json"
+  },
+  {
+    "index": 8,
+    "name": "npm-ci",
+    "command": "npm.cmd ci --ignore-scripts --no-audit --no-fund",
+    "workingDirectory": "<ISOLATED_ROOT>\\repo",
+    "exitCode": 0,
+    "stdout": "08-npm-ci.stdout.log",
+    "stderr": "08-npm-ci.stderr.log",
+    "environment": "08-npm-ci.env.json"
+  },
+  {
+    "index": 9,
+    "name": "npm-build",
+    "command": "npm.cmd run build",
+    "workingDirectory": "<ISOLATED_ROOT>\\repo",
+    "exitCode": 0,
+    "stdout": "09-npm-build.stdout.log",
+    "stderr": "09-npm-build.stderr.log",
+    "environment": "09-npm-build.env.json"
+  },
+  {
+    "index": 10,
+    "name": "five-files",
+    "command": "node.exe --import tsx --test test/profile-secret-scan-five.test.ts test/profile-secret-scan-boundary.test.ts test/profile-secret-scan-m13.test.ts test/profile-secret-scan.test.ts test/secret-scan-m0.test.ts",
+    "workingDirectory": "<ISOLATED_ROOT>\\repo",
+    "exitCode": 0,
+    "stdout": "10-five-files.stdout.log",
+    "stderr": "10-five-files.stderr.log",
+    "environment": "10-five-files.env.json"
+  },
+  {
+    "index": 11,
+    "name": "npm-test",
+    "command": "npm.cmd test",
+    "workingDirectory": "<ISOLATED_ROOT>\\repo",
+    "exitCode": 0,
+    "stdout": "11-npm-test.stdout.log",
+    "stderr": "11-npm-test.stderr.log",
+    "environment": "11-npm-test.env.json"
+  },
+  {
+    "index": 12,
+    "name": "final-status",
+    "command": "git status --short --branch",
+    "workingDirectory": "<ISOLATED_ROOT>\\repo",
+    "exitCode": 0,
+    "stdout": "12-final-status.stdout.log",
+    "stderr": "12-final-status.stderr.log",
+    "environment": "12-final-status.env.json"
+  },
+  {
+    "index": 13,
+    "name": "final-diff",
+    "command": "git diff --no-ext-diff",
+    "workingDirectory": "<ISOLATED_ROOT>\\repo",
+    "exitCode": 0,
+    "stdout": "13-final-diff.stdout.log",
+    "stderr": "13-final-diff.stderr.log",
+    "environment": "13-final-diff.env.json"
+  }
+]
