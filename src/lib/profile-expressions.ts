@@ -145,7 +145,9 @@ export function recognizeProfileExpressions(content: string, source: string): { 
     const placeholders = typescriptPlaceholders(content, source, region, tokens);
     for (let i = 0; i < tokens.length; i++) {
       const key = tokens[i];
-      if (placeholders && key.text === 'apiKey' && tokens[i + 1]?.text === ':') {
+      // Quoted field tokens need the same refusal guard. They do not enter the
+      // unquoted constructor allow-map; string contents are never decoded.
+      if (placeholders && /^(?:apiKey|"apiKey"|'apiKey')$/.test(key.text) && tokens[i + 1]?.text === ':') {
         const literal = placeholders.get(key);
         if (literal) {
           // Only the exact literal is masked; comments and neighboring fields
