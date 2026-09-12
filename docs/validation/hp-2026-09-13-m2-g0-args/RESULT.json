@@ -1,0 +1,46 @@
+{
+  "task": "HP-03-M2-G0-ARGS",
+  "finding": "RY-G0-01",
+  "inputSha": "f26fda70d4f96a78c6c46e21b7bd6756bd126010",
+  "prototypeFixSha": "eaf93ff1c2f51038bb00a8a6c963727d386f3c26",
+  "productionSourceSha": "70428520228adcac3ac66a2cfb857667b7b69aed",
+  "conclusion": "prototype-only-fix-passed-hp-pending-honor",
+  "redPerRuntime": {
+    "tests": 7,
+    "pass": 4,
+    "fail": 3,
+    "exit": 1
+  },
+  "newPairsBeforeCurrent": {
+    "tests": 18,
+    "pass": 10,
+    "fail": 8,
+    "allowRegression": 6,
+    "refusalRegression": 4
+  },
+  "greenPerRuntime": {
+    "tests": 82,
+    "pass": 82,
+    "fail": 0,
+    "exit": 0,
+    "original": 57,
+    "honor": 7,
+    "newPairs": 18
+  },
+  "runtimes": [
+    "v24.19.0",
+    "v18.20.8"
+  ],
+  "packedImportPerRuntimeExit": 0,
+  "originalTestsChanged": false,
+  "honorTestsChanged": false,
+  "providerChanged": false,
+  "productionChanged": false,
+  "realTemplatesRead": false,
+  "realFilesRescanned": false,
+  "threeEntrypointsTested": false,
+  "m2Allowed": false,
+  "hp03Complete": false,
+  "hp04Complete": false,
+  "migrationComplete": false
+}

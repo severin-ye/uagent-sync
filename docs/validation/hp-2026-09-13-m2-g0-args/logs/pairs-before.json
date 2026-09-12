@@ -1,0 +1,10 @@
+{
+  "cmd": "node",
+  "args": [
+    "--test",
+    "args-pairs.test.mjs"
+  ],
+  "cwd": "<LOCAL>/m2g1p",
+  "status": 1,
+  "signal": null
+}

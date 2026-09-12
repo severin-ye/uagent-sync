@@ -1,0 +1,9 @@
+{
+  "cmd": "<LOCAL>/m2g0e/runtime18/node-v18.20.8-win-x64/node.exe",
+  "args": [
+    "--version"
+  ],
+  "cwd": "<LOCAL>/m2g1p",
+  "status": 0,
+  "signal": null
+}

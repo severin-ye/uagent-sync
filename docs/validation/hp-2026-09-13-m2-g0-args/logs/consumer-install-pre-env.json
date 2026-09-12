@@ -1,0 +1,39 @@
+{
+  "cwd": "<LOCAL>/m2g1c",
+  "selected": {
+    "HONOR_G0_MODULE": "<LOCAL>/m2g1p/index.mjs",
+    "USERPROFILE": "<LOCAL>/m2g1h",
+    "HOME": "<LOCAL>/m2g1h",
+    "APPDATA": "<LOCAL>/m2g1h/a",
+    "LOCALAPPDATA": "<LOCAL>/m2g1h/l",
+    "CODEX_HOME": "<LOCAL>/m2g1h/c",
+    "XDG_CONFIG_HOME": "<LOCAL>/m2g1h/x",
+    "TEMP": "<LOCAL>/m2g1h/t",
+    "TMP": "<LOCAL>/m2g1h/t",
+    "npm_config_cache": "<LOCAL>/m2g1h/n",
+    "npm_config_userconfig": "<LOCAL>/m2g1h/u.rc",
+    "npm_config_globalconfig": "<LOCAL>/m2g1h/g.rc",
+    "UAGENT_SYNC_WORKSPACE_ROOT": null,
+    "OPENCODE_SYNC_WORKSPACE_ROOT": null,
+    "OPENCODE_CONFIG_DIR": null,
+    "OPENCODE_HOME": null
+  },
+  "hasOwn": {
+    "HONOR_G0_MODULE": true,
+    "USERPROFILE": true,
+    "HOME": true,
+    "APPDATA": true,
+    "LOCALAPPDATA": true,
+    "CODEX_HOME": true,
+    "XDG_CONFIG_HOME": true,
+    "TEMP": true,
+    "TMP": true,
+    "npm_config_cache": true,
+    "npm_config_userconfig": true,
+    "npm_config_globalconfig": true,
+    "UAGENT_SYNC_WORKSPACE_ROOT": false,
+    "OPENCODE_SYNC_WORKSPACE_ROOT": false,
+    "OPENCODE_CONFIG_DIR": false,
+    "OPENCODE_HOME": false
+  }
+}

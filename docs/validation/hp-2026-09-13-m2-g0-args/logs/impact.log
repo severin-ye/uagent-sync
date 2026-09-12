@@ -1,0 +1,8 @@
+file:///<LOCAL>/m2g1e/impact.mjs:3
+const backend=new LocalBackend();if(!await backend.init())throw Error('No isolated index');
+                                                                ^
+
+Error: No isolated index
+    at file:///<LOCAL>/m2g1e/impact.mjs:3:65
+
+Node.js v24.19.0

@@ -1,0 +1,196 @@
+✔ allow multiple preserves LF CRLF UTF16 positions (8.12ms)
+✔ allow returns preserves LF CRLF UTF16 positions (1.3622ms)
+✔ allow raises preserves LF CRLF UTF16 positions (2.2701ms)
+✔ allow both preserves LF CRLF UTF16 positions (1.0178ms)
+✔ allow blanks preserves LF CRLF UTF16 positions (1.145ms)
+✔ allow differentIndent preserves LF CRLF UTF16 positions (0.5965ms)
+✖ abstain afterSibling also revokes prior candidate (1.4175ms)
+✔ abstain nestedAfterSibling also revokes prior candidate (1.635ms)
+✖ abstain beforeWithBlank also revokes prior candidate (0.6048ms)
+✖ abstain unknownParameter also revokes prior candidate (0.6478ms)
+✖ abstain duplicateSibling also revokes prior candidate (0.8174ms)
+✖ abstain indentationChange also revokes prior candidate (0.3164ms)
+✔ abstain targetUnderReturns also revokes prior candidate (1.1592ms)
+✔ abstain unknownSection also revokes prior candidate (1.301ms)
+✖ abstain indentedHeader also revokes prior candidate (0.4743ms)
+✖ abstain headerWithinExample also revokes prior candidate (0.3802ms)
+✔ abstain continuation also revokes prior candidate (0.9317ms)
+✖ abstain afterSections also revokes prior candidate (0.2241ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 10
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 136.2627
+
+✖ failing tests:
+
+test at args-pairs.test.mjs:31:48
+✖ abstain afterSibling also revokes prior candidate (1.4175ms)
+  AssertionError [ERR_ASSERTION]: afterSibling
+
+  1 !== 0
+
+      at TestContext.<anonymous> (file:///<LOCAL>/m2g1p/args-pairs.test.mjs:31:258)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at args-pairs.test.mjs:31:48
+✖ abstain beforeWithBlank also revokes prior candidate (0.6048ms)
+  AssertionError [ERR_ASSERTION]: beforeWithBlank
+
+  1 !== 0
+
+      at TestContext.<anonymous> (file:///<LOCAL>/m2g1p/args-pairs.test.mjs:31:258)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at args-pairs.test.mjs:31:48
+✖ abstain unknownParameter also revokes prior candidate (0.6478ms)
+  AssertionError [ERR_ASSERTION]: unknownParameter
+
+  1 !== 0
+
+      at TestContext.<anonymous> (file:///<LOCAL>/m2g1p/args-pairs.test.mjs:31:258)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at args-pairs.test.mjs:31:48
+✖ abstain duplicateSibling also revokes prior candidate (0.8174ms)
+  AssertionError [ERR_ASSERTION]: duplicateSibling
+
+  1 !== 0
+
+      at TestContext.<anonymous> (file:///<LOCAL>/m2g1p/args-pairs.test.mjs:31:258)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at args-pairs.test.mjs:31:48
+✖ abstain indentationChange also revokes prior candidate (0.3164ms)
+  AssertionError [ERR_ASSERTION]: indentationChange
+
+  1 !== 0
+
+      at TestContext.<anonymous> (file:///<LOCAL>/m2g1p/args-pairs.test.mjs:31:258)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at args-pairs.test.mjs:31:48
+✖ abstain indentedHeader also revokes prior candidate (0.4743ms)
+  AssertionError [ERR_ASSERTION]: indentedHeader
+
+  1 !== 0
+
+      at TestContext.<anonymous> (file:///<LOCAL>/m2g1p/args-pairs.test.mjs:31:258)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at args-pairs.test.mjs:31:48
+✖ abstain headerWithinExample also revokes prior candidate (0.3802ms)
+  AssertionError [ERR_ASSERTION]: headerWithinExample
+
+  1 !== 0
+
+      at TestContext.<anonymous> (file:///<LOCAL>/m2g1p/args-pairs.test.mjs:31:258)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at args-pairs.test.mjs:31:48
+✖ abstain afterSections also revokes prior candidate (0.2241ms)
+  AssertionError [ERR_ASSERTION]: afterSections
+
+  1 !== 0
+
+      at TestContext.<anonymous> (file:///<LOCAL>/m2g1p/args-pairs.test.mjs:31:258)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
