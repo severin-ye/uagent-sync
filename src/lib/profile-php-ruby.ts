@@ -98,7 +98,7 @@ export function recognizePhpRubyExamples(content: string, source: string): { nor
     // Comments remain raw. Also reject assignment-like sensitive comment text
     // even when a value prefix would evade the baseline line-oriented rule.
     for (const comment of parsed.comments) {
-      for (const match of comment.text.matchAll(/\b(?:apiKey|api_key|token|password|secret)\b["']?\s*[:=]/g)) reject(comment.start + match.index!);
+      for (const match of comment.text.matchAll(/\b(?:api[_-]?key|token|secret|password|authorization)\b["']?\s*[:=]/gi)) reject(comment.start + match.index!);
     }
   }
   return { normalized: output.join(''), rejectedLines: [...rejectedLines] };
