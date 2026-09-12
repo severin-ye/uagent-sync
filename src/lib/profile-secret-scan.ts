@@ -16,6 +16,11 @@ export function scanProfileContent(content: string, source: string, context?: Pr
   if (isM2Enabled(context) && /\.py$/i.test(source)) {
     // Catch only the M2 recognition/validation boundary. Base/M13 failures propagate.
     try {
+      // M2's layout/residual grammar supports only space, tab, CR and LF.
+      // In particular Python form feed is legal between assignment tokens, but
+      // is not covered by that grammar. Revoke every M2 span, even when the
+      // unsupported whitespace occurs after a candidate or inside a comment.
+      if (/[^\S \t\r\n]|\u0085/u.test(content)) throw Error();
       const result = analyze(content, context.template);
       m2 = result.reason;
       let end = 0;
