@@ -1,0 +1,15 @@
+{
+  "label": "probe-current",
+  "cmd": "C:\\Program Files\\nodejs\\node.EXE",
+  "args": [
+    "probe.mjs",
+    "<LOCAL>\\artifacts\\trees-current.json",
+    "--expect-raw-rejection"
+  ],
+  "cwd": "<LOCAL>\\p",
+  "status": 1,
+  "startedUtc": "2026-09-12T15:12:30.912380+00:00",
+  "finishedUtc": "2026-09-12T15:12:31.031768+00:00",
+  "stdoutLog": "logs/probe-current.log",
+  "preEnv": "logs/probe-current-pre-env.json"
+}

@@ -1,0 +1,16 @@
+{
+  "label": "consumer-install",
+  "cmd": "C:\\Program Files\\nodejs\\npm.cmd",
+  "args": [
+    "install",
+    "--ignore-scripts",
+    "--no-audit",
+    "--no-fund"
+  ],
+  "cwd": "<LOCAL>\\c",
+  "status": 0,
+  "startedUtc": "2026-09-12T15:12:34.978502+00:00",
+  "finishedUtc": "2026-09-12T15:12:36.991954+00:00",
+  "stdoutLog": "logs/consumer-install.log",
+  "preEnv": "logs/consumer-install-pre-env.json"
+}

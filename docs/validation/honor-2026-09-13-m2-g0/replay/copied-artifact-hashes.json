@@ -1,0 +1,56 @@
+[
+  {
+    "path": "prototype/index.mjs",
+    "expected": "819eba057e71aeff965e2d3161168e47a8f377d97d4421eee55c175212d34195",
+    "actual": "819eba057e71aeff965e2d3161168e47a8f377d97d4421eee55c175212d34195",
+    "match": true
+  },
+  {
+    "path": "prototype/inventory.mjs",
+    "expected": "cb84692e5aa2bfa50b19fb64dadd805a5e418f5edda681d91e710ae130265ab6",
+    "actual": "cb84692e5aa2bfa50b19fb64dadd805a5e418f5edda681d91e710ae130265ab6",
+    "match": true
+  },
+  {
+    "path": "prototype/package-lock.json",
+    "expected": "18c9198030a21e9c85f952c94bcb0d036cec0a4010e4a04dcc74233d44a6784b",
+    "actual": "18c9198030a21e9c85f952c94bcb0d036cec0a4010e4a04dcc74233d44a6784b",
+    "match": true
+  },
+  {
+    "path": "prototype/package.json",
+    "expected": "a2e5ca567415d249d3e70fa3699ec5b7030d854e4ac010edfacb59b8f5251cb9",
+    "actual": "a2e5ca567415d249d3e70fa3699ec5b7030d854e4ac010edfacb59b8f5251cb9",
+    "match": true
+  },
+  {
+    "path": "prototype/parser.mjs",
+    "expected": "e965c470f96e378c577756ef60fcd8855909f50e1d273a62ae706d43a0d62c92",
+    "actual": "e965c470f96e378c577756ef60fcd8855909f50e1d273a62ae706d43a0d62c92",
+    "match": true
+  },
+  {
+    "path": "prototype/probe.mjs",
+    "expected": "886cc5d186f2edb7562e684b496a3be0557793813ca9e5d24824039324a62841",
+    "actual": "886cc5d186f2edb7562e684b496a3be0557793813ca9e5d24824039324a62841",
+    "match": true
+  },
+  {
+    "path": "prototype/provider.mjs",
+    "expected": "164514435be2a41bf329b43eb7b4ff997e6dc245c3f2d7775ca7b7c6a01c4dcb",
+    "actual": "164514435be2a41bf329b43eb7b4ff997e6dc245c3f2d7775ca7b7c6a01c4dcb",
+    "match": true
+  },
+  {
+    "path": "prototype/test.mjs",
+    "expected": "735703767cb6fc22482e946ba56bbc84b27d8ec15c5046599a735b8c77120db7",
+    "actual": "735703767cb6fc22482e946ba56bbc84b27d8ec15c5046599a735b8c77120db7",
+    "match": true
+  },
+  {
+    "path": "consumer/smoke.mjs",
+    "expected": "c96d660553e94d2d0d32e196e9c60e70f657117673cab19d4b73e6c6cee3af51",
+    "actual": "c96d660553e94d2d0d32e196e9c60e70f657117673cab19d4b73e6c6cee3af51",
+    "match": true
+  }
+]

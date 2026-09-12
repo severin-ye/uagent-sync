@@ -1,0 +1,32 @@
+{
+  "task": "RY-15",
+  "inputSha": "c25f06c441cf0dbd3345e0475ed6c3ecd4540760",
+  "productionSourceSha": "70428520228adcac3ac66a2cfb857667b7b69aed",
+  "conclusion": "failed-independent-prototype-review",
+  "finding": "RY-G0-01",
+  "runtimes": [
+    "v24.16.0",
+    "v18.20.8"
+  ],
+  "standardTestsPerRuntime": {
+    "fail": 0,
+    "pass": 57,
+    "exit": 0
+  },
+  "additionalPerRuntime": {
+    "fail": 3,
+    "pass": 4,
+    "exit": 1
+  },
+  "packedImportPerRuntimeExit": 0,
+  "strictProbePerRuntimeExit": 1,
+  "strictFailureIsExpectedAssertion": true,
+  "productionChanged": false,
+  "realTemplatesRead": false,
+  "realFilesRescanned": false,
+  "threeEntrypointsTested": false,
+  "m2Allowed": false,
+  "hp03Complete": false,
+  "hp04Complete": false,
+  "migrationComplete": false
+}

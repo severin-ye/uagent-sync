@@ -1,0 +1,13 @@
+{
+  "label": "consumer-current",
+  "cmd": "C:\\Program Files\\nodejs\\node.EXE",
+  "args": [
+    "smoke.mjs"
+  ],
+  "cwd": "<LOCAL>\\c",
+  "status": 0,
+  "startedUtc": "2026-09-12T15:12:36.996693+00:00",
+  "finishedUtc": "2026-09-12T15:12:37.104328+00:00",
+  "stdoutLog": "logs/consumer-current.log",
+  "preEnv": "logs/consumer-current-pre-env.json"
+}

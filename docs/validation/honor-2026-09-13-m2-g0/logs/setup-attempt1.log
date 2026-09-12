@@ -1,0 +1,5 @@
+2026-09-13 infrastructure setup attempt 1 failed before replay.
+- TEMP Node 18 discovery command had a PowerShell parser error (empty pipeline element).
+- prototype copy used LiteralPath with a wildcard, so no prototype files were copied.
+- artifact path was mistyped as hp-2026-Line13-m2-g0.
+Recovery: one corrected copy/discovery pass was used. This is infrastructure evidence, not a prototype red test.

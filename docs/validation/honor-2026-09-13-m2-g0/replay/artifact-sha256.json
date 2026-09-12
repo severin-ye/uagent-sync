@@ -1,0 +1,42 @@
+[
+  {
+    "path": "prototype/index.mjs",
+    "sha256": "819eba057e71aeff965e2d3161168e47a8f377d97d4421eee55c175212d34195"
+  },
+  {
+    "path": "prototype/inventory.mjs",
+    "sha256": "cb84692e5aa2bfa50b19fb64dadd805a5e418f5edda681d91e710ae130265ab6"
+  },
+  {
+    "path": "prototype/package-lock.json",
+    "sha256": "18c9198030a21e9c85f952c94bcb0d036cec0a4010e4a04dcc74233d44a6784b"
+  },
+  {
+    "path": "prototype/package.json",
+    "sha256": "a2e5ca567415d249d3e70fa3699ec5b7030d854e4ac010edfacb59b8f5251cb9"
+  },
+  {
+    "path": "prototype/parser.mjs",
+    "sha256": "e965c470f96e378c577756ef60fcd8855909f50e1d273a62ae706d43a0d62c92"
+  },
+  {
+    "path": "prototype/probe.mjs",
+    "sha256": "886cc5d186f2edb7562e684b496a3be0557793813ca9e5d24824039324a62841"
+  },
+  {
+    "path": "prototype/provider.mjs",
+    "sha256": "164514435be2a41bf329b43eb7b4ff997e6dc245c3f2d7775ca7b7c6a01c4dcb"
+  },
+  {
+    "path": "prototype/test.mjs",
+    "sha256": "735703767cb6fc22482e946ba56bbc84b27d8ec15c5046599a735b8c77120db7"
+  },
+  {
+    "path": "consumer/observed-package-lock.json",
+    "sha256": "4f36d5f80df03a8368cddeacd84f1d804e10c729b4af358a8a9c4b64b2eca28f"
+  },
+  {
+    "path": "consumer/smoke.mjs",
+    "sha256": "c96d660553e94d2d0d32e196e9c60e70f657117673cab19d4b73e6c6cee3af51"
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "copiedHashChecks": 9,
+  "commands": 12,
+  "failures": [],
+  "expectedProbeFailures": [
+    "probe-current",
+    "probe-node18"
+  ],
+  "result": "pass",
+  "inventoryOutput": "{\n  \"node\": \"v24.16.0\",\n  \"platform\": \"win32\",\n  \"arch\": \"x64\",\n  \"lockSha256\": \"18c9198030a21e9c85f952c94bcb0d036cec0a4010e4a04dcc74233d44a6784b\",\n  \"packages\": [\n    {\n      \"path\": \"node_modules/@lezer/common\",\n      \"name\": \"@lezer/common\",\n      \"version\": \"1.5.2\",\n      \"lockedVersion\": \"1.5.2\",\n      \"license\": \"MIT\",\n      \"resolved\": \"https://registry.npmjs.org/@lezer/common/-/common-1.5.2.tgz\",\n      \"integrity\": \"sha512-sxQE460fPZyU3sdc8lafxiPwJHBzZRy/udNFynGQky1SePYBdhkBl1kOagA9uT3pxR8K09bOrmTUqA9wb/PjSQ==\"\n    },\n    {\n      \"path\": \"node_modules/@lezer/highlight\",\n      \"name\": \"@lezer/highlight\",\n      \"version\": \"1.2.3\",\n      \"lockedVersion\": \"1.2.3\",\n      \"license\": \"MIT\",\n      \"resolved\": \"https://registry.npmjs.org/@lezer/highlight/-/highlight-1.2.3.tgz\",\n      \"integrity\": \"sha512-qXdH7UqTvGfdVBINrgKhDsVTJTxactNNxLk7+UMwZhU13lMHaOBlJe9Vqp907ya56Y3+ed2tlqzys7jDkTmW0g==\"\n    },\n    {\n      \"path\": \"node_modules/@lezer/lr\",\n      \"name\": \"@lezer/lr\",\n      \"version\": \"1.4.10\",\n      \"lockedVersion\": \"1.4.10\",\n      \"license\": \"MIT\",\n      \"resolved\": \"https://registry.npmjs.org/@lezer/lr/-/lr-1.4.10.tgz\",\n      \"integrity\": \"sha512-rnCpTIBafOx4mRp43xOxDJbFipJm/c0cia/V5TiGlhmMa+wsSdoGmUN3w5Bqrks/09Q/D4tNAmWaT8p6NRi77A==\"\n    },\n    {\n      \"path\": \"node_modules/@lezer/python\",\n      \"name\": \"@lezer/python\",\n      \"version\": \"1.1.18\",\n      \"lockedVersion\": \"1.1.18\",\n      \"license\": \"MIT\",\n      \"resolved\": \"https://registry.npmjs.org/@lezer/python/-/python-1.1.18.tgz\",\n      \"integrity\": \"sha512-31FiUrU7z9+d/ElGQLJFXl+dKOdx0jALlP3KEOsGTex8mvj+SoE1FgItcHWK/axkxCHGUSpqIHt6JAWfWu9Rhg==\"\n    }\n  ]\n}\n"
+}

@@ -1,0 +1,24 @@
+[{"id":"safe","accepted":true,"errorNodes":0,"tree":"Script(FunctionDefinition(def,VariableName,ParamList(\"(\",VariableName,AssignOp,None,\")\"),Body(\":\",ExpressionStatement(String),PassStatement(pass))))"},{"id":"shortBefore","accepted":true,"errorNodes":0,"tree":"Script(AssignStatement(VariableName,AssignOp,String),FunctionDefinition(def,VariableName,ParamList(\"(\",VariableName,AssignOp,None,\")\"),Body(\":\",ExpressionStatement(String),PassStatement(pass))))"},{"id":"shortAfter","accepted":true,"errorNodes":0,"tree":"Script(FunctionDefinition(def,VariableName,ParamList(\"(\",VariableName,AssignOp,None,\")\"),Body(\":\",ExpressionStatement(String),PassStatement(pass))),AssignStatement(VariableName,AssignOp,String))"},{"id":"tripleBefore","accepted":false},{"id":"tripleAfter","accepted":false},{"id":"defaultOrder","accepted":true,"errorNodes":0,"tree":"Script(FunctionDefinition(def,VariableName,ParamList(\"(\",VariableName,AssignOp,Number,\",\",VariableName,\")\"),Body(\":\",PassStatement(pass))))"},{"id":"bareStar","accepted":true,"errorNodes":0,"tree":"Script(FunctionDefinition(def,VariableName,ParamList(\"(\",VariableName,\",\",\"*\",\")\"),Body(\":\",PassStatement(pass))))"},{"id":"defaultName","accepted":true,"errorNodes":0,"tree":"Script(FunctionDefinition(def,VariableName,ParamList(\"(\",VariableName,AssignOp,VariableName,\")\"),Body(\":\",PassStatement(pass))))"},{"id":"generic","accepted":true,"errorNodes":0,"tree":"Script(FunctionDefinition(def,VariableName,TypeParamList(\"[\",TypeParam(VariableName),\"]\"),ParamList(\"(\",VariableName,\")\"),Body(\":\",PassStatement(pass))))"},{"id":"comma","accepted":true,"errorNodes":0,"tree":"Script(FunctionDefinition(def,VariableName,ParamList(\"(\",VariableName,AssignOp,None,\")\"),Body(\":\",ExpressionStatement(String,\",\"),PassStatement(pass))))"}]
+
+[stderr]
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: strict alone must reject every unterminated short string (safety hypothesis)
+
+2 !== 0
+
+    at file:///<LOCAL>/p/probe.mjs:12:60
+    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)
+    at async node:internal/modules/esm/loader:633:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 2,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.16.0

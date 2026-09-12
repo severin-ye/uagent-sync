@@ -1,0 +1,71 @@
+✔ control: exact synthetic entry remains supported (4.1736ms)
+✔ postSyntax: LF and CRLF must return no M2 spans (1.0877ms)
+✔ postShortString: LF and CRLF must return no M2 spans (0.9995ms)
+✔ postBadSignature: LF and CRLF must return no M2 spans (1.0533ms)
+✖ nestedExample: LF and CRLF must return no M2 spans (1.1626ms)
+✖ unknownParagraph: LF and CRLF must return no M2 spans (0.5654ms)
+✖ priorThenNested: LF and CRLF must return no M2 spans (0.5383ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 4
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 134.1432
+
+✖ failing tests:
+
+test at additional-review.test.mjs:17:51
+✖ nestedExample: LF and CRLF must return no M2 spans (1.1626ms)
+  AssertionError [ERR_ASSERTION]: [{"lineEnding":"LF","result":{"spans":[{"from":73,"to":80,"line":5}],"reason":"ok"}},{"lineEnding":"CRLF","result":{"spans":[{"from":77,"to":84,"line":5}],"reason":"ok"}}]
+      at TestContext.<anonymous> (file:///<EXTRA>/additional-review.test.mjs:19:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at additional-review.test.mjs:17:51
+✖ unknownParagraph: LF and CRLF must return no M2 spans (0.5654ms)
+  AssertionError [ERR_ASSERTION]: [{"lineEnding":"LF","result":{"spans":[{"from":95,"to":102,"line":5}],"reason":"ok"}},{"lineEnding":"CRLF","result":{"spans":[{"from":99,"to":106,"line":5}],"reason":"ok"}}]
+      at TestContext.<anonymous> (file:///<EXTRA>/additional-review.test.mjs:19:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at additional-review.test.mjs:17:51
+✖ priorThenNested: LF and CRLF must return no M2 spans (0.5383ms)
+  AssertionError [ERR_ASSERTION]: [{"lineEnding":"LF","result":{"spans":[{"from":52,"to":59,"line":4},{"from":178,"to":185,"line":11}],"reason":"ok"}},{"lineEnding":"CRLF","result":{"spans":[{"from":55,"to":62,"line":4},{"from":188,"to":195,"line":11}],"reason":"ok"}}]
+      at TestContext.<anonymous> (file:///<EXTRA>/additional-review.test.mjs:19:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

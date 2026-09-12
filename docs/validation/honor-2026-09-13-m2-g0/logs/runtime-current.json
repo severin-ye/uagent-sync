@@ -1,0 +1,13 @@
+{
+  "label": "runtime-current",
+  "cmd": "C:\\Program Files\\nodejs\\node.EXE",
+  "args": [
+    "--version"
+  ],
+  "cwd": "<LOCAL>\\p",
+  "status": 0,
+  "startedUtc": "2026-09-12T15:12:28.043579+00:00",
+  "finishedUtc": "2026-09-12T15:12:28.106009+00:00",
+  "stdoutLog": "logs/runtime-current.log",
+  "preEnv": "logs/runtime-current-pre-env.json"
+}

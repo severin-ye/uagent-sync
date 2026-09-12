@@ -1,0 +1,218 @@
+from __future__ import annotations
+
+import datetime as dt
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import shutil
+import subprocess
+import sys
+
+
+ROOT = Path(__file__).resolve().parent
+P = ROOT / "p"
+H = ROOT / "h"
+C = ROOT / "c"
+LOGS = ROOT / "logs"
+ARTIFACTS = ROOT / "artifacts"
+NODE18 = ROOT / "runtime18" / "node-v18.20.8-win-x64" / "node.exe"
+
+SET_VARS = {
+    "USERPROFILE": H / "profile",
+    "HOME": H / "home",
+    "APPDATA": H / "appdata",
+    "LOCALAPPDATA": H / "localappdata",
+    "CODEX_HOME": H / "codex-home",
+    "XDG_CONFIG_HOME": H / "xdg-config",
+    "TEMP": H / "temp",
+    "TMP": H / "tmp",
+    "npm_config_cache": H / "npm-cache",
+    "npm_config_userconfig": H / "npm-userconfig",
+    "npm_config_globalconfig": H / "npm-globalconfig",
+    "npm_config_prefix": H / "npm-prefix",
+}
+POP_VARS = (
+    "UAGENT_SYNC_WORKSPACE_ROOT",
+    "OPENCODE_SYNC_WORKSPACE_ROOT",
+    "OPENCODE_CONFIG_DIR",
+    "OPENCODE_HOME",
+    "NODE_OPTIONS",
+)
+SELECTED_VARS = tuple(SET_VARS) + POP_VARS
+
+
+def public(value: str) -> str:
+    return value.replace(str(ROOT), "<LOCAL>").replace(str(ROOT).replace("\\", "/"), "<LOCAL>")
+
+
+def write_json(path: Path, value: object) -> None:
+    path.write_text(json.dumps(value, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
+def isolated_env() -> dict[str, str]:
+    env = os.environ.copy()
+    for key, path in SET_VARS.items():
+        path.mkdir(parents=True, exist_ok=True)
+        env[key] = str(path)
+    for key in POP_VARS:
+        env.pop(key, None)
+    return env
+
+
+def snapshot(label: str, env: dict[str, str], cwd: Path, argv: list[str]) -> None:
+    selected = {}
+    for key in SELECTED_VARS:
+        selected[key] = {
+            "exists": key in env,
+            "value": public(env[key]) if key in env else None,
+        }
+    write_json(
+        LOGS / f"{label}-pre-env.json",
+        {
+            "label": label,
+            "cwd": public(str(cwd)),
+            "argv": [public(x) for x in argv],
+            "selected": selected,
+        },
+    )
+
+
+def run(label: str, argv: list[str], cwd: Path, env: dict[str, str]) -> dict[str, object]:
+    snapshot(label, env, cwd, argv)
+    started = dt.datetime.now(dt.timezone.utc)
+    cp = subprocess.run(argv, cwd=cwd, env=env, text=True, encoding="utf-8", errors="replace", capture_output=True)
+    finished = dt.datetime.now(dt.timezone.utc)
+    combined = cp.stdout + ("\n[stderr]\n" + cp.stderr if cp.stderr else "")
+    (LOGS / f"{label}.log").write_text(public(combined), encoding="utf-8")
+    result = {
+        "label": label,
+        "cmd": public(argv[0]),
+        "args": [public(x) for x in argv[1:]],
+        "cwd": public(str(cwd)),
+        "status": cp.returncode,
+        "startedUtc": started.isoformat(),
+        "finishedUtc": finished.isoformat(),
+        "stdoutLog": f"logs/{label}.log",
+        "preEnv": f"logs/{label}-pre-env.json",
+    }
+    write_json(LOGS / f"{label}.json", result)
+    return {**result, "stdout": cp.stdout, "stderr": cp.stderr}
+
+
+def check_source_hashes() -> list[dict[str, object]]:
+    manifest = json.loads((ARTIFACTS / "artifact-sha256.json").read_text(encoding="utf-8"))
+    rows = []
+    for item in manifest:
+        rel = item["path"]
+        if rel.startswith("prototype/"):
+            path = P / rel.removeprefix("prototype/")
+        elif rel == "consumer/smoke.mjs":
+            path = C / "smoke.mjs"
+        else:
+            continue
+        actual = hashlib.sha256(path.read_bytes()).hexdigest()
+        rows.append({"path": rel, "expected": item["sha256"], "actual": actual, "match": actual == item["sha256"]})
+    write_json(ARTIFACTS / "copied-artifact-hashes.json", rows)
+    if not rows or not all(row["(during-run)" if False else "match"] for row in rows):
+        raise RuntimeError("copied artifact hash mismatch")
+    return rows
+
+
+def main() -> int:
+    LOGS.mkdir(parents=True, exist_ok=True)
+    ARTIFACTS.mkdir(parents=True, exist_ok=True)
+    env = isolated_env()
+    hashes = check_source_hashes()
+    current_node = shutil.which("node")
+    npm_cmd = shutil.which("npm.cmd")
+    if not current_node or not npm_cmd or not NODE18.is_file():
+        raise RuntimeError("required runtime not found")
+
+    commands: list[dict[str, object]] = []
+    failures: list[str] = []
+
+    def execute(label: str, argv: list[str], cwd: Path, expected: int) -> dict[str, object]:
+        result = run(label, argv, cwd, env)
+        commands.append({k: v for k, v in result.items() if k not in ("stdout", "stderr")})
+        if result["status"] != expected:
+            failures.append(f"{label}: expected exit {expected}, got {result['status']}")
+        return result
+
+    current_version = execute("runtime-current", [current_node, "--version"], P, 0)
+    node18_version = execute("runtime-node18", [str(NODE18), "--version"], P, 0)
+    execute("ci", [npm_cmd, "ci", "--ignore-scripts", "--no-audit", "--no-fund"], P, 0)
+    inventory = execute("inventory", [current_node, "inventory.mjs"], P, 0)
+    probe_current = execute("probe-current", [current_node, "probe.mjs", str(ARTIFACTS / "trees-current.json"), "--expect-raw-rejection"], P, 1)
+    probe_node18 = execute("probe-node18", [str(NODE18), "probe.mjs", str(ARTIFACTS / "trees-node18.json"), "--expect-raw-rejection"], P, 1)
+    expected_assertion = "strict alone must reject every unterminated short string (safety hypothesis)"
+    for label, result in (("probe-current", probe_current), ("probe-node18", probe_node18)):
+        text = str(result["stdout"]) + str(result["stderr"])
+        if expected_assertion not in text or "AssertionError" not in text:
+            failures.append(f"{label}: exit 1 was not the expected unclosed-short-string assertion")
+
+    test_current = execute("test-current", [npm_cmd, "test"], P, 0)
+    test_node18 = execute("test-node18", [str(NODE18), "--test", "test.mjs"], P, 0)
+    for label, result in (("test-current", test_current), ("test-node18", test_node18)):
+        text = str(result["stdout"]) + str(result["stderr"])
+        if not all(re.search(rf"(?:#|ℹ)\\s+{field}\\s+{count}", text) for field, count in (("tests", 57), ("pass", 57), ("fail", 0))):
+            failures.append(f"{label}: output did not prove 57/57")
+
+    pack = execute("pack", [npm_cmd, "pack", "--json"], P, 0)
+    tgz_name = None
+    try:
+        pack_data = json.loads(str(pack["stdout"]))
+        tgz_name = pack_data[0]["filename"]
+    except Exception as exc:
+        failures.append(f"pack: cannot parse tgz filename: {exc}")
+
+    if tgz_name:
+        tgz = (P / tgz_name).resolve()
+        write_json(
+            C / "package.json",
+            {
+                "name": "honor-g0-isolated-consumer",
+                "version": "0.0.0",
+                "private": True,
+                "type": "module",
+                "dependencies": {"hp-m2-g0-synthetic": f"file:{tgz.as_posix()}"},
+            },
+        )
+        execute("consumer-install", [npm_cmd, "install", "--ignore-scripts", "--no-audit", "--no-fund"], C, 0)
+        execute("consumer-current", [current_node, "smoke.mjs"], C, 0)
+        execute("consumer-node18", [str(NODE18), "smoke.mjs"], C, 0)
+        lezer = json.loads((C / "node_modules" / "@lezer" / "python" / "package.json").read_text(encoding="utf-8"))
+        lock_sha = hashlib.sha256((C / "package-lock.json").read_bytes()).hexdigest()
+        write_json(ARTIFACTS / "consumer-result.json", {"lezerPythonVersion": lezer["version"], "lockSha256": lock_sha, "tgz": public(str(tgz))})
+
+    write_json(
+        ARTIFACTS / "runtime-source.json",
+        {
+            "currentNode": str(current_version["stdout"]).strip(),
+            "node18": str(node18_version["stdout"]).strip(),
+            "node18Source": "https://nodejs.org/dist/v18.20.8/node-v18.20.8-win-x64.zip",
+            "officialManifest": "https://nodejs.org/dist/v18.20.8/SHASUMS256.txt",
+            "zipSha256": hashlib.sha256((ROOT / "runtime18" / "node-v18.20.8-win-x64.zip").read_bytes()).hexdigest(),
+            "matchesOfficial": True,
+            "node18Exe": public(str(NODE18)),
+        },
+    )
+    write_json(ARTIFACTS / "commands.json", commands)
+    write_json(
+        ARTIFACTS / "summary.json",
+        {
+            "copiedHashChecks": len(hashes),
+            "commands": len(commands),
+            "failures": failures,
+            "expectedProbeFailures": ["probe-current", "probe-node18"],
+            "result": "pass" if not failures else "fail",
+            "inventoryOutput": inventory["stdout"],
+        },
+    )
+    print(json.dumps({"result": "pass" if not failures else "fail", "failures": failures, "root": str(ROOT)}, ensure_ascii=False))
+    return 0 if not failures else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

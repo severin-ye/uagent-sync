@@ -1,0 +1,1011 @@
+{
+  "node": "v24.16.0",
+  "records": [
+    {
+      "id": "safe",
+      "input": "def sample(api_key=None):\n    \"\"\"\n    Args:\n        api_key: Synthetic description alpha\n    \"\"\"\n    pass\n",
+      "accepted": true,
+      "tree": "Script(FunctionDefinition(def,VariableName,ParamList(\"(\",VariableName,AssignOp,None,\")\"),Body(\":\",ExpressionStatement(String),PassStatement(pass))))",
+      "nodes": [
+        {
+          "name": "Script",
+          "from": 0,
+          "to": 106,
+          "error": false
+        },
+        {
+          "name": "FunctionDefinition",
+          "from": 0,
+          "to": 106,
+          "error": false,
+          "parent": "Script"
+        },
+        {
+          "name": "def",
+          "from": 0,
+          "to": 3,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "VariableName",
+          "from": 4,
+          "to": 10,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "ParamList",
+          "from": 10,
+          "to": 24,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "(",
+          "from": 10,
+          "to": 11,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "VariableName",
+          "from": 11,
+          "to": 18,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "AssignOp",
+          "from": 18,
+          "to": 19,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "None",
+          "from": 19,
+          "to": 23,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": ")",
+          "from": 23,
+          "to": 24,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "Body",
+          "from": 24,
+          "to": 106,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": ":",
+          "from": 24,
+          "to": 25,
+          "error": false,
+          "parent": "Body"
+        },
+        {
+          "name": "ExpressionStatement",
+          "from": 30,
+          "to": 96,
+          "error": false,
+          "parent": "Body"
+        },
+        {
+          "name": "String",
+          "from": 30,
+          "to": 96,
+          "error": false,
+          "parent": "ExpressionStatement"
+        },
+        {
+          "name": "PassStatement",
+          "from": 101,
+          "to": 105,
+          "error": false,
+          "parent": "Body"
+        },
+        {
+          "name": "pass",
+          "from": 101,
+          "to": 105,
+          "error": false,
+          "parent": "PassStatement"
+        }
+      ]
+    },
+    {
+      "id": "shortBefore",
+      "input": "broken = \"unfinished\ndef sample(api_key=None):\n    \"\"\"\n    Args:\n        api_key: Synthetic description alpha\n    \"\"\"\n    pass\n",
+      "accepted": true,
+      "tree": "Script(AssignStatement(VariableName,AssignOp,String),FunctionDefinition(def,VariableName,ParamList(\"(\",VariableName,AssignOp,None,\")\"),Body(\":\",ExpressionStatement(String),PassStatement(pass))))",
+      "nodes": [
+        {
+          "name": "Script",
+          "from": 0,
+          "to": 127,
+          "error": false
+        },
+        {
+          "name": "AssignStatement",
+          "from": 0,
+          "to": 20,
+          "error": false,
+          "parent": "Script"
+        },
+        {
+          "name": "VariableName",
+          "from": 0,
+          "to": 6,
+          "error": false,
+          "parent": "AssignStatement"
+        },
+        {
+          "name": "AssignOp",
+          "from": 7,
+          "to": 8,
+          "error": false,
+          "parent": "AssignStatement"
+        },
+        {
+          "name": "String",
+          "from": 9,
+          "to": 20,
+          "error": false,
+          "parent": "AssignStatement"
+        },
+        {
+          "name": "FunctionDefinition",
+          "from": 21,
+          "to": 127,
+          "error": false,
+          "parent": "Script"
+        },
+        {
+          "name": "def",
+          "from": 21,
+          "to": 24,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "VariableName",
+          "from": 25,
+          "to": 31,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "ParamList",
+          "from": 31,
+          "to": 45,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "(",
+          "from": 31,
+          "to": 32,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "VariableName",
+          "from": 32,
+          "to": 39,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "AssignOp",
+          "from": 39,
+          "to": 40,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "None",
+          "from": 40,
+          "to": 44,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": ")",
+          "from": 44,
+          "to": 45,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "Body",
+          "from": 45,
+          "to": 127,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": ":",
+          "from": 45,
+          "to": 46,
+          "error": false,
+          "parent": "Body"
+        },
+        {
+          "name": "ExpressionStatement",
+          "from": 51,
+          "to": 117,
+          "error": false,
+          "parent": "Body"
+        },
+        {
+          "name": "String",
+          "from": 51,
+          "to": 117,
+          "error": false,
+          "parent": "ExpressionStatement"
+        },
+        {
+          "name": "PassStatement",
+          "from": 122,
+          "to": 126,
+          "error": false,
+          "parent": "Body"
+        },
+        {
+          "name": "pass",
+          "from": 122,
+          "to": 126,
+          "error": false,
+          "parent": "PassStatement"
+        }
+      ]
+    },
+    {
+      "id": "shortAfter",
+      "input": "def sample(api_key=None):\n    \"\"\"\n    Args:\n        api_key: Synthetic description alpha\n    \"\"\"\n    pass\nbroken = \"unfinished\n",
+      "accepted": true,
+      "tree": "Script(FunctionDefinition(def,VariableName,ParamList(\"(\",VariableName,AssignOp,None,\")\"),Body(\":\",ExpressionStatement(String),PassStatement(pass))),AssignStatement(VariableName,AssignOp,String))",
+      "nodes": [
+        {
+          "name": "Script",
+          "from": 0,
+          "to": 127,
+          "error": false
+        },
+        {
+          "name": "FunctionDefinition",
+          "from": 0,
+          "to": 106,
+          "error": false,
+          "parent": "Script"
+        },
+        {
+          "name": "def",
+          "from": 0,
+          "to": 3,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "VariableName",
+          "from": 4,
+          "to": 10,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "ParamList",
+          "from": 10,
+          "to": 24,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "(",
+          "from": 10,
+          "to": 11,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "VariableName",
+          "from": 11,
+          "to": 18,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "AssignOp",
+          "from": 18,
+          "to": 19,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "None",
+          "from": 19,
+          "to": 23,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": ")",
+          "from": 23,
+          "to": 24,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "Body",
+          "from": 24,
+          "to": 106,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": ":",
+          "from": 24,
+          "to": 25,
+          "error": false,
+          "parent": "Body"
+        },
+        {
+          "name": "ExpressionStatement",
+          "from": 30,
+          "to": 96,
+          "error": false,
+          "parent": "Body"
+        },
+        {
+          "name": "String",
+          "from": 30,
+          "to": 96,
+          "error": false,
+          "parent": "ExpressionStatement"
+        },
+        {
+          "name": "PassStatement",
+          "from": 101,
+          "to": 105,
+          "error": false,
+          "parent": "Body"
+        },
+        {
+          "name": "pass",
+          "from": 101,
+          "to": 105,
+          "error": false,
+          "parent": "PassStatement"
+        },
+        {
+          "name": "AssignStatement",
+          "from": 106,
+          "to": 126,
+          "error": false,
+          "parent": "Script"
+        },
+        {
+          "name": "VariableName",
+          "from": 106,
+          "to": 112,
+          "error": false,
+          "parent": "AssignStatement"
+        },
+        {
+          "name": "AssignOp",
+          "from": 113,
+          "to": 114,
+          "error": false,
+          "parent": "AssignStatement"
+        },
+        {
+          "name": "String",
+          "from": 115,
+          "to": 126,
+          "error": false,
+          "parent": "AssignStatement"
+        }
+      ]
+    },
+    {
+      "id": "tripleBefore",
+      "input": "broken = \"\"\"unfinished\ndef sample(api_key=None):\n    \"\"\"\n    Args:\n        api_key: Synthetic description alpha\n    \"\"\"\n    pass\n",
+      "accepted": false,
+      "errorType": "SyntaxError"
+    },
+    {
+      "id": "tripleAfter",
+      "input": "def sample(api_key=None):\n    \"\"\"\n    Args:\n        api_key: Synthetic description alpha\n    \"\"\"\n    pass\nbroken = \"\"\"unfinished\n",
+      "accepted": false,
+      "errorType": "SyntaxError"
+    },
+    {
+      "id": "defaultOrder",
+      "input": "def f(a=1, api_key):\n    pass\n",
+      "accepted": true,
+      "tree": "Script(FunctionDefinition(def,VariableName,ParamList(\"(\",VariableName,AssignOp,Number,\",\",VariableName,\")\"),Body(\":\",PassStatement(pass))))",
+      "nodes": [
+        {
+          "name": "Script",
+          "from": 0,
+          "to": 30,
+          "error": false
+        },
+        {
+          "name": "FunctionDefinition",
+          "from": 0,
+          "to": 30,
+          "error": false,
+          "parent": "Script"
+        },
+        {
+          "name": "def",
+          "from": 0,
+          "to": 3,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "VariableName",
+          "from": 4,
+          "to": 5,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "ParamList",
+          "from": 5,
+          "to": 19,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "(",
+          "from": 5,
+          "to": 6,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "VariableName",
+          "from": 6,
+          "to": 7,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "AssignOp",
+          "from": 7,
+          "to": 8,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "Number",
+          "from": 8,
+          "to": 9,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": ",",
+          "from": 9,
+          "to": 10,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "VariableName",
+          "from": 11,
+          "to": 18,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": ")",
+          "from": 18,
+          "to": 19,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "Body",
+          "from": 19,
+          "to": 30,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": ":",
+          "from": 19,
+          "to": 20,
+          "error": false,
+          "parent": "Body"
+        },
+        {
+          "name": "PassStatement",
+          "from": 25,
+          "to": 29,
+          "error": false,
+          "parent": "Body"
+        },
+        {
+          "name": "pass",
+          "from": 25,
+          "to": 29,
+          "error": false,
+          "parent": "PassStatement"
+        }
+      ]
+    },
+    {
+      "id": "bareStar",
+      "input": "def f(api_key, *):\n    pass\n",
+      "accepted": true,
+      "tree": "Script(FunctionDefinition(def,VariableName,ParamList(\"(\",VariableName,\",\",\"*\",\")\"),Body(\":\",PassStatement(pass))))",
+      "nodes": [
+        {
+          "name": "Script",
+          "from": 0,
+          "to": 28,
+          "error": false
+        },
+        {
+          "name": "FunctionDefinition",
+          "from": 0,
+          "to": 28,
+          "error": false,
+          "parent": "Script"
+        },
+        {
+          "name": "def",
+          "from": 0,
+          "to": 3,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "VariableName",
+          "from": 4,
+          "to": 5,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "ParamList",
+          "from": 5,
+          "to": 17,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "(",
+          "from": 5,
+          "to": 6,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "VariableName",
+          "from": 6,
+          "to": 13,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": ",",
+          "from": 13,
+          "to": 14,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "*",
+          "from": 15,
+          "to": 16,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": ")",
+          "from": 16,
+          "to": 17,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "Body",
+          "from": 17,
+          "to": 28,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": ":",
+          "from": 17,
+          "to": 18,
+          "error": false,
+          "parent": "Body"
+        },
+        {
+          "name": "PassStatement",
+          "from": 23,
+          "to": 27,
+          "error": false,
+          "parent": "Body"
+        },
+        {
+          "name": "pass",
+          "from": 23,
+          "to": 27,
+          "error": false,
+          "parent": "PassStatement"
+        }
+      ]
+    },
+    {
+      "id": "defaultName",
+      "input": "def f(other=api_key):\n    pass\n",
+      "accepted": true,
+      "tree": "Script(FunctionDefinition(def,VariableName,ParamList(\"(\",VariableName,AssignOp,VariableName,\")\"),Body(\":\",PassStatement(pass))))",
+      "nodes": [
+        {
+          "name": "Script",
+          "from": 0,
+          "to": 31,
+          "error": false
+        },
+        {
+          "name": "FunctionDefinition",
+          "from": 0,
+          "to": 31,
+          "error": false,
+          "parent": "Script"
+        },
+        {
+          "name": "def",
+          "from": 0,
+          "to": 3,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "VariableName",
+          "from": 4,
+          "to": 5,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "ParamList",
+          "from": 5,
+          "to": 20,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "(",
+          "from": 5,
+          "to": 6,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "VariableName",
+          "from": 6,
+          "to": 11,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "AssignOp",
+          "from": 11,
+          "to": 12,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "VariableName",
+          "from": 12,
+          "to": 19,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": ")",
+          "from": 19,
+          "to": 20,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "Body",
+          "from": 20,
+          "to": 31,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": ":",
+          "from": 20,
+          "to": 21,
+          "error": false,
+          "parent": "Body"
+        },
+        {
+          "name": "PassStatement",
+          "from": 26,
+          "to": 30,
+          "error": false,
+          "parent": "Body"
+        },
+        {
+          "name": "pass",
+          "from": 26,
+          "to": 30,
+          "error": false,
+          "parent": "PassStatement"
+        }
+      ]
+    },
+    {
+      "id": "generic",
+      "input": "def f[T](api_key):\n    pass\n",
+      "accepted": true,
+      "tree": "Script(FunctionDefinition(def,VariableName,TypeParamList(\"[\",TypeParam(VariableName),\"]\"),ParamList(\"(\",VariableName,\")\"),Body(\":\",PassStatement(pass))))",
+      "nodes": [
+        {
+          "name": "Script",
+          "from": 0,
+          "to": 28,
+          "error": false
+        },
+        {
+          "name": "FunctionDefinition",
+          "from": 0,
+          "to": 28,
+          "error": false,
+          "parent": "Script"
+        },
+        {
+          "name": "def",
+          "from": 0,
+          "to": 3,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "VariableName",
+          "from": 4,
+          "to": 5,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "TypeParamList",
+          "from": 5,
+          "to": 8,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "[",
+          "from": 5,
+          "to": 6,
+          "error": false,
+          "parent": "TypeParamList"
+        },
+        {
+          "name": "TypeParam",
+          "from": 6,
+          "to": 7,
+          "error": false,
+          "parent": "TypeParamList"
+        },
+        {
+          "name": "VariableName",
+          "from": 6,
+          "to": 7,
+          "error": false,
+          "parent": "TypeParam"
+        },
+        {
+          "name": "]",
+          "from": 7,
+          "to": 8,
+          "error": false,
+          "parent": "TypeParamList"
+        },
+        {
+          "name": "ParamList",
+          "from": 8,
+          "to": 17,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "(",
+          "from": 8,
+          "to": 9,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "VariableName",
+          "from": 9,
+          "to": 16,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": ")",
+          "from": 16,
+          "to": 17,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "Body",
+          "from": 17,
+          "to": 28,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": ":",
+          "from": 17,
+          "to": 18,
+          "error": false,
+          "parent": "Body"
+        },
+        {
+          "name": "PassStatement",
+          "from": 23,
+          "to": 27,
+          "error": false,
+          "parent": "Body"
+        },
+        {
+          "name": "pass",
+          "from": 23,
+          "to": 27,
+          "error": false,
+          "parent": "PassStatement"
+        }
+      ]
+    },
+    {
+      "id": "comma",
+      "input": "def sample(api_key=None):\n    \"\"\"\n    Args:\n        api_key: Synthetic description alpha\n    \"\"\",\n    pass\n",
+      "accepted": true,
+      "tree": "Script(FunctionDefinition(def,VariableName,ParamList(\"(\",VariableName,AssignOp,None,\")\"),Body(\":\",ExpressionStatement(String,\",\"),PassStatement(pass))))",
+      "nodes": [
+        {
+          "name": "Script",
+          "from": 0,
+          "to": 107,
+          "error": false
+        },
+        {
+          "name": "FunctionDefinition",
+          "from": 0,
+          "to": 107,
+          "error": false,
+          "parent": "Script"
+        },
+        {
+          "name": "def",
+          "from": 0,
+          "to": 3,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "VariableName",
+          "from": 4,
+          "to": 10,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "ParamList",
+          "from": 10,
+          "to": 24,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": "(",
+          "from": 10,
+          "to": 11,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "VariableName",
+          "from": 11,
+          "to": 18,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "AssignOp",
+          "from": 18,
+          "to": 19,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "None",
+          "from": 19,
+          "to": 23,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": ")",
+          "from": 23,
+          "to": 24,
+          "error": false,
+          "parent": "ParamList"
+        },
+        {
+          "name": "Body",
+          "from": 24,
+          "to": 107,
+          "error": false,
+          "parent": "FunctionDefinition"
+        },
+        {
+          "name": ":",
+          "from": 24,
+          "to": 25,
+          "error": false,
+          "parent": "Body"
+        },
+        {
+          "name": "ExpressionStatement",
+          "from": 30,
+          "to": 97,
+          "error": false,
+          "parent": "Body"
+        },
+        {
+          "name": "String",
+          "from": 30,
+          "to": 96,
+          "error": false,
+          "parent": "ExpressionStatement"
+        },
+        {
+          "name": ",",
+          "from": 96,
+          "to": 97,
+          "error": false,
+          "parent": "ExpressionStatement"
+        },
+        {
+          "name": "PassStatement",
+          "from": 102,
+          "to": 106,
+          "error": false,
+          "parent": "Body"
+        },
+        {
+          "name": "pass",
+          "from": 102,
+          "to": 106,
+          "error": false,
+          "parent": "PassStatement"
+        }
+      ]
+    }
+  ]
+}

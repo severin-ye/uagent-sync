@@ -1,0 +1,79 @@
+{
+  "label": "test-node18",
+  "cwd": "<LOCAL>\\p",
+  "argv": [
+    "<LOCAL>\\runtime18\\node-v18.20.8-win-x64\\node.exe",
+    "--test",
+    "test.mjs"
+  ],
+  "selected": {
+    "USERPROFILE": {
+      "exists": true,
+      "value": "<LOCAL>\\h\\profile"
+    },
+    "HOME": {
+      "exists": true,
+      "value": "<LOCAL>\\h\\home"
+    },
+    "APPDATA": {
+      "exists": true,
+      "value": "<LOCAL>\\h\\appdata"
+    },
+    "LOCALAPPDATA": {
+      "exists": true,
+      "value": "<LOCAL>\\h\\localappdata"
+    },
+    "CODEX_HOME": {
+      "exists": true,
+      "value": "<LOCAL>\\h\\codex-home"
+    },
+    "XDG_CONFIG_HOME": {
+      "exists": true,
+      "value": "<LOCAL>\\h\\xdg-config"
+    },
+    "TEMP": {
+      "exists": true,
+      "value": "<LOCAL>\\h\\temp"
+    },
+    "TMP": {
+      "exists": true,
+      "value": "<LOCAL>\\h\\tmp"
+    },
+    "npm_config_cache": {
+      "exists": true,
+      "value": "<LOCAL>\\h\\npm-cache"
+    },
+    "npm_config_userconfig": {
+      "exists": true,
+      "value": "<LOCAL>\\h\\npm-userconfig"
+    },
+    "npm_config_globalconfig": {
+      "exists": true,
+      "value": "<LOCAL>\\h\\npm-globalconfig"
+    },
+    "npm_config_prefix": {
+      "exists": true,
+      "value": "<LOCAL>\\h\\npm-prefix"
+    },
+    "UAGENT_SYNC_WORKSPACE_ROOT": {
+      "exists": false,
+      "value": null
+    },
+    "OPENCODE_SYNC_WORKSPACE_ROOT": {
+      "exists": false,
+      "value": null
+    },
+    "OPENCODE_CONFIG_DIR": {
+      "exists": false,
+      "value": null
+    },
+    "OPENCODE_HOME": {
+      "exists": false,
+      "value": null
+    },
+    "NODE_OPTIONS": {
+      "exists": false,
+      "value": null
+    }
+  }
+}

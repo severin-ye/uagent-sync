@@ -1,0 +1,14 @@
+{
+  "label": "pack",
+  "cmd": "C:\\Program Files\\nodejs\\npm.cmd",
+  "args": [
+    "pack",
+    "--json"
+  ],
+  "cwd": "<LOCAL>\\p",
+  "status": 0,
+  "startedUtc": "2026-09-12T15:12:33.155986+00:00",
+  "finishedUtc": "2026-09-12T15:12:34.973759+00:00",
+  "stdoutLog": "logs/pack.log",
+  "preEnv": "logs/pack-pre-env.json"
+}

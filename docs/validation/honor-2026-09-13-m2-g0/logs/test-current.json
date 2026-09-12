@@ -1,0 +1,13 @@
+{
+  "label": "test-current",
+  "cmd": "C:\\Program Files\\nodejs\\npm.cmd",
+  "args": [
+    "test"
+  ],
+  "cwd": "<LOCAL>\\p",
+  "status": 0,
+  "startedUtc": "2026-09-12T15:12:31.299748+00:00",
+  "finishedUtc": "2026-09-12T15:12:32.771944+00:00",
+  "stdoutLog": "logs/test-current.log",
+  "preEnv": "logs/test-current-pre-env.json"
+}

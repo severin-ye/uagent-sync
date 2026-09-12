@@ -1,0 +1,15 @@
+{
+  "label": "probe-node18",
+  "cmd": "<LOCAL>\\runtime18\\node-v18.20.8-win-x64\\node.exe",
+  "args": [
+    "probe.mjs",
+    "<LOCAL>\\artifacts\\trees-node18.json",
+    "--expect-raw-rejection"
+  ],
+  "cwd": "<LOCAL>\\p",
+  "status": 1,
+  "startedUtc": "2026-09-12T15:12:31.038432+00:00",
+  "finishedUtc": "2026-09-12T15:12:31.277163+00:00",
+  "stdoutLog": "logs/probe-node18.log",
+  "preEnv": "logs/probe-node18-pre-env.json"
+}
