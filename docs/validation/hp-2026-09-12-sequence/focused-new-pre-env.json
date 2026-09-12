@@ -1,0 +1,15 @@
+{
+  "USERPROFILE": "<USER_ROOT>/hpsqh",
+  "HOME": "<USER_ROOT>/hpsqh",
+  "APPDATA": "<USER_ROOT>/hpsqh/AppData/Roaming",
+  "LOCALAPPDATA": "<USER_ROOT>/hpsqh/AppData/Local",
+  "CODEX_HOME": "<USER_ROOT>/hpsqh/.codex",
+  "XDG_CONFIG_HOME": "<USER_ROOT>/hpsqh/.config",
+  "TEMP": "<USER_ROOT>/hpsqh/tmp",
+  "TMP": "<USER_ROOT>/hpsqh/tmp",
+  "npm_config_cache": "<USER_ROOT>/hpsqh/npm-cache",
+  "npm_config_userconfig": "<USER_ROOT>/hpsqh/npmrc",
+  "npm_config_globalconfig": "<USER_ROOT>/hpsqh/npm-globalrc",
+  "UAGENT_SYNC_WORKSPACE_ROOT": null,
+  "OPENCODE_SYNC_WORKSPACE_ROOT": "<USER_ROOT>/hpseq"
+}

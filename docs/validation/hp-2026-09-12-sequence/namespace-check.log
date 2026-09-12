@@ -1,0 +1,1 @@
+{"candidate":"HP-001","line":16,"baselineHashMatches":true,"separatorCodePoints":[92],"consecutiveSeparators":false,"decision":"verified single U+005C; PHP is in scope; no decoding performed"}

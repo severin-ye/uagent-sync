@@ -1,0 +1,482 @@
+✖ SEQ ordered allow php 1 line 20 (4.2969ms)
+✖ SEQ ordered allow php 1 line 22 (0.3085ms)
+✖ SEQ ordered allow php 2 line 20 (0.2321ms)
+✖ SEQ ordered allow php 2 line 22 (0.1901ms)
+✖ SEQ multiline and multiple fences php (0.2904ms)
+✔ SEQ boundary refusal php 0 (0.4987ms)
+✔ SEQ boundary refusal php 1 (0.1733ms)
+✔ SEQ boundary refusal php 2 (0.1176ms)
+✔ SEQ boundary refusal php 3 (0.1194ms)
+✔ SEQ boundary refusal php 4 (0.1557ms)
+✔ SEQ boundary refusal php 5 (0.125ms)
+✔ SEQ boundary refusal php 6 (0.1038ms)
+✔ SEQ boundary refusal php 7 (0.0899ms)
+✔ SEQ boundary refusal php 8 (0.0943ms)
+✔ SEQ boundary refusal php 9 (0.0923ms)
+✔ SEQ boundary refusal php 10 (0.0744ms)
+✔ SEQ boundary refusal php 11 (0.0888ms)
+✔ SEQ boundary refusal php 12 (0.1086ms)
+✔ SEQ boundary refusal php 13 (0.09ms)
+✔ SEQ boundary refusal php 14 (0.0736ms)
+✔ SEQ boundary refusal php 15 (0.0758ms)
+✔ SEQ boundary refusal php 16 (0.0777ms)
+✔ SEQ boundary refusal php 17 (0.0757ms)
+✔ SEQ boundary refusal php 18 (0.0796ms)
+✔ SEQ boundary refusal php 19 (0.0865ms)
+✔ SEQ boundary refusal php 20 (0.074ms)
+✔ SEQ boundary refusal php 21 (0.071ms)
+✔ SEQ boundary refusal php 22 (0.0746ms)
+✔ SEQ boundary refusal php 23 (0.0998ms)
+✔ SEQ boundary refusal php 24 (0.0783ms)
+✔ SEQ boundary refusal php 25 (0.0744ms)
+✔ SEQ embedded and unsupported contexts php (0.3822ms)
+✖ SEQ comments and original lines php (0.7405ms)
+✖ SEQ three gates php 1 (12.9416ms)
+✖ SEQ three gates php 2 (13.9213ms)
+✖ SEQ ordered allow rb 1 line 20 (0.3328ms)
+✖ SEQ ordered allow rb 1 line 22 (0.2642ms)
+✖ SEQ ordered allow rb 2 line 20 (0.225ms)
+✖ SEQ ordered allow rb 2 line 22 (1.0885ms)
+✖ SEQ multiline and multiple fences rb (0.1714ms)
+✔ SEQ boundary refusal rb 0 (0.1074ms)
+✔ SEQ boundary refusal rb 1 (0.1195ms)
+✔ SEQ boundary refusal rb 2 (0.1108ms)
+✔ SEQ boundary refusal rb 3 (0.11ms)
+✔ SEQ boundary refusal rb 4 (0.2275ms)
+✔ SEQ boundary refusal rb 5 (0.1576ms)
+✔ SEQ boundary refusal rb 6 (0.0938ms)
+✔ SEQ boundary refusal rb 7 (0.0885ms)
+✔ SEQ boundary refusal rb 8 (0.0799ms)
+✔ SEQ boundary refusal rb 9 (0.0877ms)
+✔ SEQ boundary refusal rb 10 (0.0624ms)
+✔ SEQ boundary refusal rb 11 (0.0618ms)
+✔ SEQ boundary refusal rb 12 (0.0765ms)
+✔ SEQ boundary refusal rb 13 (0.0772ms)
+✔ SEQ boundary refusal rb 14 (0.0778ms)
+✔ SEQ boundary refusal rb 15 (0.1128ms)
+✔ SEQ boundary refusal rb 16 (0.0713ms)
+✔ SEQ boundary refusal rb 17 (0.0692ms)
+✔ SEQ boundary refusal rb 18 (0.0677ms)
+✔ SEQ boundary refusal rb 19 (0.0713ms)
+✔ SEQ boundary refusal rb 20 (0.0752ms)
+✔ SEQ boundary refusal rb 21 (0.0768ms)
+✔ SEQ boundary refusal rb 22 (0.0714ms)
+✔ SEQ boundary refusal rb 23 (0.0693ms)
+✔ SEQ boundary refusal rb 24 (0.1094ms)
+✔ SEQ boundary refusal rb 25 (0.0899ms)
+✔ SEQ embedded and unsupported contexts rb (0.1951ms)
+✖ SEQ comments and original lines rb (0.2758ms)
+✖ SEQ three gates rb 1 (9.7557ms)
+✖ SEQ three gates rb 2 (7.7758ms)
+ℹ tests 70
+ℹ suites 0
+ℹ pass 54
+ℹ fail 16
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 823.7377
+
+✖ failing tests:
+
+test at test\profile-secret-scan-sequence.test.ts:1:1572
+✖ SEQ ordered allow php 1 line 20 (4.2969ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked fixture.md: sensitive-assignment@20"
+      at checkMasked (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:12)
+      at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:31:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked fixture.md: sensitive-assignment@20
+        at assertProfileContentSafe (<USER_ROOT>\hpseq\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:31)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at checkMasked (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:12)
+        at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:31:7)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.start (node:internal/test_runner/test:1242:17)
+        at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-sequence.test.ts:1:1572
+✖ SEQ ordered allow php 1 line 22 (0.3085ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked fixture.md: sensitive-assignment@22"
+      at checkMasked (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:12)
+      at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:31:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked fixture.md: sensitive-assignment@22
+        at assertProfileContentSafe (<USER_ROOT>\hpseq\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:31)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at checkMasked (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:12)
+        at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:31:7)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-sequence.test.ts:1:1572
+✖ SEQ ordered allow php 2 line 20 (0.2321ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked fixture.md: sensitive-assignment@20"
+      at checkMasked (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:12)
+      at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:31:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked fixture.md: sensitive-assignment@20
+        at assertProfileContentSafe (<USER_ROOT>\hpseq\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:31)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at checkMasked (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:12)
+        at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:31:7)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-sequence.test.ts:1:1572
+✖ SEQ ordered allow php 2 line 22 (0.1901ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked fixture.md: sensitive-assignment@22"
+      at checkMasked (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:12)
+      at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:31:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked fixture.md: sensitive-assignment@22
+        at assertProfileContentSafe (<USER_ROOT>\hpseq\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:31)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at checkMasked (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:12)
+        at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:31:7)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-sequence.test.ts:1:2030
+✖ SEQ multiline and multiple fences php (0.2904ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked fixture.php: sensitive-assignment@3"
+      at checkMasked (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:12)
+      at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:38:5)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked fixture.php: sensitive-assignment@3
+        at assertProfileContentSafe (<USER_ROOT>\hpseq\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:31)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at checkMasked (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:12)
+        at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:38:5)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-sequence.test.ts:1:4728
+✖ SEQ comments and original lines php (0.7405ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+    '// "apiKey": ("SYNTHETIC_NONEMPTY")\n' +
+      'use Anthropic\\Client;\n' +
+      '$client = new Client();\n' +
+[sanitized synthetic assertion value; raw evidence hash retained]
+  -   '$client = new Client(apiKey:               );'
+
+      at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:85:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+[sanitized synthetic assertion value; raw evidence hash retained]
+    expected: '// "apiKey": ("SYNTHETIC_NONEMPTY")\nuse Anthropic\\Client;\n$client = new Client();\n$client = new Client(apiKey:               );',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-sequence.test.ts:1:5651
+✖ SEQ three gates php 1 (12.9416ms)
+  Error: Profile collection blocked:
+  Secret scan blocked codex/skills/artificial/tool.php: sensitive-assignment@3
+      at createCodexProfile (<USER_ROOT>\hpseq\src\lib\codex-profile.ts:118:28)
+      at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:104:5)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\profile-secret-scan-sequence.test.ts:1:5651
+✖ SEQ three gates php 2 (13.9213ms)
+  Error: Profile collection blocked:
+  Secret scan blocked codex/skills/artificial/tool.php: sensitive-assignment@3
+      at createCodexProfile (<USER_ROOT>\hpseq\src\lib\codex-profile.ts:118:28)
+      at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:104:5)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\profile-secret-scan-sequence.test.ts:1:1572
+✖ SEQ ordered allow rb 1 line 20 (0.3328ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked fixture.md: sensitive-assignment@20"
+      at checkMasked (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:12)
+      at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:31:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked fixture.md: sensitive-assignment@20
+        at assertProfileContentSafe (<USER_ROOT>\hpseq\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:31)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at checkMasked (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:12)
+        at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:31:7)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-sequence.test.ts:1:1572
+✖ SEQ ordered allow rb 1 line 22 (0.2642ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked fixture.md: sensitive-assignment@22"
+      at checkMasked (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:12)
+      at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:31:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked fixture.md: sensitive-assignment@22
+        at assertProfileContentSafe (<USER_ROOT>\hpseq\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:31)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at checkMasked (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:12)
+        at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:31:7)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-sequence.test.ts:1:1572
+✖ SEQ ordered allow rb 2 line 20 (0.225ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked fixture.md: sensitive-assignment@20"
+      at checkMasked (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:12)
+      at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:31:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked fixture.md: sensitive-assignment@20
+        at assertProfileContentSafe (<USER_ROOT>\hpseq\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:31)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at checkMasked (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:12)
+        at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:31:7)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-sequence.test.ts:1:1572
+✖ SEQ ordered allow rb 2 line 22 (1.0885ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked fixture.md: sensitive-assignment@22"
+      at checkMasked (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:12)
+      at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:31:7)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked fixture.md: sensitive-assignment@22
+        at assertProfileContentSafe (<USER_ROOT>\hpseq\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:31)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at checkMasked (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:12)
+        at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:31:7)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-sequence.test.ts:1:2030
+✖ SEQ multiline and multiple fences rb (0.1714ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Secret scan blocked fixture.rb: sensitive-assignment@3"
+      at checkMasked (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:12)
+      at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:38:5)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Secret scan blocked fixture.rb: sensitive-assignment@3
+        at assertProfileContentSafe (<USER_ROOT>\hpseq\src\lib\profile-secret-scan.ts:15:30)
+        at <anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:31)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at checkMasked (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:22:12)
+        at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:38:5)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-sequence.test.ts:1:4728
+✖ SEQ comments and original lines rb (0.2758ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+    '# "apiKey": ("SYNTHETIC_NONEMPTY")\n' +
+      'require "anthropic"\n' +
+      'client = Anthropic::Client.new\n' +
+[sanitized synthetic assertion value; raw evidence hash retained]
+  -   'client = Anthropic::Client.new(api_key:               )'
+
+      at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:85:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+[sanitized synthetic assertion value; raw evidence hash retained]
+    expected: '# "apiKey": ("SYNTHETIC_NONEMPTY")\nrequire "anthropic"\nclient = Anthropic::Client.new\nclient = Anthropic::Client.new(api_key:               )',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-secret-scan-sequence.test.ts:1:5651
+✖ SEQ three gates rb 1 (9.7557ms)
+  Error: Profile collection blocked:
+  Secret scan blocked codex/skills/artificial/tool.rb: sensitive-assignment@3
+      at createCodexProfile (<USER_ROOT>\hpseq\src\lib\codex-profile.ts:118:28)
+      at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:104:5)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at test\profile-secret-scan-sequence.test.ts:1:5651
+✖ SEQ three gates rb 2 (7.7758ms)
+  Error: Profile collection blocked:
+  Secret scan blocked codex/skills/artificial/tool.rb: sensitive-assignment@3
+      at createCodexProfile (<USER_ROOT>\hpseq\src\lib\codex-profile.ts:118:28)
+      at TestContext.<anonymous> (<USER_ROOT>\hpseq\test\profile-secret-scan-sequence.test.ts:104:5)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)

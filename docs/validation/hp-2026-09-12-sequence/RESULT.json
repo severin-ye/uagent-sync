@@ -1,0 +1,49 @@
+{
+  "task": "HP-03-M13-SEQ",
+  "inputSha": "5075de32828a8d0c8e979f39303cd8a0fdb9b3ae",
+  "baseline": "af3f79c2c66a3d3c17fea20de0b12cc5577faf0f",
+  "codeSha": "70428520228adcac3ac66a2cfb857667b7b69aed",
+  "red": {
+    "total": 70,
+    "pass": 54,
+    "expectedFailures": 16,
+    "exit": 1
+  },
+  "focused": {
+    "pass": 286,
+    "exit": 0
+  },
+  "full": {
+    "pass": 704,
+    "exit": 0
+  },
+  "scan": {
+    "files": 13,
+    "read": 13,
+    "baselineMatches": 13,
+    "drift": 0,
+    "passed": 8,
+    "blocked": 5,
+    "hits": 7,
+    "beforeAfterMatches": 13
+  },
+  "clearedCandidates": [
+    "HP-001",
+    "HP-004",
+    "HP-005"
+  ],
+  "remainingCandidates": [
+    "HP-006",
+    "HP-009",
+    "HP-010",
+    "HP-013",
+    "HP-018",
+    "HP-022",
+    "HP-023"
+  ],
+  "honorReview": "pending",
+  "realSnapshotsCreated": false,
+  "hp03Complete": false,
+  "hp04Complete": false,
+  "migrationComplete": false
+}
