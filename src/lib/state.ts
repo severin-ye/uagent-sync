@@ -6,7 +6,7 @@ import { getPlatform } from "./cache.js";
 import { resolveSkillSources } from "./skills.js";
 import { generateSyncMcpConfig } from "./portable.js";
 import { redactSecretsDeep, REDACTED } from "./redact.js";
-import type { WorkspaceState, SubmoduleState, ImportResult, TargetAgent, ExtensionTombstone, ExtensionRef } from "./types.js";
+import type { WorkspaceState, SubmoduleState, ImportResult, TargetAgent, ExtensionTombstone, ExtensionRef, SkillScanAgent, SkillScanDiagnostic } from "./types.js";
 import { DOTFILES_DIR } from "./dotfiles.js";
 import { parse as parseToml } from "smol-toml";
 import { mergePermanentTombstones } from "./tombstones.js";
@@ -116,11 +116,157 @@ function readSubmodules(workspaceRoot: string): SubmoduleState[] {
   return submodules;
 }
 
+export interface SkillScanFileSystem {
+  lstatSync(filePath: string): fs.Stats;
+  statSync(filePath: string): fs.Stats;
+  readdirSync(filePath: string, options: { withFileTypes: true }): fs.Dirent[];
+}
+
+interface SkillScanEntry {
+  name: string;
+  path: string;
+}
+
+export interface SkillScanResult {
+  skills: string[];
+  entries: SkillScanEntry[];
+  diagnostics: SkillScanDiagnostic[];
+  blocking: boolean;
+}
+
+type SkillScanDiagnosticSink = (diagnostic: SkillScanDiagnostic) => void;
+
+const nativeSkillFileSystem = fs as unknown as SkillScanFileSystem;
+
+function errorCode(error: unknown): string | undefined {
+  if (!error || typeof error !== "object") return undefined;
+  const code = (error as { code?: unknown }).code;
+  return typeof code === "string" ? code : undefined;
+}
+
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
+function skillScanDiagnostic(
+  agent: SkillScanAgent,
+  filePath: string,
+  error: unknown,
+  phase: "root" | "entry" | "link-target",
+): SkillScanDiagnostic {
+  const code = errorCode(error);
+  const kind: SkillScanDiagnostic["kind"] = code === "ENOENT"
+    ? phase === "link-target" ? "broken-link" : "disappeared"
+    : code === "EACCES" || code === "EPERM" ? "permission-denied" : "io-error";
+  const blocking = phase === "root" || kind === "io-error";
+  return {
+    agent,
+    path: filePath,
+    kind,
+    ...(code ? { code } : {}),
+    message: `Unable to inspect skill entry ${filePath}: ${errorMessage(error)}`,
+    severity: blocking ? "error" : "warning",
+    blocking,
+  };
+}
+
+function addSkillScanDiagnostic(result: SkillScanResult, diagnostic: SkillScanDiagnostic): void {
+  result.diagnostics.push(diagnostic);
+  if (diagnostic.blocking) result.blocking = true;
+}
+
+function scanSkillRoot(
+  root: string,
+  agent: SkillScanAgent,
+  fileSystem: SkillScanFileSystem,
+  result: SkillScanResult,
+): void {
+  let rootLstat: fs.Stats;
+  try {
+    rootLstat = fileSystem.lstatSync(root);
+  } catch (error) {
+    // A missing optional root is normal on a fresh machine. Once a root was
+    // present but cannot be inspected, preserve the failure as a blocking
+    // diagnostic so a partial scan cannot be mistaken for a complete one.
+    if (errorCode(error) === "ENOENT") return;
+    addSkillScanDiagnostic(result, skillScanDiagnostic(agent, root, error, "root"));
+    return;
+  }
+  let rootStat = rootLstat;
+  if (rootLstat.isSymbolicLink()) {
+    try {
+      rootStat = fileSystem.statSync(root);
+    } catch (error) {
+      addSkillScanDiagnostic(result, skillScanDiagnostic(agent, root, error, "link-target"));
+      return;
+    }
+  }
+  if (!rootStat.isDirectory()) return;
+
+  let entries: fs.Dirent[];
+  try {
+    entries = fileSystem.readdirSync(root, { withFileTypes: true });
+  } catch (error) {
+    addSkillScanDiagnostic(result, skillScanDiagnostic(agent, root, error, "root"));
+    return;
+  }
+
+  for (const entry of entries) {
+    const entryPath = path.join(root, entry.name);
+    let entryLstat: fs.Stats;
+    try {
+      entryLstat = fileSystem.lstatSync(entryPath);
+    } catch (error) {
+      addSkillScanDiagnostic(result, skillScanDiagnostic(agent, entryPath, error, "entry"));
+      continue;
+    }
+
+    let entryStat = entryLstat;
+    if (entryLstat.isSymbolicLink()) {
+      try {
+        entryStat = fileSystem.statSync(entryPath);
+      } catch (error) {
+        addSkillScanDiagnostic(result, skillScanDiagnostic(agent, entryPath, error, "link-target"));
+        continue;
+      }
+    }
+    if (!entryStat.isDirectory()) continue;
+
+    if (agent === "codex") {
+      try {
+        if (!fileSystem.statSync(path.join(entryPath, "SKILL.md")).isFile()) continue;
+      } catch (error) {
+        // A directory without SKILL.md is not a Codex skill. Other failures
+        // are retained so permission and unknown I/O errors stay observable.
+        if (errorCode(error) === "ENOENT") continue;
+        addSkillScanDiagnostic(result, skillScanDiagnostic(agent, entryPath, error, "entry"));
+        continue;
+      }
+    }
+
+    result.entries.push({ name: entry.name, path: entryPath });
+    result.skills.push(entry.name);
+  }
+}
+
+export function scanSkillDirectories(homeDir: string, agent: SkillScanAgent, fileSystem: SkillScanFileSystem = nativeSkillFileSystem): SkillScanResult {
+  const result: SkillScanResult = { skills: [], entries: [], diagnostics: [], blocking: false };
+  const roots = agent === "codex"
+    ? [path.join(homeDir, ".agents", "skills"), path.join(homeDir, ".codex", "skills")]
+    : [path.join(homeDir, ".agents", "skills")];
+  for (const root of roots) scanSkillRoot(root, agent, fileSystem, result);
+  return result;
+}
+
 // 只扫描 opencode 生态的 skills 目录（~/.agents/skills）；codex 生态不在跟踪范围（见 lib/scope.ts 约定）。
-function readSkills(): string[] {
-  const skillsDir = path.join(os.homedir(), ".agents", "skills");
-  if (!fs.existsSync(skillsDir)) return [];
-  return fs.readdirSync(skillsDir).filter(f => fs.statSync(path.join(skillsDir, f)).isDirectory());
+export function readSkills(homeDir = os.homedir(), fileSystem: SkillScanFileSystem = nativeSkillFileSystem): SkillScanResult {
+  return scanSkillDirectories(homeDir, "opencode", fileSystem);
+}
+
+function assertSkillScanNotBlocked(diagnostics: SkillScanDiagnostic[]): void {
+  const blocked = diagnostics.filter((diagnostic) => diagnostic.blocking);
+  if (blocked.length === 0) return;
+  throw new Error(`Skill scan blocked: ${blocked.map((diagnostic) => `${diagnostic.path} [${diagnostic.code ?? diagnostic.kind}]`).join("; ")}`);
 }
 
 function readTombstones(workspaceRoot: string): ExtensionTombstone[] {
@@ -140,7 +286,7 @@ function readTombstones(workspaceRoot: string): ExtensionTombstone[] {
   return mergePermanentTombstones(items);
 }
 
-function readCodexState(homeDir: string): { plugins: ExtensionRef[]; skills: ExtensionRef[]; mcp: ExtensionRef[]; config: Record<string, unknown> } {
+function readCodexState(homeDir: string, fileSystem: SkillScanFileSystem = nativeSkillFileSystem): { plugins: ExtensionRef[]; skills: ExtensionRef[]; mcp: ExtensionRef[]; config: Record<string, unknown>; scanDiagnostics: SkillScanDiagnostic[]; scanBlocking: boolean } {
   const configPath = path.join(homeDir, ".codex", "config.toml");
   const configText = fs.existsSync(configPath) ? fs.readFileSync(configPath, "utf-8") : "";
   let parsed: Record<string, unknown> = {};
@@ -185,49 +331,68 @@ function readCodexState(homeDir: string): { plugins: ExtensionRef[]; skills: Ext
       lockedSkills = lock.skills ?? {};
     } catch { lockedSkills = {}; }
   }
-  const skills: ExtensionRef[] = [];
-  for (const root of [path.join(homeDir, ".agents", "skills"), path.join(homeDir, ".codex", "skills")]) {
-    if (!fs.existsSync(root)) continue;
-    for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
-      if (entry.isDirectory() && fs.existsSync(path.join(root, entry.name, "SKILL.md"))) {
-        const locked = lockedSkills[entry.name];
-        skills.push({
-          kind: "skill", id: entry.name,
-          source: locked?.sourceUrl ?? locked?.source,
-          path: locked?.skillPath,
-          version: locked?.skillFolderHash,
-        });
-      }
-    }
-  }
-  return { plugins, skills, mcp, config: { configFile: ".codex/config.toml", secretValuesIncluded: false } };
+  const skillScan = scanSkillDirectories(homeDir, "codex", fileSystem);
+  const skills: ExtensionRef[] = skillScan.entries.map(({ name }) => {
+    const locked = lockedSkills[name];
+    return {
+      kind: "skill", id: name,
+      source: locked?.sourceUrl ?? locked?.source,
+      path: locked?.skillPath,
+      version: locked?.skillFolderHash,
+    };
+  });
+  return {
+    plugins,
+    skills,
+    mcp,
+    config: { configFile: ".codex/config.toml", secretValuesIncluded: false },
+    scanDiagnostics: skillScan.diagnostics,
+    scanBlocking: skillScan.blocking,
+  };
 }
 
-export function scanInstalledCodexExtensions(homeDir: string): ExtensionRef[] {
-  const codex = readCodexState(homeDir);
+function defaultSkillScanDiagnosticSink(diagnostic: SkillScanDiagnostic): void {
+  const write = diagnostic.blocking ? console.error : console.warn;
+  write(`[uagent-sync] ${diagnostic.message}`);
+}
+
+export function scanInstalledCodexExtensions(
+  homeDir: string,
+  fileSystem: SkillScanFileSystem = nativeSkillFileSystem,
+  onDiagnostic: SkillScanDiagnosticSink = defaultSkillScanDiagnosticSink,
+): ExtensionRef[] {
+  const codex = readCodexState(homeDir, fileSystem);
+  for (const diagnostic of codex.scanDiagnostics) onDiagnostic(diagnostic);
+  assertSkillScanNotBlocked(codex.scanDiagnostics);
   return [...codex.plugins, ...codex.skills, ...codex.mcp];
 }
 
-export function exportSystemState(workspaceRoot: string, options?: { targetAgent?: TargetAgent; homeDir?: string }): WorkspaceState {
+export function exportSystemState(workspaceRoot: string, options?: { targetAgent?: TargetAgent; homeDir?: string; fsApi?: SkillScanFileSystem }): WorkspaceState {
   const targetAgent = options?.targetAgent;
+  const fileSystem = options?.fsApi ?? nativeSkillFileSystem;
   if (targetAgent === "codex") {
     const tombstones = readTombstones(workspaceRoot);
-    const codex = readCodexState(options?.homeDir ?? os.homedir());
+    const codex = readCodexState(options?.homeDir ?? os.homedir(), fileSystem);
+    assertSkillScanNotBlocked(codex.scanDiagnostics);
+    const { scanDiagnostics, scanBlocking: _scanBlocking, ...codexState } = codex;
     const blocked = new Set(tombstones.map((item) => `${item.kind}:${item.id.toLowerCase()}`));
-    codex.plugins = codex.plugins.filter((item) => !blocked.has(`plugin:${item.id.toLowerCase()}`));
-    codex.skills = codex.skills.filter((item) => !blocked.has(`skill:${item.id.toLowerCase()}`));
-    codex.mcp = codex.mcp.filter((item) => !blocked.has(`mcp:${item.id.toLowerCase()}`));
+    codexState.plugins = codexState.plugins.filter((item) => !blocked.has(`plugin:${item.id.toLowerCase()}`));
+    codexState.skills = codexState.skills.filter((item) => !blocked.has(`skill:${item.id.toLowerCase()}`));
+    codexState.mcp = codexState.mcp.filter((item) => !blocked.has(`mcp:${item.id.toLowerCase()}`));
     return {
       schemaVersion: 2,
       targetAgent,
-      completeness: [...codex.plugins, ...codex.skills, ...codex.mcp].some((item) => !item.source || (item.kind === "mcp" && Array.isArray(item.config?.envVars) && item.config.envVars.length > 0)) ? "partial" : "complete",
+      completeness: scanDiagnostics.length > 0 || [...codexState.plugins, ...codexState.skills, ...codexState.mcp].some((item) => !item.source || (item.kind === "mcp" && Array.isArray(item.config?.envVars) && item.config.envVars.length > 0)) ? "partial" : "complete",
       timestamp: new Date().toISOString(), platform: getPlatform(), hostname: os.hostname(),
-      agents: { codex }, tombstones, envVars: readEnvVarNames(workspaceRoot),
-      submodules: [], skills: codex.skills.map((item) => item.id),
-      skillSources: codex.skills.flatMap((item) => item.source ? [item.source] : []), windowsFixPaths: [],
+      agents: { codex: codexState }, tombstones, envVars: readEnvVarNames(workspaceRoot),
+      submodules: [], skills: codexState.skills.map((item) => item.id),
+      skillSources: codexState.skills.flatMap((item) => item.source ? [item.source] : []), windowsFixPaths: [],
+      scanDiagnostics,
     };
   }
-  const skills = readSkills();
+  const skillScan = readSkills(options?.homeDir ?? os.homedir(), fileSystem);
+  assertSkillScanNotBlocked(skillScan.diagnostics);
+  const skills = skillScan.skills;
   const config = readOpenCodeConfig(workspaceRoot);
   const pwConfig = detectPlaywrightInfo(config);
   return {
@@ -242,6 +407,8 @@ export function exportSystemState(workspaceRoot: string, options?: { targetAgent
     windowsFixPaths: detectWindowsProblematicPaths(workspaceRoot),
     playwrightMcp: pwConfig,
     syncPortability: generateSyncMcpConfig(workspaceRoot),
+    completeness: skillScan.diagnostics.length > 0 ? "partial" : "complete",
+    scanDiagnostics: skillScan.diagnostics,
   };
 }
 

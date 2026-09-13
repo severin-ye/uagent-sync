@@ -23,6 +23,8 @@ export interface CrystallizeCommitInput {
   workspaceRoot: string;
   /** Dotfiles directory name relative to workspaceRoot, e.g. "usync-dotfiles". */
   dotfilesDir: string;
+  /** Exact generated paths relative to dotfilesDir; legacy callers use the safe default set. */
+  artifactPaths?: readonly string[];
   commitMsg: string;
   skipPush: boolean;
 }
@@ -96,7 +98,7 @@ function ensureGitIdentity(repoDir: string, parentDir: string): boolean {
 /**
  * 确保 dotfiles 仓库的 .gitignore 覆盖密钥/环境文件（keys/、.env）。
  * 真实 secret 只允许存在于被 ignore 的本地文件——即使新用户未预先配置
- * .gitignore，这里也会补齐，保证 crystallize 的 `git add -A` 永不把
+ * .gitignore，这里也会补齐，保证 crystallize 的显式 artifact staging 永不把
  * API.md 真实值带入 Git 历史。幂等：已包含的规则不重复追加。
  */
 export function ensureSecretGitignore(dotfilesDir: string): { changed: boolean; path: string } {
@@ -129,14 +131,140 @@ function isSecretsIgnored(dotfilesAbs: string, workspaceRoot: string): boolean {
   return check.code === 0;
 }
 
+const CRYSTALLIZE_ARTIFACTS = [
+  "state/install-log.json",
+  "state/workspace-state.json",
+  "state/crystallize-operation.json",
+  "guide",
+  "know-how",
+  ".gitignore",
+] as const;
+
+function normalizeGitPath(value: string): string {
+  return value.replaceAll("\\", "/").replace(/^\.\//, "");
+}
+
+function normalizeArtifactSpec(value: string): string {
+  return normalizeGitPath(value).replace(/\/+$/, "");
+}
+
+function isSafeArtifactSpec(relativePath: string): boolean {
+  return relativePath.length > 0
+    && !relativePath.startsWith("/")
+    && !/^[A-Za-z]:\//.test(relativePath)
+    && !relativePath.split("/").some((part) => part === ".." || part === ".");
+}
+
+function isDirectoryArtifact(relativePath: string): boolean {
+  return relativePath === "guide" || relativePath === "know-how";
+}
+
+function isArtifactPath(relativePath: string, allowedArtifacts: readonly string[] = CRYSTALLIZE_ARTIFACTS): boolean {
+  const normalized = normalizeGitPath(relativePath);
+  return isSafeArtifactSpec(normalized) && allowedArtifacts.some((artifact) =>
+    isDirectoryArtifact(artifact)
+      ? normalized === artifact || normalized.startsWith(`${artifact}/`)
+      : normalized === artifact,
+  );
+}
+
+function resolveArtifactSpecs(requested?: readonly string[]): { paths: string[]; invalid: string[] } {
+  const paths = [...new Set((requested ?? CRYSTALLIZE_ARTIFACTS).map(normalizeArtifactSpec))];
+  // ensureSecretGitignore may create this required safety file in a submodule.
+  if (!paths.includes(".gitignore")) paths.push(".gitignore");
+  return { paths, invalid: paths.filter((relativePath) => !isArtifactPath(relativePath)) };
+}
+
+function isParentArtifactPath(
+  relativePath: string,
+  dotfilesRel: string,
+  dotfilesIsRepo: boolean,
+  allowedArtifacts: readonly string[],
+): boolean {
+  const normalized = normalizeGitPath(relativePath);
+  const base = normalizeGitPath(dotfilesRel);
+  if (dotfilesIsRepo) return normalized === base;
+  if (!base) return false;
+  const nested = normalized.startsWith(`${base}/`) ? normalized.slice(base.length + 1) : "";
+  return nested.length > 0 && isArtifactPath(nested, allowedArtifacts);
+}
+
+function refuseUnrelatedStaged(
+  repoDir: string,
+  commandCwd: string,
+  label: string,
+  allowed: (relativePath: string) => boolean,
+): string | undefined {
+  const staged = run(`git -C ${shellEscape(repoDir)} diff --cached --name-only -z --`, commandCwd);
+  // Let the subsequent git add/commit report a normal repository error when
+  // this probe cannot run (for example, when the workspace is not a repo).
+  if (staged.code !== 0) return undefined;
+  const unrelated = staged.stdout
+    .split("\0")
+    .filter(Boolean)
+    .map(normalizeGitPath)
+    .filter((relativePath) => !allowed(relativePath));
+  if (unrelated.length === 0) return undefined;
+  return `⚠️ Step 4: refused to commit — unrelated staged changes in ${label}: ${unrelated.join(", ")}. Staging was left untouched.`;
+}
+
+function isTrackedArtifact(repoDir: string, commandCwd: string, relativePath: string, directory = false): boolean {
+  const normalized = normalizeGitPath(relativePath);
+  const queryPath = directory ? `${normalized}/` : normalized;
+  const listed = run(`git -C ${shellEscape(repoDir)} ls-files -- ${shellEscape(queryPath)}`, commandCwd);
+  if (listed.code !== 0) return false;
+  const paths = listed.stdout.split(/\r?\n/).filter(Boolean).map(normalizeGitPath);
+  return directory
+    ? paths.some((candidate) => candidate === normalized || candidate.startsWith(`${normalized}/`))
+    : paths.includes(normalized);
+}
+
+function pathsForArtifacts(repoDir: string, commandCwd: string, allowedArtifacts: readonly string[], prefix = ""): string[] {
+  return allowedArtifacts.filter((relativePath) => {
+    const fullRelativePath = `${prefix}${relativePath}`;
+    const absolute = path.join(repoDir, ...fullRelativePath.split("/"));
+    return fs.existsSync(absolute) || isTrackedArtifact(repoDir, commandCwd, fullRelativePath, isDirectoryArtifact(relativePath));
+  }).map((relativePath) => `${prefix}${relativePath}`);
+}
+
+function addArtifactPaths(repoDir: string, commandCwd: string, paths: readonly string[]): { stdout: string; stderr: string; code: number } {
+  if (paths.length === 0) return { stdout: "", stderr: "", code: 0 };
+  const args = paths.map((relativePath) => shellEscape(relativePath)).join(" ");
+  return run(`git -C ${shellEscape(repoDir)} add -- ${args}`, commandCwd);
+}
+
 export function commitCrystallize(input: CrystallizeCommitInput): string[] {
   const results: string[] = [];
   const { workspaceRoot, dotfilesDir, commitMsg, skipPush } = input;
   const dotfilesAbs = path.resolve(workspaceRoot, dotfilesDir);
   const dotfilesIsRepo = isGitRepo(dotfilesAbs);
+  const dotfilesRel = normalizeGitPath(path.relative(workspaceRoot, dotfilesAbs));
+  const resolvedArtifacts = resolveArtifactSpecs(input.artifactPaths);
+  if (resolvedArtifacts.invalid.length > 0) {
+    return [`⚠️ Step 4: refused to commit — invalid crystallize artifact path(s): ${resolvedArtifacts.invalid.join(", ")}.`];
+  }
+  const allowedArtifacts = resolvedArtifacts.paths;
 
-  // Message file lives outside the dotfiles repo so `git add -A` inside it can
-  // never stage the temporary message.
+  const parentStagingRefusal = refuseUnrelatedStaged(
+    workspaceRoot,
+    workspaceRoot,
+    "workspace",
+    (relativePath) => isParentArtifactPath(relativePath, dotfilesRel, dotfilesIsRepo, allowedArtifacts),
+  );
+  if (parentStagingRefusal) return [parentStagingRefusal];
+
+  if (dotfilesIsRepo) {
+    const dotfilesStagingRefusal = refuseUnrelatedStaged(
+      dotfilesAbs,
+      workspaceRoot,
+      "dotfiles",
+      (relativePath) => isArtifactPath(relativePath, allowedArtifacts),
+    );
+    if (dotfilesStagingRefusal) return [dotfilesStagingRefusal];
+  }
+
+  // Message file lives outside both repositories and is never part of the
+  // explicit crystallize artifact path list.
   const tmpMsgFile = path.join(os.tmpdir(), `uagent-sync-commit-${process.pid}-${Date.now()}.msg`);
   fs.writeFileSync(tmpMsgFile, commitMsg, "utf-8");
   try {
@@ -152,7 +280,7 @@ export function commitCrystallize(input: CrystallizeCommitInput): string[] {
         results.push("⚠️ Step 4: cannot commit dotfiles — git user.name/user.email missing in both dotfiles and workspace. Configure once: git config user.name \"<name>\" && git config user.email \"<email>\"");
         return results;
       }
-      const addIn = run(`git -C ${shellEscape(dotfilesAbs)} add -A`, workspaceRoot);
+      const addIn = addArtifactPaths(dotfilesAbs, workspaceRoot, pathsForArtifacts(dotfilesAbs, workspaceRoot, allowedArtifacts));
       if (addIn.code !== 0) {
         results.push(`⚠️ Step 4: dotfiles git add failed — ${detail(addIn)}`);
         return results;
@@ -168,7 +296,10 @@ export function commitCrystallize(input: CrystallizeCommitInput): string[] {
       }
     }
 
-    const addParent = run(`git add ${shellEscape(dotfilesDir)}/`, workspaceRoot);
+    const parentPaths = dotfilesIsRepo
+      ? [dotfilesRel]
+      : pathsForArtifacts(workspaceRoot, workspaceRoot, allowedArtifacts, `${dotfilesRel}/`);
+    const addParent = addArtifactPaths(workspaceRoot, workspaceRoot, parentPaths);
     if (addParent.code !== 0) {
       results.push(`⚠️ Step 4: git add failed — ${detail(addParent)}`);
       return results;
@@ -177,12 +308,13 @@ export function commitCrystallize(input: CrystallizeCommitInput): string[] {
     if (commitParent.code !== 0) {
       if (isNoopCommit(commitParent)) {
         results.push("ℹ️ Step 4: nothing to commit in workspace (artifacts unchanged)");
+      } else {
+        results.push(`⚠️ Step 4: git commit — ${detail(commitParent)}`);
         return results;
       }
-      results.push(`⚠️ Step 4: git commit — ${detail(commitParent)}`);
-      return results;
+    } else {
+      results.push(`✅ Step 4: Committed — "${commitMsg}"`);
     }
-    results.push(`✅ Step 4: Committed — "${commitMsg}"`);
 
     if (skipPush) {
       results.push("⏭️ Step 4: Push skipped");
@@ -193,7 +325,11 @@ export function commitCrystallize(input: CrystallizeCommitInput): string[] {
     // the workspace repo's pointer references it.
     if (dotfilesIsRepo) {
       const pushIn = run(`git -C ${shellEscape(dotfilesAbs)} push`, workspaceRoot);
-      results.push(pushIn.code === 0 ? "🚀 Step 4: dotfiles pushed to remote" : `⚠️ Step 4: dotfiles git push failed — ${detail(pushIn)}`);
+      if (pushIn.code !== 0) {
+        results.push(`⚠️ Step 4: dotfiles git push failed — ${detail(pushIn)}`);
+        return results;
+      }
+      results.push("🚀 Step 4: dotfiles pushed to remote");
     }
     const pushParent = run("git push", workspaceRoot);
     results.push(pushParent.code === 0 ? "🚀 Step 4: Pushed to remote" : `⚠️ Step 4: git push failed — ${detail(pushParent)}`);
