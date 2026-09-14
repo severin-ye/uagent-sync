@@ -1,0 +1,9 @@
+[
+  {
+    "name": "adapter-probe",
+    "args": [
+      "<USER_HOME>/hpr/adapter-probe.mjs"
+    ],
+    "status": 0
+  }
+]

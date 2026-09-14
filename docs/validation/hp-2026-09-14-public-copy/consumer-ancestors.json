@@ -1,0 +1,37 @@
+[
+  {
+    "path": "<CONTROLLED_ROOT>/e/env-full/tmp",
+    "plugin": false,
+    "sdk": false
+  },
+  {
+    "path": "<CONTROLLED_ROOT>/e/env-full",
+    "plugin": false,
+    "sdk": false
+  },
+  {
+    "path": "<CONTROLLED_ROOT>/e",
+    "plugin": false,
+    "sdk": false
+  },
+  {
+    "path": "<CONTROLLED_ROOT>",
+    "plugin": false,
+    "sdk": false
+  },
+  {
+    "path": "C:/Users/Public",
+    "plugin": false,
+    "sdk": false
+  },
+  {
+    "path": "C:/Users",
+    "plugin": false,
+    "sdk": false
+  },
+  {
+    "path": "C:/",
+    "plugin": false,
+    "sdk": false
+  }
+]

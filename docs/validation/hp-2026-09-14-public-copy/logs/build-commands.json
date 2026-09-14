@@ -1,0 +1,13 @@
+[
+  {
+    "name": "build",
+    "args": [
+      "C:/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "build",
+      "--prefix",
+      "<USER_HOME>/hpr/src"
+    ],
+    "status": 0
+  }
+]

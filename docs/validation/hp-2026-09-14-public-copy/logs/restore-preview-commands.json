@@ -1,0 +1,22 @@
+[
+  {
+    "name": "restore-preview",
+    "args": [
+      "scripts/verified-public-profile.mjs",
+      "restore-preview",
+      "--home",
+      "<CONTROLLED_ROOT>/restored",
+      "--codex-home",
+      "<CONTROLLED_ROOT>/restored/.codex",
+      "--workspace-root",
+      "<CONTROLLED_ROOT>/restored/workspace",
+      "--cache",
+      "<CONTROLLED_ROOT>/cache-restore-preview",
+      "--report",
+      "<CONTROLLED_ROOT>/private-restore-preview.json",
+      "--snapshot",
+      "<CONTROLLED_ROOT>/snapshot"
+    ],
+    "status": 0
+  }
+]

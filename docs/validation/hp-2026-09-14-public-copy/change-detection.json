@@ -1,0 +1,10 @@
+{
+  "summary": {
+    "changed_count": 4,
+    "affected_count": 0,
+    "changed_files": 43,
+    "risk_level": "low"
+  },
+  "exit": 0,
+  "scope": "staged docs only; index predates new production provider and new report; zero graph flows not proof of production safety; no production edits staged"
+}

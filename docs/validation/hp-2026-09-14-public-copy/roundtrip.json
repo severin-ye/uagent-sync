@@ -1,0 +1,72 @@
+{
+  "manifestFiles": 13,
+  "gitMetadata": 0,
+  "rows": [
+    {
+      "source": "agents/skills/claude-api/php/managed-agents/README.md",
+      "restoredMatchesCopy": true,
+      "originalStillMatchesCopy": true
+    },
+    {
+      "source": "agents/skills/claude-api/python/claude-api/README.md",
+      "restoredMatchesCopy": true,
+      "originalStillMatchesCopy": true
+    },
+    {
+      "source": "agents/skills/claude-api/python/managed-agents/README.md",
+      "restoredMatchesCopy": true,
+      "originalStillMatchesCopy": true
+    },
+    {
+      "source": "agents/skills/claude-api/ruby/claude-api/README.md",
+      "restoredMatchesCopy": true,
+      "originalStillMatchesCopy": true
+    },
+    {
+      "source": "agents/skills/claude-api/ruby/managed-agents/README.md",
+      "restoredMatchesCopy": true,
+      "originalStillMatchesCopy": true
+    },
+    {
+      "source": "agents/skills/claude-api/shared/managed-agents-tools.md",
+      "restoredMatchesCopy": true,
+      "originalStillMatchesCopy": true
+    },
+    {
+      "source": "agents/skills/claude-api/typescript/claude-api/README.md",
+      "restoredMatchesCopy": true,
+      "originalStillMatchesCopy": true
+    },
+    {
+      "source": "agents/skills/claude-api/typescript/managed-agents/README.md",
+      "restoredMatchesCopy": true,
+      "originalStillMatchesCopy": true
+    },
+    {
+      "source": "agents/skills/pdf/SKILL.md",
+      "restoredMatchesCopy": true,
+      "originalStillMatchesCopy": true
+    },
+    {
+      "source": "agents/skills/pdf/reference.md",
+      "restoredMatchesCopy": true,
+      "originalStillMatchesCopy": true
+    },
+    {
+      "source": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+      "restoredMatchesCopy": true,
+      "originalStillMatchesCopy": true
+    },
+    {
+      "source": "agents/skills/ncbi-sequence-fetch/scripts/ncbi_fetch.py",
+      "restoredMatchesCopy": true,
+      "originalStillMatchesCopy": true
+    },
+    {
+      "source": "agents/skills/openfda-database/scripts/openfda_query.py",
+      "restoredMatchesCopy": true,
+      "originalStillMatchesCopy": true
+    }
+  ],
+  "missing": 69
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "path": "src/lib/profile-m2-provider.ts",
+    "match": true
+  },
+  {
+    "path": "src/lib/profile-secret-scan.ts",
+    "match": true
+  },
+  {
+    "path": "scripts/verified-public-profile.mjs",
+    "match": true
+  },
+  {
+    "path": "data/reviewed-public-skills.json",
+    "match": true
+  },
+  {
+    "path": "package.json",
+    "match": true
+  },
+  {
+    "path": "package-lock.json",
+    "match": true
+  },
+  {
+    "path": "test/profile-public-source.test.ts",
+    "match": true
+  },
+  {
+    "path": "test/profile-public-source-gates.test.ts",
+    "match": true
+  },
+  {
+    "path": "test/package-metadata.test.ts",
+    "match": true
+  }
+]

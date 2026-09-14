@@ -1,0 +1,54 @@
+{
+  "task": "HP-PUBLIC-COPY",
+  "source": "1056d411419082bd18ad8f76fbb23720a3a3b93d",
+  "inputHandoff": "1056d411419082bd18ad8f76fbb23720a3a3b93d",
+  "node": "v24.19.0",
+  "build": 0,
+  "focused": {
+    "pass": 13,
+    "fail": 0,
+    "exit": 0
+  },
+  "full": {
+    "pass": 869,
+    "fail": 0,
+    "cancelled": 0,
+    "exit": 0
+  },
+  "publicDownloads": 82,
+  "actualHP": {
+    "listed": 82,
+    "present": 13,
+    "exact": 13,
+    "missing": 69,
+    "drift": 0,
+    "linkSkipped": 0,
+    "copyMatches": 13,
+    "originalUnchanged": 13
+  },
+  "snapshot": {
+    "files": 13,
+    "gitMetadata": 0,
+    "restoredMatches": 13,
+    "create": 0,
+    "preview": 0,
+    "restore": 0
+  },
+  "adapterFailureChecks": {
+    "pass": 3,
+    "realGitInvokedDuringFailureProbes": false
+  },
+  "codeChanges": false,
+  "fullEnvironmentMigrated": false,
+  "notExecuted": [
+    "Node18 tests (outside new engines)",
+    "old M2 synthetic experiments",
+    "engine-strict reinstall (Honor evidence retained, not independently repeated)",
+    "real configuration/memory/link overwrite",
+    "plugin registration",
+    "personal snapshot publication",
+    "Honor-to-HP material transfer",
+    "legacy link version search",
+    "historical backup or memory source search"
+  ]
+}

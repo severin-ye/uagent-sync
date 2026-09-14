@@ -1,0 +1,433 @@
+{
+  "artificial": [
+    {
+      "case": "download failure throws before provider exists",
+      "pass": true,
+      "calls": 1
+    },
+    {
+      "case": "fixed digest mismatch throws; promisor semantics retained",
+      "pass": true,
+      "calls": 3
+    },
+    {
+      "case": "existing cache rejected",
+      "pass": true
+    }
+  ],
+  "verifiedPublicBlobs": 82,
+  "files": [
+    {
+      "source": "agents/skills/gstack/.env.example",
+      "verified": true,
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/gstack/bin/gstack-distill-free-text",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/browse-client.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/browser-manager.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/cli.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/cookie-import-browser.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/proxy-config.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/proxy-redact.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/server.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/session-cookie-store.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/socks-bridge.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/terminal-agent.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/token-registry.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/bridge-chromium-e2e.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/browse-client.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/browser-skill-commands.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/busy-daemon-iron-rule.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/busy-daemon-recovery.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/commands.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/cookie-import-browser.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/daemon-mismatch-refuse.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/extension-token.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/fixtures/injection-combined.html",
+      "verified": true,
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/pair-agent-e2e.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/pair-agent-tunnel-eval.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/proxy-redact.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/server-auth.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/server-embedder-terminal-port.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/server-factory.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/sidebar-ux.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/stop-dead-daemon.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/terminal-agent-integration.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/terminal-agent-owner-watchdog.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/token-registry.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/tunnel-revoke-cli.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/browser-skills/hackernews-frontpage/_lib/browse-client.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/design/src/check.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/design/src/design-to-code.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/design/src/diff.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/design/src/evolve.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/design/src/generate.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/design/src/iterate.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/design/src/memory.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/design/src/variants.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/docs/REMOTE_BROWSER_ACCESS.md",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/docs/designs/v2_PLAN.md",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/extension/background.js",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/extension/sidepanel-terminal.js",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/ios-qa/daemon/src/session-tokens.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/ios-qa/daemon/test/daemon-integration.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/ios-qa/scripts/gen-accessors.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/lib/code-intelligence/sourcebot-adapter.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/lib/context-bill.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/brain-sync.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/claude-provider-keychain.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/code-intelligence.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/free-tests-workflow-wiring.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/gbrain-supabase-provision.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/gstack-memory-ingest.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/helpers/benchmark-judge.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/helpers/hermetic-env.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/helpers/hermetic-env.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/helpers/touchfiles-data.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/hermetic-skills-seeding.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/redact-engine.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/regression-issue2091-bsd-mktemp.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/skill-e2e-cso.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/telemetry.test.ts",
+      "verified": true,
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/claude-api/php/managed-agents/README.md",
+      "verified": true,
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/claude-api/python/claude-api/README.md",
+      "verified": true,
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/claude-api/python/managed-agents/README.md",
+      "verified": true,
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/claude-api/ruby/claude-api/README.md",
+      "verified": true,
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/claude-api/ruby/managed-agents/README.md",
+      "verified": true,
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/claude-api/shared/managed-agents-tools.md",
+      "verified": true,
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/claude-api/typescript/claude-api/README.md",
+      "verified": true,
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/claude-api/typescript/managed-agents/README.md",
+      "verified": true,
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/pdf/SKILL.md",
+      "verified": true,
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/pdf/reference.md",
+      "verified": true,
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+      "verified": true,
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/ncbi-sequence-fetch/scripts/ncbi_fetch.py",
+      "verified": true,
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/openfda-database/scripts/openfda_query.py",
+      "verified": true,
+      "lineEndings": "crlf"
+    }
+  ],
+  "realNpmInvoked": false,
+  "noPersonalSourceForProvider": true
+}

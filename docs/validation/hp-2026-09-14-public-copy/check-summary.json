@@ -1,0 +1,580 @@
+{
+  "files": [
+    {
+      "source": "agents/skills/gstack/.env.example",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/bin/gstack-distill-free-text",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/browse-client.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/browser-manager.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/cli.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/cookie-import-browser.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/proxy-config.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/proxy-redact.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/server.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/session-cookie-store.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/socks-bridge.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/terminal-agent.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/token-registry.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/bridge-chromium-e2e.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/browse-client.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/browser-skill-commands.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/busy-daemon-iron-rule.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/busy-daemon-recovery.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/commands.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/cookie-import-browser.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/daemon-mismatch-refuse.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/extension-token.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/fixtures/injection-combined.html",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/pair-agent-e2e.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/pair-agent-tunnel-eval.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/proxy-redact.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/server-auth.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/server-embedder-terminal-port.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/server-factory.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/sidebar-ux.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/stop-dead-daemon.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/terminal-agent-integration.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/terminal-agent-owner-watchdog.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/token-registry.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/tunnel-revoke-cli.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/browser-skills/hackernews-frontpage/_lib/browse-client.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/design/src/check.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/design/src/design-to-code.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/design/src/diff.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/design/src/evolve.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/design/src/generate.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/design/src/iterate.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/design/src/memory.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/design/src/variants.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/docs/REMOTE_BROWSER_ACCESS.md",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/docs/designs/v2_PLAN.md",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/extension/background.js",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/extension/sidepanel-terminal.js",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/ios-qa/daemon/src/session-tokens.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/ios-qa/daemon/test/daemon-integration.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/ios-qa/scripts/gen-accessors.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/lib/code-intelligence/sourcebot-adapter.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/lib/context-bill.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/test/brain-sync.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/test/claude-provider-keychain.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/test/code-intelligence.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/test/free-tests-workflow-wiring.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/test/gbrain-supabase-provision.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/test/gstack-memory-ingest.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/test/helpers/benchmark-judge.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/test/helpers/hermetic-env.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/test/helpers/hermetic-env.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/test/helpers/touchfiles-data.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/test/hermetic-skills-seeding.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/test/redact-engine.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/test/regression-issue2091-bsd-mktemp.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/test/skill-e2e-cso.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/gstack/test/telemetry.test.ts",
+      "exactPublicMatch": false,
+      "unchanged": null,
+      "error": "ENOENT",
+      "findings": []
+    },
+    {
+      "source": "agents/skills/claude-api/php/managed-agents/README.md",
+      "exactPublicMatch": true,
+      "unchanged": true,
+      "error": null,
+      "findings": []
+    },
+    {
+      "source": "agents/skills/claude-api/python/claude-api/README.md",
+      "exactPublicMatch": true,
+      "unchanged": true,
+      "error": null,
+      "findings": []
+    },
+    {
+      "source": "agents/skills/claude-api/python/managed-agents/README.md",
+      "exactPublicMatch": true,
+      "unchanged": true,
+      "error": null,
+      "findings": []
+    },
+    {
+      "source": "agents/skills/claude-api/ruby/claude-api/README.md",
+      "exactPublicMatch": true,
+      "unchanged": true,
+      "error": null,
+      "findings": []
+    },
+    {
+      "source": "agents/skills/claude-api/ruby/managed-agents/README.md",
+      "exactPublicMatch": true,
+      "unchanged": true,
+      "error": null,
+      "findings": []
+    },
+    {
+      "source": "agents/skills/claude-api/shared/managed-agents-tools.md",
+      "exactPublicMatch": true,
+      "unchanged": true,
+      "error": null,
+      "findings": []
+    },
+    {
+      "source": "agents/skills/claude-api/typescript/claude-api/README.md",
+      "exactPublicMatch": true,
+      "unchanged": true,
+      "error": null,
+      "findings": []
+    },
+    {
+      "source": "agents/skills/claude-api/typescript/managed-agents/README.md",
+      "exactPublicMatch": true,
+      "unchanged": true,
+      "error": null,
+      "findings": []
+    },
+    {
+      "source": "agents/skills/pdf/SKILL.md",
+      "exactPublicMatch": true,
+      "unchanged": true,
+      "error": null,
+      "findings": []
+    },
+    {
+      "source": "agents/skills/pdf/reference.md",
+      "exactPublicMatch": true,
+      "unchanged": true,
+      "error": null,
+      "findings": []
+    },
+    {
+      "source": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+      "exactPublicMatch": true,
+      "unchanged": true,
+      "error": null,
+      "findings": []
+    },
+    {
+      "source": "agents/skills/ncbi-sequence-fetch/scripts/ncbi_fetch.py",
+      "exactPublicMatch": true,
+      "unchanged": true,
+      "error": null,
+      "findings": []
+    },
+    {
+      "source": "agents/skills/openfda-database/scripts/openfda_query.py",
+      "exactPublicMatch": true,
+      "unchanged": true,
+      "error": null,
+      "findings": []
+    }
+  ],
+  "exit": 1,
+  "reason": "69 missing entries; 13 exact files passed"
+}

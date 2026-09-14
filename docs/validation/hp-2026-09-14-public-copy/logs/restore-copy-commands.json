@@ -1,0 +1,22 @@
+[
+  {
+    "name": "restore-copy",
+    "args": [
+      "scripts/verified-public-profile.mjs",
+      "restore-copy",
+      "--home",
+      "<CONTROLLED_ROOT>/restored",
+      "--codex-home",
+      "<CONTROLLED_ROOT>/restored/.codex",
+      "--workspace-root",
+      "<CONTROLLED_ROOT>/restored/workspace",
+      "--cache",
+      "<CONTROLLED_ROOT>/cache-restore-copy",
+      "--report",
+      "<CONTROLLED_ROOT>/private-restore-copy.json",
+      "--snapshot",
+      "<CONTROLLED_ROOT>/snapshot"
+    ],
+    "status": 0
+  }
+]

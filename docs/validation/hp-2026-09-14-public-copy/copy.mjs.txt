@@ -1,0 +1,8 @@
+import fs from 'node:fs';import path from 'node:path';import {createHash} from 'node:crypto';
+const base='<CONTROLLED_ROOT>/copies',root='<USER_HOME>/hpr/src',home='<USER_HOME>';
+if(fs.existsSync(base))throw Error('new copies root required');fs.mkdirSync(base,{recursive:true});
+const hash=b=>createHash('sha256').update(b).digest('hex');const files=JSON.parse(fs.readFileSync(root+'/data/reviewed-public-skills.json')).files;
+const rows=[];for(const f of files){if(!/^(agents|codex)\/skills\//.test(f.source)||f.source.split('/').some(x=>x==='..'||x===''))throw Error('invalid scope');const relative=f.source.replace(/^agents\//,'.agents/').replace(/^codex\//,'.codex/');const original=path.join(home,relative);let status='present';
+ try {let p=home;for(const part of relative.split('/')){p=path.join(p,part);const st=fs.lstatSync(p);if(st.isSymbolicLink()){status='link-not-followed';break;}}if(status!=='present'){rows.push({source:f.source,status});continue;}const st=fs.statSync(original);if(!st.isFile())throw Error('not-file');const bytes=fs.readFileSync(original),target=path.join(base,relative);fs.mkdirSync(path.dirname(target),{recursive:true});fs.writeFileSync(target,bytes,{flag:'wx'});const digest=hash(bytes);rows.push({source:f.source,status:digest===f.sha256?'exact':'drift',copied:true,originalUnchanged:hash(fs.readFileSync(original))===digest,copyMatches:hash(fs.readFileSync(target))===digest});
+ }catch(e){rows.push({source:f.source,status:e.code==='ENOENT'?'missing':'error',error:e.code||e.message});}}
+fs.writeFileSync('<USER_HOME>/hpr/copy-inventory.json',JSON.stringify({scope:'fixed 82 manifest entries only; no original content uploaded',rows},null,2));console.log(rows.reduce((a,r)=>(a[r.status]=(a[r.status]||0)+1,a),{}));

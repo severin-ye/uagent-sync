@@ -1,0 +1,13 @@
+[
+  {
+    "name": "focused",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-public-source.test.ts",
+      "test/profile-public-source-gates.test.ts"
+    ],
+    "status": 0
+  }
+]

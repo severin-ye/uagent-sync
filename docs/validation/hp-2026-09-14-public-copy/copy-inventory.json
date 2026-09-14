@@ -1,0 +1,441 @@
+{
+  "scope": "fixed 82 manifest entries only; no original content uploaded",
+  "rows": [
+    {
+      "source": "agents/skills/gstack/.env.example",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/bin/gstack-distill-free-text",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/browse-client.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/browser-manager.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/cli.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/cookie-import-browser.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/proxy-config.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/proxy-redact.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/server.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/session-cookie-store.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/socks-bridge.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/terminal-agent.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/src/token-registry.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/bridge-chromium-e2e.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/browse-client.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/browser-skill-commands.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/busy-daemon-iron-rule.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/busy-daemon-recovery.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/commands.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/cookie-import-browser.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/daemon-mismatch-refuse.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/extension-token.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/fixtures/injection-combined.html",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/pair-agent-e2e.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/pair-agent-tunnel-eval.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/proxy-redact.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/server-auth.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/server-embedder-terminal-port.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/server-factory.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/sidebar-ux.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/stop-dead-daemon.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/terminal-agent-integration.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/terminal-agent-owner-watchdog.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/token-registry.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browse/test/tunnel-revoke-cli.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/browser-skills/hackernews-frontpage/_lib/browse-client.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/design/src/check.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/design/src/design-to-code.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/design/src/diff.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/design/src/evolve.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/design/src/generate.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/design/src/iterate.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/design/src/memory.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/design/src/variants.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/docs/REMOTE_BROWSER_ACCESS.md",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/docs/designs/v2_PLAN.md",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/extension/background.js",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/extension/sidepanel-terminal.js",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/ios-qa/daemon/src/session-tokens.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/ios-qa/daemon/test/daemon-integration.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/ios-qa/scripts/gen-accessors.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/lib/code-intelligence/sourcebot-adapter.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/lib/context-bill.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/test/brain-sync.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/test/claude-provider-keychain.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/test/code-intelligence.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/test/free-tests-workflow-wiring.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/test/gbrain-supabase-provision.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/test/gstack-memory-ingest.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/test/helpers/benchmark-judge.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/test/helpers/hermetic-env.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/test/helpers/hermetic-env.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/test/helpers/touchfiles-data.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/test/hermetic-skills-seeding.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/test/redact-engine.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/test/regression-issue2091-bsd-mktemp.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/test/skill-e2e-cso.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/gstack/test/telemetry.test.ts",
+      "status": "missing",
+      "error": "ENOENT"
+    },
+    {
+      "source": "agents/skills/claude-api/php/managed-agents/README.md",
+      "status": "exact",
+      "copied": true,
+      "originalUnchanged": true,
+      "copyMatches": true
+    },
+    {
+      "source": "agents/skills/claude-api/python/claude-api/README.md",
+      "status": "exact",
+      "copied": true,
+      "originalUnchanged": true,
+      "copyMatches": true
+    },
+    {
+      "source": "agents/skills/claude-api/python/managed-agents/README.md",
+      "status": "exact",
+      "copied": true,
+      "originalUnchanged": true,
+      "copyMatches": true
+    },
+    {
+      "source": "agents/skills/claude-api/ruby/claude-api/README.md",
+      "status": "exact",
+      "copied": true,
+      "originalUnchanged": true,
+      "copyMatches": true
+    },
+    {
+      "source": "agents/skills/claude-api/ruby/managed-agents/README.md",
+      "status": "exact",
+      "copied": true,
+      "originalUnchanged": true,
+      "copyMatches": true
+    },
+    {
+      "source": "agents/skills/claude-api/shared/managed-agents-tools.md",
+      "status": "exact",
+      "copied": true,
+      "originalUnchanged": true,
+      "copyMatches": true
+    },
+    {
+      "source": "agents/skills/claude-api/typescript/claude-api/README.md",
+      "status": "exact",
+      "copied": true,
+      "originalUnchanged": true,
+      "copyMatches": true
+    },
+    {
+      "source": "agents/skills/claude-api/typescript/managed-agents/README.md",
+      "status": "exact",
+      "copied": true,
+      "originalUnchanged": true,
+      "copyMatches": true
+    },
+    {
+      "source": "agents/skills/pdf/SKILL.md",
+      "status": "exact",
+      "copied": true,
+      "originalUnchanged": true,
+      "copyMatches": true
+    },
+    {
+      "source": "agents/skills/pdf/reference.md",
+      "status": "exact",
+      "copied": true,
+      "originalUnchanged": true,
+      "copyMatches": true
+    },
+    {
+      "source": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+      "status": "exact",
+      "copied": true,
+      "originalUnchanged": true,
+      "copyMatches": true
+    },
+    {
+      "source": "agents/skills/ncbi-sequence-fetch/scripts/ncbi_fetch.py",
+      "status": "exact",
+      "copied": true,
+      "originalUnchanged": true,
+      "copyMatches": true
+    },
+    {
+      "source": "agents/skills/openfda-database/scripts/openfda_query.py",
+      "status": "exact",
+      "copied": true,
+      "originalUnchanged": true,
+      "copyMatches": true
+    }
+  ]
+}

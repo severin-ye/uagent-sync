@@ -1,0 +1,133 @@
+[
+  {
+    "name": "adapter-probe",
+    "args": [
+      "<USER_HOME>/hpr/adapter-probe.mjs"
+    ],
+    "status": 0
+  },
+  {
+    "name": "build",
+    "args": [
+      "C:/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "build",
+      "--prefix",
+      "<USER_HOME>/hpr/src"
+    ],
+    "status": 0
+  },
+  {
+    "name": "ci",
+    "args": [
+      "C:/node_modules/npm/bin/npm-cli.js",
+      "ci",
+      "--prefix",
+      "<USER_HOME>/hpr/src",
+      "--ignore-scripts",
+      "--include=optional",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "status": 0
+  },
+  {
+    "name": "focused",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-public-source.test.ts",
+      "test/profile-public-source-gates.test.ts"
+    ],
+    "status": 0
+  },
+  {
+    "name": "full",
+    "args": [
+      "C:/node_modules/npm/bin/npm-cli.js",
+      "test",
+      "--prefix",
+      "<USER_HOME>/hpr/src"
+    ],
+    "status": 0
+  },
+  {
+    "name": "public-check",
+    "args": [
+      "scripts/verified-public-profile.mjs",
+      "check",
+      "--home",
+      "<CONTROLLED_ROOT>/copies",
+      "--codex-home",
+      "<CONTROLLED_ROOT>/copies/.codex",
+      "--workspace-root",
+      "<CONTROLLED_ROOT>/copies/workspace",
+      "--cache",
+      "<CONTROLLED_ROOT>/public-cache",
+      "--report",
+      "<CONTROLLED_ROOT>/private-check.json"
+    ],
+    "status": 1
+  },
+  {
+    "name": "restore-copy",
+    "args": [
+      "scripts/verified-public-profile.mjs",
+      "restore-copy",
+      "--home",
+      "<CONTROLLED_ROOT>/restored",
+      "--codex-home",
+      "<CONTROLLED_ROOT>/restored/.codex",
+      "--workspace-root",
+      "<CONTROLLED_ROOT>/restored/workspace",
+      "--cache",
+      "<CONTROLLED_ROOT>/cache-restore-copy",
+      "--report",
+      "<CONTROLLED_ROOT>/private-restore-copy.json",
+      "--snapshot",
+      "<CONTROLLED_ROOT>/snapshot"
+    ],
+    "status": 0
+  },
+  {
+    "name": "restore-preview",
+    "args": [
+      "scripts/verified-public-profile.mjs",
+      "restore-preview",
+      "--home",
+      "<CONTROLLED_ROOT>/restored",
+      "--codex-home",
+      "<CONTROLLED_ROOT>/restored/.codex",
+      "--workspace-root",
+      "<CONTROLLED_ROOT>/restored/workspace",
+      "--cache",
+      "<CONTROLLED_ROOT>/cache-restore-preview",
+      "--report",
+      "<CONTROLLED_ROOT>/private-restore-preview.json",
+      "--snapshot",
+      "<CONTROLLED_ROOT>/snapshot"
+    ],
+    "status": 0
+  },
+  {
+    "name": "snapshot",
+    "args": [
+      "scripts/verified-public-profile.mjs",
+      "snapshot",
+      "--home",
+      "<CONTROLLED_ROOT>/copies",
+      "--codex-home",
+      "<CONTROLLED_ROOT>/copies/.codex",
+      "--workspace-root",
+      "<CONTROLLED_ROOT>/copies/workspace",
+      "--cache",
+      "<CONTROLLED_ROOT>/cache-snapshot",
+      "--report",
+      "<CONTROLLED_ROOT>/private-snapshot.json",
+      "--snapshot",
+      "<CONTROLLED_ROOT>/snapshot"
+    ],
+    "status": 0
+  }
+]

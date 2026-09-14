@@ -1,0 +1,20 @@
+[
+  {
+    "name": "public-check",
+    "args": [
+      "scripts/verified-public-profile.mjs",
+      "check",
+      "--home",
+      "<CONTROLLED_ROOT>/copies",
+      "--codex-home",
+      "<CONTROLLED_ROOT>/copies/.codex",
+      "--workspace-root",
+      "<CONTROLLED_ROOT>/copies/workspace",
+      "--cache",
+      "<CONTROLLED_ROOT>/public-cache",
+      "--report",
+      "<CONTROLLED_ROOT>/private-check.json"
+    ],
+    "status": 1
+  }
+]

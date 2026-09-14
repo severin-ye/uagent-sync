@@ -1,0 +1,116 @@
+[
+  {
+    "source": "agents/skills/claude-api/php/managed-agents/README.md",
+    "ids": [
+      "HP-001"
+    ],
+    "currentStatus": "exact",
+    "historicDigestMatchesReviewed": true
+  },
+  {
+    "source": "agents/skills/claude-api/python/claude-api/README.md",
+    "ids": [
+      "HP-002"
+    ],
+    "currentStatus": "exact",
+    "historicDigestMatchesReviewed": true
+  },
+  {
+    "source": "agents/skills/claude-api/python/managed-agents/README.md",
+    "ids": [
+      "HP-003"
+    ],
+    "currentStatus": "exact",
+    "historicDigestMatchesReviewed": true
+  },
+  {
+    "source": "agents/skills/claude-api/ruby/claude-api/README.md",
+    "ids": [
+      "HP-004"
+    ],
+    "currentStatus": "exact",
+    "historicDigestMatchesReviewed": true
+  },
+  {
+    "source": "agents/skills/claude-api/ruby/managed-agents/README.md",
+    "ids": [
+      "HP-005"
+    ],
+    "currentStatus": "exact",
+    "historicDigestMatchesReviewed": true
+  },
+  {
+    "source": "agents/skills/claude-api/shared/managed-agents-tools.md",
+    "ids": [
+      "HP-006"
+    ],
+    "currentStatus": "exact",
+    "historicDigestMatchesReviewed": true
+  },
+  {
+    "source": "agents/skills/claude-api/typescript/claude-api/README.md",
+    "ids": [
+      "HP-007"
+    ],
+    "currentStatus": "exact",
+    "historicDigestMatchesReviewed": true
+  },
+  {
+    "source": "agents/skills/claude-api/typescript/managed-agents/README.md",
+    "ids": [
+      "HP-008"
+    ],
+    "currentStatus": "exact",
+    "historicDigestMatchesReviewed": true
+  },
+  {
+    "source": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+    "ids": [
+      "HP-009",
+      "HP-010",
+      "HP-011",
+      "HP-012",
+      "HP-013",
+      "HP-014",
+      "HP-015"
+    ],
+    "currentStatus": "exact",
+    "historicDigestMatchesReviewed": true
+  },
+  {
+    "source": "agents/skills/ncbi-sequence-fetch/scripts/ncbi_fetch.py",
+    "ids": [
+      "HP-016",
+      "HP-017"
+    ],
+    "currentStatus": "exact",
+    "historicDigestMatchesReviewed": true
+  },
+  {
+    "source": "agents/skills/openfda-database/scripts/openfda_query.py",
+    "ids": [
+      "HP-018",
+      "HP-019",
+      "HP-020",
+      "HP-021"
+    ],
+    "currentStatus": "exact",
+    "historicDigestMatchesReviewed": true
+  },
+  {
+    "source": "agents/skills/pdf/SKILL.md",
+    "ids": [
+      "HP-022"
+    ],
+    "currentStatus": "exact",
+    "historicDigestMatchesReviewed": true
+  },
+  {
+    "source": "agents/skills/pdf/reference.md",
+    "ids": [
+      "HP-023"
+    ],
+    "currentStatus": "exact",
+    "historicDigestMatchesReviewed": true
+  }
+]

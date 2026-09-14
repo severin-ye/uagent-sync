@@ -1,0 +1,1 @@
+{"artificial":[{"case":"download failure throws before provider exists","pass":true,"calls":1},{"case":"fixed digest mismatch throws; promisor semantics retained","pass":true,"calls":3},{"case":"existing cache rejected","pass":true}],"verifiedPublicBlobs":82}
