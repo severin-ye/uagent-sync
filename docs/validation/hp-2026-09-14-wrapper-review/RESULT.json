@@ -1,0 +1,34 @@
+{
+  "inputHandoff": "bef061cefb9f1301db7cae3388cc2c1491b5c57b",
+  "productionSource": "ce6780faa0995c3c3587658aa46a161b4b5e4bcf",
+  "task": "HP-WRAPPER-REVIEW",
+  "pass": 6,
+  "fail": 0,
+  "exit": 0,
+  "realNpmInvoked": false,
+  "staticEvidenceMatches": true,
+  "rootEngine": ">=18",
+  "toml": ">=20",
+  "ini": "^22.22.2 || ^24.15.0 || >=26.0.0",
+  "files": [
+    {
+      "path": "docs/validation/honor-2026-09-14-delivery-batch/run-batch.ps1",
+      "sha256": "8bf6bb6a665d61bd19ebab08d123db8c0a5d03d1dce6db3d439fedce07ca2b01"
+    },
+    {
+      "path": "docs/validation/honor-2026-09-14-wrapper-contract/wrapper-tests.ps1",
+      "sha256": "b6f25bbd9293bd8373a30b6a7ac424fd54a03b79f549cdfae75385b38fb89d10"
+    }
+  ],
+  "productionDiff": "",
+  "conclusion": "HP-BATCH-01 wrapper fix accepted; HP-BATCH-02 declaration clarification accepted; conclude these two review loops",
+  "notExecuted": [
+    "npm test 855 suite",
+    "real run-batch",
+    "engine-strict installation",
+    "old M2 experiments",
+    "historical event searches",
+    "real data/template/link/collection/install/restore"
+  ],
+  "metadataGap": "root engines >=18 remains unchanged; documentation clarification is not a metadata fix"
+}

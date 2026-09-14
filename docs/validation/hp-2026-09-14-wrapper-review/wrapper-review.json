@@ -1,0 +1,17 @@
+{
+  "cwd": "<USER_HOME>/hpb/src",
+  "cmd": "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
+  "args": [
+    "-NoProfile",
+    "-ExecutionPolicy",
+    "Bypass",
+    "-File",
+    "<USER_HOME>/hpb/src/docs/validation/honor-2026-09-14-wrapper-contract/wrapper-tests.ps1",
+    "-Wrapper",
+    "<USER_HOME>/hpb/src/docs/validation/honor-2026-09-14-delivery-batch/run-batch.ps1",
+    "-ScratchRoot",
+    "<ARTIFICIAL_SCRATCH>"
+  ],
+  "status": 0,
+  "signal": null
+}

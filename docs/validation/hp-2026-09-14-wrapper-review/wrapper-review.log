@@ -1,0 +1,67 @@
+{
+    "pass":  6,
+    "fail":  0,
+    "rows":  [
+                 {
+                     "case":  "multi",
+                     "passed":  true,
+                     "calls":  3,
+                     "labels":  [
+                                    "ci",
+                                    "full-current",
+                                    "full-node18"
+                                ],
+                     "error":  null
+                 },
+                 {
+                     "case":  "explicit",
+                     "passed":  true,
+                     "calls":  3,
+                     "labels":  [
+                                    "ci",
+                                    "full-current",
+                                    "full-node18"
+                                ],
+                     "error":  null
+                 },
+                 {
+                     "case":  "invalid",
+                     "passed":  true,
+                     "calls":  0,
+                     "labels":  [
+
+                                ],
+                     "error":  "CurrentNodePath must name an existing executable file."
+                 },
+                 {
+                     "case":  "missing",
+                     "passed":  true,
+                     "calls":  0,
+                     "labels":  [
+
+                                ],
+                     "error":  "No Node executable found; provide -CurrentNodePath."
+                 },
+                 {
+                     "case":  "ci-failure",
+                     "passed":  true,
+                     "calls":  1,
+                     "labels":  [
+                                    "ci"
+                                ],
+                     "error":  "Isolated dependency setup failed; inspect evidence."
+                 },
+                 {
+                     "case":  "runtime-failure",
+                     "passed":  true,
+                     "calls":  3,
+                     "labels":  [
+                                    "ci",
+                                    "full-current",
+                                    "full-node18"
+                                ],
+                     "error":  "One or both runtime validations failed; preserve and report both sets of evidence."
+                 }
+             ],
+    "realNpmInvoked":  false
+}

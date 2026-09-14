@@ -1,0 +1,32 @@
+{
+  "wrapper": {
+    "cwd": "<USER_HOME>/hpb/src",
+    "cmd": "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
+    "args": [
+      "-NoProfile",
+      "-ExecutionPolicy",
+      "Bypass",
+      "-File",
+      "<USER_HOME>/hpb/src/docs/validation/honor-2026-09-14-wrapper-contract/wrapper-tests.ps1",
+      "-Wrapper",
+      "<USER_HOME>/hpb/src/docs/validation/honor-2026-09-14-delivery-batch/run-batch.ps1",
+      "-ScratchRoot",
+      "<ARTIFICIAL_SCRATCH>"
+    ],
+    "status": 0,
+    "signal": null
+  },
+  "static": {
+    "executable": "C:/node.exe",
+    "args": [
+      "docs/validation/honor-2026-09-14-wrapper-contract/check-engines.mjs",
+      "<USER_HOME>/hpb/src",
+      "<USER_HOME>/hpb/wrapper-engines.json"
+    ],
+    "exit": 0
+  },
+  "productionDiff": {
+    "command": "git diff --exit-code ce6780f -- src test package.json package-lock.json",
+    "exit": 0
+  }
+}

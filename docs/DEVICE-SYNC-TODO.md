@@ -80,6 +80,7 @@
 | RY-17 | 荣耀 | 有限修复复核通过（整体仍未完成） | RY-M2-01空白弃权独立复核 | [新报告](validation/honor-2026-09-14-m2-whitespace/README.md)：固定57b852f，双Node148/148、原反例24/24与6/6、已有目标配对6/6；修正复验PATH后全量852/852。旧失败和首轮环境失败保留 | 真实M2及全部既有阻断保留；HP-03/HP-04和迁移未完成 |
 | HP-DELIVERY-REVIEW | 惠普 | 已完成 | 最终源码双Node独立验收与事件有界核对 | [报告](validation/hp-2026-09-14-delivery-review/README.md)：固定ce6780f；双Node全量855/855、855/855；包装器多Node问题/依赖engine声明单列；旧npm现场未恢复 | 仅本批独立验收；真实迁移仍阻断 |
 | RY-18 | 荣耀 | 两机隔离验收通过；引擎声明限制另列 | Node18路径兼容、生产依赖插件入口与集中收尾 | [报告](validation/honor-2026-09-14-delivery-batch/README.md)：独立源码ce6780faa0995c3c3587658aa46a161b4b5e4bcf；双Node全量各855/855，红态保留，运行时依赖无版本升级；[收尾清单](DEVICE-SYNC-CLOSEOUT.md) | 惠普15c881e已回传；HP-BATCH-01/02见RY-19，真实迁移阻断保留 |
+| HP-WRAPPER-REVIEW | 惠普 | 已完成 | HP-BATCH-01/02新增范围独立复核 | [报告](validation/hp-2026-09-14-wrapper-review/README.md)：人工6/6、静态声明一致；结束两项往返，根engines差异未修改；生产仍ce6780f | 不重复855；真实迁移授权/证据阻断保留 |
 | RY-19 | 荣耀 | 包装器修复与兼容边界收敛完成 | HP-BATCH-01/02集中处理 | [报告](validation/honor-2026-09-14-wrapper-contract/README.md)：包装器人工红1/6、绿6/6；静态版本8/8，toml与ini声明均保留；根engines差异明确未修改 | 生产仍ce6780f，855不重跑；真实迁移阻断保留 |
 | HP-04-PRE | 惠普 | 已完成 | 既有13文件只读复扫（非快照验收） | [报告](validation/hp-2026-09-12-readonly-rescan/README.md)：固定af3f79c，13旧摘要匹配、0漂移、前后13一致；5文件通过、8阻断10命中，Python11/TS2消除旧命中、PHP/Ruby3仍阻断。HP-03/HP-04及迁移未完成 | RY-11有限复核通过 |
 | RY-04-PRE | 荣耀 | 已完成（只读对照） | 共同13文件完整内容扫描及序列意见 | [报告](validation/honor-2026-09-12-readonly-rescan/README.md)：固定af3f79c，13旧摘要匹配、0漂移、前后13一致；5通过、8阻断10命中，与惠普逐文件一致。两种受限序列仅形成意见；M2/HP-006/密码示例/172/RY-03继续阻断，未生成快照 | HP-04-PRE；不代改惠普状态 |
