@@ -1,0 +1,28 @@
+{
+  "red": [
+    "powershell",
+    "-NoProfile",
+    "-File",
+    "wrapper-tests.ps1",
+    "-Wrapper",
+    "wrapper-original.ps1",
+    "-ScratchRoot",
+    "<NEW_RED_FIXTURE_ROOT>"
+  ],
+  "green": [
+    "powershell",
+    "-NoProfile",
+    "-File",
+    "wrapper-tests.ps1",
+    "-Wrapper",
+    "<CHECKOUT>/docs/validation/honor-2026-09-14-delivery-batch/run-batch.ps1",
+    "-ScratchRoot",
+    "<NEW_GREEN_FIXTURE_ROOT>"
+  ],
+  "engines": [
+    "node",
+    "check-engines.mjs",
+    "<CHECKOUT>",
+    "engine-ranges.json"
+  ]
+}

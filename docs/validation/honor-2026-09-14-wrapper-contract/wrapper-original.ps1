@@ -1,19 +1,10 @@
 param(
  [Parameter(Mandatory=$true)][string]$SourcePath,
  [Parameter(Mandatory=$true)][string]$EvidencePath,
- [Parameter(Mandatory=$true)][string]$Node18Path,
- [string]$CurrentNodePath
+ [Parameter(Mandatory=$true)][string]$Node18Path
 )
 $ErrorActionPreference='Stop'
-if([string]::IsNullOrWhiteSpace($CurrentNodePath)){
- $candidate=Get-Command node -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
- if(!$candidate){throw 'No Node executable found; provide -CurrentNodePath.'}
- $CurrentNodePath=$candidate.Source
-}
-if(!(Test-Path -LiteralPath $CurrentNodePath -PathType Leaf)){throw 'CurrentNodePath must name an existing executable file.'}
-$currentNode=(Resolve-Path -LiteralPath $CurrentNodePath).Path
-if(!(Test-Path -LiteralPath $Node18Path -PathType Leaf)){throw 'Node18Path must name an existing executable file.'}
-$Node18Path=(Resolve-Path -LiteralPath $Node18Path).Path
+$currentNode=(Get-Command node -CommandType Application).Source
 $source=(Resolve-Path -LiteralPath $SourcePath).Path
 if(Test-Path -LiteralPath $EvidencePath){throw 'Choose a new evidence directory; do not overwrite an earlier run.'}
 $replay=Join-Path $PSScriptRoot 'replay.mjs'

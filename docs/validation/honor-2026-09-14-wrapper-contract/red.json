@@ -1,0 +1,61 @@
+{
+    "pass":  1,
+    "fail":  5,
+    "rows":  [
+                 {
+                     "case":  "multi",
+                     "passed":  false,
+                     "calls":  0,
+                     "labels":  [
+
+                                ],
+                     "error":  "The term \u0027<RED_FIXTURE>\\first\\node.ps1 <RED_FIXTURE>\\second\\node.ps1\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again."
+                 },
+                 {
+                     "case":  "explicit",
+                     "passed":  false,
+                     "calls":  0,
+                     "labels":  [
+
+                                ],
+                     "error":  "A parameter cannot be found that matches parameter name \u0027CurrentNodePath\u0027."
+                 },
+                 {
+                     "case":  "invalid",
+                     "passed":  true,
+                     "calls":  0,
+                     "labels":  [
+
+                                ],
+                     "error":  "A parameter cannot be found that matches parameter name \u0027CurrentNodePath\u0027."
+                 },
+                 {
+                     "case":  "missing",
+                     "passed":  false,
+                     "calls":  0,
+                     "labels":  [
+
+                                ],
+                     "error":  "Cannot bind argument to parameter \u0027Path\u0027 because it is null."
+                 },
+                 {
+                     "case":  "ci-failure",
+                     "passed":  false,
+                     "calls":  0,
+                     "labels":  [
+
+                                ],
+                     "error":  "The term \u0027<RED_FIXTURE>\\first\\node.ps1 <RED_FIXTURE>\\second\\node.ps1\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again."
+                 },
+                 {
+                     "case":  "runtime-failure",
+                     "passed":  false,
+                     "calls":  0,
+                     "labels":  [
+
+                                ],
+                     "error":  "The term \u0027<RED_FIXTURE>\\first\\node.ps1 <RED_FIXTURE>\\second\\node.ps1\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again."
+                 }
+             ],
+    "realNpmInvoked":  false
+}

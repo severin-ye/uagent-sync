@@ -1,0 +1,26 @@
+{
+  "handoff": "15c881edf2f32672788b27a67a5f0f242df983a7",
+  "productionSource": "ce6780faa0995c3c3587658aa46a161b4b5e4bcf",
+  "productionTestDependencyDiff": false,
+  "wrapperRed": {
+    "pass": 1,
+    "fail": 5,
+    "exit": 1
+  },
+  "wrapperGreen": {
+    "pass": 6,
+    "fail": 0,
+    "exit": 0
+  },
+  "engineRangeChecks": {
+    "pass": 8,
+    "fail": 0,
+    "kind": "static semver only"
+  },
+  "full855": "not rerun; unchanged source",
+  "strictInstall": "not run",
+  "rootEngineMetadata": "unchanged >=18; documented mismatch with runtime tree",
+  "runtimeEngineIntersection": "^22.22.2 || ^24.15.0 || >=26.0.0",
+  "realOperations": "none",
+  "originalWrapperSha256": "4625ae6f375979f780d069fef7dba1192d424cde188d13b4f2f391ca7ae7d1d0"
+}

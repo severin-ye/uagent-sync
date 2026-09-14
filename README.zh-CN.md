@@ -1,9 +1,11 @@
+> **Node兼容范围：** 锁定运行依赖的要求比根`>=18`字段更严格。Node18.20.8通过过已记录测试，但不代表支持engine-strict安装；24.16.0/24.19.0同时有测试证据且满足依赖声明。详见[精确兼容边界](docs/NODE-COMPATIBILITY.md)。
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/severin-ye/uagent-sync/master/assets/uagent-sync-readme-hero-banner.png" alt="uagent-sync" width="100%">
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Node.js-18%2B-brightgreen?style=flat-square" alt="Node.js 18+">
+  <img src="https://img.shields.io/badge/Node.js-24.16%20tested-brightgreen?style=flat-square" alt="Node.js 24.16 tested">
   <img src="https://img.shields.io/github/actions/workflow/status/severin-ye/uagent-sync/ci.yml?style=flat-square&label=CI" alt="CI">
   <img src="https://img.shields.io/github/v/release/severin-ye/uagent-sync?style=flat-square&color=blue" alt="Release">
   <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="MIT">

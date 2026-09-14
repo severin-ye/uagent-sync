@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {createRequire} from 'node:module';
+const [repo,out]=process.argv.slice(2);
+const require=createRequire(path.join(path.dirname(process.execPath),'node_modules/npm/package.json'));
+const semver=require('semver');
+const lock=JSON.parse(fs.readFileSync(path.join(repo,'package-lock.json'),'utf8'));
+const ranges=Object.entries(lock.packages).filter(([k,v])=>k&&!v.dev&&v.engines?.node).map(([name,v])=>({name,version:v.version,range:v.engines.node}));
+const cases=['18.20.8','20.20.0','22.22.1','22.22.2','24.14.0','24.16.0','24.19.0','26.0.0'].map(node=>({node,declaredBlockers:ranges.filter(x=>!semver.satisfies(node,x.range)).map(x=>x.name)}));
+fs.writeFileSync(out,JSON.stringify({rootEngine:lock.packages[''].engines.node,ranges,cases,note:'Static lockfile range evaluation only. No npm install, engine-strict run or dependency API execution.'},null,2)+'\n');
+console.log(JSON.stringify(cases));

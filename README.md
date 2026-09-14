@@ -1,9 +1,11 @@
+> **Node compatibility:** the locked runtime dependencies have stricter engine requirements than the root `>=18` field. Node18.20.8 passed the recorded tests, but is not an engine-strict installation target. Node24.16.0/24.19.0 satisfy the declared ranges and have recorded test coverage. See [the exact compatibility boundary](docs/NODE-COMPATIBILITY.md).
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/severin-ye/uagent-sync/master/assets/uagent-sync-readme-hero-banner.png" alt="uagent-sync" width="100%">
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Node.js-18%2B-brightgreen?style=flat-square" alt="Node.js 18+">
+  <img src="https://img.shields.io/badge/Node.js-24.16%20tested-brightgreen?style=flat-square" alt="Node.js 24.16 tested">
   <img src="https://img.shields.io/github/actions/workflow/status/severin-ye/uagent-sync/ci.yml?style=flat-square&label=CI" alt="CI">
   <img src="https://img.shields.io/github/v/release/severin-ye/uagent-sync?style=flat-square&color=blue" alt="Release">
   <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="MIT">
