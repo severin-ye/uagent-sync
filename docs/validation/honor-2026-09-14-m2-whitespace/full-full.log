@@ -1,0 +1,1349 @@
+
+> uagent-sync@2.1.1 pretest
+> npm run build
+
+
+> uagent-sync@2.1.1 build
+> rimraf dist && tsc && node scripts/generate-dashboard-i18n.mjs && node scripts/copy-dashboard.mjs
+
+
+> uagent-sync@2.1.1 test
+> node scripts/run-tests.mjs
+
+▶ AgentAdapter contract
+  ✔ scans exactly the injected adapters, in injection order (2.6072ms)
+  ✔ keeps DeepSeek inventory and target ids explicitly distinct (0.1873ms)
+✔ AgentAdapter contract (3.6741ms)
+▶ portability classification
+  ✔ classifies shared assets and platform state honestly (0.5274ms)
+  ✔ redacts nested values before display (0.5756ms)
+✔ portability classification (1.7044ms)
+▶ agent adapters
+  ✔ detects all three agents and shared skills without exposing secrets (15.3234ms)
+  ✔ reports an absent DeepSeek Harness without failing the inventory (10.3519ms)
+✔ agent adapters (26.6019ms)
+▶ workspace inventory
+  ✔ returns stable agents, coverage, drift, migration actions, and security flags (11.5911ms)
+✔ workspace inventory (11.698ms)
+▶ Application operation x target capability gate
+  ✔ publishes the complete 7 operations x 4 targets matrix (1.8414ms)
+  ✔ every unsupported operation fails closed before invoking any dependency (1.2034ms)
+✔ Application operation x target capability gate (3.7898ms)
+✔ migrated entrypoints depend on Application instead of migrated domain orchestrators (58.8542ms)
+✔ Application never imports presentation entrypoints (13.7624ms)
+✔ Domain and Ports never import the public barrel, Application, or Adapters (109.2138ms)
+✔ import analysis sees and rejects default, namespace, and dynamic import bypasses (3.1063ms)
+✔ the public barrel exposes the implemented architecture contracts (0.2161ms)
+✔ the public barrel exports v3 and major Application request/result types (0.8938ms)
+✔ the runtime Agent registry carries a fourth scanner through inventory diff (3.002ms)
+▶ unified dashboard backend contract
+  ✔ serves a cached unified snapshot and carries its identity into analysis (67.2984ms)
+  ✔ keeps agent-browser, browser, and chrome in one canonical group with one action per implementation (24.4784ms)
+  ✔ allows non-Codex and cross-agent decisions in ledger-only mode without config writes (41.8153ms)
+  ✔ returns populated and internally consistent cross-agent sections (22.8335ms)
+  ✔ discovers DeepSeek profile bundles from the repository-standard profile manifest (17.9854ms)
+  ✔ returns 410 for legacy business APIs and keeps public DTOs path-free (24.9141ms)
+  ✔ verify performs a fresh scan and reports external configuration drift (26.7136ms)
+  ✔ keeps external ledger changes cached until refresh and then adopts them (30.5883ms)
+✔ unified dashboard backend contract (258.8409ms)
+▶ Windows Codex bootstrap plan
+  ✖ accepts only the two repository URLs and produces a Codex-only resumable plan (5.5615ms)
+  ✔ all marketplace metadata versions match package.json (0.8578ms)
+  ✔ accepts both npm 10 array and npm 12 keyed-object pack JSON (0.5528ms)
+  ✔ retries the state pull before entering idempotent setup (0.3883ms)
+  ✔ refreshes an existing personal marketplace and verifies the installed plugin version (0.2885ms)
+  ✖ falls back after three remote failures only through a same-origin local fast-forward (2.6301ms)
+  ✖ rejects a source-origin mismatch before using the local fallback (3.3644ms)
+  ✔ matches a PowerShell diagnostic even when a word is line-wrapped (0.24ms)
+  ✖ rejects a local marketplace branch that cannot fast-forward to source (3.0238ms)
+  ✔ uses terminating cmdlet errors and leaves LASTEXITCODE checks to native commands (0.8711ms)
+  ✖ smoke-runs the documented raw download command and propagates the native bootstrap exit (4.2597ms)
+✖ Windows Codex bootstrap plan (23.3901ms)
+▶ resolveWorkspaceRoot — 非 workspace cwd
+  ✔ Codex 作用域使用自己的缓存且不创建 OpenCode 路径 (5.3051ms)
+  ✔ workspace 外启动 + 固定缓存存在 → 直接命中缓存 (7.2675ms)
+  ✔ 固定缓存仍指向旧 opencode-dotfiles → 自动改写为 workspace/usync-dotfiles (6.9032ms)
+  ✔ OPENCODE_SYNC_WORKSPACE_ROOT 环境变量优先于缓存 (3.9125ms)
+  ✔ 旧位置缓存（workspace 内 opencode-dotfiles/state/）→ 迁移到固定位置 (6.7984ms)
+  ✔ workspace 内启动（无缓存）→ 向上找 .gitmodules 兜底 (4.1156ms)
+  ✔ Codex stale cache 指向嵌套插件目录时，改从上层真实 workspace 解析 (84.4837ms)
+  ✔ 找不到时错误消息包含引导提示 (2.9908ms)
+✔ resolveWorkspaceRoot — 非 workspace cwd (123.1439ms)
+✔ CLI verify preflights dsh/all before OpenCode workspace resolution (548.8337ms)
+✔ CLI export preflights dsh/all before OpenCode workspace resolution (577.7061ms)
+✔ CLI import preflights dsh/all before OpenCode workspace resolution (723.65ms)
+✔ CLI setup preflights dsh/all before OpenCode workspace resolution (590.9091ms)
+✔ CLI update preflights dsh/all before OpenCode workspace resolution (542.35ms)
+✔ CLI push preflights dsh/all before OpenCode workspace resolution (508.8958ms)
+✔ CLI pull preflights dsh/all before OpenCode workspace resolution (521.2758ms)
+✔ CLI verify rejects every malformed explicit target before resolution (832.9383ms)
+✔ CLI export rejects every malformed explicit target before resolution (827.9641ms)
+✔ CLI import rejects every malformed explicit target before resolution (724.1776ms)
+✔ CLI setup rejects every malformed explicit target before resolution (716.1325ms)
+✔ CLI update rejects every malformed explicit target before resolution (669.4795ms)
+✔ CLI push rejects every malformed explicit target before resolution (667.5628ms)
+✔ CLI pull rejects every malformed explicit target before resolution (766.8853ms)
+✔ CLI push failure is structured and deeply redacted (196.3845ms)
+✔ CLI pull failure is structured and deeply redacted (193.9268ms)
+✔ CLI import failure is structured and deeply redacted (180.681ms)
+✔ top-level CLI failures emit one sanitized structured JSON object (686.1516ms)
+✔ detected OpenCode resolves scope without reading its cache first (400.3404ms)
+✔ an explicit OpenCode target may still use its cache from outside a workspace (322.2751ms)
+✔ detected OpenCode runs normally from a workspace with matching persisted scope (305.5417ms)
+✔ CLI verify keeps one immutable target across detection and init-state (419.742ms)
+✔ CLI export keeps one immutable target across detection and init-state (570.2119ms)
+✔ CLI import keeps one immutable target across detection and init-state (568.0412ms)
+✔ CLI setup keeps one immutable target across detection and init-state (393.6246ms)
+✔ CLI update keeps one immutable target across detection and init-state (386.0589ms)
+✔ CLI push keeps one immutable target across detection and init-state (405.9382ms)
+✔ CLI pull keeps one immutable target across detection and init-state (407.5122ms)
+Unknown command: nonexistent
+Invalid dashboard port: invalid
+Error: --type, --name, and --source are required for crystallize
+Error: --type, --name, and --source are required for 'add' action
+Error: --key-name is required for 'add' action
+▶ CLI usage
+  ✔ no command shows usage with all 16 commands (267.7932ms)
+  ✔ unknown command exits non-zero (236.5982ms)
+  ✔ --help prints usage and exits 0 (226.6648ms)
+  ✔ -h prints usage and exits 0 (215.5425ms)
+  ✔ --version prints the package version and exits 0 (261.9549ms)
+✔ CLI usage (1209.2329ms)
+▶ CLI read-only commands
+  ✔ inventory --json returns a safe three-agent payload (247.1358ms)
+  ✔ dashboard rejects invalid ports (253.0794ms)
+  ✔ status lists submodules (318.6101ms)
+  ✔ verify does not report success when required checks fail (734.5085ms)
+  ✔ guide generates SYNC-GUIDE.md (218.9166ms)
+  ✔ api-keys detect lists keys (197.2144ms)
+  ✔ log read shows empty log (267.7629ms)
+✔ CLI read-only commands (2237.7597ms)
+▶ CLI bilingual output
+  ✔ defaults to English (UAGENT_SYNC_LANG unset → en) (239.809ms)
+  ✔ --lang zh switches CLI output to Chinese (321.4974ms)
+  ✔ UAGENT_SYNC_LANG=zh switches CLI output to Chinese (269.2172ms)
+  ✔ --lang en overrides UAGENT_SYNC_LANG=zh (225.8075ms)
+  ✔ help shows bilingual usage with --lang hint (474.7321ms)
+✔ CLI bilingual output (1531.403ms)
+▶ CLI stateful commands (safe paths)
+  ✔ init --force writes init state and prints next steps (256.0837ms)
+  ✔ log add records entry then read returns it (450.2324ms)
+  ✔ log export produces markdown (213.7119ms)
+  ✔ crystallize without required flags errors (209.6251ms)
+  ✔ log add without required flags errors (209.5755ms)
+  ✔ api-keys add without --key-name errors (269.6673ms)
+✔ CLI stateful commands (safe paths) (1609.2377ms)
+✔ profile roundtrip preserves memory and maps config without transferring trust or auth (44.2468ms)
+✔ different existing data conflicts; explicit first restore makes a backup (39.613ms)
+✔ three-way baseline protects edits and allows a subsequent source change (53.2317ms)
+✔ tampering and path traversal fail before any target writes (22.0702ms)
+✔ secret values block export without creating an uploadable snapshot (8.5245ms)
+✔ explicit component selection reports omitted skills and refuses empty component selection (15.538ms)
+✔ junctions cannot redirect target writes outside the registered profile (17.6193ms)
+✔ profile excludes nested Git directories and worktree pointers without changing source (42.2392ms)
+✔ legacy snapshot containing Git metadata is refused before target writes (16.101ms)
+[uagent-sync] skill source install still running
+▶ Codex extension restoration
+  ✔ restores only selected portable entries and treats an absent tombstone as already satisfied (3.5336ms)
+  ✔ reports missing sources and secret-bearing MCP configuration as errors (0.6581ms)
+  ✔ restores a remote MCP bearer token by environment-variable name only (0.5672ms)
+  ✔ removes an installed tombstone once and rescans until absence is confirmed (1.0212ms)
+  ✔ does not hide a real tombstone permission failure (0.5098ms)
+  ✔ fails when a successful tombstone command does not actually remove the target (0.2728ms)
+  ✔ treats a not-found removal response as success only after absence is confirmed (0.2928ms)
+  ✔ recognizes the bootstrap-installed Uagent plugin as an existing equivalent source (0.4212ms)
+  ✔ reports a supply-chain conflict for genuinely different plugin repositories (0.1558ms)
+  ✔ groups skills by normalized source and emits one structured source summary (0.4924ms)
+  ✔ reports one grouped failure for every skill covered by a failed source (0.3231ms)
+  ✔ retries a reset skill source with a bounded backoff and succeeds on the third attempt (0.5576ms)
+  ✔ stops retrying when a pre-retry scan confirms the whole source is installed (0.2335ms)
+  ✔ fails a 38/39 source after exit zero and names the one source-consistent missing skill (0.404ms)
+  ✔ treats exit one as idempotent success when the immediate rescan is source-complete (0.233ms)
+  ✔ retries an exit-one partial install until every selected skill from that source is present (0.2751ms)
+  ✔ does not count a globally same-named skill from a different source (0.1743ms)
+  ✔ keeps one source summary and verifies every selected ID when that source was initially partial (0.2917ms)
+  ✔ retries spinner-only clone failures and writes clean structured decisions (5.8796ms)
+  ✔ stops a spinner clone failure immediately when permanent 404 evidence is present (0.4407ms)
+  ✔ does not start another clone attempt after the source total timeout expires (0.3366ms)
+  ✔ emits already-complete for an initially installed source without duplicating summaries (0.208ms)
+  ✔ fails non-retryable source errors immediately and keeps full details in an optional report (5.3951ms)
+  ✔ keeps separate redacted stdout and stderr summaries when stdout is long (0.5743ms)
+  ✔ redacts command stderr before adding it to structured recovery errors (2.9197ms)
+  ✔ aggregates existing skills into one skipped entry per normalized source (0.3892ms)
+✔ Codex extension restoration (28.4376ms)
+▶ trusted Windows command execution
+  ✔ resolves trusted codex.cmd and npx.cmd shims without executing WindowsApps or shell metacharacters (321.7495ms)
+  ✔ emits periodic stderr heartbeats while a real monitored skill command is still running (983.9075ms)
+  ✔ terminates a real monitored skill command at its bounded timeout (400.1234ms)
+  ✔ retries two real monitored connection resets and succeeds on the third process (530.8705ms)
+✔ trusted Windows command execution (2236.9695ms)
+▶ Codex-only verify/setup scope
+  ✔ setup scans current Codex extensions instead of treating all selected entries as absent (0.8735ms)
+  ✔ verify checks Codex and explicitly skips OpenCode without an error (595.6042ms)
+  ✔ verify reports a selected MCP whose required credential variable is unset (553.4339ms)
+  ✔ setup planning excludes every OpenCode action (2.0407ms)
+  ✔ writes a safe source failure report and emits setup progress on Windows (366.7505ms)
+  ✔ CLI verify returns structured fields and exits non-zero on required errors (873.7369ms)
+✔ Codex-only verify/setup scope (2393.2685ms)
+
+> uagent-sync@2.1.1 prepack
+> npm run build
+
+
+> uagent-sync@2.1.1 build
+> rimraf dist && tsc && node scripts/generate-dashboard-i18n.mjs && node scripts/copy-dashboard.mjs
+
+▶ Codex crystallize Skill
+  ✔ publishes a discoverable Skill with the required triggers and CLI contract (2.0449ms)
+  ✔ includes the crystallize Skill and Codex metadata in the npm package (5852.2964ms)
+✔ Codex crystallize Skill (5855.3314ms)
+node:internal/child_process:1143
+    result.error = new ErrnoException(result.error, 'spawnSync ' + options.file);
+                   ^
+
+<ref *1> Error: spawnSync where.exe ENOENT
+    at Object.spawnSync (node:internal/child_process:1143:20)
+    at spawnSync (node:child_process:911:24)
+    at execFileSync (node:child_process:954:15)
+    at resolveGitExecutable (<REVIEW_ROOT>\src\test\support\fixture-runner.ts:72:18)
+    at <anonymous> (<REVIEW_ROOT>\src\test\crystallize-submodule.test.ts:23:13)
+    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)
+    at async node:internal/modules/esm/loader:633:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'spawnSync where.exe',
+  path: 'where.exe',
+  spawnargs: [ 'git' ],
+  error: [Circular *1],
+  status: null,
+  signal: null,
+  output: null,
+  pid: 0,
+  stdout: undefined,
+  stderr: undefined
+}
+
+Node.js v24.16.0
+✖ <REVIEW_ROOT>\src\test\crystallize-submodule.test.ts (235.7692ms)
+▶ dashboard assets
+  ✔ builds the single dashboard shell and four top-level routes (2.8968ms)
+  ✔ keeps legacy extension URL on the same shell without loading a second page (0.4387ms)
+  ✔ switches language in place and exposes both dictionaries (0.3127ms)
+  ✔ uses a bounded inventory request and preserves the last result on errors (0.4277ms)
+  ✔ keeps all dashboard scripts syntactically executable (258.3815ms)
+  ✔ does not ship legacy migration UI or browser decision storage (0.9308ms)
+✔ dashboard assets (264.3992ms)
+▶ dashboard server
+  ✔ serves all read-only JSON endpoints without secrets (61.5726ms)
+  ✔ serves the i18n asset required before app initialization (34.6837ms)
+  ✔ serves extension deduplication from the same dashboard origin (10.7337ms)
+  ✔ rejects unknown routes and write methods (18.4326ms)
+  ✔ retires the legacy migration-draft API (11.519ms)
+  ✔ does not return migration results before an explicit analysis scope (10.352ms)
+  ✔ rejects same-agent analysis and returns one unified scoped result (18.8326ms)
+✔ dashboard server (167.8136ms)
+▶ unified dashboard shell
+  ✔ exposes exactly four top-level navigation routes (1.9367ms)
+  ✔ models migration analysis as five real internal tabs (0.9765ms)
+  ✔ contains no legacy shell references (1.5844ms)
+  ✔ does not build or ship a second legacy dashboard implementation (0.7814ms)
+  ✔ runs a real Playwright browser test from the e2e command (1.0668ms)
+  ✔ starts with a null analysis scope and requires an explicit start action (0.7713ms)
+  ✔ keeps a cross-agent swap control that invalidates the previous analysis (0.5536ms)
+  ✔ renders real coverage, compatibility, and execution modules (0.6771ms)
+  ✔ invalidates unsafe transient state on preview failure and rescan (0.5127ms)
+  ✔ guards asynchronous analysis actions against stale responses and duplicate submits (0.4205ms)
+  ✔ keeps unavailable single-agent deep links explicit instead of silently changing tabs (0.3613ms)
+  ✔ switches language in place without reloading the document (0.5304ms)
+  ✔ generates the browser dictionary from the TypeScript message source (0.5549ms)
+  ✔ keeps every responsive navigation item available (0.2667ms)
+✔ unified dashboard shell (12.5017ms)
+✔ publication refuses traversal and literal credentials before Git/network mutation (10.5391ms)
+▶ device registry
+  ✔ registers one local device with a stable random id on rerun (44.8507ms)
+  ✔ supports multiple devices and rejects an ambiguous alias (58.7612ms)
+  ✔ renames a device without changing its id (33.6173ms)
+  ✔ reconnects to another checkout only when the same device id is present (40.8651ms)
+  ✔ rejects cross-schema and malformed records (5.4324ms)
+  ✔ rejects path traversal, symlink escape, and a connection inside the registry (9.0166ms)
+  ✔ does not overwrite an existing file with a conflicting device identity (7.7775ms)
+  ✔ CLI emits JSON and does not expose URL credentials (22.893ms)
+✔ device registry (224.5218ms)
+✖ audit includes ignored and untracked documents without reading credential contents (7.817ms)
+▶ dsh plugin schema contract (dsh-tools)
+  ✔ apply() registers all 16 sync_* tools against the pinned dsh-tools contract (4.3752ms)
+✔ dsh plugin schema contract (dsh-tools) (5.3825ms)
+▶ argsToFlags
+  ✔ maps string, boolean true, boolean false, arrays, and underscore-to-dash (1.5982ms)
+  ✔ omits undefined/null values and keeps order (0.3326ms)
+✔ argsToFlags (2.7685ms)
+▶ findWorkspaceRoot
+  ✔ walks up from a nested dir to the .gitmodules root (6.5535ms)
+  ✔ returns undefined when no .gitmodules in ancestors (3.9575ms)
+✔ findWorkspaceRoot (10.8231ms)
+▶ findDeep
+  ✔ finds uagent-sync/dist/cli.js under the workspace root (6.9699ms)
+  ✔ skips node_modules and .git (3.515ms)
+  ✔ returns undefined when nothing matches (1.3686ms)
+✔ findDeep (12.1248ms)
+▶ resolveCliPath
+  ✔ prefers explicit cliPath when it exists (1.7632ms)
+  ✔ ignores explicit cliPath when missing, falls to env var (1.7652ms)
+  ✔ finds the CLI via workspace recursion when nothing else set (3.884ms)
+  ✔ finds the CLI via npm dependency (node_modules/uagent-sync/dist/cli.js) before workspace recursion (4.4227ms)
+  ✔ npm dependency lookup climbs out of nested installs (pnpm-style layout) (5.4836ms)
+  ✔ returns undefined when CLI is nowhere to be found (1.5768ms)
+  ✔ cliPathError gives actionable guidance (0.321ms)
+✔ resolveCliPath (19.7265ms)
+▶ DSH bundle manifest compatibility
+  ✔ never declares required:false (DSH schema rejects it; optional params omit the field) (0.2106ms)
+  ✔ declares schemastery as a real dependency and host packages as peers (0.0772ms)
+  ✔ declares uagent-sync as a dependency so the CLI ships with the npm-installed plugin (0.0799ms)
+✔ DSH bundle manifest compatibility (0.5142ms)
+▶ skill bridging
+  ✔ parseSkillMd extracts name/description and strips frontmatter (0.3058ms)
+  ✔ parseSkillMd returns null without frontmatter or missing fields (0.1218ms)
+  ✔ resolveSkillsDir derives <checkout>/skills from the CLI path (2.2031ms)
+  ✔ resolveSkillsDir returns undefined when skills dir missing (2.8571ms)
+✔ skill bridging (5.9664ms)
+▶ runCli + renderResult
+  ✔ captures stdout on success (119.1511ms)
+  ✔ reports exit code and stderr on failure (102.2496ms)
+  ✔ kills on timeout and marks the result (534.3226ms)
+  ✔ real CLI without command prints usage and exits 1 (194.953ms)
+✔ runCli + renderResult (951.0813ms)
+▶ DSH target scope forwarding
+  ✔ passes --target-agent dsh through all workspace operation tools (759.5013ms)
+✔ DSH target scope forwarding (759.6725ms)
+▶ verify entrypoint parity
+  ✔ keeps the existing human and JSON verification output contracts (2.6299ms)
+  ✔ routes CLI and plugin verification through the shared workspace application (0.8534ms)
+✔ verify entrypoint parity (4.4079ms)
+✔ formats Plugin Application results with sanitized structured metadata (0.4548ms)
+✔ deeply redacts every structured Application result field including URL credentials (0.386ms)
+✔ routes CLI failure JSON through the shared structured result formatter (0.4349ms)
+▶ exportWorkspace
+  ✔ scans the complete serialized artifact before writing it (7.2722ms)
+  ✔ fails closed without writing when the secret scan rejects the artifact (1.0356ms)
+  ✔ fails unsupported dsh/all scopes before collection, scanning, or any file write (0.7858ms)
+  ✔ owns the Plugin tracking policy and performs every .gitignore operation through FileSystem (0.8616ms)
+✔ exportWorkspace (10.9767ms)
+▶ importWorkspace
+  ✔ propagates a domain import failure as ok=false (4.1701ms)
+  ✔ exposes a pure capability preflight with stable unsupported-target errors (0.7189ms)
+  ✔ parses with the artifact codec and rejects a target mismatch before mutation (0.5178ms)
+  ✔ passes the validated v3 artifact to the legacy bridge without dropping fields (0.3524ms)
+  ✔ validates target scope before a dry-run snapshot or diff (0.4726ms)
+  ✔ fails unsupported dsh/all scopes before codec parsing or any downstream work (0.4169ms)
+✔ importWorkspace (7.0271ms)
+▶ nodeFileSystem
+  ✔ implements the text file port (3.8374ms)
+✔ nodeFileSystem (3.9339ms)
+▶ export/import entrypoint parity
+  ✔ keeps CLI path and URL parsing at the edge while delegating both workflows (0.7571ms)
+  ✔ keeps Plugin tool schemas and text protocol while delegating both workflows (0.509ms)
+✔ export/import entrypoint parity (1.3652ms)
+▶ real CLI export/import protocol
+  ✔ roundtrips a supported OpenCode artifact with stable exit/output and JSON (474.5004ms)
+  ✔ fails dsh/all export and import with ok=false before artifact writes or parsing (886.5296ms)
+  ✔ exits non-zero when the domain importer returns success=false (190.8124ms)
+  ✔ preflights unsupported imports before a missing path read or observable URL fetch (818.4838ms)
+✔ real CLI export/import protocol (2370.6735ms)
+▶ real Plugin export/import protocol
+  ✔ returns success and failure as Plugin text while application owns tracking (178.5396ms)
+  ✔ renders artifact write failures as stable non-secret Plugin text (9.1075ms)
+✔ real Plugin export/import protocol (187.8216ms)
+▶ legacy extension conflict API
+  ✔ is frozen while the unified migration analysis owns decisions (44.5865ms)
+✔ legacy extension conflict API (45.3543ms)
+▶ Codex extension governance
+  ✔ normalizes capability IDs neutrally for same-type and cross-type matches (0.709ms)
+  ✔ discovers only active official extensions in deterministic order (9.9767ms)
+  ✔ validates ledger decisions and rejects absolute paths (2.7203ms)
+  ✔ does not trust a personal manifest that claims an official source (0.3884ms)
+  ✔ edits only a unique boolean enabled span while preserving BOM, CRLF, comments, and order (1.2784ms)
+  ✔ stops an extension block at the next unrelated TOML table (0.3464ms)
+✔ Codex extension governance (16.2764ms)
+▶ fixture command runner
+  ✔ retries one exact environment failure with a fresh fixture (0.9968ms)
+  ✔ fails after the single allowed retry when the environment error repeats (0.4978ms)
+  ✔ does not retry ordinary command failures (0.3144ms)
+  ✔ selects an absolute trusted Git executable and rejects WindowsApps shims (0.3853ms)
+  ✖ passes Git arguments as argv, preserving spaces and shell metacharacters (3.4429ms)
+✖ fixture command runner (6.5125ms)
+▶ importSystemState redacted sentinel guard
+  ✔ should keep local real url when synced value contains <hidden> (4.3184ms)
+  ✔ should write <hidden> sentinel on a fresh device (no local config) (1.7429ms)
+✔ importSystemState redacted sentinel guard (10.9437ms)
+▶ data-driven MCP detection
+  ✔ should load known MCPs from data file (2.5708ms)
+  ✔ should fall back to built-in repo data when workspace has no data file (1.0221ms)
+  ✔ should match by command pattern (0.345ms)
+  ✔ should match by URL pattern (remote MCPs) (0.4933ms)
+  ✔ should match by env var patterns (0.217ms)
+  ✔ should analyze MCP with known entry (0.592ms)
+  ✔ should analyze unknown MCP gracefully (1.4872ms)
+✔ data-driven MCP detection (126.8164ms)
+▶ known-mcps.json data integrity
+  ✔ should exist and be valid JSON (0.6992ms)
+✔ known-mcps.json data integrity (0.8395ms)
+▶ migration analysis contract
+  ✔ requires an explicit scope and rejects same-agent cross analysis (0.6815ms)
+  ✔ does not create a disable action for cross-agent relations (0.536ms)
+  ✔ groups multiple relations into one implementation action (8.0005ms)
+  ✔ never repeats an implementation action across different capability groups (0.3513ms)
+✔ migration analysis contract (10.2681ms)
+▶ migration analysis core model
+  ✔ uses the same context and relation implementations through every public entrypoint (2.1192ms)
+  ✔ requires a complete scope and rejects a same-agent route (1.0949ms)
+  ✔ allows disable_in_agent only for single-agent Codex analysis (0.2036ms)
+  ✔ derives an implementation id without content fingerprint and validates provenance (0.5013ms)
+  ✔ validates relation and confidence vocabularies (7.916ms)
+  ✔ uses one relation type across the factory and production grouping API (0.8785ms)
+  ✔ groups equivalent implementations by capability with one action per implementation (0.5158ms)
+  ✔ sanitizes public output without locators or absolute paths (0.7329ms)
+✔ migration analysis core model (17.6215ms)
+▶ scoped migration analysis transaction
+  ✔ groups an auto-discovered skill once and applies only after exact preview (118.6245ms)
+  ✔ rejects malformed or future decision ledgers before preview/write (4.1618ms)
+  ✔ uses the same capability inventory for cross-agent comparisons without write actions (7.0604ms)
+  ✔ never re-enables a manually disabled Codex registration (26.4253ms)
+✔ scoped migration analysis transaction (157.5989ms)
+▶ bidirectional migration draft (orthogonal axes)
+  ✔ supports all six directions and rejects a same-agent route (4.1325ms)
+  ✔ classifies a missing portable capability as missing with direct_share (0.1751ms)
+  ✔ classifies same-named capability in a different config file as existing/dual_registered with keep_current (0.168ms)
+  ✔ classifies target-native overlap as existing/target_native (0.1365ms)
+  ✔ counts same-file shared assets in summary.shared and skips them (0.1121ms)
+  ✔ keeps same-named skills in different directories as migration items (not shared) (0.11ms)
+  ✔ defers unverified DeepSeek MCP as missing with defer (0.1058ms)
+  ✔ applies a global conflict policy and then an item override with the 4-action set (0.1623ms)
+  ✔ maps every policy to one of the four actions (0.1639ms)
+  ✔ keeps the custom adapter as the last, unrecommended candidate (0.1624ms)
+✔ bidirectional migration draft (orthogonal axes) (6.5137ms)
+✖ Windows offline staging previews, verifies, resumes, and refuses overwrites (8.2464ms)
+
+> uagent-sync@2.1.1 prepack
+> npm run build
+
+
+> uagent-sync@2.1.1 build
+> rimraf dist && tsc && node scripts/generate-dashboard-i18n.mjs && node scripts/copy-dashboard.mjs
+
+▶ real npm pack installation
+  ✔ runs the installed CLI with production dependencies only (190.4312ms)
+  ✔ ships valid Codex metadata and all three skills (0.7338ms)
+✔ real npm pack installation (191.8889ms)
+▶ stripJsonComments
+  ✔ should strip line comments (0.6906ms)
+  ✔ should strip block comments (0.1744ms)
+  ✔ should NOT strip // inside URL strings (1.1978ms)
+  ✔ should NOT strip // inside single-quoted strings (0.1667ms)
+  ✔ should handle escaped quotes inside strings (0.0958ms)
+  ✔ should remove multiple mixed comments (0.748ms)
+  ✔ should produce valid JSON from realistic JSONC with URL (0.352ms)
+  ✔ should handle mixed comment styles together (0.1028ms)
+✔ stripJsonComments (113.4564ms)
+▶ detectPlaywrightMcpConfig
+  ✔ should detect playwright with extension + edge + token (0.573ms)
+  ✔ should detect vision capability (0.1825ms)
+  ✔ should detect headless mode (0.0738ms)
+  ✔ should detect Chrome browser (0.0707ms)
+  ✔ should detect CDP endpoint (0.052ms)
+  ✔ should return null when no playwright MCP (0.0471ms)
+  ✔ should return null when playwright is disabled (0.0394ms)
+  ✔ should detect token via PLAYWRIGHT_MCP_EXTENSION_TOKEN (0.0477ms)
+  ✔ should detect token via alternative env var naming (0.0492ms)
+  ✔ should detect missing token (0.0428ms)
+  ✔ should return null when mcp section is missing (0.0364ms)
+  ✔ should detect plain playwright without optional flags (0.1786ms)
+✔ detectPlaywrightMcpConfig (3.5906ms)
+▶ generateSyncGuide — Playwright section
+  ✔ should include Playwright install section (15.1286ms)
+  ✔ should include multi-model notes (6.1776ms)
+  ✔ should include known pitfalls (3.236ms)
+  ✔ should NOT include Playwright section when not configured (2.9351ms)
+✔ generateSyncGuide — Playwright section (36.2675ms)
+▶ Module exports
+  ✔ should export new Playwright functions (1.6427ms)
+✔ Module exports (1.7592ms)
+▶ updateExtensions
+  ✔ dry-run returns skipped steps without executing any command (174.0337ms)
+  ✔ does not plan codebase-memory-mcp for default or MCP-only updates (183.5868ms)
+  ✔ emits plan → step-start → step-end → done event flow (62.4875ms)
+  ✔ respects explicit components filter (56.6942ms)
+  ✔ excludes opencode by default (258.4751ms)
+  ✔ includes opencode when explicitly requested (75.8294ms)
+  ✔ plans a complete Codex-only self-update without touching OpenCode (82.796ms)
+  ✔ does not inspect OpenCode plugin or config directories in the default Codex plan (207.3484ms)
+  ✔ rejects an explicit OpenCode update inside Codex scope without executing it (62.2954ms)
+  ✔ executes packed CLI installation and verifies the Codex marketplace and plugin version (989.4607ms)
+  ✔ stops before replacing the installed CLI when the required self-test fails (397.1143ms)
+✔ updateExtensions (2552.4057ms)
+▶ OpencodeSyncPlugin
+  ✔ exposes the full opencode_sync_* tool set (6.4111ms)
+✔ OpencodeSyncPlugin (6.5324ms)
+▶ isMachineSpecificPath
+  ✔ should detect Windows absolute user paths (0.5758ms)
+  ✔ should detect Linux absolute home paths (0.1051ms)
+  ✔ should detect macOS absolute user paths (0.083ms)
+  ✔ should NOT flag workspace-relative paths (0.1096ms)
+  ✔ should NOT flag npx commands (0.1109ms)
+✔ isMachineSpecificPath (126.627ms)
+▶ detectSyncPath
+  ✔ should detect workspace-relative sync plugin (2.0697ms)
+  ✔ should report published-channel when sync plugin not found (0.8329ms)
+✔ detectSyncPath (10.9863ms)
+▶ trackState toggle in export
+  ✔ should know the trackState parameter exists in export schema (1.6457ms)
+✔ trackState toggle in export (5.9494ms)
+▶ portable module exports
+  ✔ should export all portability functions (1.8098ms)
+✔ portable module exports (1.9452ms)
+✔ allow multiple preserves LF CRLF UTF16 positions (7.7209ms)
+✔ allow returns preserves LF CRLF UTF16 positions (3.1126ms)
+✔ allow raises preserves LF CRLF UTF16 positions (1.2055ms)
+✔ allow both preserves LF CRLF UTF16 positions (1.1713ms)
+✔ allow blanks preserves LF CRLF UTF16 positions (1.328ms)
+✔ allow differentIndent preserves LF CRLF UTF16 positions (0.5788ms)
+✔ abstain afterSibling also revokes prior candidate (1.3006ms)
+✔ abstain nestedAfterSibling also revokes prior candidate (2.0007ms)
+✔ abstain beforeWithBlank also revokes prior candidate (1.0786ms)
+✔ abstain unknownParameter also revokes prior candidate (0.6516ms)
+✔ abstain duplicateSibling also revokes prior candidate (0.5606ms)
+✔ abstain indentationChange also revokes prior candidate (0.4792ms)
+✔ abstain targetUnderReturns also revokes prior candidate (0.7043ms)
+✔ abstain unknownSection also revokes prior candidate (1.0375ms)
+✔ abstain indentedHeader also revokes prior candidate (0.7657ms)
+✔ abstain headerWithinExample also revokes prior candidate (0.8097ms)
+✔ abstain continuation also revokes prior candidate (0.8273ms)
+✔ abstain afterSections also revokes prior candidate (2.0906ms)
+✔ composition preserves neighboring credential password (10.489ms)
+✔ composition preserves neighboring credential PASSWORD=("SYNTHETIC_NONEMPTY") (1.3975ms)
+✔ composition preserves neighboring credential "apiKey": (1.0937ms)
+✔ composition preserves neighboring credential const (1.5539ms)
+✔ composition preserves neighboring credential token (1.9702ms)
+✔ composition preserves neighboring credential Bearer (1.9669ms)
+✔ composition preserves neighboring credential ghp_SYNTHETIC_NONEMPTY_VALUE_123 (1.0434ms)
+✔ composition preserves neighboring credential PASSWORD=None, (0.8098ms)
+✔ missing and forged contexts exactly preserve old findings (7.4904ms)
+✔ prefix/Bearer inside exact policy text cannot be masked (1.3192ms)
+✔ byte validation precedes lossy decode; actual replacement character is valid UTF8 (1.9994ms)
+✔ recognized M13 environment lookup composes; unproven annotations abstain (1.0285ms)
+✔ inert None must not hide a second sensitive value on the same line (0.6247ms)
+✔ provider throws, fake sessions and missing source fail closed without leaking errors (0.319ms)
+✔ factory concurrency, once per operation, previews and apply reload policy (55.3887ms)
+✔ M2 isolated external gates and CLI propagation (1033.4092ms)
+✔ two valid functions retain both exact spans (13.0436ms)
+✔ preamble revokes earlier valid candidate under conservative scope (1.7582ms)
+✔ duplicateSection revokes earlier valid candidate under conservative scope (1.2833ms)
+✔ reverseSections revokes earlier valid candidate under conservative scope (3.7466ms)
+✔ multilineReturn revokes earlier valid candidate under conservative scope (1.7353ms)
+✔ bodyOnClosingLine revokes earlier valid candidate under conservative scope (1.0586ms)
+✔ tabEntry revokes earlier valid candidate under conservative scope (0.8683ms)
+✔ empty Returns and Raises are allowed as specified (0.2584ms)
+✔ control: exact synthetic entry remains supported (6.1231ms)
+✔ postSyntax: LF and CRLF must return no M2 spans (1.2013ms)
+✔ postShortString: LF and CRLF must return no M2 spans (1.0972ms)
+✔ postBadSignature: LF and CRLF must return no M2 spans (1.8769ms)
+✔ nestedExample: LF and CRLF must return no M2 spans (0.7401ms)
+✔ unknownParagraph: LF and CRLF must return no M2 spans (1.6877ms)
+✔ priorThenNested: LF and CRLF must return no M2 spans (1.0211ms)
+✔ M2 exact artificial docstring is allowed "\n" (10.6203ms)
+✔ M2 adjacent credential remains rejected "\n" (2.0044ms)
+✔ M2 exact artificial docstring is allowed "\r\n" (1.1488ms)
+✔ M2 adjacent credential remains rejected "\r\n" (1.2874ms)
+✔ missing provider and non-Python remain blocked (0.8782ms)
+✔ unknown Args after candidate revokes pending (0.8926ms)
+✔ artificial M2 operation create (28.695ms)
+✔ artificial M2 operation plan (14.1023ms)
+✔ artificial M2 operation restore (13.3125ms)
+✔ safe exact field with original UTF16 span and LF/CRLF (7.9074ms)
+✔ abstain shortBefore (0.9196ms)
+✔ abstain shortAfter (0.8707ms)
+✔ abstain tripleBefore (0.4811ms)
+✔ abstain tripleAfter (1.1028ms)
+✔ abstain syntaxAfter (0.9992ms)
+✔ abstain defaultOrder (1.6372ms)
+✔ abstain bareStar (0.7514ms)
+✔ abstain defaultName (0.8095ms)
+✔ abstain generic (1.1647ms)
+✔ abstain comma (0.8607ms)
+✔ abstain unknownDescription (0.686ms)
+✔ abstain unicodeMismatch (0.5348ms)
+✔ abstain blankContinuation (0.6392ms)
+✔ abstain duplicateArgs (0.5311ms)
+✔ abstain wrongOwner (0.4605ms)
+✔ abstain adjacentFunction (0.5839ms)
+✔ abstain formatString (0.4947ms)
+✔ abstain escapedDoc (0.5435ms)
+✔ abstain prefixedDoc (0.7236ms)
+✔ abstain bom (0.3306ms)
+✔ abstain loneCR (0.2721ms)
+✔ keyword-only required after default is allowed (0.3597ms)
+✔ raw quote boundary escapes and EOF (0.2656ms)
+✔ valid final string EOF and literal replacement character (0.3927ms)
+✔ missing and untrusted plain template fail closed (0.0814ms)
+✔ closed provider topExtra (0.1782ms)
+✔ closed provider entryExtra (0.1608ms)
+✔ closed provider version (0.0929ms)
+✔ closed provider policy (0.0956ms)
+✔ closed provider parser (0.0656ms)
+✔ closed provider id (0.066ms)
+✔ closed provider field (0.0577ms)
+✔ closed provider duplicateId (0.069ms)
+✔ closed provider duplicateDescription (0.0661ms)
+✔ closed provider missingGroup (0.0617ms)
+✔ closed provider whitespace (0.0594ms)
+✔ closed provider newline (0.095ms)
+✔ JSON rejection duplicateTop (0.1047ms)
+✔ JSON rejection escapedDuplicate (0.0452ms)
+✔ JSON rejection duplicateEntry (0.0642ms)
+✔ JSON rejection nonJSONWhitespace (0.0747ms)
+✔ JSON rejection bom (0.0312ms)
+✔ JSON rejection trailing (0.068ms)
+✔ invalid UTF8, absent source and read failure (0.167ms)
+✔ deep freeze and one load per operation (0.9028ms)
+✔ concurrent operation isolation and copied bytes (0.4217ms)
+✔ copy failure returns no partial template (0.1441ms)
+✔ JSON group order and exact Unicode description (0.3593ms)
+✔ later invalid candidate clears earlier pending (0.25ms)
+✔ default expression names are not added to parameter set (0.2376ms)
+✔ actual parameter sibling accepted (0.2523ms)
+✔ byte validation is separate from string positions (0.1353ms)
+✔ resource limits are refusal gates (0.3245ms)
+✔ annotated parameter with nested default expression (0.3093ms)
+✔ unsupported signatures stay empty (0.7019ms)
+✔ synthetic neighboring assignment remains outside the only span (0.3122ms)
+✔ RY-M2-01 beforeEquals "\n" (3.8574ms)
+✔ RY-M2-01 beforeValue "\n" (0.6426ms)
+✔ RY-M2-01 commentSecond "\n" (0.3418ms)
+✔ RY-M2-01 parameter "\n" (0.2731ms)
+✔ space/tab and inert None controls "\n" (7.9158ms)
+✔ RY-M2-01 beforeEquals "\r\n" (0.2748ms)
+✔ RY-M2-01 beforeValue "\r\n" (0.3588ms)
+✔ RY-M2-01 commentSecond "\r\n" (0.203ms)
+✔ RY-M2-01 parameter "\r\n" (0.1614ms)
+✔ space/tab and inert None controls "\r\n" (2.6276ms)
+✔ unsupported whitespace U+b (0.3768ms)
+✔ unsupported whitespace U+c (0.2818ms)
+✔ unsupported whitespace U+85 (0.2043ms)
+✔ unsupported whitespace U+a0 (0.1619ms)
+✔ unsupported whitespace U+1680 (1.2561ms)
+✔ unsupported whitespace U+2000 (0.662ms)
+✔ unsupported whitespace U+2001 (0.9206ms)
+✔ unsupported whitespace U+2002 (0.1677ms)
+✔ unsupported whitespace U+2003 (0.1282ms)
+✔ unsupported whitespace U+2004 (0.132ms)
+✔ unsupported whitespace U+2005 (0.1323ms)
+✔ unsupported whitespace U+2006 (0.1409ms)
+✔ unsupported whitespace U+2007 (0.1449ms)
+✔ unsupported whitespace U+2008 (0.213ms)
+✔ unsupported whitespace U+2009 (0.1531ms)
+✔ unsupported whitespace U+200a (0.1665ms)
+✔ unsupported whitespace U+2028 (0.1867ms)
+✔ unsupported whitespace U+2029 (0.1304ms)
+✔ unsupported whitespace U+202f (0.1621ms)
+✔ unsupported whitespace U+205f (0.1447ms)
+✔ unsupported whitespace U+3000 (0.1698ms)
+✔ unsupported whitespace U+feff (0.3773ms)
+✔ ordinary Unicode is not blanket-rejected and preserves original line (1.1111ms)
+✔ RY-M13-01 three gates reject JS continuation after a safe control (45.1447ms)
+✔ RY-M13-01 valid JS continuation 1 (0.9061ms)
+✔ RY-M13-01 valid JS continuation 2 (0.3113ms)
+✔ RY-M13-01 valid JS continuation 3 (0.2407ms)
+✔ RY-M13-01 valid JS continuation 4 (0.2736ms)
+✔ RY-M13-01 valid JS continuation 5 (0.2505ms)
+✔ RY-M13-01 valid JS continuation 6 (0.2815ms)
+✔ RY-M13-01 valid JS continuation 7 (1.2849ms)
+✔ RY-M13-01 valid JS continuation 8 (0.8101ms)
+✔ RY-M13-01 valid JS continuation 9 (0.4142ms)
+✔ RY-M13-01 valid JS continuation 10 (0.2451ms)
+✔ RY-M13-01 valid JS continuation 11 (0.237ms)
+✔ RY-M13-01 valid JS continuation 12 (0.3806ms)
+✔ RY-M13-01 valid JS continuation 13 (0.3577ms)
+✔ RY-M13-01 valid JS continuation 14 (0.1991ms)
+✔ RY-M13-01 valid JS continuation 15 (0.1823ms)
+✔ RY-M13-01 valid JS continuation 16 (0.1974ms)
+✔ RY-M13-01 valid JS continuation 17 (0.1946ms)
+✔ RY-M13-01 valid JS continuation 18 (0.2687ms)
+✔ RY-M13-01 valid JS continuation 19 (0.2507ms)
+✔ RY-M13-01 valid JS continuation 20 (0.2137ms)
+✔ RY-M13-01 valid JS continuation 21 (0.1907ms)
+✔ RY-M13-01 valid JS continuation 22 (0.214ms)
+✔ RY-M13-01 valid JS continuation 23 (0.1853ms)
+✔ RY-M13-01 valid JS continuation 24 (0.3548ms)
+✔ RY-M13-01 valid JS continuation 25 (0.3ms)
+✔ RY-M13-01 valid JS continuation 26 (0.279ms)
+✔ RY-M13-01 valid JS continuation 27 (0.2156ms)
+✔ RY-M13-01 valid JS continuation 28 (0.1814ms)
+✔ RY-M13-01 valid JS continuation 29 (0.169ms)
+✔ RY-M13-01 valid JS continuation 30 (0.2713ms)
+✔ RY-M13-01 valid JS continuation 31 (0.2265ms)
+✔ RY-M13-01 explicit terminators and independent statements remain safe (0.8999ms)
+✔ RY-M13-01 TS type continuations remain unproven (0.5941ms)
+✔ M3 TS precise constructor allow double (4.0626ms)
+✔ M3 TS precise constructor allow single (0.6064ms)
+✔ M3 TS precise constructor allow multiline (0.277ms)
+✔ M3 TS precise constructor allow comments (0.1642ms)
+✔ M3 TS precise constructor allow fence (0.6344ms)
+✔ M3 TS precise constructor allow tilde fence (0.3078ms)
+✔ M3 TS value refusal 1 (0.5326ms)
+✔ M3 TS value refusal 2 (0.1984ms)
+✔ M3 TS value refusal 3 (0.1673ms)
+✔ M3 TS value refusal 4 (0.2384ms)
+✔ M3 TS value refusal 5 (0.1999ms)
+✔ M3 TS value refusal 6 (0.1439ms)
+✔ M3 TS value refusal 7 (0.1607ms)
+✔ M3 TS value refusal 8 (0.1305ms)
+✔ M3 TS value refusal 9 (0.1195ms)
+✔ M3 TS value refusal 10 (0.1252ms)
+✔ M3 TS value refusal 11 (0.104ms)
+✔ M3 TS value refusal 12 (0.0802ms)
+✔ M3 TS value refusal 13 (0.0708ms)
+✔ M3 TS value refusal 14 (0.0837ms)
+✔ M3 TS value refusal 15 (0.0823ms)
+✔ M3 TS value refusal 16 (0.0731ms)
+✔ M3 TS value refusal 17 (0.0664ms)
+✔ M3 TS value refusal 18 (0.0663ms)
+✔ M3 TS value refusal 19 (0.0687ms)
+✔ M3 TS value refusal 20 (0.0937ms)
+✔ M3 TS value refusal 21 (0.0887ms)
+✔ M3 TS constructor context is narrow, not a generic placeholder exception (2.7804ms)
+✔ M3 TS comments and adjacent credentials retain original lines (0.9809ms)
+✔ M3 PHP and Ruby continuations and embedded examples remain blocked (0.2453ms)
+✔ M3 TS constructor three gates preserve refusal side effects (44.709ms)
+✔ M13 bounded Python allow 1 (3.3436ms)
+✔ M13 bounded Python allow 2 (0.5286ms)
+✔ M13 bounded Python allow 3 (0.2335ms)
+✔ M13 bounded Python allow 4 (0.2016ms)
+✔ M13 bounded Python allow 5 (0.1784ms)
+✔ M13 bounded Python allow 6 (0.1275ms)
+✔ M13 bounded Python allow 7 (0.1354ms)
+✔ M13 bounded Python allow 8 (0.1518ms)
+✔ M13 bounded Python allow 9 (0.2428ms)
+✔ M13 Python boundary refusal 1 (0.7645ms)
+✔ M13 Python boundary refusal 2 (0.2475ms)
+✔ M13 Python boundary refusal 3 (0.156ms)
+✔ M13 Python boundary refusal 4 (0.1515ms)
+✔ M13 Python boundary refusal 5 (0.1759ms)
+✔ M13 Python boundary refusal 6 (0.1525ms)
+✔ M13 Python boundary refusal 7 (0.0915ms)
+✔ M13 Python boundary refusal 8 (0.104ms)
+✔ M13 Python boundary refusal 9 (0.1018ms)
+✔ M13 Python boundary refusal 10 (0.1083ms)
+✔ M13 Python boundary refusal 11 (0.0808ms)
+✔ M13 Python boundary refusal 12 (0.072ms)
+✔ M13 Python boundary refusal 13 (0.0836ms)
+✔ M13 Python boundary refusal 14 (0.0706ms)
+✔ M13 Python boundary refusal 15 (0.0784ms)
+✔ M13 Python boundary refusal 16 (0.0723ms)
+✔ M13 Python boundary refusal 17 (0.09ms)
+✔ M13 Python boundary refusal 18 (0.0787ms)
+✔ M13 Python boundary refusal 19 (0.0638ms)
+✔ M13 Python boundary refusal 20 (0.0713ms)
+✔ M13 Python boundary refusal 21 (0.0732ms)
+✔ M13 Python boundary refusal 22 (0.0768ms)
+✔ M13 Python boundary refusal 23 (1.968ms)
+✔ M13 Python boundary refusal 24 (0.3231ms)
+✔ M13 Python boundary refusal 25 (0.226ms)
+✔ M13 Python boundary refusal 26 (0.1622ms)
+✔ M13 Python boundary refusal 27 (0.2484ms)
+✔ M13 Markdown requires a Python fence, not a directory or document exception (1.6407ms)
+✔ M13 legacy JS environment expressions cannot swallow newline suffixes (1.6409ms)
+✔ M13 original line numbers survive multiline allowed expressions and comments (0.9964ms)
+✔ M13 adjacent real-shaped artificial credentials are never masked (0.7059ms)
+✔ M13 all three profile gates agree on allows and refusals without real effects (46.1083ms)
+{"extension":"php","failures":[],"calls":1}
+{"extension":"rb","failures":[],"calls":1}
+✔ PHP closing tag inside line comments cannot expose HTML as code (3.84ms)
+✔ PHP opening tag and Ruby in-argument comments preserve exact spans (0.5568ms)
+✔ PHP/Ruby unsupported lexical modes before or after a candidate invalidate the region (2.0147ms)
+✔ PHP/Ruby bounded allow php exact (0.3112ms)
+✔ PHP/Ruby bounded allow php single (0.1237ms)
+✔ PHP/Ruby bounded allow php multiline (0.1063ms)
+✔ PHP/Ruby bounded allow php comment (0.227ms)
+✔ PHP/Ruby closed language fence php (0.4716ms)
+✔ PHP/Ruby value refusal php 0 (0.2317ms)
+✔ PHP/Ruby value refusal php 1 (0.154ms)
+✔ PHP/Ruby value refusal php 2 (0.082ms)
+✔ PHP/Ruby value refusal php 3 (0.0773ms)
+✔ PHP/Ruby value refusal php 4 (0.0687ms)
+✔ PHP/Ruby value refusal php 5 (0.0574ms)
+✔ PHP/Ruby value refusal php 6 (0.0554ms)
+✔ PHP/Ruby value refusal php 7 (0.064ms)
+✔ PHP/Ruby value refusal php 8 (0.0545ms)
+✔ PHP/Ruby full statement boundary php (0.3129ms)
+✔ PHP/Ruby embedded examples never masked php (0.3413ms)
+✔ PHP/Ruby comments and adjacent fields retain lines php (0.5996ms)
+✔ PHP/Ruby bounded allow rb exact (0.1154ms)
+✔ PHP/Ruby bounded allow rb single (0.0882ms)
+✔ PHP/Ruby bounded allow rb multiline (0.0955ms)
+✔ PHP/Ruby bounded allow rb comment (0.1242ms)
+✔ PHP/Ruby closed language fence rb (0.1082ms)
+✔ PHP/Ruby value refusal rb 0 (0.0544ms)
+✔ PHP/Ruby value refusal rb 1 (0.0423ms)
+✔ PHP/Ruby value refusal rb 2 (0.0605ms)
+✔ PHP/Ruby value refusal rb 3 (0.0635ms)
+✔ PHP/Ruby value refusal rb 4 (0.0453ms)
+✔ PHP/Ruby value refusal rb 5 (0.0427ms)
+✔ PHP/Ruby value refusal rb 6 (0.0418ms)
+✔ PHP/Ruby value refusal rb 7 (0.0442ms)
+✔ PHP/Ruby value refusal rb 8 (0.043ms)
+✔ PHP/Ruby full statement boundary rb (0.2279ms)
+✔ PHP/Ruby embedded examples never masked rb (0.1875ms)
+✔ PHP/Ruby comments and adjacent fields retain lines rb (0.1654ms)
+✔ PHP/Ruby three gates php (40.1075ms)
+✔ PHP/Ruby three gates rb (39.6155ms)
+✔ RY-PR-01 comment key php apikey (0.5678ms)
+✔ RY-PR-01 comment key php apiKey (0.8194ms)
+✔ RY-PR-01 comment key php APIKEY (0.4201ms)
+✔ RY-PR-01 comment key php api_key (0.2376ms)
+✔ RY-PR-01 comment key php API_KEY (0.2238ms)
+✔ RY-PR-01 comment key php api-key (0.2256ms)
+✔ RY-PR-01 comment key php API-KEY (0.2057ms)
+✔ RY-PR-01 comment key php token (0.2108ms)
+✔ RY-PR-01 comment key php TOKEN (0.2048ms)
+✔ RY-PR-01 comment key php ToKeN (0.1825ms)
+✔ RY-PR-01 comment key php secret (0.1698ms)
+✔ RY-PR-01 comment key php SECRET (0.164ms)
+✔ RY-PR-01 comment key php password (0.1679ms)
+✔ RY-PR-01 comment key php PASSWORD (0.6751ms)
+✔ RY-PR-01 comment key php PaSsWoRd (0.1815ms)
+✔ RY-PR-01 comment key php authorization (0.1657ms)
+✔ RY-PR-01 comment key php AUTHORIZATION (0.1584ms)
+✔ RY-PR-01 comment key php AuThOrIzAtIoN (0.1871ms)
+✔ RY-PR-01 comment key rb apikey (0.4112ms)
+✔ RY-PR-01 comment key rb apiKey (0.556ms)
+✔ RY-PR-01 comment key rb APIKEY (0.5414ms)
+✔ RY-PR-01 comment key rb api_key (0.3793ms)
+✔ RY-PR-01 comment key rb API_KEY (0.1723ms)
+✔ RY-PR-01 comment key rb api-key (0.1643ms)
+✔ RY-PR-01 comment key rb API-KEY (0.1677ms)
+✔ RY-PR-01 comment key rb token (0.2653ms)
+✔ RY-PR-01 comment key rb TOKEN (0.2414ms)
+✔ RY-PR-01 comment key rb ToKeN (0.1755ms)
+✔ RY-PR-01 comment key rb secret (0.1614ms)
+✔ RY-PR-01 comment key rb SECRET (0.1673ms)
+✔ RY-PR-01 comment key rb password (0.1666ms)
+✔ RY-PR-01 comment key rb PASSWORD (0.6941ms)
+✔ RY-PR-01 comment key rb PaSsWoRd (0.1969ms)
+✔ RY-PR-01 comment key rb authorization (0.2088ms)
+✔ RY-PR-01 comment key rb AUTHORIZATION (0.156ms)
+✔ RY-PR-01 comment key rb AuThOrIzAtIoN (0.1505ms)
+✔ RY-PR-01 three gates php (27.3441ms)
+✔ RY-PR-01 three gates rb (33.2923ms)
+{"variant":"quoted-comment","expectedRefusalFailures":[],"calls":1}
+{"variant":"quoted-comment-single","expectedRefusalFailures":[],"calls":1}
+{"variant":"quoted-template","expectedRefusalFailures":[],"calls":1}
+{"variant":"quoted-template-single","expectedRefusalFailures":[],"calls":1}
+✔ RY-C5-01 quoted field " comment (3.5064ms)
+✔ RY-C5-01 quoted field " template (0.7316ms)
+✔ RY-C5-01 quoted field " newline (0.7527ms)
+✔ RY-C5-01 quoted field " line-comment (0.5757ms)
+✔ RY-C5-01 quoted field " interpolation (0.7329ms)
+✔ RY-C5-01 quoted field " comment-template (0.625ms)
+✔ RY-C5-01 quoted field ' comment (0.5307ms)
+✔ RY-C5-01 quoted field ' template (0.3336ms)
+✔ RY-C5-01 quoted field ' newline (0.523ms)
+✔ RY-C5-01 quoted field ' line-comment (1.3585ms)
+✔ RY-C5-01 quoted field ' interpolation (0.3952ms)
+✔ RY-C5-01 quoted field ' comment-template (0.4005ms)
+✔ RY-C5-01 quoted fields do not gain a placeholder allowance (0.2907ms)
+✔ RY-C5-01 does not reinterpret string contents or mask comments and neighbors (1.2235ms)
+✔ RY-C5-01 quoted-comment (43.77ms)
+✔ RY-C5-01 quoted-comment-single (36.6243ms)
+✔ RY-C5-01 quoted-template (37.1296ms)
+✔ RY-C5-01 quoted-template-single (30.3539ms)
+✔ SEQ ordered allow php 1 line 20 (4.1636ms)
+✔ SEQ ordered allow php 1 line 22 (0.9175ms)
+✔ SEQ ordered allow php 2 line 20 (0.6738ms)
+✔ SEQ ordered allow php 2 line 22 (0.5456ms)
+✔ SEQ multiline and multiple fences php (0.5906ms)
+✔ SEQ boundary refusal php 0 (2.9536ms)
+✔ SEQ boundary refusal php 1 (0.2426ms)
+✔ SEQ boundary refusal php 2 (0.1097ms)
+✔ SEQ boundary refusal php 3 (0.1355ms)
+✔ SEQ boundary refusal php 4 (0.1569ms)
+✔ SEQ boundary refusal php 5 (0.1349ms)
+✔ SEQ boundary refusal php 6 (0.0833ms)
+✔ SEQ boundary refusal php 7 (0.0836ms)
+✔ SEQ boundary refusal php 8 (0.0642ms)
+✔ SEQ boundary refusal php 9 (0.0659ms)
+✔ SEQ boundary refusal php 10 (0.0626ms)
+✔ SEQ boundary refusal php 11 (0.0709ms)
+✔ SEQ boundary refusal php 12 (0.3633ms)
+✔ SEQ boundary refusal php 13 (0.148ms)
+✔ SEQ boundary refusal php 14 (0.3124ms)
+✔ SEQ boundary refusal php 15 (0.1095ms)
+✔ SEQ boundary refusal php 16 (0.0765ms)
+✔ SEQ boundary refusal php 17 (0.075ms)
+✔ SEQ boundary refusal php 18 (0.058ms)
+✔ SEQ boundary refusal php 19 (0.0808ms)
+✔ SEQ boundary refusal php 20 (0.0774ms)
+✔ SEQ boundary refusal php 21 (0.0762ms)
+✔ SEQ boundary refusal php 22 (0.0683ms)
+✔ SEQ boundary refusal php 23 (0.0844ms)
+✔ SEQ boundary refusal php 24 (0.4353ms)
+✔ SEQ boundary refusal php 25 (0.124ms)
+✔ SEQ embedded and unsupported contexts php (0.5142ms)
+✔ SEQ comments and original lines php (8.2695ms)
+✔ SEQ three gates php 1 (44.3775ms)
+✔ SEQ three gates php 2 (35.7531ms)
+✔ SEQ ordered allow rb 1 line 20 (0.5509ms)
+✔ SEQ ordered allow rb 1 line 22 (0.446ms)
+✔ SEQ ordered allow rb 2 line 20 (0.983ms)
+✔ SEQ ordered allow rb 2 line 22 (0.3431ms)
+✔ SEQ multiline and multiple fences rb (0.3313ms)
+✔ SEQ boundary refusal rb 0 (0.2943ms)
+✔ SEQ boundary refusal rb 1 (0.1359ms)
+✔ SEQ boundary refusal rb 2 (0.0869ms)
+✔ SEQ boundary refusal rb 3 (0.0826ms)
+✔ SEQ boundary refusal rb 4 (0.1772ms)
+✔ SEQ boundary refusal rb 5 (0.1469ms)
+✔ SEQ boundary refusal rb 6 (0.0848ms)
+✔ SEQ boundary refusal rb 7 (0.0748ms)
+✔ SEQ boundary refusal rb 8 (0.0626ms)
+✔ SEQ boundary refusal rb 9 (0.1038ms)
+✔ SEQ boundary refusal rb 10 (0.0518ms)
+✔ SEQ boundary refusal rb 11 (0.0628ms)
+✔ SEQ boundary refusal rb 12 (0.0644ms)
+✔ SEQ boundary refusal rb 13 (0.0663ms)
+✔ SEQ boundary refusal rb 14 (0.0732ms)
+✔ SEQ boundary refusal rb 15 (0.0728ms)
+✔ SEQ boundary refusal rb 16 (0.077ms)
+✔ SEQ boundary refusal rb 17 (0.0845ms)
+✔ SEQ boundary refusal rb 18 (0.0909ms)
+✔ SEQ boundary refusal rb 19 (0.1795ms)
+✔ SEQ boundary refusal rb 20 (0.0826ms)
+✔ SEQ boundary refusal rb 21 (0.0839ms)
+✔ SEQ boundary refusal rb 22 (0.0631ms)
+✔ SEQ boundary refusal rb 23 (0.082ms)
+✔ SEQ boundary refusal rb 24 (0.166ms)
+✔ SEQ boundary refusal rb 25 (0.0907ms)
+✔ SEQ embedded and unsupported contexts rb (0.1833ms)
+✔ SEQ comments and original lines rb (5.6216ms)
+✔ SEQ three gates rb 1 (37.4982ms)
+✔ SEQ three gates rb 2 (33.9048ms)
+✔ source environment references are portable but literal tokens remain blocked (4.6421ms)
+▶ pushWorkspace application use case
+  ✔ exports, scans, writes and pushes the canonical artifact through argv-only Git (8.0877ms)
+  ✔ treats probe code 0 as an explicit no-change skip without committing and still pushes (1.1418ms)
+  ✔ treats probe code 1 as staged changes and commits before pushing (1.8639ms)
+  ✔ fails a probe code above 1 and does not commit or push (1.0707ms)
+  ✔ never treats deceptive no-change stdout as success when commit has a fatal stderr (0.8581ms)
+✔ pushWorkspace application use case (14.3278ms)
+▶ pullWorkspace application use case
+  ✔ pulls --ff-only in the dotfiles repository and restores the canonical artifact (2.8814ms)
+  ✔ fails closed on Git, parse, target mismatch and restore failures (0.9408ms)
+✔ pullWorkspace application use case (4.0782ms)
+▶ Git CLI adapter
+  ✖ executes only argv arrays with shell:false (6.7602ms)
+✖ Git CLI adapter (6.9879ms)
+▶ push/pull entrypoint characterization
+  ✔ keeps CLI presentation while delegating push and pull to the application (1.0009ms)
+  ✔ removes old Plugin drift while keeping explicit OpenCode scope and tool schemas (1.1397ms)
+✔ push/pull entrypoint characterization (2.3198ms)
+{"ok":false,"warnings":[],"errors":["Dotfiles repository is not initialized: <REVIEW_ROOT>\\env-full\\tmp\\uagent-recovery-contract-1789386868036\\workspace\\usync-dotfiles"],"skipped":[],"targetAgent":"codex"}
+{"ok":false,"warnings":[],"errors":["git pull failed: spawnSync git ENOENT"],"skipped":[],"targetAgent":"codex"}
+Secret values are never accepted. Only variable names and safe placeholders may be recorded.
+Invalid environment variable name
+{"ok":false,"warnings":[],"errors":["Path traversal detected: <REVIEW_ROOT>\\env-full\\tmp\\uagent-recovery-contract-1789386868036\\outside.json"],"skipped":[],"targetAgent":"codex"}
+▶ targetAgent persistence and strict scope
+  ✔ persists an explicit Codex target in init-state.json (3.6422ms)
+  ✔ CLI init persists --target-agent codex (251.5266ms)
+  ✔ Codex export contains a host-scoped manifest and no OpenCode config (5.5391ms)
+  ✔ exports stable skill provenance from the shared skill lock (3.3007ms)
+✔ targetAgent persistence and strict scope (264.7602ms)
+▶ safe recovery protocol
+  ✔ pull fails non-zero when workspace-state.json is missing (208.7756ms)
+  ✔ pull reports a dotfiles git failure as structured JSON (212.0613ms)
+  ✖ pull reports malformed state as structured JSON (2.476ms)
+  ✔ API template never accepts or writes a real token value (0.4683ms)
+  ✔ CLI api-keys add rejects a supplied secret value (216.0358ms)
+  ✔ CLI api-keys rejects unsafe key names and export rejects paths outside the workspace (516.3968ms)
+  ✔ Codex export fails closed on a malformed tombstone file (1.8507ms)
+  ✔ Codex export captures current plugin tables and recoverable MCP configuration (3.8006ms)
+  ✔ raw Codex scanning sees an active tombstone while exported state keeps it deleted (4.3908ms)
+  ✔ permanent deletions reject a legacy manifest even when it omits tombstones (1.4587ms)
+  ✔ tombstones override stale manifests and historical discovery (2.213ms)
+✖ safe recovery protocol (1170.5595ms)
+▶ clean checkout and Codex plugin contract
+  ✔ npm test has a build lifecycle prerequisite (0.3188ms)
+  ✔ Codex manifest version matches package and uses only accepted discovery fields (0.4396ms)
+✔ clean checkout and Codex plugin contract (0.9182ms)
+▶ redactString
+  ✔ should mask url ?token= but keep base url (1.165ms)
+  ✔ should mask &api_key= and other query secret params (0.4102ms)
+  ✔ should mask Bearer tokens (0.168ms)
+  ✔ should mask well-known token prefixes (0.1729ms)
+  ✔ should NOT false-positive on ordinary words containing sk- (0.0928ms)
+  ✔ should leave non-secret strings unchanged (0.0724ms)
+  ✔ should be idempotent on already-redacted strings (0.1261ms)
+✔ redactString (3.4539ms)
+▶ redactSecretsDeep
+  ✔ should deep-redact nested objects and arrays without mutating input (0.3094ms)
+  ✔ should pass through non-string scalars unchanged (0.1191ms)
+✔ redactSecretsDeep (0.6019ms)
+▶ generateConfigRefMd redaction (guide layer)
+  ✔ should not leak url token into generated config-ref.md (1.5223ms)
+✔ generateConfigRefMd redaction (guide layer) (1.6013ms)
+✔ run-tests propagates a cancelled test hook as a non-zero exit (469.7821ms)
+▶ config sanitization for export
+  ✔ should strip environment variables from MCP config (9.7818ms)
+  ✔ should strip Authorization headers from MCP config (2.8089ms)
+  ✔ should exclude OAuth-based providers (2.3043ms)
+  ✔ should keep plugin list intact (2.9944ms)
+  ✔ should redact tokens inside MCP url query strings (3.1822ms)
+  ✔ should redact inline apiKey in provider config (2.4168ms)
+  ✔ should NOT output empty config sections (2.0993ms)
+✔ config sanitization for export (150.3963ms)
+▶ ensureSecretGitignore
+  ✔ creates .gitignore with keys/ and .env when none exists (3.5689ms)
+  ✔ appends missing rules to an existing .gitignore without touching others (2.315ms)
+  ✔ is idempotent when all rules already present (1.4719ms)
+  ✔ matches a keys/ rule written with a comment header (1.7325ms)
+✔ ensureSecretGitignore (10.0546ms)
+✔ M0 detects known-token-prefix before and after <hidden> (2.0069ms)
+✔ M0 detects authorization-bearer before and after <hidden> (0.2349ms)
+✔ M0 detects sensitive-assignment before and after <hidden> (0.099ms)
+✔ M0 detects known-token-prefix before and after <YOUR_API_KEY> (0.0941ms)
+✔ M0 detects authorization-bearer before and after <YOUR_API_KEY> (0.1285ms)
+✔ M0 detects sensitive-assignment before and after <YOUR_API_KEY> (0.1188ms)
+✔ M0 preserves placeholder-only inputs and one finding per rule per line (0.9288ms)
+✔ M0 marker variants, suffixes and concatenation cannot hide adjacent credentials (0.4093ms)
+✔ M0 retains original lines across LF, CRLF, non-BMP and Unicode separators (1.6298ms)
+✔ M0 scans past display windows and returns no credential text (0.3143ms)
+✔ M0 base scanner retains its rules independently of M13 profile allowances (0.7315ms)
+✔ M0 profile collection, restore and publish reject the same fixture before effects (32.2838ms)
+✔ M0 Codex MCP recovery rejects a marker alongside a token before executing (1.1398ms)
+✔ M0 recovery report refuses residual credentials beside a redaction marker (4.9897ms)
+▶ pre-commit secret scanner
+  ✔ blocks secret values while allowing variable names and safe placeholders (5.4439ms)
+  ✔ throws before unsafe serialized state can be written (1.4915ms)
+✔ pre-commit secret scanner (7.8914ms)
+▶ setupWorkspace application use case
+  ✔ delegates once with an explicit target and aggregates typed setup results (6.0601ms)
+  ✔ converts a delegated setup exception into ok=false (0.7926ms)
+✔ setupWorkspace application use case (8.0563ms)
+▶ updateWorkspace application use case
+  ✔ redacts every progress string field and all structured result strings (5.6225ms)
+  ✔ passes explicit scope, typed progress and argv process execution to the updater (4.8383ms)
+  ✔ reports every update error as ok=false and preserves the report (0.5576ms)
+  ✔ converts a delegated update exception into ok=false (0.3565ms)
+  ✔ preserves the updater's legacy default executor when no ProcessRunner is injected (0.2846ms)
+  ✔ streams ordinary output with at most one-event delay and preserves line boundaries (0.5746ms)
+  ✔ streams split-secret output safely without leaking through joined lines (0.3655ms)
+✔ updateWorkspace application use case (12.9672ms)
+▶ setup/update entrypoint delegation
+  ✔ routes CLI and Plugin setup/update through the shared application with explicit scope (0.7099ms)
+  ✔ keeps report archival at the CLI edge and exits non-zero if archival fails (253.6483ms)
+✔ setup/update entrypoint delegation (254.4719ms)
+▶ ProcessRunner adapter bridge
+  ✔ adapts the argv port without spawning or joining a shell command (1.0318ms)
+✔ ProcessRunner adapter bridge (1.6568ms)
+▶ real Plugin setup failure
+  ✔ renders stable redacted result fields with metadata.ok=false (209.3075ms)
+✔ real Plugin setup failure (209.4014ms)
+[opencode-sync] Exported: <REVIEW_ROOT>\src\test-fixture-ws\test-output.json
+[opencode-sync]   Submodules: 0
+[opencode-sync]   Skills: 0
+▶ CLI smoke tests
+  ✔ should show usage when no command given (197.8789ms)
+  ✔ should export state without errors (197.0571ms)
+  ✔ should load all exports from sync module (91.3451ms)
+✔ CLI smoke tests (487.1576ms)
+▶ verifyWorkspace
+  ✔ passes an explicit Codex scope to the verifier once and aggregates warnings and errors (2.1535ms)
+  ✔ passes an explicit OpenCode scope without adding Codex-only skips (0.5961ms)
+✔ verifyWorkspace (3.7127ms)
+▶ WorkspaceState artifact codec
+  ✔ migrates an unversioned v1 artifact and preserves safe legacy fields (2.7403ms)
+  ✔ migrates a v2 artifact into the validated internal v3 model (0.8963ms)
+  ✔ accepts and validates an already-current v3 artifact (1.5079ms)
+  ✔ rejects future schema versions instead of guessing a migration (0.2041ms)
+  ✔ applies permanent and artifact tombstones before exposing selected extensions (0.5743ms)
+  ✔ removes tombstoned MCPs from every recoverable configuration table without mutating input (0.5513ms)
+  ✔ removes tombstoned extensions from recoverable string-array configuration tables (1.1715ms)
+  ✔ does not echo rejected runtime values in validation errors (0.5946ms)
+  ✔ accepts JSON text and rejects malformed runtime shapes (0.746ms)
+✔ WorkspaceState artifact codec (10.2026ms)
+▶ MCP security audit
+  ✔ should NOT expose tokens in URL query params (default security rule) (0.8508ms)
+  ✔ should use Authorization headers for tokens (default security rule) (0.6695ms)
+✔ MCP security audit (122.5023ms)
+▶ zapier-gmail config (ease-of-use exception)
+  ✔ should be in the URL_TOKEN_ALLOWED exception list (0.376ms)
+  ✔ should have a valid Zapier MCP endpoint URL (0.4672ms)
+  ✔ should have oauth explicitly disabled (0.2796ms)
+✔ zapier-gmail config (ease-of-use exception) (2.8428ms)
+▶ zapier-gmail endpoint
+  ✔ should respond to initialize with valid MCP protocol (0.3101ms)
+  ✔ should list tools successfully (0.1367ms)
+✔ zapier-gmail endpoint (2.5065ms)
+ℹ tests 846
+ℹ suites 81
+ℹ pass 835
+ℹ fail 11
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 79068.4809
+
+✖ failing tests:
+
+test at test\bootstrap-script.test.ts:13:131
+✖ accepts only the two repository URLs and produces a Codex-only resumable plan (5.5615ms)
+  AssertionError [ERR_ASSERTION]: null == 0
+      at TestContext.<anonymous> (<REVIEW_ROOT>\src\test\bootstrap-script.test.ts:95:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.start (node:internal/test_runner/test:1177:17)
+      at node:internal/test_runner/test:1769:71
+      at node:internal/per_context/primordials:466:82
+      at new Promise (<anonymous>)
+      at new SafePromise (node:internal/per_context/primordials:435:3)
+      at node:internal/per_context/primordials:466:9
+      at Array.map (<anonymous>) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: 0,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\bootstrap-script.test.ts:13:3322
+✖ falls back after three remote failures only through a same-origin local fast-forward (2.6301ms)
+  AssertionError [ERR_ASSERTION]: git init --initial-branch=master failed: undefined
+      at runGit (<REVIEW_ROOT>\src\test\bootstrap-script.test.ts:14:10)
+      at createMarketplaceFixture (<REVIEW_ROOT>\src\test\bootstrap-script.test.ts:23:3)
+      at TestContext.<anonymous> (<REVIEW_ROOT>\src\test\bootstrap-script.test.ts:153:21)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Suite.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: 0,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\bootstrap-script.test.ts:13:4293
+✖ rejects a source-origin mismatch before using the local fallback (3.3644ms)
+  AssertionError [ERR_ASSERTION]: git init --initial-branch=master failed: undefined
+      at runGit (<REVIEW_ROOT>\src\test\bootstrap-script.test.ts:14:10)
+      at createMarketplaceFixture (<REVIEW_ROOT>\src\test\bootstrap-script.test.ts:23:3)
+      at TestContext.<anonymous> (<REVIEW_ROOT>\src\test\bootstrap-script.test.ts:163:21)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Suite.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: 0,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\bootstrap-script.test.ts:15:351
+✖ rejects a local marketplace branch that cannot fast-forward to source (3.0238ms)
+  AssertionError [ERR_ASSERTION]: git init --initial-branch=master failed: undefined
+      at runGit (<REVIEW_ROOT>\src\test\bootstrap-script.test.ts:14:10)
+      at createMarketplaceFixture (<REVIEW_ROOT>\src\test\bootstrap-script.test.ts:23:3)
+      at TestContext.<anonymous> (<REVIEW_ROOT>\src\test\bootstrap-script.test.ts:182:21)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Suite.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: 0,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\bootstrap-script.test.ts:15:1153
+✖ smoke-runs the documented raw download command and propagates the native bootstrap exit (4.2597ms)
+  AssertionError [ERR_ASSERTION]: stdout=undefined
+  stderr=undefined
+      at TestContext.<anonymous> (<REVIEW_ROOT>\src\test\bootstrap-script.test.ts:216:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Suite.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: 7,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test\crystallize-submodule.test.ts:1:1
+✖ <REVIEW_ROOT>\src\test\crystallize-submodule.test.ts (235.7692ms)
+  'test failed'
+
+test at test\device-workspace-audit.test.ts:1:371
+✖ audit includes ignored and untracked documents without reading credential contents (7.817ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  null !== 0
+
+      at git (<REVIEW_ROOT>\src\test\device-workspace-audit.test.ts:10:97)
+      at TestContext.<anonymous> (<REVIEW_ROOT>\src\test\device-workspace-audit.test.ts:11:3)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.start (node:internal/test_runner/test:1177:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\fixture-runner.test.ts:1:2041
+✖ passes Git arguments as argv, preserving spaces and shell metacharacters (3.4429ms)
+  Error: spawnSync where.exe ENOENT
+      at Object.spawnSync (node:internal/child_process:1143:20)
+      at spawnSync (node:child_process:911:24)
+      at execFileSync (node:child_process:954:15)
+      at resolveGitExecutable (<REVIEW_ROOT>\src\test\support\fixture-runner.ts:72:18)
+      at TestContext.<anonymous> (<REVIEW_ROOT>\src\test\fixture-runner.test.ts:92:19)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Suite.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12) {
+    errno: -4058,
+    code: 'ENOENT',
+    syscall: 'spawnSync where.exe',
+    path: 'where.exe',
+    spawnargs: [ 'git' ],
+    error: Error: spawnSync where.exe ENOENT
+        at Object.spawnSync (node:internal/child_process:1143:20)
+        at spawnSync (node:child_process:911:24)
+        at execFileSync (node:child_process:954:15)
+        at resolveGitExecutable (<REVIEW_ROOT>\src\test\support\fixture-runner.ts:72:18)
+        at TestContext.<anonymous> (<REVIEW_ROOT>\src\test\fixture-runner.test.ts:92:19)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1306:25)
+        at Suite.processPendingSubtests (node:internal/test_runner/test:897:18)
+        at Test.postRun (node:internal/test_runner/test:1447:19)
+        at Test.run (node:internal/test_runner/test:1372:12),
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at test\offline-workspace-copy.test.ts:1:300
+✖ Windows offline staging previews, verifies, resumes, and refuses overwrites (8.2464ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  null !== 0
+
+      at TestContext.<anonymous> (<REVIEW_ROOT>\src\test\offline-workspace-copy.test.ts:18:33)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.start (node:internal/test_runner/test:1177:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\push-pull-use-cases.test.ts:1:9144
+✖ executes only argv arrays with shell:false (6.7602ms)
+  Error: spawnSync git ENOENT
+      at Object.spawnSync (node:internal/child_process:1143:20)
+      at spawnSync (node:child_process:911:24)
+      at execFileSync (node:child_process:954:15)
+      at TestContext.<anonymous> (<REVIEW_ROOT>\src\test\push-pull-use-cases.test.ts:282:5)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1771:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    errno: -4058,
+    code: 'ENOENT',
+    syscall: 'spawnSync git',
+    path: 'git',
+    spawnargs: [ 'init' ],
+    error: Error: spawnSync git ENOENT
+        at Object.spawnSync (node:internal/child_process:1143:20)
+        at spawnSync (node:child_process:911:24)
+        at execFileSync (node:child_process:954:15)
+        at TestContext.<anonymous> (<REVIEW_ROOT>\src\test\push-pull-use-cases.test.ts:282:5)
+        at async Test.run (node:internal/test_runner/test:1313:7)
+        at async Promise.all (index 0)
+        at async Suite.run (node:internal/test_runner/test:1771:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:897:7),
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at test\recovery-contract.test.ts:1:4862
+✖ pull reports malformed state as structured JSON (2.476ms)
+  Error: spawnSync git ENOENT
+      at Object.spawnSync (node:internal/child_process:1143:20)
+      at spawnSync (node:child_process:911:24)
+      at execFileSync (node:child_process:954:15)
+      at makeDotfilesPullable (<REVIEW_ROOT>\src\test\recovery-contract.test.ts:37:3)
+      at TestContext.<anonymous> (<REVIEW_ROOT>\src\test\recovery-contract.test.ts:126:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Suite.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12) {
+    errno: -4058,
+    code: 'ENOENT',
+    syscall: 'spawnSync git',
+    path: 'git',
+    spawnargs: [ 'init', '--initial-branch=master' ],
+    error: Error: spawnSync git ENOENT
+        at Object.spawnSync (node:internal/child_process:1143:20)
+        at spawnSync (node:child_process:911:24)
+        at execFileSync (node:child_process:954:15)
+        at makeDotfilesPullable (<REVIEW_ROOT>\src\test\recovery-contract.test.ts:37:3)
+        at TestContext.<anonymous> (<REVIEW_ROOT>\src\test\recovery-contract.test.ts:126:20)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1306:25)
+        at Suite.processPendingSubtests (node:internal/test_runner/test:897:18)
+        at Test.postRun (node:internal/test_runner/test:1447:19)
+        at Test.run (node:internal/test_runner/test:1372:12),
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+npm notice
+npm notice New major version of npm available! 11.13.0 -> 12.0.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.0.2
+npm notice To update run: npm install -g npm@12.0.2
+npm notice

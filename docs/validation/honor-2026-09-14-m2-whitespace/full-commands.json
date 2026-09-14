@@ -1,0 +1,12 @@
+[
+  {
+    "name": "full",
+    "args": [
+      "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+      "test",
+      "--prefix",
+      "<REVIEW_ROOT>\\src"
+    ],
+    "status": 1
+  }
+]

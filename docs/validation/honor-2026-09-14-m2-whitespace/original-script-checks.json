@@ -1,0 +1,14 @@
+{
+  "honor-residual.mjs": {
+    "sameBytes": true,
+    "sha256": "837fac816e26fc9a656bf958b3849932f5a8faedff66a618d854a78d74b5833b"
+  },
+  "honor-formfeed-gates.mjs": {
+    "sameBytes": true,
+    "sha256": "bc7a68ceb34129b38b4ab6f042181dbef037ec5515e2f979b9aa6f56aaf7c01f"
+  },
+  "run-honor-probes.ps1": {
+    "sameBytes": true,
+    "sha256": "cba76933cb5c32cac5632795fa5038758503298fedc1fcea3fa1cf774a9b142d"
+  }
+}

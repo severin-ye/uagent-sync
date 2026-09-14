@@ -1,0 +1,27 @@
+[
+  {
+    "name": "ci",
+    "args": [
+      "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+      "ci",
+      "--prefix",
+      "<REVIEW_ROOT>\\src",
+      "--ignore-scripts",
+      "--include=optional",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "status": 0
+  },
+  {
+    "name": "build",
+    "args": [
+      "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+      "run",
+      "build",
+      "--prefix",
+      "<REVIEW_ROOT>\\src"
+    ],
+    "status": 0
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "HOME": "<REVIEW_ROOT>\\probe-ws-node18\\home",
+  "USERPROFILE": "<REVIEW_ROOT>\\probe-ws-node18\\home",
+  "APPDATA": "<REVIEW_ROOT>\\probe-ws-node18\\app",
+  "LOCALAPPDATA": "<REVIEW_ROOT>\\probe-ws-node18\\local",
+  "CODEX_HOME": "<REVIEW_ROOT>\\probe-ws-node18\\codex",
+  "XDG_CONFIG_HOME": "<REVIEW_ROOT>\\probe-ws-node18\\xdg",
+  "TMP": "<REVIEW_ROOT>\\probe-ws-node18\\tmp",
+  "TEMP": "<REVIEW_ROOT>\\probe-ws-node18\\tmp",
+  "npm_config_cache": "<REVIEW_ROOT>\\probe-ws-node18\\npm-cache",
+  "npm_config_prefix": "<REVIEW_ROOT>\\probe-ws-node18\\npm-prefix",
+  "npm_config_userconfig": "<REVIEW_ROOT>\\probe-ws-node18\\npm_config_userconfig.rc",
+  "npm_config_globalconfig": "<REVIEW_ROOT>\\probe-ws-node18\\npm_config_globalconfig.rc",
+  "UAGENT_SYNC_WORKSPACE_ROOT": null,
+  "OPENCODE_SYNC_WORKSPACE_ROOT": null,
+  "NODE_OPTIONS": null,
+  "NODE_PATH": null,
+  "HONOR_M2_SOURCE": "<REVIEW_ROOT>\\src",
+  "_publicEvidence": "Selected isolation fields only; full raw environment retained locally"
+}

@@ -1,0 +1,15 @@
+{
+  "APPDATA": "<REVIEW_ROOT>\\env-current\\app",
+  "LOCALAPPDATA": "<REVIEW_ROOT>\\env-current\\local",
+  "TEMP": "<REVIEW_ROOT>\\env-current\\tmp",
+  "TMP": "<REVIEW_ROOT>\\env-current\\tmp",
+  "USERPROFILE": "<REVIEW_ROOT>\\env-current\\home",
+  "HOME": "<REVIEW_ROOT>\\env-current\\home",
+  "CODEX_HOME": "<REVIEW_ROOT>\\env-current\\codex",
+  "XDG_CONFIG_HOME": "<REVIEW_ROOT>\\env-current\\xdg",
+  "npm_config_cache": "<REVIEW_ROOT>\\env-current\\npm-cache",
+  "npm_config_prefix": "<REVIEW_ROOT>\\env-current\\npm-prefix",
+  "npm_config_userconfig": "<REVIEW_ROOT>\\env-current\\npm_config_userconfig.rc",
+  "npm_config_globalconfig": "<REVIEW_ROOT>\\env-current\\npm_config_globalconfig.rc",
+  "_publicEvidence": "Selected isolation fields only; full raw environment retained locally"
+}

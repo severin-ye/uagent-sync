@@ -1,0 +1,11 @@
+{
+  "arguments": [
+    "--import",
+    "file:///<REVIEW_ROOT>/src/node_modules/tsx/dist/loader.mjs",
+    "<REVIEW_ROOT>\\honor-existing-gates.mjs"
+  ],
+  "node": "<NODE18>\\node.exe",
+  "stderr": "<REVIEW_ROOT>\\ws-existing-node18-honor-existing-gates.stderr.log",
+  "exitCode": 0,
+  "stdout": "<REVIEW_ROOT>\\ws-existing-node18-honor-existing-gates.json"
+}

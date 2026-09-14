@@ -1,0 +1,41 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import cp from 'node:child_process';
+import {syncBuiltinESMExports} from 'node:module';
+import {pathToFileURL} from 'node:url';
+import {createHash} from 'node:crypto';
+const root=process.env.HONOR_PROBE_ROOT,base=process.env.HONOR_M2_SOURCE;
+if(!root||!base||fs.existsSync(root))throw Error('explicit new artificial root required');
+let calls=0;
+for(const api of ['spawnSync','spawn','exec','execSync','execFile','execFileSync','fork'])cp[api]=()=>{calls++;throw Error('SYNTHETIC_EXTERNAL_STOP');};
+cp.ChildProcess.prototype.spawn=()=>{calls++;throw Error('SYNTHETIC_EXTERNAL_STOP');};
+syncBuiltinESMExports();
+const load=p=>import(pathToFileURL(path.join(base,'src/lib',p+'.ts')));
+const {createProvider}=await load('profile-m2-provider');
+const {createProfileOperations}=await load('profile-scan-operations');
+const safe='def sample(api_key=None):\n    """\n    Args:\n        api_key: Synthetic description alpha\n    """\n    pass\n';
+const policy=()=>Buffer.from(JSON.stringify({schemaVersion:1,policyVersion:'m2-python-doc-v1',parserVersion:'1.1.18',entries:['alpha','beta','gamma'].map((x,i)=>({id:`D${i+1}`,field:'api_key',description:`Synthetic description ${x}`}))}));
+const ops=createProfileOperations(createProvider(async()=>policy()));
+const write=(p,b)=>{fs.mkdirSync(path.dirname(p),{recursive:true});fs.writeFileSync(p,b);};
+const hash=b=>createHash('sha256').update(b).digest('hex');
+const attempt=async f=>{try{await f();return {rejected:false};}catch(e){return {rejected:true,error:e.message};}};
+const rows=[];
+for(const [id,tail,expectBlocked] of [['safe','',false],['space','PASSWORD=("SYNTHETIC_NONEMPTY")\n',true],['formfeed','PASSWORD=\f("SYNTHETIC_NONEMPTY")\n',true]])for(const nl of ['LF','CRLF']){
+ const dir=path.join(root,id+'-'+nl),text=(safe+tail).replaceAll('\n',nl==='LF'?'\n':'\r\n');
+ const source={deviceId:'source',userHome:dir+'/source',codexHome:dir+'/source/c',workspaceRoot:dir+'/w'};
+ const target={deviceId:'target',userHome:dir+'/target',codexHome:dir+'/target/c',workspaceRoot:dir+'/w2'};
+ write(source.codexHome+'/skills/a.py',text);
+ const create=await attempt(()=>ops.create({source,snapshotDir:dir+'/created',components:['skills']}));
+ const snapshot=dir+'/supplied';write(snapshot+'/files/codex/skills/a.py',text);
+ write(snapshot+'/manifest.json',JSON.stringify({schemaVersion:1,id:'synthetic',sourceDeviceId:'source',files:[{root:'codex',path:'skills/a.py',sha256:hash(text)}],excluded:[]}));
+ if(expectBlocked){write(target.codexHome+'/skills/a.py','PREEXISTING_TARGET');write(target.codexHome+'/uagent-device-state/profile-baseline.json','PREEXISTING_BASELINE');}
+ const plan=await attempt(()=>ops.plan({target,snapshotDir:snapshot}));
+ const restore=await attempt(()=>ops.restore({target,snapshotDir:snapshot}));
+ const registry=dir+'/registry',relative='sync/profiles/synthetic/a.py';write(registry+'/'+relative,text);
+ const before=calls,publish=await attempt(()=>ops.publish(registry,'https://github.com/example/private',[relative]));
+ const preserved=!expectBlocked||(fs.readFileSync(target.codexHome+'/skills/a.py','utf8')==='PREEXISTING_TARGET'&&fs.readFileSync(target.codexHome+'/uagent-device-state/profile-baseline.json','utf8')==='PREEXISTING_BASELINE');
+ const newCalls=calls-before,created=fs.existsSync(dir+'/created/manifest.json'),targetWritten=fs.existsSync(target.codexHome+'/skills/a.py'),baselineWritten=fs.existsSync(target.codexHome+'/uagent-device-state/profile-baseline.json');
+ rows.push({id,nl,expectBlocked,create,plan,restore,publish,newExternalCalls:newCalls,created,targetWritten,baselineWritten,preserved,sourceUnchanged:hash(fs.readFileSync(source.codexHome+'/skills/a.py'))===hash(text),passed:expectBlocked?create.rejected&&plan.rejected&&restore.rejected&&!created&&preserved&&newCalls===0:!create.rejected&&!plan.rejected&&!restore.rejected&&created&&targetWritten&&newCalls===1});
+}
+console.log(JSON.stringify({runtime:process.version,rows,pass:rows.filter(r=>r.passed).length,fail:rows.filter(r=>!r.passed).length,allExternalCallsIntercepted:true},null,2));
+process.exitCode=rows.some(r=>!r.passed)?1:0;

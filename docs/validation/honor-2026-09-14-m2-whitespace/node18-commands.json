@@ -1,0 +1,20 @@
+[
+  {
+    "name": "focused",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-m2-whitespace.test.ts",
+      "test/profile-m2-composition.test.ts",
+      "test/profile-m2-integration.test.ts",
+      "test/profile-m2-operations.test.ts",
+      "test/profile-m2-gates.test.ts",
+      "test/profile-m2-parser.test.ts",
+      "test/profile-m2-args.test.ts",
+      "test/profile-m2-honor.test.ts",
+      "test/profile-m2-honor-boundary.test.ts"
+    ],
+    "status": 0
+  }
+]

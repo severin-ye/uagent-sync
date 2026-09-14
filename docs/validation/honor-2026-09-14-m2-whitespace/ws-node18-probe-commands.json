@@ -1,0 +1,24 @@
+[
+  {
+    "exitCode": 0,
+    "arguments": [
+      "--import",
+      "file:///<REVIEW_ROOT>/src/node_modules/tsx/dist/loader.mjs",
+      "<REVIEW_ROOT>\\honor-residual.mjs"
+    ],
+    "stdout": "<REVIEW_ROOT>\\ws-node18-honor-residual.json",
+    "stderr": "<REVIEW_ROOT>\\ws-node18-honor-residual.stderr.log",
+    "node": "<NODE18>\\node.exe"
+  },
+  {
+    "exitCode": 0,
+    "arguments": [
+      "--import",
+      "file:///<REVIEW_ROOT>/src/node_modules/tsx/dist/loader.mjs",
+      "<REVIEW_ROOT>\\honor-formfeed-gates.mjs"
+    ],
+    "stdout": "<REVIEW_ROOT>\\ws-node18-honor-formfeed-gates.json",
+    "stderr": "<REVIEW_ROOT>\\ws-node18-honor-formfeed-gates.stderr.log",
+    "node": "<NODE18>\\node.exe"
+  }
+]
