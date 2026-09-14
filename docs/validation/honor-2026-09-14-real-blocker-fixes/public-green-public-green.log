@@ -1,0 +1,14 @@
+✔ independently reviewed exact source can pass without modifying its bytes (3.5543ms)
+✔ changed content, path, newline, appended credential and forged context never inherit review (0.5539ms)
+✔ publish path maps only a canonical profile skills payload (0.5052ms)
+✔ missing, malformed, duplicate, oversized or failed host inputs fail closed as a batch (0.5388ms)
+✔ host buffers are copied and each operation has an isolated view (0.4698ms)
+✔ invalid UTF8 cannot normalize into a reviewed source (0.6501ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 324.9975

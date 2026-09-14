@@ -1,0 +1,109 @@
+{
+  "rootEngine": "^22.22.2 || ^24.15.0 || >=26.0.0",
+  "ranges": [
+    {
+      "name": "node_modules/@ai-sdk/provider",
+      "version": "3.0.8",
+      "range": ">=18"
+    },
+    {
+      "name": "node_modules/cross-spawn",
+      "version": "7.0.6",
+      "range": ">= 8"
+    },
+    {
+      "name": "node_modules/detect-libc",
+      "version": "2.1.2",
+      "range": ">=8"
+    },
+    {
+      "name": "node_modules/fast-check",
+      "version": "4.9.0",
+      "range": ">=12.17.0"
+    },
+    {
+      "name": "node_modules/ini",
+      "version": "7.0.0",
+      "range": "^22.22.2 || ^24.15.0 || >=26.0.0"
+    },
+    {
+      "name": "node_modules/path-key",
+      "version": "3.1.1",
+      "range": ">=8"
+    },
+    {
+      "name": "node_modules/shebang-command",
+      "version": "2.0.0",
+      "range": ">=8"
+    },
+    {
+      "name": "node_modules/shebang-regex",
+      "version": "3.0.0",
+      "range": ">=8"
+    },
+    {
+      "name": "node_modules/smol-toml",
+      "version": "1.8.0",
+      "range": ">= 18"
+    },
+    {
+      "name": "node_modules/toml",
+      "version": "4.3.0",
+      "range": ">=20"
+    },
+    {
+      "name": "node_modules/which",
+      "version": "2.0.2",
+      "range": ">= 8"
+    },
+    {
+      "name": "node_modules/yaml",
+      "version": "2.9.0",
+      "range": ">= 14.6"
+    }
+  ],
+  "cases": [
+    {
+      "node": "18.20.8",
+      "declaredBlockers": [
+        "node_modules/ini",
+        "node_modules/toml"
+      ]
+    },
+    {
+      "node": "20.20.0",
+      "declaredBlockers": [
+        "node_modules/ini"
+      ]
+    },
+    {
+      "node": "22.22.1",
+      "declaredBlockers": [
+        "node_modules/ini"
+      ]
+    },
+    {
+      "node": "22.22.2",
+      "declaredBlockers": []
+    },
+    {
+      "node": "24.14.0",
+      "declaredBlockers": [
+        "node_modules/ini"
+      ]
+    },
+    {
+      "node": "24.16.0",
+      "declaredBlockers": []
+    },
+    {
+      "node": "24.19.0",
+      "declaredBlockers": []
+    },
+    {
+      "node": "26.0.0",
+      "declaredBlockers": []
+    }
+  ],
+  "note": "Static lockfile range evaluation only. No npm install, engine-strict run or dependency API execution."
+}

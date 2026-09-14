@@ -1,0 +1,8 @@
+{
+  "packageVersion": "2.1.1",
+  "lockVersion": "2.1.1",
+  "dependencyDeclarationsUnchanged": true,
+  "lockPackageVersionChanges": [],
+  "rootEngineBefore": ">=18",
+  "rootEngineAfter": "^22.22.2 || ^24.15.0 || >=26.0.0"
+}

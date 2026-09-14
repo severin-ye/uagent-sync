@@ -1,0 +1,48 @@
+{"ok":false,"warnings":[],"errors":["Crystallize preflight refused: usync-dotfiles is ignored by the parent repository and is not a Git repository"],"skipped":[],"targetAgent":"codex"}
+{"ok":false,"warnings":[],"errors":["Crystallize preflight refused: usync-dotfiles is ignored by the parent repository and is not a Git repository"],"skipped":[],"targetAgent":"codex"}
+▶ crystallize step 4 with dotfiles as a git submodule
+  ✔ exits 0 and reports committed steps (0.6143ms)
+  ✔ commits the generated artifacts inside the submodule (251.8219ms)
+  ✔ pushes the dotfiles commit to its remote (110.4773ms)
+  ✔ updates the workspace pointer and pushes it (213.1125ms)
+✔ crystallize step 4 with dotfiles as a git submodule (7701.0538ms)
+▶ crystallize step 4 with dotfiles as a plain directory
+  ✔ commits files directly in the workspace repo (2595.4609ms)
+✔ crystallize step 4 with dotfiles as a plain directory (2595.6645ms)
+▶ crystallize step 4 failure visibility (no git repo)
+  ✖ surfaces the failure detail instead of a blank warning (284.773ms)
+✖ crystallize step 4 failure visibility (no git repo) (285.0327ms)
+▶ crystallize preflight side-effect protection
+  ✔ refuses an ignored plain dotfiles directory before writing provenance artifacts (731.2495ms)
+✔ crystallize preflight side-effect protection (731.4199ms)
+ℹ tests 7
+ℹ suites 4
+ℹ pass 6
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11836.409
+
+✖ failing tests:
+
+test at test\crystallize-submodule.test.ts:1:7454
+✖ surfaces the failure detail instead of a blank warning (284.773ms)
+  AssertionError [ERR_ASSERTION]: failure detail must be non-empty:
+      at TestContext.<anonymous> (<WORKTREE>\test\crystallize-submodule.test.ts:207:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.start (node:internal/test_runner/test:1177:17)
+      at node:internal/test_runner/test:1769:71
+      at node:internal/per_context/primordials:466:82
+      at new Promise (<anonymous>)
+      at new SafePromise (node:internal/per_context/primordials:435:3)
+      at node:internal/per_context/primordials:466:9
+      at Array.map (<anonymous>) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '',
+    expected: /⚠️ Step 4: .+failed.+— .+/s,
+    operator: 'match',
+    diff: 'simple'
+  }

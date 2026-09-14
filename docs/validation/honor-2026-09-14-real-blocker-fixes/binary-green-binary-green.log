@@ -1,0 +1,21 @@
+✔ public source create exact allowed (35.598ms)
+✔ public source create changed refused (12.3783ms)
+✔ public source restore exact allowed (26.1491ms)
+✔ public source restore changed refused (15.9852ms)
+✔ public source publish exact allowed (21.1066ms)
+✔ public source publish changed refused (18.2175ms)
+✔ independently reviewed exact source can pass without modifying its bytes (3.9576ms)
+✔ changed content, path, newline, appended credential and forged context never inherit review (1.2886ms)
+✔ publish path maps only a canonical profile skills payload (0.7499ms)
+✔ missing, malformed, duplicate, oversized or failed host inputs fail closed as a batch (1.2032ms)
+✔ host buffers are copied and each operation has an isolated view (0.5499ms)
+✔ invalid UTF8 cannot normalize into a reviewed source (1.2756ms)
+✔ unreviewed binary Skill resources retain default behavior (0.9211ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 635.3076

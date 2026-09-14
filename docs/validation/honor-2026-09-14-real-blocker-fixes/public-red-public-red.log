@@ -1,0 +1,158 @@
+✖ independently reviewed exact source can pass without modifying its bytes (2.5517ms)
+✖ changed content, path, newline, appended credential and forged context never inherit review (0.4185ms)
+✖ publish path maps only a canonical profile skills payload (0.2926ms)
+✖ missing, malformed, duplicate, oversized or failed host inputs fail closed as a batch (0.1938ms)
+✖ host buffers are copied and each operation has an isolated view (0.2296ms)
+✖ invalid UTF8 cannot normalize into a reviewed source (0.1706ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 0
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 727.3106
+
+✖ failing tests:
+
+test at test\profile-public-source.test.ts:1:669
+✖ independently reviewed exact source can pass without modifying its bytes (2.5517ms)
+  AssertionError [ERR_ASSERTION]: public-source host provider must exist
+  + actual - expected
+
+  + 'undefined'
+  - 'function'
+
+      at provider (<STAGING_ROOT>\final-fixes\test\profile-public-source.test.ts:9:10)
+      at TestContext.<anonymous> (<STAGING_ROOT>\final-fixes\test\profile-public-source.test.ts:13:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.start (node:internal/test_runner/test:1177:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-public-source.test.ts:1:1139
+✖ changed content, path, newline, appended credential and forged context never inherit review (0.4185ms)
+  AssertionError [ERR_ASSERTION]: public-source host provider must exist
+  + actual - expected
+
+  + 'undefined'
+  - 'function'
+
+      at provider (<STAGING_ROOT>\final-fixes\test\profile-public-source.test.ts:9:10)
+      at TestContext.<anonymous> (<STAGING_ROOT>\final-fixes\test\profile-public-source.test.ts:21:23)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-public-source.test.ts:1:1831
+✖ publish path maps only a canonical profile skills payload (0.2926ms)
+  AssertionError [ERR_ASSERTION]: public-source host provider must exist
+  + actual - expected
+
+  + 'undefined'
+  - 'function'
+
+      at provider (<STAGING_ROOT>\final-fixes\test\profile-public-source.test.ts:9:10)
+      at TestContext.<anonymous> (<STAGING_ROOT>\final-fixes\test\profile-public-source.test.ts:28:23)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-public-source.test.ts:1:2390
+✖ missing, malformed, duplicate, oversized or failed host inputs fail closed as a batch (0.1938ms)
+  AssertionError [ERR_ASSERTION]: public-source host provider must exist
+  + actual - expected
+
+  + 'undefined'
+  - 'function'
+
+      at provider (<STAGING_ROOT>\final-fixes\test\profile-public-source.test.ts:9:10)
+      at TestContext.<anonymous> (<STAGING_ROOT>\final-fixes\test\profile-public-source.test.ts:34:24)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-public-source.test.ts:1:2900
+✖ host buffers are copied and each operation has an isolated view (0.2296ms)
+  AssertionError [ERR_ASSERTION]: public-source host provider must exist
+  + actual - expected
+
+  + 'undefined'
+  - 'function'
+
+      at provider (<STAGING_ROOT>\final-fixes\test\profile-public-source.test.ts:9:10)
+      at TestContext.<anonymous> (<STAGING_ROOT>\final-fixes\test\profile-public-source.test.ts:39:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test\profile-public-source.test.ts:1:3318
+✖ invalid UTF8 cannot normalize into a reviewed source (0.1706ms)
+  AssertionError [ERR_ASSERTION]: public-source host provider must exist
+  + actual - expected
+
+  + 'undefined'
+  - 'function'
+
+      at provider (<STAGING_ROOT>\final-fixes\test\profile-public-source.test.ts:9:10)
+      at TestContext.<anonymous> (<STAGING_ROOT>\final-fixes\test\profile-public-source.test.ts:44:49)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

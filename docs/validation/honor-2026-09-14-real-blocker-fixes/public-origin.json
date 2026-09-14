@@ -1,0 +1,1017 @@
+[
+  {
+    "path": "agents/skills/claude-api/php/managed-agents/README.md",
+    "repository": "anthropics",
+    "exactPublicBlob": false,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "fc63d9888525238f7dccf0eddefae4f0f7be648d",
+    "ids": [
+      "HP-001"
+    ]
+  },
+  {
+    "path": "agents/skills/claude-api/python/claude-api/README.md",
+    "repository": "anthropics",
+    "exactPublicBlob": false,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "62c0f508661623c7af40a5068f6d6d68b00b4376",
+    "ids": [
+      "HP-002"
+    ]
+  },
+  {
+    "path": "agents/skills/claude-api/python/managed-agents/README.md",
+    "repository": "anthropics",
+    "exactPublicBlob": false,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "cb97bfa4754aa4fe3dc12a61aacbf880c6a05dc1",
+    "ids": [
+      "HP-003"
+    ]
+  },
+  {
+    "path": "agents/skills/claude-api/ruby/claude-api/README.md",
+    "repository": "anthropics",
+    "exactPublicBlob": false,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "2a0466854785521eb5d9cdcc24f9253716fcb98f",
+    "ids": [
+      "HP-004"
+    ]
+  },
+  {
+    "path": "agents/skills/claude-api/ruby/managed-agents/README.md",
+    "repository": "anthropics",
+    "exactPublicBlob": false,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "4b58dc96d8f4ecc73a4685f36fcfe3876e431c57",
+    "ids": [
+      "HP-005"
+    ]
+  },
+  {
+    "path": "agents/skills/claude-api/shared/managed-agents-tools.md",
+    "repository": "anthropics",
+    "exactPublicBlob": false,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "150b19d4849b63bab45f62a26dc79c3fc38e5fc5",
+    "ids": [
+      "HP-006"
+    ]
+  },
+  {
+    "path": "agents/skills/claude-api/typescript/claude-api/README.md",
+    "repository": "anthropics",
+    "exactPublicBlob": false,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "115d20d7aafd10d87c080d8ef36a292648158d57",
+    "ids": [
+      "HP-007"
+    ]
+  },
+  {
+    "path": "agents/skills/claude-api/typescript/managed-agents/README.md",
+    "repository": "anthropics",
+    "exactPublicBlob": false,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "0431a816a32ba0516af6b7dcc83ffed8e966ba9b",
+    "ids": [
+      "HP-008"
+    ]
+  },
+  {
+    "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+    "repository": "science",
+    "exactPublicBlob": false,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "5c1346328d3e3c9c778d3baf8c5a099e3b78caec",
+    "ids": [
+      "HP-009",
+      "HP-010",
+      "HP-011",
+      "HP-012",
+      "HP-013",
+      "HP-014",
+      "HP-015"
+    ]
+  },
+  {
+    "path": "agents/skills/ncbi-sequence-fetch/scripts/ncbi_fetch.py",
+    "repository": "science",
+    "exactPublicBlob": false,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "eabba8481b8672494f84b88e5b03bf8228ce908c",
+    "ids": [
+      "HP-016",
+      "HP-017"
+    ]
+  },
+  {
+    "path": "agents/skills/openfda-database/scripts/openfda_query.py",
+    "repository": "science",
+    "exactPublicBlob": false,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "9dd0f23d5ad5b0dc3733bff72f4dc0f1c545643f",
+    "ids": [
+      "HP-018",
+      "HP-019",
+      "HP-020",
+      "HP-021"
+    ]
+  },
+  {
+    "path": "agents/skills/pdf/SKILL.md",
+    "repository": "anthropics",
+    "exactPublicBlob": false,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "d3e046a5ae107a6cb23cfb16c219837094ab35d3",
+    "ids": [
+      "HP-022"
+    ]
+  },
+  {
+    "path": "agents/skills/pdf/reference.md",
+    "repository": "anthropics",
+    "exactPublicBlob": false,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "41400bf4fc67f15fb062d43695ec92f078226023",
+    "ids": [
+      "HP-023"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/.env.example",
+    "repository": "gstack",
+    "exactPublicBlob": false,
+    "lfPublicBlob": true,
+    "publicPath": ".env.example",
+    "blob": "04c8f010b391b1a9a15c4789c30b957a600197e4",
+    "ids": [
+      "RY-009"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/bin/gstack-distill-free-text",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "fe75c45a409f7606165e8fd1db8b0af0c8c01807",
+    "ids": [
+      "RY-010"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/src/browse-client.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "499b366f76a35fefd312ee1335a3b229f70c4c5d",
+    "ids": [
+      "RY-011",
+      "RY-012",
+      "RY-013",
+      "RY-014"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/src/browser-manager.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "60c478842f4aa4356f122ac70f7803a4385c8f8a",
+    "ids": [
+      "RY-015"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/src/cli.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "55c69c6707607ad8cfa01940120910a2397457f4",
+    "ids": [
+      "RY-016"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/src/cookie-import-browser.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "2984d5772b772c98442e0cb6397ddab3520f7c2a",
+    "ids": [
+      "RY-017"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/src/proxy-config.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "1614758250e9159e8427246a9a35441071b282e8",
+    "ids": [
+      "RY-018",
+      "RY-019",
+      "RY-020"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/src/proxy-redact.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "f0e5cf9178e1cb490ed40865891fc37ed868e895",
+    "ids": [
+      "RY-021",
+      "RY-022"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/src/server.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "47c2e2e4df82b2c0236a42a4d307f420f6900338",
+    "ids": [
+      "RY-023",
+      "RY-024",
+      "RY-025",
+      "RY-026",
+      "RY-027",
+      "RY-028",
+      "RY-029"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/src/session-cookie-store.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "7e0f77c68d1908a088fa8effc1ecdc492d5f5ab4",
+    "ids": [
+      "RY-030"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/src/socks-bridge.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "dc8b2e219ab23bca1348aa9df75039a4e4b78ef8",
+    "ids": [
+      "RY-031"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/src/terminal-agent.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "f75f6a28d72e3ad4d1d1b692a8c004e17ba485ca",
+    "ids": [
+      "RY-032",
+      "RY-033"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/src/token-registry.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "89b0a990c31e26188275295e3d2d60f5908c5033",
+    "ids": [
+      "RY-034",
+      "RY-035",
+      "RY-036"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/bridge-chromium-e2e.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "959722153591ae4c7325019f304cf37bdae6ebaa",
+    "ids": [
+      "RY-037"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/browse-client.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "61853f9941a549ebaac5ea654d31b3c6df9a7178",
+    "ids": [
+      "RY-038",
+      "RY-039",
+      "RY-040"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/browser-skill-commands.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "c93a908e2ec86215fc9f5e7db59165b0c2fdd687",
+    "ids": [
+      "RY-041"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/busy-daemon-iron-rule.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "57aa7777cd5eaf215a4af80c311b5d4de32efc14",
+    "ids": [
+      "RY-042",
+      "RY-043",
+      "RY-044",
+      "RY-045"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/busy-daemon-recovery.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "93f8d079c163782c61d9425a220076485ae929f3",
+    "ids": [
+      "RY-046"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/commands.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "83ae4707cc8db7ddc8b2fe163a491d16a2ee51ab",
+    "ids": [
+      "RY-047"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/cookie-import-browser.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "5e9a5b441ea0d9b0dd236fde846ae4ff4f9596f0",
+    "ids": [
+      "RY-048"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/daemon-mismatch-refuse.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "b36ab64e3033fc79a22aff8a7e407f3c7f3b9bd1",
+    "ids": [
+      "RY-049",
+      "RY-050",
+      "RY-051"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/extension-token.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "950c166bff36eff93b49a5c84d630bf3337968dc",
+    "ids": [
+      "RY-052"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/fixtures/injection-combined.html",
+    "repository": "gstack",
+    "exactPublicBlob": false,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "9d9ae4ef8ccf8e65f28abb1af15b7a6d03a8eec9",
+    "ids": [
+      "RY-053"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/pair-agent-e2e.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "3891c3c118c9f77dde1061469ebe211a374395f1",
+    "ids": [
+      "RY-054",
+      "RY-055"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/pair-agent-tunnel-eval.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "ffb432193e4f44a49d9f1948b8185e1df84828ba",
+    "ids": [
+      "RY-056"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/proxy-redact.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "f05a69df56d813b977b6072f0cae316e6284feb2",
+    "ids": [
+      "RY-057"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/server-auth.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "5949f1f13d057ff70f60fef0673ffa436655e2a9",
+    "ids": [
+      "RY-058",
+      "RY-059"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/server-embedder-terminal-port.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "e9d01c52fb2c669a0e496f83b8e81b9f1ef7d756",
+    "ids": [
+      "RY-060"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/server-factory.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "b6c1dc44d96a8cbfa950b860a8eced6f8cb8ecfa",
+    "ids": [
+      "RY-061",
+      "RY-062"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/sidebar-ux.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "c97412349ad8a84697fea6b5c9a94100667cb07c",
+    "ids": [
+      "RY-063"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/stop-dead-daemon.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "b92a669d33afa465574434689dc65cdad747443e",
+    "ids": [
+      "RY-064",
+      "RY-065"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/terminal-agent-integration.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "c4a72c019d16269f6e9011ad4ae0d48f030e2523",
+    "ids": [
+      "RY-066",
+      "RY-067",
+      "RY-068",
+      "RY-069"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/terminal-agent-owner-watchdog.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "e28502964d1653070ec31ef09455703af378f430",
+    "ids": [
+      "RY-070"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/token-registry.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "3d2639b83b4f3b829c3a127d395dba3bd847fcaa",
+    "ids": [
+      "RY-071",
+      "RY-072",
+      "RY-073",
+      "RY-074",
+      "RY-075"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/tunnel-revoke-cli.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "251c128808b49c3dbbf5b1f4aa812cce33dbb365",
+    "ids": [
+      "RY-076",
+      "RY-077"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/browser-skills/hackernews-frontpage/_lib/browse-client.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "499b366f76a35fefd312ee1335a3b229f70c4c5d",
+    "ids": [
+      "RY-078",
+      "RY-079",
+      "RY-080",
+      "RY-081"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/design/src/check.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "992d606ca19602043ef46dbea0a1cf8eaa843718",
+    "ids": [
+      "RY-082"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/design/src/design-to-code.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "67ba95c2a17526978b2f1d3808a548a14e18bc6f",
+    "ids": [
+      "RY-083"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/design/src/diff.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "b96dad652afdd8997fa76e939ead2a35d201ca29",
+    "ids": [
+      "RY-084"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/design/src/evolve.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "844f94f71e788ab1970a51af8f2a8670162e704f",
+    "ids": [
+      "RY-085"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/design/src/generate.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "c1aaeb8dcb24205b32ada22ddfdc8b4529101ccc",
+    "ids": [
+      "RY-086"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/design/src/iterate.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "279bec450e38e4bf8492c38fb56834fb38d33420",
+    "ids": [
+      "RY-087"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/design/src/memory.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "513e25d5bee0a0034852fc9feab3476d1d367593",
+    "ids": [
+      "RY-088"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/design/src/variants.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "f532823673713f4286099df4ea98ac4391f0c115",
+    "ids": [
+      "RY-089"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/docs/REMOTE_BROWSER_ACCESS.md",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "950d23b86a5411b3a5b2dcfc18a35db1d27782a4",
+    "ids": [
+      "RY-090"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/docs/designs/v2_PLAN.md",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "bd684df0dd6afd80d631240852fd8029ee22c6e3",
+    "ids": [
+      "RY-091"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/extension/background.js",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "3eeb7e5046be65623b4b39f39a043d1d4471b6a0",
+    "ids": [
+      "RY-092",
+      "RY-093"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/extension/sidepanel-terminal.js",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "9ffb031151f79962d6fcb52637ff9ebe39898ef2",
+    "ids": [
+      "RY-094",
+      "RY-095"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/ios-qa/daemon/src/session-tokens.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "de7f0d95442c7c881ba61f58272095bfede90755",
+    "ids": [
+      "RY-096"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/ios-qa/daemon/test/daemon-integration.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "9073b18d42606cdf47a8a1eeeaddeffca122c409",
+    "ids": [
+      "RY-097"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/ios-qa/scripts/gen-accessors.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "738e08364542c075e6cb9d2c4300a00d425c8165",
+    "ids": [
+      "RY-098"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/lib/code-intelligence/sourcebot-adapter.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "f274cb09e5266738496f20311783f216973eac24",
+    "ids": [
+      "RY-099"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/lib/context-bill.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "b264e72c947fd03b95999e0ef52985328aa12eb8",
+    "ids": [
+      "RY-100"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "25de82b9f52976f346d0c5ed05f7942646171899",
+    "ids": [
+      "RY-101",
+      "RY-102",
+      "RY-103",
+      "RY-104",
+      "RY-105",
+      "RY-106",
+      "RY-107",
+      "RY-108",
+      "RY-109",
+      "RY-110",
+      "RY-111",
+      "RY-112",
+      "RY-113",
+      "RY-114",
+      "RY-115",
+      "RY-116",
+      "RY-117",
+      "RY-118",
+      "RY-119",
+      "RY-120",
+      "RY-121",
+      "RY-122",
+      "RY-123",
+      "RY-124",
+      "RY-125",
+      "RY-126",
+      "RY-127",
+      "RY-128",
+      "RY-129",
+      "RY-130",
+      "RY-131",
+      "RY-132",
+      "RY-133",
+      "RY-134",
+      "RY-135",
+      "RY-136",
+      "RY-137"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/test/brain-sync.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "47d8b5931ae3186bf0c874ebdc2f4cb57755884e",
+    "ids": [
+      "RY-138",
+      "RY-139",
+      "RY-140",
+      "RY-141"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/test/claude-provider-keychain.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "9aff4be619969cc550526bf979106cc0d680727f",
+    "ids": [
+      "RY-142"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/test/code-intelligence.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "8d9705f32c52bd2f37817b46b1154c7822cd2a83",
+    "ids": [
+      "RY-143"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/test/free-tests-workflow-wiring.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "736b391b9dc0b4da75fa4e5e7849e880830df3b0",
+    "ids": [
+      "RY-144"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/test/gbrain-supabase-provision.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "3a6b1d21c913d677ad20e382849afd6467d2968c",
+    "ids": [
+      "RY-145"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/test/gstack-memory-ingest.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "26289afe6492dabfc1fb06079930284106579786",
+    "ids": [
+      "RY-146"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/test/helpers/benchmark-judge.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "944d81168cd11e720da49d20bebc9f697648ddf4",
+    "ids": [
+      "RY-147"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/test/helpers/hermetic-env.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "b4503b60c29c0efdac3cab009767d4351f2f7ea9",
+    "ids": [
+      "RY-148",
+      "RY-149",
+      "RY-150",
+      "RY-151",
+      "RY-152",
+      "RY-153",
+      "RY-154",
+      "RY-155"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/test/helpers/hermetic-env.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "4fb17e734f522202026e2f5415795bc55384643f",
+    "ids": [
+      "RY-156",
+      "RY-157"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/test/helpers/touchfiles-data.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "667495ba9617362184f15e5c7589925c550824f7",
+    "ids": [
+      "RY-158"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/test/hermetic-skills-seeding.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "43b294db96ca9c76f4c7d2717c3989c6bf1a0d67",
+    "ids": [
+      "RY-159"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/test/redact-engine.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "0201715256be7491d561000575d4658d24f0bda8",
+    "ids": [
+      "RY-160",
+      "RY-161",
+      "RY-162",
+      "RY-163",
+      "RY-164",
+      "RY-165",
+      "RY-166",
+      "RY-167",
+      "RY-168",
+      "RY-169",
+      "RY-170",
+      "RY-171",
+      "RY-172",
+      "RY-173",
+      "RY-174",
+      "RY-175",
+      "RY-176"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/test/regression-issue2091-bsd-mktemp.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "4b858dbdf6d7412a8ba33812970192ff80c4397d",
+    "ids": [
+      "RY-177"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/test/skill-e2e-cso.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "9bd0ed380f58b040da59a98b1732e49c64b397c9",
+    "ids": [
+      "RY-178",
+      "RY-179"
+    ]
+  },
+  {
+    "path": "agents/skills/gstack/test/telemetry.test.ts",
+    "repository": "gstack",
+    "exactPublicBlob": true,
+    "lfPublicBlob": true,
+    "publicPath": "promised-public-object",
+    "blob": "66834948173a2328a418215e6c6232b3fd006a6b",
+    "ids": [
+      "RY-180"
+    ]
+  }
+]

@@ -1,0 +1,658 @@
+[
+  {
+    "path": "agents/skills/gstack/.env.example",
+    "publicBlob": "04c8f010b391b1a9a15c4789c30b957a600197e4",
+    "repository": "gstack",
+    "conversion": "LF-to-CRLF",
+    "byteEqual": true,
+    "sha256": "35207468cee082359fc05df49c697a74661b088521f5d0479dbc2a2a5037c3c4"
+  },
+  {
+    "path": "agents/skills/gstack/bin/gstack-distill-free-text",
+    "publicBlob": "fe75c45a409f7606165e8fd1db8b0af0c8c01807",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "0aef0f18f98a0cb40064b923323bd8238b6b24d3fe3516d4497c338c64b15532"
+  },
+  {
+    "path": "agents/skills/gstack/browse/src/browse-client.ts",
+    "publicBlob": "499b366f76a35fefd312ee1335a3b229f70c4c5d",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "bb1056c58e442e63558fdfbab2a20bffa8165eaebc246421757f4ce86895e8c6"
+  },
+  {
+    "path": "agents/skills/gstack/browse/src/browser-manager.ts",
+    "publicBlob": "60c478842f4aa4356f122ac70f7803a4385c8f8a",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "994c5eb67685692ac82cbff8b175c4e153f19c9c024fafbea8f522505b3a91d8"
+  },
+  {
+    "path": "agents/skills/gstack/browse/src/cli.ts",
+    "publicBlob": "55c69c6707607ad8cfa01940120910a2397457f4",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "b24fd3d78ddad0fbb888704d8544db618670779ba25650f01201780c36cfe427"
+  },
+  {
+    "path": "agents/skills/gstack/browse/src/cookie-import-browser.ts",
+    "publicBlob": "2984d5772b772c98442e0cb6397ddab3520f7c2a",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "2d8a06307c6d408b291894fb35133a5dab363db093eafd75ba393dcc1a8eb83b"
+  },
+  {
+    "path": "agents/skills/gstack/browse/src/proxy-config.ts",
+    "publicBlob": "1614758250e9159e8427246a9a35441071b282e8",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "5007d30873e5761bbc3a8b7b989e487aca5738a8e80e0a1f17919d33c65a9323"
+  },
+  {
+    "path": "agents/skills/gstack/browse/src/proxy-redact.ts",
+    "publicBlob": "f0e5cf9178e1cb490ed40865891fc37ed868e895",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "01a4b81bb4da979270d28bd802119bce93c02615574cdcfcb43be29f74381516"
+  },
+  {
+    "path": "agents/skills/gstack/browse/src/server.ts",
+    "publicBlob": "47c2e2e4df82b2c0236a42a4d307f420f6900338",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "f29a368e9ee2253ae261541d0fe02d6e0896b24c248e535fbd68c8cb61e43ed3"
+  },
+  {
+    "path": "agents/skills/gstack/browse/src/session-cookie-store.ts",
+    "publicBlob": "7e0f77c68d1908a088fa8effc1ecdc492d5f5ab4",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "7fe0eca3f3adb8d27a127814cc3d4bc5d9425392d9d7faeb032ae6b0533b676e"
+  },
+  {
+    "path": "agents/skills/gstack/browse/src/socks-bridge.ts",
+    "publicBlob": "dc8b2e219ab23bca1348aa9df75039a4e4b78ef8",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "7d2fe319b708687c2c5a13a002b81ad679df2008af095e699a11c36164162f6d"
+  },
+  {
+    "path": "agents/skills/gstack/browse/src/terminal-agent.ts",
+    "publicBlob": "f75f6a28d72e3ad4d1d1b692a8c004e17ba485ca",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "f2c31580880664802173874df905819402fc268be13a4abd3205db7a4597f691"
+  },
+  {
+    "path": "agents/skills/gstack/browse/src/token-registry.ts",
+    "publicBlob": "89b0a990c31e26188275295e3d2d60f5908c5033",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "fc2cf6c209ebc179d5bd159e15f8a4ce8147da3c6b2c4135b1da0dff37fae0d3"
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/bridge-chromium-e2e.test.ts",
+    "publicBlob": "959722153591ae4c7325019f304cf37bdae6ebaa",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "db7e2ad7eb93f71a9e024700e3cff731ac729c63891fbb5871dcf0dce725b916"
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/browse-client.test.ts",
+    "publicBlob": "61853f9941a549ebaac5ea654d31b3c6df9a7178",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "1b41f6d8938a30d564120d653e24fcfbabcd6d60bd77cb3e3da3fa27c77d03ad"
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/browser-skill-commands.test.ts",
+    "publicBlob": "c93a908e2ec86215fc9f5e7db59165b0c2fdd687",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "6bd98729162e77b4b51f4583667f946c489a1da2fb57008ef29b2835f89636b6"
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/busy-daemon-iron-rule.test.ts",
+    "publicBlob": "57aa7777cd5eaf215a4af80c311b5d4de32efc14",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "a09a504f7734c630bc032a85069bce7f644c9716b8ffe143fa55bb2bbcb057c2"
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/busy-daemon-recovery.test.ts",
+    "publicBlob": "93f8d079c163782c61d9425a220076485ae929f3",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "0ed4c9c7f6ac5a2f9a53d0613d60a910d7d34c8c9e9aa8b137426b9cadea7016"
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/commands.test.ts",
+    "publicBlob": "83ae4707cc8db7ddc8b2fe163a491d16a2ee51ab",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "cd93f6f33495bcf72cc53cebe713e91758056a03ef86ea73ce05f5f1263928c4"
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/cookie-import-browser.test.ts",
+    "publicBlob": "5e9a5b441ea0d9b0dd236fde846ae4ff4f9596f0",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "89417aa7e6bf29138b26af32353eaae84636d4d62dc84af8949aac261d5d974d"
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/daemon-mismatch-refuse.test.ts",
+    "publicBlob": "b36ab64e3033fc79a22aff8a7e407f3c7f3b9bd1",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "7e24302e24462cacd7726b22d1e1850f8ca70cc56146a4619df562a550d855e5"
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/extension-token.test.ts",
+    "publicBlob": "950c166bff36eff93b49a5c84d630bf3337968dc",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "3cc9f9d81acbfa848d5d0f0d329fa431f4c04a6044f428ebd3641983d8e319d8"
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/fixtures/injection-combined.html",
+    "publicBlob": "9d9ae4ef8ccf8e65f28abb1af15b7a6d03a8eec9",
+    "repository": "gstack",
+    "conversion": "LF-to-CRLF",
+    "byteEqual": true,
+    "sha256": "bf9a7b92a4f02829ee73ee5818bb30764084cb21f1eec495e3f7797a758e21cf"
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/pair-agent-e2e.test.ts",
+    "publicBlob": "3891c3c118c9f77dde1061469ebe211a374395f1",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "8cbb8d79a792c685ef9849332d4f44054a7a0996a63a2ccc6a17d4f6c0ac0dee"
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/pair-agent-tunnel-eval.test.ts",
+    "publicBlob": "ffb432193e4f44a49d9f1948b8185e1df84828ba",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "c5f41c5175da7e0855e99af545f60399efa26e45a29d1ecdc5a94adcabf4c7e7"
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/proxy-redact.test.ts",
+    "publicBlob": "f05a69df56d813b977b6072f0cae316e6284feb2",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "85f25fa0ab7659e8fe38fe1c1d0a8853b41847d30808c6567626e3dfacec0e19"
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/server-auth.test.ts",
+    "publicBlob": "5949f1f13d057ff70f60fef0673ffa436655e2a9",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "a5eb8e83b754b327e1cf4b481876c22be26e19db0785c7ab4d04e4917b8e1611"
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/server-embedder-terminal-port.test.ts",
+    "publicBlob": "e9d01c52fb2c669a0e496f83b8e81b9f1ef7d756",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "0923eb0ba614e0196d708d08eca3b7820fd24baada39f7fca2f21dd6c63f44c1"
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/server-factory.test.ts",
+    "publicBlob": "b6c1dc44d96a8cbfa950b860a8eced6f8cb8ecfa",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "921167e6a4b171a05b90f6877d9aa4b9e9f2089be4febc6046e5836c054b9b78"
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/sidebar-ux.test.ts",
+    "publicBlob": "c97412349ad8a84697fea6b5c9a94100667cb07c",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "8f4c5b9a719e7f52819f30368af3cdb7ce0506e4d0a6926aa06144537484b37b"
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/stop-dead-daemon.test.ts",
+    "publicBlob": "b92a669d33afa465574434689dc65cdad747443e",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "2751565cd1ad7928e35fba9d4249f3ba33b5f8727e873c2d692039cd99d5e611"
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/terminal-agent-integration.test.ts",
+    "publicBlob": "c4a72c019d16269f6e9011ad4ae0d48f030e2523",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "3d200b5be60eb4a018b0e301c5e8ddea8cfd8733257632e3ec3f22a1bdb4cec0"
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/terminal-agent-owner-watchdog.test.ts",
+    "publicBlob": "e28502964d1653070ec31ef09455703af378f430",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "d59faac5e6d1f0044cacef18e9c35798564d475399675be59b03519b86813b1b"
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/token-registry.test.ts",
+    "publicBlob": "3d2639b83b4f3b829c3a127d395dba3bd847fcaa",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "01da7c5ba0a24de79798a91f3577b1b61a94ccd14e45599424570225dc6fae37"
+  },
+  {
+    "path": "agents/skills/gstack/browse/test/tunnel-revoke-cli.test.ts",
+    "publicBlob": "251c128808b49c3dbbf5b1f4aa812cce33dbb365",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "0a3e5f0a18725d7299012484a19ce196082ae851c20180ef43d3f7083ec8aa2a"
+  },
+  {
+    "path": "agents/skills/gstack/browser-skills/hackernews-frontpage/_lib/browse-client.ts",
+    "publicBlob": "499b366f76a35fefd312ee1335a3b229f70c4c5d",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "bb1056c58e442e63558fdfbab2a20bffa8165eaebc246421757f4ce86895e8c6"
+  },
+  {
+    "path": "agents/skills/gstack/design/src/check.ts",
+    "publicBlob": "992d606ca19602043ef46dbea0a1cf8eaa843718",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "f8d83f9eef7b0a4a718eb8d2d79951107e9663bda27f95eb628da9b944c18841"
+  },
+  {
+    "path": "agents/skills/gstack/design/src/design-to-code.ts",
+    "publicBlob": "67ba95c2a17526978b2f1d3808a548a14e18bc6f",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "1e6ed4ca206b4457f6ed869ade69a28820afd8b62bddb89aeded4b307183b736"
+  },
+  {
+    "path": "agents/skills/gstack/design/src/diff.ts",
+    "publicBlob": "b96dad652afdd8997fa76e939ead2a35d201ca29",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "8e4a59d14c29cd65c3e3e356a38fae70a2fa7988ba7e6ae77fa4d4b8db935575"
+  },
+  {
+    "path": "agents/skills/gstack/design/src/evolve.ts",
+    "publicBlob": "844f94f71e788ab1970a51af8f2a8670162e704f",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "016429c88e7e4f4c7b949ec8bac386729c026a24d18c24615453317931cc5b2a"
+  },
+  {
+    "path": "agents/skills/gstack/design/src/generate.ts",
+    "publicBlob": "c1aaeb8dcb24205b32ada22ddfdc8b4529101ccc",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "1e19d82ccf3c0d57f1d5cdb9339f84dcdb89298403484fcdb86997c398394196"
+  },
+  {
+    "path": "agents/skills/gstack/design/src/iterate.ts",
+    "publicBlob": "279bec450e38e4bf8492c38fb56834fb38d33420",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "511549eb0b433a6b316b5b0778c0bc71c914b34cc8b66679ab72d8cb88d13f29"
+  },
+  {
+    "path": "agents/skills/gstack/design/src/memory.ts",
+    "publicBlob": "513e25d5bee0a0034852fc9feab3476d1d367593",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "f62270394f6f2aa30639977b26327bce972fc05ef34170ff5dd0fe33aa4d8cda"
+  },
+  {
+    "path": "agents/skills/gstack/design/src/variants.ts",
+    "publicBlob": "f532823673713f4286099df4ea98ac4391f0c115",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "ababf04f6ea1d11da0deed2b126411d3dccbf7bf4e1a01915bee9d927aef7749"
+  },
+  {
+    "path": "agents/skills/gstack/docs/REMOTE_BROWSER_ACCESS.md",
+    "publicBlob": "950d23b86a5411b3a5b2dcfc18a35db1d27782a4",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "b356712c9eee1cbc1e996cf51dc0bc0f7594ad26a56571cae8374e9881f9c297"
+  },
+  {
+    "path": "agents/skills/gstack/docs/designs/v2_PLAN.md",
+    "publicBlob": "bd684df0dd6afd80d631240852fd8029ee22c6e3",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "34e4294e9ee426218ff9302a0957a7432ab28e97ce2a8e11afaab1d6bf8850ef"
+  },
+  {
+    "path": "agents/skills/gstack/extension/background.js",
+    "publicBlob": "3eeb7e5046be65623b4b39f39a043d1d4471b6a0",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "fe214abd845630ebcdf24ae91cf7a9fd59feac11fd59f81c8123b54c27f40ab9"
+  },
+  {
+    "path": "agents/skills/gstack/extension/sidepanel-terminal.js",
+    "publicBlob": "9ffb031151f79962d6fcb52637ff9ebe39898ef2",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "b2a17e16e34cbcedf9ea37201af436dd28c9753812bbe548242201ec1497a1a1"
+  },
+  {
+    "path": "agents/skills/gstack/ios-qa/daemon/src/session-tokens.ts",
+    "publicBlob": "de7f0d95442c7c881ba61f58272095bfede90755",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "78fee52b526a132aa15fb15245da4b45ee47fb67ff0c367322f91a63e7745f8a"
+  },
+  {
+    "path": "agents/skills/gstack/ios-qa/daemon/test/daemon-integration.test.ts",
+    "publicBlob": "9073b18d42606cdf47a8a1eeeaddeffca122c409",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "56d1efecce56bd8baa3abcd677555330cdd65ed8ccc3b3fddc0858acb79e9f71"
+  },
+  {
+    "path": "agents/skills/gstack/ios-qa/scripts/gen-accessors.ts",
+    "publicBlob": "738e08364542c075e6cb9d2c4300a00d425c8165",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "e2bb83279cb439f97927ae0a66db6efe7b20573dbf6e35482c96ab8e16f50487"
+  },
+  {
+    "path": "agents/skills/gstack/lib/code-intelligence/sourcebot-adapter.ts",
+    "publicBlob": "f274cb09e5266738496f20311783f216973eac24",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "ba955d22f475da87c8726f7e9a4357399fc7c9666589c9aa6b80f30d72c78f16"
+  },
+  {
+    "path": "agents/skills/gstack/lib/context-bill.ts",
+    "publicBlob": "b264e72c947fd03b95999e0ef52985328aa12eb8",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "9c4a7fe676c68981d021469cb4724e949d913495a22cf543b00ba458869f1433"
+  },
+  {
+    "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+    "publicBlob": "25de82b9f52976f346d0c5ed05f7942646171899",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "da9c363071afbe79e06807bd1e67dbacc1123187db7b99e2608dd4a1a9567e94"
+  },
+  {
+    "path": "agents/skills/gstack/test/brain-sync.test.ts",
+    "publicBlob": "47d8b5931ae3186bf0c874ebdc2f4cb57755884e",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "f38f1509ee3c057de3473a9d884d36da002afea1ba2c4d8f02f9beb3e5728695"
+  },
+  {
+    "path": "agents/skills/gstack/test/claude-provider-keychain.test.ts",
+    "publicBlob": "9aff4be619969cc550526bf979106cc0d680727f",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "907916548700a49a82d38039545716a3321095ecb3113fcf90866a2491d78864"
+  },
+  {
+    "path": "agents/skills/gstack/test/code-intelligence.test.ts",
+    "publicBlob": "8d9705f32c52bd2f37817b46b1154c7822cd2a83",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "b5da785b5b7aef439549622617b2498c0b6891ba1c577161caa5c64b6aab10f4"
+  },
+  {
+    "path": "agents/skills/gstack/test/free-tests-workflow-wiring.test.ts",
+    "publicBlob": "736b391b9dc0b4da75fa4e5e7849e880830df3b0",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "7de4184782743370a3abb8c070d8089695a047c17230da55a7ef1845e22f5e17"
+  },
+  {
+    "path": "agents/skills/gstack/test/gbrain-supabase-provision.test.ts",
+    "publicBlob": "3a6b1d21c913d677ad20e382849afd6467d2968c",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "6a1a818043b11907747155d55b4fa19e22296388f62ce86522fee4500cdadd74"
+  },
+  {
+    "path": "agents/skills/gstack/test/gstack-memory-ingest.test.ts",
+    "publicBlob": "26289afe6492dabfc1fb06079930284106579786",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "2712cfe6f82da314155502932e9f18a7229a916e11a49d2fb979bbbe022b2e1c"
+  },
+  {
+    "path": "agents/skills/gstack/test/helpers/benchmark-judge.ts",
+    "publicBlob": "944d81168cd11e720da49d20bebc9f697648ddf4",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "0863dda65de08f60f165b234be7e072d36aa8eda733c02e69845dba151394258"
+  },
+  {
+    "path": "agents/skills/gstack/test/helpers/hermetic-env.test.ts",
+    "publicBlob": "b4503b60c29c0efdac3cab009767d4351f2f7ea9",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "e8f69bceb858abfc8d4bd725f4b2fbcbb74a710e5fb8eda9cbd8546cf6db0778"
+  },
+  {
+    "path": "agents/skills/gstack/test/helpers/hermetic-env.ts",
+    "publicBlob": "4fb17e734f522202026e2f5415795bc55384643f",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "2ab8be06ba009701b6731fa39a7beab2c70cfe29b7e0f9adba9f21dcf702efff"
+  },
+  {
+    "path": "agents/skills/gstack/test/helpers/touchfiles-data.ts",
+    "publicBlob": "667495ba9617362184f15e5c7589925c550824f7",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "5d1a419486e9eb1964a09621e56ca7ad65e6705128be44e94376a9f160f380f8"
+  },
+  {
+    "path": "agents/skills/gstack/test/hermetic-skills-seeding.test.ts",
+    "publicBlob": "43b294db96ca9c76f4c7d2717c3989c6bf1a0d67",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "d51d4c62e15cb70df7c5d098bd8f15059a8ee8133665cb689c8716fd197a3d9e"
+  },
+  {
+    "path": "agents/skills/gstack/test/redact-engine.test.ts",
+    "publicBlob": "0201715256be7491d561000575d4658d24f0bda8",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "f827834a90820fb0110b15169579755e60b70644fd39cffd715980444edcbb75"
+  },
+  {
+    "path": "agents/skills/gstack/test/regression-issue2091-bsd-mktemp.test.ts",
+    "publicBlob": "4b858dbdf6d7412a8ba33812970192ff80c4397d",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "c06aa08f95ab5bbb620b9f14594633b56eef25515575d053a1d9ea8df3481623"
+  },
+  {
+    "path": "agents/skills/gstack/test/skill-e2e-cso.test.ts",
+    "publicBlob": "9bd0ed380f58b040da59a98b1732e49c64b397c9",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "c51eedd32aeda50c4e061f2ba3986b30907adc3fad1048d81bd7af290bafbc43"
+  },
+  {
+    "path": "agents/skills/gstack/test/telemetry.test.ts",
+    "publicBlob": "66834948173a2328a418215e6c6232b3fd006a6b",
+    "repository": "gstack",
+    "conversion": "none",
+    "byteEqual": true,
+    "sha256": "eddbd8f82f3d82526deebe273078f8d6054c3b80ce009f24f974b5692c844d39"
+  },
+  {
+    "path": "agents/skills/claude-api/php/managed-agents/README.md",
+    "publicBlob": "fc63d9888525238f7dccf0eddefae4f0f7be648d",
+    "repository": "anthropics",
+    "conversion": "LF-to-CRLF",
+    "byteEqual": true,
+    "sha256": "45f40f6e2322cfab24f0e1c249b91ded7a1604f58487bdb6b648cbcdd4ab3773"
+  },
+  {
+    "path": "agents/skills/claude-api/python/claude-api/README.md",
+    "publicBlob": "62c0f508661623c7af40a5068f6d6d68b00b4376",
+    "repository": "anthropics",
+    "conversion": "LF-to-CRLF",
+    "byteEqual": true,
+    "sha256": "44d1518721c5c5d2f4a3deb2095df55224d9b11cee3510176b3805bad4634281"
+  },
+  {
+    "path": "agents/skills/claude-api/python/managed-agents/README.md",
+    "publicBlob": "cb97bfa4754aa4fe3dc12a61aacbf880c6a05dc1",
+    "repository": "anthropics",
+    "conversion": "LF-to-CRLF",
+    "byteEqual": true,
+    "sha256": "613568340ce4962fe82f5c1c16f40823cce0c6a0ff2cd7c945dc97f579259cf8"
+  },
+  {
+    "path": "agents/skills/claude-api/ruby/claude-api/README.md",
+    "publicBlob": "2a0466854785521eb5d9cdcc24f9253716fcb98f",
+    "repository": "anthropics",
+    "conversion": "LF-to-CRLF",
+    "byteEqual": true,
+    "sha256": "cf874b7aa952e701bbf2ad2a253d826d6dd4a0f41a605c6996ee8253c1b4f217"
+  },
+  {
+    "path": "agents/skills/claude-api/ruby/managed-agents/README.md",
+    "publicBlob": "4b58dc96d8f4ecc73a4685f36fcfe3876e431c57",
+    "repository": "anthropics",
+    "conversion": "LF-to-CRLF",
+    "byteEqual": true,
+    "sha256": "563c476e0516d0bb81bec209648780d1e64ed7ac18e76015b9146affe12b0ecd"
+  },
+  {
+    "path": "agents/skills/claude-api/shared/managed-agents-tools.md",
+    "publicBlob": "150b19d4849b63bab45f62a26dc79c3fc38e5fc5",
+    "repository": "anthropics",
+    "conversion": "LF-to-CRLF",
+    "byteEqual": true,
+    "sha256": "dbe6506e49c9f58a2f744d633058366e3eb529f2453db6971cb45911edf21980"
+  },
+  {
+    "path": "agents/skills/claude-api/typescript/claude-api/README.md",
+    "publicBlob": "115d20d7aafd10d87c080d8ef36a292648158d57",
+    "repository": "anthropics",
+    "conversion": "LF-to-CRLF",
+    "byteEqual": true,
+    "sha256": "07c3a035a8c93e5e2bfd9ecf6cf824e8fd8df15cc393eec19a842f184615fe12"
+  },
+  {
+    "path": "agents/skills/claude-api/typescript/managed-agents/README.md",
+    "publicBlob": "0431a816a32ba0516af6b7dcc83ffed8e966ba9b",
+    "repository": "anthropics",
+    "conversion": "LF-to-CRLF",
+    "byteEqual": true,
+    "sha256": "6f49f9d66640f8d266b79ac655746889b5ee5470d8749dbfcf58f0e7b8ce014f"
+  },
+  {
+    "path": "agents/skills/pdf/SKILL.md",
+    "publicBlob": "d3e046a5ae107a6cb23cfb16c219837094ab35d3",
+    "repository": "anthropics",
+    "conversion": "LF-to-CRLF",
+    "byteEqual": true,
+    "sha256": "067401220db5745f719ff8c048d545d5edc8545e809668a3a6f9e2892fa51d48"
+  },
+  {
+    "path": "agents/skills/pdf/reference.md",
+    "publicBlob": "41400bf4fc67f15fb062d43695ec92f078226023",
+    "repository": "anthropics",
+    "conversion": "LF-to-CRLF",
+    "byteEqual": true,
+    "sha256": "16fbf406156feb08e2951403c03b1bfd76be5f2bc6bed1eed0d70c25954ab562"
+  },
+  {
+    "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+    "publicBlob": "5c1346328d3e3c9c778d3baf8c5a099e3b78caec",
+    "repository": "science",
+    "conversion": "LF-to-CRLF",
+    "byteEqual": true,
+    "sha256": "c8b9e42cbdd96e6390fca389531781191d01584d6f747218f6215816471065c1"
+  },
+  {
+    "path": "agents/skills/ncbi-sequence-fetch/scripts/ncbi_fetch.py",
+    "publicBlob": "eabba8481b8672494f84b88e5b03bf8228ce908c",
+    "repository": "science",
+    "conversion": "LF-to-CRLF",
+    "byteEqual": true,
+    "sha256": "57d6c9cdfd10eaa3f15cee9008854132a475e9bc5564847ea97d2bfb2460b307"
+  },
+  {
+    "path": "agents/skills/openfda-database/scripts/openfda_query.py",
+    "publicBlob": "9dd0f23d5ad5b0dc3733bff72f4dc0f1c545643f",
+    "repository": "science",
+    "conversion": "LF-to-CRLF",
+    "byteEqual": true,
+    "sha256": "f16aa90b65dc17e5fbc59bf267fdd9f09ad07cb32cacb58ccbb18c8ddbca8a76"
+  }
+]

@@ -1,0 +1,2473 @@
+{
+  "rows": [
+    {
+      "path": "agents/skills/claude-api/php/managed-agents/README.md",
+      "ids": [
+        "HP-001"
+      ],
+      "sha256": "45f40f6e2322cfab24f0e1c249b91ded7a1604f58487bdb6b648cbcdd4ab3773",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 13969,
+      "m2": "disabled",
+      "findings": []
+    },
+    {
+      "path": "agents/skills/claude-api/python/claude-api/README.md",
+      "ids": [
+        "HP-002"
+      ],
+      "sha256": "44d1518721c5c5d2f4a3deb2095df55224d9b11cee3510176b3805bad4634281",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 20491,
+      "m2": "disabled",
+      "findings": []
+    },
+    {
+      "path": "agents/skills/claude-api/python/managed-agents/README.md",
+      "ids": [
+        "HP-003"
+      ],
+      "sha256": "613568340ce4962fe82f5c1c16f40823cce0c6a0ff2cd7c945dc97f579259cf8",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 10692,
+      "m2": "disabled",
+      "findings": []
+    },
+    {
+      "path": "agents/skills/claude-api/ruby/claude-api/README.md",
+      "ids": [
+        "HP-004"
+      ],
+      "sha256": "cf874b7aa952e701bbf2ad2a253d826d6dd4a0f41a605c6996ee8253c1b4f217",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 4615,
+      "m2": "disabled",
+      "findings": []
+    },
+    {
+      "path": "agents/skills/claude-api/ruby/managed-agents/README.md",
+      "ids": [
+        "HP-005"
+      ],
+      "sha256": "563c476e0516d0bb81bec209648780d1e64ed7ac18e76015b9146affe12b0ecd",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 10854,
+      "m2": "disabled",
+      "findings": []
+    },
+    {
+      "path": "agents/skills/claude-api/shared/managed-agents-tools.md",
+      "ids": [
+        "HP-006"
+      ],
+      "sha256": "dbe6506e49c9f58a2f744d633058366e3eb529f2453db6971cb45911edf21980",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 23492,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "known-token-prefix",
+          "line": 263,
+          "oldIds": [
+            "HP-006"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/claude-api/typescript/claude-api/README.md",
+      "ids": [
+        "HP-007"
+      ],
+      "sha256": "07c3a035a8c93e5e2bfd9ecf6cf824e8fd8df15cc393eec19a842f184615fe12",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 15584,
+      "m2": "disabled",
+      "findings": []
+    },
+    {
+      "path": "agents/skills/claude-api/typescript/managed-agents/README.md",
+      "ids": [
+        "HP-008"
+      ],
+      "sha256": "6f49f9d66640f8d266b79ac655746889b5ee5470d8749dbfcf58f0e7b8ce014f",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 10203,
+      "m2": "disabled",
+      "findings": []
+    },
+    {
+      "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+      "ids": [
+        "HP-009",
+        "HP-010",
+        "HP-011",
+        "HP-012",
+        "HP-013",
+        "HP-014",
+        "HP-015"
+      ],
+      "sha256": "c8b9e42cbdd96e6390fca389531781191d01584d6f747218f6215816471065c1",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 20789,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 100,
+          "oldIds": [
+            "HP-009"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 125,
+          "oldIds": [
+            "HP-010"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 344,
+          "oldIds": [
+            "HP-013"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/ncbi-sequence-fetch/scripts/ncbi_fetch.py",
+      "ids": [
+        "HP-016",
+        "HP-017"
+      ],
+      "sha256": "57d6c9cdfd10eaa3f15cee9008854132a475e9bc5564847ea97d2bfb2460b307",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 36875,
+      "m2": "disabled",
+      "findings": []
+    },
+    {
+      "path": "agents/skills/openfda-database/scripts/openfda_query.py",
+      "ids": [
+        "HP-018",
+        "HP-019",
+        "HP-020",
+        "HP-021"
+      ],
+      "sha256": "f16aa90b65dc17e5fbc59bf267fdd9f09ad07cb32cacb58ccbb18c8ddbca8a76",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 14444,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 158,
+          "oldIds": [
+            "HP-018"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/pdf/SKILL.md",
+      "ids": [
+        "HP-022"
+      ],
+      "sha256": "067401220db5745f719ff8c048d545d5edc8545e809668a3a6f9e2892fa51d48",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 8386,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 216,
+          "oldIds": [
+            "HP-022"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/pdf/reference.md",
+      "ids": [
+        "HP-023"
+      ],
+      "sha256": "16fbf406156feb08e2951403c03b1bfd76be5f2bc6bed1eed0d70c25954ab562",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 17303,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 340,
+          "oldIds": [
+            "HP-023"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/.env.example",
+      "ids": [
+        "RY-009"
+      ],
+      "sha256": "35207468cee082359fc05df49c697a74661b088521f5d0479dbc2a2a5037c3c4",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 176,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "known-token-prefix",
+          "line": 5,
+          "oldIds": [
+            "RY-009"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/bin/gstack-distill-free-text",
+      "ids": [
+        "RY-010"
+      ],
+      "sha256": "0aef0f18f98a0cb40064b923323bd8238b6b24d3fe3516d4497c338c64b15532",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 10795,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 190,
+          "oldIds": [
+            "RY-010"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/browse-client.ts",
+      "ids": [
+        "RY-011",
+        "RY-012",
+        "RY-013",
+        "RY-014"
+      ],
+      "sha256": "bb1056c58e442e63558fdfbab2a20bffa8165eaebc246421757f4ce86895e8c6",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 11540,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 67,
+          "oldIds": [
+            "RY-011"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 76,
+          "oldIds": [
+            "RY-012"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 88,
+          "oldIds": [
+            "RY-013"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 141,
+          "oldIds": [
+            "RY-014"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/browser-manager.ts",
+      "ids": [
+        "RY-015"
+      ],
+      "sha256": "994c5eb67685692ac82cbff8b175c4e153f19c9c024fafbea8f522505b3a91d8",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 85446,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 580,
+          "oldIds": [
+            "RY-015"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/cli.ts",
+      "ids": [
+        "RY-016"
+      ],
+      "sha256": "b24fd3d78ddad0fbb888704d8544db618670779ba25650f01201780c36cfe427",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 84675,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 1093,
+          "oldIds": [
+            "RY-016"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/cookie-import-browser.ts",
+      "ids": [
+        "RY-017"
+      ],
+      "sha256": "2d8a06307c6d408b291894fb35133a5dab363db093eafd75ba393dcc1a8eb83b",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 39364,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 654,
+          "oldIds": [
+            "RY-017"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/proxy-config.ts",
+      "ids": [
+        "RY-018",
+        "RY-019",
+        "RY-020"
+      ],
+      "sha256": "5007d30873e5761bbc3a8b7b989e487aca5738a8e80e0a1f17919d33c65a9323",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 4848,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 101,
+          "oldIds": [
+            "RY-018"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 104,
+          "oldIds": [
+            "RY-019"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 123,
+          "oldIds": [
+            "RY-020"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/proxy-redact.ts",
+      "ids": [
+        "RY-021",
+        "RY-022"
+      ],
+      "sha256": "01a4b81bb4da979270d28bd802119bce93c02615574cdcfcb43be29f74381516",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 1390,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 26,
+          "oldIds": [
+            "RY-021"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 44,
+          "oldIds": [
+            "RY-022"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/server.ts",
+      "ids": [
+        "RY-023",
+        "RY-024",
+        "RY-025",
+        "RY-026",
+        "RY-027",
+        "RY-028",
+        "RY-029"
+      ],
+      "sha256": "f29a368e9ee2253ae261541d0fe02d6e0896b24c248e535fbd68c8cb61e43ed3",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 159277,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 572,
+          "oldIds": [
+            "RY-023"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 579,
+          "oldIds": [
+            "RY-024"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 1893,
+          "oldIds": [
+            "RY-025"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 2281,
+          "oldIds": [
+            "RY-026"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 2316,
+          "oldIds": [
+            "RY-027"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 3082,
+          "oldIds": [
+            "RY-028"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 3166,
+          "oldIds": [
+            "RY-029"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/session-cookie-store.ts",
+      "ids": [
+        "RY-030"
+      ],
+      "sha256": "7fe0eca3f3adb8d27a127814cc3d4bc5d9425392d9d7faeb032ae6b0533b676e",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 4086,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 65,
+          "oldIds": [
+            "RY-030"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/socks-bridge.ts",
+      "ids": [
+        "RY-031"
+      ],
+      "sha256": "7d2fe319b708687c2c5a13a002b81ad679df2008af095e699a11c36164162f6d",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 11799,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 57,
+          "oldIds": [
+            "RY-031"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/terminal-agent.ts",
+      "ids": [
+        "RY-032",
+        "RY-033"
+      ],
+      "sha256": "f2c31580880664802173874df905819402fc268be13a4abd3205db7a4597f691",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 45360,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 615,
+          "oldIds": [
+            "RY-032"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 627,
+          "oldIds": [
+            "RY-033"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/token-registry.ts",
+      "ids": [
+        "RY-034",
+        "RY-035",
+        "RY-036"
+      ],
+      "sha256": "fc2cf6c209ebc179d5bd159e15f8a4ce8147da3c6b2c4135b1da0dff37fae0d3",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 26093,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 263,
+          "oldIds": [
+            "RY-034"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 310,
+          "oldIds": [
+            "RY-035"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 386,
+          "oldIds": [
+            "RY-036"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/bridge-chromium-e2e.test.ts",
+      "ids": [
+        "RY-037"
+      ],
+      "sha256": "db7e2ad7eb93f71a9e024700e3cff731ac729c63891fbb5871dcf0dce725b916",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 7823,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 123,
+          "oldIds": [
+            "RY-037"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/browse-client.test.ts",
+      "ids": [
+        "RY-038",
+        "RY-039",
+        "RY-040"
+      ],
+      "sha256": "1b41f6d8938a30d564120d653e24fcfbabcd6d60bd77cb3e3da3fa27c77d03ad",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 11084,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 43,
+          "oldIds": [
+            "RY-038"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 105,
+          "oldIds": [
+            "RY-039"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 127,
+          "oldIds": [
+            "RY-040"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/browser-skill-commands.test.ts",
+      "ids": [
+        "RY-041"
+      ],
+      "sha256": "6bd98729162e77b4b51f4583667f946c489a1da2fb57008ef29b2835f89636b6",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 17378,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 284,
+          "oldIds": [
+            "RY-041"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/busy-daemon-iron-rule.test.ts",
+      "ids": [
+        "RY-042",
+        "RY-043",
+        "RY-044",
+        "RY-045"
+      ],
+      "sha256": "a09a504f7734c630bc032a85069bce7f644c9716b8ffe143fa55bb2bbcb057c2",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 11896,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 127,
+          "oldIds": [
+            "RY-042"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 159,
+          "oldIds": [
+            "RY-043"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 197,
+          "oldIds": [
+            "RY-044"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 233,
+          "oldIds": [
+            "RY-045"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/busy-daemon-recovery.test.ts",
+      "ids": [
+        "RY-046"
+      ],
+      "sha256": "0ed4c9c7f6ac5a2f9a53d0613d60a910d7d34c8c9e9aa8b137426b9cadea7016",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 5348,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 100,
+          "oldIds": [
+            "RY-046"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/commands.test.ts",
+      "ids": [
+        "RY-047"
+      ],
+      "sha256": "cd93f6f33495bcf72cc53cebe713e91758056a03ef86ea73ce05f5f1263928c4",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 101823,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 1895,
+          "oldIds": [
+            "RY-047"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/cookie-import-browser.test.ts",
+      "ids": [
+        "RY-048"
+      ],
+      "sha256": "89417aa7e6bf29138b26af32353eaae84636d4d62dc84af8949aac261d5d974d",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 21337,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 8,
+          "oldIds": [
+            "RY-048"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/daemon-mismatch-refuse.test.ts",
+      "ids": [
+        "RY-049",
+        "RY-050",
+        "RY-051"
+      ],
+      "sha256": "7e24302e24462cacd7726b22d1e1850f8ca70cc56146a4619df562a550d855e5",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 6755,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 68,
+          "oldIds": [
+            "RY-049"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 104,
+          "oldIds": [
+            "RY-050"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 146,
+          "oldIds": [
+            "RY-051"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/extension-token.test.ts",
+      "ids": [
+        "RY-052"
+      ],
+      "sha256": "3cc9f9d81acbfa848d5d0f0d329fa431f4c04a6044f428ebd3641983d8e319d8",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 6553,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 33,
+          "oldIds": [
+            "RY-052"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/fixtures/injection-combined.html",
+      "ids": [
+        "RY-053"
+      ],
+      "sha256": "bf9a7b92a4f02829ee73ee5818bb30764084cb21f1eec495e3f7797a758e21cf",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 1779,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 32,
+          "oldIds": [
+            "RY-053"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/pair-agent-e2e.test.ts",
+      "ids": [
+        "RY-054",
+        "RY-055"
+      ],
+      "sha256": "8cbb8d79a792c685ef9849332d4f44054a7a0996a63a2ccc6a17d4f6c0ac0dee",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 26132,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 79,
+          "oldIds": [
+            "RY-054"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 440,
+          "oldIds": [
+            "RY-055"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/pair-agent-tunnel-eval.test.ts",
+      "ids": [
+        "RY-056"
+      ],
+      "sha256": "c5f41c5175da7e0855e99af545f60399efa26e45a29d1ecdc5a94adcabf4c7e7",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 9382,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 122,
+          "oldIds": [
+            "RY-056"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/proxy-redact.test.ts",
+      "ids": [
+        "RY-057"
+      ],
+      "sha256": "85f25fa0ab7659e8fe38fe1c1d0a8853b41847d30808c6567626e3dfacec0e19",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 2301,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 51,
+          "oldIds": [
+            "RY-057"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/server-auth.test.ts",
+      "ids": [
+        "RY-058",
+        "RY-059"
+      ],
+      "sha256": "a5eb8e83b754b327e1cf4b481876c22be26e19db0785c7ab4d04e4917b8e1611",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 24099,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 31,
+          "oldIds": [
+            "RY-058"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 41,
+          "oldIds": [
+            "RY-059"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/server-embedder-terminal-port.test.ts",
+      "ids": [
+        "RY-060"
+      ],
+      "sha256": "0923eb0ba614e0196d708d08eca3b7820fd24baada39f7fca2f21dd6c63f44c1",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 10614,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 48,
+          "oldIds": [
+            "RY-060"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/server-factory.test.ts",
+      "ids": [
+        "RY-061",
+        "RY-062"
+      ],
+      "sha256": "921167e6a4b171a05b90f6877d9aa4b9e9f2089be4febc6046e5836c054b9b78",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 23548,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 204,
+          "oldIds": [
+            "RY-061"
+          ]
+        },
+        {
+          "rule": "authorization-bearer",
+          "line": 246,
+          "oldIds": [
+            "RY-062"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/sidebar-ux.test.ts",
+      "ids": [
+        "RY-063"
+      ],
+      "sha256": "8f4c5b9a719e7f52819f30368af3cdb7ce0506e4d0a6926aa06144537484b37b",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 42625,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 850,
+          "oldIds": [
+            "RY-063"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/stop-dead-daemon.test.ts",
+      "ids": [
+        "RY-064",
+        "RY-065"
+      ],
+      "sha256": "2751565cd1ad7928e35fba9d4249f3ba33b5f8727e873c2d692039cd99d5e611",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 5964,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 82,
+          "oldIds": [
+            "RY-064"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 118,
+          "oldIds": [
+            "RY-065"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/terminal-agent-integration.test.ts",
+      "ids": [
+        "RY-066",
+        "RY-067",
+        "RY-068",
+        "RY-069"
+      ],
+      "sha256": "3d200b5be60eb4a018b0e301c5e8ddea8cfd8733257632e3ec3f22a1bdb4cec0",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 12212,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 56,
+          "oldIds": [
+            "RY-066"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 99,
+          "oldIds": [
+            "RY-067"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 199,
+          "oldIds": [
+            "RY-068"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 239,
+          "oldIds": [
+            "RY-069"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/terminal-agent-owner-watchdog.test.ts",
+      "ids": [
+        "RY-070"
+      ],
+      "sha256": "d59faac5e6d1f0044cacef18e9c35798564d475399675be59b03519b86813b1b",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 2453,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 42,
+          "oldIds": [
+            "RY-070"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/token-registry.test.ts",
+      "ids": [
+        "RY-071",
+        "RY-072",
+        "RY-073",
+        "RY-074",
+        "RY-075"
+      ],
+      "sha256": "01da7c5ba0a24de79798a91f3577b1b61a94ccd14e45599424570225dc6fae37",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 26547,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 57,
+          "oldIds": [
+            "RY-071"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 58,
+          "oldIds": [
+            "RY-072"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 588,
+          "oldIds": [
+            "RY-073"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 596,
+          "oldIds": [
+            "RY-074"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 604,
+          "oldIds": [
+            "RY-075"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/tunnel-revoke-cli.test.ts",
+      "ids": [
+        "RY-076",
+        "RY-077"
+      ],
+      "sha256": "0a3e5f0a18725d7299012484a19ce196082ae851c20180ef43d3f7083ec8aa2a",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 18846,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 68,
+          "oldIds": [
+            "RY-076"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 252,
+          "oldIds": [
+            "RY-077"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/browser-skills/hackernews-frontpage/_lib/browse-client.ts",
+      "ids": [
+        "RY-078",
+        "RY-079",
+        "RY-080",
+        "RY-081"
+      ],
+      "sha256": "bb1056c58e442e63558fdfbab2a20bffa8165eaebc246421757f4ce86895e8c6",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 11540,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 67,
+          "oldIds": [
+            "RY-078"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 76,
+          "oldIds": [
+            "RY-079"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 88,
+          "oldIds": [
+            "RY-080"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 141,
+          "oldIds": [
+            "RY-081"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/design/src/check.ts",
+      "ids": [
+        "RY-082"
+      ],
+      "sha256": "f8d83f9eef7b0a4a718eb8d2d79951107e9663bda27f95eb628da9b944c18841",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 3441,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 19,
+          "oldIds": [
+            "RY-082"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/design/src/design-to-code.ts",
+      "ids": [
+        "RY-083"
+      ],
+      "sha256": "1e6ed4ca206b4457f6ed869ade69a28820afd8b62bddb89aeded4b307183b736",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 3121,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 27,
+          "oldIds": [
+            "RY-083"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/design/src/diff.ts",
+      "ids": [
+        "RY-084"
+      ],
+      "sha256": "8e4a59d14c29cd65c3e3e356a38fae70a2fa7988ba7e6ae77fa4d4b8db935575",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 3512,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 24,
+          "oldIds": [
+            "RY-084"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/design/src/evolve.ts",
+      "ids": [
+        "RY-085"
+      ],
+      "sha256": "016429c88e7e4f4c7b949ec8bac386729c026a24d18c24615453317931cc5b2a",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 5587,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 25,
+          "oldIds": [
+            "RY-085"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 112,
+          "oldIds": []
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/design/src/generate.ts",
+      "ids": [
+        "RY-086"
+      ],
+      "sha256": "1e19d82ccf3c0d57f1d5cdb9339f84dcdb89298403484fcdb86997c398394196",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 4550,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 35,
+          "oldIds": []
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 99,
+          "oldIds": [
+            "RY-086"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/design/src/iterate.ts",
+      "ids": [
+        "RY-087"
+      ],
+      "sha256": "511549eb0b433a6b316b5b0778c0bc71c914b34cc8b66679ab72d8cb88d13f29",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 6821,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 25,
+          "oldIds": [
+            "RY-087"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 81,
+          "oldIds": []
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 130,
+          "oldIds": []
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/design/src/memory.ts",
+      "ids": [
+        "RY-088"
+      ],
+      "sha256": "f62270394f6f2aa30639977b26327bce972fc05ef34170ff5dd0fe33aa4d8cda",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 6206,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 31,
+          "oldIds": [
+            "RY-088"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/design/src/variants.ts",
+      "ids": [
+        "RY-089"
+      ],
+      "sha256": "ababf04f6ea1d11da0deed2b126411d3dccbf7bf4e1a01915bee9d927aef7749",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 10908,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 46,
+          "oldIds": []
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 148,
+          "oldIds": [
+            "RY-089"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 238,
+          "oldIds": []
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/docs/REMOTE_BROWSER_ACCESS.md",
+      "ids": [
+        "RY-090"
+      ],
+      "sha256": "b356712c9eee1cbc1e996cf51dc0bc0f7594ad26a56571cae8374e9881f9c297",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 12056,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 70,
+          "oldIds": [
+            "RY-090"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/docs/designs/v2_PLAN.md",
+      "ids": [
+        "RY-091"
+      ],
+      "sha256": "34e4294e9ee426218ff9302a0957a7432ab28e97ce2a8e11afaab1d6bf8850ef",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 58876,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 646,
+          "oldIds": [
+            "RY-091"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/extension/background.js",
+      "ids": [
+        "RY-092",
+        "RY-093"
+      ],
+      "sha256": "fe214abd845630ebcdf24ae91cf7a9fd59feac11fd59f81c8123b54c27f40ab9",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 22166,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 331,
+          "oldIds": [
+            "RY-092"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 358,
+          "oldIds": [
+            "RY-093"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/extension/sidepanel-terminal.js",
+      "ids": [
+        "RY-094",
+        "RY-095"
+      ],
+      "sha256": "b2a17e16e34cbcedf9ea37201af436dd28c9753812bbe548242201ec1497a1a1",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 38996,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 178,
+          "oldIds": [
+            "RY-094"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 789,
+          "oldIds": [
+            "RY-095"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/ios-qa/daemon/src/session-tokens.ts",
+      "ids": [
+        "RY-096"
+      ],
+      "sha256": "78fee52b526a132aa15fb15245da4b45ee47fb67ff0c367322f91a63e7745f8a",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 3835,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 34,
+          "oldIds": [
+            "RY-096"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/ios-qa/daemon/test/daemon-integration.test.ts",
+      "ids": [
+        "RY-097"
+      ],
+      "sha256": "56d1efecce56bd8baa3abcd677555330cdd65ed8ccc3b3fddc0858acb79e9f71",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 27288,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "authorization-bearer",
+          "line": 342,
+          "oldIds": [
+            "RY-097"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/ios-qa/scripts/gen-accessors.ts",
+      "ids": [
+        "RY-098"
+      ],
+      "sha256": "e2bb83279cb439f97927ae0a66db6efe7b20573dbf6e35482c96ab8e16f50487",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 32800,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 333,
+          "oldIds": [
+            "RY-098"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/lib/code-intelligence/sourcebot-adapter.ts",
+      "ids": [
+        "RY-099"
+      ],
+      "sha256": "ba955d22f475da87c8726f7e9a4357399fc7c9666589c9aa6b80f30d72c78f16",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 12600,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 87,
+          "oldIds": [
+            "RY-099"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/lib/context-bill.ts",
+      "ids": [
+        "RY-100"
+      ],
+      "sha256": "9c4a7fe676c68981d021469cb4724e949d913495a22cf543b00ba458869f1433",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 39715,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 935,
+          "oldIds": [
+            "RY-100"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+      "ids": [
+        "RY-101",
+        "RY-102",
+        "RY-103",
+        "RY-104",
+        "RY-105",
+        "RY-106",
+        "RY-107",
+        "RY-108",
+        "RY-109",
+        "RY-110",
+        "RY-111",
+        "RY-112",
+        "RY-113",
+        "RY-114",
+        "RY-115",
+        "RY-116",
+        "RY-117",
+        "RY-118",
+        "RY-119",
+        "RY-120",
+        "RY-121",
+        "RY-122",
+        "RY-123",
+        "RY-124",
+        "RY-125",
+        "RY-126",
+        "RY-127",
+        "RY-128",
+        "RY-129",
+        "RY-130",
+        "RY-131",
+        "RY-132",
+        "RY-133",
+        "RY-134",
+        "RY-135",
+        "RY-136",
+        "RY-137"
+      ],
+      "sha256": "da9c363071afbe79e06807bd1e67dbacc1123187db7b99e2608dd4a1a9567e94",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 9645479,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 858,
+          "oldIds": [
+            "RY-101"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 889,
+          "oldIds": [
+            "RY-102"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 1042,
+          "oldIds": [
+            "RY-103"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 1185,
+          "oldIds": [
+            "RY-104"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 1293,
+          "oldIds": [
+            "RY-105"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 1589,
+          "oldIds": [
+            "RY-106"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 1595,
+          "oldIds": [
+            "RY-107"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 1601,
+          "oldIds": [
+            "RY-108"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 1664,
+          "oldIds": [
+            "RY-109"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 1808,
+          "oldIds": [
+            "RY-110"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 1972,
+          "oldIds": [
+            "RY-111"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 2191,
+          "oldIds": [
+            "RY-112"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 2329,
+          "oldIds": [
+            "RY-113"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 2389,
+          "oldIds": [
+            "RY-114"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 2456,
+          "oldIds": [
+            "RY-115"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 2544,
+          "oldIds": [
+            "RY-116"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 2618,
+          "oldIds": [
+            "RY-117"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 2808,
+          "oldIds": [
+            "RY-118"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 2817,
+          "oldIds": [
+            "RY-119"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 2994,
+          "oldIds": [
+            "RY-120"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 2997,
+          "oldIds": [
+            "RY-121"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 3063,
+          "oldIds": [
+            "RY-122"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 3319,
+          "oldIds": [
+            "RY-123"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 3325,
+          "oldIds": [
+            "RY-124"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 3359,
+          "oldIds": [
+            "RY-125"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 3365,
+          "oldIds": [
+            "RY-126"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 3371,
+          "oldIds": [
+            "RY-127"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 3422,
+          "oldIds": [
+            "RY-128"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 3543,
+          "oldIds": [
+            "RY-129"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 3702,
+          "oldIds": [
+            "RY-130"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 3910,
+          "oldIds": [
+            "RY-131"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 4048,
+          "oldIds": [
+            "RY-132"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 4246,
+          "oldIds": [
+            "RY-133"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 4340,
+          "oldIds": [
+            "RY-134"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 4347,
+          "oldIds": [
+            "RY-135"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 4464,
+          "oldIds": [
+            "RY-136"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 4550,
+          "oldIds": [
+            "RY-137"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/test/brain-sync.test.ts",
+      "ids": [
+        "RY-138",
+        "RY-139",
+        "RY-140",
+        "RY-141"
+      ],
+      "sha256": "f38f1509ee3c057de3473a9d884d36da002afea1ba2c4d8f02f9beb3e5728695",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 50283,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "known-token-prefix",
+          "line": 325,
+          "oldIds": [
+            "RY-138"
+          ]
+        },
+        {
+          "rule": "known-token-prefix",
+          "line": 327,
+          "oldIds": [
+            "RY-139"
+          ]
+        },
+        {
+          "rule": "authorization-bearer",
+          "line": 330,
+          "oldIds": [
+            "RY-140"
+          ]
+        },
+        {
+          "rule": "known-token-prefix",
+          "line": 358,
+          "oldIds": [
+            "RY-141"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/test/claude-provider-keychain.test.ts",
+      "ids": [
+        "RY-142"
+      ],
+      "sha256": "907916548700a49a82d38039545716a3321095ecb3113fcf90866a2491d78864",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 7210,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "known-token-prefix",
+          "line": 111,
+          "oldIds": [
+            "RY-142"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/test/code-intelligence.test.ts",
+      "ids": [
+        "RY-143"
+      ],
+      "sha256": "b5da785b5b7aef439549622617b2498c0b6891ba1c577161caa5c64b6aab10f4",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 49604,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 299,
+          "oldIds": [
+            "RY-143"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/test/free-tests-workflow-wiring.test.ts",
+      "ids": [
+        "RY-144"
+      ],
+      "sha256": "7de4184782743370a3abb8c070d8089695a047c17230da55a7ef1845e22f5e17",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 2858,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 57,
+          "oldIds": [
+            "RY-144"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/test/gbrain-supabase-provision.test.ts",
+      "ids": [
+        "RY-145"
+      ],
+      "sha256": "6a1a818043b11907747155d55b4fa19e22296388f62ce86522fee4500cdadd74",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 27310,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "authorization-bearer",
+          "line": 151,
+          "oldIds": [
+            "RY-145"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/test/gstack-memory-ingest.test.ts",
+      "ids": [
+        "RY-146"
+      ],
+      "sha256": "2712cfe6f82da314155502932e9f18a7229a916e11a49d2fb979bbbe022b2e1c",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 60635,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 790,
+          "oldIds": [
+            "RY-146"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/test/helpers/benchmark-judge.ts",
+      "ids": [
+        "RY-147"
+      ],
+      "sha256": "0863dda65de08f60f165b234be7e072d36aa8eda733c02e69845dba151394258",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 3983,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 20,
+          "oldIds": []
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 22,
+          "oldIds": [
+            "RY-147"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/test/helpers/hermetic-env.test.ts",
+      "ids": [
+        "RY-148",
+        "RY-149",
+        "RY-150",
+        "RY-151",
+        "RY-152",
+        "RY-153",
+        "RY-154",
+        "RY-155"
+      ],
+      "sha256": "e8f69bceb858abfc8d4bd725f4b2fbcbb74a710e5fb8eda9cbd8546cf6db0778",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 11131,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "known-token-prefix",
+          "line": 27,
+          "oldIds": [
+            "RY-148"
+          ]
+        },
+        {
+          "rule": "known-token-prefix",
+          "line": 100,
+          "oldIds": [
+            "RY-149"
+          ]
+        },
+        {
+          "rule": "known-token-prefix",
+          "line": 102,
+          "oldIds": [
+            "RY-150"
+          ]
+        },
+        {
+          "rule": "known-token-prefix",
+          "line": 153,
+          "oldIds": [
+            "RY-151"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 153,
+          "oldIds": [
+            "RY-152"
+          ]
+        },
+        {
+          "rule": "known-token-prefix",
+          "line": 160,
+          "oldIds": [
+            "RY-153"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 166,
+          "oldIds": [
+            "RY-154"
+          ]
+        },
+        {
+          "rule": "known-token-prefix",
+          "line": 172,
+          "oldIds": [
+            "RY-155"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 173,
+          "oldIds": []
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/test/helpers/hermetic-env.ts",
+      "ids": [
+        "RY-156",
+        "RY-157"
+      ],
+      "sha256": "2ab8be06ba009701b6731fa39a7beab2c70cfe29b7e0f9adba9f21dcf702efff",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 15251,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 130,
+          "oldIds": []
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 210,
+          "oldIds": [
+            "RY-156"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 266,
+          "oldIds": [
+            "RY-157"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/test/helpers/touchfiles-data.ts",
+      "ids": [
+        "RY-158"
+      ],
+      "sha256": "5d1a419486e9eb1964a09621e56ca7ad65e6705128be44e94376a9f160f380f8",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 56729,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 577,
+          "oldIds": [
+            "RY-158"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/test/hermetic-skills-seeding.test.ts",
+      "ids": [
+        "RY-159"
+      ],
+      "sha256": "d51d4c62e15cb70df7c5d098bd8f15059a8ee8133665cb689c8716fd197a3d9e",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 3734,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 80,
+          "oldIds": [
+            "RY-159"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/test/redact-engine.test.ts",
+      "ids": [
+        "RY-160",
+        "RY-161",
+        "RY-162",
+        "RY-163",
+        "RY-164",
+        "RY-165",
+        "RY-166",
+        "RY-167",
+        "RY-168",
+        "RY-169",
+        "RY-170",
+        "RY-171",
+        "RY-172",
+        "RY-173",
+        "RY-174",
+        "RY-175",
+        "RY-176"
+      ],
+      "sha256": "f827834a90820fb0110b15169579755e60b70644fd39cffd715980444edcbb75",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 29276,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "known-token-prefix",
+          "line": 37,
+          "oldIds": [
+            "RY-160"
+          ]
+        },
+        {
+          "rule": "known-token-prefix",
+          "line": 72,
+          "oldIds": [
+            "RY-161"
+          ]
+        },
+        {
+          "rule": "known-token-prefix",
+          "line": 73,
+          "oldIds": [
+            "RY-162"
+          ]
+        },
+        {
+          "rule": "known-token-prefix",
+          "line": 74,
+          "oldIds": [
+            "RY-163"
+          ]
+        },
+        {
+          "rule": "known-token-prefix",
+          "line": 87,
+          "oldIds": [
+            "RY-164"
+          ]
+        },
+        {
+          "rule": "known-token-prefix",
+          "line": 88,
+          "oldIds": [
+            "RY-165"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 188,
+          "oldIds": [
+            "RY-166"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 196,
+          "oldIds": [
+            "RY-167"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 199,
+          "oldIds": [
+            "RY-168"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 202,
+          "oldIds": [
+            "RY-169"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 205,
+          "oldIds": [
+            "RY-170"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 206,
+          "oldIds": [
+            "RY-171"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 233,
+          "oldIds": [
+            "RY-172"
+          ]
+        },
+        {
+          "rule": "authorization-bearer",
+          "line": 242,
+          "oldIds": [
+            "RY-173"
+          ]
+        },
+        {
+          "rule": "authorization-bearer",
+          "line": 250,
+          "oldIds": [
+            "RY-174"
+          ]
+        },
+        {
+          "rule": "authorization-bearer",
+          "line": 254,
+          "oldIds": [
+            "RY-175"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 540,
+          "oldIds": [
+            "RY-176"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/test/regression-issue2091-bsd-mktemp.test.ts",
+      "ids": [
+        "RY-177"
+      ],
+      "sha256": "c06aa08f95ab5bbb620b9f14594633b56eef25515575d053a1d9ea8df3481623",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 7258,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 82,
+          "oldIds": [
+            "RY-177"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/test/skill-e2e-cso.test.ts",
+      "ids": [
+        "RY-178",
+        "RY-179"
+      ],
+      "sha256": "c51eedd32aeda50c4e061f2ba3986b30907adc3fad1048d81bd7af290bafbc43",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 9228,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "known-token-prefix",
+          "line": 45,
+          "oldIds": [
+            "RY-178"
+          ]
+        },
+        {
+          "rule": "sensitive-assignment",
+          "line": 45,
+          "oldIds": [
+            "RY-179"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "agents/skills/gstack/test/telemetry.test.ts",
+      "ids": [
+        "RY-180"
+      ],
+      "sha256": "eddbd8f82f3d82526deebe273078f8d6054c3b80ce009f24f974b5692c844d39",
+      "baselineMatches": true,
+      "beforeAfterMatches": true,
+      "bytes": 20825,
+      "m2": "disabled",
+      "findings": [
+        {
+          "rule": "sensitive-assignment",
+          "line": 277,
+          "oldIds": [
+            "RY-180"
+          ]
+        }
+      ]
+    }
+  ]
+}

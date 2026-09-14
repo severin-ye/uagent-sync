@@ -17,6 +17,7 @@
     ".claude-plugin",
     "scripts/bootstrap.ps1",
     "scripts/copy-offline-workspace.ps1",
+    "scripts/verified-public-profile.mjs",
     "docs/DEVICE-SYNC-USAGE.md",
     "README.md",
     "README.zh-CN.md",
@@ -37,7 +38,7 @@
     "release:major": "npm version major && git push --follow-tags"
   },
   "engines": {
-    "node": ">=18"
+    "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
   },
   "dependencies": {
     "@lezer/python": "1.1.18",

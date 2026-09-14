@@ -1,0 +1,32 @@
+✖ root manifest and lockfile advertise the supported runtime intersection (4.0453ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 315.8272
+
+✖ failing tests:
+
+test at test\package-metadata.test.ts:1:293
+✖ root manifest and lockfile advertise the supported runtime intersection (4.0453ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + '>=18'
+  - '^22.22.2 || ^24.15.0 || >=26.0.0'
+
+      at TestContext.<anonymous> (<WORKTREE>\test\package-metadata.test.ts:18:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.start (node:internal/test_runner/test:1177:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '>=18',
+    expected: '^22.22.2 || ^24.15.0 || >=26.0.0',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

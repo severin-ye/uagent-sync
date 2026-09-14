@@ -1,0 +1,9 @@
+{
+  "privateManifestBeforeInstall": true,
+  "explicitPrefix": true,
+  "ancestorCheck": "clean",
+  "engineStrict": true,
+  "install": 0,
+  "adapterImport": 0,
+  "packagedPublicFiles": 82
+}

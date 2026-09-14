@@ -1,0 +1,23 @@
+{
+  "node": "v24.16.0",
+  "npm": "11.13.0",
+  "engineStrict": "true",
+  "force": "false",
+  "cwd": "<WORKTREE>",
+  "isolation": {
+    "USERPROFILE": "<ISOLATED_RUNTIME>/profile",
+    "TEMP": "<ISOLATED_RUNTIME>/Temp",
+    "HOME": "<ISOLATED_RUNTIME>/profile",
+    "npmConfig": "<ISOLATED_RUNTIME>/profile/npmrc",
+    "npmCache": "<ISOLATED_RUNTIME>/profile/npm-cache",
+    "LOCALAPPDATA": "<ISOLATED_RUNTIME>/profile/LocalAppData",
+    "CODEX_HOME": "<ISOLATED_RUNTIME>/profile/Codex",
+    "TMP": "<ISOLATED_RUNTIME>/Temp",
+    "APPDATA": "<ISOLATED_RUNTIME>/profile/AppData"
+  },
+  "clearedWorkspaceVars": [
+    "UAGENT_SYNC_WORKSPACE_ROOT",
+    "UAGENT_SYNC_HOME"
+  ],
+  "ancestorTempProbe": "nonzero: temp root is outside any Git repository"
+}

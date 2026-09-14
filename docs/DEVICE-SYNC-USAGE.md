@@ -64,3 +64,15 @@ publish 只接受显式设备/快照目录，检查 origin 与连接一致、Git
 U同步新增 `uagent-sync-device` Skill；Severin 的 Agent 运维 Skill 增加按需设备交接工作流及目录登记。两者共用 U同步设备表，不写死别名、路径或仓库地址。源文件接入已完成，安装缓存未更新，不能声称新工作流已在宿主加载。
 
 完整完成仍需：处理 Skill 采集阻断、发布/安装新版本、传输项目与离线文件、在真实目标机恢复、安装与运行验证、双向回传。历史对话继续作为可选项。
+
+## 已核验公开Skill源码的精确复核入口
+
+2026-09-14新增 `scripts/verified-public-profile.mjs`。它使用随应用代码维护的 `data/reviewed-public-skills.json`，从三个公开仓库独立获取固定blob，并验证SHA256；不读取快照内的允许名单或从待扫描内容生成规则。仅当逻辑Skill路径和完整字节完全匹配时，原扫描命中由该公开来源复核解决。变更、新文件、策略失败继续原扫描；普通 `device snapshot` 不会自动开启此机制。
+
+```powershell
+node <源码或安装包>/scripts/verified-public-profile.mjs check --home <用户目录> --codex-home <Codex目录> --workspace-root <工作区> --cache <新的绝对缓存目录> --report <新的绝对报告路径>
+```
+
+同样参数支持 `snapshot --snapshot <新快照目录>`、`restore-preview --snapshot <快照目录>`；`restore-copy`只允许不存在的新用户目标目录，Codex和workspace路径必须在其中，不覆盖真实办公目录。每次缓存与报告使用新目录/文件。报告可能含本地路径，不直接上传。清单没有该设备上的文件会明确报告缺失；这不是私密凭据识别结果。
+
+本次82历史文件（约定范围，非所有用户文件）在荣耀本地副本全部通过且恢复摘要一致。其余文件、链接、插件安装及两机往返仍各自验收；该入口不会修复缺失链接目标，不复制宿主信任或登录。

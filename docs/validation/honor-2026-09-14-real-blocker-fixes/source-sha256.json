@@ -1,0 +1,11 @@
+{
+  "src/lib/profile-m2-provider.ts": "0a7d46086686c5e2cf68133dd19502cb157776fdc7b2f91c56e56c6c69c5b660",
+  "src/lib/profile-secret-scan.ts": "d03b0e9a85ba79f6ed18e0e013b1f18cb46421a9ad0c7a786b430ab2261834cf",
+  "scripts/verified-public-profile.mjs": "83765b87bcc513be929396eb380aaf77be3de3c17db36fb6ad571d59c2bfeb98",
+  "data/reviewed-public-skills.json": "b9d4d351a3ef201a328df803cdb9e047c1d803e8d86b2390d45fa0243b543da0",
+  "package.json": "c983dc6a54653522c551677cd2ea82ff6cd555017ec7e6edb8ce16afce78fca6",
+  "package-lock.json": "bcb3d43c43ad98113757ee7a9b8118c7924a2ef84af2fe33e4ecebdf52aee016",
+  "test/profile-public-source.test.ts": "ab4598ffc845d2b79e8d52af1495ed321a5f3bfbaa8cff5c515d36482415869c",
+  "test/profile-public-source-gates.test.ts": "c9f6f2753b289203fb558480a0818b3cf46a11a284692c2feb05323e54e67165",
+  "test/package-metadata.test.ts": "27b5504c66ca4d43c7f319b333bb5a2c4611888606b5061ac87ce42b758ad643"
+}

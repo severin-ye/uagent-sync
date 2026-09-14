@@ -1,6 +1,6 @@
 # Node兼容边界（固定锁文件）
 
-本说明适用于ce6780faa0995c3c3587658aa46a161b4b5e4bcf及本轮未变的package.json/package-lock.json。两机在Node18.20.8和各自当前Node24.16.0/24.19.0全量各855/855，包含实际打包CLI、插件import/config；这是特定路径与运行时的实测，不是所有依赖API的完整支持承诺。
+本说明记录固定锁文件下的 Node 兼容边界。依赖版本未升级；本轮将根 `package.json` 与 `package-lock.json` 的 Node 声明对齐到运行时依赖声明交集。两机在Node18.20.8和各自当前Node24.16.0/24.19.0全量各855/855，包含实际打包CLI、插件import/config；这是特定路径与运行时的实测，不是所有依赖API的完整支持承诺。
 
 ## 安装声明与实际通过是两件事
 
@@ -17,10 +17,10 @@
 | Node20.x | 不满足ini要求 | 不将旧CI矩阵或Node18结果外推为本锁文件通过 |
 | Node22.22.2起的22.x、24.15.0起的24.x、26及以上 | 静态声明交集满足 | 仅24.16.0/24.19.0有本次两机证据；其余未运行 |
 
-安装与办公使用优先沿用已测且符合声明的24.16.0/24.19.0；不要把Node18当成严格安装支持目标。不得通过关闭engine-strict或force来声称已支持。Node18上的engine-strict安装不能由855/855证明成功；本轮未运行strict安装，也未安装或升级任何依赖。
+安装与办公使用优先沿用已测且符合声明的24.16.0/24.19.0；不要把Node18当成严格安装支持目标。不得通过关闭engine-strict或force来声称已支持。Node18上的engine-strict安装不能由855/855证明成功；此前声明收敛轮未运行strict安装；本轮已在隔离消费者运行engine-strict安装及import，均通过，依赖版本未升级。
 
-## 根元数据的已知差异
+## 根元数据已对齐
 
-根package.json目前仍写`engines.node >=18`。本轮按兼容边界收敛范围保留该元数据和依赖版本，不静默改生产安装契约。它低于完整运行依赖树要求，不能只看根字段就判断可严格安装；这个元数据差异保持公开，尚未修正。若后续要改变根声明，应作为安装契约变更独立验证，不能把本说明写成已经改过engines。
+根 `package.json` 与 `package-lock.json` 现在统一写为 `^22.22.2 || ^24.15.0 || >=26.0.0`，与固定运行依赖树的声明交集一致。该声明只表达严格安装边界，不证明所有匹配版本或全部依赖 API 已实测可用；Node18 的历史运行证据仍保留，但它不满足严格安装声明，因此不作为安装支持目标。依赖版本未升级。
 
-[静态范围证据](validation/honor-2026-09-14-wrapper-contract/engine-ranges.json)包含非dev依赖声明和指定版本的semver计算；[荣耀运行证据](validation/honor-2026-09-14-delivery-batch/README.md)及[惠普运行证据](validation/hp-2026-09-14-delivery-review/README.md)保留原事实。
+[静态范围证据](validation/honor-2026-09-14-engine-contract/engine-ranges.json)包含非dev依赖声明和指定版本的semver计算；[荣耀运行证据](validation/honor-2026-09-14-delivery-batch/README.md)及[惠普运行证据](validation/hp-2026-09-14-delivery-review/README.md)保留原事实。

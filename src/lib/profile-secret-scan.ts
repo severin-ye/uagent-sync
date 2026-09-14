@@ -1,10 +1,10 @@
 import { scanForSecrets } from './secret-scan.js';
 import { recognizeProfileExpressions } from './profile-expressions.js';
 import { analyze } from './profile-m2-docstrings.js';
-import { isM2Enabled, type ProfileM2Context } from './profile-m2-provider.js';
+import { isM2Enabled, hasPublicSourceReview, matchesPublicSource, type ProfileM2Context } from './profile-m2-provider.js';
 import type { SecretFinding } from './secret-scan.js';
 
-export interface ProfileScanResult { findings: SecretFinding[]; m2: string }
+export interface ProfileScanResult { findings: SecretFinding[]; m2: string; publicSourceMatched?: boolean }
 
 /** Keep literal-secret rules; recognize only complete, value-free environment lookups in source files. */
 export function scanProfileContent(content: string, source: string, context?: ProfileM2Context): ProfileScanResult {
@@ -53,6 +53,9 @@ export function scanProfileContent(content: string, source: string, context?: Pr
   for (const line of rejectedLines) if (!findings.some(f => f.rule === 'sensitive-assignment' && f.line === line)) findings.push({ rule: 'sensitive-assignment', line, evidence: '<redacted>' });
   const order = ['authorization-bearer', 'known-token-prefix', 'sensitive-assignment'];
   findings.sort((a, b) => a.line - b.line || order.indexOf(a.rule) - order.indexOf(b.rule));
+  // Run normal detection first. A separate trusted host review may resolve
+  // findings only for this exact, independently obtained public Skill artifact.
+  if(matchesPublicSource(content,source,context))return {findings:[],m2,publicSourceMatched:true};
   return { findings, m2 };
 }
 
@@ -64,7 +67,7 @@ export function assertProfileContentSafe(content: string, source: string, contex
 /** Decode once, before any lossy conversion, and never rewrite the payload. */
 export function assertProfileBytesSafe(bytes: Uint8Array, source: string, context?: ProfileM2Context): void {
   let content: string;
-  if (isM2Enabled(context) && /\.py$/i.test(source)) {
+  if ((isM2Enabled(context) && /\.py$/i.test(source)) || hasPublicSourceReview(context,source)) {
     try { content = new TextDecoder('utf-8', {fatal:true, ignoreBOM:true}).decode(bytes); }
     catch { throw new Error('Profile UTF8 validation failed'); }
   } else content = Buffer.from(bytes).toString('utf8');

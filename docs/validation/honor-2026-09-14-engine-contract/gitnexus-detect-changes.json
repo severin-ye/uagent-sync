@@ -1,0 +1,12 @@
+{
+  "summary": {
+    "changed_count": 0,
+    "affected_count": 0,
+    "changed_files": 3,
+    "risk_level": "low"
+  },
+  "changed_symbols": [],
+  "affected_processes": [],
+  "scope": "all",
+  "worktree": "<WORKTREE>"
+}

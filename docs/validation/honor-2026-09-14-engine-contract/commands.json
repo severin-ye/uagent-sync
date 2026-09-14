@@ -1,0 +1,20 @@
+{
+  "environment": "pre-env.json",
+  "commands": [
+    {"name": "npm ci", "exit": 0, "evidence": "logs/npm-ci.log"},
+    {"name": "node --import tsx --test test/package-metadata.test.ts (red)", "exit": 1, "evidence": "logs/red-config-assertion.log"},
+    {"name": "node --import tsx --test test/package-metadata.test.ts (green)", "exit": 0, "evidence": "logs/green-config-assertion.log"},
+    {"name": "check-engines.mjs", "exit": 0, "evidence": "engine-ranges.json"},
+    {"name": "npm test with isolated external temp root", "exit": 0, "evidence": "logs/full-npm-test-clean-temp.log"},
+    {"name": "npm pack", "exit": 0, "evidence": "logs/consumer-pack.log"},
+    {"name": "npm install --prefix <consumer> --engine-strict --omit=dev", "exit": 0, "evidence": "logs/consumer-engine-strict-install.log"},
+    {"name": "consumer import/config smoke", "exit": 0, "evidence": "logs/consumer-import-retry.log"},
+    {"name": "dependency version comparison against HEAD", "exit": 0, "evidence": "dependency-version-check.json"}
+  ],
+  "firstAttemptCorrection": {
+    "command": "consumer import with unsupported node --cwd option",
+    "exit": 9,
+    "evidence": "logs/consumer-import.log",
+    "recovery": "reran from the explicit consumer directory with Push-Location"
+  }
+}

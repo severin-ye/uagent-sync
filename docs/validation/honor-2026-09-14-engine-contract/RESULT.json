@@ -1,0 +1,35 @@
+{
+  "baseline": "14a90c1",
+  "productionSource": "ce6780faa0995c3c3587658aa46a161b4b5e4bcf",
+  "scope": [
+    "package.json",
+    "package-lock.json",
+    "docs/NODE-COMPATIBILITY.md",
+    "test/package-metadata.test.ts",
+    "docs/validation/honor-2026-09-14-engine-contract"
+  ],
+  "rootEngine": {
+    "before": ">=18",
+    "after": "^22.22.2 || ^24.15.0 || >=26.0.0",
+    "manifestAndLockAligned": true
+  },
+  "dependencyVersionsChanged": false,
+  "validation": {
+    "redConfigAssertion": {"exit": 1, "evidence": "logs/red-config-assertion.log"},
+    "greenConfigAssertion": {"exit": 0, "evidence": "logs/green-config-assertion.log"},
+    "staticEngineRanges": {"exit": 0, "evidence": "engine-ranges.json"},
+    "npmCi": {"exit": 0, "evidence": "logs/npm-ci.log"},
+    "fullNpmTest": {"exit": 0, "suites": 85, "pass": 856, "fail": 0, "cancelled": 0, "evidence": "logs/full-npm-test-clean-temp.log"},
+    "consumerPack": {"exit": 0, "evidence": "logs/consumer-pack.log"},
+    "consumerEngineStrictInstall": {"exit": 0, "evidence": "logs/consumer-engine-strict-install.log"},
+    "consumerImportSmoke": {"exit": 0, "evidence": "logs/consumer-import-retry.log"},
+    "consumerAncestorPollution": {"clean": true, "evidence": "consumer-engine-strict.json"},
+    "dependencyVersionCheck": {"exit": 0, "evidence": "dependency-version-check.json"}
+  },
+  "notRun": [
+    "Node18 engine-strict install",
+    "Node18 full npm test"
+  ],
+  "commitOrPush": false,
+  "conclusion": "PASS for the authorized root engine alignment and current Node validation; Node18 is intentionally outside the corrected strict installation declaration."
+}

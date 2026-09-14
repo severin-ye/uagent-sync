@@ -1,0 +1,50 @@
+{
+  "node": "v24.16.0",
+  "npm": "11.13.0",
+  "privateManifest": true,
+  "manifestBeforeInstall": true,
+  "packExit": 0,
+  "tarball": "<ISOLATED_RUNTIME>\\pack\\uagent-sync-2.1.1.tgz",
+  "installExit": 0,
+  "importExit": 0,
+  "ancestorsClean": true,
+  "ancestorsBefore": [
+    {
+      "path": "<ISOLATED_RUNTIME>",
+      "uagentSync": false,
+      "plugin": false
+    },
+    {
+      "path": "<STAGING_ROOT>",
+      "uagentSync": false,
+      "plugin": false
+    },
+    {
+      "path": "C:\\",
+      "uagentSync": false,
+      "plugin": false
+    }
+  ],
+  "ancestorsAfter": [
+    {
+      "path": "<ISOLATED_RUNTIME>",
+      "uagentSync": false,
+      "plugin": false
+    },
+    {
+      "path": "<STAGING_ROOT>",
+      "uagentSync": false,
+      "plugin": false
+    },
+    {
+      "path": "C:\\",
+      "uagentSync": false,
+      "plugin": false
+    }
+  ],
+  "prefix": "<ISOLATED_RUNTIME>\\consumer-20260914221014",
+  "engineStrict": true,
+  "installedRootEngine": "^22.22.2 || ^24.15.0 || >=26.0.0",
+  "installedPackageVersion": "2.1.1",
+  "importEvidence": "consumer-import-retry.log"
+}

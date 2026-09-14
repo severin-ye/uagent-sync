@@ -1,9 +1,53 @@
+import {createHash} from 'node:crypto';
 /** Host-only policy loading. Never discovers a path or inspects environment variables. */
 export const PARSER_VERSION = '1.1.18';
 export interface M2Template { readonly schemaVersion: 1; readonly policyVersion: string; readonly parserVersion: string; readonly entries: readonly Readonly<{id:string;field:string;description:string}>[] }
 export interface ProfileM2Context { readonly template: M2Template | null; readonly reason: 'ok' | 'missing' | 'unavailable' }
 export interface M2Provider { begin(): Promise<ProfileM2Context> }
 const trusted = new WeakSet<object>(), sessions = new WeakSet<object>();
+const publicSources = new WeakMap<object, ReadonlyMap<string,string>>();
+function publicSourcePath(source:string):string|null {
+  const name=source.replaceAll('\\','/');
+  if(name.split('/').some(p=>!p||p==='.'||p==='..')||name.includes(':')||name.includes('\0'))return null;
+  const relative=name.replace(/^sync\/profiles\/[^/]+\/[^/]+\/files\//,'');
+  return /^(?:agents|codex)\/skills\/[^/]+\/.+/.test(relative)?relative:null;
+}
+export function hasPublicSourceReview(value:unknown,source?:string):boolean {
+  if(value===null||typeof value!=='object'||!publicSources.has(value))return false;
+  if(source===undefined)return true;
+  const name=publicSourcePath(source);return name!==null&&publicSources.get(value)!.has(name);
+}
+export function matchesPublicSource(content:string,source:string,value:unknown):boolean {
+  if(!hasPublicSourceReview(value))return false;
+  const name=publicSourcePath(source);if(!name)return false;
+  return publicSources.get(value as object)!.get(name)===createHash('sha256').update(content,'utf8').digest('hex');
+}
+
+/**
+ * Host-only review input, never a snapshot field, CLI option, env path or a
+ * template learned from inspected files. The host must independently retrieve
+ * and review public upstream bytes before supplying them. Exact bytes + logical
+ * Skill path bind approval; changed files retain all ordinary scan findings.
+ */
+export function createPublicSourceProvider(load:()=>Promise<readonly {source:string;bytes:Uint8Array}[]|null|undefined>):M2Provider {
+  return Object.freeze({async begin(){
+    try {
+      const entries=await load();if(entries==null)return context(null,'missing');
+      if(!Array.isArray(entries)||!entries.length||entries.length>1024)throw Error();
+      const hashes=new Map<string,string>();let total=0;
+      for(const entry of entries){
+        if(!entry||typeof entry.source!=='string'||!(entry.bytes instanceof Uint8Array))throw Error();
+        const name=publicSourcePath(entry.source);
+        if(!name||name!==entry.source||hashes.has(name)||entry.bytes.length>32*1024*1024)throw Error();
+        total+=entry.bytes.length;if(total>64*1024*1024)throw Error();
+        const bytes=Uint8Array.from(entry.bytes);
+        new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(bytes);
+        hashes.set(name,createHash('sha256').update(bytes).digest('hex'));
+      }
+      const result=context(null,'ok');publicSources.set(result,hashes);return result;
+    }catch{return context(null,'unavailable');}
+  }});
+}
 export function isTrustedTemplate(value: unknown): value is M2Template { return value !== null && typeof value === 'object' && trusted.has(value); }
 export function isM2Enabled(value: unknown): value is ProfileM2Context & {template:M2Template} { return value !== null && typeof value === 'object' && sessions.has(value) && isTrustedTemplate((value as ProfileM2Context).template); }
 

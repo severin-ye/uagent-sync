@@ -1,0 +1,834 @@
+{
+  "files": 82,
+  "matched": 82,
+  "remainingFindings": 0,
+  "snapshotFiles": 82,
+  "gitMetadata": 0,
+  "restored": 82,
+  "originalsUnchanged": 82,
+  "scope": "82 historical Skill files in isolated local copies only; no real HP restore or publication",
+  "rows": [
+    {
+      "path": "agents/skills/gstack/.env.example",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/bin/gstack-distill-free-text",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/browse-client.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/browser-manager.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/cli.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/cookie-import-browser.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/proxy-config.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/proxy-redact.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/server.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/session-cookie-store.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/socks-bridge.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/terminal-agent.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/token-registry.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/bridge-chromium-e2e.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/browse-client.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/browser-skill-commands.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/busy-daemon-iron-rule.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/busy-daemon-recovery.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/commands.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/cookie-import-browser.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/daemon-mismatch-refuse.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/extension-token.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/fixtures/injection-combined.html",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/pair-agent-e2e.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/pair-agent-tunnel-eval.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/proxy-redact.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/server-auth.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/server-embedder-terminal-port.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/server-factory.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/sidebar-ux.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/stop-dead-daemon.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/terminal-agent-integration.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/terminal-agent-owner-watchdog.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/token-registry.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/tunnel-revoke-cli.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/browser-skills/hackernews-frontpage/_lib/browse-client.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/design/src/check.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/design/src/design-to-code.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/design/src/diff.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/design/src/evolve.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/design/src/generate.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/design/src/iterate.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/design/src/memory.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/design/src/variants.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/docs/REMOTE_BROWSER_ACCESS.md",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/docs/designs/v2_PLAN.md",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/extension/background.js",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/extension/sidepanel-terminal.js",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/ios-qa/daemon/src/session-tokens.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/ios-qa/daemon/test/daemon-integration.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/ios-qa/scripts/gen-accessors.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/lib/code-intelligence/sourcebot-adapter.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/lib/context-bill.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/test/brain-sync.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/test/claude-provider-keychain.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/test/code-intelligence.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/test/free-tests-workflow-wiring.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/test/gbrain-supabase-provision.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/test/gstack-memory-ingest.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/test/helpers/benchmark-judge.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/test/helpers/hermetic-env.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/test/helpers/hermetic-env.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/test/helpers/touchfiles-data.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/test/hermetic-skills-seeding.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/test/redact-engine.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/test/regression-issue2091-bsd-mktemp.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/test/skill-e2e-cso.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/gstack/test/telemetry.test.ts",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/claude-api/php/managed-agents/README.md",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/claude-api/python/claude-api/README.md",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/claude-api/python/managed-agents/README.md",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/claude-api/ruby/claude-api/README.md",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/claude-api/ruby/managed-agents/README.md",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/claude-api/shared/managed-agents-tools.md",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/claude-api/typescript/claude-api/README.md",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/claude-api/typescript/managed-agents/README.md",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/pdf/SKILL.md",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/pdf/reference.md",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/ncbi-sequence-fetch/scripts/ncbi_fetch.py",
+      "publicSourceMatched": true,
+      "findings": []
+    },
+    {
+      "path": "agents/skills/openfda-database/scripts/openfda_query.py",
+      "publicSourceMatched": true,
+      "findings": []
+    }
+  ],
+  "checks": [
+    {
+      "path": "agents/skills/gstack/.env.example",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/bin/gstack-distill-free-text",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/browse-client.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/browser-manager.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/cli.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/cookie-import-browser.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/proxy-config.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/proxy-redact.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/server.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/session-cookie-store.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/socks-bridge.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/terminal-agent.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/src/token-registry.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/bridge-chromium-e2e.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/browse-client.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/browser-skill-commands.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/busy-daemon-iron-rule.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/busy-daemon-recovery.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/commands.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/cookie-import-browser.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/daemon-mismatch-refuse.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/extension-token.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/fixtures/injection-combined.html",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/pair-agent-e2e.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/pair-agent-tunnel-eval.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/proxy-redact.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/server-auth.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/server-embedder-terminal-port.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/server-factory.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/sidebar-ux.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/stop-dead-daemon.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/terminal-agent-integration.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/terminal-agent-owner-watchdog.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/token-registry.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browse/test/tunnel-revoke-cli.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/browser-skills/hackernews-frontpage/_lib/browse-client.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/design/src/check.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/design/src/design-to-code.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/design/src/diff.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/design/src/evolve.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/design/src/generate.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/design/src/iterate.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/design/src/memory.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/design/src/variants.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/docs/REMOTE_BROWSER_ACCESS.md",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/docs/designs/v2_PLAN.md",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/extension/background.js",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/extension/sidepanel-terminal.js",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/ios-qa/daemon/src/session-tokens.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/ios-qa/daemon/test/daemon-integration.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/ios-qa/scripts/gen-accessors.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/lib/code-intelligence/sourcebot-adapter.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/lib/context-bill.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/test/brain-sync.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/test/claude-provider-keychain.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/test/code-intelligence.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/test/free-tests-workflow-wiring.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/test/gbrain-supabase-provision.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/test/gstack-memory-ingest.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/test/helpers/benchmark-judge.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/test/helpers/hermetic-env.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/test/helpers/hermetic-env.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/test/helpers/touchfiles-data.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/test/hermetic-skills-seeding.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/test/redact-engine.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/test/regression-issue2091-bsd-mktemp.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/test/skill-e2e-cso.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/gstack/test/telemetry.test.ts",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/claude-api/php/managed-agents/README.md",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/claude-api/python/claude-api/README.md",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/claude-api/python/managed-agents/README.md",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/claude-api/ruby/claude-api/README.md",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/claude-api/ruby/managed-agents/README.md",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/claude-api/shared/managed-agents-tools.md",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/claude-api/typescript/claude-api/README.md",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/claude-api/typescript/managed-agents/README.md",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/pdf/SKILL.md",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/pdf/reference.md",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/ncbi-sequence-fetch/scripts/ncbi_fetch.py",
+      "restored": true,
+      "originalUnchanged": true
+    },
+    {
+      "path": "agents/skills/openfda-database/scripts/openfda_query.py",
+      "restored": true,
+      "originalUnchanged": true
+    }
+  ]
+}

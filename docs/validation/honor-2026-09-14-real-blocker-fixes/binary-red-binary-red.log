@@ -1,0 +1,39 @@
+✔ independently reviewed exact source can pass without modifying its bytes (3.6711ms)
+✔ changed content, path, newline, appended credential and forged context never inherit review (0.7766ms)
+✔ publish path maps only a canonical profile skills payload (0.6864ms)
+✔ missing, malformed, duplicate, oversized or failed host inputs fail closed as a batch (0.8281ms)
+✔ host buffers are copied and each operation has an isolated view (0.3205ms)
+✔ invalid UTF8 cannot normalize into a reviewed source (1.2934ms)
+✖ unreviewed binary Skill resources retain default behavior (2.923ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 6
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 410.8062
+
+✖ failing tests:
+
+test at test\profile-public-source.test.ts:1:3613
+✖ unreviewed binary Skill resources retain default behavior (2.923ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Profile UTF8 validation failed"
+      at TestContext.<anonymous> (<STAGING_ROOT>\final-fixes\test\profile-public-source.test.ts:51:9)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Profile UTF8 validation failed
+        at assertProfileBytesSafe (<STAGING_ROOT>\final-fixes\src\lib\profile-secret-scan.ts:72:19)
+        at <anonymous> (<STAGING_ROOT>\final-fixes\test\profile-public-source.test.ts:51:26)
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (<STAGING_ROOT>\final-fixes\test\profile-public-source.test.ts:51:9)
+        at async Test.run (node:internal/test_runner/test:1313:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:897:7),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }

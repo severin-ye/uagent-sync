@@ -1,0 +1,27 @@
+{
+  "wrapper": "../honor-2026-09-14-delivery-batch/replay.mjs",
+  "isolated": [
+    "USERPROFILE",
+    "HOME",
+    "CODEX_HOME",
+    "APPDATA",
+    "LOCALAPPDATA",
+    "XDG_CONFIG_HOME",
+    "XDG_CACHE_HOME",
+    "TMPDIR",
+    "TMP",
+    "TEMP",
+    "npm_config_cache",
+    "npm_config_prefix",
+    "npm_config_userconfig",
+    "npm_config_globalconfig"
+  ],
+  "removed": [
+    "UAGENT_SYNC_WORKSPACE_ROOT",
+    "OPENCODE_SYNC_WORKSPACE_ROOT",
+    "NODE_PATH",
+    "NODE_OPTIONS"
+  ],
+  "fixtureOverridesAllowed": true,
+  "rawEnvironment": "retained locally only"
+}

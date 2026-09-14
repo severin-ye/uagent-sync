@@ -1,0 +1,45 @@
+{
+  "baselineHandoff": "14a90c178f9f1556e73c1a6d3cfde54eb5ed7b38",
+  "priorProductionSource": "ce6780faa0995c3c3587658aa46a161b4b5e4bcf",
+  "currentSource": "same commit as this report; per-file SHA256 recorded",
+  "originalFiles": 82,
+  "baselineMatches": 82,
+  "publicOriginalBytes": 67,
+  "publicLfToCrlf": 15,
+  "downloadedPublicByteMatches": 82,
+  "preReviewBlockedFiles": 74,
+  "preReviewFindings": 188,
+  "postReviewPassed": 82,
+  "postReviewFindings": 0,
+  "isolatedSnapshotFiles": 82,
+  "isolatedRestoreHashMatches": 82,
+  "originalFilesUnchanged": 82,
+  "gitMetadata": 0,
+  "focused": {
+    "passed": 13,
+    "failed": 0
+  },
+  "full": {
+    "node": "24.16.0",
+    "passed": 869,
+    "failed": 0,
+    "cancelled": 0,
+    "exit": 0
+  },
+  "independentReview": "P2 unrelated binary UTF8 regression found; main fixed with red/green",
+  "legacyCandidateFiles": 136,
+  "legacyCandidateVerified": 136,
+  "realLinkModified": false,
+  "actualHPRecovery": false,
+  "personalSnapshotPublished": false,
+  "migrationComplete": false,
+  "finalPackagedConsumer": {
+    "privateManifestBeforeInstall": true,
+    "explicitPrefix": true,
+    "ancestorCheck": "clean",
+    "engineStrict": true,
+    "install": 0,
+    "adapterImport": 0,
+    "packagedPublicFiles": 82
+  }
+}

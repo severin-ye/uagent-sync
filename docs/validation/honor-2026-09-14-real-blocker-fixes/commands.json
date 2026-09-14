@@ -1,0 +1,145 @@
+[
+  {
+    "name": "adapter",
+    "args": [
+      "scripts/verified-public-profile.mjs",
+      "check",
+      "--home",
+      "<STAGING_ROOT>/real-local-20260914/source",
+      "--codex-home",
+      "<STAGING_ROOT>/real-local-20260914/source/.codex",
+      "--workspace-root",
+      "<STAGING_ROOT>/real-local-20260914/source/workspace",
+      "--cache",
+      "<STAGING_ROOT>/real-local-20260914/adapter-cache",
+      "--report",
+      "<STAGING_ROOT>/real-local-20260914/adapter-check.json"
+    ],
+    "status": 1
+  },
+  {
+    "name": "adapter-fixed",
+    "args": [
+      "scripts/verified-public-profile.mjs",
+      "check",
+      "--home",
+      "<STAGING_ROOT>/real-local-20260914/source",
+      "--codex-home",
+      "<STAGING_ROOT>/real-local-20260914/source/.codex",
+      "--workspace-root",
+      "<STAGING_ROOT>/real-local-20260914/source/workspace",
+      "--cache",
+      "<STAGING_ROOT>/real-local-20260914/adapter-cache-fixed",
+      "--report",
+      "<STAGING_ROOT>/real-local-20260914/adapter-check-fixed.json"
+    ],
+    "status": 0
+  },
+  {
+    "name": "binary-green",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-public-source.test.ts",
+      "test/profile-public-source-gates.test.ts"
+    ],
+    "status": 0
+  },
+  {
+    "name": "binary-red",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-public-source.test.ts"
+    ],
+    "status": 1
+  },
+  {
+    "name": "build",
+    "args": [
+      "C:/Program Files/nodejs/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "build",
+      "--prefix",
+      "<STAGING_ROOT>/final-fixes"
+    ],
+    "status": 0
+  },
+  {
+    "name": "final-consumer",
+    "args": [
+      "<STAGING_ROOT>/final-consumer.mjs"
+    ],
+    "status": 0
+  },
+  {
+    "name": "full",
+    "args": [
+      "C:/Program Files/nodejs/node_modules/npm/bin/npm-cli.js",
+      "test",
+      "--prefix",
+      "<STAGING_ROOT>/final-fixes"
+    ],
+    "status": 0
+  },
+  {
+    "name": "full-final",
+    "args": [
+      "C:/Program Files/nodejs/node_modules/npm/bin/npm-cli.js",
+      "test",
+      "--prefix",
+      "<STAGING_ROOT>/final-fixes"
+    ],
+    "status": 0
+  },
+  {
+    "name": "install",
+    "args": [
+      "C:/Program Files/nodejs/node_modules/npm/bin/npm-cli.js",
+      "ci",
+      "--prefix",
+      "<STAGING_ROOT>/final-fixes",
+      "--ignore-scripts"
+    ],
+    "status": 0
+  },
+  {
+    "name": "public-gates",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-public-source-gates.test.ts"
+    ],
+    "status": 0
+  },
+  {
+    "name": "public-green",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-public-source.test.ts"
+    ],
+    "status": 0
+  },
+  {
+    "name": "public-red",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/profile-public-source.test.ts"
+    ],
+    "status": 1
+  },
+  {
+    "name": "real-roundtrip",
+    "args": [
+      "<STAGING_ROOT>/real-roundtrip.mjs"
+    ],
+    "status": 0
+  }
+]
