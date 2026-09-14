@@ -1,0 +1,15 @@
+{
+  "APPDATA": "<EVIDENCE_ROOT>\\env-red-node18\\app",
+  "LOCALAPPDATA": "<EVIDENCE_ROOT>\\env-red-node18\\local",
+  "TEMP": "<EVIDENCE_ROOT>\\env-red-node18\\tmp",
+  "TMP": "<EVIDENCE_ROOT>\\env-red-node18\\tmp",
+  "TMPDIR": "<EVIDENCE_ROOT>\\env-red-node18\\tmp",
+  "USERPROFILE": "<EVIDENCE_ROOT>\\env-red-node18\\home",
+  "HOME": "<EVIDENCE_ROOT>\\env-red-node18\\home",
+  "CODEX_HOME": "<EVIDENCE_ROOT>\\env-red-node18\\codex",
+  "XDG_CONFIG_HOME": "<EVIDENCE_ROOT>\\env-red-node18\\xdg",
+  "npm_config_cache": "<EVIDENCE_ROOT>\\env-red-node18\\npm-cache",
+  "npm_config_prefix": "<EVIDENCE_ROOT>\\env-red-node18\\npm-prefix",
+  "npm_config_userconfig": "<EVIDENCE_ROOT>\\env-red-node18\\npm_config_userconfig.rc",
+  "npm_config_globalconfig": "<EVIDENCE_ROOT>\\env-red-node18\\npm_config_globalconfig.rc"
+}

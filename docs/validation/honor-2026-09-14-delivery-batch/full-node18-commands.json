@@ -1,0 +1,12 @@
+[
+  {
+    "name": "full-node18",
+    "args": [
+      "<NODE18>/node_modules/npm/bin/npm-cli.js",
+      "test",
+      "--prefix",
+      "<SOURCE_ROOT>"
+    ],
+    "status": 0
+  }
+]

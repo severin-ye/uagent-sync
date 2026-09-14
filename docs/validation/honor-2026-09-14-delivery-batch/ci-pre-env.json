@@ -1,0 +1,15 @@
+{
+  "APPDATA": "<EVIDENCE_ROOT>\\env-ci\\app",
+  "LOCALAPPDATA": "<EVIDENCE_ROOT>\\env-ci\\local",
+  "TEMP": "<EVIDENCE_ROOT>\\env-ci\\tmp",
+  "TMP": "<EVIDENCE_ROOT>\\env-ci\\tmp",
+  "TMPDIR": "<EVIDENCE_ROOT>\\env-ci\\tmp",
+  "USERPROFILE": "<EVIDENCE_ROOT>\\env-ci\\home",
+  "HOME": "<EVIDENCE_ROOT>\\env-ci\\home",
+  "CODEX_HOME": "<EVIDENCE_ROOT>\\env-ci\\codex",
+  "XDG_CONFIG_HOME": "<EVIDENCE_ROOT>\\env-ci\\xdg",
+  "npm_config_cache": "<EVIDENCE_ROOT>\\env-ci\\npm-cache",
+  "npm_config_prefix": "<EVIDENCE_ROOT>\\env-ci\\npm-prefix",
+  "npm_config_userconfig": "<EVIDENCE_ROOT>\\env-ci\\npm_config_userconfig.rc",
+  "npm_config_globalconfig": "<EVIDENCE_ROOT>\\env-ci\\npm_config_globalconfig.rc"
+}

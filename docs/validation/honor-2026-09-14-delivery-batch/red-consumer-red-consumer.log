@@ -1,0 +1,88 @@
+
+> uagent-sync@2.1.1 prepack
+> npm run build
+
+
+> uagent-sync@2.1.1 build
+> rimraf dist && tsc && node scripts/generate-dashboard-i18n.mjs && node scripts/copy-dashboard.mjs
+
+npm notice
+npm notice New major version of npm available! 11.13.0 -> 12.0.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.0.2
+npm notice To update run: npm install -g npm@12.0.2
+npm notice
+node:internal/modules/package_json_reader:301
+  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+        ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package '@opencode-ai/plugin' imported from <EVIDENCE_ROOT>\env-red-consumer\tmp\uagent-pack-smoke-Xot83w\install\node_modules\uagent-sync\dist\plugin.js
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)
+    at packageResolve (node:internal/modules/esm/resolve:768:81)
+    at moduleResolve (node:internal/modules/esm/resolve:859:18)
+    at defaultResolve (node:internal/modules/esm/resolve:992:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:691:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:708:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:740:52)
+    at #resolve (node:internal/modules/esm/loader:673:17)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:593:35)
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:163:33) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}
+
+Node.js v24.16.0
+▶ real npm pack installation
+  ✖ loads the installed plugin without dev dependencies or a host SDK ancestor (79.4101ms)
+  ✔ runs the installed CLI with production dependencies only (152.6429ms)
+  ✔ ships valid Codex metadata and all three skills (1.3856ms)
+✖ real npm pack installation (235.5612ms)
+ℹ tests 3
+ℹ suites 1
+ℹ pass 2
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 12725.9472
+
+✖ failing tests:
+
+test at test\packaged-install.test.ts:1:2010
+✖ loads the installed plugin without dev dependencies or a host SDK ancestor (79.4101ms)
+  Error: Command failed: C:\Program Files\nodejs\node.exe --input-type=module -e const {OpencodeSyncPlugin}=await import('uagent-sync');const hooks=await OpencodeSyncPlugin({});const cfg={};await hooks.config(cfg);if(cfg.skills.paths.length!==1)throw Error('missing skills');console.log('plugin-ready');
+  node:internal/modules/package_json_reader:301
+    throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+          ^
+
+  Error [ERR_MODULE_NOT_FOUND]: Cannot find package '@opencode-ai/plugin' imported from <EVIDENCE_ROOT>\env-red-consumer\tmp\uagent-pack-smoke-Xot83w\install\node_modules\uagent-sync\dist\plugin.js
+      at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)
+      at packageResolve (node:internal/modules/esm/resolve:768:81)
+      at moduleResolve (node:internal/modules/esm/resolve:859:18)
+      at defaultResolve (node:internal/modules/esm/resolve:992:11)
+      at #cachedDefaultResolve (node:internal/modules/esm/loader:691:20)
+      at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:708:38)
+      at ModuleLoader.resolveSync (node:internal/modules/esm/loader:740:52)
+      at #resolve (node:internal/modules/esm/loader:673:17)
+      at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:593:35)
+      at ModuleJob.syncLink (node:internal/modules/esm/module_job:163:33) {
+    code: 'ERR_MODULE_NOT_FOUND'
+  }
+
+  Node.js v24.16.0
+
+      at genericNodeError (node:internal/errors:985:15)
+      at wrappedFn (node:internal/errors:539:14)
+      at checkExecSyncError (node:child_process:925:11)
+      at execFileSync (node:child_process:961:15)
+      at TestContext.<anonymous> (<SOURCE_ROOT>\test\packaged-install.test.ts:48:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.start (node:internal/test_runner/test:1177:17)
+      at node:internal/test_runner/test:1769:71
+      at node:internal/per_context/primordials:466:82 {
+    status: 1,
+    signal: null,
+    output: [ null, '', "node:internal/modules/package_json_reader:301\r\n  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);\r\n        ^\r\n\r\nError [ERR_MODULE_NOT_FOUND]: Cannot find package '@opencode-ai/plugin' imported from <EVIDENCE_ROOT>\\env-red-consumer\\tmp\\uagent-pack-smoke-Xot83w\\install\\node_modules\\uagent-sync\\dist\\plugin.js\r\n    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)\r\n    at packageResolve (node:internal/modules/esm/resolve:768:81)\r\n    at moduleResolve (node:internal/modules/esm/resolve:859:18)\r\n    at defaultResolve (node:internal/modules/esm/resolve:992:11)\r\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:691:20)\r\n    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:708:38)\r\n    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:740:52)\r\n    at #resolve (node:internal/modules/esm/loader:673:17)\r\n    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:593:35)\r\n    at ModuleJob.syncLink (node:internal/modules/esm/module_job:163:33) {\r\n  code: 'ERR_MODULE_NOT_FOUND'\r\n}\r\n\r\nNode.js v24.16.0\r\n" ],
+    pid: 51464,
+    stdout: '',
+    stderr: "node:internal/modules/package_json_reader:301\r\n  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);\r\n        ^\r\n\r\nError [ERR_MODULE_NOT_FOUND]: Cannot find package '@opencode-ai/plugin' imported from <EVIDENCE_ROOT>\\env-red-consumer\\tmp\\uagent-pack-smoke-Xot83w\\install\\node_modules\\uagent-sync\\dist\\plugin.js\r\n    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)\r\n    at packageResolve (node:internal/modules/esm/resolve:768:81)\r\n    at moduleResolve (node:internal/modules/esm/resolve:859:18)\r\n    at defaultResolve (node:internal/modules/esm/resolve:992:11)\r\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:691:20)\r\n    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:708:38)\r\n    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:740:52)\r\n    at #resolve (node:internal/modules/esm/loader:673:17)\r\n    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:593:35)\r\n    at ModuleJob.syncLink (node:internal/modules/esm/module_job:163:33) {\r\n  code: 'ERR_MODULE_NOT_FOUND'\r\n}\r\n\r\nNode.js v24.16.0\r\n"
+  }

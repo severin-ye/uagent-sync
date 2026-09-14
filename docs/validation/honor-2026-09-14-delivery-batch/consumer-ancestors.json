@@ -1,0 +1,14 @@
+[
+  {
+    "root": "<EVIDENCE_ROOT>",
+    "hostSdkPresent": false
+  },
+  {
+    "root": "<REVIEW_PARENT>",
+    "hostSdkPresent": false
+  },
+  {
+    "root": "C:\\",
+    "hostSdkPresent": false
+  }
+]

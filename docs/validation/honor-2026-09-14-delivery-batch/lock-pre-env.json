@@ -1,0 +1,15 @@
+{
+  "APPDATA": "<EVIDENCE_ROOT>\\env-lock\\app",
+  "LOCALAPPDATA": "<EVIDENCE_ROOT>\\env-lock\\local",
+  "TEMP": "<EVIDENCE_ROOT>\\env-lock\\tmp",
+  "TMP": "<EVIDENCE_ROOT>\\env-lock\\tmp",
+  "TMPDIR": "<EVIDENCE_ROOT>\\env-lock\\tmp",
+  "USERPROFILE": "<EVIDENCE_ROOT>\\env-lock\\home",
+  "HOME": "<EVIDENCE_ROOT>\\env-lock\\home",
+  "CODEX_HOME": "<EVIDENCE_ROOT>\\env-lock\\codex",
+  "XDG_CONFIG_HOME": "<EVIDENCE_ROOT>\\env-lock\\xdg",
+  "npm_config_cache": "<EVIDENCE_ROOT>\\env-lock\\npm-cache",
+  "npm_config_prefix": "<EVIDENCE_ROOT>\\env-lock\\npm-prefix",
+  "npm_config_userconfig": "<EVIDENCE_ROOT>\\env-lock\\npm_config_userconfig.rc",
+  "npm_config_globalconfig": "<EVIDENCE_ROOT>\\env-lock\\npm_config_globalconfig.rc"
+}

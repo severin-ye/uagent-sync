@@ -1,0 +1,9 @@
+[
+  {
+    "name": "wrapper-check",
+    "args": [
+      "--version"
+    ],
+    "status": 0
+  }
+]

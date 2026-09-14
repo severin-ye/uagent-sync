@@ -1,0 +1,20 @@
+TAP version 13
+# Subtest: bundled MCP data resolves without a workspace copy on supported runtimes
+ok 1 - bundled MCP data resolves without a workspace copy on supported runtimes
+  ---
+  duration_ms: 4.0417
+  ...
+# Subtest: plugin config locates bundled skills and is idempotent on supported runtimes
+ok 2 - plugin config locates bundled skills and is idempotent on supported runtimes
+  ---
+  duration_ms: 7.3065
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 541.6159

@@ -1,0 +1,13 @@
+[
+  {
+    "name": "build-red",
+    "args": [
+      "C:/Program Files/nodejs/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "build",
+      "--prefix",
+      "<SOURCE_ROOT>"
+    ],
+    "status": 0
+  }
+]

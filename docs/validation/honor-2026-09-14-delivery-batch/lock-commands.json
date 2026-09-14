@@ -1,0 +1,16 @@
+[
+  {
+    "name": "lock",
+    "args": [
+      "C:/Program Files/nodejs/node_modules/npm/bin/npm-cli.js",
+      "install",
+      "--package-lock-only",
+      "--prefix",
+      "<SOURCE_ROOT>",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "status": 0
+  }
+]

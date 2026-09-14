@@ -1,0 +1,12 @@
+[
+  {
+    "name": "red-consumer",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/packaged-install.test.ts"
+    ],
+    "status": 1
+  }
+]

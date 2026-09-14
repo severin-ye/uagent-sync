@@ -1,0 +1,15 @@
+{
+  "APPDATA": "<EVIDENCE_ROOT>\\env-full-current\\app",
+  "LOCALAPPDATA": "<EVIDENCE_ROOT>\\env-full-current\\local",
+  "TEMP": "<EVIDENCE_ROOT>\\env-full-current\\tmp",
+  "TMP": "<EVIDENCE_ROOT>\\env-full-current\\tmp",
+  "TMPDIR": "<EVIDENCE_ROOT>\\env-full-current\\tmp",
+  "USERPROFILE": "<EVIDENCE_ROOT>\\env-full-current\\home",
+  "HOME": "<EVIDENCE_ROOT>\\env-full-current\\home",
+  "CODEX_HOME": "<EVIDENCE_ROOT>\\env-full-current\\codex",
+  "XDG_CONFIG_HOME": "<EVIDENCE_ROOT>\\env-full-current\\xdg",
+  "npm_config_cache": "<EVIDENCE_ROOT>\\env-full-current\\npm-cache",
+  "npm_config_prefix": "<EVIDENCE_ROOT>\\env-full-current\\npm-prefix",
+  "npm_config_userconfig": "<EVIDENCE_ROOT>\\env-full-current\\npm_config_userconfig.rc",
+  "npm_config_globalconfig": "<EVIDENCE_ROOT>\\env-full-current\\npm_config_globalconfig.rc"
+}

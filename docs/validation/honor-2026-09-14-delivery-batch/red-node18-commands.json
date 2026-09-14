@@ -1,0 +1,12 @@
+[
+  {
+    "name": "red-node18",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/runtime-paths.test.ts"
+    ],
+    "status": 1
+  }
+]

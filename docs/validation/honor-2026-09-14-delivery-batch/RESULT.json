@@ -1,0 +1,44 @@
+{
+  "source": "ce6780faa0995c3c3587658aa46a161b4b5e4bcf",
+  "baseline": "38c3dbbc0e2c5c50654c62aee77550b16181d0c2",
+  "currentNode": "24.16.0",
+  "node18": "18.20.8",
+  "redRuntime": {
+    "pass": 0,
+    "fail": 2,
+    "exit": 1
+  },
+  "redConsumer": {
+    "pass": 2,
+    "fail": 1,
+    "exit": 1
+  },
+  "greenRuntimeNode18": {
+    "pass": 2,
+    "fail": 0,
+    "exit": 0
+  },
+  "fullCurrent": {
+    "pass": 855,
+    "fail": 0,
+    "cancelled": 0,
+    "exit": 0
+  },
+  "fullNode18": {
+    "pass": 855,
+    "fail": 0,
+    "cancelled": 0,
+    "exit": 0
+  },
+  "dependencyVersionsChanged": [],
+  "productionFiles": [
+    "src/plugin.ts",
+    "src/lib/guide.ts",
+    "src/lib/dashboard-server.ts",
+    "package.json",
+    "package-lock.json"
+  ],
+  "status": "Honor implemented and isolated validation passed; HP independent validation pending",
+  "realMigration": "not performed; existing real-data blockers preserved",
+  "release": "validation branch only; no runtime plugin registration or release"
+}

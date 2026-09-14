@@ -1,0 +1,4940 @@
+
+> uagent-sync@2.1.1 pretest
+> npm run build
+
+
+> uagent-sync@2.1.1 build
+> rimraf dist && tsc && node scripts/generate-dashboard-i18n.mjs && node scripts/copy-dashboard.mjs
+
+
+> uagent-sync@2.1.1 test
+> node scripts/run-tests.mjs
+
+TAP version 13
+# Subtest: AgentAdapter contract
+    # Subtest: scans exactly the injected adapters, in injection order
+    ok 1 - scans exactly the injected adapters, in injection order
+      ---
+      duration_ms: 2.8479
+      ...
+    # Subtest: keeps DeepSeek inventory and target ids explicitly distinct
+    ok 2 - keeps DeepSeek inventory and target ids explicitly distinct
+      ---
+      duration_ms: 0.1405
+      ...
+    1..2
+ok 1 - AgentAdapter contract
+  ---
+  duration_ms: 4.2957
+  type: 'suite'
+  ...
+# Subtest: portability classification
+    # Subtest: classifies shared assets and platform state honestly
+    ok 1 - classifies shared assets and platform state honestly
+      ---
+      duration_ms: 0.4385
+      ...
+    # Subtest: redacts nested values before display
+    ok 2 - redacts nested values before display
+      ---
+      duration_ms: 0.6372
+      ...
+    1..2
+ok 2 - portability classification
+  ---
+  duration_ms: 1.8954
+  type: 'suite'
+  ...
+# Subtest: agent adapters
+    # Subtest: detects all three agents and shared skills without exposing secrets
+    ok 1 - detects all three agents and shared skills without exposing secrets
+      ---
+      duration_ms: 16.2967
+      ...
+    # Subtest: reports an absent DeepSeek Harness without failing the inventory
+    ok 2 - reports an absent DeepSeek Harness without failing the inventory
+      ---
+      duration_ms: 10.2994
+      ...
+    1..2
+ok 3 - agent adapters
+  ---
+  duration_ms: 26.7975
+  type: 'suite'
+  ...
+# Subtest: workspace inventory
+    # Subtest: returns stable agents, coverage, drift, migration actions, and security flags
+    ok 1 - returns stable agents, coverage, drift, migration actions, and security flags
+      ---
+      duration_ms: 10.5412
+      ...
+    1..1
+ok 4 - workspace inventory
+  ---
+  duration_ms: 10.8648
+  type: 'suite'
+  ...
+# Subtest: Application operation x target capability gate
+    # Subtest: publishes the complete 7 operations x 4 targets matrix
+    ok 1 - publishes the complete 7 operations x 4 targets matrix
+      ---
+      duration_ms: 2.4895
+      ...
+    # Subtest: every unsupported operation fails closed before invoking any dependency
+    ok 2 - every unsupported operation fails closed before invoking any dependency
+      ---
+      duration_ms: 1.2106
+      ...
+    1..2
+ok 5 - Application operation x target capability gate
+  ---
+  duration_ms: 4.7903
+  type: 'suite'
+  ...
+# Subtest: migrated entrypoints depend on Application instead of migrated domain orchestrators
+ok 6 - migrated entrypoints depend on Application instead of migrated domain orchestrators
+  ---
+  duration_ms: 71.7105
+  ...
+# Subtest: Application never imports presentation entrypoints
+ok 7 - Application never imports presentation entrypoints
+  ---
+  duration_ms: 26.018
+  ...
+# Subtest: Domain and Ports never import the public barrel, Application, or Adapters
+ok 8 - Domain and Ports never import the public barrel, Application, or Adapters
+  ---
+  duration_ms: 117.1974
+  ...
+# Subtest: import analysis sees and rejects default, namespace, and dynamic import bypasses
+ok 9 - import analysis sees and rejects default, namespace, and dynamic import bypasses
+  ---
+  duration_ms: 4.0196
+  ...
+# Subtest: the public barrel exposes the implemented architecture contracts
+ok 10 - the public barrel exposes the implemented architecture contracts
+  ---
+  duration_ms: 0.1185
+  ...
+# Subtest: the public barrel exports v3 and major Application request/result types
+ok 11 - the public barrel exports v3 and major Application request/result types
+  ---
+  duration_ms: 0.609
+  ...
+# Subtest: the runtime Agent registry carries a fourth scanner through inventory diff
+ok 12 - the runtime Agent registry carries a fourth scanner through inventory diff
+  ---
+  duration_ms: 1.3905
+  ...
+# Subtest: unified dashboard backend contract
+    # Subtest: serves a cached unified snapshot and carries its identity into analysis
+    ok 1 - serves a cached unified snapshot and carries its identity into analysis
+      ---
+      duration_ms: 5091.4896
+      ...
+    # Subtest: keeps agent-browser, browser, and chrome in one canonical group with one action per implementation
+    ok 2 - keeps agent-browser, browser, and chrome in one canonical group with one action per implementation
+      ---
+      duration_ms: 66.0881
+      ...
+    # Subtest: allows non-Codex and cross-agent decisions in ledger-only mode without config writes
+    ok 3 - allows non-Codex and cross-agent decisions in ledger-only mode without config writes
+      ---
+      duration_ms: 5098.7569
+      ...
+    # Subtest: returns populated and internally consistent cross-agent sections
+    ok 4 - returns populated and internally consistent cross-agent sections
+      ---
+      duration_ms: 5070.7362
+      ...
+    # Subtest: discovers DeepSeek profile bundles from the repository-standard profile manifest
+    ok 5 - discovers DeepSeek profile bundles from the repository-standard profile manifest
+      ---
+      duration_ms: 49.2792
+      ...
+    # Subtest: returns 410 for legacy business APIs and keeps public DTOs path-free
+    ok 6 - returns 410 for legacy business APIs and keeps public DTOs path-free
+      ---
+      duration_ms: 5073.3861
+      ...
+    # Subtest: verify performs a fresh scan and reports external configuration drift
+    ok 7 - verify performs a fresh scan and reports external configuration drift
+      ---
+      duration_ms: 5079.882
+      ...
+    # Subtest: keeps external ledger changes cached until refresh and then adopts them
+    ok 8 - keeps external ledger changes cached until refresh and then adopts them
+      ---
+      duration_ms: 5085.559
+      ...
+    1..8
+ok 13 - unified dashboard backend contract
+  ---
+  duration_ms: 30620.2941
+  type: 'suite'
+  ...
+# Subtest: Windows Codex bootstrap plan
+    # Subtest: accepts only the two repository URLs and produces a Codex-only resumable plan
+    ok 1 - accepts only the two repository URLs and produces a Codex-only resumable plan
+      ---
+      duration_ms: 1701.0571
+      ...
+    # Subtest: all marketplace metadata versions match package.json
+    ok 2 - all marketplace metadata versions match package.json
+      ---
+      duration_ms: 0.5062
+      ...
+    # Subtest: accepts both npm 10 array and npm 12 keyed-object pack JSON
+    ok 3 - accepts both npm 10 array and npm 12 keyed-object pack JSON
+      ---
+      duration_ms: 0.2154
+      ...
+    # Subtest: retries the state pull before entering idempotent setup
+    ok 4 - retries the state pull before entering idempotent setup
+      ---
+      duration_ms: 0.2417
+      ...
+    # Subtest: refreshes an existing personal marketplace and verifies the installed plugin version
+    ok 5 - refreshes an existing personal marketplace and verifies the installed plugin version
+      ---
+      duration_ms: 0.2155
+      ...
+    # Subtest: falls back after three remote failures only through a same-origin local fast-forward
+    ok 6 - falls back after three remote failures only through a same-origin local fast-forward
+      ---
+      duration_ms: 3621.6673
+      ...
+    # Subtest: rejects a source-origin mismatch before using the local fallback
+    ok 7 - rejects a source-origin mismatch before using the local fallback
+      ---
+      duration_ms: 3791.3753
+      ...
+    # Subtest: matches a PowerShell diagnostic even when a word is line-wrapped
+    ok 8 - matches a PowerShell diagnostic even when a word is line-wrapped
+      ---
+      duration_ms: 0.2936
+      ...
+    # Subtest: rejects a local marketplace branch that cannot fast-forward to source
+    ok 9 - rejects a local marketplace branch that cannot fast-forward to source
+      ---
+      duration_ms: 3536.582
+      ...
+    # Subtest: uses terminating cmdlet errors and leaves LASTEXITCODE checks to native commands
+    ok 10 - uses terminating cmdlet errors and leaves LASTEXITCODE checks to native commands
+      ---
+      duration_ms: 2.001
+      ...
+    # Subtest: smoke-runs the documented raw download command and propagates the native bootstrap exit
+    ok 11 - smoke-runs the documented raw download command and propagates the native bootstrap exit
+      ---
+      duration_ms: 2324.002
+      ...
+    1..11
+ok 14 - Windows Codex bootstrap plan
+  ---
+  duration_ms: 14980.8563
+  type: 'suite'
+  ...
+# Subtest: resolveWorkspaceRoot — 非 workspace cwd
+    # Subtest: Codex 作用域使用自己的缓存且不创建 OpenCode 路径
+    ok 1 - Codex 作用域使用自己的缓存且不创建 OpenCode 路径
+      ---
+      duration_ms: 4.7177
+      ...
+    # Subtest: workspace 外启动 + 固定缓存存在 → 直接命中缓存
+    ok 2 - workspace 外启动 + 固定缓存存在 → 直接命中缓存
+      ---
+      duration_ms: 5.8267
+      ...
+    # Subtest: 固定缓存仍指向旧 opencode-dotfiles → 自动改写为 workspace/usync-dotfiles
+    ok 3 - 固定缓存仍指向旧 opencode-dotfiles → 自动改写为 workspace/usync-dotfiles
+      ---
+      duration_ms: 6.7974
+      ...
+    # Subtest: OPENCODE_SYNC_WORKSPACE_ROOT 环境变量优先于缓存
+    ok 4 - OPENCODE_SYNC_WORKSPACE_ROOT 环境变量优先于缓存
+      ---
+      duration_ms: 5.1685
+      ...
+    # Subtest: 旧位置缓存（workspace 内 opencode-dotfiles/state/）→ 迁移到固定位置
+    ok 5 - 旧位置缓存（workspace 内 opencode-dotfiles/state/）→ 迁移到固定位置
+      ---
+      duration_ms: 6.6293
+      ...
+    # Subtest: workspace 内启动（无缓存）→ 向上找 .gitmodules 兜底
+    ok 6 - workspace 内启动（无缓存）→ 向上找 .gitmodules 兜底
+      ---
+      duration_ms: 3.0576
+      ...
+    # Subtest: Codex stale cache 指向嵌套插件目录时，改从上层真实 workspace 解析
+    ok 7 - Codex stale cache 指向嵌套插件目录时，改从上层真实 workspace 解析
+      ---
+      duration_ms: 215.7283
+      ...
+    # Subtest: 找不到时错误消息包含引导提示
+    ok 8 - 找不到时错误消息包含引导提示
+      ---
+      duration_ms: 2.9772
+      ...
+    1..8
+ok 15 - resolveWorkspaceRoot — 非 workspace cwd
+  ---
+  duration_ms: 253.1588
+  type: 'suite'
+  ...
+# Subtest: CLI verify preflights dsh/all before OpenCode workspace resolution
+ok 16 - CLI verify preflights dsh/all before OpenCode workspace resolution
+  ---
+  duration_ms: 491.0055
+  ...
+# Subtest: CLI export preflights dsh/all before OpenCode workspace resolution
+ok 17 - CLI export preflights dsh/all before OpenCode workspace resolution
+  ---
+  duration_ms: 440.3656
+  ...
+# Subtest: CLI import preflights dsh/all before OpenCode workspace resolution
+ok 18 - CLI import preflights dsh/all before OpenCode workspace resolution
+  ---
+  duration_ms: 431.7955
+  ...
+# Subtest: CLI setup preflights dsh/all before OpenCode workspace resolution
+ok 19 - CLI setup preflights dsh/all before OpenCode workspace resolution
+  ---
+  duration_ms: 461.4723
+  ...
+# Subtest: CLI update preflights dsh/all before OpenCode workspace resolution
+ok 20 - CLI update preflights dsh/all before OpenCode workspace resolution
+  ---
+  duration_ms: 419.3098
+  ...
+# Subtest: CLI push preflights dsh/all before OpenCode workspace resolution
+ok 21 - CLI push preflights dsh/all before OpenCode workspace resolution
+  ---
+  duration_ms: 470.7778
+  ...
+# Subtest: CLI pull preflights dsh/all before OpenCode workspace resolution
+ok 22 - CLI pull preflights dsh/all before OpenCode workspace resolution
+  ---
+  duration_ms: 455.2095
+  ...
+# Subtest: CLI verify rejects every malformed explicit target before resolution
+ok 23 - CLI verify rejects every malformed explicit target before resolution
+  ---
+  duration_ms: 682.4096
+  ...
+# Subtest: CLI export rejects every malformed explicit target before resolution
+ok 24 - CLI export rejects every malformed explicit target before resolution
+  ---
+  duration_ms: 582.9579
+  ...
+# Subtest: CLI import rejects every malformed explicit target before resolution
+ok 25 - CLI import rejects every malformed explicit target before resolution
+  ---
+  duration_ms: 566.5405
+  ...
+# Subtest: CLI setup rejects every malformed explicit target before resolution
+ok 26 - CLI setup rejects every malformed explicit target before resolution
+  ---
+  duration_ms: 599.627
+  ...
+# Subtest: CLI update rejects every malformed explicit target before resolution
+ok 27 - CLI update rejects every malformed explicit target before resolution
+  ---
+  duration_ms: 641.3146
+  ...
+# Subtest: CLI push rejects every malformed explicit target before resolution
+ok 28 - CLI push rejects every malformed explicit target before resolution
+  ---
+  duration_ms: 687.0806
+  ...
+# Subtest: CLI pull rejects every malformed explicit target before resolution
+ok 29 - CLI pull rejects every malformed explicit target before resolution
+  ---
+  duration_ms: 604.3074
+  ...
+# Subtest: CLI push failure is structured and deeply redacted
+ok 30 - CLI push failure is structured and deeply redacted
+  ---
+  duration_ms: 143.3062
+  ...
+# Subtest: CLI pull failure is structured and deeply redacted
+ok 31 - CLI pull failure is structured and deeply redacted
+  ---
+  duration_ms: 145.2052
+  ...
+# Subtest: CLI import failure is structured and deeply redacted
+ok 32 - CLI import failure is structured and deeply redacted
+  ---
+  duration_ms: 157.4781
+  ...
+# Subtest: top-level CLI failures emit one sanitized structured JSON object
+ok 33 - top-level CLI failures emit one sanitized structured JSON object
+  ---
+  duration_ms: 707.2097
+  ...
+# Subtest: detected OpenCode resolves scope without reading its cache first
+ok 34 - detected OpenCode resolves scope without reading its cache first
+  ---
+  duration_ms: 317.8459
+  ...
+# Subtest: an explicit OpenCode target may still use its cache from outside a workspace
+ok 35 - an explicit OpenCode target may still use its cache from outside a workspace
+  ---
+  duration_ms: 1092.4586
+  ...
+# Subtest: detected OpenCode runs normally from a workspace with matching persisted scope
+ok 36 - detected OpenCode runs normally from a workspace with matching persisted scope
+  ---
+  duration_ms: 883.4513
+  ...
+# Subtest: CLI verify keeps one immutable target across detection and init-state
+ok 37 - CLI verify keeps one immutable target across detection and init-state
+  ---
+  duration_ms: 320.106
+  ...
+# Subtest: CLI export keeps one immutable target across detection and init-state
+ok 38 - CLI export keeps one immutable target across detection and init-state
+  ---
+  duration_ms: 322.6964
+  ...
+# Subtest: CLI import keeps one immutable target across detection and init-state
+ok 39 - CLI import keeps one immutable target across detection and init-state
+  ---
+  duration_ms: 372.5098
+  ...
+# Subtest: CLI setup keeps one immutable target across detection and init-state
+ok 40 - CLI setup keeps one immutable target across detection and init-state
+  ---
+  duration_ms: 349.9585
+  ...
+# Subtest: CLI update keeps one immutable target across detection and init-state
+ok 41 - CLI update keeps one immutable target across detection and init-state
+  ---
+  duration_ms: 365.1741
+  ...
+# Subtest: CLI push keeps one immutable target across detection and init-state
+ok 42 - CLI push keeps one immutable target across detection and init-state
+  ---
+  duration_ms: 361.5319
+  ...
+# Subtest: CLI pull keeps one immutable target across detection and init-state
+ok 43 - CLI pull keeps one immutable target across detection and init-state
+  ---
+  duration_ms: 330.0734
+  ...
+# Unknown command: nonexistent
+# Invalid dashboard port: invalid
+# Error: --type, --name, and --source are required for crystallize
+# Error: --type, --name, and --source are required for 'add' action
+# Error: --key-name is required for 'add' action
+# Subtest: CLI usage
+    # Subtest: no command shows usage with all 16 commands
+    ok 1 - no command shows usage with all 16 commands
+      ---
+      duration_ms: 174.569
+      ...
+    # Subtest: unknown command exits non-zero
+    ok 2 - unknown command exits non-zero
+      ---
+      duration_ms: 196.1258
+      ...
+    # Subtest: --help prints usage and exits 0
+    ok 3 - --help prints usage and exits 0
+      ---
+      duration_ms: 200.7444
+      ...
+    # Subtest: -h prints usage and exits 0
+    ok 4 - -h prints usage and exits 0
+      ---
+      duration_ms: 180.4453
+      ...
+    # Subtest: --version prints the package version and exits 0
+    ok 5 - --version prints the package version and exits 0
+      ---
+      duration_ms: 211.5692
+      ...
+    1..5
+ok 44 - CLI usage
+  ---
+  duration_ms: 966.5541
+  type: 'suite'
+  ...
+# Subtest: CLI read-only commands
+    # Subtest: inventory --json returns a safe three-agent payload
+    ok 1 - inventory --json returns a safe three-agent payload
+      ---
+      duration_ms: 166.7661
+      ...
+    # Subtest: dashboard rejects invalid ports
+    ok 2 - dashboard rejects invalid ports
+      ---
+      duration_ms: 163.3855
+      ...
+    # Subtest: status lists submodules
+    ok 3 - status lists submodules
+      ---
+      duration_ms: 167.8171
+      ...
+    # Subtest: verify does not report success when required checks fail
+    ok 4 - verify does not report success when required checks fail
+      ---
+      duration_ms: 1188.1993
+      ...
+    # Subtest: guide generates SYNC-GUIDE.md
+    ok 5 - guide generates SYNC-GUIDE.md
+      ---
+      duration_ms: 219.5838
+      ...
+    # Subtest: api-keys detect lists keys
+    ok 6 - api-keys detect lists keys
+      ---
+      duration_ms: 194.175
+      ...
+    # Subtest: log read shows empty log
+    ok 7 - log read shows empty log
+      ---
+      duration_ms: 212.0777
+      ...
+    1..7
+ok 45 - CLI read-only commands
+  ---
+  duration_ms: 2313.4313
+  type: 'suite'
+  ...
+# Subtest: CLI bilingual output
+    # Subtest: defaults to English (UAGENT_SYNC_LANG unset → en)
+    ok 1 - defaults to English (UAGENT_SYNC_LANG unset → en)
+      ---
+      duration_ms: 182.4586
+      ...
+    # Subtest: --lang zh switches CLI output to Chinese
+    ok 2 - --lang zh switches CLI output to Chinese
+      ---
+      duration_ms: 187.1329
+      ...
+    # Subtest: UAGENT_SYNC_LANG=zh switches CLI output to Chinese
+    ok 3 - UAGENT_SYNC_LANG=zh switches CLI output to Chinese
+      ---
+      duration_ms: 177.5513
+      ...
+    # Subtest: --lang en overrides UAGENT_SYNC_LANG=zh
+    ok 4 - --lang en overrides UAGENT_SYNC_LANG=zh
+      ---
+      duration_ms: 179.2942
+      ...
+    # Subtest: help shows bilingual usage with --lang hint
+    ok 5 - help shows bilingual usage with --lang hint
+      ---
+      duration_ms: 409.4374
+      ...
+    1..5
+ok 46 - CLI bilingual output
+  ---
+  duration_ms: 1137.9148
+  type: 'suite'
+  ...
+# Subtest: CLI stateful commands (safe paths)
+    # Subtest: init --force writes init state and prints next steps
+    ok 1 - init --force writes init state and prints next steps
+      ---
+      duration_ms: 320.0864
+      ...
+    # Subtest: log add records entry then read returns it
+    ok 2 - log add records entry then read returns it
+      ---
+      duration_ms: 346.0885
+      ...
+    # Subtest: log export produces markdown
+    ok 3 - log export produces markdown
+      ---
+      duration_ms: 169.8343
+      ...
+    # Subtest: crystallize without required flags errors
+    ok 4 - crystallize without required flags errors
+      ---
+      duration_ms: 169.6952
+      ...
+    # Subtest: log add without required flags errors
+    ok 5 - log add without required flags errors
+      ---
+      duration_ms: 171.5421
+      ...
+    # Subtest: api-keys add without --key-name errors
+    ok 6 - api-keys add without --key-name errors
+      ---
+      duration_ms: 169.4754
+      ...
+    1..6
+ok 47 - CLI stateful commands (safe paths)
+  ---
+  duration_ms: 1348.2385
+  type: 'suite'
+  ...
+# Subtest: profile roundtrip preserves memory and maps config without transferring trust or auth
+ok 48 - profile roundtrip preserves memory and maps config without transferring trust or auth
+  ---
+  duration_ms: 35.9996
+  ...
+# Subtest: different existing data conflicts; explicit first restore makes a backup
+ok 49 - different existing data conflicts; explicit first restore makes a backup
+  ---
+  duration_ms: 43.3963
+  ...
+# Subtest: three-way baseline protects edits and allows a subsequent source change
+ok 50 - three-way baseline protects edits and allows a subsequent source change
+  ---
+  duration_ms: 42.2484
+  ...
+# Subtest: tampering and path traversal fail before any target writes
+ok 51 - tampering and path traversal fail before any target writes
+  ---
+  duration_ms: 13.0443
+  ...
+# Subtest: secret values block export without creating an uploadable snapshot
+ok 52 - secret values block export without creating an uploadable snapshot
+  ---
+  duration_ms: 5.873
+  ...
+# Subtest: explicit component selection reports omitted skills and refuses empty component selection
+ok 53 - explicit component selection reports omitted skills and refuses empty component selection
+  ---
+  duration_ms: 10.8309
+  ...
+# Subtest: junctions cannot redirect target writes outside the registered profile
+ok 54 - junctions cannot redirect target writes outside the registered profile
+  ---
+  duration_ms: 16.792
+  ...
+# Subtest: profile excludes nested Git directories and worktree pointers without changing source
+ok 55 - profile excludes nested Git directories and worktree pointers without changing source
+  ---
+  duration_ms: 31.3817
+  ...
+# Subtest: legacy snapshot containing Git metadata is refused before target writes
+ok 56 - legacy snapshot containing Git metadata is refused before target writes
+  ---
+  duration_ms: 15.3677
+  ...
+# [uagent-sync] skill source install still running
+# Subtest: Codex extension restoration
+    # Subtest: restores only selected portable entries and treats an absent tombstone as already satisfied
+    ok 1 - restores only selected portable entries and treats an absent tombstone as already satisfied
+      ---
+      duration_ms: 3.1781
+      ...
+    # Subtest: reports missing sources and secret-bearing MCP configuration as errors
+    ok 2 - reports missing sources and secret-bearing MCP configuration as errors
+      ---
+      duration_ms: 0.4488
+      ...
+    # Subtest: restores a remote MCP bearer token by environment-variable name only
+    ok 3 - restores a remote MCP bearer token by environment-variable name only
+      ---
+      duration_ms: 0.1768
+      ...
+    # Subtest: removes an installed tombstone once and rescans until absence is confirmed
+    ok 4 - removes an installed tombstone once and rescans until absence is confirmed
+      ---
+      duration_ms: 0.6413
+      ...
+    # Subtest: does not hide a real tombstone permission failure
+    ok 5 - does not hide a real tombstone permission failure
+      ---
+      duration_ms: 0.2646
+      ...
+    # Subtest: fails when a successful tombstone command does not actually remove the target
+    ok 6 - fails when a successful tombstone command does not actually remove the target
+      ---
+      duration_ms: 0.1671
+      ...
+    # Subtest: treats a not-found removal response as success only after absence is confirmed
+    ok 7 - treats a not-found removal response as success only after absence is confirmed
+      ---
+      duration_ms: 0.4338
+      ...
+    # Subtest: recognizes the bootstrap-installed Uagent plugin as an existing equivalent source
+    ok 8 - recognizes the bootstrap-installed Uagent plugin as an existing equivalent source
+      ---
+      duration_ms: 0.4723
+      ...
+    # Subtest: reports a supply-chain conflict for genuinely different plugin repositories
+    ok 9 - reports a supply-chain conflict for genuinely different plugin repositories
+      ---
+      duration_ms: 0.1627
+      ...
+    # Subtest: groups skills by normalized source and emits one structured source summary
+    ok 10 - groups skills by normalized source and emits one structured source summary
+      ---
+      duration_ms: 1.5199
+      ...
+    # Subtest: reports one grouped failure for every skill covered by a failed source
+    ok 11 - reports one grouped failure for every skill covered by a failed source
+      ---
+      duration_ms: 0.3621
+      ...
+    # Subtest: retries a reset skill source with a bounded backoff and succeeds on the third attempt
+    ok 12 - retries a reset skill source with a bounded backoff and succeeds on the third attempt
+      ---
+      duration_ms: 0.6862
+      ...
+    # Subtest: stops retrying when a pre-retry scan confirms the whole source is installed
+    ok 13 - stops retrying when a pre-retry scan confirms the whole source is installed
+      ---
+      duration_ms: 0.2555
+      ...
+    # Subtest: fails a 38/39 source after exit zero and names the one source-consistent missing skill
+    ok 14 - fails a 38/39 source after exit zero and names the one source-consistent missing skill
+      ---
+      duration_ms: 0.6026
+      ...
+    # Subtest: treats exit one as idempotent success when the immediate rescan is source-complete
+    ok 15 - treats exit one as idempotent success when the immediate rescan is source-complete
+      ---
+      duration_ms: 0.2206
+      ...
+    # Subtest: retries an exit-one partial install until every selected skill from that source is present
+    ok 16 - retries an exit-one partial install until every selected skill from that source is present
+      ---
+      duration_ms: 0.2524
+      ...
+    # Subtest: does not count a globally same-named skill from a different source
+    ok 17 - does not count a globally same-named skill from a different source
+      ---
+      duration_ms: 0.1725
+      ...
+    # Subtest: keeps one source summary and verifies every selected ID when that source was initially partial
+    ok 18 - keeps one source summary and verifies every selected ID when that source was initially partial
+      ---
+      duration_ms: 0.3313
+      ...
+    # Subtest: retries spinner-only clone failures and writes clean structured decisions
+    ok 19 - retries spinner-only clone failures and writes clean structured decisions
+      ---
+      duration_ms: 5.2142
+      ...
+    # Subtest: stops a spinner clone failure immediately when permanent 404 evidence is present
+    ok 20 - stops a spinner clone failure immediately when permanent 404 evidence is present
+      ---
+      duration_ms: 0.4449
+      ...
+    # Subtest: does not start another clone attempt after the source total timeout expires
+    ok 21 - does not start another clone attempt after the source total timeout expires
+      ---
+      duration_ms: 0.2931
+      ...
+    # Subtest: emits already-complete for an initially installed source without duplicating summaries
+    ok 22 - emits already-complete for an initially installed source without duplicating summaries
+      ---
+      duration_ms: 0.196
+      ...
+    # Subtest: fails non-retryable source errors immediately and keeps full details in an optional report
+    ok 23 - fails non-retryable source errors immediately and keeps full details in an optional report
+      ---
+      duration_ms: 3.3067
+      ...
+    # Subtest: keeps separate redacted stdout and stderr summaries when stdout is long
+    ok 24 - keeps separate redacted stdout and stderr summaries when stdout is long
+      ---
+      duration_ms: 0.3129
+      ...
+    # Subtest: redacts command stderr before adding it to structured recovery errors
+    ok 25 - redacts command stderr before adding it to structured recovery errors
+      ---
+      duration_ms: 1.9552
+      ...
+    # Subtest: aggregates existing skills into one skipped entry per normalized source
+    ok 26 - aggregates existing skills into one skipped entry per normalized source
+      ---
+      duration_ms: 0.5633
+      ...
+    1..26
+ok 57 - Codex extension restoration
+  ---
+  duration_ms: 24.5264
+  type: 'suite'
+  ...
+# Subtest: trusted Windows command execution
+    # Subtest: resolves trusted codex.cmd and npx.cmd shims without executing WindowsApps or shell metacharacters
+    ok 1 - resolves trusted codex.cmd and npx.cmd shims without executing WindowsApps or shell metacharacters
+      ---
+      duration_ms: 156.8226
+      ...
+    # Subtest: emits periodic stderr heartbeats while a real monitored skill command is still running
+    ok 2 - emits periodic stderr heartbeats while a real monitored skill command is still running
+      ---
+      duration_ms: 921.4927
+      ...
+    # Subtest: terminates a real monitored skill command at its bounded timeout
+    ok 3 - terminates a real monitored skill command at its bounded timeout
+      ---
+      duration_ms: 377.5965
+      ...
+    # Subtest: retries two real monitored connection resets and succeeds on the third process
+    ok 4 - retries two real monitored connection resets and succeeds on the third process
+      ---
+      duration_ms: 487.3809
+      ...
+    1..4
+ok 58 - trusted Windows command execution
+  ---
+  duration_ms: 1943.6384
+  type: 'suite'
+  ...
+# Subtest: Codex-only verify/setup scope
+    # Subtest: setup scans current Codex extensions instead of treating all selected entries as absent
+    ok 1 - setup scans current Codex extensions instead of treating all selected entries as absent
+      ---
+      duration_ms: 0.9053
+      ...
+    # Subtest: verify checks Codex and explicitly skips OpenCode without an error
+    ok 2 - verify checks Codex and explicitly skips OpenCode without an error
+      ---
+      duration_ms: 940.6636
+      ...
+    # Subtest: verify reports a selected MCP whose required credential variable is unset
+    ok 3 - verify reports a selected MCP whose required credential variable is unset
+      ---
+      duration_ms: 882.482
+      ...
+    # Subtest: setup planning excludes every OpenCode action
+    ok 4 - setup planning excludes every OpenCode action
+      ---
+      duration_ms: 2.9235
+      ...
+    # Subtest: writes a safe source failure report and emits setup progress on Windows
+    ok 5 - writes a safe source failure report and emits setup progress on Windows
+      ---
+      duration_ms: 511.0162
+      ...
+    # Subtest: CLI verify returns structured fields and exits non-zero on required errors
+    ok 6 - CLI verify returns structured fields and exits non-zero on required errors
+      ---
+      duration_ms: 1077.0885
+      ...
+    1..6
+ok 59 - Codex-only verify/setup scope
+  ---
+  duration_ms: 3419.7993
+  type: 'suite'
+  ...
+# > uagent-sync@2.1.1 prepack
+# > npm run build
+# > uagent-sync@2.1.1 build
+# > rimraf dist && tsc && node scripts/generate-dashboard-i18n.mjs && node scripts/copy-dashboard.mjs
+# Subtest: Codex crystallize Skill
+    # Subtest: publishes a discoverable Skill with the required triggers and CLI contract
+    ok 1 - publishes a discoverable Skill with the required triggers and CLI contract
+      ---
+      duration_ms: 1.4763
+      ...
+    # Subtest: includes the crystallize Skill and Codex metadata in the npm package
+    ok 2 - includes the crystallize Skill and Codex metadata in the npm package
+      ---
+      duration_ms: 5223.2727
+      ...
+    1..2
+ok 60 - Codex crystallize Skill
+  ---
+  duration_ms: 5225.8867
+  type: 'suite'
+  ...
+# {"ok":false,"warnings":[],"errors":["Crystallize preflight refused: usync-dotfiles is ignored by the parent repository and is not a Git repository"],"skipped":[],"targetAgent":"codex"}
+# Subtest: crystallize step 4 with dotfiles as a git submodule
+    # Subtest: exits 0 and reports committed steps
+    ok 1 - exits 0 and reports committed steps
+      ---
+      duration_ms: 0.4798
+      ...
+    # Subtest: commits the generated artifacts inside the submodule
+    ok 2 - commits the generated artifacts inside the submodule
+      ---
+      duration_ms: 229.2104
+      ...
+    # Subtest: pushes the dotfiles commit to its remote
+    ok 3 - pushes the dotfiles commit to its remote
+      ---
+      duration_ms: 88.6454
+      ...
+    # Subtest: updates the workspace pointer and pushes it
+    ok 4 - updates the workspace pointer and pushes it
+      ---
+      duration_ms: 209.6041
+      ...
+    1..4
+ok 61 - crystallize step 4 with dotfiles as a git submodule
+  ---
+  duration_ms: 7117.2156
+  type: 'suite'
+  ...
+# Subtest: crystallize step 4 with dotfiles as a plain directory
+    # Subtest: commits files directly in the workspace repo
+    ok 1 - commits files directly in the workspace repo
+      ---
+      duration_ms: 1962.4401
+      ...
+    1..1
+ok 62 - crystallize step 4 with dotfiles as a plain directory
+  ---
+  duration_ms: 1963.0359
+  type: 'suite'
+  ...
+# Subtest: crystallize step 4 failure visibility (no git repo)
+    # Subtest: surfaces the failure detail instead of a blank warning
+    ok 1 - surfaces the failure detail instead of a blank warning
+      ---
+      duration_ms: 351.4085
+      ...
+    1..1
+ok 63 - crystallize step 4 failure visibility (no git repo)
+  ---
+  duration_ms: 352.2511
+  type: 'suite'
+  ...
+# Subtest: crystallize preflight side-effect protection
+    # Subtest: refuses an ignored plain dotfiles directory before writing provenance artifacts
+    ok 1 - refuses an ignored plain dotfiles directory before writing provenance artifacts
+      ---
+      duration_ms: 594.9971
+      ...
+    1..1
+ok 64 - crystallize preflight side-effect protection
+  ---
+  duration_ms: 595.6701
+  type: 'suite'
+  ...
+# Subtest: dashboard assets
+    # Subtest: builds the single dashboard shell and four top-level routes
+    ok 1 - builds the single dashboard shell and four top-level routes
+      ---
+      duration_ms: 2.0876
+      ...
+    # Subtest: keeps legacy extension URL on the same shell without loading a second page
+    ok 2 - keeps legacy extension URL on the same shell without loading a second page
+      ---
+      duration_ms: 0.4813
+      ...
+    # Subtest: switches language in place and exposes both dictionaries
+    ok 3 - switches language in place and exposes both dictionaries
+      ---
+      duration_ms: 0.2835
+      ...
+    # Subtest: uses a bounded inventory request and preserves the last result on errors
+    ok 4 - uses a bounded inventory request and preserves the last result on errors
+      ---
+      duration_ms: 0.5715
+      ...
+    # Subtest: keeps all dashboard scripts syntactically executable
+    ok 5 - keeps all dashboard scripts syntactically executable
+      ---
+      duration_ms: 188.4995
+      ...
+    # Subtest: does not ship legacy migration UI or browser decision storage
+    ok 6 - does not ship legacy migration UI or browser decision storage
+      ---
+      duration_ms: 0.9749
+      ...
+    1..6
+ok 65 - dashboard assets
+  ---
+  duration_ms: 194.2665
+  type: 'suite'
+  ...
+# Subtest: dashboard server
+    # Subtest: serves all read-only JSON endpoints without secrets
+    ok 1 - serves all read-only JSON endpoints without secrets
+      ---
+      duration_ms: 5066.8573
+      ...
+    # Subtest: serves the i18n asset required before app initialization
+    ok 2 - serves the i18n asset required before app initialization
+      ---
+      duration_ms: 5031.3076
+      ...
+    # Subtest: serves extension deduplication from the same dashboard origin
+    ok 3 - serves extension deduplication from the same dashboard origin
+      ---
+      duration_ms: 4087.7707
+      ...
+    # Subtest: rejects unknown routes and write methods
+    ok 4 - rejects unknown routes and write methods
+      ---
+      duration_ms: 5043.1134
+      ...
+    # Subtest: retires the legacy migration-draft API
+    ok 5 - retires the legacy migration-draft API
+      ---
+      duration_ms: 5023.7557
+      ...
+    # Subtest: does not return migration results before an explicit analysis scope
+    ok 6 - does not return migration results before an explicit analysis scope
+      ---
+      duration_ms: 4084.5919
+      ...
+    # Subtest: rejects same-agent analysis and returns one unified scoped result
+    ok 7 - rejects same-agent analysis and returns one unified scoped result
+      ---
+      duration_ms: 5032.9104
+      ...
+    1..7
+ok 66 - dashboard server
+  ---
+  duration_ms: 33373.7308
+  type: 'suite'
+  ...
+# Subtest: unified dashboard shell
+    # Subtest: exposes exactly four top-level navigation routes
+    ok 1 - exposes exactly four top-level navigation routes
+      ---
+      duration_ms: 1.1568
+      ...
+    # Subtest: models migration analysis as five real internal tabs
+    ok 2 - models migration analysis as five real internal tabs
+      ---
+      duration_ms: 0.6362
+      ...
+    # Subtest: contains no legacy shell references
+    ok 3 - contains no legacy shell references
+      ---
+      duration_ms: 0.892
+      ...
+    # Subtest: does not build or ship a second legacy dashboard implementation
+    ok 4 - does not build or ship a second legacy dashboard implementation
+      ---
+      duration_ms: 0.4512
+      ...
+    # Subtest: runs a real Playwright browser test from the e2e command
+    ok 5 - runs a real Playwright browser test from the e2e command
+      ---
+      duration_ms: 0.3563
+      ...
+    # Subtest: starts with a null analysis scope and requires an explicit start action
+    ok 6 - starts with a null analysis scope and requires an explicit start action
+      ---
+      duration_ms: 0.35
+      ...
+    # Subtest: keeps a cross-agent swap control that invalidates the previous analysis
+    ok 7 - keeps a cross-agent swap control that invalidates the previous analysis
+      ---
+      duration_ms: 0.3834
+      ...
+    # Subtest: renders real coverage, compatibility, and execution modules
+    ok 8 - renders real coverage, compatibility, and execution modules
+      ---
+      duration_ms: 0.399
+      ...
+    # Subtest: invalidates unsafe transient state on preview failure and rescan
+    ok 9 - invalidates unsafe transient state on preview failure and rescan
+      ---
+      duration_ms: 0.4384
+      ...
+    # Subtest: guards asynchronous analysis actions against stale responses and duplicate submits
+    ok 10 - guards asynchronous analysis actions against stale responses and duplicate submits
+      ---
+      duration_ms: 0.3094
+      ...
+    # Subtest: keeps unavailable single-agent deep links explicit instead of silently changing tabs
+    ok 11 - keeps unavailable single-agent deep links explicit instead of silently changing tabs
+      ---
+      duration_ms: 0.3072
+      ...
+    # Subtest: switches language in place without reloading the document
+    ok 12 - switches language in place without reloading the document
+      ---
+      duration_ms: 0.4011
+      ...
+    # Subtest: generates the browser dictionary from the TypeScript message source
+    ok 13 - generates the browser dictionary from the TypeScript message source
+      ---
+      duration_ms: 0.9329
+      ...
+    # Subtest: keeps every responsive navigation item available
+    ok 14 - keeps every responsive navigation item available
+      ---
+      duration_ms: 0.2369
+      ...
+    1..14
+ok 67 - unified dashboard shell
+  ---
+  duration_ms: 8.8714
+  type: 'suite'
+  ...
+# Subtest: publication refuses traversal and literal credentials before Git/network mutation
+ok 68 - publication refuses traversal and literal credentials before Git/network mutation
+  ---
+  duration_ms: 6.8335
+  ...
+# Subtest: device registry
+    # Subtest: registers one local device with a stable random id on rerun
+    ok 1 - registers one local device with a stable random id on rerun
+      ---
+      duration_ms: 47.1265
+      ...
+    # Subtest: supports multiple devices and rejects an ambiguous alias
+    ok 2 - supports multiple devices and rejects an ambiguous alias
+      ---
+      duration_ms: 44.18
+      ...
+    # Subtest: renames a device without changing its id
+    ok 3 - renames a device without changing its id
+      ---
+      duration_ms: 32.2666
+      ...
+    # Subtest: reconnects to another checkout only when the same device id is present
+    ok 4 - reconnects to another checkout only when the same device id is present
+      ---
+      duration_ms: 41.6575
+      ...
+    # Subtest: rejects cross-schema and malformed records
+    ok 5 - rejects cross-schema and malformed records
+      ---
+      duration_ms: 7.7358
+      ...
+    # Subtest: rejects path traversal, symlink escape, and a connection inside the registry
+    ok 6 - rejects path traversal, symlink escape, and a connection inside the registry
+      ---
+      duration_ms: 8.6831
+      ...
+    # Subtest: does not overwrite an existing file with a conflicting device identity
+    ok 7 - does not overwrite an existing file with a conflicting device identity
+      ---
+      duration_ms: 7.9595
+      ...
+    # Subtest: CLI emits JSON and does not expose URL credentials
+    ok 8 - CLI emits JSON and does not expose URL credentials
+      ---
+      duration_ms: 22.2006
+      ...
+    1..8
+ok 69 - device registry
+  ---
+  duration_ms: 213.4533
+  type: 'suite'
+  ...
+# Subtest: audit includes ignored and untracked documents without reading credential contents
+ok 70 - audit includes ignored and untracked documents without reading credential contents
+  ---
+  duration_ms: 529.2054
+  ...
+# Subtest: dsh plugin schema contract (dsh-tools)
+    # Subtest: apply() registers all 16 sync_* tools against the pinned dsh-tools contract
+    ok 1 - apply() registers all 16 sync_* tools against the pinned dsh-tools contract
+      ---
+      duration_ms: 3.193
+      ...
+    1..1
+ok 71 - dsh plugin schema contract (dsh-tools)
+  ---
+  duration_ms: 3.9703
+  type: 'suite'
+  ...
+# Subtest: argsToFlags
+    # Subtest: maps string, boolean true, boolean false, arrays, and underscore-to-dash
+    ok 1 - maps string, boolean true, boolean false, arrays, and underscore-to-dash
+      ---
+      duration_ms: 0.7896
+      ...
+    # Subtest: omits undefined/null values and keeps order
+    ok 2 - omits undefined/null values and keeps order
+      ---
+      duration_ms: 0.1195
+      ...
+    1..2
+ok 72 - argsToFlags
+  ---
+  duration_ms: 1.6086
+  type: 'suite'
+  ...
+# Subtest: findWorkspaceRoot
+    # Subtest: walks up from a nested dir to the .gitmodules root
+    ok 1 - walks up from a nested dir to the .gitmodules root
+      ---
+      duration_ms: 4.6384
+      ...
+    # Subtest: returns undefined when no .gitmodules in ancestors
+    ok 2 - returns undefined when no .gitmodules in ancestors
+      ---
+      duration_ms: 1.9225
+      ...
+    1..2
+ok 73 - findWorkspaceRoot
+  ---
+  duration_ms: 6.8389
+  type: 'suite'
+  ...
+# Subtest: findDeep
+    # Subtest: finds uagent-sync/dist/cli.js under the workspace root
+    ok 1 - finds uagent-sync/dist/cli.js under the workspace root
+      ---
+      duration_ms: 4.0059
+      ...
+    # Subtest: skips node_modules and .git
+    ok 2 - skips node_modules and .git
+      ---
+      duration_ms: 3.2519
+      ...
+    # Subtest: returns undefined when nothing matches
+    ok 3 - returns undefined when nothing matches
+      ---
+      duration_ms: 0.7518
+      ...
+    1..3
+ok 74 - findDeep
+  ---
+  duration_ms: 8.3363
+  type: 'suite'
+  ...
+# Subtest: resolveCliPath
+    # Subtest: prefers explicit cliPath when it exists
+    ok 1 - prefers explicit cliPath when it exists
+      ---
+      duration_ms: 1.316
+      ...
+    # Subtest: ignores explicit cliPath when missing, falls to env var
+    ok 2 - ignores explicit cliPath when missing, falls to env var
+      ---
+      duration_ms: 1.8446
+      ...
+    # Subtest: finds the CLI via workspace recursion when nothing else set
+    ok 3 - finds the CLI via workspace recursion when nothing else set
+      ---
+      duration_ms: 5.1587
+      ...
+    # Subtest: finds the CLI via npm dependency (node_modules/uagent-sync/dist/cli.js) before workspace recursion
+    ok 4 - finds the CLI via npm dependency (node_modules/uagent-sync/dist/cli.js) before workspace recursion
+      ---
+      duration_ms: 3.7512
+      ...
+    # Subtest: npm dependency lookup climbs out of nested installs (pnpm-style layout)
+    ok 5 - npm dependency lookup climbs out of nested installs (pnpm-style layout)
+      ---
+      duration_ms: 5.4861
+      ...
+    # Subtest: returns undefined when CLI is nowhere to be found
+    ok 6 - returns undefined when CLI is nowhere to be found
+      ---
+      duration_ms: 1.9557
+      ...
+    # Subtest: cliPathError gives actionable guidance
+    ok 7 - cliPathError gives actionable guidance
+      ---
+      duration_ms: 0.2689
+      ...
+    1..7
+ok 75 - resolveCliPath
+  ---
+  duration_ms: 20.3079
+  type: 'suite'
+  ...
+# Subtest: DSH bundle manifest compatibility
+    # Subtest: never declares required:false (DSH schema rejects it; optional params omit the field)
+    ok 1 - never declares required:false (DSH schema rejects it; optional params omit the field)
+      ---
+      duration_ms: 0.2029
+      ...
+    # Subtest: declares schemastery as a real dependency and host packages as peers
+    ok 2 - declares schemastery as a real dependency and host packages as peers
+      ---
+      duration_ms: 0.0741
+      ...
+    # Subtest: declares uagent-sync as a dependency so the CLI ships with the npm-installed plugin
+    ok 3 - declares uagent-sync as a dependency so the CLI ships with the npm-installed plugin
+      ---
+      duration_ms: 0.0585
+      ...
+    1..3
+ok 76 - DSH bundle manifest compatibility
+  ---
+  duration_ms: 0.4786
+  type: 'suite'
+  ...
+# Subtest: skill bridging
+    # Subtest: parseSkillMd extracts name/description and strips frontmatter
+    ok 1 - parseSkillMd extracts name/description and strips frontmatter
+      ---
+      duration_ms: 0.2667
+      ...
+    # Subtest: parseSkillMd returns null without frontmatter or missing fields
+    ok 2 - parseSkillMd returns null without frontmatter or missing fields
+      ---
+      duration_ms: 0.1862
+      ...
+    # Subtest: resolveSkillsDir derives <checkout>/skills from the CLI path
+    ok 3 - resolveSkillsDir derives <checkout>/skills from the CLI path
+      ---
+      duration_ms: 2.6702
+      ...
+    # Subtest: resolveSkillsDir returns undefined when skills dir missing
+    ok 4 - resolveSkillsDir returns undefined when skills dir missing
+      ---
+      duration_ms: 2.0086
+      ...
+    1..4
+ok 77 - skill bridging
+  ---
+  duration_ms: 5.3302
+  type: 'suite'
+  ...
+# Subtest: runCli + renderResult
+    # Subtest: captures stdout on success
+    ok 1 - captures stdout on success
+      ---
+      duration_ms: 93.2852
+      ...
+    # Subtest: reports exit code and stderr on failure
+    ok 2 - reports exit code and stderr on failure
+      ---
+      duration_ms: 80.9739
+      ...
+    # Subtest: kills on timeout and marks the result
+    ok 3 - kills on timeout and marks the result
+      ---
+      duration_ms: 543.346
+      ...
+    # Subtest: real CLI without command prints usage and exits 1
+    ok 4 - real CLI without command prints usage and exits 1
+      ---
+      duration_ms: 152.6709
+      ...
+    1..4
+ok 78 - runCli + renderResult
+  ---
+  duration_ms: 870.8239
+  type: 'suite'
+  ...
+# Subtest: DSH target scope forwarding
+    # Subtest: passes --target-agent dsh through all workspace operation tools
+    ok 1 - passes --target-agent dsh through all workspace operation tools
+      ---
+      duration_ms: 584.2315
+      ...
+    1..1
+ok 79 - DSH target scope forwarding
+  ---
+  duration_ms: 584.426
+  type: 'suite'
+  ...
+# Subtest: verify entrypoint parity
+    # Subtest: keeps the existing human and JSON verification output contracts
+    ok 1 - keeps the existing human and JSON verification output contracts
+      ---
+      duration_ms: 1.3321
+      ...
+    # Subtest: routes CLI and plugin verification through the shared workspace application
+    ok 2 - routes CLI and plugin verification through the shared workspace application
+      ---
+      duration_ms: 1.04
+      ...
+    1..2
+ok 80 - verify entrypoint parity
+  ---
+  duration_ms: 3.2988
+  type: 'suite'
+  ...
+# Subtest: formats Plugin Application results with sanitized structured metadata
+ok 81 - formats Plugin Application results with sanitized structured metadata
+  ---
+  duration_ms: 2.9322
+  ...
+# Subtest: deeply redacts every structured Application result field including URL credentials
+ok 82 - deeply redacts every structured Application result field including URL credentials
+  ---
+  duration_ms: 1.3244
+  ...
+# Subtest: routes CLI failure JSON through the shared structured result formatter
+ok 83 - routes CLI failure JSON through the shared structured result formatter
+  ---
+  duration_ms: 0.6908
+  ...
+# Subtest: exportWorkspace
+    # Subtest: scans the complete serialized artifact before writing it
+    ok 1 - scans the complete serialized artifact before writing it
+      ---
+      duration_ms: 9.802
+      ...
+    # Subtest: fails closed without writing when the secret scan rejects the artifact
+    ok 2 - fails closed without writing when the secret scan rejects the artifact
+      ---
+      duration_ms: 0.9992
+      ...
+    # Subtest: fails unsupported dsh/all scopes before collection, scanning, or any file write
+    ok 3 - fails unsupported dsh/all scopes before collection, scanning, or any file write
+      ---
+      duration_ms: 0.8775
+      ...
+    # Subtest: owns the Plugin tracking policy and performs every .gitignore operation through FileSystem
+    ok 4 - owns the Plugin tracking policy and performs every .gitignore operation through FileSystem
+      ---
+      duration_ms: 1.0873
+      ...
+    1..4
+ok 84 - exportWorkspace
+  ---
+  duration_ms: 13.6937
+  type: 'suite'
+  ...
+# Subtest: importWorkspace
+    # Subtest: propagates a domain import failure as ok=false
+    ok 1 - propagates a domain import failure as ok=false
+      ---
+      duration_ms: 3.6401
+      ...
+    # Subtest: exposes a pure capability preflight with stable unsupported-target errors
+    ok 2 - exposes a pure capability preflight with stable unsupported-target errors
+      ---
+      duration_ms: 0.8338
+      ...
+    # Subtest: parses with the artifact codec and rejects a target mismatch before mutation
+    ok 3 - parses with the artifact codec and rejects a target mismatch before mutation
+      ---
+      duration_ms: 1.6891
+      ...
+    # Subtest: passes the validated v3 artifact to the legacy bridge without dropping fields
+    ok 4 - passes the validated v3 artifact to the legacy bridge without dropping fields
+      ---
+      duration_ms: 0.943
+      ...
+    # Subtest: validates target scope before a dry-run snapshot or diff
+    ok 5 - validates target scope before a dry-run snapshot or diff
+      ---
+      duration_ms: 0.9427
+      ...
+    # Subtest: fails unsupported dsh/all scopes before codec parsing or any downstream work
+    ok 6 - fails unsupported dsh/all scopes before codec parsing or any downstream work
+      ---
+      duration_ms: 1.3015
+      ...
+    1..6
+ok 85 - importWorkspace
+  ---
+  duration_ms: 9.9275
+  type: 'suite'
+  ...
+# Subtest: nodeFileSystem
+    # Subtest: implements the text file port
+    ok 1 - implements the text file port
+      ---
+      duration_ms: 6.7772
+      ...
+    1..1
+ok 86 - nodeFileSystem
+  ---
+  duration_ms: 7.0342
+  type: 'suite'
+  ...
+# Subtest: export/import entrypoint parity
+    # Subtest: keeps CLI path and URL parsing at the edge while delegating both workflows
+    ok 1 - keeps CLI path and URL parsing at the edge while delegating both workflows
+      ---
+      duration_ms: 0.7925
+      ...
+    # Subtest: keeps Plugin tool schemas and text protocol while delegating both workflows
+    ok 2 - keeps Plugin tool schemas and text protocol while delegating both workflows
+      ---
+      duration_ms: 0.5177
+      ...
+    1..2
+ok 87 - export/import entrypoint parity
+  ---
+  duration_ms: 1.4724
+  type: 'suite'
+  ...
+# Subtest: real CLI export/import protocol
+    # Subtest: roundtrips a supported OpenCode artifact with stable exit/output and JSON
+    ok 1 - roundtrips a supported OpenCode artifact with stable exit/output and JSON
+      ---
+      duration_ms: 389.501
+      ...
+    # Subtest: fails dsh/all export and import with ok=false before artifact writes or parsing
+    ok 2 - fails dsh/all export and import with ok=false before artifact writes or parsing
+      ---
+      duration_ms: 599.2257
+      ...
+    # Subtest: exits non-zero when the domain importer returns success=false
+    ok 3 - exits non-zero when the domain importer returns success=false
+      ---
+      duration_ms: 159.0592
+      ...
+    # Subtest: preflights unsupported imports before a missing path read or observable URL fetch
+    ok 4 - preflights unsupported imports before a missing path read or observable URL fetch
+      ---
+      duration_ms: 635.4477
+      ...
+    1..4
+ok 88 - real CLI export/import protocol
+  ---
+  duration_ms: 1783.7655
+  type: 'suite'
+  ...
+# Subtest: real Plugin export/import protocol
+    # Subtest: returns success and failure as Plugin text while application owns tracking
+    ok 1 - returns success and failure as Plugin text while application owns tracking
+      ---
+      duration_ms: 129.2451
+      ...
+    # Subtest: renders artifact write failures as stable non-secret Plugin text
+    ok 2 - renders artifact write failures as stable non-secret Plugin text
+      ---
+      duration_ms: 8.0619
+      ...
+    1..2
+ok 89 - real Plugin export/import protocol
+  ---
+  duration_ms: 137.6126
+  type: 'suite'
+  ...
+# Subtest: legacy extension conflict API
+    # Subtest: is frozen while the unified migration analysis owns decisions
+    ok 1 - is frozen while the unified migration analysis owns decisions
+      ---
+      duration_ms: 5053.0442
+      ...
+    1..1
+ok 90 - legacy extension conflict API
+  ---
+  duration_ms: 5054.7895
+  type: 'suite'
+  ...
+# Subtest: Codex extension governance
+    # Subtest: normalizes capability IDs neutrally for same-type and cross-type matches
+    ok 1 - normalizes capability IDs neutrally for same-type and cross-type matches
+      ---
+      duration_ms: 0.5009
+      ...
+    # Subtest: discovers only active official extensions in deterministic order
+    ok 2 - discovers only active official extensions in deterministic order
+      ---
+      duration_ms: 10.054
+      ...
+    # Subtest: validates ledger decisions and rejects absolute paths
+    ok 3 - validates ledger decisions and rejects absolute paths
+      ---
+      duration_ms: 2.3315
+      ...
+    # Subtest: does not trust a personal manifest that claims an official source
+    ok 4 - does not trust a personal manifest that claims an official source
+      ---
+      duration_ms: 0.2925
+      ...
+    # Subtest: edits only a unique boolean enabled span while preserving BOM, CRLF, comments, and order
+    ok 5 - edits only a unique boolean enabled span while preserving BOM, CRLF, comments, and order
+      ---
+      duration_ms: 1.2046
+      ...
+    # Subtest: stops an extension block at the next unrelated TOML table
+    ok 6 - stops an extension block at the next unrelated TOML table
+      ---
+      duration_ms: 0.1687
+      ...
+    1..6
+ok 91 - Codex extension governance
+  ---
+  duration_ms: 15.5783
+  type: 'suite'
+  ...
+# Subtest: fixture command runner
+    # Subtest: retries one exact environment failure with a fresh fixture
+    ok 1 - retries one exact environment failure with a fresh fixture
+      ---
+      duration_ms: 0.7647
+      ...
+    # Subtest: fails after the single allowed retry when the environment error repeats
+    ok 2 - fails after the single allowed retry when the environment error repeats
+      ---
+      duration_ms: 0.3708
+      ...
+    # Subtest: does not retry ordinary command failures
+    ok 3 - does not retry ordinary command failures
+      ---
+      duration_ms: 0.1265
+      ...
+    # Subtest: selects an absolute trusted Git executable and rejects WindowsApps shims
+    ok 4 - selects an absolute trusted Git executable and rejects WindowsApps shims
+      ---
+      duration_ms: 0.3101
+      ...
+    # Subtest: passes Git arguments as argv, preserving spaces and shell metacharacters
+    ok 5 - passes Git arguments as argv, preserving spaces and shell metacharacters
+      ---
+      duration_ms: 448.9593
+      ...
+    1..5
+ok 92 - fixture command runner
+  ---
+  duration_ms: 451.596
+  type: 'suite'
+  ...
+# Subtest: importSystemState redacted sentinel guard
+    # Subtest: should keep local real url when synced value contains <hidden>
+    ok 1 - should keep local real url when synced value contains <hidden>
+      ---
+      duration_ms: 2.4949
+      ...
+    # Subtest: should write <hidden> sentinel on a fresh device (no local config)
+    ok 2 - should write <hidden> sentinel on a fresh device (no local config)
+      ---
+      duration_ms: 1.308
+      ...
+    1..2
+ok 93 - importSystemState redacted sentinel guard
+  ---
+  duration_ms: 7.9136
+  type: 'suite'
+  ...
+# Subtest: data-driven MCP detection
+    # Subtest: should load known MCPs from data file
+    ok 1 - should load known MCPs from data file
+      ---
+      duration_ms: 1.265
+      ...
+    # Subtest: should fall back to built-in repo data when workspace has no data file
+    ok 2 - should fall back to built-in repo data when workspace has no data file
+      ---
+      duration_ms: 0.3611
+      ...
+    # Subtest: should match by command pattern
+    ok 3 - should match by command pattern
+      ---
+      duration_ms: 0.1851
+      ...
+    # Subtest: should match by URL pattern (remote MCPs)
+    ok 4 - should match by URL pattern (remote MCPs)
+      ---
+      duration_ms: 0.0638
+      ...
+    # Subtest: should match by env var patterns
+    ok 5 - should match by env var patterns
+      ---
+      duration_ms: 0.0734
+      ...
+    # Subtest: should analyze MCP with known entry
+    ok 6 - should analyze MCP with known entry
+      ---
+      duration_ms: 0.2452
+      ...
+    # Subtest: should analyze unknown MCP gracefully
+    ok 7 - should analyze unknown MCP gracefully
+      ---
+      duration_ms: 0.075
+      ...
+    1..7
+ok 94 - data-driven MCP detection
+  ---
+  duration_ms: 77.4216
+  type: 'suite'
+  ...
+# Subtest: known-mcps.json data integrity
+    # Subtest: should exist and be valid JSON
+    ok 1 - should exist and be valid JSON
+      ---
+      duration_ms: 0.412
+      ...
+    1..1
+ok 95 - known-mcps.json data integrity
+  ---
+  duration_ms: 0.5103
+  type: 'suite'
+  ...
+# Subtest: migration analysis contract
+    # Subtest: requires an explicit scope and rejects same-agent cross analysis
+    ok 1 - requires an explicit scope and rejects same-agent cross analysis
+      ---
+      duration_ms: 0.4608
+      ...
+    # Subtest: does not create a disable action for cross-agent relations
+    ok 2 - does not create a disable action for cross-agent relations
+      ---
+      duration_ms: 0.4884
+      ...
+    # Subtest: groups multiple relations into one implementation action
+    ok 3 - groups multiple relations into one implementation action
+      ---
+      duration_ms: 8.0285
+      ...
+    # Subtest: never repeats an implementation action across different capability groups
+    ok 4 - never repeats an implementation action across different capability groups
+      ---
+      duration_ms: 0.2559
+      ...
+    1..4
+ok 96 - migration analysis contract
+  ---
+  duration_ms: 10.2754
+  type: 'suite'
+  ...
+# Subtest: migration analysis core model
+    # Subtest: uses the same context and relation implementations through every public entrypoint
+    ok 1 - uses the same context and relation implementations through every public entrypoint
+      ---
+      duration_ms: 0.2625
+      ...
+    # Subtest: requires a complete scope and rejects a same-agent route
+    ok 2 - requires a complete scope and rejects a same-agent route
+      ---
+      duration_ms: 0.752
+      ...
+    # Subtest: allows disable_in_agent only for single-agent Codex analysis
+    ok 3 - allows disable_in_agent only for single-agent Codex analysis
+      ---
+      duration_ms: 0.1585
+      ...
+    # Subtest: derives an implementation id without content fingerprint and validates provenance
+    ok 4 - derives an implementation id without content fingerprint and validates provenance
+      ---
+      duration_ms: 0.527
+      ...
+    # Subtest: validates relation and confidence vocabularies
+    ok 5 - validates relation and confidence vocabularies
+      ---
+      duration_ms: 7.1839
+      ...
+    # Subtest: uses one relation type across the factory and production grouping API
+    ok 6 - uses one relation type across the factory and production grouping API
+      ---
+      duration_ms: 0.4943
+      ...
+    # Subtest: groups equivalent implementations by capability with one action per implementation
+    ok 7 - groups equivalent implementations by capability with one action per implementation
+      ---
+      duration_ms: 0.4028
+      ...
+    # Subtest: sanitizes public output without locators or absolute paths
+    ok 8 - sanitizes public output without locators or absolute paths
+      ---
+      duration_ms: 0.535
+      ...
+    1..8
+ok 97 - migration analysis core model
+  ---
+  duration_ms: 11.5078
+  type: 'suite'
+  ...
+# Subtest: scoped migration analysis transaction
+    # Subtest: groups an auto-discovered skill once and applies only after exact preview
+    ok 1 - groups an auto-discovered skill once and applies only after exact preview
+      ---
+      duration_ms: 5102.8171
+      ...
+    # Subtest: rejects malformed or future decision ledgers before preview/write
+    ok 2 - rejects malformed or future decision ledgers before preview/write
+      ---
+      duration_ms: 14.2726
+      ...
+    # Subtest: uses the same capability inventory for cross-agent comparisons without write actions
+    ok 3 - uses the same capability inventory for cross-agent comparisons without write actions
+      ---
+      duration_ms: 27.4772
+      ...
+    # Subtest: never re-enables a manually disabled Codex registration
+    ok 4 - never re-enables a manually disabled Codex registration
+      ---
+      duration_ms: 5058.3383
+      ...
+    1..4
+ok 98 - scoped migration analysis transaction
+  ---
+  duration_ms: 10205.966
+  type: 'suite'
+  ...
+# Subtest: bidirectional migration draft (orthogonal axes)
+    # Subtest: supports all six directions and rejects a same-agent route
+    ok 1 - supports all six directions and rejects a same-agent route
+      ---
+      duration_ms: 2.393
+      ...
+    # Subtest: classifies a missing portable capability as missing with direct_share
+    ok 2 - classifies a missing portable capability as missing with direct_share
+      ---
+      duration_ms: 0.1791
+      ...
+    # Subtest: classifies same-named capability in a different config file as existing/dual_registered with keep_current
+    ok 3 - classifies same-named capability in a different config file as existing/dual_registered with keep_current
+      ---
+      duration_ms: 0.3129
+      ...
+    # Subtest: classifies target-native overlap as existing/target_native
+    ok 4 - classifies target-native overlap as existing/target_native
+      ---
+      duration_ms: 0.1087
+      ...
+    # Subtest: counts same-file shared assets in summary.shared and skips them
+    ok 5 - counts same-file shared assets in summary.shared and skips them
+      ---
+      duration_ms: 0.1719
+      ...
+    # Subtest: keeps same-named skills in different directories as migration items (not shared)
+    ok 6 - keeps same-named skills in different directories as migration items (not shared)
+      ---
+      duration_ms: 0.1075
+      ...
+    # Subtest: defers unverified DeepSeek MCP as missing with defer
+    ok 7 - defers unverified DeepSeek MCP as missing with defer
+      ---
+      duration_ms: 0.1039
+      ...
+    # Subtest: applies a global conflict policy and then an item override with the 4-action set
+    ok 8 - applies a global conflict policy and then an item override with the 4-action set
+      ---
+      duration_ms: 0.1317
+      ...
+    # Subtest: maps every policy to one of the four actions
+    ok 9 - maps every policy to one of the four actions
+      ---
+      duration_ms: 0.3843
+      ...
+    # Subtest: keeps the custom adapter as the last, unrecommended candidate
+    ok 10 - keeps the custom adapter as the last, unrecommended candidate
+      ---
+      duration_ms: 0.2305
+      ...
+    1..10
+ok 99 - bidirectional migration draft (orthogonal axes)
+  ---
+  duration_ms: 5.7823
+  type: 'suite'
+  ...
+# Subtest: Windows offline staging previews, verifies, resumes, and refuses overwrites
+ok 100 - Windows offline staging previews, verifies, resumes, and refuses overwrites
+  ---
+  duration_ms: 7026.253
+  ...
+# > uagent-sync@2.1.1 prepack
+# > npm run build
+# > uagent-sync@2.1.1 build
+# > rimraf dist && tsc && node scripts/generate-dashboard-i18n.mjs && node scripts/copy-dashboard.mjs
+# npm warn EBADENGINE Unsupported engine {
+# npm warn EBADENGINE   package: 'ini@7.0.0',
+# npm warn EBADENGINE   required: { node: '^22.22.2 || ^24.15.0 || >=26.0.0' },
+# npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+# npm warn EBADENGINE }
+# npm warn EBADENGINE Unsupported engine {
+# npm warn EBADENGINE   package: 'toml@4.3.0',
+# npm warn EBADENGINE   required: { node: '>=20' },
+# npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+# npm warn EBADENGINE }
+# Subtest: real npm pack installation
+    # Subtest: loads the installed plugin without dev dependencies or a host SDK ancestor
+    ok 1 - loads the installed plugin without dev dependencies or a host SDK ancestor
+      ---
+      duration_ms: 171.7266
+      ...
+    # Subtest: runs the installed CLI with production dependencies only
+    ok 2 - runs the installed CLI with production dependencies only
+      ---
+      duration_ms: 162.6567
+      ...
+    # Subtest: ships valid Codex metadata and all three skills
+    ok 3 - ships valid Codex metadata and all three skills
+      ---
+      duration_ms: 2.4963
+      ...
+    1..3
+ok 101 - real npm pack installation
+  ---
+  duration_ms: 18717.045
+  type: 'suite'
+  ...
+# Subtest: stripJsonComments
+    # Subtest: should strip line comments
+    ok 1 - should strip line comments
+      ---
+      duration_ms: 0.4523
+      ...
+    # Subtest: should strip block comments
+    ok 2 - should strip block comments
+      ---
+      duration_ms: 0.0826
+      ...
+    # Subtest: should NOT strip // inside URL strings
+    ok 3 - should NOT strip // inside URL strings
+      ---
+      duration_ms: 0.0766
+      ...
+    # Subtest: should NOT strip // inside single-quoted strings
+    ok 4 - should NOT strip // inside single-quoted strings
+      ---
+      duration_ms: 0.119
+      ...
+    # Subtest: should handle escaped quotes inside strings
+    ok 5 - should handle escaped quotes inside strings
+      ---
+      duration_ms: 0.0646
+      ...
+    # Subtest: should remove multiple mixed comments
+    ok 6 - should remove multiple mixed comments
+      ---
+      duration_ms: 0.5134
+      ...
+    # Subtest: should produce valid JSON from realistic JSONC with URL
+    ok 7 - should produce valid JSON from realistic JSONC with URL
+      ---
+      duration_ms: 0.1356
+      ...
+    # Subtest: should handle mixed comment styles together
+    ok 8 - should handle mixed comment styles together
+      ---
+      duration_ms: 0.077
+      ...
+    1..8
+ok 102 - stripJsonComments
+  ---
+  duration_ms: 92.2073
+  type: 'suite'
+  ...
+# Subtest: detectPlaywrightMcpConfig
+    # Subtest: should detect playwright with extension + edge + token
+    ok 1 - should detect playwright with extension + edge + token
+      ---
+      duration_ms: 0.5339
+      ...
+    # Subtest: should detect vision capability
+    ok 2 - should detect vision capability
+      ---
+      duration_ms: 0.2788
+      ...
+    # Subtest: should detect headless mode
+    ok 3 - should detect headless mode
+      ---
+      duration_ms: 0.0884
+      ...
+    # Subtest: should detect Chrome browser
+    ok 4 - should detect Chrome browser
+      ---
+      duration_ms: 0.1863
+      ...
+    # Subtest: should detect CDP endpoint
+    ok 5 - should detect CDP endpoint
+      ---
+      duration_ms: 0.1958
+      ...
+    # Subtest: should return null when no playwright MCP
+    ok 6 - should return null when no playwright MCP
+      ---
+      duration_ms: 0.0767
+      ...
+    # Subtest: should return null when playwright is disabled
+    ok 7 - should return null when playwright is disabled
+      ---
+      duration_ms: 0.2217
+      ...
+    # Subtest: should detect token via PLAYWRIGHT_MCP_EXTENSION_TOKEN
+    ok 8 - should detect token via PLAYWRIGHT_MCP_EXTENSION_TOKEN
+      ---
+      duration_ms: 0.0919
+      ...
+    # Subtest: should detect token via alternative env var naming
+    ok 9 - should detect token via alternative env var naming
+      ---
+      duration_ms: 0.1615
+      ...
+    # Subtest: should detect missing token
+    ok 10 - should detect missing token
+      ---
+      duration_ms: 0.2493
+      ...
+    # Subtest: should return null when mcp section is missing
+    ok 11 - should return null when mcp section is missing
+      ---
+      duration_ms: 0.0622
+      ...
+    # Subtest: should detect plain playwright without optional flags
+    ok 12 - should detect plain playwright without optional flags
+      ---
+      duration_ms: 0.3
+      ...
+    1..12
+ok 103 - detectPlaywrightMcpConfig
+  ---
+  duration_ms: 6.578
+  type: 'suite'
+  ...
+# Subtest: generateSyncGuide — Playwright section
+    # Subtest: should include Playwright install section
+    ok 1 - should include Playwright install section
+      ---
+      duration_ms: 25.809
+      ...
+    # Subtest: should include multi-model notes
+    ok 2 - should include multi-model notes
+      ---
+      duration_ms: 5.0498
+      ...
+    # Subtest: should include known pitfalls
+    ok 3 - should include known pitfalls
+      ---
+      duration_ms: 5.9868
+      ...
+    # Subtest: should NOT include Playwright section when not configured
+    ok 4 - should NOT include Playwright section when not configured
+      ---
+      duration_ms: 5.0715
+      ...
+    1..4
+ok 104 - generateSyncGuide — Playwright section
+  ---
+  duration_ms: 63.6948
+  type: 'suite'
+  ...
+# Subtest: Module exports
+    # Subtest: should export new Playwright functions
+    ok 1 - should export new Playwright functions
+      ---
+      duration_ms: 4.0664
+      ...
+    1..1
+ok 105 - Module exports
+  ---
+  duration_ms: 4.3395
+  type: 'suite'
+  ...
+# Subtest: updateExtensions
+    # Subtest: dry-run returns skipped steps without executing any command
+    ok 1 - dry-run returns skipped steps without executing any command
+      ---
+      duration_ms: 308.2148
+      ...
+    # Subtest: does not plan codebase-memory-mcp for default or MCP-only updates
+    ok 2 - does not plan codebase-memory-mcp for default or MCP-only updates
+      ---
+      duration_ms: 295.4
+      ...
+    # Subtest: emits plan → step-start → step-end → done event flow
+    ok 3 - emits plan → step-start → step-end → done event flow
+      ---
+      duration_ms: 113.4436
+      ...
+    # Subtest: respects explicit components filter
+    ok 4 - respects explicit components filter
+      ---
+      duration_ms: 128.9744
+      ...
+    # Subtest: excludes opencode by default
+    ok 5 - excludes opencode by default
+      ---
+      duration_ms: 389.6618
+      ...
+    # Subtest: includes opencode when explicitly requested
+    ok 6 - includes opencode when explicitly requested
+      ---
+      duration_ms: 122.4625
+      ...
+    # Subtest: plans a complete Codex-only self-update without touching OpenCode
+    ok 7 - plans a complete Codex-only self-update without touching OpenCode
+      ---
+      duration_ms: 120.4066
+      ...
+    # Subtest: does not inspect OpenCode plugin or config directories in the default Codex plan
+    ok 8 - does not inspect OpenCode plugin or config directories in the default Codex plan
+      ---
+      duration_ms: 257.9842
+      ...
+    # Subtest: rejects an explicit OpenCode update inside Codex scope without executing it
+    ok 9 - rejects an explicit OpenCode update inside Codex scope without executing it
+      ---
+      duration_ms: 109.6267
+      ...
+    # Subtest: executes packed CLI installation and verifies the Codex marketplace and plugin version
+    ok 10 - executes packed CLI installation and verifies the Codex marketplace and plugin version
+      ---
+      duration_ms: 1709.4507
+      ...
+    # Subtest: stops before replacing the installed CLI when the required self-test fails
+    ok 11 - stops before replacing the installed CLI when the required self-test fails
+      ---
+      duration_ms: 874.3598
+      ...
+    1..11
+ok 106 - updateExtensions
+  ---
+  duration_ms: 4432.7633
+  type: 'suite'
+  ...
+# Subtest: OpencodeSyncPlugin
+    # Subtest: exposes the full opencode_sync_* tool set
+    ok 1 - exposes the full opencode_sync_* tool set
+      ---
+      duration_ms: 15.2988
+      ...
+    1..1
+ok 107 - OpencodeSyncPlugin
+  ---
+  duration_ms: 15.6245
+  type: 'suite'
+  ...
+# Subtest: isMachineSpecificPath
+    # Subtest: should detect Windows absolute user paths
+    ok 1 - should detect Windows absolute user paths
+      ---
+      duration_ms: 0.3875
+      ...
+    # Subtest: should detect Linux absolute home paths
+    ok 2 - should detect Linux absolute home paths
+      ---
+      duration_ms: 0.0738
+      ...
+    # Subtest: should detect macOS absolute user paths
+    ok 3 - should detect macOS absolute user paths
+      ---
+      duration_ms: 0.1716
+      ...
+    # Subtest: should NOT flag workspace-relative paths
+    ok 4 - should NOT flag workspace-relative paths
+      ---
+      duration_ms: 0.0616
+      ...
+    # Subtest: should NOT flag npx commands
+    ok 5 - should NOT flag npx commands
+      ---
+      duration_ms: 0.0623
+      ...
+    1..5
+ok 108 - isMachineSpecificPath
+  ---
+  duration_ms: 78.0057
+  type: 'suite'
+  ...
+# Subtest: detectSyncPath
+    # Subtest: should detect workspace-relative sync plugin
+    ok 1 - should detect workspace-relative sync plugin
+      ---
+      duration_ms: 1.8621
+      ...
+    # Subtest: should report published-channel when sync plugin not found
+    ok 2 - should report published-channel when sync plugin not found
+      ---
+      duration_ms: 0.3487
+      ...
+    1..2
+ok 109 - detectSyncPath
+  ---
+  duration_ms: 12.0279
+  type: 'suite'
+  ...
+# Subtest: trackState toggle in export
+    # Subtest: should know the trackState parameter exists in export schema
+    ok 1 - should know the trackState parameter exists in export schema
+      ---
+      duration_ms: 1.5263
+      ...
+    1..1
+ok 110 - trackState toggle in export
+  ---
+  duration_ms: 6.753
+  type: 'suite'
+  ...
+# Subtest: portable module exports
+    # Subtest: should export all portability functions
+    ok 1 - should export all portability functions
+      ---
+      duration_ms: 1.6532
+      ...
+    1..1
+ok 111 - portable module exports
+  ---
+  duration_ms: 1.8244
+  type: 'suite'
+  ...
+# Subtest: allow multiple preserves LF CRLF UTF16 positions
+ok 112 - allow multiple preserves LF CRLF UTF16 positions
+  ---
+  duration_ms: 8.4392
+  ...
+# Subtest: allow returns preserves LF CRLF UTF16 positions
+ok 113 - allow returns preserves LF CRLF UTF16 positions
+  ---
+  duration_ms: 2.2083
+  ...
+# Subtest: allow raises preserves LF CRLF UTF16 positions
+ok 114 - allow raises preserves LF CRLF UTF16 positions
+  ---
+  duration_ms: 1.8063
+  ...
+# Subtest: allow both preserves LF CRLF UTF16 positions
+ok 115 - allow both preserves LF CRLF UTF16 positions
+  ---
+  duration_ms: 1.1741
+  ...
+# Subtest: allow blanks preserves LF CRLF UTF16 positions
+ok 116 - allow blanks preserves LF CRLF UTF16 positions
+  ---
+  duration_ms: 1.6062
+  ...
+# Subtest: allow differentIndent preserves LF CRLF UTF16 positions
+ok 117 - allow differentIndent preserves LF CRLF UTF16 positions
+  ---
+  duration_ms: 0.9935
+  ...
+# Subtest: abstain afterSibling also revokes prior candidate
+ok 118 - abstain afterSibling also revokes prior candidate
+  ---
+  duration_ms: 2.2867
+  ...
+# Subtest: abstain nestedAfterSibling also revokes prior candidate
+ok 119 - abstain nestedAfterSibling also revokes prior candidate
+  ---
+  duration_ms: 1.36
+  ...
+# Subtest: abstain beforeWithBlank also revokes prior candidate
+ok 120 - abstain beforeWithBlank also revokes prior candidate
+  ---
+  duration_ms: 1.3039
+  ...
+# Subtest: abstain unknownParameter also revokes prior candidate
+ok 121 - abstain unknownParameter also revokes prior candidate
+  ---
+  duration_ms: 3.2138
+  ...
+# Subtest: abstain duplicateSibling also revokes prior candidate
+ok 122 - abstain duplicateSibling also revokes prior candidate
+  ---
+  duration_ms: 1.8557
+  ...
+# Subtest: abstain indentationChange also revokes prior candidate
+ok 123 - abstain indentationChange also revokes prior candidate
+  ---
+  duration_ms: 2.8961
+  ...
+# Subtest: abstain targetUnderReturns also revokes prior candidate
+ok 124 - abstain targetUnderReturns also revokes prior candidate
+  ---
+  duration_ms: 1.7747
+  ...
+# Subtest: abstain unknownSection also revokes prior candidate
+ok 125 - abstain unknownSection also revokes prior candidate
+  ---
+  duration_ms: 0.9152
+  ...
+# Subtest: abstain indentedHeader also revokes prior candidate
+ok 126 - abstain indentedHeader also revokes prior candidate
+  ---
+  duration_ms: 0.7281
+  ...
+# Subtest: abstain headerWithinExample also revokes prior candidate
+ok 127 - abstain headerWithinExample also revokes prior candidate
+  ---
+  duration_ms: 0.7923
+  ...
+# Subtest: abstain continuation also revokes prior candidate
+ok 128 - abstain continuation also revokes prior candidate
+  ---
+  duration_ms: 0.6081
+  ...
+# Subtest: abstain afterSections also revokes prior candidate
+ok 129 - abstain afterSections also revokes prior candidate
+  ---
+  duration_ms: 0.6889
+  ...
+# Subtest: composition preserves neighboring credential password
+ok 130 - composition preserves neighboring credential password
+  ---
+  duration_ms: 9.134
+  ...
+# Subtest: composition preserves neighboring credential PASSWORD=("SYNTHETIC_NONEMPTY")
+ok 131 - composition preserves neighboring credential PASSWORD=("SYNTHETIC_NONEMPTY")
+  ---
+  duration_ms: 2.0418
+  ...
+# Subtest: composition preserves neighboring credential "apiKey":
+ok 132 - composition preserves neighboring credential "apiKey":
+  ---
+  duration_ms: 0.834
+  ...
+# Subtest: composition preserves neighboring credential const
+ok 133 - composition preserves neighboring credential const
+  ---
+  duration_ms: 0.9752
+  ...
+# Subtest: composition preserves neighboring credential token
+ok 134 - composition preserves neighboring credential token
+  ---
+  duration_ms: 1.8071
+  ...
+# Subtest: composition preserves neighboring credential Bearer
+ok 135 - composition preserves neighboring credential Bearer
+  ---
+  duration_ms: 1.0657
+  ...
+# Subtest: composition preserves neighboring credential ghp_SYNTHETIC_NONEMPTY_VALUE_123
+ok 136 - composition preserves neighboring credential ghp_SYNTHETIC_NONEMPTY_VALUE_123
+  ---
+  duration_ms: 1.1122
+  ...
+# Subtest: composition preserves neighboring credential PASSWORD=None,
+ok 137 - composition preserves neighboring credential PASSWORD=None,
+  ---
+  duration_ms: 1.4321
+  ...
+# Subtest: missing and forged contexts exactly preserve old findings
+ok 138 - missing and forged contexts exactly preserve old findings
+  ---
+  duration_ms: 8.2453
+  ...
+# Subtest: prefix/Bearer inside exact policy text cannot be masked
+ok 139 - prefix/Bearer inside exact policy text cannot be masked
+  ---
+  duration_ms: 1.57
+  ...
+# Subtest: byte validation precedes lossy decode; actual replacement character is valid UTF8
+ok 140 - byte validation precedes lossy decode; actual replacement character is valid UTF8
+  ---
+  duration_ms: 1.0599
+  ...
+# Subtest: recognized M13 environment lookup composes; unproven annotations abstain
+ok 141 - recognized M13 environment lookup composes; unproven annotations abstain
+  ---
+  duration_ms: 0.788
+  ...
+# Subtest: inert None must not hide a second sensitive value on the same line
+ok 142 - inert None must not hide a second sensitive value on the same line
+  ---
+  duration_ms: 0.6254
+  ...
+# Subtest: provider throws, fake sessions and missing source fail closed without leaking errors
+ok 143 - provider throws, fake sessions and missing source fail closed without leaking errors
+  ---
+  duration_ms: 0.398
+  ...
+# Subtest: factory concurrency, once per operation, previews and apply reload policy
+ok 144 - factory concurrency, once per operation, previews and apply reload policy
+  ---
+  duration_ms: 40.8336
+  ...
+# Subtest: M2 isolated external gates and CLI propagation
+ok 145 - M2 isolated external gates and CLI propagation
+  ---
+  duration_ms: 949.0104
+  ...
+# Subtest: two valid functions retain both exact spans
+ok 146 - two valid functions retain both exact spans
+  ---
+  duration_ms: 6.2662
+  ...
+# Subtest: preamble revokes earlier valid candidate under conservative scope
+ok 147 - preamble revokes earlier valid candidate under conservative scope
+  ---
+  duration_ms: 1.3189
+  ...
+# Subtest: duplicateSection revokes earlier valid candidate under conservative scope
+ok 148 - duplicateSection revokes earlier valid candidate under conservative scope
+  ---
+  duration_ms: 1.1796
+  ...
+# Subtest: reverseSections revokes earlier valid candidate under conservative scope
+ok 149 - reverseSections revokes earlier valid candidate under conservative scope
+  ---
+  duration_ms: 1.0647
+  ...
+# Subtest: multilineReturn revokes earlier valid candidate under conservative scope
+ok 150 - multilineReturn revokes earlier valid candidate under conservative scope
+  ---
+  duration_ms: 2.3662
+  ...
+# Subtest: bodyOnClosingLine revokes earlier valid candidate under conservative scope
+ok 151 - bodyOnClosingLine revokes earlier valid candidate under conservative scope
+  ---
+  duration_ms: 1.4567
+  ...
+# Subtest: tabEntry revokes earlier valid candidate under conservative scope
+ok 152 - tabEntry revokes earlier valid candidate under conservative scope
+  ---
+  duration_ms: 1.6519
+  ...
+# Subtest: empty Returns and Raises are allowed as specified
+ok 153 - empty Returns and Raises are allowed as specified
+  ---
+  duration_ms: 1.6402
+  ...
+# Subtest: control: exact synthetic entry remains supported
+ok 154 - control: exact synthetic entry remains supported
+  ---
+  duration_ms: 5.7698
+  ...
+# Subtest: postSyntax: LF and CRLF must return no M2 spans
+ok 155 - postSyntax: LF and CRLF must return no M2 spans
+  ---
+  duration_ms: 1.7664
+  ...
+# Subtest: postShortString: LF and CRLF must return no M2 spans
+ok 156 - postShortString: LF and CRLF must return no M2 spans
+  ---
+  duration_ms: 1.0779
+  ...
+# Subtest: postBadSignature: LF and CRLF must return no M2 spans
+ok 157 - postBadSignature: LF and CRLF must return no M2 spans
+  ---
+  duration_ms: 1.3195
+  ...
+# Subtest: nestedExample: LF and CRLF must return no M2 spans
+ok 158 - nestedExample: LF and CRLF must return no M2 spans
+  ---
+  duration_ms: 1.9208
+  ...
+# Subtest: unknownParagraph: LF and CRLF must return no M2 spans
+ok 159 - unknownParagraph: LF and CRLF must return no M2 spans
+  ---
+  duration_ms: 0.8949
+  ...
+# Subtest: priorThenNested: LF and CRLF must return no M2 spans
+ok 160 - priorThenNested: LF and CRLF must return no M2 spans
+  ---
+  duration_ms: 0.9297
+  ...
+# Subtest: M2 exact artificial docstring is allowed "\\n"
+ok 161 - M2 exact artificial docstring is allowed "\\n"
+  ---
+  duration_ms: 9.6648
+  ...
+# Subtest: M2 adjacent credential remains rejected "\\n"
+ok 162 - M2 adjacent credential remains rejected "\\n"
+  ---
+  duration_ms: 2.4507
+  ...
+# Subtest: M2 exact artificial docstring is allowed "\\r\\n"
+ok 163 - M2 exact artificial docstring is allowed "\\r\\n"
+  ---
+  duration_ms: 2.0615
+  ...
+# Subtest: M2 adjacent credential remains rejected "\\r\\n"
+ok 164 - M2 adjacent credential remains rejected "\\r\\n"
+  ---
+  duration_ms: 2.0708
+  ...
+# Subtest: missing provider and non-Python remain blocked
+ok 165 - missing provider and non-Python remain blocked
+  ---
+  duration_ms: 2.0566
+  ...
+# Subtest: unknown Args after candidate revokes pending
+ok 166 - unknown Args after candidate revokes pending
+  ---
+  duration_ms: 1.14
+  ...
+# Subtest: artificial M2 operation create
+ok 167 - artificial M2 operation create
+  ---
+  duration_ms: 38.0653
+  ...
+# Subtest: artificial M2 operation plan
+ok 168 - artificial M2 operation plan
+  ---
+  duration_ms: 13.4346
+  ...
+# Subtest: artificial M2 operation restore
+ok 169 - artificial M2 operation restore
+  ---
+  duration_ms: 13.2531
+  ...
+# Subtest: safe exact field with original UTF16 span and LF/CRLF
+ok 170 - safe exact field with original UTF16 span and LF/CRLF
+  ---
+  duration_ms: 9.2386
+  ...
+# Subtest: abstain shortBefore
+ok 171 - abstain shortBefore
+  ---
+  duration_ms: 1.2918
+  ...
+# Subtest: abstain shortAfter
+ok 172 - abstain shortAfter
+  ---
+  duration_ms: 0.8589
+  ...
+# Subtest: abstain tripleBefore
+ok 173 - abstain tripleBefore
+  ---
+  duration_ms: 1.5343
+  ...
+# Subtest: abstain tripleAfter
+ok 174 - abstain tripleAfter
+  ---
+  duration_ms: 0.8032
+  ...
+# Subtest: abstain syntaxAfter
+ok 175 - abstain syntaxAfter
+  ---
+  duration_ms: 0.6915
+  ...
+# Subtest: abstain defaultOrder
+ok 176 - abstain defaultOrder
+  ---
+  duration_ms: 1.9521
+  ...
+# Subtest: abstain bareStar
+ok 177 - abstain bareStar
+  ---
+  duration_ms: 1.0981
+  ...
+# Subtest: abstain defaultName
+ok 178 - abstain defaultName
+  ---
+  duration_ms: 0.6267
+  ...
+# Subtest: abstain generic
+ok 179 - abstain generic
+  ---
+  duration_ms: 0.6577
+  ...
+# Subtest: abstain comma
+ok 180 - abstain comma
+  ---
+  duration_ms: 0.5817
+  ...
+# Subtest: abstain unknownDescription
+ok 181 - abstain unknownDescription
+  ---
+  duration_ms: 0.996
+  ...
+# Subtest: abstain unicodeMismatch
+ok 182 - abstain unicodeMismatch
+  ---
+  duration_ms: 0.8791
+  ...
+# Subtest: abstain blankContinuation
+ok 183 - abstain blankContinuation
+  ---
+  duration_ms: 0.8048
+  ...
+# Subtest: abstain duplicateArgs
+ok 184 - abstain duplicateArgs
+  ---
+  duration_ms: 1.3104
+  ...
+# Subtest: abstain wrongOwner
+ok 185 - abstain wrongOwner
+  ---
+  duration_ms: 0.5623
+  ...
+# Subtest: abstain adjacentFunction
+ok 186 - abstain adjacentFunction
+  ---
+  duration_ms: 0.67
+  ...
+# Subtest: abstain formatString
+ok 187 - abstain formatString
+  ---
+  duration_ms: 0.7888
+  ...
+# Subtest: abstain escapedDoc
+ok 188 - abstain escapedDoc
+  ---
+  duration_ms: 0.6837
+  ...
+# Subtest: abstain prefixedDoc
+ok 189 - abstain prefixedDoc
+  ---
+  duration_ms: 0.3954
+  ...
+# Subtest: abstain bom
+ok 190 - abstain bom
+  ---
+  duration_ms: 0.2226
+  ...
+# Subtest: abstain loneCR
+ok 191 - abstain loneCR
+  ---
+  duration_ms: 0.3444
+  ...
+# Subtest: keyword-only required after default is allowed
+ok 192 - keyword-only required after default is allowed
+  ---
+  duration_ms: 0.2739
+  ...
+# Subtest: raw quote boundary escapes and EOF
+ok 193 - raw quote boundary escapes and EOF
+  ---
+  duration_ms: 0.1372
+  ...
+# Subtest: valid final string EOF and literal replacement character
+ok 194 - valid final string EOF and literal replacement character
+  ---
+  duration_ms: 0.4034
+  ...
+# Subtest: missing and untrusted plain template fail closed
+ok 195 - missing and untrusted plain template fail closed
+  ---
+  duration_ms: 0.0861
+  ...
+# Subtest: closed provider topExtra
+ok 196 - closed provider topExtra
+  ---
+  duration_ms: 0.155
+  ...
+# Subtest: closed provider entryExtra
+ok 197 - closed provider entryExtra
+  ---
+  duration_ms: 0.1852
+  ...
+# Subtest: closed provider version
+ok 198 - closed provider version
+  ---
+  duration_ms: 0.1165
+  ...
+# Subtest: closed provider policy
+ok 199 - closed provider policy
+  ---
+  duration_ms: 0.0887
+  ...
+# Subtest: closed provider parser
+ok 200 - closed provider parser
+  ---
+  duration_ms: 0.1586
+  ...
+# Subtest: closed provider id
+ok 201 - closed provider id
+  ---
+  duration_ms: 0.1344
+  ...
+# Subtest: closed provider field
+ok 202 - closed provider field
+  ---
+  duration_ms: 0.1032
+  ...
+# Subtest: closed provider duplicateId
+ok 203 - closed provider duplicateId
+  ---
+  duration_ms: 0.0762
+  ...
+# Subtest: closed provider duplicateDescription
+ok 204 - closed provider duplicateDescription
+  ---
+  duration_ms: 0.0892
+  ...
+# Subtest: closed provider missingGroup
+ok 205 - closed provider missingGroup
+  ---
+  duration_ms: 0.1117
+  ...
+# Subtest: closed provider whitespace
+ok 206 - closed provider whitespace
+  ---
+  duration_ms: 0.3334
+  ...
+# Subtest: closed provider newline
+ok 207 - closed provider newline
+  ---
+  duration_ms: 0.5055
+  ...
+# Subtest: JSON rejection duplicateTop
+ok 208 - JSON rejection duplicateTop
+  ---
+  duration_ms: 0.1574
+  ...
+# Subtest: JSON rejection escapedDuplicate
+ok 209 - JSON rejection escapedDuplicate
+  ---
+  duration_ms: 0.0717
+  ...
+# Subtest: JSON rejection duplicateEntry
+ok 210 - JSON rejection duplicateEntry
+  ---
+  duration_ms: 0.0603
+  ...
+# Subtest: JSON rejection nonJSONWhitespace
+ok 211 - JSON rejection nonJSONWhitespace
+  ---
+  duration_ms: 0.0546
+  ...
+# Subtest: JSON rejection bom
+ok 212 - JSON rejection bom
+  ---
+  duration_ms: 0.0522
+  ...
+# Subtest: JSON rejection trailing
+ok 213 - JSON rejection trailing
+  ---
+  duration_ms: 0.3557
+  ...
+# Subtest: invalid UTF8, absent source and read failure
+ok 214 - invalid UTF8, absent source and read failure
+  ---
+  duration_ms: 0.6852
+  ...
+# Subtest: deep freeze and one load per operation
+ok 215 - deep freeze and one load per operation
+  ---
+  duration_ms: 1.1943
+  ...
+# Subtest: concurrent operation isolation and copied bytes
+ok 216 - concurrent operation isolation and copied bytes
+  ---
+  duration_ms: 0.5324
+  ...
+# Subtest: copy failure returns no partial template
+ok 217 - copy failure returns no partial template
+  ---
+  duration_ms: 0.1593
+  ...
+# Subtest: JSON group order and exact Unicode description
+ok 218 - JSON group order and exact Unicode description
+  ---
+  duration_ms: 0.4997
+  ...
+# Subtest: later invalid candidate clears earlier pending
+ok 219 - later invalid candidate clears earlier pending
+  ---
+  duration_ms: 0.5401
+  ...
+# Subtest: default expression names are not added to parameter set
+ok 220 - default expression names are not added to parameter set
+  ---
+  duration_ms: 0.379
+  ...
+# Subtest: actual parameter sibling accepted
+ok 221 - actual parameter sibling accepted
+  ---
+  duration_ms: 0.4877
+  ...
+# Subtest: byte validation is separate from string positions
+ok 222 - byte validation is separate from string positions
+  ---
+  duration_ms: 0.1614
+  ...
+# Subtest: resource limits are refusal gates
+ok 223 - resource limits are refusal gates
+  ---
+  duration_ms: 0.4119
+  ...
+# Subtest: annotated parameter with nested default expression
+ok 224 - annotated parameter with nested default expression
+  ---
+  duration_ms: 0.3169
+  ...
+# Subtest: unsupported signatures stay empty
+ok 225 - unsupported signatures stay empty
+  ---
+  duration_ms: 1.4384
+  ...
+# Subtest: synthetic neighboring assignment remains outside the only span
+ok 226 - synthetic neighboring assignment remains outside the only span
+  ---
+  duration_ms: 0.4787
+  ...
+# Subtest: RY-M2-01 beforeEquals "\\n"
+ok 227 - RY-M2-01 beforeEquals "\\n"
+  ---
+  duration_ms: 4.4268
+  ...
+# Subtest: RY-M2-01 beforeValue "\\n"
+ok 228 - RY-M2-01 beforeValue "\\n"
+  ---
+  duration_ms: 0.4608
+  ...
+# Subtest: RY-M2-01 commentSecond "\\n"
+ok 229 - RY-M2-01 commentSecond "\\n"
+  ---
+  duration_ms: 0.1479
+  ...
+# Subtest: RY-M2-01 parameter "\\n"
+ok 230 - RY-M2-01 parameter "\\n"
+  ---
+  duration_ms: 0.1289
+  ...
+# Subtest: space/tab and inert None controls "\\n"
+ok 231 - space/tab and inert None controls "\\n"
+  ---
+  duration_ms: 8.2157
+  ...
+# Subtest: RY-M2-01 beforeEquals "\\r\\n"
+ok 232 - RY-M2-01 beforeEquals "\\r\\n"
+  ---
+  duration_ms: 0.1728
+  ...
+# Subtest: RY-M2-01 beforeValue "\\r\\n"
+ok 233 - RY-M2-01 beforeValue "\\r\\n"
+  ---
+  duration_ms: 0.1268
+  ...
+# Subtest: RY-M2-01 commentSecond "\\r\\n"
+ok 234 - RY-M2-01 commentSecond "\\r\\n"
+  ---
+  duration_ms: 0.1832
+  ...
+# Subtest: RY-M2-01 parameter "\\r\\n"
+ok 235 - RY-M2-01 parameter "\\r\\n"
+  ---
+  duration_ms: 0.9061
+  ...
+# Subtest: space/tab and inert None controls "\\r\\n"
+ok 236 - space/tab and inert None controls "\\r\\n"
+  ---
+  duration_ms: 2.8774
+  ...
+# Subtest: unsupported whitespace U+b
+ok 237 - unsupported whitespace U+b
+  ---
+  duration_ms: 0.3622
+  ...
+# Subtest: unsupported whitespace U+c
+ok 238 - unsupported whitespace U+c
+  ---
+  duration_ms: 0.2106
+  ...
+# Subtest: unsupported whitespace U+85
+ok 239 - unsupported whitespace U+85
+  ---
+  duration_ms: 0.1914
+  ...
+# Subtest: unsupported whitespace U+a0
+ok 240 - unsupported whitespace U+a0
+  ---
+  duration_ms: 0.3527
+  ...
+# Subtest: unsupported whitespace U+1680
+ok 241 - unsupported whitespace U+1680
+  ---
+  duration_ms: 0.6784
+  ...
+# Subtest: unsupported whitespace U+2000
+ok 242 - unsupported whitespace U+2000
+  ---
+  duration_ms: 0.4366
+  ...
+# Subtest: unsupported whitespace U+2001
+ok 243 - unsupported whitespace U+2001
+  ---
+  duration_ms: 0.1926
+  ...
+# Subtest: unsupported whitespace U+2002
+ok 244 - unsupported whitespace U+2002
+  ---
+  duration_ms: 0.4417
+  ...
+# Subtest: unsupported whitespace U+2003
+ok 245 - unsupported whitespace U+2003
+  ---
+  duration_ms: 0.2311
+  ...
+# Subtest: unsupported whitespace U+2004
+ok 246 - unsupported whitespace U+2004
+  ---
+  duration_ms: 0.2273
+  ...
+# Subtest: unsupported whitespace U+2005
+ok 247 - unsupported whitespace U+2005
+  ---
+  duration_ms: 0.2488
+  ...
+# Subtest: unsupported whitespace U+2006
+ok 248 - unsupported whitespace U+2006
+  ---
+  duration_ms: 0.247
+  ...
+# Subtest: unsupported whitespace U+2007
+ok 249 - unsupported whitespace U+2007
+  ---
+  duration_ms: 0.2607
+  ...
+# Subtest: unsupported whitespace U+2008
+ok 250 - unsupported whitespace U+2008
+  ---
+  duration_ms: 0.2044
+  ...
+# Subtest: unsupported whitespace U+2009
+ok 251 - unsupported whitespace U+2009
+  ---
+  duration_ms: 0.202
+  ...
+# Subtest: unsupported whitespace U+200a
+ok 252 - unsupported whitespace U+200a
+  ---
+  duration_ms: 0.185
+  ...
+# Subtest: unsupported whitespace U+2028
+ok 253 - unsupported whitespace U+2028
+  ---
+  duration_ms: 0.2575
+  ...
+# Subtest: unsupported whitespace U+2029
+ok 254 - unsupported whitespace U+2029
+  ---
+  duration_ms: 0.3255
+  ...
+# Subtest: unsupported whitespace U+202f
+ok 255 - unsupported whitespace U+202f
+  ---
+  duration_ms: 0.2396
+  ...
+# Subtest: unsupported whitespace U+205f
+ok 256 - unsupported whitespace U+205f
+  ---
+  duration_ms: 0.214
+  ...
+# Subtest: unsupported whitespace U+3000
+ok 257 - unsupported whitespace U+3000
+  ---
+  duration_ms: 0.2458
+  ...
+# Subtest: unsupported whitespace U+feff
+ok 258 - unsupported whitespace U+feff
+  ---
+  duration_ms: 0.1859
+  ...
+# Subtest: ordinary Unicode is not blanket-rejected and preserves original line
+ok 259 - ordinary Unicode is not blanket-rejected and preserves original line
+  ---
+  duration_ms: 1.1121
+  ...
+# Subtest: RY-M13-01 three gates reject JS continuation after a safe control
+ok 260 - RY-M13-01 three gates reject JS continuation after a safe control
+  ---
+  duration_ms: 38.6531
+  ...
+# Subtest: RY-M13-01 valid JS continuation 1
+ok 261 - RY-M13-01 valid JS continuation 1
+  ---
+  duration_ms: 0.8914
+  ...
+# Subtest: RY-M13-01 valid JS continuation 2
+ok 262 - RY-M13-01 valid JS continuation 2
+  ---
+  duration_ms: 0.2481
+  ...
+# Subtest: RY-M13-01 valid JS continuation 3
+ok 263 - RY-M13-01 valid JS continuation 3
+  ---
+  duration_ms: 0.3398
+  ...
+# Subtest: RY-M13-01 valid JS continuation 4
+ok 264 - RY-M13-01 valid JS continuation 4
+  ---
+  duration_ms: 0.2367
+  ...
+# Subtest: RY-M13-01 valid JS continuation 5
+ok 265 - RY-M13-01 valid JS continuation 5
+  ---
+  duration_ms: 0.2748
+  ...
+# Subtest: RY-M13-01 valid JS continuation 6
+ok 266 - RY-M13-01 valid JS continuation 6
+  ---
+  duration_ms: 0.2536
+  ...
+# Subtest: RY-M13-01 valid JS continuation 7
+ok 267 - RY-M13-01 valid JS continuation 7
+  ---
+  duration_ms: 0.2117
+  ...
+# Subtest: RY-M13-01 valid JS continuation 8
+ok 268 - RY-M13-01 valid JS continuation 8
+  ---
+  duration_ms: 0.4387
+  ...
+# Subtest: RY-M13-01 valid JS continuation 9
+ok 269 - RY-M13-01 valid JS continuation 9
+  ---
+  duration_ms: 0.2438
+  ...
+# Subtest: RY-M13-01 valid JS continuation 10
+ok 270 - RY-M13-01 valid JS continuation 10
+  ---
+  duration_ms: 0.3169
+  ...
+# Subtest: RY-M13-01 valid JS continuation 11
+ok 271 - RY-M13-01 valid JS continuation 11
+  ---
+  duration_ms: 0.2188
+  ...
+# Subtest: RY-M13-01 valid JS continuation 12
+ok 272 - RY-M13-01 valid JS continuation 12
+  ---
+  duration_ms: 0.3139
+  ...
+# Subtest: RY-M13-01 valid JS continuation 13
+ok 273 - RY-M13-01 valid JS continuation 13
+  ---
+  duration_ms: 0.2176
+  ...
+# Subtest: RY-M13-01 valid JS continuation 14
+ok 274 - RY-M13-01 valid JS continuation 14
+  ---
+  duration_ms: 0.1983
+  ...
+# Subtest: RY-M13-01 valid JS continuation 15
+ok 275 - RY-M13-01 valid JS continuation 15
+  ---
+  duration_ms: 0.235
+  ...
+# Subtest: RY-M13-01 valid JS continuation 16
+ok 276 - RY-M13-01 valid JS continuation 16
+  ---
+  duration_ms: 0.4461
+  ...
+# Subtest: RY-M13-01 valid JS continuation 17
+ok 277 - RY-M13-01 valid JS continuation 17
+  ---
+  duration_ms: 0.2479
+  ...
+# Subtest: RY-M13-01 valid JS continuation 18
+ok 278 - RY-M13-01 valid JS continuation 18
+  ---
+  duration_ms: 0.2543
+  ...
+# Subtest: RY-M13-01 valid JS continuation 19
+ok 279 - RY-M13-01 valid JS continuation 19
+  ---
+  duration_ms: 0.2266
+  ...
+# Subtest: RY-M13-01 valid JS continuation 20
+ok 280 - RY-M13-01 valid JS continuation 20
+  ---
+  duration_ms: 0.2651
+  ...
+# Subtest: RY-M13-01 valid JS continuation 21
+ok 281 - RY-M13-01 valid JS continuation 21
+  ---
+  duration_ms: 0.2232
+  ...
+# Subtest: RY-M13-01 valid JS continuation 22
+ok 282 - RY-M13-01 valid JS continuation 22
+  ---
+  duration_ms: 0.805
+  ...
+# Subtest: RY-M13-01 valid JS continuation 23
+ok 283 - RY-M13-01 valid JS continuation 23
+  ---
+  duration_ms: 0.2566
+  ...
+# Subtest: RY-M13-01 valid JS continuation 24
+ok 284 - RY-M13-01 valid JS continuation 24
+  ---
+  duration_ms: 0.2389
+  ...
+# Subtest: RY-M13-01 valid JS continuation 25
+ok 285 - RY-M13-01 valid JS continuation 25
+  ---
+  duration_ms: 0.1802
+  ...
+# Subtest: RY-M13-01 valid JS continuation 26
+ok 286 - RY-M13-01 valid JS continuation 26
+  ---
+  duration_ms: 0.1843
+  ...
+# Subtest: RY-M13-01 valid JS continuation 27
+ok 287 - RY-M13-01 valid JS continuation 27
+  ---
+  duration_ms: 0.1843
+  ...
+# Subtest: RY-M13-01 valid JS continuation 28
+ok 288 - RY-M13-01 valid JS continuation 28
+  ---
+  duration_ms: 0.1734
+  ...
+# Subtest: RY-M13-01 valid JS continuation 29
+ok 289 - RY-M13-01 valid JS continuation 29
+  ---
+  duration_ms: 0.1832
+  ...
+# Subtest: RY-M13-01 valid JS continuation 30
+ok 290 - RY-M13-01 valid JS continuation 30
+  ---
+  duration_ms: 0.3477
+  ...
+# Subtest: RY-M13-01 valid JS continuation 31
+ok 291 - RY-M13-01 valid JS continuation 31
+  ---
+  duration_ms: 0.1823
+  ...
+# Subtest: RY-M13-01 explicit terminators and independent statements remain safe
+ok 292 - RY-M13-01 explicit terminators and independent statements remain safe
+  ---
+  duration_ms: 0.2657
+  ...
+# Subtest: RY-M13-01 TS type continuations remain unproven
+ok 293 - RY-M13-01 TS type continuations remain unproven
+  ---
+  duration_ms: 0.4355
+  ...
+# Subtest: M3 TS precise constructor allow double
+ok 294 - M3 TS precise constructor allow double
+  ---
+  duration_ms: 2.6113
+  ...
+# Subtest: M3 TS precise constructor allow single
+ok 295 - M3 TS precise constructor allow single
+  ---
+  duration_ms: 0.5664
+  ...
+# Subtest: M3 TS precise constructor allow multiline
+ok 296 - M3 TS precise constructor allow multiline
+  ---
+  duration_ms: 0.2925
+  ...
+# Subtest: M3 TS precise constructor allow comments
+ok 297 - M3 TS precise constructor allow comments
+  ---
+  duration_ms: 0.1484
+  ...
+# Subtest: M3 TS precise constructor allow fence
+ok 298 - M3 TS precise constructor allow fence
+  ---
+  duration_ms: 0.6169
+  ...
+# Subtest: M3 TS precise constructor allow tilde fence
+ok 299 - M3 TS precise constructor allow tilde fence
+  ---
+  duration_ms: 0.2351
+  ...
+# Subtest: M3 TS value refusal 1
+ok 300 - M3 TS value refusal 1
+  ---
+  duration_ms: 0.516
+  ...
+# Subtest: M3 TS value refusal 2
+ok 301 - M3 TS value refusal 2
+  ---
+  duration_ms: 0.4728
+  ...
+# Subtest: M3 TS value refusal 3
+ok 302 - M3 TS value refusal 3
+  ---
+  duration_ms: 0.1308
+  ...
+# Subtest: M3 TS value refusal 4
+ok 303 - M3 TS value refusal 4
+  ---
+  duration_ms: 0.106
+  ...
+# Subtest: M3 TS value refusal 5
+ok 304 - M3 TS value refusal 5
+  ---
+  duration_ms: 0.0868
+  ...
+# Subtest: M3 TS value refusal 6
+ok 305 - M3 TS value refusal 6
+  ---
+  duration_ms: 0.0746
+  ...
+# Subtest: M3 TS value refusal 7
+ok 306 - M3 TS value refusal 7
+  ---
+  duration_ms: 0.0709
+  ...
+# Subtest: M3 TS value refusal 8
+ok 307 - M3 TS value refusal 8
+  ---
+  duration_ms: 0.0666
+  ...
+# Subtest: M3 TS value refusal 9
+ok 308 - M3 TS value refusal 9
+  ---
+  duration_ms: 0.0752
+  ...
+# Subtest: M3 TS value refusal 10
+ok 309 - M3 TS value refusal 10
+  ---
+  duration_ms: 0.0742
+  ...
+# Subtest: M3 TS value refusal 11
+ok 310 - M3 TS value refusal 11
+  ---
+  duration_ms: 0.0636
+  ...
+# Subtest: M3 TS value refusal 12
+ok 311 - M3 TS value refusal 12
+  ---
+  duration_ms: 0.1631
+  ...
+# Subtest: M3 TS value refusal 13
+ok 312 - M3 TS value refusal 13
+  ---
+  duration_ms: 0.0954
+  ...
+# Subtest: M3 TS value refusal 14
+ok 313 - M3 TS value refusal 14
+  ---
+  duration_ms: 0.0845
+  ...
+# Subtest: M3 TS value refusal 15
+ok 314 - M3 TS value refusal 15
+  ---
+  duration_ms: 0.1196
+  ...
+# Subtest: M3 TS value refusal 16
+ok 315 - M3 TS value refusal 16
+  ---
+  duration_ms: 0.0654
+  ...
+# Subtest: M3 TS value refusal 17
+ok 316 - M3 TS value refusal 17
+  ---
+  duration_ms: 0.0569
+  ...
+# Subtest: M3 TS value refusal 18
+ok 317 - M3 TS value refusal 18
+  ---
+  duration_ms: 0.0518
+  ...
+# Subtest: M3 TS value refusal 19
+ok 318 - M3 TS value refusal 19
+  ---
+  duration_ms: 0.0518
+  ...
+# Subtest: M3 TS value refusal 20
+ok 319 - M3 TS value refusal 20
+  ---
+  duration_ms: 0.0514
+  ...
+# Subtest: M3 TS value refusal 21
+ok 320 - M3 TS value refusal 21
+  ---
+  duration_ms: 0.054
+  ...
+# Subtest: M3 TS constructor context is narrow, not a generic placeholder exception
+ok 321 - M3 TS constructor context is narrow, not a generic placeholder exception
+  ---
+  duration_ms: 2.9506
+  ...
+# Subtest: M3 TS comments and adjacent credentials retain original lines
+ok 322 - M3 TS comments and adjacent credentials retain original lines
+  ---
+  duration_ms: 1.2188
+  ...
+# Subtest: M3 PHP and Ruby continuations and embedded examples remain blocked
+ok 323 - M3 PHP and Ruby continuations and embedded examples remain blocked
+  ---
+  duration_ms: 0.2736
+  ...
+# Subtest: M3 TS constructor three gates preserve refusal side effects
+ok 324 - M3 TS constructor three gates preserve refusal side effects
+  ---
+  duration_ms: 50.9634
+  ...
+# Subtest: M13 bounded Python allow 1
+ok 325 - M13 bounded Python allow 1
+  ---
+  duration_ms: 2.4116
+  ...
+# Subtest: M13 bounded Python allow 2
+ok 326 - M13 bounded Python allow 2
+  ---
+  duration_ms: 0.2606
+  ...
+# Subtest: M13 bounded Python allow 3
+ok 327 - M13 bounded Python allow 3
+  ---
+  duration_ms: 0.2445
+  ...
+# Subtest: M13 bounded Python allow 4
+ok 328 - M13 bounded Python allow 4
+  ---
+  duration_ms: 0.2654
+  ...
+# Subtest: M13 bounded Python allow 5
+ok 329 - M13 bounded Python allow 5
+  ---
+  duration_ms: 0.1472
+  ...
+# Subtest: M13 bounded Python allow 6
+ok 330 - M13 bounded Python allow 6
+  ---
+  duration_ms: 0.0655
+  ...
+# Subtest: M13 bounded Python allow 7
+ok 331 - M13 bounded Python allow 7
+  ---
+  duration_ms: 0.0697
+  ...
+# Subtest: M13 bounded Python allow 8
+ok 332 - M13 bounded Python allow 8
+  ---
+  duration_ms: 0.1296
+  ...
+# Subtest: M13 bounded Python allow 9
+ok 333 - M13 bounded Python allow 9
+  ---
+  duration_ms: 0.1055
+  ...
+# Subtest: M13 Python boundary refusal 1
+ok 334 - M13 Python boundary refusal 1
+  ---
+  duration_ms: 0.338
+  ...
+# Subtest: M13 Python boundary refusal 2
+ok 335 - M13 Python boundary refusal 2
+  ---
+  duration_ms: 0.1367
+  ...
+# Subtest: M13 Python boundary refusal 3
+ok 336 - M13 Python boundary refusal 3
+  ---
+  duration_ms: 0.0875
+  ...
+# Subtest: M13 Python boundary refusal 4
+ok 337 - M13 Python boundary refusal 4
+  ---
+  duration_ms: 0.0758
+  ...
+# Subtest: M13 Python boundary refusal 5
+ok 338 - M13 Python boundary refusal 5
+  ---
+  duration_ms: 0.1879
+  ...
+# Subtest: M13 Python boundary refusal 6
+ok 339 - M13 Python boundary refusal 6
+  ---
+  duration_ms: 0.1123
+  ...
+# Subtest: M13 Python boundary refusal 7
+ok 340 - M13 Python boundary refusal 7
+  ---
+  duration_ms: 0.0695
+  ...
+# Subtest: M13 Python boundary refusal 8
+ok 341 - M13 Python boundary refusal 8
+  ---
+  duration_ms: 0.0567
+  ...
+# Subtest: M13 Python boundary refusal 9
+ok 342 - M13 Python boundary refusal 9
+  ---
+  duration_ms: 0.2117
+  ...
+# Subtest: M13 Python boundary refusal 10
+ok 343 - M13 Python boundary refusal 10
+  ---
+  duration_ms: 0.0933
+  ...
+# Subtest: M13 Python boundary refusal 11
+ok 344 - M13 Python boundary refusal 11
+  ---
+  duration_ms: 0.0591
+  ...
+# Subtest: M13 Python boundary refusal 12
+ok 345 - M13 Python boundary refusal 12
+  ---
+  duration_ms: 0.1084
+  ...
+# Subtest: M13 Python boundary refusal 13
+ok 346 - M13 Python boundary refusal 13
+  ---
+  duration_ms: 0.0591
+  ...
+# Subtest: M13 Python boundary refusal 14
+ok 347 - M13 Python boundary refusal 14
+  ---
+  duration_ms: 0.0541
+  ...
+# Subtest: M13 Python boundary refusal 15
+ok 348 - M13 Python boundary refusal 15
+  ---
+  duration_ms: 0.0663
+  ...
+# Subtest: M13 Python boundary refusal 16
+ok 349 - M13 Python boundary refusal 16
+  ---
+  duration_ms: 0.0505
+  ...
+# Subtest: M13 Python boundary refusal 17
+ok 350 - M13 Python boundary refusal 17
+  ---
+  duration_ms: 0.0456
+  ...
+# Subtest: M13 Python boundary refusal 18
+ok 351 - M13 Python boundary refusal 18
+  ---
+  duration_ms: 0.0405
+  ...
+# Subtest: M13 Python boundary refusal 19
+ok 352 - M13 Python boundary refusal 19
+  ---
+  duration_ms: 0.0394
+  ...
+# Subtest: M13 Python boundary refusal 20
+ok 353 - M13 Python boundary refusal 20
+  ---
+  duration_ms: 0.0557
+  ...
+# Subtest: M13 Python boundary refusal 21
+ok 354 - M13 Python boundary refusal 21
+  ---
+  duration_ms: 0.0593
+  ...
+# Subtest: M13 Python boundary refusal 22
+ok 355 - M13 Python boundary refusal 22
+  ---
+  duration_ms: 0.2083
+  ...
+# Subtest: M13 Python boundary refusal 23
+ok 356 - M13 Python boundary refusal 23
+  ---
+  duration_ms: 0.0735
+  ...
+# Subtest: M13 Python boundary refusal 24
+ok 357 - M13 Python boundary refusal 24
+  ---
+  duration_ms: 0.1632
+  ...
+# Subtest: M13 Python boundary refusal 25
+ok 358 - M13 Python boundary refusal 25
+  ---
+  duration_ms: 0.1039
+  ...
+# Subtest: M13 Python boundary refusal 26
+ok 359 - M13 Python boundary refusal 26
+  ---
+  duration_ms: 0.3909
+  ...
+# Subtest: M13 Python boundary refusal 27
+ok 360 - M13 Python boundary refusal 27
+  ---
+  duration_ms: 0.1102
+  ...
+# Subtest: M13 Markdown requires a Python fence, not a directory or document exception
+ok 361 - M13 Markdown requires a Python fence, not a directory or document exception
+  ---
+  duration_ms: 2.7217
+  ...
+# Subtest: M13 legacy JS environment expressions cannot swallow newline suffixes
+ok 362 - M13 legacy JS environment expressions cannot swallow newline suffixes
+  ---
+  duration_ms: 0.7836
+  ...
+# Subtest: M13 original line numbers survive multiline allowed expressions and comments
+ok 363 - M13 original line numbers survive multiline allowed expressions and comments
+  ---
+  duration_ms: 0.859
+  ...
+# Subtest: M13 adjacent real-shaped artificial credentials are never masked
+ok 364 - M13 adjacent real-shaped artificial credentials are never masked
+  ---
+  duration_ms: 0.6757
+  ...
+# Subtest: M13 all three profile gates agree on allows and refusals without real effects
+ok 365 - M13 all three profile gates agree on allows and refusals without real effects
+  ---
+  duration_ms: 38.9835
+  ...
+# {"extension":"php","failures":[],"calls":1}
+# {"extension":"rb","failures":[],"calls":1}
+# Subtest: PHP closing tag inside line comments cannot expose HTML as code
+ok 366 - PHP closing tag inside line comments cannot expose HTML as code
+  ---
+  duration_ms: 3.9302
+  ...
+# Subtest: PHP opening tag and Ruby in-argument comments preserve exact spans
+ok 367 - PHP opening tag and Ruby in-argument comments preserve exact spans
+  ---
+  duration_ms: 1.1081
+  ...
+# Subtest: PHP/Ruby unsupported lexical modes before or after a candidate invalidate the region
+ok 368 - PHP/Ruby unsupported lexical modes before or after a candidate invalidate the region
+  ---
+  duration_ms: 0.8899
+  ...
+# Subtest: PHP/Ruby bounded allow php exact
+ok 369 - PHP/Ruby bounded allow php exact
+  ---
+  duration_ms: 0.2377
+  ...
+# Subtest: PHP/Ruby bounded allow php single
+ok 370 - PHP/Ruby bounded allow php single
+  ---
+  duration_ms: 0.3135
+  ...
+# Subtest: PHP/Ruby bounded allow php multiline
+ok 371 - PHP/Ruby bounded allow php multiline
+  ---
+  duration_ms: 0.2591
+  ...
+# Subtest: PHP/Ruby bounded allow php comment
+ok 372 - PHP/Ruby bounded allow php comment
+  ---
+  duration_ms: 0.3714
+  ...
+# Subtest: PHP/Ruby closed language fence php
+ok 373 - PHP/Ruby closed language fence php
+  ---
+  duration_ms: 0.7249
+  ...
+# Subtest: PHP/Ruby value refusal php 0
+ok 374 - PHP/Ruby value refusal php 0
+  ---
+  duration_ms: 0.2196
+  ...
+# Subtest: PHP/Ruby value refusal php 1
+ok 375 - PHP/Ruby value refusal php 1
+  ---
+  duration_ms: 0.1637
+  ...
+# Subtest: PHP/Ruby value refusal php 2
+ok 376 - PHP/Ruby value refusal php 2
+  ---
+  duration_ms: 0.0803
+  ...
+# Subtest: PHP/Ruby value refusal php 3
+ok 377 - PHP/Ruby value refusal php 3
+  ---
+  duration_ms: 0.0577
+  ...
+# Subtest: PHP/Ruby value refusal php 4
+ok 378 - PHP/Ruby value refusal php 4
+  ---
+  duration_ms: 0.0532
+  ...
+# Subtest: PHP/Ruby value refusal php 5
+ok 379 - PHP/Ruby value refusal php 5
+  ---
+  duration_ms: 0.1913
+  ...
+# Subtest: PHP/Ruby value refusal php 6
+ok 380 - PHP/Ruby value refusal php 6
+  ---
+  duration_ms: 0.0635
+  ...
+# Subtest: PHP/Ruby value refusal php 7
+ok 381 - PHP/Ruby value refusal php 7
+  ---
+  duration_ms: 0.0547
+  ...
+# Subtest: PHP/Ruby value refusal php 8
+ok 382 - PHP/Ruby value refusal php 8
+  ---
+  duration_ms: 0.0511
+  ...
+# Subtest: PHP/Ruby full statement boundary php
+ok 383 - PHP/Ruby full statement boundary php
+  ---
+  duration_ms: 0.3538
+  ...
+# Subtest: PHP/Ruby embedded examples never masked php
+ok 384 - PHP/Ruby embedded examples never masked php
+  ---
+  duration_ms: 0.2617
+  ...
+# Subtest: PHP/Ruby comments and adjacent fields retain lines php
+ok 385 - PHP/Ruby comments and adjacent fields retain lines php
+  ---
+  duration_ms: 0.6298
+  ...
+# Subtest: PHP/Ruby bounded allow rb exact
+ok 386 - PHP/Ruby bounded allow rb exact
+  ---
+  duration_ms: 0.1832
+  ...
+# Subtest: PHP/Ruby bounded allow rb single
+ok 387 - PHP/Ruby bounded allow rb single
+  ---
+  duration_ms: 0.0876
+  ...
+# Subtest: PHP/Ruby bounded allow rb multiline
+ok 388 - PHP/Ruby bounded allow rb multiline
+  ---
+  duration_ms: 0.0831
+  ...
+# Subtest: PHP/Ruby bounded allow rb comment
+ok 389 - PHP/Ruby bounded allow rb comment
+  ---
+  duration_ms: 0.0764
+  ...
+# Subtest: PHP/Ruby closed language fence rb
+ok 390 - PHP/Ruby closed language fence rb
+  ---
+  duration_ms: 0.0909
+  ...
+# Subtest: PHP/Ruby value refusal rb 0
+ok 391 - PHP/Ruby value refusal rb 0
+  ---
+  duration_ms: 0.0526
+  ...
+# Subtest: PHP/Ruby value refusal rb 1
+ok 392 - PHP/Ruby value refusal rb 1
+  ---
+  duration_ms: 0.0462
+  ...
+# Subtest: PHP/Ruby value refusal rb 2
+ok 393 - PHP/Ruby value refusal rb 2
+  ---
+  duration_ms: 0.0417
+  ...
+# Subtest: PHP/Ruby value refusal rb 3
+ok 394 - PHP/Ruby value refusal rb 3
+  ---
+  duration_ms: 0.0464
+  ...
+# Subtest: PHP/Ruby value refusal rb 4
+ok 395 - PHP/Ruby value refusal rb 4
+  ---
+  duration_ms: 0.0422
+  ...
+# Subtest: PHP/Ruby value refusal rb 5
+ok 396 - PHP/Ruby value refusal rb 5
+  ---
+  duration_ms: 0.0378
+  ...
+# Subtest: PHP/Ruby value refusal rb 6
+ok 397 - PHP/Ruby value refusal rb 6
+  ---
+  duration_ms: 0.0412
+  ...
+# Subtest: PHP/Ruby value refusal rb 7
+ok 398 - PHP/Ruby value refusal rb 7
+  ---
+  duration_ms: 0.0417
+  ...
+# Subtest: PHP/Ruby value refusal rb 8
+ok 399 - PHP/Ruby value refusal rb 8
+  ---
+  duration_ms: 0.1178
+  ...
+# Subtest: PHP/Ruby full statement boundary rb
+ok 400 - PHP/Ruby full statement boundary rb
+  ---
+  duration_ms: 0.1694
+  ...
+# Subtest: PHP/Ruby embedded examples never masked rb
+ok 401 - PHP/Ruby embedded examples never masked rb
+  ---
+  duration_ms: 0.1668
+  ...
+# Subtest: PHP/Ruby comments and adjacent fields retain lines rb
+ok 402 - PHP/Ruby comments and adjacent fields retain lines rb
+  ---
+  duration_ms: 0.1511
+  ...
+# Subtest: PHP/Ruby three gates php
+ok 403 - PHP/Ruby three gates php
+  ---
+  duration_ms: 37.4145
+  ...
+# Subtest: PHP/Ruby three gates rb
+ok 404 - PHP/Ruby three gates rb
+  ---
+  duration_ms: 29.4015
+  ...
+# Subtest: RY-PR-01 comment key php apikey
+ok 405 - RY-PR-01 comment key php apikey
+  ---
+  duration_ms: 0.4871
+  ...
+# Subtest: RY-PR-01 comment key php apiKey
+ok 406 - RY-PR-01 comment key php apiKey
+  ---
+  duration_ms: 0.2494
+  ...
+# Subtest: RY-PR-01 comment key php APIKEY
+ok 407 - RY-PR-01 comment key php APIKEY
+  ---
+  duration_ms: 0.3504
+  ...
+# Subtest: RY-PR-01 comment key php api_key
+ok 408 - RY-PR-01 comment key php api_key
+  ---
+  duration_ms: 0.3825
+  ...
+# Subtest: RY-PR-01 comment key php API_KEY
+ok 409 - RY-PR-01 comment key php API_KEY
+  ---
+  duration_ms: 0.357
+  ...
+# Subtest: RY-PR-01 comment key php api-key
+ok 410 - RY-PR-01 comment key php api-key
+  ---
+  duration_ms: 0.2584
+  ...
+# Subtest: RY-PR-01 comment key php API-KEY
+ok 411 - RY-PR-01 comment key php API-KEY
+  ---
+  duration_ms: 0.2311
+  ...
+# Subtest: RY-PR-01 comment key php token
+ok 412 - RY-PR-01 comment key php token
+  ---
+  duration_ms: 0.2356
+  ...
+# Subtest: RY-PR-01 comment key php TOKEN
+ok 413 - RY-PR-01 comment key php TOKEN
+  ---
+  duration_ms: 0.2858
+  ...
+# Subtest: RY-PR-01 comment key php ToKeN
+ok 414 - RY-PR-01 comment key php ToKeN
+  ---
+  duration_ms: 0.2572
+  ...
+# Subtest: RY-PR-01 comment key php secret
+ok 415 - RY-PR-01 comment key php secret
+  ---
+  duration_ms: 0.6378
+  ...
+# Subtest: RY-PR-01 comment key php SECRET
+ok 416 - RY-PR-01 comment key php SECRET
+  ---
+  duration_ms: 0.2128
+  ...
+# Subtest: RY-PR-01 comment key php password
+ok 417 - RY-PR-01 comment key php password
+  ---
+  duration_ms: 0.2098
+  ...
+# Subtest: RY-PR-01 comment key php PASSWORD
+ok 418 - RY-PR-01 comment key php PASSWORD
+  ---
+  duration_ms: 0.1973
+  ...
+# Subtest: RY-PR-01 comment key php PaSsWoRd
+ok 419 - RY-PR-01 comment key php PaSsWoRd
+  ---
+  duration_ms: 0.2003
+  ...
+# Subtest: RY-PR-01 comment key php authorization
+ok 420 - RY-PR-01 comment key php authorization
+  ---
+  duration_ms: 0.1995
+  ...
+# Subtest: RY-PR-01 comment key php AUTHORIZATION
+ok 421 - RY-PR-01 comment key php AUTHORIZATION
+  ---
+  duration_ms: 0.1978
+  ...
+# Subtest: RY-PR-01 comment key php AuThOrIzAtIoN
+ok 422 - RY-PR-01 comment key php AuThOrIzAtIoN
+  ---
+  duration_ms: 0.2117
+  ...
+# Subtest: RY-PR-01 comment key rb apikey
+ok 423 - RY-PR-01 comment key rb apikey
+  ---
+  duration_ms: 0.2209
+  ...
+# Subtest: RY-PR-01 comment key rb apiKey
+ok 424 - RY-PR-01 comment key rb apiKey
+  ---
+  duration_ms: 0.3098
+  ...
+# Subtest: RY-PR-01 comment key rb APIKEY
+ok 425 - RY-PR-01 comment key rb APIKEY
+  ---
+  duration_ms: 0.2317
+  ...
+# Subtest: RY-PR-01 comment key rb api_key
+ok 426 - RY-PR-01 comment key rb api_key
+  ---
+  duration_ms: 0.2264
+  ...
+# Subtest: RY-PR-01 comment key rb API_KEY
+ok 427 - RY-PR-01 comment key rb API_KEY
+  ---
+  duration_ms: 0.2207
+  ...
+# Subtest: RY-PR-01 comment key rb api-key
+ok 428 - RY-PR-01 comment key rb api-key
+  ---
+  duration_ms: 0.2547
+  ...
+# Subtest: RY-PR-01 comment key rb API-KEY
+ok 429 - RY-PR-01 comment key rb API-KEY
+  ---
+  duration_ms: 0.2906
+  ...
+# Subtest: RY-PR-01 comment key rb token
+ok 430 - RY-PR-01 comment key rb token
+  ---
+  duration_ms: 0.2686
+  ...
+# Subtest: RY-PR-01 comment key rb TOKEN
+ok 431 - RY-PR-01 comment key rb TOKEN
+  ---
+  duration_ms: 0.2219
+  ...
+# Subtest: RY-PR-01 comment key rb ToKeN
+ok 432 - RY-PR-01 comment key rb ToKeN
+  ---
+  duration_ms: 0.2147
+  ...
+# Subtest: RY-PR-01 comment key rb secret
+ok 433 - RY-PR-01 comment key rb secret
+  ---
+  duration_ms: 0.925
+  ...
+# Subtest: RY-PR-01 comment key rb SECRET
+ok 434 - RY-PR-01 comment key rb SECRET
+  ---
+  duration_ms: 0.2389
+  ...
+# Subtest: RY-PR-01 comment key rb password
+ok 435 - RY-PR-01 comment key rb password
+  ---
+  duration_ms: 0.3385
+  ...
+# Subtest: RY-PR-01 comment key rb PASSWORD
+ok 436 - RY-PR-01 comment key rb PASSWORD
+  ---
+  duration_ms: 0.3177
+  ...
+# Subtest: RY-PR-01 comment key rb PaSsWoRd
+ok 437 - RY-PR-01 comment key rb PaSsWoRd
+  ---
+  duration_ms: 0.2836
+  ...
+# Subtest: RY-PR-01 comment key rb authorization
+ok 438 - RY-PR-01 comment key rb authorization
+  ---
+  duration_ms: 0.3109
+  ...
+# Subtest: RY-PR-01 comment key rb AUTHORIZATION
+ok 439 - RY-PR-01 comment key rb AUTHORIZATION
+  ---
+  duration_ms: 0.2279
+  ...
+# Subtest: RY-PR-01 comment key rb AuThOrIzAtIoN
+ok 440 - RY-PR-01 comment key rb AuThOrIzAtIoN
+  ---
+  duration_ms: 0.2261
+  ...
+# Subtest: RY-PR-01 three gates php
+ok 441 - RY-PR-01 three gates php
+  ---
+  duration_ms: 35.2696
+  ...
+# Subtest: RY-PR-01 three gates rb
+ok 442 - RY-PR-01 three gates rb
+  ---
+  duration_ms: 27.274
+  ...
+# {"variant":"quoted-comment","expectedRefusalFailures":[],"calls":1}
+# {"variant":"quoted-comment-single","expectedRefusalFailures":[],"calls":1}
+# {"variant":"quoted-template","expectedRefusalFailures":[],"calls":1}
+# {"variant":"quoted-template-single","expectedRefusalFailures":[],"calls":1}
+# Subtest: RY-C5-01 quoted field " comment
+ok 443 - RY-C5-01 quoted field " comment
+  ---
+  duration_ms: 3.4316
+  ...
+# Subtest: RY-C5-01 quoted field " template
+ok 444 - RY-C5-01 quoted field " template
+  ---
+  duration_ms: 0.3778
+  ...
+# Subtest: RY-C5-01 quoted field " newline
+ok 445 - RY-C5-01 quoted field " newline
+  ---
+  duration_ms: 0.327
+  ...
+# Subtest: RY-C5-01 quoted field " line-comment
+ok 446 - RY-C5-01 quoted field " line-comment
+  ---
+  duration_ms: 0.5015
+  ...
+# Subtest: RY-C5-01 quoted field " interpolation
+ok 447 - RY-C5-01 quoted field " interpolation
+  ---
+  duration_ms: 0.4115
+  ...
+# Subtest: RY-C5-01 quoted field " comment-template
+ok 448 - RY-C5-01 quoted field " comment-template
+  ---
+  duration_ms: 0.3553
+  ...
+# Subtest: RY-C5-01 quoted field ' comment
+ok 449 - RY-C5-01 quoted field ' comment
+  ---
+  duration_ms: 0.4693
+  ...
+# Subtest: RY-C5-01 quoted field ' template
+ok 450 - RY-C5-01 quoted field ' template
+  ---
+  duration_ms: 1.1141
+  ...
+# Subtest: RY-C5-01 quoted field ' newline
+ok 451 - RY-C5-01 quoted field ' newline
+  ---
+  duration_ms: 0.6733
+  ...
+# Subtest: RY-C5-01 quoted field ' line-comment
+ok 452 - RY-C5-01 quoted field ' line-comment
+  ---
+  duration_ms: 0.4087
+  ...
+# Subtest: RY-C5-01 quoted field ' interpolation
+ok 453 - RY-C5-01 quoted field ' interpolation
+  ---
+  duration_ms: 0.3166
+  ...
+# Subtest: RY-C5-01 quoted field ' comment-template
+ok 454 - RY-C5-01 quoted field ' comment-template
+  ---
+  duration_ms: 0.2807
+  ...
+# Subtest: RY-C5-01 quoted fields do not gain a placeholder allowance
+ok 455 - RY-C5-01 quoted fields do not gain a placeholder allowance
+  ---
+  duration_ms: 0.22
+  ...
+# Subtest: RY-C5-01 does not reinterpret string contents or mask comments and neighbors
+ok 456 - RY-C5-01 does not reinterpret string contents or mask comments and neighbors
+  ---
+  duration_ms: 1.3761
+  ...
+# Subtest: RY-C5-01 quoted-comment
+ok 457 - RY-C5-01 quoted-comment
+  ---
+  duration_ms: 35.7436
+  ...
+# Subtest: RY-C5-01 quoted-comment-single
+ok 458 - RY-C5-01 quoted-comment-single
+  ---
+  duration_ms: 30.9448
+  ...
+# Subtest: RY-C5-01 quoted-template
+ok 459 - RY-C5-01 quoted-template
+  ---
+  duration_ms: 33.9199
+  ...
+# Subtest: RY-C5-01 quoted-template-single
+ok 460 - RY-C5-01 quoted-template-single
+  ---
+  duration_ms: 30.3873
+  ...
+# Subtest: SEQ ordered allow php 1 line 20
+ok 461 - SEQ ordered allow php 1 line 20
+  ---
+  duration_ms: 3.5036
+  ...
+# Subtest: SEQ ordered allow php 1 line 22
+ok 462 - SEQ ordered allow php 1 line 22
+  ---
+  duration_ms: 1.3884
+  ...
+# Subtest: SEQ ordered allow php 2 line 20
+ok 463 - SEQ ordered allow php 2 line 20
+  ---
+  duration_ms: 0.2295
+  ...
+# Subtest: SEQ ordered allow php 2 line 22
+ok 464 - SEQ ordered allow php 2 line 22
+  ---
+  duration_ms: 0.2025
+  ...
+# Subtest: SEQ multiline and multiple fences php
+ok 465 - SEQ multiline and multiple fences php
+  ---
+  duration_ms: 0.3478
+  ...
+# Subtest: SEQ boundary refusal php 0
+ok 466 - SEQ boundary refusal php 0
+  ---
+  duration_ms: 0.4673
+  ...
+# Subtest: SEQ boundary refusal php 1
+ok 467 - SEQ boundary refusal php 1
+  ---
+  duration_ms: 0.112
+  ...
+# Subtest: SEQ boundary refusal php 2
+ok 468 - SEQ boundary refusal php 2
+  ---
+  duration_ms: 0.1074
+  ...
+# Subtest: SEQ boundary refusal php 3
+ok 469 - SEQ boundary refusal php 3
+  ---
+  duration_ms: 0.0897
+  ...
+# Subtest: SEQ boundary refusal php 4
+ok 470 - SEQ boundary refusal php 4
+  ---
+  duration_ms: 0.1042
+  ...
+# Subtest: SEQ boundary refusal php 5
+ok 471 - SEQ boundary refusal php 5
+  ---
+  duration_ms: 0.092
+  ...
+# Subtest: SEQ boundary refusal php 6
+ok 472 - SEQ boundary refusal php 6
+  ---
+  duration_ms: 0.0711
+  ...
+# Subtest: SEQ boundary refusal php 7
+ok 473 - SEQ boundary refusal php 7
+  ---
+  duration_ms: 0.0836
+  ...
+# Subtest: SEQ boundary refusal php 8
+ok 474 - SEQ boundary refusal php 8
+  ---
+  duration_ms: 0.1212
+  ...
+# Subtest: SEQ boundary refusal php 9
+ok 475 - SEQ boundary refusal php 9
+  ---
+  duration_ms: 0.0638
+  ...
+# Subtest: SEQ boundary refusal php 10
+ok 476 - SEQ boundary refusal php 10
+  ---
+  duration_ms: 0.0771
+  ...
+# Subtest: SEQ boundary refusal php 11
+ok 477 - SEQ boundary refusal php 11
+  ---
+  duration_ms: 0.0681
+  ...
+# Subtest: SEQ boundary refusal php 12
+ok 478 - SEQ boundary refusal php 12
+  ---
+  duration_ms: 0.1961
+  ...
+# Subtest: SEQ boundary refusal php 13
+ok 479 - SEQ boundary refusal php 13
+  ---
+  duration_ms: 0.1269
+  ...
+# Subtest: SEQ boundary refusal php 14
+ok 480 - SEQ boundary refusal php 14
+  ---
+  duration_ms: 0.0849
+  ...
+# Subtest: SEQ boundary refusal php 15
+ok 481 - SEQ boundary refusal php 15
+  ---
+  duration_ms: 0.1259
+  ...
+# Subtest: SEQ boundary refusal php 16
+ok 482 - SEQ boundary refusal php 16
+  ---
+  duration_ms: 0.0985
+  ...
+# Subtest: SEQ boundary refusal php 17
+ok 483 - SEQ boundary refusal php 17
+  ---
+  duration_ms: 0.164
+  ...
+# Subtest: SEQ boundary refusal php 18
+ok 484 - SEQ boundary refusal php 18
+  ---
+  duration_ms: 0.084
+  ...
+# Subtest: SEQ boundary refusal php 19
+ok 485 - SEQ boundary refusal php 19
+  ---
+  duration_ms: 0.0795
+  ...
+# Subtest: SEQ boundary refusal php 20
+ok 486 - SEQ boundary refusal php 20
+  ---
+  duration_ms: 0.0771
+  ...
+# Subtest: SEQ boundary refusal php 21
+ok 487 - SEQ boundary refusal php 21
+  ---
+  duration_ms: 0.0773
+  ...
+# Subtest: SEQ boundary refusal php 22
+ok 488 - SEQ boundary refusal php 22
+  ---
+  duration_ms: 0.0699
+  ...
+# Subtest: SEQ boundary refusal php 23
+ok 489 - SEQ boundary refusal php 23
+  ---
+  duration_ms: 0.1637
+  ...
+# Subtest: SEQ boundary refusal php 24
+ok 490 - SEQ boundary refusal php 24
+  ---
+  duration_ms: 0.0863
+  ...
+# Subtest: SEQ boundary refusal php 25
+ok 491 - SEQ boundary refusal php 25
+  ---
+  duration_ms: 0.0828
+  ...
+# Subtest: SEQ embedded and unsupported contexts php
+ok 492 - SEQ embedded and unsupported contexts php
+  ---
+  duration_ms: 0.2998
+  ...
+# Subtest: SEQ comments and original lines php
+ok 493 - SEQ comments and original lines php
+  ---
+  duration_ms: 4.7479
+  ...
+# Subtest: SEQ three gates php 1
+ok 494 - SEQ three gates php 1
+  ---
+  duration_ms: 37.3797
+  ...
+# Subtest: SEQ three gates php 2
+ok 495 - SEQ three gates php 2
+  ---
+  duration_ms: 28.2535
+  ...
+# Subtest: SEQ ordered allow rb 1 line 20
+ok 496 - SEQ ordered allow rb 1 line 20
+  ---
+  duration_ms: 0.5246
+  ...
+# Subtest: SEQ ordered allow rb 1 line 22
+ok 497 - SEQ ordered allow rb 1 line 22
+  ---
+  duration_ms: 0.1803
+  ...
+# Subtest: SEQ ordered allow rb 2 line 20
+ok 498 - SEQ ordered allow rb 2 line 20
+  ---
+  duration_ms: 0.1553
+  ...
+# Subtest: SEQ ordered allow rb 2 line 22
+ok 499 - SEQ ordered allow rb 2 line 22
+  ---
+  duration_ms: 0.2041
+  ...
+# Subtest: SEQ multiline and multiple fences rb
+ok 500 - SEQ multiline and multiple fences rb
+  ---
+  duration_ms: 0.1495
+  ...
+# Subtest: SEQ boundary refusal rb 0
+ok 501 - SEQ boundary refusal rb 0
+  ---
+  duration_ms: 0.0843
+  ...
+# Subtest: SEQ boundary refusal rb 1
+ok 502 - SEQ boundary refusal rb 1
+  ---
+  duration_ms: 0.074
+  ...
+# Subtest: SEQ boundary refusal rb 2
+ok 503 - SEQ boundary refusal rb 2
+  ---
+  duration_ms: 0.1047
+  ...
+# Subtest: SEQ boundary refusal rb 3
+ok 504 - SEQ boundary refusal rb 3
+  ---
+  duration_ms: 0.2285
+  ...
+# Subtest: SEQ boundary refusal rb 4
+ok 505 - SEQ boundary refusal rb 4
+  ---
+  duration_ms: 0.0947
+  ...
+# Subtest: SEQ boundary refusal rb 5
+ok 506 - SEQ boundary refusal rb 5
+  ---
+  duration_ms: 0.0741
+  ...
+# Subtest: SEQ boundary refusal rb 6
+ok 507 - SEQ boundary refusal rb 6
+  ---
+  duration_ms: 0.0691
+  ...
+# Subtest: SEQ boundary refusal rb 7
+ok 508 - SEQ boundary refusal rb 7
+  ---
+  duration_ms: 0.0685
+  ...
+# Subtest: SEQ boundary refusal rb 8
+ok 509 - SEQ boundary refusal rb 8
+  ---
+  duration_ms: 0.067
+  ...
+# Subtest: SEQ boundary refusal rb 9
+ok 510 - SEQ boundary refusal rb 9
+  ---
+  duration_ms: 0.0661
+  ...
+# Subtest: SEQ boundary refusal rb 10
+ok 511 - SEQ boundary refusal rb 10
+  ---
+  duration_ms: 0.0522
+  ...
+# Subtest: SEQ boundary refusal rb 11
+ok 512 - SEQ boundary refusal rb 11
+  ---
+  duration_ms: 0.0507
+  ...
+# Subtest: SEQ boundary refusal rb 12
+ok 513 - SEQ boundary refusal rb 12
+  ---
+  duration_ms: 0.0664
+  ...
+# Subtest: SEQ boundary refusal rb 13
+ok 514 - SEQ boundary refusal rb 13
+  ---
+  duration_ms: 0.0721
+  ...
+# Subtest: SEQ boundary refusal rb 14
+ok 515 - SEQ boundary refusal rb 14
+  ---
+  duration_ms: 0.076
+  ...
+# Subtest: SEQ boundary refusal rb 15
+ok 516 - SEQ boundary refusal rb 15
+  ---
+  duration_ms: 0.0666
+  ...
+# Subtest: SEQ boundary refusal rb 16
+ok 517 - SEQ boundary refusal rb 16
+  ---
+  duration_ms: 0.0787
+  ...
+# Subtest: SEQ boundary refusal rb 17
+ok 518 - SEQ boundary refusal rb 17
+  ---
+  duration_ms: 0.0852
+  ...
+# Subtest: SEQ boundary refusal rb 18
+ok 519 - SEQ boundary refusal rb 18
+  ---
+  duration_ms: 0.2755
+  ...
+# Subtest: SEQ boundary refusal rb 19
+ok 520 - SEQ boundary refusal rb 19
+  ---
+  duration_ms: 0.0982
+  ...
+# Subtest: SEQ boundary refusal rb 20
+ok 521 - SEQ boundary refusal rb 20
+  ---
+  duration_ms: 0.0752
+  ...
+# Subtest: SEQ boundary refusal rb 21
+ok 522 - SEQ boundary refusal rb 21
+  ---
+  duration_ms: 0.0752
+  ...
+# Subtest: SEQ boundary refusal rb 22
+ok 523 - SEQ boundary refusal rb 22
+  ---
+  duration_ms: 0.0651
+  ...
+# Subtest: SEQ boundary refusal rb 23
+ok 524 - SEQ boundary refusal rb 23
+  ---
+  duration_ms: 0.0604
+  ...
+# Subtest: SEQ boundary refusal rb 24
+ok 525 - SEQ boundary refusal rb 24
+  ---
+  duration_ms: 0.4402
+  ...
+# Subtest: SEQ boundary refusal rb 25
+ok 526 - SEQ boundary refusal rb 25
+  ---
+  duration_ms: 0.0793
+  ...
+# Subtest: SEQ embedded and unsupported contexts rb
+ok 527 - SEQ embedded and unsupported contexts rb
+  ---
+  duration_ms: 0.1551
+  ...
+# Subtest: SEQ comments and original lines rb
+ok 528 - SEQ comments and original lines rb
+  ---
+  duration_ms: 2.8868
+  ...
+# Subtest: SEQ three gates rb 1
+ok 529 - SEQ three gates rb 1
+  ---
+  duration_ms: 29.0783
+  ...
+# Subtest: SEQ three gates rb 2
+ok 530 - SEQ three gates rb 2
+  ---
+  duration_ms: 26.369
+  ...
+# Subtest: source environment references are portable but literal tokens remain blocked
+ok 531 - source environment references are portable but literal tokens remain blocked
+  ---
+  duration_ms: 3.5772
+  ...
+# Subtest: pushWorkspace application use case
+    # Subtest: exports, scans, writes and pushes the canonical artifact through argv-only Git
+    ok 1 - exports, scans, writes and pushes the canonical artifact through argv-only Git
+      ---
+      duration_ms: 7.2346
+      ...
+    # Subtest: treats probe code 0 as an explicit no-change skip without committing and still pushes
+    ok 2 - treats probe code 0 as an explicit no-change skip without committing and still pushes
+      ---
+      duration_ms: 1.012
+      ...
+    # Subtest: treats probe code 1 as staged changes and commits before pushing
+    ok 3 - treats probe code 1 as staged changes and commits before pushing
+      ---
+      duration_ms: 0.7883
+      ...
+    # Subtest: fails a probe code above 1 and does not commit or push
+    ok 4 - fails a probe code above 1 and does not commit or push
+      ---
+      duration_ms: 1.0183
+      ...
+    # Subtest: never treats deceptive no-change stdout as success when commit has a fatal stderr
+    ok 5 - never treats deceptive no-change stdout as success when commit has a fatal stderr
+      ---
+      duration_ms: 1.2936
+      ...
+    1..5
+ok 532 - pushWorkspace application use case
+  ---
+  duration_ms: 12.5225
+  type: 'suite'
+  ...
+# Subtest: pullWorkspace application use case
+    # Subtest: pulls --ff-only in the dotfiles repository and restores the canonical artifact
+    ok 1 - pulls --ff-only in the dotfiles repository and restores the canonical artifact
+      ---
+      duration_ms: 2.6739
+      ...
+    # Subtest: fails closed on Git, parse, target mismatch and restore failures
+    ok 2 - fails closed on Git, parse, target mismatch and restore failures
+      ---
+      duration_ms: 1.0249
+      ...
+    1..2
+ok 533 - pullWorkspace application use case
+  ---
+  duration_ms: 3.8871
+  type: 'suite'
+  ...
+# Subtest: Git CLI adapter
+    # Subtest: executes only argv arrays with shell:false
+    ok 1 - executes only argv arrays with shell:false
+      ---
+      duration_ms: 295.9816
+      ...
+    1..1
+ok 534 - Git CLI adapter
+  ---
+  duration_ms: 296.1913
+  type: 'suite'
+  ...
+# Subtest: push/pull entrypoint characterization
+    # Subtest: keeps CLI presentation while delegating push and pull to the application
+    ok 1 - keeps CLI presentation while delegating push and pull to the application
+      ---
+      duration_ms: 0.7591
+      ...
+    # Subtest: removes old Plugin drift while keeping explicit OpenCode scope and tool schemas
+    ok 2 - removes old Plugin drift while keeping explicit OpenCode scope and tool schemas
+      ---
+      duration_ms: 0.6751
+      ...
+    1..2
+ok 535 - push/pull entrypoint characterization
+  ---
+  duration_ms: 1.595
+  type: 'suite'
+  ...
+# {"ok":false,"warnings":[],"errors":["Dotfiles repository is not initialized: C:\\\\uagent-review\\\\delivery-evidence\\\\env-full-node18\\\\tmp\\\\uagent-recovery-contract-1789388244249\\\\workspace\\\\usync-dotfiles"],"skipped":[],"targetAgent":"codex"}
+# {"ok":false,"warnings":[],"errors":["git pull failed: fatal: not a git repository (or any of the parent directories): .git"],"skipped":[],"targetAgent":"codex"}
+# warning: in the working copy of 'state/init-state.json', LF will be replaced by CRLF the next time Git touches it
+# To <EVIDENCE_ROOT>\\env-full-node18\\tmp\\uagent-recovery-contract-1789388244249\\dotfiles-remote-1789388244901.git
+#  * [new branch]      master -> master
+# {"ok":false,"warnings":[],"errors":["Invalid workspace-state.json: Invalid WorkspaceState JSON [invalid_json] at root"],"skipped":[],"targetAgent":"codex"}
+# Secret values are never accepted. Only variable names and safe placeholders may be recorded.
+# Invalid environment variable name
+# {"ok":false,"warnings":[],"errors":["Path traversal detected: C:\\\\uagent-review\\\\delivery-evidence\\\\env-full-node18\\\\tmp\\\\uagent-recovery-contract-1789388244249\\\\outside.json"],"skipped":[],"targetAgent":"codex"}
+# Subtest: targetAgent persistence and strict scope
+    # Subtest: persists an explicit Codex target in init-state.json
+    ok 1 - persists an explicit Codex target in init-state.json
+      ---
+      duration_ms: 2.1189
+      ...
+    # Subtest: CLI init persists --target-agent codex
+    ok 2 - CLI init persists --target-agent codex
+      ---
+      duration_ms: 245.4013
+      ...
+    # Subtest: Codex export contains a host-scoped manifest and no OpenCode config
+    ok 3 - Codex export contains a host-scoped manifest and no OpenCode config
+      ---
+      duration_ms: 4.8737
+      ...
+    # Subtest: exports stable skill provenance from the shared skill lock
+    ok 4 - exports stable skill provenance from the shared skill lock
+      ---
+      duration_ms: 4.243
+      ...
+    1..4
+ok 536 - targetAgent persistence and strict scope
+  ---
+  duration_ms: 261.2493
+  type: 'suite'
+  ...
+# Subtest: safe recovery protocol
+    # Subtest: pull fails non-zero when workspace-state.json is missing
+    ok 1 - pull fails non-zero when workspace-state.json is missing
+      ---
+      duration_ms: 161.537
+      ...
+    # Subtest: pull reports a dotfiles git failure as structured JSON
+    ok 2 - pull reports a dotfiles git failure as structured JSON
+      ---
+      duration_ms: 221.9219
+      ...
+    # Subtest: pull reports malformed state as structured JSON
+    ok 3 - pull reports malformed state as structured JSON
+      ---
+      duration_ms: 1251.8748
+      ...
+    # Subtest: API template never accepts or writes a real token value
+    ok 4 - API template never accepts or writes a real token value
+      ---
+      duration_ms: 0.5666
+      ...
+    # Subtest: CLI api-keys add rejects a supplied secret value
+    ok 5 - CLI api-keys add rejects a supplied secret value
+      ---
+      duration_ms: 153.6317
+      ...
+    # Subtest: CLI api-keys rejects unsafe key names and export rejects paths outside the workspace
+    ok 6 - CLI api-keys rejects unsafe key names and export rejects paths outside the workspace
+      ---
+      duration_ms: 333.9443
+      ...
+    # Subtest: Codex export fails closed on a malformed tombstone file
+    ok 7 - Codex export fails closed on a malformed tombstone file
+      ---
+      duration_ms: 1.4474
+      ...
+    # Subtest: Codex export captures current plugin tables and recoverable MCP configuration
+    ok 8 - Codex export captures current plugin tables and recoverable MCP configuration
+      ---
+      duration_ms: 3.4677
+      ...
+    # Subtest: raw Codex scanning sees an active tombstone while exported state keeps it deleted
+    ok 9 - raw Codex scanning sees an active tombstone while exported state keeps it deleted
+      ---
+      duration_ms: 9.2445
+      ...
+    # Subtest: permanent deletions reject a legacy manifest even when it omits tombstones
+    ok 10 - permanent deletions reject a legacy manifest even when it omits tombstones
+      ---
+      duration_ms: 1.7971
+      ...
+    # Subtest: tombstones override stale manifests and historical discovery
+    ok 11 - tombstones override stale manifests and historical discovery
+      ---
+      duration_ms: 2.9561
+      ...
+    1..11
+ok 537 - safe recovery protocol
+  ---
+  duration_ms: 2144.0441
+  type: 'suite'
+  ...
+# Subtest: clean checkout and Codex plugin contract
+    # Subtest: npm test has a build lifecycle prerequisite
+    ok 1 - npm test has a build lifecycle prerequisite
+      ---
+      duration_ms: 0.404
+      ...
+    # Subtest: Codex manifest version matches package and uses only accepted discovery fields
+    ok 2 - Codex manifest version matches package and uses only accepted discovery fields
+      ---
+      duration_ms: 0.6836
+      ...
+    1..2
+ok 538 - clean checkout and Codex plugin contract
+  ---
+  duration_ms: 1.3306
+  type: 'suite'
+  ...
+# Subtest: redactString
+    # Subtest: should mask url ?token= but keep base url
+    ok 1 - should mask url ?token= but keep base url
+      ---
+      duration_ms: 0.5455
+      ...
+    # Subtest: should mask &api_key= and other query secret params
+    ok 2 - should mask &api_key= and other query secret params
+      ---
+      duration_ms: 0.5519
+      ...
+    # Subtest: should mask Bearer tokens
+    ok 3 - should mask Bearer tokens
+      ---
+      duration_ms: 0.118
+      ...
+    # Subtest: should mask well-known token prefixes
+    ok 4 - should mask well-known token prefixes
+      ---
+      duration_ms: 0.1097
+      ...
+    # Subtest: should NOT false-positive on ordinary words containing sk-
+    ok 5 - should NOT false-positive on ordinary words containing sk-
+      ---
+      duration_ms: 0.0559
+      ...
+    # Subtest: should leave non-secret strings unchanged
+    ok 6 - should leave non-secret strings unchanged
+      ---
+      duration_ms: 0.0471
+      ...
+    # Subtest: should be idempotent on already-redacted strings
+    ok 7 - should be idempotent on already-redacted strings
+      ---
+      duration_ms: 0.0767
+      ...
+    1..7
+ok 539 - redactString
+  ---
+  duration_ms: 2.8406
+  type: 'suite'
+  ...
+# Subtest: redactSecretsDeep
+    # Subtest: should deep-redact nested objects and arrays without mutating input
+    ok 1 - should deep-redact nested objects and arrays without mutating input
+      ---
+      duration_ms: 0.2487
+      ...
+    # Subtest: should pass through non-string scalars unchanged
+    ok 2 - should pass through non-string scalars unchanged
+      ---
+      duration_ms: 0.0632
+      ...
+    1..2
+ok 540 - redactSecretsDeep
+  ---
+  duration_ms: 0.5183
+  type: 'suite'
+  ...
+# Subtest: generateConfigRefMd redaction (guide layer)
+    # Subtest: should not leak url token into generated config-ref.md
+    ok 1 - should not leak url token into generated config-ref.md
+      ---
+      duration_ms: 0.4842
+      ...
+    1..1
+ok 541 - generateConfigRefMd redaction (guide layer)
+  ---
+  duration_ms: 0.5705
+  type: 'suite'
+  ...
+# Subtest: run-tests propagates a cancelled test hook as a non-zero exit
+ok 542 - run-tests propagates a cancelled test hook as a non-zero exit
+  ---
+  duration_ms: 528.4294
+  ...
+# Subtest: bundled MCP data resolves without a workspace copy on supported runtimes
+ok 543 - bundled MCP data resolves without a workspace copy on supported runtimes
+  ---
+  duration_ms: 2.0329
+  ...
+# Subtest: plugin config locates bundled skills and is idempotent on supported runtimes
+ok 544 - plugin config locates bundled skills and is idempotent on supported runtimes
+  ---
+  duration_ms: 9.1553
+  ...
+# Subtest: config sanitization for export
+    # Subtest: should strip environment variables from MCP config
+    ok 1 - should strip environment variables from MCP config
+      ---
+      duration_ms: 7.8371
+      ...
+    # Subtest: should strip Authorization headers from MCP config
+    ok 2 - should strip Authorization headers from MCP config
+      ---
+      duration_ms: 1.6675
+      ...
+    # Subtest: should exclude OAuth-based providers
+    ok 3 - should exclude OAuth-based providers
+      ---
+      duration_ms: 2.0131
+      ...
+    # Subtest: should keep plugin list intact
+    ok 4 - should keep plugin list intact
+      ---
+      duration_ms: 2.3427
+      ...
+    # Subtest: should redact tokens inside MCP url query strings
+    ok 5 - should redact tokens inside MCP url query strings
+      ---
+      duration_ms: 1.5304
+      ...
+    # Subtest: should redact inline apiKey in provider config
+    ok 6 - should redact inline apiKey in provider config
+      ---
+      duration_ms: 1.6239
+      ...
+    # Subtest: should NOT output empty config sections
+    ok 7 - should NOT output empty config sections
+      ---
+      duration_ms: 1.6304
+      ...
+    1..7
+ok 545 - config sanitization for export
+  ---
+  duration_ms: 93.9237
+  type: 'suite'
+  ...
+# Subtest: ensureSecretGitignore
+    # Subtest: creates .gitignore with keys/ and .env when none exists
+    ok 1 - creates .gitignore with keys/ and .env when none exists
+      ---
+      duration_ms: 3.3865
+      ...
+    # Subtest: appends missing rules to an existing .gitignore without touching others
+    ok 2 - appends missing rules to an existing .gitignore without touching others
+      ---
+      duration_ms: 2.009
+      ...
+    # Subtest: is idempotent when all rules already present
+    ok 3 - is idempotent when all rules already present
+      ---
+      duration_ms: 1.3836
+      ...
+    # Subtest: matches a keys/ rule written with a comment header
+    ok 4 - matches a keys/ rule written with a comment header
+      ---
+      duration_ms: 1.4739
+      ...
+    1..4
+ok 546 - ensureSecretGitignore
+  ---
+  duration_ms: 9.3904
+  type: 'suite'
+  ...
+# Subtest: M0 detects known-token-prefix before and after <hidden>
+ok 547 - M0 detects known-token-prefix before and after <hidden>
+  ---
+  duration_ms: 1.8148
+  ...
+# Subtest: M0 detects authorization-bearer before and after <hidden>
+ok 548 - M0 detects authorization-bearer before and after <hidden>
+  ---
+  duration_ms: 0.1898
+  ...
+# Subtest: M0 detects sensitive-assignment before and after <hidden>
+ok 549 - M0 detects sensitive-assignment before and after <hidden>
+  ---
+  duration_ms: 0.0728
+  ...
+# Subtest: M0 detects known-token-prefix before and after <YOUR_API_KEY>
+ok 550 - M0 detects known-token-prefix before and after <YOUR_API_KEY>
+  ---
+  duration_ms: 0.058
+  ...
+# Subtest: M0 detects authorization-bearer before and after <YOUR_API_KEY>
+ok 551 - M0 detects authorization-bearer before and after <YOUR_API_KEY>
+  ---
+  duration_ms: 0.0572
+  ...
+# Subtest: M0 detects sensitive-assignment before and after <YOUR_API_KEY>
+ok 552 - M0 detects sensitive-assignment before and after <YOUR_API_KEY>
+  ---
+  duration_ms: 0.067
+  ...
+# Subtest: M0 preserves placeholder-only inputs and one finding per rule per line
+ok 553 - M0 preserves placeholder-only inputs and one finding per rule per line
+  ---
+  duration_ms: 0.4988
+  ...
+# Subtest: M0 marker variants, suffixes and concatenation cannot hide adjacent credentials
+ok 554 - M0 marker variants, suffixes and concatenation cannot hide adjacent credentials
+  ---
+  duration_ms: 0.0934
+  ...
+# Subtest: M0 retains original lines across LF, CRLF, non-BMP and Unicode separators
+ok 555 - M0 retains original lines across LF, CRLF, non-BMP and Unicode separators
+  ---
+  duration_ms: 1.3912
+  ...
+# Subtest: M0 scans past display windows and returns no credential text
+ok 556 - M0 scans past display windows and returns no credential text
+  ---
+  duration_ms: 0.4334
+  ...
+# Subtest: M0 base scanner retains its rules independently of M13 profile allowances
+ok 557 - M0 base scanner retains its rules independently of M13 profile allowances
+  ---
+  duration_ms: 0.8607
+  ...
+# Subtest: M0 profile collection, restore and publish reject the same fixture before effects
+ok 558 - M0 profile collection, restore and publish reject the same fixture before effects
+  ---
+  duration_ms: 29.0403
+  ...
+# Subtest: M0 Codex MCP recovery rejects a marker alongside a token before executing
+ok 559 - M0 Codex MCP recovery rejects a marker alongside a token before executing
+  ---
+  duration_ms: 1.038
+  ...
+# Subtest: M0 recovery report refuses residual credentials beside a redaction marker
+ok 560 - M0 recovery report refuses residual credentials beside a redaction marker
+  ---
+  duration_ms: 3.538
+  ...
+# Subtest: pre-commit secret scanner
+    # Subtest: blocks secret values while allowing variable names and safe placeholders
+    ok 1 - blocks secret values while allowing variable names and safe placeholders
+      ---
+      duration_ms: 7.713
+      ...
+    # Subtest: throws before unsafe serialized state can be written
+    ok 2 - throws before unsafe serialized state can be written
+      ---
+      duration_ms: 3.5331
+      ...
+    1..2
+ok 561 - pre-commit secret scanner
+  ---
+  duration_ms: 12.6276
+  type: 'suite'
+  ...
+# Subtest: setupWorkspace application use case
+    # Subtest: delegates once with an explicit target and aggregates typed setup results
+    ok 1 - delegates once with an explicit target and aggregates typed setup results
+      ---
+      duration_ms: 7.4166
+      ...
+    # Subtest: converts a delegated setup exception into ok=false
+    ok 2 - converts a delegated setup exception into ok=false
+      ---
+      duration_ms: 0.8857
+      ...
+    1..2
+ok 562 - setupWorkspace application use case
+  ---
+  duration_ms: 9.2225
+  type: 'suite'
+  ...
+# Subtest: updateWorkspace application use case
+    # Subtest: redacts every progress string field and all structured result strings
+    ok 1 - redacts every progress string field and all structured result strings
+      ---
+      duration_ms: 7.1823
+      ...
+    # Subtest: passes explicit scope, typed progress and argv process execution to the updater
+    ok 2 - passes explicit scope, typed progress and argv process execution to the updater
+      ---
+      duration_ms: 5.2279
+      ...
+    # Subtest: reports every update error as ok=false and preserves the report
+    ok 3 - reports every update error as ok=false and preserves the report
+      ---
+      duration_ms: 1.5994
+      ...
+    # Subtest: converts a delegated update exception into ok=false
+    ok 4 - converts a delegated update exception into ok=false
+      ---
+      duration_ms: 1.2997
+      ...
+    # Subtest: preserves the updater's legacy default executor when no ProcessRunner is injected
+    ok 5 - preserves the updater's legacy default executor when no ProcessRunner is injected
+      ---
+      duration_ms: 1.1966
+      ...
+    # Subtest: streams ordinary output with at most one-event delay and preserves line boundaries
+    ok 6 - streams ordinary output with at most one-event delay and preserves line boundaries
+      ---
+      duration_ms: 1.0166
+      ...
+    # Subtest: streams split-secret output safely without leaking through joined lines
+    ok 7 - streams split-secret output safely without leaking through joined lines
+      ---
+      duration_ms: 1.5504
+      ...
+    1..7
+ok 563 - updateWorkspace application use case
+  ---
+  duration_ms: 19.9164
+  type: 'suite'
+  ...
+# Subtest: setup/update entrypoint delegation
+    # Subtest: routes CLI and Plugin setup/update through the shared application with explicit scope
+    ok 1 - routes CLI and Plugin setup/update through the shared application with explicit scope
+      ---
+      duration_ms: 1.1485
+      ...
+    # Subtest: keeps report archival at the CLI edge and exits non-zero if archival fails
+    ok 2 - keeps report archival at the CLI edge and exits non-zero if archival fails
+      ---
+      duration_ms: 307.2961
+      ...
+    1..2
+ok 564 - setup/update entrypoint delegation
+  ---
+  duration_ms: 308.6335
+  type: 'suite'
+  ...
+# Subtest: ProcessRunner adapter bridge
+    # Subtest: adapts the argv port without spawning or joining a shell command
+    ok 1 - adapts the argv port without spawning or joining a shell command
+      ---
+      duration_ms: 1.7464
+      ...
+    1..1
+ok 565 - ProcessRunner adapter bridge
+  ---
+  duration_ms: 1.9049
+  type: 'suite'
+  ...
+# Subtest: real Plugin setup failure
+    # Subtest: renders stable redacted result fields with metadata.ok=false
+    ok 1 - renders stable redacted result fields with metadata.ok=false
+      ---
+      duration_ms: 705.3525
+      ...
+    1..1
+ok 566 - real Plugin setup failure
+  ---
+  duration_ms: 705.5812
+  type: 'suite'
+  ...
+# [opencode-sync] Exported: <SOURCE_ROOT>\\test-fixture-ws\\test-output.json
+# [opencode-sync]   Submodules: 0
+# [opencode-sync]   Skills: 0
+# Subtest: CLI smoke tests
+    # Subtest: should show usage when no command given
+    ok 1 - should show usage when no command given
+      ---
+      duration_ms: 176.1693
+      ...
+    # Subtest: should export state without errors
+    ok 2 - should export state without errors
+      ---
+      duration_ms: 171.3433
+      ...
+    # Subtest: should load all exports from sync module
+    ok 3 - should load all exports from sync module
+      ---
+      duration_ms: 81.0036
+      ...
+    1..3
+ok 567 - CLI smoke tests
+  ---
+  duration_ms: 429.7544
+  type: 'suite'
+  ...
+# Subtest: verifyWorkspace
+    # Subtest: passes an explicit Codex scope to the verifier once and aggregates warnings and errors
+    ok 1 - passes an explicit Codex scope to the verifier once and aggregates warnings and errors
+      ---
+      duration_ms: 0.6588
+      ...
+    # Subtest: passes an explicit OpenCode scope without adding Codex-only skips
+    ok 2 - passes an explicit OpenCode scope without adding Codex-only skips
+      ---
+      duration_ms: 0.1275
+      ...
+    1..2
+ok 568 - verifyWorkspace
+  ---
+  duration_ms: 1.7242
+  type: 'suite'
+  ...
+# Subtest: WorkspaceState artifact codec
+    # Subtest: migrates an unversioned v1 artifact and preserves safe legacy fields
+    ok 1 - migrates an unversioned v1 artifact and preserves safe legacy fields
+      ---
+      duration_ms: 1.7918
+      ...
+    # Subtest: migrates a v2 artifact into the validated internal v3 model
+    ok 2 - migrates a v2 artifact into the validated internal v3 model
+      ---
+      duration_ms: 0.627
+      ...
+    # Subtest: accepts and validates an already-current v3 artifact
+    ok 3 - accepts and validates an already-current v3 artifact
+      ---
+      duration_ms: 0.8849
+      ...
+    # Subtest: rejects future schema versions instead of guessing a migration
+    ok 4 - rejects future schema versions instead of guessing a migration
+      ---
+      duration_ms: 0.2223
+      ...
+    # Subtest: applies permanent and artifact tombstones before exposing selected extensions
+    ok 5 - applies permanent and artifact tombstones before exposing selected extensions
+      ---
+      duration_ms: 0.3586
+      ...
+    # Subtest: removes tombstoned MCPs from every recoverable configuration table without mutating input
+    ok 6 - removes tombstoned MCPs from every recoverable configuration table without mutating input
+      ---
+      duration_ms: 0.3003
+      ...
+    # Subtest: removes tombstoned extensions from recoverable string-array configuration tables
+    ok 7 - removes tombstoned extensions from recoverable string-array configuration tables
+      ---
+      duration_ms: 0.2543
+      ...
+    # Subtest: does not echo rejected runtime values in validation errors
+    ok 8 - does not echo rejected runtime values in validation errors
+      ---
+      duration_ms: 0.3668
+      ...
+    # Subtest: accepts JSON text and rejects malformed runtime shapes
+    ok 9 - accepts JSON text and rejects malformed runtime shapes
+      ---
+      duration_ms: 0.4827
+      ...
+    1..9
+ok 569 - WorkspaceState artifact codec
+  ---
+  duration_ms: 6.6406
+  type: 'suite'
+  ...
+# Subtest: MCP security audit
+    # Subtest: should NOT expose tokens in URL query params (default security rule)
+    ok 1 - should NOT expose tokens in URL query params (default security rule)
+      ---
+      duration_ms: 0.3575
+      ...
+    # Subtest: should use Authorization headers for tokens (default security rule)
+    ok 2 - should use Authorization headers for tokens (default security rule)
+      ---
+      duration_ms: 0.1623
+      ...
+    1..2
+ok 570 - MCP security audit
+  ---
+  duration_ms: 73.8487
+  type: 'suite'
+  ...
+# Subtest: zapier-gmail config (ease-of-use exception)
+    # Subtest: should be in the URL_TOKEN_ALLOWED exception list
+    ok 1 - should be in the URL_TOKEN_ALLOWED exception list
+      ---
+      duration_ms: 0.1838
+      ...
+    # Subtest: should have a valid Zapier MCP endpoint URL
+    ok 2 - should have a valid Zapier MCP endpoint URL
+      ---
+      duration_ms: 0.2041
+      ...
+    # Subtest: should have oauth explicitly disabled
+    ok 3 - should have oauth explicitly disabled
+      ---
+      duration_ms: 0.2426
+      ...
+    1..3
+ok 571 - zapier-gmail config (ease-of-use exception)
+  ---
+  duration_ms: 1.9579
+  type: 'suite'
+  ...
+# Subtest: zapier-gmail endpoint
+    # Subtest: should respond to initialize with valid MCP protocol
+    ok 1 - should respond to initialize with valid MCP protocol
+      ---
+      duration_ms: 0.1843
+      ...
+    # Subtest: should list tools successfully
+    ok 2 - should list tools successfully
+      ---
+      duration_ms: 0.121
+      ...
+    1..2
+ok 572 - zapier-gmail endpoint
+  ---
+  duration_ms: 1.4082
+  type: 'suite'
+  ...
+1..572
+# tests 855
+# suites 85
+# pass 855
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 206596.9243
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 12.0.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.0.2
+npm notice To update run: npm install -g npm@12.0.2
+npm notice

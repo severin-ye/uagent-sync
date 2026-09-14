@@ -1,0 +1,12 @@
+[
+  {
+    "name": "full-current",
+    "args": [
+      "C:/Program Files/nodejs/node_modules/npm/bin/npm-cli.js",
+      "test",
+      "--prefix",
+      "<SOURCE_ROOT>"
+    ],
+    "status": 0
+  }
+]

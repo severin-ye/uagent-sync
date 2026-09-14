@@ -1,0 +1,50 @@
+TAP version 13
+# Subtest: bundled MCP data resolves without a workspace copy on supported runtimes
+not ok 1 - bundled MCP data resolves without a workspace copy on supported runtimes
+  ---
+  duration_ms: 4.0495
+  location: 'file:///<SOURCE_ROOT>/test/runtime-paths.test.ts:1:240'
+  failureType: 'testCodeFailure'
+  error: 'The "path" argument must be of type string. Received undefined'
+  code: 'ERR_INVALID_ARG_TYPE'
+  name: 'TypeError'
+  stack: |-
+    __node_internal_captureLargerStackTrace (node:internal/errors:496:5)
+    new NodeError (node:internal/errors:405:5)
+    validateString (node:internal/validators:162:11)
+    Module.join (node:path:447:7)
+    loadKnownMcps (<SOURCE_ROOT>\src\lib\guide.ts:15:10)
+    TestContext.<anonymous> (<SOURCE_ROOT>\test\runtime-paths.test.ts:11:31)
+    Test.runInAsyncScope (node:async_hooks:203:9)
+    Test.run (node:internal/test_runner/test:631:25)
+    Test.start (node:internal/test_runner/test:542:17)
+    startSubtest (node:internal/test_runner/harness:214:17)
+  ...
+# Subtest: plugin config locates bundled skills and is idempotent on supported runtimes
+not ok 2 - plugin config locates bundled skills and is idempotent on supported runtimes
+  ---
+  duration_ms: 8.6443
+  location: 'file:///<SOURCE_ROOT>/test/runtime-paths.test.ts:1:515'
+  failureType: 'testCodeFailure'
+  error: 'The "path" argument must be of type string. Received undefined'
+  code: 'ERR_INVALID_ARG_TYPE'
+  name: 'TypeError'
+  stack: |-
+    __node_internal_captureLargerStackTrace (node:internal/errors:496:5)
+    new NodeError (node:internal/errors:405:5)
+    validateString (node:internal/validators:162:11)
+    Module.join (node:path:447:7)
+    Object.config (<SOURCE_ROOT>\src\plugin.ts:45:30)
+    TestContext.<anonymous> (<SOURCE_ROOT>\test\runtime-paths.test.ts:17:16)
+    async Test.run (node:internal/test_runner/test:632:9)
+    async Test.processPendingSubtests (node:internal/test_runner/test:374:7)
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 0
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 663.5447

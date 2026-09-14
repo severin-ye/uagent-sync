@@ -1,0 +1,15 @@
+{
+  "APPDATA": "<EVIDENCE_ROOT>\\env-wrapper-check\\app",
+  "LOCALAPPDATA": "<EVIDENCE_ROOT>\\env-wrapper-check\\local",
+  "TEMP": "<EVIDENCE_ROOT>\\env-wrapper-check\\tmp",
+  "TMP": "<EVIDENCE_ROOT>\\env-wrapper-check\\tmp",
+  "TMPDIR": "<EVIDENCE_ROOT>\\env-wrapper-check\\tmp",
+  "USERPROFILE": "<EVIDENCE_ROOT>\\env-wrapper-check\\home",
+  "HOME": "<EVIDENCE_ROOT>\\env-wrapper-check\\home",
+  "CODEX_HOME": "<EVIDENCE_ROOT>\\env-wrapper-check\\codex",
+  "XDG_CONFIG_HOME": "<EVIDENCE_ROOT>\\env-wrapper-check\\xdg",
+  "npm_config_cache": "<EVIDENCE_ROOT>\\env-wrapper-check\\npm-cache",
+  "npm_config_prefix": "<EVIDENCE_ROOT>\\env-wrapper-check\\npm-prefix",
+  "npm_config_userconfig": "<EVIDENCE_ROOT>\\env-wrapper-check\\npm_config_userconfig.rc",
+  "npm_config_globalconfig": "<EVIDENCE_ROOT>\\env-wrapper-check\\npm_config_globalconfig.rc"
+}

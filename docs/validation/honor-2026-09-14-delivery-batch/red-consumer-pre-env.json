@@ -1,0 +1,15 @@
+{
+  "APPDATA": "<EVIDENCE_ROOT>\\env-red-consumer\\app",
+  "LOCALAPPDATA": "<EVIDENCE_ROOT>\\env-red-consumer\\local",
+  "TEMP": "<EVIDENCE_ROOT>\\env-red-consumer\\tmp",
+  "TMP": "<EVIDENCE_ROOT>\\env-red-consumer\\tmp",
+  "TMPDIR": "<EVIDENCE_ROOT>\\env-red-consumer\\tmp",
+  "USERPROFILE": "<EVIDENCE_ROOT>\\env-red-consumer\\home",
+  "HOME": "<EVIDENCE_ROOT>\\env-red-consumer\\home",
+  "CODEX_HOME": "<EVIDENCE_ROOT>\\env-red-consumer\\codex",
+  "XDG_CONFIG_HOME": "<EVIDENCE_ROOT>\\env-red-consumer\\xdg",
+  "npm_config_cache": "<EVIDENCE_ROOT>\\env-red-consumer\\npm-cache",
+  "npm_config_prefix": "<EVIDENCE_ROOT>\\env-red-consumer\\npm-prefix",
+  "npm_config_userconfig": "<EVIDENCE_ROOT>\\env-red-consumer\\npm_config_userconfig.rc",
+  "npm_config_globalconfig": "<EVIDENCE_ROOT>\\env-red-consumer\\npm_config_globalconfig.rc"
+}

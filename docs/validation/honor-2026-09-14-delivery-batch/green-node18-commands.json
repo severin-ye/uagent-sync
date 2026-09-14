@@ -1,0 +1,12 @@
+[
+  {
+    "name": "green-node18",
+    "args": [
+      "--import",
+      "tsx",
+      "--test",
+      "test/runtime-paths.test.ts"
+    ],
+    "status": 0
+  }
+]

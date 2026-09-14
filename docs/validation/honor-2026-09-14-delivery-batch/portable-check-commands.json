@@ -1,0 +1,9 @@
+[
+  {
+    "name": "portable-check",
+    "args": [
+      "--version"
+    ],
+    "status": 0
+  }
+]

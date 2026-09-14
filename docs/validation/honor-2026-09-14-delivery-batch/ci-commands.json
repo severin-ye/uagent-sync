@@ -1,0 +1,16 @@
+[
+  {
+    "name": "ci",
+    "args": [
+      "C:/Program Files/nodejs/node_modules/npm/bin/npm-cli.js",
+      "ci",
+      "--prefix",
+      "<SOURCE_ROOT>",
+      "--ignore-scripts",
+      "--include=optional",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "status": 0
+  }
+]
