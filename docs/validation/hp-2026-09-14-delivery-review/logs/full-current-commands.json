@@ -1,0 +1,12 @@
+[
+  {
+    "name": "full-current",
+    "args": [
+      "C:\\node_modules\\npm\\bin\\npm-cli.js",
+      "test",
+      "--prefix",
+      "<USER_HOME>/hpb/src"
+    ],
+    "status": 0
+  }
+]

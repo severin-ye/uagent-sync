@@ -1,0 +1,497 @@
+[
+  {
+    "name": "build-red-build-red.log",
+    "sha256": "0b777e2023f71383a70b7c62ec9cae298e4e6f6e4ec859e517f9ff59a66a26cc",
+    "summary": []
+  },
+  {
+    "name": "build-red-commands.json",
+    "sha256": "dfc76da26a4e0ce9715caf88c66124ce074ed6abc695a72696eff5978300a521",
+    "summary": [
+      {
+        "name": "build-red",
+        "args": [
+          "C:/Program Files/nodejs/node_modules/npm/bin/npm-cli.js",
+          "run",
+          "build",
+          "--prefix",
+          "<SOURCE_ROOT>"
+        ],
+        "status": 0
+      }
+    ]
+  },
+  {
+    "name": "build-red-pre-env.json",
+    "sha256": "09c145c0b75864597b7ee3233074045dae2b4d37433759af226aae9a2488bdcf",
+    "summary": {
+      "APPDATA": "<EVIDENCE_ROOT>\\env-build-red\\app",
+      "LOCALAPPDATA": "<EVIDENCE_ROOT>\\env-build-red\\local",
+      "TEMP": "<EVIDENCE_ROOT>\\env-build-red\\tmp",
+      "TMP": "<EVIDENCE_ROOT>\\env-build-red\\tmp",
+      "TMPDIR": "<EVIDENCE_ROOT>\\env-build-red\\tmp",
+      "USERPROFILE": "<EVIDENCE_ROOT>\\env-build-red\\home",
+      "HOME": "<EVIDENCE_ROOT>\\env-build-red\\home",
+      "CODEX_HOME": "<EVIDENCE_ROOT>\\env-build-red\\codex",
+      "XDG_CONFIG_HOME": "<EVIDENCE_ROOT>\\env-build-red\\xdg",
+      "npm_config_cache": "<EVIDENCE_ROOT>\\env-build-red\\npm-cache",
+      "npm_config_prefix": "<EVIDENCE_ROOT>\\env-build-red\\npm-prefix",
+      "npm_config_userconfig": "<EVIDENCE_ROOT>\\env-build-red\\npm_config_userconfig.rc",
+      "npm_config_globalconfig": "<EVIDENCE_ROOT>\\env-build-red\\npm_config_globalconfig.rc"
+    }
+  },
+  {
+    "name": "ci-ci.log",
+    "sha256": "eaf9d5927f1e9ae8edf3ba79b14ae04b95f9f7011043517f51f54c6eec2c9120",
+    "summary": []
+  },
+  {
+    "name": "ci-commands.json",
+    "sha256": "3910f53ba0f7b428b7fc96536307da90c7b70c2428cc8c7befeed511c1232d46",
+    "summary": [
+      {
+        "name": "ci",
+        "args": [
+          "C:/Program Files/nodejs/node_modules/npm/bin/npm-cli.js",
+          "ci",
+          "--prefix",
+          "<SOURCE_ROOT>",
+          "--ignore-scripts",
+          "--include=optional",
+          "--no-audit",
+          "--no-fund"
+        ],
+        "status": 0
+      }
+    ]
+  },
+  {
+    "name": "ci-pre-env.json",
+    "sha256": "d5c5a6db334eec0a360bca4e87852027ca4578c8bf1e947e4a519d91f813d344",
+    "summary": {
+      "APPDATA": "<EVIDENCE_ROOT>\\env-ci\\app",
+      "LOCALAPPDATA": "<EVIDENCE_ROOT>\\env-ci\\local",
+      "TEMP": "<EVIDENCE_ROOT>\\env-ci\\tmp",
+      "TMP": "<EVIDENCE_ROOT>\\env-ci\\tmp",
+      "TMPDIR": "<EVIDENCE_ROOT>\\env-ci\\tmp",
+      "USERPROFILE": "<EVIDENCE_ROOT>\\env-ci\\home",
+      "HOME": "<EVIDENCE_ROOT>\\env-ci\\home",
+      "CODEX_HOME": "<EVIDENCE_ROOT>\\env-ci\\codex",
+      "XDG_CONFIG_HOME": "<EVIDENCE_ROOT>\\env-ci\\xdg",
+      "npm_config_cache": "<EVIDENCE_ROOT>\\env-ci\\npm-cache",
+      "npm_config_prefix": "<EVIDENCE_ROOT>\\env-ci\\npm-prefix",
+      "npm_config_userconfig": "<EVIDENCE_ROOT>\\env-ci\\npm_config_userconfig.rc",
+      "npm_config_globalconfig": "<EVIDENCE_ROOT>\\env-ci\\npm_config_globalconfig.rc"
+    }
+  },
+  {
+    "name": "consumer-ancestors.json",
+    "sha256": "4e11a7f941bb9c6f0641affbbe37d35a90cb75faac8d4d7f9efcc170f9cc6f0c",
+    "summary": [
+      {
+        "root": "<EVIDENCE_ROOT>",
+        "hostSdkPresent": false
+      },
+      {
+        "root": "<REVIEW_PARENT>",
+        "hostSdkPresent": false
+      },
+      {
+        "root": "C:\\",
+        "hostSdkPresent": false
+      }
+    ]
+  },
+  {
+    "name": "full-current-commands.json",
+    "sha256": "f26dd9fd7b65420aaabec67dc3dd7e8e8388340309f7b06bb2bea5e3fbc47a0a",
+    "summary": [
+      {
+        "name": "full-current",
+        "args": [
+          "C:/Program Files/nodejs/node_modules/npm/bin/npm-cli.js",
+          "test",
+          "--prefix",
+          "<SOURCE_ROOT>"
+        ],
+        "status": 0
+      }
+    ]
+  },
+  {
+    "name": "full-current-full-current.log",
+    "sha256": "e2b056079c598e64ca65d183e80b67d52a9f237ea29052ab7637911489e37398",
+    "summary": [
+      "ℹ tests 855",
+      "ℹ pass 855",
+      "ℹ fail 0",
+      "ℹ cancelled 0"
+    ]
+  },
+  {
+    "name": "full-current-pre-env.json",
+    "sha256": "83950f18f2ae92700eba7092171a0e621856ed72a2444b86a558e14c8b98cedf",
+    "summary": {
+      "APPDATA": "<EVIDENCE_ROOT>\\env-full-current\\app",
+      "LOCALAPPDATA": "<EVIDENCE_ROOT>\\env-full-current\\local",
+      "TEMP": "<EVIDENCE_ROOT>\\env-full-current\\tmp",
+      "TMP": "<EVIDENCE_ROOT>\\env-full-current\\tmp",
+      "TMPDIR": "<EVIDENCE_ROOT>\\env-full-current\\tmp",
+      "USERPROFILE": "<EVIDENCE_ROOT>\\env-full-current\\home",
+      "HOME": "<EVIDENCE_ROOT>\\env-full-current\\home",
+      "CODEX_HOME": "<EVIDENCE_ROOT>\\env-full-current\\codex",
+      "XDG_CONFIG_HOME": "<EVIDENCE_ROOT>\\env-full-current\\xdg",
+      "npm_config_cache": "<EVIDENCE_ROOT>\\env-full-current\\npm-cache",
+      "npm_config_prefix": "<EVIDENCE_ROOT>\\env-full-current\\npm-prefix",
+      "npm_config_userconfig": "<EVIDENCE_ROOT>\\env-full-current\\npm_config_userconfig.rc",
+      "npm_config_globalconfig": "<EVIDENCE_ROOT>\\env-full-current\\npm_config_globalconfig.rc"
+    }
+  },
+  {
+    "name": "full-node18-commands.json",
+    "sha256": "529cc3011f9571820e8d6a1611f03484a693dc834d2386087383756351ba181f",
+    "summary": [
+      {
+        "name": "full-node18",
+        "args": [
+          "<NODE18>/node_modules/npm/bin/npm-cli.js",
+          "test",
+          "--prefix",
+          "<SOURCE_ROOT>"
+        ],
+        "status": 0
+      }
+    ]
+  },
+  {
+    "name": "full-node18-full-node18.log",
+    "sha256": "0a22b21c624ca7747ffc03622cda37a2304e0a271fe0f174678ac5b67f604b91",
+    "summary": [
+      "# tests 855",
+      "# pass 855",
+      "# fail 0",
+      "# cancelled 0"
+    ]
+  },
+  {
+    "name": "full-node18-pre-env.json",
+    "sha256": "e94d35e97064e71db5c3a0287c450e287143f26055189d252ff17266d049ec20",
+    "summary": {
+      "APPDATA": "<EVIDENCE_ROOT>\\env-full-node18\\app",
+      "LOCALAPPDATA": "<EVIDENCE_ROOT>\\env-full-node18\\local",
+      "TEMP": "<EVIDENCE_ROOT>\\env-full-node18\\tmp",
+      "TMP": "<EVIDENCE_ROOT>\\env-full-node18\\tmp",
+      "TMPDIR": "<EVIDENCE_ROOT>\\env-full-node18\\tmp",
+      "USERPROFILE": "<EVIDENCE_ROOT>\\env-full-node18\\home",
+      "HOME": "<EVIDENCE_ROOT>\\env-full-node18\\home",
+      "CODEX_HOME": "<EVIDENCE_ROOT>\\env-full-node18\\codex",
+      "XDG_CONFIG_HOME": "<EVIDENCE_ROOT>\\env-full-node18\\xdg",
+      "npm_config_cache": "<EVIDENCE_ROOT>\\env-full-node18\\npm-cache",
+      "npm_config_prefix": "<EVIDENCE_ROOT>\\env-full-node18\\npm-prefix",
+      "npm_config_userconfig": "<EVIDENCE_ROOT>\\env-full-node18\\npm_config_userconfig.rc",
+      "npm_config_globalconfig": "<EVIDENCE_ROOT>\\env-full-node18\\npm_config_globalconfig.rc"
+    }
+  },
+  {
+    "name": "green-node18-commands.json",
+    "sha256": "65a70afa58021633c26d90960c82f636c894905dad854537f5fcb11602bd723e",
+    "summary": [
+      {
+        "name": "green-node18",
+        "args": [
+          "--import",
+          "tsx",
+          "--test",
+          "test/runtime-paths.test.ts"
+        ],
+        "status": 0
+      }
+    ]
+  },
+  {
+    "name": "green-node18-green-node18.log",
+    "sha256": "94821e9a34de70dc3101fbf3f2eef720a3d748ac02d2a853b250913bc263832e",
+    "summary": [
+      "# tests 2",
+      "# pass 2",
+      "# fail 0",
+      "# cancelled 0"
+    ]
+  },
+  {
+    "name": "green-node18-pre-env.json",
+    "sha256": "c81ba8789301680bf5b7e4274c721a08200ad344bc057f574643d3a199f013c9",
+    "summary": {
+      "APPDATA": "<EVIDENCE_ROOT>\\env-green-node18\\app",
+      "LOCALAPPDATA": "<EVIDENCE_ROOT>\\env-green-node18\\local",
+      "TEMP": "<EVIDENCE_ROOT>\\env-green-node18\\tmp",
+      "TMP": "<EVIDENCE_ROOT>\\env-green-node18\\tmp",
+      "TMPDIR": "<EVIDENCE_ROOT>\\env-green-node18\\tmp",
+      "USERPROFILE": "<EVIDENCE_ROOT>\\env-green-node18\\home",
+      "HOME": "<EVIDENCE_ROOT>\\env-green-node18\\home",
+      "CODEX_HOME": "<EVIDENCE_ROOT>\\env-green-node18\\codex",
+      "XDG_CONFIG_HOME": "<EVIDENCE_ROOT>\\env-green-node18\\xdg",
+      "npm_config_cache": "<EVIDENCE_ROOT>\\env-green-node18\\npm-cache",
+      "npm_config_prefix": "<EVIDENCE_ROOT>\\env-green-node18\\npm-prefix",
+      "npm_config_userconfig": "<EVIDENCE_ROOT>\\env-green-node18\\npm_config_userconfig.rc",
+      "npm_config_globalconfig": "<EVIDENCE_ROOT>\\env-green-node18\\npm_config_globalconfig.rc"
+    }
+  },
+  {
+    "name": "lock-commands.json",
+    "sha256": "ef38bddc0cf453866ec2fd03672d9a3c6e09272385384d79608bb09bd1ec9911",
+    "summary": [
+      {
+        "name": "lock",
+        "args": [
+          "C:/Program Files/nodejs/node_modules/npm/bin/npm-cli.js",
+          "install",
+          "--package-lock-only",
+          "--prefix",
+          "<SOURCE_ROOT>",
+          "--ignore-scripts",
+          "--no-audit",
+          "--no-fund"
+        ],
+        "status": 0
+      }
+    ]
+  },
+  {
+    "name": "lock-lock.log",
+    "sha256": "004e5f359bc81a0c8bd0239183421d83284c77e021c26f716fc1af31988d45ce",
+    "summary": []
+  },
+  {
+    "name": "lock-pre-env.json",
+    "sha256": "4b085424248e502963c986828be61fa57cc7d6f922bb52391b80906aad076b71",
+    "summary": {
+      "APPDATA": "<EVIDENCE_ROOT>\\env-lock\\app",
+      "LOCALAPPDATA": "<EVIDENCE_ROOT>\\env-lock\\local",
+      "TEMP": "<EVIDENCE_ROOT>\\env-lock\\tmp",
+      "TMP": "<EVIDENCE_ROOT>\\env-lock\\tmp",
+      "TMPDIR": "<EVIDENCE_ROOT>\\env-lock\\tmp",
+      "USERPROFILE": "<EVIDENCE_ROOT>\\env-lock\\home",
+      "HOME": "<EVIDENCE_ROOT>\\env-lock\\home",
+      "CODEX_HOME": "<EVIDENCE_ROOT>\\env-lock\\codex",
+      "XDG_CONFIG_HOME": "<EVIDENCE_ROOT>\\env-lock\\xdg",
+      "npm_config_cache": "<EVIDENCE_ROOT>\\env-lock\\npm-cache",
+      "npm_config_prefix": "<EVIDENCE_ROOT>\\env-lock\\npm-prefix",
+      "npm_config_userconfig": "<EVIDENCE_ROOT>\\env-lock\\npm_config_userconfig.rc",
+      "npm_config_globalconfig": "<EVIDENCE_ROOT>\\env-lock\\npm_config_globalconfig.rc"
+    }
+  },
+  {
+    "name": "portable-check-commands.json",
+    "sha256": "dde417f4ba008f069d3defe7d03ae5ba54efb821229834ef3fbd0e44ecd35161",
+    "summary": [
+      {
+        "name": "portable-check",
+        "args": [
+          "--version"
+        ],
+        "status": 0
+      }
+    ]
+  },
+  {
+    "name": "portable-check-portable-check.log",
+    "sha256": "1e818e7c43f4b13c1e913709e2425959af4b584c0bd6693bb6b5f31c29afd5e0",
+    "summary": []
+  },
+  {
+    "name": "README.md",
+    "sha256": "469208e5b7e928b2f128f3c5272a2db821d65653887e2decb90c1a9fcd765542",
+    "summary": "read"
+  },
+  {
+    "name": "red-consumer-commands.json",
+    "sha256": "1d1108a1c880646820fbb1ca32b54be618b9ad671bf08af3fb77428c58fb09c8",
+    "summary": [
+      {
+        "name": "red-consumer",
+        "args": [
+          "--import",
+          "tsx",
+          "--test",
+          "test/packaged-install.test.ts"
+        ],
+        "status": 1
+      }
+    ]
+  },
+  {
+    "name": "red-consumer-pre-env.json",
+    "sha256": "1a4c566a4d056299f447f0946fe75d81a1a71b6a3e5d7297831c01c9647cd30c",
+    "summary": {
+      "APPDATA": "<EVIDENCE_ROOT>\\env-red-consumer\\app",
+      "LOCALAPPDATA": "<EVIDENCE_ROOT>\\env-red-consumer\\local",
+      "TEMP": "<EVIDENCE_ROOT>\\env-red-consumer\\tmp",
+      "TMP": "<EVIDENCE_ROOT>\\env-red-consumer\\tmp",
+      "TMPDIR": "<EVIDENCE_ROOT>\\env-red-consumer\\tmp",
+      "USERPROFILE": "<EVIDENCE_ROOT>\\env-red-consumer\\home",
+      "HOME": "<EVIDENCE_ROOT>\\env-red-consumer\\home",
+      "CODEX_HOME": "<EVIDENCE_ROOT>\\env-red-consumer\\codex",
+      "XDG_CONFIG_HOME": "<EVIDENCE_ROOT>\\env-red-consumer\\xdg",
+      "npm_config_cache": "<EVIDENCE_ROOT>\\env-red-consumer\\npm-cache",
+      "npm_config_prefix": "<EVIDENCE_ROOT>\\env-red-consumer\\npm-prefix",
+      "npm_config_userconfig": "<EVIDENCE_ROOT>\\env-red-consumer\\npm_config_userconfig.rc",
+      "npm_config_globalconfig": "<EVIDENCE_ROOT>\\env-red-consumer\\npm_config_globalconfig.rc"
+    }
+  },
+  {
+    "name": "red-consumer-red-consumer.log",
+    "sha256": "a87df70e29a614ef4aa3130fbce0bbfbf6c958a053b1bef0ba65796ad9be16e3",
+    "summary": [
+      "ℹ tests 3",
+      "ℹ pass 2",
+      "ℹ fail 1",
+      "ℹ cancelled 0"
+    ]
+  },
+  {
+    "name": "red-node18-commands.json",
+    "sha256": "0ea8c584cc66c0e61e6512b54cd55aa43b5eecd324322f83b05c50ead64d860d",
+    "summary": [
+      {
+        "name": "red-node18",
+        "args": [
+          "--import",
+          "tsx",
+          "--test",
+          "test/runtime-paths.test.ts"
+        ],
+        "status": 1
+      }
+    ]
+  },
+  {
+    "name": "red-node18-pre-env.json",
+    "sha256": "4e9c0410c5914c5060251a48d49a2e9ec0ce870ccf8031191164b6517d152b34",
+    "summary": {
+      "APPDATA": "<EVIDENCE_ROOT>\\env-red-node18\\app",
+      "LOCALAPPDATA": "<EVIDENCE_ROOT>\\env-red-node18\\local",
+      "TEMP": "<EVIDENCE_ROOT>\\env-red-node18\\tmp",
+      "TMP": "<EVIDENCE_ROOT>\\env-red-node18\\tmp",
+      "TMPDIR": "<EVIDENCE_ROOT>\\env-red-node18\\tmp",
+      "USERPROFILE": "<EVIDENCE_ROOT>\\env-red-node18\\home",
+      "HOME": "<EVIDENCE_ROOT>\\env-red-node18\\home",
+      "CODEX_HOME": "<EVIDENCE_ROOT>\\env-red-node18\\codex",
+      "XDG_CONFIG_HOME": "<EVIDENCE_ROOT>\\env-red-node18\\xdg",
+      "npm_config_cache": "<EVIDENCE_ROOT>\\env-red-node18\\npm-cache",
+      "npm_config_prefix": "<EVIDENCE_ROOT>\\env-red-node18\\npm-prefix",
+      "npm_config_userconfig": "<EVIDENCE_ROOT>\\env-red-node18\\npm_config_userconfig.rc",
+      "npm_config_globalconfig": "<EVIDENCE_ROOT>\\env-red-node18\\npm_config_globalconfig.rc"
+    }
+  },
+  {
+    "name": "red-node18-red-node18.log",
+    "sha256": "1d52716601c8b887a24a9343c3b353afacd52fb7391bb603393298a264ddbf1f",
+    "summary": [
+      "# tests 2",
+      "# pass 0",
+      "# fail 2",
+      "# cancelled 0"
+    ]
+  },
+  {
+    "name": "replay.mjs",
+    "sha256": "e6143ad5ad4ad71c2cafc5ba7f3f3323808e92853f71aa0075380b1adb509c49",
+    "summary": "read"
+  },
+  {
+    "name": "RESULT.json",
+    "sha256": "18f38444b017ce38a564a3766bf6ba978f904f1fa753aeedcaadc98ae7812d88",
+    "summary": {
+      "source": "ce6780faa0995c3c3587658aa46a161b4b5e4bcf",
+      "baseline": "38c3dbbc0e2c5c50654c62aee77550b16181d0c2",
+      "currentNode": "24.16.0",
+      "node18": "18.20.8",
+      "redRuntime": {
+        "pass": 0,
+        "fail": 2,
+        "exit": 1
+      },
+      "redConsumer": {
+        "pass": 2,
+        "fail": 1,
+        "exit": 1
+      },
+      "greenRuntimeNode18": {
+        "pass": 2,
+        "fail": 0,
+        "exit": 0
+      },
+      "fullCurrent": {
+        "pass": 855,
+        "fail": 0,
+        "cancelled": 0,
+        "exit": 0
+      },
+      "fullNode18": {
+        "pass": 855,
+        "fail": 0,
+        "cancelled": 0,
+        "exit": 0
+      },
+      "dependencyVersionsChanged": [],
+      "productionFiles": [
+        "src/plugin.ts",
+        "src/lib/guide.ts",
+        "src/lib/dashboard-server.ts",
+        "package.json",
+        "package-lock.json"
+      ],
+      "status": "Honor implemented and isolated validation passed; HP independent validation pending",
+      "realMigration": "not performed; existing real-data blockers preserved",
+      "release": "validation branch only; no runtime plugin registration or release"
+    }
+  },
+  {
+    "name": "run-batch.ps1",
+    "sha256": "4625ae6f375979f780d069fef7dba1192d424cde188d13b4f2f391ca7ae7d1d0",
+    "summary": "read"
+  },
+  {
+    "name": "run.mjs",
+    "sha256": "2c0fa2762e998d1963e19d57c375b17af96a28ad34cb3731da3c0983d7593f86",
+    "summary": "read"
+  },
+  {
+    "name": "wrapper-check-commands.json",
+    "sha256": "a99be6a1e6cbfa0e3285c9c7ccaa6a6c529b1956c8fa660bd93a45e35324cf63",
+    "summary": [
+      {
+        "name": "wrapper-check",
+        "args": [
+          "--version"
+        ],
+        "status": 0
+      }
+    ]
+  },
+  {
+    "name": "wrapper-check-pre-env.json",
+    "sha256": "08a0d32e7e6632ef9f44c548fc70fa02ef3e7c767f462f37b86335aa714edd33",
+    "summary": {
+      "APPDATA": "<EVIDENCE_ROOT>\\env-wrapper-check\\app",
+      "LOCALAPPDATA": "<EVIDENCE_ROOT>\\env-wrapper-check\\local",
+      "TEMP": "<EVIDENCE_ROOT>\\env-wrapper-check\\tmp",
+      "TMP": "<EVIDENCE_ROOT>\\env-wrapper-check\\tmp",
+      "TMPDIR": "<EVIDENCE_ROOT>\\env-wrapper-check\\tmp",
+      "USERPROFILE": "<EVIDENCE_ROOT>\\env-wrapper-check\\home",
+      "HOME": "<EVIDENCE_ROOT>\\env-wrapper-check\\home",
+      "CODEX_HOME": "<EVIDENCE_ROOT>\\env-wrapper-check\\codex",
+      "XDG_CONFIG_HOME": "<EVIDENCE_ROOT>\\env-wrapper-check\\xdg",
+      "npm_config_cache": "<EVIDENCE_ROOT>\\env-wrapper-check\\npm-cache",
+      "npm_config_prefix": "<EVIDENCE_ROOT>\\env-wrapper-check\\npm-prefix",
+      "npm_config_userconfig": "<EVIDENCE_ROOT>\\env-wrapper-check\\npm_config_userconfig.rc",
+      "npm_config_globalconfig": "<EVIDENCE_ROOT>\\env-wrapper-check\\npm_config_globalconfig.rc"
+    }
+  },
+  {
+    "name": "wrapper-check-wrapper-check.log",
+    "sha256": "1e818e7c43f4b13c1e913709e2425959af4b584c0bd6693bb6b5f31c29afd5e0",
+    "summary": []
+  }
+]

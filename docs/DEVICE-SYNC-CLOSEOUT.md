@@ -7,7 +7,7 @@
 ## 已完成与本轮范围
 
 - RY-M2-01空白弃权修复已获荣耀有限独立通过，固定57b852f；双Node148/148、原反例24/24及三入口6/6、已有目标保护6/6，当前Node852/852。[证据](validation/honor-2026-09-14-m2-whitespace/README.md)。不再安排重复红测或再让惠普修同一漏洞。
-- 本轮荣耀已修复Node18路径兼容及omit-dev插件入口依赖，双Node全量各855/855；惠普独立验收仍待执行。最终结果、独立源码和执行限制以[本轮交付报告](validation/honor-2026-09-14-delivery-batch/README.md)为准。
+- 本轮荣耀已修复Node18路径兼容及omit-dev插件入口依赖，双Node全量各855/855；惠普已固定ce6780f完成双Node独立全量各855/855，包装器多Node解析问题及toml的Node>=20声明单列，未改生产。见[惠普集中验收与事件核对](validation/hp-2026-09-14-delivery-review/README.md)。源码仍以[荣耀交付报告](validation/honor-2026-09-14-delivery-batch/README.md)为准。
 - 本轮只操作共享源码、人工fixture与隔离依赖，不读取真实模板、不重扫真实文件、不操作真实链接、不真实采集/安装/恢复/发布快照。
 
 ## 剩余工作与责任

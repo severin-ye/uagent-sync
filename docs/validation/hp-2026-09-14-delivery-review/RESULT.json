@@ -1,0 +1,37 @@
+{
+  "task": "HP-DELIVERY-REVIEW",
+  "source": "ce6780faa0995c3c3587658aa46a161b4b5e4bcf",
+  "baseline": "38c3dbbc0e2c5c50654c62aee77550b16181d0c2",
+  "handoff": "8d203a0e20542b011575a9c3e36141455efc4e50",
+  "currentNode": "v24.19.0",
+  "node18": "v18.20.8",
+  "runs": {
+    "full-current": {
+      "pass": 855,
+      "fail": 0,
+      "cancelled": 0,
+      "exit": 0
+    },
+    "full-node18": {
+      "pass": 855,
+      "fail": 0,
+      "cancelled": 0,
+      "exit": 0
+    }
+  },
+  "productionModified": false,
+  "findings": [
+    "HP-BATCH-01: run-batch.ps1 resolves multiple Node applications as one command; explicit-executable replay succeeds",
+    "HP-BATCH-02: production toml dependency declares Node >=20; passing Node18 tests does not prove support for every dependency API or engine-strict installation"
+  ],
+  "remaining": [
+    "npm user directory original state unknown",
+    "historical memory writer unknown",
+    "real M2 four candidates",
+    "HP-006",
+    "HP-022/023",
+    "172 unknown-origin items",
+    "RY-03",
+    "HP-03/HP-04 and migration incomplete"
+  ]
+}

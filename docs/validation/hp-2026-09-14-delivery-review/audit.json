@@ -1,0 +1,514 @@
+{
+  "changes": [
+    {
+      "package": "node_modules/@ai-sdk/provider",
+      "versionBefore": "3.0.8",
+      "versionAfter": "3.0.8",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/@msgpackr-extract/msgpackr-extract-darwin-arm64",
+      "versionBefore": "3.0.4",
+      "versionAfter": "3.0.4",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/@msgpackr-extract/msgpackr-extract-darwin-x64",
+      "versionBefore": "3.0.4",
+      "versionAfter": "3.0.4",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/@msgpackr-extract/msgpackr-extract-linux-arm",
+      "versionBefore": "3.0.4",
+      "versionAfter": "3.0.4",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/@msgpackr-extract/msgpackr-extract-linux-arm64",
+      "versionBefore": "3.0.4",
+      "versionAfter": "3.0.4",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/@msgpackr-extract/msgpackr-extract-linux-x64",
+      "versionBefore": "3.0.4",
+      "versionAfter": "3.0.4",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/@msgpackr-extract/msgpackr-extract-win32-x64",
+      "versionBefore": "3.0.4",
+      "versionAfter": "3.0.4",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/@opencode-ai/plugin",
+      "versionBefore": "1.18.15",
+      "versionAfter": "1.18.15",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/@opencode-ai/plugin/node_modules/zod",
+      "versionBefore": "4.1.8",
+      "versionAfter": "4.1.8",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/@opencode-ai/sdk",
+      "versionBefore": "1.18.15",
+      "versionAfter": "1.18.15",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/@standard-schema/spec",
+      "versionBefore": "1.1.0",
+      "versionAfter": "1.1.0",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/cross-spawn",
+      "versionBefore": "7.0.6",
+      "versionAfter": "7.0.6",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/detect-libc",
+      "versionBefore": "2.1.2",
+      "versionAfter": "2.1.2",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/effect",
+      "versionBefore": "4.0.0-beta.83",
+      "versionAfter": "4.0.0-beta.83",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/fast-check",
+      "versionBefore": "4.9.0",
+      "versionAfter": "4.9.0",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/find-my-way-ts",
+      "versionBefore": "0.1.6",
+      "versionAfter": "0.1.6",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/ini",
+      "versionBefore": "7.0.0",
+      "versionAfter": "7.0.0",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/isexe",
+      "versionBefore": "2.0.0",
+      "versionAfter": "2.0.0",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/json-schema",
+      "versionBefore": "0.4.0",
+      "versionAfter": "0.4.0",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/kubernetes-types",
+      "versionBefore": "1.30.0",
+      "versionAfter": "1.30.0",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/msgpackr",
+      "versionBefore": "2.0.5",
+      "versionAfter": "2.0.5",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/msgpackr-extract",
+      "versionBefore": "3.0.4",
+      "versionAfter": "3.0.4",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/multipasta",
+      "versionBefore": "0.2.8",
+      "versionAfter": "0.2.8",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/node-gyp-build-optional-packages",
+      "versionBefore": "5.2.2",
+      "versionAfter": "5.2.2",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/path-key",
+      "versionBefore": "3.1.1",
+      "versionAfter": "3.1.1",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/pure-rand",
+      "versionBefore": "8.4.2",
+      "versionAfter": "8.4.2",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/shebang-command",
+      "versionBefore": "2.0.0",
+      "versionAfter": "2.0.0",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/shebang-regex",
+      "versionBefore": "3.0.0",
+      "versionAfter": "3.0.0",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/toml",
+      "versionBefore": "4.3.0",
+      "versionAfter": "4.3.0",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/uuid",
+      "versionBefore": "14.0.1",
+      "versionAfter": "14.0.1",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/which",
+      "versionBefore": "2.0.2",
+      "versionAfter": "2.0.2",
+      "changedKeys": [
+        "dev"
+      ]
+    },
+    {
+      "package": "node_modules/yaml",
+      "versionBefore": "2.9.0",
+      "versionAfter": "2.9.0",
+      "changedKeys": [
+        "dev"
+      ]
+    }
+  ],
+  "versionsUnchanged": true,
+  "onlyDevFlagsChanged": true,
+  "ancestors": [
+    {
+      "label": "full-current",
+      "path": "<ISOLATED_PUBLIC>/e2/env-full-current/tmp",
+      "plugin": false,
+      "sdk": false
+    },
+    {
+      "label": "full-current",
+      "path": "<ISOLATED_PUBLIC>/e2/env-full-current",
+      "plugin": false,
+      "sdk": false
+    },
+    {
+      "label": "full-current",
+      "path": "<ISOLATED_PUBLIC>/e2",
+      "plugin": false,
+      "sdk": false
+    },
+    {
+      "label": "full-current",
+      "path": "<ISOLATED_PUBLIC>",
+      "plugin": false,
+      "sdk": false
+    },
+    {
+      "label": "full-current",
+      "path": "C:/Users/Public",
+      "plugin": false,
+      "sdk": false
+    },
+    {
+      "label": "full-current",
+      "path": "C:/Users",
+      "plugin": false,
+      "sdk": false
+    },
+    {
+      "label": "full-current",
+      "path": "C:/",
+      "plugin": false,
+      "sdk": false
+    },
+    {
+      "label": "full-node18",
+      "path": "<ISOLATED_PUBLIC>/e2/env-full-node18/tmp",
+      "plugin": false,
+      "sdk": false
+    },
+    {
+      "label": "full-node18",
+      "path": "<ISOLATED_PUBLIC>/e2/env-full-node18",
+      "plugin": false,
+      "sdk": false
+    },
+    {
+      "label": "full-node18",
+      "path": "<ISOLATED_PUBLIC>/e2",
+      "plugin": false,
+      "sdk": false
+    },
+    {
+      "label": "full-node18",
+      "path": "<ISOLATED_PUBLIC>",
+      "plugin": false,
+      "sdk": false
+    },
+    {
+      "label": "full-node18",
+      "path": "C:/Users/Public",
+      "plugin": false,
+      "sdk": false
+    },
+    {
+      "label": "full-node18",
+      "path": "C:/Users",
+      "plugin": false,
+      "sdk": false
+    },
+    {
+      "label": "full-node18",
+      "path": "C:/",
+      "plugin": false,
+      "sdk": false
+    }
+  ],
+  "memory": [
+    {
+      "name": "protected-state-before.json",
+      "exists": true,
+      "sha256": "43b27a894e551f37a42845603e6b6c8c62430e146512ee9232c46588876b8cbf",
+      "topLevelKeys": [
+        ".codex/config.toml",
+        ".codex/AGENTS.md",
+        ".codex/rules",
+        ".codex/memories",
+        ".codex/skills",
+        ".agents/skills",
+        ".codex/uagent-device.json",
+        ".codex/plugins/cache/personal",
+        ".codex/plugins/cache/uagent-sync",
+        ".codex/plugins/installed_plugins.json",
+        ".config/opencode/opencode.json"
+      ]
+    },
+    {
+      "name": "protected-state-after.json",
+      "exists": true,
+      "sha256": "575838296898ce11ac05d9788cb861f59bfedd11a5d5af8400c452da165dcf63",
+      "topLevelKeys": [
+        ".codex/config.toml",
+        ".codex/AGENTS.md",
+        ".codex/rules",
+        ".codex/memories",
+        ".codex/skills",
+        ".agents/skills",
+        ".codex/uagent-device.json",
+        ".codex/plugins/cache/personal",
+        ".codex/plugins/cache/uagent-sync",
+        ".codex/plugins/installed_plugins.json",
+        ".config/opencode/opencode.json"
+      ]
+    },
+    {
+      "name": "protected-state-comparison.json",
+      "exists": true,
+      "sha256": "0c46f646852edcff9f75c2a5891644df20e6ff2175d9b4a1e5a218ea6070cd87",
+      "topLevelKeys": [
+        "changed",
+        "unchanged",
+        "scope"
+      ]
+    },
+    {
+      "name": "protected-state-detail.json",
+      "exists": true,
+      "sha256": "24bd1db05a0625233e22aa7e7aa95dbffe91924fbdb099a27a21cca31a01c62f",
+      "topLevelKeys": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "22",
+        "23",
+        "24"
+      ]
+    }
+  ],
+  "knownSnapshotMetadata": {
+    "exists": true,
+    "topLevelKeys": [
+      "schemaVersion",
+      "id",
+      "sourceDeviceId",
+      "createdAt",
+      "files",
+      "excluded"
+    ],
+    "entries": false,
+    "includesUserPackageManifest": false
+  },
+  "incident": [
+    {
+      "name": "s2-consumer-install.json",
+      "exists": true,
+      "sha256": "5c0e8fca2fd68684e493d0ca4342784c21124548df90abfddca2aa3eae462d8e"
+    },
+    {
+      "name": "s2-consumer-install.log",
+      "exists": true,
+      "sha256": "5adf6a9f1e15b743e3a27ff602009a2c8ad60366457b3811fa4d6dec4c830a2f"
+    },
+    {
+      "name": "s2-host-install.json",
+      "exists": true,
+      "sha256": "256dff08adff53b573c890a23b270774ef1feba4f7f7a65aeff7598f9e85e9c0"
+    },
+    {
+      "name": "s2-host-install.log",
+      "exists": true,
+      "sha256": "fa7e1f84a018f9a5ebc32feb8b81ced465cf6d3c4d78ff298bafbe79604ffef5"
+    }
+  ],
+  "engines": [
+    {
+      "package": "node_modules/@ai-sdk/provider",
+      "node": ">=18"
+    },
+    {
+      "package": "node_modules/cross-spawn",
+      "node": ">= 8"
+    },
+    {
+      "package": "node_modules/detect-libc",
+      "node": ">=8"
+    },
+    {
+      "package": "node_modules/fast-check",
+      "node": ">=12.17.0"
+    },
+    {
+      "package": "node_modules/ini",
+      "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+    },
+    {
+      "package": "node_modules/path-key",
+      "node": ">=8"
+    },
+    {
+      "package": "node_modules/shebang-command",
+      "node": ">=8"
+    },
+    {
+      "package": "node_modules/shebang-regex",
+      "node": ">=8"
+    },
+    {
+      "package": "node_modules/smol-toml",
+      "node": ">= 18"
+    },
+    {
+      "package": "node_modules/toml",
+      "node": ">=20"
+    },
+    {
+      "package": "node_modules/which",
+      "node": ">= 8"
+    },
+    {
+      "package": "node_modules/yaml",
+      "node": ">= 14.6"
+    }
+  ],
+  "scannerDiff": ""
+}

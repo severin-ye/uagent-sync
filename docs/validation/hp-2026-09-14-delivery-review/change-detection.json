@@ -1,0 +1,12 @@
+{
+  "summary": {
+    "changed_count": 9,
+    "affected_count": 0,
+    "changed_files": 27,
+    "risk_level": "low"
+  },
+  "affectedProcesses": [],
+  "scope": "staged documents only",
+  "exit": 0,
+  "indexCaveat": "Flow graph truncation reported; staged path diff independently reviewed"
+}

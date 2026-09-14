@@ -1,0 +1,6 @@
+run-batch.ps1:
+Line |
+   2 |  try { & <USER_HOME>/hpb/run-batch.ps1 -SourcePath C:/Users/sever …
+     |        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | The term 'C:\node.exe <USER_HOME>\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.

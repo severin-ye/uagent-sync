@@ -1,0 +1,16 @@
+[
+  {
+    "name": "ci",
+    "args": [
+      "C:\\node_modules\\npm\\bin\\npm-cli.js",
+      "ci",
+      "--prefix",
+      "<USER_HOME>/hpb/src",
+      "--ignore-scripts",
+      "--include=optional",
+      "--no-audit",
+      "--no-fund"
+    ],
+    "status": 0
+  }
+]

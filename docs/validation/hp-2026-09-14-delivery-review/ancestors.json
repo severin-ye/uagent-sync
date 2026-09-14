@@ -1,0 +1,22 @@
+[
+  {
+    "path": "<ISOLATED_PUBLIC>",
+    "plugin": false,
+    "sdk": false
+  },
+  {
+    "path": "C:/Users/Public",
+    "plugin": false,
+    "sdk": false
+  },
+  {
+    "path": "C:/Users",
+    "plugin": false,
+    "sdk": false
+  },
+  {
+    "path": "C:/",
+    "plugin": false,
+    "sdk": false
+  }
+]

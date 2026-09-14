@@ -1,0 +1,7 @@
+import fs from 'node:fs';import {spawnSync} from 'node:child_process';import path from 'node:path';
+const src='<USER_HOME>/hpb/src',ev='<ISOLATED_PUBLIC>/e2';
+const current='C:/node.exe',legacy='<USER_HOME>/m2g0e/runtime18/node-v18.20.8-win-x64/node.exe';
+for(const [label,node,cmd] of [['ci',current,'ci'],['full-current',current,'test'],['full-node18',legacy,'test']]){
+ const args=[path.join(path.dirname(node),'node_modules/npm/bin/npm-cli.js'),cmd,'--prefix',src,...(cmd==='ci'?['--ignore-scripts','--include=optional','--no-audit','--no-fund']:[])];
+ const r=spawnSync(current,['<USER_HOME>/hpb/replay.mjs',src,ev,node,label,JSON.stringify(args)],{encoding:'utf8',maxBuffer:4e6});console.log(r.stdout,r.stderr);if(label==='ci'&&r.status!==0)process.exit(r.status||1);
+}

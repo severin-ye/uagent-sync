@@ -1,0 +1,14 @@
+{
+  "cmd": "npm.cmd",
+  "args": [
+    "install",
+    "--omit=dev",
+    "--ignore-scripts",
+    "--no-audit",
+    "--no-fund",
+    "<USER_HOME>/m2pack/uagent-sync-2.1.1.tgz"
+  ],
+  "cwd": "<USER_HOME>/m2pc",
+  "status": 0,
+  "signal": null
+}

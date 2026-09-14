@@ -1,0 +1,17 @@
+{
+  "cmd": "npm.cmd",
+  "args": [
+    "install",
+    "--omit=dev",
+    "--ignore-scripts",
+    "--no-audit",
+    "--no-fund",
+    "--save-exact",
+    "<USER_HOME>/m2pack/uagent-sync-2.1.1.tgz",
+    "@opencode-ai/plugin@1.18.15",
+    "@opencode-ai/sdk@1.18.15"
+  ],
+  "cwd": "<USER_HOME>/m2ph",
+  "status": 0,
+  "signal": null
+}
