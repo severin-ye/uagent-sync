@@ -1,3 +1,4 @@
+import { fileURLToPath as moduleFilePath } from "node:url";
 import { describe, it, before, after } from "node:test";
 import * as assert from "node:assert";
 import * as fs from "node:fs";
@@ -17,7 +18,7 @@ import { resolveGitExecutable, runGit, runWithFreshFixture } from "./support/fix
  * 2. dotfiles 是普通目录（非子模块）时，workspace 一次提交覆盖。
  * 3. workspace 根本不是 git 仓库时，失败详情必须可见（stdout/stderr 都上屏）。
  */
-const CLI = path.join(import.meta.dirname, "..", "dist", "cli.js");
+const CLI = path.join(path.dirname(moduleFilePath(import.meta.url)), "..", "dist", "cli.js");
 const TMP = path.join(os.tmpdir(), `crystallize-git-test-${Date.now()}`);
 
 const GIT = resolveGitExecutable();

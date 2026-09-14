@@ -1,3 +1,4 @@
+import { fileURLToPath as moduleFilePath } from "node:url";
 import { after, before, describe, it } from "node:test";
 import * as assert from "node:assert";
 import * as fs from "node:fs";
@@ -9,7 +10,7 @@ import { setupWorkspace, verifyEnvironment } from "../dist/lib/workspace.js";
 const TMP = path.join(os.tmpdir(), `uagent-codex-scope-${Date.now()}`);
 const WS = path.join(TMP, "workspace");
 const HOME = path.join(TMP, "home");
-const CLI = path.join(import.meta.dirname, "..", "dist", "cli.js");
+const CLI = path.join(path.dirname(moduleFilePath(import.meta.url)), "..", "dist", "cli.js");
 
 before(() => {
   fs.mkdirSync(path.join(WS, "usync-dotfiles", "config"), { recursive: true });
@@ -22,7 +23,7 @@ after(() => fs.rmSync(TMP, { recursive: true, force: true }));
 
 describe("Codex-only verify/setup scope", () => {
   it("setup scans current Codex extensions instead of treating all selected entries as absent", () => {
-    const source = fs.readFileSync(path.join(import.meta.dirname, "..", "src", "lib", "workspace.ts"), "utf-8");
+    const source = fs.readFileSync(path.join(path.dirname(moduleFilePath(import.meta.url)), "..", "src", "lib", "workspace.ts"), "utf-8");
     assert.doesNotMatch(source, /restoreCodexExtensions\(\{[^}]*installed:\s*\[\]/s);
     assert.match(source, /exportSystemState/);
   });

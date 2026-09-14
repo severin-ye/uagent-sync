@@ -1,3 +1,4 @@
+import { fileURLToPath as moduleFilePath } from "node:url";
 import { afterEach, describe, it } from "node:test";
 import * as assert from "node:assert";
 import { spawnSync } from "node:child_process";
@@ -499,7 +500,7 @@ describe("trusted Windows command execution", () => {
     fs.mkdirSync(path.dirname(npxCli), { recursive: true });
     fs.writeFileSync(path.join(globalBin, "npx.cmd"), "@echo off\r\nexit /b 99\r\n");
     fs.writeFileSync(npxCli, "setTimeout(() => process.exit(0), 700)");
-    const moduleUrl = pathToFileURL(path.join(import.meta.dirname, "..", "dist", "lib", "codex-restore.js")).href;
+    const moduleUrl = pathToFileURL(path.join(path.dirname(moduleFilePath(import.meta.url)), "..", "dist", "lib", "codex-restore.js")).href;
     const driver = path.join(root, "driver.mjs");
     fs.writeFileSync(driver, `import { executeTrustedCommand } from ${JSON.stringify(moduleUrl)}; const result = executeTrustedCommand("npx", ["--yes", "skills", "add", "acme/shared-skills", "-g", "-y"], { timeoutMs: 2000, heartbeatIntervalMs: 250 }); process.stdout.write(JSON.stringify(result));`);
     const run = spawnSync(process.execPath, [driver], {

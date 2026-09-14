@@ -1,3 +1,4 @@
+import { fileURLToPath as moduleFilePath } from "node:url";
 import { after, before, describe, it } from "node:test";
 import * as assert from "node:assert";
 import * as fs from "node:fs";
@@ -6,7 +7,7 @@ import * as path from "node:path";
 import { execFileSync } from "node:child_process";
 import { createRequire } from "node:module";
 
-const ROOT = path.join(import.meta.dirname, "..");
+const ROOT = path.join(path.dirname(moduleFilePath(import.meta.url)), "..");
 let tempRoot = "";
 let installedPackage = "";
 
@@ -30,6 +31,8 @@ before(() => {
   assert.ok(!packed.files.some((item) => /codebase-memory/i.test(item.path)), "deleted codebase-memory files must never ship");
   const tarball = path.join(tempRoot, packed.filename);
   const prefix = path.join(tempRoot, "install");
+  fs.mkdirSync(prefix, { recursive: true });
+  fs.writeFileSync(path.join(prefix, "package.json"), JSON.stringify({ private: true }));
   npm(["install", "--prefix", prefix, tarball, "--omit=dev", "--no-audit", "--no-fund"], { timeout: 120_000 });
   installedPackage = path.join(prefix, "node_modules", "uagent-sync");
 });
@@ -41,6 +44,13 @@ after(() => {
 });
 
 describe("real npm pack installation", () => {
+  it("loads the installed plugin without dev dependencies or a host SDK ancestor", () => {
+    const script = `const {OpencodeSyncPlugin}=await import('uagent-sync');const hooks=await OpencodeSyncPlugin({});const cfg={};await hooks.config(cfg);if(cfg.skills.paths.length!==1)throw Error('missing skills');console.log('plugin-ready');`;
+    const output = execFileSync(process.execPath, ["--input-type=module", "-e", script], {
+      cwd: path.dirname(path.dirname(installedPackage)), encoding: "utf-8", timeout: 30_000,
+    });
+    assert.match(output, /plugin-ready/);
+  });
   it("runs the installed CLI with production dependencies only", () => {
     const cli = path.join(installedPackage, "dist", "cli.js");
     const version = execFileSync(process.execPath, [cli, "--version"], { encoding: "utf-8", timeout: 30_000 }).trim();

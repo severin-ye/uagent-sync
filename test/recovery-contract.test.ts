@@ -1,3 +1,4 @@
+import { fileURLToPath as moduleFilePath } from "node:url";
 import { after, before, describe, it } from "node:test";
 import * as assert from "node:assert";
 import * as fs from "node:fs";
@@ -11,7 +12,7 @@ import { initApiKeyFile } from "../dist/lib/keys.js";
 const TMP = path.join(os.tmpdir(), `uagent-recovery-contract-${Date.now()}`);
 const WS = path.join(TMP, "workspace");
 const HOME = path.join(TMP, "home");
-const CLI = path.join(import.meta.dirname, "..", "dist", "cli.js");
+const CLI = path.join(path.dirname(moduleFilePath(import.meta.url)), "..", "dist", "cli.js");
 
 function runCli(args: string[]): { stdout: string; stderr: string; code: number } {
   try {
@@ -216,12 +217,12 @@ describe("safe recovery protocol", () => {
 
 describe("clean checkout and Codex plugin contract", () => {
   it("npm test has a build lifecycle prerequisite", () => {
-    const pkg = JSON.parse(fs.readFileSync(path.join(import.meta.dirname, "..", "package.json"), "utf-8"));
+    const pkg = JSON.parse(fs.readFileSync(path.join(path.dirname(moduleFilePath(import.meta.url)), "..", "package.json"), "utf-8"));
     assert.equal(pkg.scripts.pretest, "npm run build");
   });
 
   it("Codex manifest version matches package and uses only accepted discovery fields", () => {
-    const root = path.join(import.meta.dirname, "..");
+    const root = path.join(path.dirname(moduleFilePath(import.meta.url)), "..");
     const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf-8"));
     const manifest = JSON.parse(fs.readFileSync(path.join(root, ".codex-plugin", "plugin.json"), "utf-8"));
     assert.equal(manifest.version, pkg.version);

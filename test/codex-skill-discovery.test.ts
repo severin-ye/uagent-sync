@@ -1,3 +1,4 @@
+import { fileURLToPath as moduleFilePath } from "node:url";
 import { describe, it } from "node:test";
 import * as assert from "node:assert/strict";
 import * as fs from "node:fs";
@@ -5,7 +6,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { execFileSync } from "node:child_process";
 
-const ROOT = path.join(import.meta.dirname, "..");
+const ROOT = path.join(path.dirname(moduleFilePath(import.meta.url)), "..");
 const SKILL_ROOT = path.join(ROOT, "skills", "uagent-sync-crystallize");
 
 function npm(args: string[], cwd = ROOT): string {

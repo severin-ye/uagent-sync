@@ -1,3 +1,4 @@
+import { fileURLToPath as moduleFilePath } from "node:url";
 import { test } from "node:test";
 import * as assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
@@ -12,7 +13,7 @@ test("run-tests propagates a cancelled test hook as a non-zero exit", () => {
       path.join(fixtureDir, "cancelled-hook.test.ts"),
       'import { test } from "node:test";\n\ntest("hook cancellation", (t) => {\n  t.after(() => { throw new Error("hook cancellation"); });\n});\n',
     );
-    const wrapper = path.join(import.meta.dirname, "..", "scripts", "run-tests.mjs");
+    const wrapper = path.join(path.dirname(moduleFilePath(import.meta.url)), "..", "scripts", "run-tests.mjs");
     const { NODE_TEST_CONTEXT: _nodeTestContext, ...parentEnv } = process.env;
     const result = spawnSync(process.execPath, [wrapper], {
       encoding: "utf8",

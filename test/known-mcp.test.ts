@@ -1,3 +1,4 @@
+import { fileURLToPath as moduleFilePath } from "node:url";
 import { describe, it, before, after } from "node:test";
 import * as assert from "node:assert";
 import * as fs from "node:fs";
@@ -191,7 +192,7 @@ describe("data-driven MCP detection", () => {
 describe("known-mcps.json data integrity", () => {
   it("should exist and be valid JSON", () => {
     // 仓库内 data/known-mcps.json（随代码分发）优先；回退 workspace 内 dotfiles 副本
-    const dataPath = path.resolve(import.meta.dirname!, "../data/known-mcps.json");
+    const dataPath = path.resolve(path.dirname(moduleFilePath(import.meta.url)), "../data/known-mcps.json");
     const wsDataPath = path.join(os.homedir(), "Codelib-severin", DOTFILES_DIR, "data", "known-mcps.json");
     const resolvedPath = fs.existsSync(dataPath) ? dataPath
       : fs.existsSync(wsDataPath) ? wsDataPath : null;

@@ -1,3 +1,4 @@
+import { fileURLToPath as moduleFilePath } from "node:url";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { readOpenCodeConfig, exportSystemState } from "./state.js";
@@ -12,7 +13,7 @@ import { t } from "../i18n/index.js";
 export function loadKnownMcps(workspaceRoot: string): KnownMcpData {
   const dataPaths = [
     path.join(workspaceRoot, DOTFILES_DIR, "data", "known-mcps.json"),
-    path.join(import.meta.dirname, "..", "..", "data", "known-mcps.json"),
+    path.join(path.dirname(moduleFilePath(import.meta.url)), "..", "..", "data", "known-mcps.json"),
   ];
   for (const dp of dataPaths) {
     if (!fs.existsSync(dp)) continue;

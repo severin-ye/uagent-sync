@@ -1,3 +1,4 @@
+import { fileURLToPath as moduleFilePath } from "node:url";
 import { describe, it, before, after } from "node:test";
 import * as assert from "node:assert";
 import * as fs from "node:fs";
@@ -10,7 +11,7 @@ import { DOTFILES_DIR } from "../src/lib/dotfiles.js";
  * CLI 16 命令覆盖测试（v2.0.0 新增 8 命令：status/verify/setup/init/create-repo/api-keys/guide/log/crystallize）。
  * 无副作用路径（读操作）直接验证输出；有副作用路径验证参数校验。
  */
-const CLI = path.join(import.meta.dirname, "..", "dist", "cli.js");
+const CLI = path.join(path.dirname(moduleFilePath(import.meta.url)), "..", "dist", "cli.js");
 const TMP = path.join(os.tmpdir(), `cli-test-${Date.now()}`);
 const WS = path.join(TMP, "workspace");
 

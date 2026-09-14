@@ -1,3 +1,4 @@
+import { fileURLToPath as moduleFilePath } from "node:url";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
@@ -12,7 +13,7 @@ import type { AgentPaths } from "../src/lib/agent-paths.js";
 import type { AgentCapability, AgentId, AgentInventory } from "../src/lib/agent-inventory-types.js";
 import type { AgentAdapter } from "../src/ports/agent-adapter.js";
 
-const ROOT = path.resolve(import.meta.dirname, "..");
+const ROOT = path.resolve(path.dirname(moduleFilePath(import.meta.url)), "..");
 
 interface ImportEdge {
   sourceFile: string;

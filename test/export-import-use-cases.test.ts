@@ -1,3 +1,4 @@
+import { fileURLToPath as moduleFilePath } from "node:url";
 import { afterEach, describe, it } from "node:test";
 import * as assert from "node:assert/strict";
 import * as fs from "node:fs";
@@ -10,7 +11,7 @@ import type { ApplicationResult } from "../src/application/result.js";
 const exportModulePath = "../src/application/export-workspace.js";
 const importModulePath = "../src/application/import-workspace.js";
 const nodeFileSystemModulePath = "../src/adapters/infrastructure/node-file-system.js";
-const repositoryRoot = path.join(import.meta.dirname, "..");
+const repositoryRoot = path.join(path.dirname(moduleFilePath(import.meta.url)), "..");
 
 type ExportWorkspace = (
   input: { workspaceRoot: string; outputPath: string; targetAgent: TargetAgent; trackState?: boolean },

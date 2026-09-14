@@ -1,3 +1,4 @@
+import { fileURLToPath as moduleFilePath } from "node:url";
 /**
  * OpencodeSyncPlugin — opencode-sync 的 Plugin 形态。
  *
@@ -42,7 +43,7 @@ export const OpencodeSyncPlugin: Plugin = async (_ctx) => {
     // 注册内置 skills 目录（skills/uagent-sync-*），双端共享：opencode 无需手动配置即可加载。
     // 与 Codex 侧（.codex-plugin/plugin.json 的 skills 字段）指向同一份目录。
     config: async (cfg) => {
-      const skillsDir = path.join(import.meta.dirname, "..", "skills");
+      const skillsDir = path.join(path.dirname(moduleFilePath(import.meta.url)), "..", "skills");
       const loose = cfg as unknown as { skills?: { paths?: string[] } };
       loose.skills = loose.skills ?? {};
       loose.skills.paths = loose.skills.paths ?? [];

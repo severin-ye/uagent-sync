@@ -1,3 +1,4 @@
+import { fileURLToPath as moduleFilePath } from "node:url";
 import * as http from "node:http";
 import * as fs from "node:fs";
 import * as path from "node:path";
@@ -79,7 +80,7 @@ export async function startDashboardServer(options: DashboardServerOptions): Pro
         return response.end();
       }
       if (asset) {
-        const dashboardRoot = path.resolve(import.meta.dirname, "..", "dashboard");
+        const dashboardRoot = path.resolve(path.dirname(moduleFilePath(import.meta.url)), "..", "dashboard");
         const file = path.resolve(dashboardRoot, asset.file);
         if (!file.startsWith(dashboardRoot) || !fs.existsSync(file)) return sendJson(response, 404, { error: { code: "asset_missing", message: errorMessage(lang, "server.assetMissing") } });
         response.writeHead(200, { "Content-Type": asset.type, "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" });

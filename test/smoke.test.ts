@@ -1,10 +1,11 @@
+import { fileURLToPath as moduleFilePath } from "node:url";
 import { describe, it } from "node:test";
 import * as assert from "node:assert";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { execSync } from "node:child_process";
 
-const CLI = path.join(import.meta.dirname, "..", "dist", "cli.js");
+const CLI = path.join(path.dirname(moduleFilePath(import.meta.url)), "..", "dist", "cli.js");
 
 describe("CLI smoke tests", () => {
   it("should show usage when no command given", () => {
@@ -18,7 +19,7 @@ describe("CLI smoke tests", () => {
 
   it("should export state without errors", () => {
     // CI/非 workspace 目录：注入 fake workspace root（env 分支不需要 .gitmodules）
-    const fakeWs = path.join(import.meta.dirname, "..", "test-fixture-ws");
+    const fakeWs = path.join(path.dirname(moduleFilePath(import.meta.url)), "..", "test-fixture-ws");
     const tmp = path.join(fakeWs, "test-output.json");
     fs.mkdirSync(fakeWs, { recursive: true });
     try {

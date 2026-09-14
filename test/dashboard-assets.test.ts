@@ -1,10 +1,11 @@
+import { fileURLToPath as moduleFilePath } from "node:url";
 import { describe, it } from "node:test";
 import * as assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as path from "node:path";
 
-const root = path.join(import.meta.dirname, "..");
+const root = path.join(path.dirname(moduleFilePath(import.meta.url)), "..");
 const source = path.join(root, "src", "dashboard");
 const asset = (name: string) => fs.readFileSync(path.join(root, "dist", "dashboard", name), "utf8");
 

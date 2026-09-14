@@ -42,12 +42,12 @@
   "dependencies": {
     "@lezer/python": "1.1.18",
     "smol-toml": "^1.8.0",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "@opencode-ai/plugin": "1.18.15"
   },
   "devDependencies": {
     "@deepseek-ai/dsh-tools": "0.1.0-rc.6",
     "@deepseek-ai/schemastery": "3.18.1",
-    "@opencode-ai/plugin": "^1.18.15",
     "@types/node": "^22.0.0",
     "playwright": "^1.62.1",
     "rimraf": "^5.0.0",

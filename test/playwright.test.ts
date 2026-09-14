@@ -1,3 +1,4 @@
+import { fileURLToPath as moduleFilePath } from "node:url";
 import { describe, it, before, after } from "node:test";
 import * as assert from "node:assert";
 import * as fs from "node:fs";
@@ -238,7 +239,7 @@ describe("generateSyncGuide — Playwright section", () => {
     fs.mkdirSync(path.join(ws, DOTFILES_DIR, "guide"), { recursive: true });
     fs.mkdirSync(path.join(ws, DOTFILES_DIR, "data"), { recursive: true });
     // Copy real data file for authentic content（仓库内 data/，随代码分发，CI 可达）
-    const realData = path.resolve(import.meta.dirname!, "../data/known-mcps.json");
+    const realData = path.resolve(path.dirname(moduleFilePath(import.meta.url)), "../data/known-mcps.json");
     if (fs.existsSync(realData)) {
       fs.copyFileSync(realData, path.join(ws, DOTFILES_DIR, "data", "known-mcps.json"));
     } else {

@@ -1,3 +1,4 @@
+import { fileURLToPath as moduleFilePath } from "node:url";
 import { afterEach, describe, it } from "node:test";
 import * as assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
@@ -5,7 +6,7 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 
-const repositoryRoot = path.join(import.meta.dirname, "..");
+const repositoryRoot = path.join(path.dirname(moduleFilePath(import.meta.url)), "..");
 const temporaryDirectories: string[] = [];
 
 afterEach(() => {

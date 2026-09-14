@@ -1,3 +1,4 @@
+import { fileURLToPath as moduleFilePath } from "node:url";
 import { describe, it } from "node:test";
 import * as assert from "node:assert";
 import * as fs from "node:fs";
@@ -5,7 +6,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { spawnSync } from "node:child_process";
 
-const ROOT = path.join(import.meta.dirname, "..");
+const ROOT = path.join(path.dirname(moduleFilePath(import.meta.url)), "..");
 const SCRIPT = path.join(ROOT, "scripts", "bootstrap.ps1");
 const EXPECTED_REPO = "https://github.com/example/uagent-sync";
 
