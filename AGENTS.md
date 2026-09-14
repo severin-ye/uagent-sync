@@ -1,3 +1,7 @@
+## 全终端开发协作要求
+
+在本仓库开展开发、修复或复核前，必须读取并遵循[开发协作指导](docs/DEVELOPMENT-WORKFLOW.md)。按批次连续推进、集中验收与交接；保留当前任务的授权限制和安全门槛。所有设备共用该文件，已运行会话须主动重新读取。
+
 # Agent Instructions — opencode-sync
 
 > **给 AI Agent 的自动化配置与同步指南。**
