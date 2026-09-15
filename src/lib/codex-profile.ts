@@ -51,11 +51,58 @@ function atomically(p: string, bytes: Buffer | string): void {
 function mappings(d: ProfileDevice): [string, string][] {
   return [[d.codexHome, '${UAGENT_CODEX_HOME}'], [d.workspaceRoot, '${UAGENT_WORKSPACE_ROOT}'], [d.userHome, '${UAGENT_USER_HOME}']].sort((a, b) => b[0].length - a[0].length) as [string, string][];
 }
+const extendedWindowsPrefix = '\\\\?\\';
+const pathBoundaryPunctuation = new Set(['/', '\\', '"', "'", '`', '=', ':', ',', ';', '(', ')', '[', ']', '{', '}']);
+function isPathBoundaryCharacter(character: string): boolean {
+  return /\s/.test(character) || pathBoundaryPunctuation.has(character);
+}
+function isPathBoundaryBefore(value: string, index: number): boolean {
+  return index <= 0 || isPathBoundaryCharacter(value[index - 1]);
+}
+function isPathBoundaryAfter(value: string, index: number): boolean {
+  return index >= value.length || isPathBoundaryCharacter(value[index]);
+}
+function pathVariants(actual: string): string[] {
+  const base = actual.startsWith(extendedWindowsPrefix) ? actual.slice(extendedWindowsPrefix.length) : actual;
+  const forward = base.replaceAll('\\', '/');
+  const backslash = forward.replaceAll('/', '\\');
+  return [...new Set([actual, forward, backslash, extendedWindowsPrefix + forward, extendedWindowsPrefix + backslash])].sort((a, b) => b.length - a.length);
+}
+function replacePathRoot(value: string, actual: string, token: string): string {
+  let result = value;
+  for (const variant of pathVariants(actual)) {
+    const matches: Array<[number, number]> = [];
+    let cursor = 0;
+    let index = -1;
+    while ((index = result.indexOf(variant, cursor)) >= 0) {
+      const end = index + variant.length;
+      const before = isPathBoundaryBefore(result, index);
+      const after = isPathBoundaryAfter(result, end);
+      if (!before || !after) {
+        // Advance by one so a rejected prefix cannot hide a later valid match.
+        cursor = index + 1;
+        continue;
+      }
+      matches.push([index, end]);
+      cursor = end;
+    }
+    if (matches.length) {
+      let next = '';
+      cursor = 0;
+      for (const [start, end] of matches) {
+        next += result.slice(cursor, start) + token;
+        cursor = end;
+      }
+      result = next + result.slice(cursor);
+    }
+  }
+  return result;
+}
 function mapString(value: string, d: ProfileDevice, importing: boolean): string {
   let result = value;
   for (const [actual, token] of mappings(d)) {
     if (importing) result = result.split(token).join(actual.replaceAll('\\', '/'));
-    else for (const variant of new Set([actual, actual.replaceAll('\\', '/')])) result = result.split(variant).join(token);
+    else result = replacePathRoot(result, actual, token);
   }
   return result;
 }
