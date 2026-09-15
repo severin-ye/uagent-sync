@@ -1,0 +1,34 @@
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at nextStep (node:internal/modules/customization_hooks:189:26)
+    at load2 (file:///C:/uagent-review/honor-path-fix/node_modules/tsx/dist/register-CqMfTiWi.mjs:2:5385)
+    at nextStep (node:internal/modules/customization_hooks:189:26)
+    at loadWithHooks (node:internal/modules/customization_hooks:374:18)
+    at #loadSync (node:internal/modules/esm/loader:787:14)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31) {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+✖ C:\uagent-review\honor-path-fix\test\path-baseline-replay.manual.ts (673.511ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 687.0311
+
+✖ failing tests:
+
+test at test\path-baseline-replay.manual.ts:1:1
+✖ C:\uagent-review\honor-path-fix\test\path-baseline-replay.manual.ts (673.511ms)
+  'test failed'

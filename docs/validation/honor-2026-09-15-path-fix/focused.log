@@ -1,0 +1,18 @@
+✔ profile mapping handles both separator styles, command args, extended paths, and sibling prefixes (78.8309ms)
+✔ profile roundtrip preserves memory and maps config without transferring trust or auth (63.5275ms)
+✔ different existing data conflicts; explicit first restore makes a backup (73.24ms)
+✔ three-way baseline protects edits and allows a subsequent source change (55.9947ms)
+✔ tampering and path traversal fail before any target writes (21.8769ms)
+✔ secret values block export without creating an uploadable snapshot (9.8726ms)
+✔ explicit component selection reports omitted skills and refuses empty component selection (21.4558ms)
+✔ junctions cannot redirect target writes outside the registered profile (24.7709ms)
+✔ profile excludes nested Git directories and worktree pointers without changing source (62.1656ms)
+✔ legacy snapshot containing Git metadata is refused before target writes (24.1361ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1322.8682

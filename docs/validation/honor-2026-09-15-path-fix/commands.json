@@ -1,0 +1,34 @@
+[
+  {
+    "command": "node --import tsx --test test/path-baseline-replay.manual.ts (imports fixed1056 dist)",
+    "exit": 1,
+    "classification": "environment failure; not product red"
+  },
+  {
+    "command": "npm run build",
+    "exit": 0
+  },
+  {
+    "command": "node --import tsx --test test/codex-profile-path-mapping.test.ts test/codex-profile.test.ts",
+    "exit": 0
+  },
+  {
+    "command": "npm test",
+    "exit": 0
+  },
+  {
+    "command": "node --import tsx --test docs/validation/honor-2026-09-15-path-fix/baseline-replay.manual.ts (correct file URL)",
+    "exit": 1,
+    "classification": "product assertion red on fixed1056 dist"
+  },
+  {
+    "command": "node --import tsx --test test/codex-profile-path-mapping.test.ts (additional mixed prefix assertions)",
+    "exit": 0,
+    "passed": 1
+  },
+  {
+    "command": "node C:/uagent-review/honor-return-parent/path-fix-actual-copy.mjs",
+    "exit": 0,
+    "scope": "actual HP config controlled copy only"
+  }
+]

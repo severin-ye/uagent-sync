@@ -1,0 +1,14 @@
+{
+  "node": "C:\\Program Files\\nodejs\\node.exe",
+  "npm": "C:\\Program Files\\nodejs\\npm.cmd",
+  "USERPROFILE": "C:\\uagent-review\\honor-return-parent\\path-final-isolation\\home",
+  "HOME": "C:\\uagent-review\\honor-return-parent\\path-final-isolation\\home",
+  "CODEX_HOME": "C:\\uagent-review\\honor-return-parent\\path-final-isolation\\home\\.codex",
+  "APPDATA": "C:\\uagent-review\\honor-return-parent\\path-final-isolation\\appdata",
+  "LOCALAPPDATA": "C:\\uagent-review\\honor-return-parent\\path-final-isolation\\localappdata",
+  "TMP": "C:\\uagent-review\\honor-return-parent\\path-final-isolation\\tmp",
+  "TEMP": "C:\\uagent-review\\honor-return-parent\\path-final-isolation\\tmp",
+  "npm_cache": "C:\\uagent-review\\honor-return-parent\\path-final-isolation\\npm-cache",
+  "npm_userconfig": "C:\\uagent-review\\honor-return-parent\\path-final-isolation\\npmrc",
+  "workspaceOverridePresent": false
+}

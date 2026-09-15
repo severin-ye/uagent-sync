@@ -1,0 +1,17 @@
+{
+  "sourceSha": "8d9702d88e5e2cb2f67885d609fb42e9d2c363b9",
+  "testedWorktreeCommit": "02abaf3e7a83ed7d6d0ea6aadba1c5d0457851ac",
+  "baselineProduction": "1056d411419082bd18ad8f76fbb23720a3a3b93d",
+  "runtime": "Node 24.16.0",
+  "buildExit": 0,
+  "focused": {"passed":10,"failed":0},
+  "full": {"passed":870,"failed":0,"cancelled":0,"exit":0},
+  "additionalMixedPrefixCheck": {"passed":1,"failed":0},
+  "baselineReplay": {"exit":1,"failure":"AssertionError: workspace token missing; original Windows paths remain"},
+  "initialReplayEnvironmentFailurePreserved": true,
+  "actualHpConfigControlledCopy": {"passed":true,"restored":1,"sourceUnchanged":true,"sourceRootResiduals":0},
+  "gitnexus": {"impact":"target not indexed; UNKNOWN","detectChangedFiles":2,"symbolCoverage":false},
+  "installedPluginUpdated": false,
+  "hpIndependentReview": "pending",
+  "fullMigration": false
+}

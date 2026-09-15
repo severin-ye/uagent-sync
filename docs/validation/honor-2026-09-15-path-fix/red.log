@@ -1,0 +1,38 @@
+✖ profile mapping handles both separator styles, command args, extended paths, and sibling prefixes (28.6973ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 503.2924
+
+✖ failing tests:
+
+test at docs\validation\honor-2026-09-15-path-fix\baseline-replay.manual.ts:1:912
+✖ profile mapping handles both separator styles, command args, extended paths, and sibling prefixes (28.6973ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /\$\{UAGENT_WORKSPACE_ROOT\}/. Input:
+  
+  'model = "path-fixture"\n' +
+    '\n' +
+    '[mcp_servers.paths]\n' +
+    'command_backslash = "tool --path C:\\\\uagent-review\\\\honor-return-parent\\\\path-final-isolation\\\\tmp\\\\uagent-path-mapping-DKdP9o\\\\forward-source\\\\seve\\\\work\\\\server.exe"\n' +
+    'command_forward = "tool --path ${UAGENT_USER_HOME}/work/server.exe"\n' +
+    'extended_workspace = "\\\\\\\\?\\\\C:\\\\uagent-review\\\\honor-return-parent\\\\path-final-isolation\\\\tmp\\\\uagent-path-mapping-DKdP9o\\\\forward-source\\\\seve\\\\workspace\\\\server.exe"\n' +
+    'extended_codex = "\\\\\\\\?\\\\${UAGENT_CODEX_HOME}/plugin"\n' +
+    'sibling = "${UAGENT_USER_HOME}rin/work/server.exe"\n' +
+    'unknown_prefix = "prefix${UAGENT_USER_HOME}/should-not-map"\n'
+  
+      at TestContext.<anonymous> (C:\uagent-review\honor-path-fix\docs\validation\honor-2026-09-15-path-fix\baseline-replay.manual.ts:61:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.start (node:internal/test_runner/test:1177:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'model = "path-fixture"\n\n[mcp_servers.paths]\ncommand_backslash = "tool --path C:\\\\uagent-review\\\\honor-return-parent\\\\path-final-isolation\\\\tmp\\\\uagent-path-mapping-DKdP9o\\\\forward-source\\\\seve\\\\work\\\\server.exe"\ncommand_forward = "tool --path ${UAGENT_USER_HOME}/work/server.exe"\nextended_workspace = "\\\\\\\\?\\\\C:\\\\uagent-review\\\\honor-return-parent\\\\path-final-isolation\\\\tmp\\\\uagent-path-mapping-DKdP9o\\\\forward-source\\\\seve\\\\workspace\\\\server.exe"\nextended_codex = "\\\\\\\\?\\\\${UAGENT_CODEX_HOME}/plugin"\nsibling = "${UAGENT_USER_HOME}rin/work/server.exe"\nunknown_prefix = "prefix${UAGENT_USER_HOME}/should-not-map"\n',
+    expected: /\$\{UAGENT_WORKSPACE_ROOT\}/,
+    operator: 'match',
+    diff: 'simple'
+  }
