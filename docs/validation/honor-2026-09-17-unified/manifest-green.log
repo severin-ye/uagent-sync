@@ -1,0 +1,46 @@
+✔ upgrade fixture was accepted by the legacy marker guard and rejected by current scanning (1.1305ms)
+✔ upgrade retry rejects a legacy credential in snapshot before any mutation or process (14.5975ms)
+✔ upgrade retry rejects a legacy credential in journal before any mutation or process (9.9613ms)
+✔ upgrade retry rejects a legacy credential in state before any mutation or process (11.857ms)
+✔ upgrade retry rejects a legacy credential in guide before any mutation or process (9.1476ms)
+✔ upgrade retry rejects a legacy credential in log before any mutation or process (9.3815ms)
+✔ upgrade retry rejects a legacy credential in extra-artifact before any mutation or process (11.0473ms)
+✔ safe legacy retry reuses byte-identical artifacts and its original entry (9.3023ms)
+✔ new event rejects unsafe existing history before journal or log mutation (5.9085ms)
+✔ new event rejects unsafe old journal without replacing the old event (8.0986ms)
+✔ new event refuses mixed credential (2.7915ms)
+✔ new event accepts placeholder-only input (20.6997ms)
+✔ retry rejects null artifact manifest before mutation or process (8.0666ms)
+✔ new event rejects null artifact manifest before mutation or process (7.8073ms)
+✔ retry rejects array artifact manifest before mutation or process (8.0134ms)
+✔ new event rejects array artifact manifest before mutation or process (8.5771ms)
+✔ retry rejects string artifact manifest before mutation or process (8.63ms)
+✔ new event rejects string artifact manifest before mutation or process (7.7614ms)
+✔ retry rejects boolean artifact manifest before mutation or process (7.5238ms)
+✔ new event rejects boolean artifact manifest before mutation or process (7.9473ms)
+✔ retry rejects number artifact manifest before mutation or process (8.8884ms)
+✔ new event rejects number artifact manifest before mutation or process (8.7391ms)
+✔ retry rejects empty record artifact manifest before mutation or process (8.21ms)
+✔ new event rejects empty record artifact manifest before mutation or process (7.1175ms)
+✔ retry rejects missing state/workspace-state.json artifact manifest before mutation or process (7.7099ms)
+✔ new event rejects missing state/workspace-state.json artifact manifest before mutation or process (6.8542ms)
+✔ retry rejects missing state/install-log.json artifact manifest before mutation or process (8.1158ms)
+✔ new event rejects missing state/install-log.json artifact manifest before mutation or process (7.0945ms)
+✔ retry rejects missing guide/SYNC-GUIDE.md artifact manifest before mutation or process (7.9841ms)
+✔ new event rejects missing guide/SYNC-GUIDE.md artifact manifest before mutation or process (6.9847ms)
+✔ retry rejects non-hex digest artifact manifest before mutation or process (8.3354ms)
+✔ new event rejects non-hex digest artifact manifest before mutation or process (8.0959ms)
+✔ retry rejects short digest artifact manifest before mutation or process (8.5091ms)
+✔ new event rejects short digest artifact manifest before mutation or process (8.0259ms)
+✔ retry rejects non-string digest artifact manifest before mutation or process (8.6436ms)
+✔ new event rejects non-string digest artifact manifest before mutation or process (8.3621ms)
+✔ safe Windows artifact paths remain reusable without mutation or process (8.2683ms)
+✔ interrupted preparation without an artifact manifest resumes and seals mandatory outputs (13.3156ms)
+ℹ tests 38
+ℹ suites 0
+ℹ pass 38
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 667.7023

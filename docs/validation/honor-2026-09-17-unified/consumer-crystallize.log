@@ -1,0 +1,13 @@
+✔ crystallize exports and guides the requested ecosystem (4773.3595ms)
+✔ generation failure reports partial progress; retry and repeat reuse the event (5027.2837ms)
+✔ invalid Codex state fails before appending installation success (573.7991ms)
+✔ malformed history is preserved; explicit legacy resume keeps its record (2554.3152ms)
+✔ broken links are diagnosed in CLI, state and guide while healthy skills survive (2996.2279ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 16236.9572

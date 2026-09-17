@@ -38,4 +38,12 @@ The default command has external Git side effects: it stages files, creates a co
 
 If the user explicitly requests no remote push, append `--skip-push`. This preserves the existing default semantics: the command still records the installation, generates the guide, exports state, and commits, while skipping only the push. Never add `--skip-push` implicitly.
 
+## Failures and retries
+
+Repeat the same command after a failure: the installation event and prepared artifacts are reused, and an unfinished Git push is retried even when there are no new changes. Keep the same installation fields and `--event-id` when retrying. A separate, identical installation can use a new `--event-id <stable-id>`; changing the commit message alone does not create a new event.
+
+To resume a historical partial installation entry created before this mechanism, first read and verify the existing log, then pass `--resume-entry-id <exact-id>` with the matching type, name, source, and installation status. Do not guess an entry or delete historical records. Malformed logs and changed prepared artifacts are refused for reconciliation, not overwritten.
+
+The CLI reports an incomplete Git delivery with a nonzero exit code. `partial` inventory and `scanDiagnostics` are retained in the state and guide, and printed in the CLI; a successful Git delivery does not imply complete inventory or successful installation validation. Preserve broken links for separate provenance work.
+
 Do not run the command against a different workspace or guess missing required values. If the CLI reports a workspace, Git identity, secret-scan, or remote problem, surface that result and the next safe action instead of claiming success.

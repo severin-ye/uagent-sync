@@ -1,0 +1,57 @@
+{
+  "scope": "Honor unified Codex/CLI package; migration incomplete",
+  "inputs": {
+    "device": "8d9702d88e5e2cb2f67885d609fb42e9d2c363b9",
+    "handoff": "f88f2aaa09330054ed3ca1ae091d264f6a8c3d01",
+    "crystallize": "a5166b613891bdcadc01cdda1a6e64a8c7016b5c"
+  },
+  "candidate": "2.2.0",
+  "node": "24.16.0",
+  "tests": {
+    "upgradeRed": {
+      "passed": 4,
+      "failed": 8
+    },
+    "upgradeGreen": 12,
+    "upgradeWithM0": 26,
+    "installedCrystallize": 5,
+    "installedDevice": {
+      "restore": true,
+      "pathMapped": true,
+      "identityPreserved": true,
+      "conflictPreserved": true
+    },
+    "initialFull": {
+      "passed": 904,
+      "failed": 0,
+      "exit": 0
+    },
+    "full": {
+      "passed": 930,
+      "failed": 0,
+      "exit": 0
+    },
+    "manifestRed": {
+      "passed": 14,
+      "failed": 24
+    },
+    "manifestGreen": 38
+  },
+  "packageSha256": "abed3c0efc9496f659863d201bb717fc58e1f6a894f172ae3a7713082eac9b76",
+  "offline": {
+    "files": 133,
+    "bytes": 4477309215,
+    "drift": 0,
+    "transportAvailable": false,
+    "privateCommit": "24cc269b495d2996fec1f569874218b312d8c713"
+  },
+  "hostInstall": "pending",
+  "independentReview": {
+    "state": "DONE",
+    "iteration": 2,
+    "scope": "source and Codex/CLI package",
+    "finding": "empty/partial legacy manifest fixed",
+    "hostNotCertified": true
+  },
+  "migrationComplete": false
+}

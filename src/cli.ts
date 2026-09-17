@@ -17,6 +17,7 @@ import {
 import { archiveUpdateReport, type UpdateComponent, type UpdateProgress } from "./lib/update.js";
 import { DOTFILES_DIR } from "./lib/dotfiles.js";
 import { commitCrystallize, validateCrystallizePreflight } from "./lib/crystallize-commit.js";
+import { prepareCrystallize } from "./lib/crystallize.js";
 import { isValidWorkspaceRoot } from "./lib/cache.js";
 import { setLang, t } from "./i18n/index.js";
 import { defaultWorkspaceApplication } from "./application/default-workspace-application.js";
@@ -580,30 +581,32 @@ async function main() {
       }
       validateCrystallizePreflight({ workspaceRoot, dotfilesDir: DOTFILES_DIR });
       const results: string[] = [];
-      const entry = appendInstallEntry(workspaceRoot, {
-        type: String(type), name: String(name), source: String(source),
-        installCommand: String(flags.get("install-command") || `(manual) ${source}`),
-        status: "success", notes: String(flags.get("notes") || ""), pitfalls: listFlag(flags, "pitfalls") || [],
-      } as never);
-      results.push(t("cli.crystallizeStep1", { entry: `${entry.type}/${entry.name}` }));
-
-      const guidePath = generateSyncGuide(workspaceRoot, exportSystemState(workspaceRoot));
-      results.push(t("cli.crystallizeStep2", { path: guidePath }));
-
-      const stateOut = exportSystemState(workspaceRoot);
-      const serialized = JSON.stringify(stateOut, null, 2);
-      assertNoSecrets(serialized, stateFile);
-      fs.writeFileSync(stateFile, serialized);
-      results.push(t("cli.crystallizeStep3", { submodules: stateOut.submodules.length, skills: stateOut.skills.length }));
-
-      const commitMsg = String(flags.get("message") || `Crystallize: ${name} ${new Date().toISOString().slice(0, 19)}`);
-      results.push(...commitCrystallize({
-        workspaceRoot,
-        dotfilesDir: DOTFILES_DIR,
-        commitMsg,
-        skipPush: boolFlag(flags, "skip-push"),
-      }));
-      console.log(["# ✨ Crystallized", "", ...results, "", t("cli.crystallizeState", { path: stateFile }), t("cli.crystallizeGuide", { path: guidePath })].join("\n"));
+      try {
+        const prepared = prepareCrystallize({
+          workspaceRoot, targetAgent: targetContext.targetAgent,
+          entry: {
+            type: String(type), name: String(name), source: String(source),
+            installCommand: String(flags.get("install-command") || `(manual) ${source}`),
+            status: "success", notes: String(flags.get("notes") || ""), pitfalls: listFlag(flags, "pitfalls") || [],
+          } as never,
+          eventId: typeof flags.get("event-id") === "string" ? String(flags.get("event-id")) : undefined,
+          resumeEntryId: typeof flags.get("resume-entry-id") === "string" ? String(flags.get("resume-entry-id")) : undefined,
+        });
+        results.push(`Step 1: installation entry ${prepared.entryId}${prepared.reused ? " (reused)" : ""}; installation status is separate from crystallize delivery.`);
+        results.push(t("cli.crystallizeStep2", { path: prepared.guidePath }));
+        results.push(t("cli.crystallizeStep3", { submodules: prepared.state.submodules.length, skills: prepared.state.skills.length }));
+        if (prepared.state.completeness === "partial") results.push("Warning: inventory is partial; inspect scanDiagnostics and unresolved sources in workspace-state.json.");
+        if (prepared.state.scanDiagnostics) results.push(JSON.stringify(prepared.state.scanDiagnostics));
+        const commitMsg = String(flags.get("message") || `Crystallize: ${name}`);
+        const delivery = commitCrystallize({ workspaceRoot, dotfilesDir: DOTFILES_DIR, commitMsg, artifactPaths: prepared.artifactPaths, skipPush: boolFlag(flags, "skip-push") });
+        results.push(...delivery);
+        const failed = delivery.some(line => line.includes("⚠️"));
+        console.log([failed ? "# Crystallize incomplete: artifacts prepared; Git delivery failed" : prepared.state.completeness === "partial" ? "# Crystallized (partial inventory)" : "# ✨ Crystallized", "", ...results, "", t("cli.crystallizeState", { path: prepared.stateFile }), t("cli.crystallizeGuide", { path: prepared.guidePath })].join("\n"));
+        if (failed) process.exitCode = 1;
+      } catch (error) {
+        console.error(`Crystallize incomplete: ${error instanceof Error ? error.message : String(error)}`);
+        process.exitCode = 1;
+      }
       break;
     }
     case "update": {

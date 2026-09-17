@@ -438,6 +438,24 @@ export function generateConfigRefMd(mcpName: string, mcpCfg: Record<string, unkn
 
 export function generateSyncGuide(workspaceRoot: string, state: WorkspaceState): string {
   const guidePath = path.join(workspaceRoot, DOTFILES_DIR, "guide", "SYNC-GUIDE.md");
+  if (state.targetAgent === "codex") {
+    const codex = state.agents?.codex;
+    if (!codex) throw new Error("Codex guide requires agents.codex state");
+    const lines = ["# Codex recovery inventory", "", `Generated: ${state.timestamp}`,
+      `Inventory completeness: ${state.completeness ?? "partial"}`, "",
+      "This inventory records available restoration evidence. It does not certify installation, credentials, or successful synchronization.", ""];
+    for (const [title, entries] of [["Plugins", codex.plugins], ["Skills", codex.skills], ["MCP servers", codex.mcp]] as const) {
+      lines.push(`## ${title}`, "");
+      for (const item of entries) lines.push(`- ${item.id}: ${item.source ?? "source unknown; manual recovery required"}${item.version ? ` (version ${item.version})` : ""}${item.enabled === false ? " [disabled]" : ""}`);
+      if (!entries.length) lines.push("No entries recorded.");
+      lines.push("");
+    }
+    lines.push("## Recovery", "", "Use workspace-state.json with the Codex-targeted U同步 restore workflow. Review partial entries and runtime-managed components before restoring. Supply credentials separately; this guide contains no secret values.", "");
+    if (Array.isArray(state.scanDiagnostics) && state.scanDiagnostics.length) lines.push("## Scan diagnostics", "", "```json", JSON.stringify(state.scanDiagnostics, null, 2), "```", "");
+    fs.mkdirSync(path.dirname(guidePath), { recursive: true });
+    fs.writeFileSync(guidePath, lines.join("\n"));
+    return guidePath;
+  }
   const skillSources = resolveSkillSources(state.skills);
   const mcpBuildInfo = detectMcpBuildInfo(workspaceRoot);
   const knownMcps = loadKnownMcps(workspaceRoot);
@@ -453,6 +471,8 @@ export function generateSyncGuide(workspaceRoot: string, state: WorkspaceState):
     `---`, ``,
     t("guide.pluginsSection", { count: plugins.length }), ``,
   ];
+  if (state.completeness === "partial") lines.push("", "> Warning: inventory is partial; missing entries are not confirmed uninstalled.", "");
+  if (Array.isArray(state.scanDiagnostics) && state.scanDiagnostics.length) lines.push("```json", JSON.stringify(state.scanDiagnostics, null, 2), "```", "");
   if (plugins.length > 0) {
     lines.push(t("guide.pluginsAuto"), "");
     for (const p of plugins) lines.push(`- \`${p}\``);

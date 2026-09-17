@@ -1,0 +1,82 @@
+TAP version 13
+# Subtest: upgrade fixture was accepted by the legacy marker guard and rejected by current scanning
+ok 1 - upgrade fixture was accepted by the legacy marker guard and rejected by current scanning
+  ---
+  duration_ms: 1.4297
+  type: 'test'
+  ...
+# Subtest: upgrade retry rejects a legacy credential in snapshot before any mutation or process
+ok 2 - upgrade retry rejects a legacy credential in snapshot before any mutation or process
+  ---
+  duration_ms: 26.7974
+  type: 'test'
+  ...
+# Subtest: upgrade retry rejects a legacy credential in journal before any mutation or process
+ok 3 - upgrade retry rejects a legacy credential in journal before any mutation or process
+  ---
+  duration_ms: 10.3409
+  type: 'test'
+  ...
+# Subtest: upgrade retry rejects a legacy credential in state before any mutation or process
+ok 4 - upgrade retry rejects a legacy credential in state before any mutation or process
+  ---
+  duration_ms: 7.9501
+  type: 'test'
+  ...
+# Subtest: upgrade retry rejects a legacy credential in guide before any mutation or process
+ok 5 - upgrade retry rejects a legacy credential in guide before any mutation or process
+  ---
+  duration_ms: 11.1083
+  type: 'test'
+  ...
+# Subtest: upgrade retry rejects a legacy credential in log before any mutation or process
+ok 6 - upgrade retry rejects a legacy credential in log before any mutation or process
+  ---
+  duration_ms: 9.2538
+  type: 'test'
+  ...
+# Subtest: upgrade retry rejects a legacy credential in extra-artifact before any mutation or process
+ok 7 - upgrade retry rejects a legacy credential in extra-artifact before any mutation or process
+  ---
+  duration_ms: 125.4254
+  type: 'test'
+  ...
+# Subtest: safe legacy retry reuses byte-identical artifacts and its original entry
+ok 8 - safe legacy retry reuses byte-identical artifacts and its original entry
+  ---
+  duration_ms: 8.8786
+  type: 'test'
+  ...
+# Subtest: new event rejects unsafe existing history before journal or log mutation
+ok 9 - new event rejects unsafe existing history before journal or log mutation
+  ---
+  duration_ms: 8.8394
+  type: 'test'
+  ...
+# Subtest: new event rejects unsafe old journal without replacing the old event
+ok 10 - new event rejects unsafe old journal without replacing the old event
+  ---
+  duration_ms: 15.1302
+  type: 'test'
+  ...
+# Subtest: new event refuses mixed credential
+ok 11 - new event refuses mixed credential
+  ---
+  duration_ms: 5.435
+  type: 'test'
+  ...
+# Subtest: new event accepts placeholder-only input
+ok 12 - new event accepts placeholder-only input
+  ---
+  duration_ms: 41.96
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 922.5777

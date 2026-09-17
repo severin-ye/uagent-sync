@@ -1,0 +1,532 @@
+✔ upgrade fixture was accepted by the legacy marker guard and rejected by current scanning (1.6497ms)
+✔ upgrade retry rejects a legacy credential in snapshot before any mutation or process (15.1326ms)
+✔ upgrade retry rejects a legacy credential in journal before any mutation or process (9.4036ms)
+✔ upgrade retry rejects a legacy credential in state before any mutation or process (9.6354ms)
+✔ upgrade retry rejects a legacy credential in guide before any mutation or process (8.3911ms)
+✔ upgrade retry rejects a legacy credential in log before any mutation or process (8.1403ms)
+✔ upgrade retry rejects a legacy credential in extra-artifact before any mutation or process (14.4216ms)
+✔ safe legacy retry reuses byte-identical artifacts and its original entry (10.6531ms)
+✔ new event rejects unsafe existing history before journal or log mutation (5.0702ms)
+✔ new event rejects unsafe old journal without replacing the old event (7.2128ms)
+✔ new event refuses mixed credential (2.539ms)
+✔ new event accepts placeholder-only input (19.0627ms)
+✖ retry rejects null artifact manifest before mutation or process (15.3405ms)
+✖ new event rejects null artifact manifest before mutation or process (13.7385ms)
+✖ retry rejects array artifact manifest before mutation or process (5.99ms)
+✖ new event rejects array artifact manifest before mutation or process (16.3391ms)
+✖ retry rejects string artifact manifest before mutation or process (9.7087ms)
+✖ new event rejects string artifact manifest before mutation or process (17.8341ms)
+✖ retry rejects boolean artifact manifest before mutation or process (12.4185ms)
+✖ new event rejects boolean artifact manifest before mutation or process (15.1984ms)
+✖ retry rejects number artifact manifest before mutation or process (8.6803ms)
+✖ new event rejects number artifact manifest before mutation or process (14.2177ms)
+✖ retry rejects empty record artifact manifest before mutation or process (11.1629ms)
+✖ new event rejects empty record artifact manifest before mutation or process (17.4963ms)
+✖ retry rejects missing state/workspace-state.json artifact manifest before mutation or process (10.7079ms)
+✖ new event rejects missing state/workspace-state.json artifact manifest before mutation or process (16.1098ms)
+✖ retry rejects missing state/install-log.json artifact manifest before mutation or process (6.4867ms)
+✖ new event rejects missing state/install-log.json artifact manifest before mutation or process (12.8181ms)
+✖ retry rejects missing guide/SYNC-GUIDE.md artifact manifest before mutation or process (7.9366ms)
+✖ new event rejects missing guide/SYNC-GUIDE.md artifact manifest before mutation or process (12.9799ms)
+✖ retry rejects non-hex digest artifact manifest before mutation or process (7.9217ms)
+✖ new event rejects non-hex digest artifact manifest before mutation or process (21.5425ms)
+✖ retry rejects short digest artifact manifest before mutation or process (9.4135ms)
+✖ new event rejects short digest artifact manifest before mutation or process (13.9479ms)
+✖ retry rejects non-string digest artifact manifest before mutation or process (8.9808ms)
+✖ new event rejects non-string digest artifact manifest before mutation or process (14.37ms)
+✔ safe Windows artifact paths remain reusable without mutation or process (9.352ms)
+✔ interrupted preparation without an artifact manifest resumes and seals mandatory outputs (15.8325ms)
+ℹ tests 38
+ℹ suites 0
+ℹ pass 14
+ℹ fail 24
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 870.5305
+
+✖ failing tests:
+
+test at test\crystallize-upgrade.test.ts:1:6636
+✖ retry rejects null artifact manifest before mutation or process (15.3405ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Invalid crystallize artifact manifest/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:6636
+✖ new event rejects null artifact manifest before mutation or process (13.7385ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Invalid crystallize artifact manifest/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:6636
+✖ retry rejects array artifact manifest before mutation or process (5.99ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Invalid crystallize artifact manifest/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:6636
+✖ new event rejects array artifact manifest before mutation or process (16.3391ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Invalid crystallize artifact manifest/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:6636
+✖ retry rejects string artifact manifest before mutation or process (9.7087ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Invalid crystallize artifact manifest/. Input:
+
+  'Error: Crystallize retry refused: prepared artifact changed: 0. Preserve/reconcile it before retrying, or use a new --event-id.'
+
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Crystallize retry refused: prepared artifact changed: 0. Preserve/reconcile it before retrying, or use a new --event-id.
+        at prepareCrystallize (<ISOLATED_REVIEW>\honor-unified\src\lib\crystallize.ts:92:15)
+        at <anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:27)
+        at getActual (node:assert:611:5)
+        at strict.throws (node:assert:759:24)
+        at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1306:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+        at Test.postRun (node:internal/test_runner/test:1447:19)
+        at Test.run (node:internal/test_runner/test:1372:12),
+    expected: /Invalid crystallize artifact manifest/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:6636
+✖ new event rejects string artifact manifest before mutation or process (17.8341ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Invalid crystallize artifact manifest/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:6636
+✖ retry rejects boolean artifact manifest before mutation or process (12.4185ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Invalid crystallize artifact manifest/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:6636
+✖ new event rejects boolean artifact manifest before mutation or process (15.1984ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Invalid crystallize artifact manifest/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:6636
+✖ retry rejects number artifact manifest before mutation or process (8.6803ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Invalid crystallize artifact manifest/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:6636
+✖ new event rejects number artifact manifest before mutation or process (14.2177ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Invalid crystallize artifact manifest/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:6636
+✖ retry rejects empty record artifact manifest before mutation or process (11.1629ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Invalid crystallize artifact manifest/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:6636
+✖ new event rejects empty record artifact manifest before mutation or process (17.4963ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Invalid crystallize artifact manifest/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:6636
+✖ retry rejects missing state/workspace-state.json artifact manifest before mutation or process (10.7079ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Invalid crystallize artifact manifest/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:6636
+✖ new event rejects missing state/workspace-state.json artifact manifest before mutation or process (16.1098ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Invalid crystallize artifact manifest/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:6636
+✖ retry rejects missing state/install-log.json artifact manifest before mutation or process (6.4867ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Invalid crystallize artifact manifest/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:6636
+✖ new event rejects missing state/install-log.json artifact manifest before mutation or process (12.8181ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Invalid crystallize artifact manifest/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:6636
+✖ retry rejects missing guide/SYNC-GUIDE.md artifact manifest before mutation or process (7.9366ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Invalid crystallize artifact manifest/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:6636
+✖ new event rejects missing guide/SYNC-GUIDE.md artifact manifest before mutation or process (12.9799ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Invalid crystallize artifact manifest/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:6636
+✖ retry rejects non-hex digest artifact manifest before mutation or process (7.9217ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Invalid crystallize artifact manifest/. Input:
+
+  'Error: Crystallize retry refused: prepared artifact changed: guide/SYNC-GUIDE.md. Preserve/reconcile it before retrying, or use a new --event-id.'
+
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Crystallize retry refused: prepared artifact changed: guide/SYNC-GUIDE.md. Preserve/reconcile it before retrying, or use a new --event-id.
+        at prepareCrystallize (<ISOLATED_REVIEW>\honor-unified\src\lib\crystallize.ts:95:43)
+        at <anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:27)
+        at getActual (node:assert:611:5)
+        at strict.throws (node:assert:759:24)
+        at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1306:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+        at Test.postRun (node:internal/test_runner/test:1447:19)
+        at Test.run (node:internal/test_runner/test:1372:12),
+    expected: /Invalid crystallize artifact manifest/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:6636
+✖ new event rejects non-hex digest artifact manifest before mutation or process (21.5425ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Invalid crystallize artifact manifest/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:6636
+✖ retry rejects short digest artifact manifest before mutation or process (9.4135ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Invalid crystallize artifact manifest/. Input:
+
+  'Error: Crystallize retry refused: prepared artifact changed: guide/SYNC-GUIDE.md. Preserve/reconcile it before retrying, or use a new --event-id.'
+
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Crystallize retry refused: prepared artifact changed: guide/SYNC-GUIDE.md. Preserve/reconcile it before retrying, or use a new --event-id.
+        at prepareCrystallize (<ISOLATED_REVIEW>\honor-unified\src\lib\crystallize.ts:95:43)
+        at <anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:27)
+        at getActual (node:assert:611:5)
+        at strict.throws (node:assert:759:24)
+        at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1306:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+        at Test.postRun (node:internal/test_runner/test:1447:19)
+        at Test.run (node:internal/test_runner/test:1372:12),
+    expected: /Invalid crystallize artifact manifest/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:6636
+✖ new event rejects short digest artifact manifest before mutation or process (13.9479ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Invalid crystallize artifact manifest/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:6636
+✖ retry rejects non-string digest artifact manifest before mutation or process (8.9808ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Invalid crystallize artifact manifest/. Input:
+
+  'Error: Crystallize retry refused: prepared artifact changed: guide/SYNC-GUIDE.md. Preserve/reconcile it before retrying, or use a new --event-id.'
+
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Crystallize retry refused: prepared artifact changed: guide/SYNC-GUIDE.md. Preserve/reconcile it before retrying, or use a new --event-id.
+        at prepareCrystallize (<ISOLATED_REVIEW>\honor-unified\src\lib\crystallize.ts:95:43)
+        at <anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:27)
+        at getActual (node:assert:611:5)
+        at strict.throws (node:assert:759:24)
+        at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1306:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+        at Test.postRun (node:internal/test_runner/test:1447:19)
+        at Test.run (node:internal/test_runner/test:1372:12),
+    expected: /Invalid crystallize artifact manifest/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:6636
+✖ new event rejects non-string digest artifact manifest before mutation or process (14.37ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:172:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Invalid crystallize artifact manifest/,
+    operator: 'throws',
+    diff: 'simple'
+  }

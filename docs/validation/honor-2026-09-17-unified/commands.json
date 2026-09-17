@@ -1,0 +1,53 @@
+[
+  {
+    "stage": "install",
+    "command": "npm ci --ignore-scripts --engine-strict --prefix <isolated-worktree>",
+    "exit": 0
+  },
+  {
+    "stage": "initial-full",
+    "command": "npm test",
+    "exit": 0,
+    "tests": "904/904"
+  },
+  {
+    "stage": "upgrade-red",
+    "command": "node --import tsx --test test/crystallize-upgrade.test.ts",
+    "exit": 1,
+    "tests": "4 pass / 8 fail"
+  },
+  {
+    "stage": "upgrade-green",
+    "command": "node --import tsx --test test/crystallize-upgrade.test.ts",
+    "exit": 0,
+    "tests": "12/12"
+  },
+  {
+    "stage": "manifest-red",
+    "command": "node --import tsx --test test/crystallize-upgrade.test.ts",
+    "exit": 1,
+    "tests": "14 pass / 24 fail"
+  },
+  {
+    "stage": "manifest-green",
+    "command": "node --import tsx --test test/crystallize-upgrade.test.ts",
+    "exit": 0,
+    "tests": "38/38"
+  },
+  {
+    "stage": "manifest-types",
+    "command": "node node_modules/typescript/bin/tsc --noEmit",
+    "exit": 0
+  },
+  {
+    "stage": "final-full",
+    "command": "npm test (isolated USERPROFILE/HOME/CODEX_HOME/APPDATA/LOCALAPPDATA/TMP/TEMP/npm, workspace vars removed)",
+    "exit": 0,
+    "tests": "930/930"
+  },
+  {
+    "stage": "pack",
+    "command": "npm pack --ignore-scripts --pack-destination <evidence>",
+    "exit": 0
+  }
+]

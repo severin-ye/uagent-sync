@@ -1,0 +1,27 @@
+{
+  "scope": {
+    "root": "C:\\uagent-review\\honor-unified",
+    "mode": "git",
+    "documents": [
+      "docs/CRYSTALLIZE-RECOVERY.md",
+      "docs/DEVICE-SYNC-USAGE.md",
+      "docs/validation/honor-2026-09-17-unified/README.md"
+    ],
+    "all": false
+  },
+  "evidence": {
+    "links_examined_in": [
+      "docs/CRYSTALLIZE-RECOVERY.md",
+      "docs/DEVICE-SYNC-USAGE.md",
+      "docs/validation/honor-2026-09-17-unified/README.md"
+    ],
+    "map_entries": 0
+  },
+  "issues": [],
+  "unchecked": [
+    {
+      "code": "parser-limitation",
+      "reason": "collapsed and shortcut reference links are not parsed"
+    }
+  ]
+}

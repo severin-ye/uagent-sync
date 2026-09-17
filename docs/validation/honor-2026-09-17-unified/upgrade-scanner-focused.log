@@ -1,0 +1,166 @@
+TAP version 13
+# Subtest: upgrade fixture was accepted by the legacy marker guard and rejected by current scanning
+ok 1 - upgrade fixture was accepted by the legacy marker guard and rejected by current scanning
+  ---
+  duration_ms: 1.7426
+  type: 'test'
+  ...
+# Subtest: upgrade retry rejects a legacy credential in snapshot before any mutation or process
+ok 2 - upgrade retry rejects a legacy credential in snapshot before any mutation or process
+  ---
+  duration_ms: 14.4947
+  type: 'test'
+  ...
+# Subtest: upgrade retry rejects a legacy credential in journal before any mutation or process
+ok 3 - upgrade retry rejects a legacy credential in journal before any mutation or process
+  ---
+  duration_ms: 9.8023
+  type: 'test'
+  ...
+# Subtest: upgrade retry rejects a legacy credential in state before any mutation or process
+ok 4 - upgrade retry rejects a legacy credential in state before any mutation or process
+  ---
+  duration_ms: 14.1064
+  type: 'test'
+  ...
+# Subtest: upgrade retry rejects a legacy credential in guide before any mutation or process
+ok 5 - upgrade retry rejects a legacy credential in guide before any mutation or process
+  ---
+  duration_ms: 14.639
+  type: 'test'
+  ...
+# Subtest: upgrade retry rejects a legacy credential in log before any mutation or process
+ok 6 - upgrade retry rejects a legacy credential in log before any mutation or process
+  ---
+  duration_ms: 12.5947
+  type: 'test'
+  ...
+# Subtest: upgrade retry rejects a legacy credential in extra-artifact before any mutation or process
+ok 7 - upgrade retry rejects a legacy credential in extra-artifact before any mutation or process
+  ---
+  duration_ms: 14.8202
+  type: 'test'
+  ...
+# Subtest: safe legacy retry reuses byte-identical artifacts and its original entry
+ok 8 - safe legacy retry reuses byte-identical artifacts and its original entry
+  ---
+  duration_ms: 11.6705
+  type: 'test'
+  ...
+# Subtest: new event rejects unsafe existing history before journal or log mutation
+ok 9 - new event rejects unsafe existing history before journal or log mutation
+  ---
+  duration_ms: 6.3168
+  type: 'test'
+  ...
+# Subtest: new event rejects unsafe old journal without replacing the old event
+ok 10 - new event rejects unsafe old journal without replacing the old event
+  ---
+  duration_ms: 11.2585
+  type: 'test'
+  ...
+# Subtest: new event refuses mixed credential
+ok 11 - new event refuses mixed credential
+  ---
+  duration_ms: 4.754
+  type: 'test'
+  ...
+# Subtest: new event accepts placeholder-only input
+ok 12 - new event accepts placeholder-only input
+  ---
+  duration_ms: 30.6134
+  type: 'test'
+  ...
+# Subtest: M0 detects known-token-prefix before and after <hidden>
+ok 13 - M0 detects known-token-prefix before and after <hidden>
+  ---
+  duration_ms: 1.572
+  type: 'test'
+  ...
+# Subtest: M0 detects authorization-bearer before and after <hidden>
+ok 14 - M0 detects authorization-bearer before and after <hidden>
+  ---
+  duration_ms: 0.1373
+  type: 'test'
+  ...
+# Subtest: M0 detects sensitive-assignment before and after <hidden>
+ok 15 - M0 detects sensitive-assignment before and after <hidden>
+  ---
+  duration_ms: 0.0966
+  type: 'test'
+  ...
+# Subtest: M0 detects known-token-prefix before and after <YOUR_API_KEY>
+ok 16 - M0 detects known-token-prefix before and after <YOUR_API_KEY>
+  ---
+  duration_ms: 0.0748
+  type: 'test'
+  ...
+# Subtest: M0 detects authorization-bearer before and after <YOUR_API_KEY>
+ok 17 - M0 detects authorization-bearer before and after <YOUR_API_KEY>
+  ---
+  duration_ms: 0.101
+  type: 'test'
+  ...
+# Subtest: M0 detects sensitive-assignment before and after <YOUR_API_KEY>
+ok 18 - M0 detects sensitive-assignment before and after <YOUR_API_KEY>
+  ---
+  duration_ms: 0.0796
+  type: 'test'
+  ...
+# Subtest: M0 preserves placeholder-only inputs and one finding per rule per line
+ok 19 - M0 preserves placeholder-only inputs and one finding per rule per line
+  ---
+  duration_ms: 0.6954
+  type: 'test'
+  ...
+# Subtest: M0 marker variants, suffixes and concatenation cannot hide adjacent credentials
+ok 20 - M0 marker variants, suffixes and concatenation cannot hide adjacent credentials
+  ---
+  duration_ms: 0.1613
+  type: 'test'
+  ...
+# Subtest: M0 retains original lines across LF, CRLF, non-BMP and Unicode separators
+ok 21 - M0 retains original lines across LF, CRLF, non-BMP and Unicode separators
+  ---
+  duration_ms: 2.8104
+  type: 'test'
+  ...
+# Subtest: M0 scans past display windows and returns no credential text
+ok 22 - M0 scans past display windows and returns no credential text
+  ---
+  duration_ms: 0.2517
+  type: 'test'
+  ...
+# Subtest: M0 base scanner retains its rules independently of M13 profile allowances
+ok 23 - M0 base scanner retains its rules independently of M13 profile allowances
+  ---
+  duration_ms: 0.5982
+  type: 'test'
+  ...
+# Subtest: M0 profile collection, restore and publish reject the same fixture before effects
+ok 24 - M0 profile collection, restore and publish reject the same fixture before effects
+  ---
+  duration_ms: 37.9839
+  type: 'test'
+  ...
+# Subtest: M0 Codex MCP recovery rejects a marker alongside a token before executing
+ok 25 - M0 Codex MCP recovery rejects a marker alongside a token before executing
+  ---
+  duration_ms: 1.4158
+  type: 'test'
+  ...
+# Subtest: M0 recovery report refuses residual credentials beside a redaction marker
+ok 26 - M0 recovery report refuses residual credentials beside a redaction marker
+  ---
+  duration_ms: 3.0113
+  type: 'test'
+  ...
+1..26
+# tests 26
+# suites 0
+# pass 26
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 574.3851

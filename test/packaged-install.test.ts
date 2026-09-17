@@ -1,4 +1,4 @@
-import { fileURLToPath as moduleFilePath } from "node:url";
+import { fileURLToPath as moduleFilePath, pathToFileURL } from "node:url";
 import { after, before, describe, it } from "node:test";
 import * as assert from "node:assert";
 import * as fs from "node:fs";
@@ -60,11 +60,21 @@ describe("real npm pack installation", () => {
     assert.ok(requireFromInstall.resolve("zod"));
   });
 
-  it("ships valid Codex metadata and all three skills", () => {
+  it("ships unified Codex metadata and all five skills", () => {
     const manifest = JSON.parse(fs.readFileSync(path.join(installedPackage, ".codex-plugin", "plugin.json"), "utf-8"));
-    assert.equal(manifest.version, "2.1.1");
-    for (const skill of ["uagent-sync-backup", "uagent-sync-restore", "uagent-sync-update"]) {
+    const pkg = JSON.parse(fs.readFileSync(path.join(installedPackage, "package.json"), "utf-8"));
+    assert.equal(manifest.version, pkg.version);
+    assert.equal(pkg.version, JSON.parse(fs.readFileSync(path.join(ROOT, "package.json"), "utf-8")).version);
+    for (const skill of ["uagent-sync-backup", "uagent-sync-restore", "uagent-sync-update", "uagent-sync-crystallize", "uagent-sync-device"]) {
       assert.ok(fs.existsSync(path.join(installedPackage, "skills", skill, "SKILL.md")), skill);
     }
+  });
+  it("keeps device and resumable crystallize in the same production package", () => {
+    const cli = path.join(installedPackage, "dist", "cli.js");
+    const output = execFileSync(process.execPath, [cli, "device", "help"], { encoding: "utf-8", timeout: 30_000 });
+    assert.match(output, /register/);
+    assert.match(output, /restore/);
+    const script = `const m=await import(${JSON.stringify(pathToFileURL(path.join(installedPackage, "dist/lib/crystallize.js")).href)});if(typeof m.prepareCrystallize!=='function')throw Error('missing retry');console.log('crystallize-ready')`;
+    assert.match(execFileSync(process.execPath, ["--input-type=module", "-e", script], { encoding: "utf-8", timeout: 30_000 }), /crystallize-ready/);
   });
 });

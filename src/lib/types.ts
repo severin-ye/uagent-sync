@@ -7,6 +7,20 @@ export interface SubmoduleState {
 
 export type TargetAgent = "codex" | "opencode" | "dsh" | "all";
 
+export type SkillScanAgent = "codex" | "opencode";
+
+export type SkillScanDiagnosticKind = "broken-link" | "disappeared" | "permission-denied" | "io-error";
+
+export interface SkillScanDiagnostic {
+  agent: SkillScanAgent;
+  path: string;
+  kind: SkillScanDiagnosticKind;
+  code?: string;
+  message: string;
+  severity: "warning" | "error";
+  blocking: boolean;
+}
+
 export interface ExtensionRef {
   kind: "plugin" | "skill" | "mcp";
   id: string;
@@ -40,6 +54,7 @@ export interface WorkspaceState {
   schemaVersion?: 2;
   targetAgent?: TargetAgent;
   completeness?: "complete" | "partial";
+  scanDiagnostics?: SkillScanDiagnostic[];
   agents?: Partial<Record<Exclude<TargetAgent, "all">, AgentRestoreState>>;
   tombstones?: ExtensionTombstone[];
   opencodeConfig?: Record<string, unknown>;

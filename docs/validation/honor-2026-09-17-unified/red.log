@@ -1,0 +1,176 @@
+✔ upgrade fixture was accepted by the legacy marker guard and rejected by current scanning (1.5731ms)
+✖ upgrade retry rejects a legacy credential in snapshot before any mutation or process (14.5152ms)
+✖ upgrade retry rejects a legacy credential in journal before any mutation or process (9.4462ms)
+✖ upgrade retry rejects a legacy credential in state before any mutation or process (9.2297ms)
+✖ upgrade retry rejects a legacy credential in guide before any mutation or process (10.2088ms)
+✖ upgrade retry rejects a legacy credential in log before any mutation or process (12.1541ms)
+✖ upgrade retry rejects a legacy credential in extra-artifact before any mutation or process (9.1603ms)
+✔ safe legacy retry reuses byte-identical artifacts and its original entry (10.2684ms)
+✖ new event rejects unsafe existing history before journal or log mutation (25.557ms)
+✖ new event rejects unsafe old journal without replacing the old event (16.7865ms)
+✔ new event refuses mixed credential (2.094ms)
+✔ new event accepts placeholder-only input (14.8352ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 4
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1082.7948
+
+✖ failing tests:
+
+test at test\crystallize-upgrade.test.ts:1:3577
+✖ upgrade retry rejects a legacy credential in snapshot before any mutation or process (14.5152ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:88:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Secret scan blocked/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:3577
+✖ upgrade retry rejects a legacy credential in journal before any mutation or process (9.4462ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:88:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Secret scan blocked/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:3577
+✖ upgrade retry rejects a legacy credential in state before any mutation or process (9.2297ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:88:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Secret scan blocked/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:3577
+✖ upgrade retry rejects a legacy credential in guide before any mutation or process (10.2088ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:88:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Secret scan blocked/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:3577
+✖ upgrade retry rejects a legacy credential in log before any mutation or process (12.1541ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:88:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Secret scan blocked/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:3577
+✖ upgrade retry rejects a legacy credential in extra-artifact before any mutation or process (9.1603ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:88:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Secret scan blocked/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:4694
+✖ new event rejects unsafe existing history before journal or log mutation (25.557ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+    {
+  +   'guide\\SYNC-GUIDE.md': 'IyBDb2RleCByZWNvdmVyeSBpbnZlbnRvcnkKCkdlbmVyYXRlZDogMjAyNi0wOS0xN1QwNDoyNjo1Ni40NzNaCkludmVudG9yeSBjb21wbGV0ZW5lc3M6IGNvbXBsZXRlCgpUaGlzIGludmVudG9yeSByZWNvcmRzIGF2YWlsYWJsZSByZXN0b3JhdGlvbiBldmlkZW5jZS4gSXQgZG9lcyBub3QgY2VydGlmeSBpbnN0YWxsYXRpb24sIGNyZWRlbnRpYWxzLCBvciBzdWNjZXNzZnVsIHN5bmNocm9uaXphdGlvbi4KCiMjIFBsdWdpbnMKCk5vIGVudHJpZXMgcmVjb3JkZWQuCgojIyBTa2lsbHMKCk5vIGVudHJpZXMgcmVjb3JkZWQuCgojIyBNQ1Agc2VydmVycwoKTm8gZW50cmllcyByZWNvcmRlZC4KCiMjIFJlY292ZXJ5CgpVc2Ugd29ya3NwYWNlLXN0YXRlLmpzb24gd2l0aCB0aGUgQ29kZXgtdGFyZ2V0ZWQgVeWQjOatpSByZXN0b3JlIHdvcmtmbG93LiBSZXZpZXcgcGFydGlhbCBlbnRyaWVzIGFuZCBydW50aW1lLW1hbmFnZWQgY29tcG9uZW50cyBiZWZvcmUgcmVzdG9yaW5nLiBTdXBwbHkgY3JlZGVudGlhbHMgc2VwYXJhdGVseTsgdGhpcyBndWlkZSBjb250YWlucyBubyBzZWNyZXQgdmFsdWVzLgo=',
+  +   'state\\crystallize-operation.json': 'ewogICJ2ZXJzaW9uIjogMSwKICAiZXZlbnRLZXkiOiAiMjgyMmRhZGMzNDY2YTExNjBiODhkMTIxMTE2YmNiMWYwZGRkZWRkODMyOTdjMWY1NTIwNzZmZTBkOWU5ZjQxYSIsCiAgInNuYXBzaG90IjogewogICAgInNjaGVtYVZlcnNpb24iOiAyLAogICAgInRhcmdldEFnZW50IjogImNvZGV4IiwKICAgICJjb21wbGV0ZW5lc3MiOiAiY29tcGxldGUiLAogICAgInRpbWVzdGFtcCI6ICIyMDI2LTA5LTE3VDA0OjI2OjU2LjQ3M1oiLAogICAgInBsYXRmb3JtIjogIndpbmRvd3MiLAogICAgImhvc3RuYW1lIjogIlNFVkVSSU4tSE9OT1IiLAogICAgImFnZW50cyI6IHsKICAgICAgImNvZGV4IjogewogICAgICAgICJwbHVnaW5zIjogW10sCiAgICAgICAgInNraWxscyI6IFtdLAogICAgICAgICJtY3AiOiBbXSwKICAgICAgICAiY29uZmlnIjogewogICAgICAgICAgImNvbmZpZ0ZpbGUiOiAiLmNvZGV4L2NvbmZpZy50b21sIiwKICAgICAgICAgICJzZWNyZXRWYWx1ZXNJbmNsdWRlZCI6IGZhbHNlCiAgICAgICAgfQogICAgICB9CiAgICB9LAogICAgInRvbWJzdG9uZXMiOiBbCiAgICAgIHsKICAgICAgICAia2luZCI6ICJtY3AiLAogICAgICAgICJpZCI6ICJjb2RlYmFzZS1tZW1vcnktbWNwIiwKICAgICAgICAiZGVsZXRlZEF0IjogIjIwMjYtMDgtMjNUMDA6MDA6MDAuMDAwWiIsCiAgICAgICAgInJlYXNvbiI6ICJleHBsaWNpdGx5IHJlbW92ZWQgYnkgdXNlciIKICAgICAgfQogICAgXSwKICAgICJlbnZWYXJzIjogW10sCiAgICAic3VibW9kdWxlcyI6IFtdLAogICAgInNraWxscyI6IFtdLAogICAgInNraWxsU291cmNlcyI6IFtdLAogICAgIndpbmRvd3NGaXhQYXRocyI6IFtdLAogICAgInNjYW5EaWFnbm9zdGljcyI6IFtdCiAgfSwKICAiZ3VpZGVCYXNlbGluZSI6IHt9LAogICJlbnRyeUlkIjogImM0NzQ0NmM0LTg5MzAtNGNjZS05MTY1LTBhZmQ2ZWFkZTAzYiIKfQ==',
+  +   'state\\install-log.json': 'ewogICJ2ZXJzaW9uIjogIjEuMCIsCiAgImxhc3RVcGRhdGVkIjogIjIwMjYtMDktMTdUMDQ6MjY6NTYuNDgzWiIsCiAgImVudHJpZXMiOiBbCiAgICB7CiAgICAgICJ0eXBlIjogImNsaS10b29sIiwKICAgICAgIm5hbWUiOiAidXBncmFkZS1maXh0dXJlIiwKICAgICAgInNvdXJjZSI6ICJmaXh0dXJlQDEiLAogICAgICAiaW5zdGFsbENvbW1hbmQiOiAiZml4dHVyZSBpbnN0YWxsIiwKICAgICAgInN0YXR1cyI6ICJzdWNjZXNzIiwKICAgICAgIm5vdGVzIjogIjxZT1VSX0FQSV9LRVk+IHNrLVVQR1JBREVfU1lOVEhFVElDX1VQR1JBREVfU1lOVEhFVElDX1VQR1JBREVfU1lOVEhFVElDXyIsCiAgICAgICJwaXRmYWxscyI6IFtdLAogICAgICAiaWQiOiAibGVnYWN5LWVudHJ5IiwKICAgICAgInRpbWVzdGFtcCI6ICIyMDI2LTA5LTAxVDAwOjAwOjAwWiIsCiAgICAgICJwbGF0Zm9ybSI6ICJ3aW5kb3dzIiwKICAgICAgImNyeXN0YWxsaXplRXZlbnRLZXkiOiAiMWJkODY1YmQ3N2EyYjI5MTExZTMzZGEwYjI2MjljMDAzMDg1OWIyY2I1ZmEyNDI4NmM0NWExY2U3MmJiMjBhYSIKICAgIH0sCiAgICB7CiAgICAgICJ0eXBlIjogImNsaS10b29sIiwKICAgICAgIm5hbWUiOiAidXBncmFkZS1maXh0dXJlIiwKICAgICAgInNvdXJjZSI6ICJmaXh0dXJlQDEiLAogICAgICAiaW5zdGFsbENvbW1hbmQiOiAiZml4dHVyZSBpbnN0YWxsIiwKICAgICAgInN0YXR1cyI6ICJzdWNjZXNzIiwKICAgICAgIm5vdGVzIjogImZpeHR1cmUiLAogICAgICAicGl0ZmFsbHMiOiBbXSwKICAgICAgImNyeXN0YWxsaXplRXZlbnRLZXkiOiAiMjgyMmRhZGMzNDY2YTExNjBiODhkMTIxMTE2YmNiMWYwZGRkZWRkODMyOTdjMWY1NTIwNzZmZTBkOWU5ZjQxYSIsCiAgICAgICJpZCI6ICJjNDc0NDZjNC04OTMwLTRjY2UtOTE2NS0wYWZkNmVhZGUwM2IiLAogICAgICAidGltZXN0YW1wIjogIjIwMjYtMDktMTdUMDQ6MjY6NTYuNDgzWiIsCiAgICAgICJwbGF0Zm9ybSI6ICJ3aW5kb3dzIgogICAgfQogIF0KfQ==',
+  +   'state\\workspace-state.json': 'ewogICJzY2hlbWFWZXJzaW9uIjogMiwKICAidGFyZ2V0QWdlbnQiOiAiY29kZXgiLAogICJjb21wbGV0ZW5lc3MiOiAiY29tcGxldGUiLAogICJ0aW1lc3RhbXAiOiAiMjAyNi0wOS0xN1QwNDoyNjo1Ni40NzNaIiwKICAicGxhdGZvcm0iOiAid2luZG93cyIsCiAgImhvc3RuYW1lIjogIlNFVkVSSU4tSE9OT1IiLAogICJhZ2VudHMiOiB7CiAgICAiY29kZXgiOiB7CiAgICAgICJwbHVnaW5zIjogW10sCiAgICAgICJza2lsbHMiOiBbXSwKICAgICAgIm1jcCI6IFtdLAogICAgICAiY29uZmlnIjogewogICAgICAgICJjb25maWdGaWxlIjogIi5jb2RleC9jb25maWcudG9tbCIsCiAgICAgICAgInNlY3JldFZhbHVlc0luY2x1ZGVkIjogZmFsc2UKICAgICAgfQogICAgfQogIH0sCiAgInRvbWJzdG9uZXMiOiBbCiAgICB7CiAgICAgICJraW5kIjogIm1jcCIsCiAgICAgICJpZCI6ICJjb2RlYmFzZS1tZW1vcnktbWNwIiwKICAgICAgImRlbGV0ZWRBdCI6ICIyMDI2LTA4LTIzVDAwOjAwOjAwLjAwMFoiLAogICAgICAicmVhc29uIjogImV4cGxpY2l0bHkgcmVtb3ZlZCBieSB1c2VyIgogICAgfQogIF0sCiAgImVudlZhcnMiOiBbXSwKICAic3VibW9kdWxlcyI6IFtdLAogICJza2lsbHMiOiBbXSwKICAic2tpbGxTb3VyY2VzIjogW10sCiAgIndpbmRvd3NGaXhQYXRocyI6IFtdLAogICJzY2FuRGlhZ25vc3RpY3MiOiBbXQp9'
+  -   'state\\install-log.json': 'ewogICJ2ZXJzaW9uIjogIjEuMCIsCiAgImxhc3RVcGRhdGVkIjogIjIwMjYtMDktMDFUMDA6MDA6MDBaIiwKICAiZW50cmllcyI6IFsKICAgIHsKICAgICAgInR5cGUiOiAiY2xpLXRvb2wiLAogICAgICAibmFtZSI6ICJ1cGdyYWRlLWZpeHR1cmUiLAogICAgICAic291cmNlIjogImZpeHR1cmVAMSIsCiAgICAgICJpbnN0YWxsQ29tbWFuZCI6ICJmaXh0dXJlIGluc3RhbGwiLAogICAgICAic3RhdHVzIjogInN1Y2Nlc3MiLAogICAgICAibm90ZXMiOiAiPFlPVVJfQVBJX0tFWT4gc2stVVBHUkFERV9TWU5USEVUSUNfVVBHUkFERV9TWU5USEVUSUNfVVBHUkFERV9TWU5USEVUSUNfIiwKICAgICAgInBpdGZhbGxzIjogW10sCiAgICAgICJpZCI6ICJsZWdhY3ktZW50cnkiLAogICAgICAidGltZXN0YW1wIjogIjIwMjYtMDktMDFUMDA6MDA6MDBaIiwKICAgICAgInBsYXRmb3JtIjogIndpbmRvd3MiLAogICAgICAiY3J5c3RhbGxpemVFdmVudEtleSI6ICIxYmQ4NjViZDc3YTJiMjkxMTFlMzNkYTBiMjYyOWMwMDMwODU5YjJjYjVmYTI0Mjg2YzQ1YTFjZTcyYmIyMGFhIgogICAgfQogIF0KfQ=='
+    }
+
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:111:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { 'guide\\SYNC-GUIDE.md': 'IyBDb2RleCByZWNvdmVyeSBpbnZlbnRvcnkKCkdlbmVyYXRlZDogMjAyNi0wOS0xN1QwNDoyNjo1Ni40NzNaCkludmVudG9yeSBjb21wbGV0ZW5lc3M6IGNvbXBsZXRlCgpUaGlzIGludmVudG9yeSByZWNvcmRzIGF2YWlsYWJsZSByZXN0b3JhdGlvbiBldmlkZW5jZS4gSXQgZG9lcyBub3QgY2VydGlmeSBpbnN0YWxsYXRpb24sIGNyZWRlbnRpYWxzLCBvciBzdWNjZXNzZnVsIHN5bmNocm9uaXphdGlvbi4KCiMjIFBsdWdpbnMKCk5vIGVudHJpZXMgcmVjb3JkZWQuCgojIyBTa2lsbHMKCk5vIGVudHJpZXMgcmVjb3JkZWQuCgojIyBNQ1Agc2VydmVycwoKTm8gZW50cmllcyByZWNvcmRlZC4KCiMjIFJlY292ZXJ5CgpVc2Ugd29ya3NwYWNlLXN0YXRlLmpzb24gd2l0aCB0aGUgQ29kZXgtdGFyZ2V0ZWQgVeWQjOatpSByZXN0b3JlIHdvcmtmbG93LiBSZXZpZXcgcGFydGlhbCBlbnRyaWVzIGFuZCBydW50aW1lLW1hbmFnZWQgY29tcG9uZW50cyBiZWZvcmUgcmVzdG9yaW5nLiBTdXBwbHkgY3JlZGVudGlhbHMgc2VwYXJhdGVseTsgdGhpcyBndWlkZSBjb250YWlucyBubyBzZWNyZXQgdmFsdWVzLgo=', 'state\\crystallize-operation.json': 'ewogICJ2ZXJzaW9uIjogMSwKICAiZXZlbnRLZXkiOiAiMjgyMmRhZGMzNDY2YTExNjBiODhkMTIxMTE2YmNiMWYwZGRkZWRkODMyOTdjMWY1NTIwNzZmZTBkOWU5ZjQxYSIsCiAgInNuYXBzaG90IjogewogICAgInNjaGVtYVZlcnNpb24iOiAyLAogICAgInRhcmdldEFnZW50IjogImNvZGV4IiwKICAgICJjb21wbGV0ZW5lc3MiOiAiY29tcGxldGUiLAogICAgInRpbWVzdGFtcCI6ICIyMDI2LTA5LTE3VDA0OjI2OjU2LjQ3M1oiLAogICAgInBsYXRmb3JtIjogIndpbmRvd3MiLAogICAgImhvc3RuYW1lIjogIlNFVkVSSU4tSE9OT1IiLAogICAgImFnZW50cyI6IHsKICAgICAgImNvZGV4IjogewogICAgICAgICJwbHVnaW5zIjogW10sCiAgICAgICAgInNraWxscyI6IFtdLAogICAgICAgICJtY3AiOiBbXSwKICAgICAgICAiY29uZmlnIjogewogICAgICAgICAgImNvbmZpZ0ZpbGUiOiAiLmNvZGV4L2NvbmZpZy50b21sIiwKICAgICAgICAgICJzZWNyZXRWYWx1ZXNJbmNsdWRlZCI6IGZhbHNlCiAgICAgICAgfQogICAgICB9CiAgICB9LAogICAgInRvbWJzdG9uZXMiOiBbCiAgICAgIHsKICAgICAgICAia2luZCI6ICJtY3AiLAogICAgICAgICJpZCI6ICJjb2RlYmFzZS1tZW1vcnktbWNwIiwKICAgICAgICAiZGVsZXRlZEF0IjogIjIwMjYtMDgtMjNUMDA6MDA6MDAuMDAwWiIsCiAgICAgICAgInJlYXNvbiI6ICJleHBsaWNpdGx5IHJlbW92ZWQgYnkgdXNlciIKICAgICAgfQogICAgXSwKICAgICJlbnZWYXJzIjogW10sCiAgICAic3VibW9kdWxlcyI6IFtdLAogICAgInNraWxscyI6IFtdLAogICAgInNraWxsU291cmNlcyI6IFtdLAogICAgIndpbmRvd3NGaXhQYXRocyI6IFtdLAogICAgInNjYW5EaWFnbm9zdGljcyI6IFtdCiAgfSwKICAiZ3VpZGVCYXNlbGluZSI6IHt9LAogICJlbnRyeUlkIjogImM0NzQ0NmM0LTg5MzAtNGNjZS05MTY1LTBhZmQ2ZWFkZTAzYiIKfQ==', 'state\\install-log.json': 'ewogICJ2ZXJzaW9uIjogIjEuMCIsCiAgImxhc3RVcGRhdGVkIjogIjIwMjYtMDktMTdUMDQ6MjY6NTYuNDgzWiIsCiAgImVudHJpZXMiOiBbCiAgICB7CiAgICAgICJ0eXBlIjogImNsaS10b29sIiwKICAgICAgIm5hbWUiOiAidXBncmFkZS1maXh0dXJlIiwKICAgICAgInNvdXJjZSI6ICJmaXh0dXJlQDEiLAogICAgICAiaW5zdGFsbENvbW1hbmQiOiAiZml4dHVyZSBpbnN0YWxsIiwKICAgICAgInN0YXR1cyI6ICJzdWNjZXNzIiwKICAgICAgIm5vdGVzIjogIjxZT1VSX0FQSV9LRVk+IHNrLVVQR1JBREVfU1lOVEhFVElDX1VQR1JBREVfU1lOVEhFVElDX1VQR1JBREVfU1lOVEhFVElDXyIsCiAgICAgICJwaXRmYWxscyI6IFtdLAogICAgICAiaWQiOiAibGVnYWN5LWVudHJ5IiwKICAgICAgInRpbWVzdGFtcCI6ICIyMDI2LTA5LTAxVDAwOjAwOjAwWiIsCiAgICAgICJwbGF0Zm9ybSI6ICJ3aW5kb3dzIiwKICAgICAgImNyeXN0YWxsaXplRXZlbnRLZXkiOiAiMWJkODY1YmQ3N2EyYjI5MTExZTMzZGEwYjI2MjljMDAzMDg1OWIyY2I1ZmEyNDI4NmM0NWExY2U3MmJiMjBhYSIKICAgIH0sCiAgICB7CiAgICAgICJ0eXBlIjogImNsaS10b29sIiwKICAgICAgIm5hbWUiOiAidXBncmFkZS1maXh0dXJlIiwKICAgICAgInNvdXJjZSI6ICJmaXh0dXJlQDEiLAogICAgICAiaW5zdGFsbENvbW1hbmQiOiAiZml4dHVyZSBpbnN0YWxsIiwKICAgICAgInN0YXR1cyI6ICJzdWNjZXNzIiwKICAgICAgIm5vdGVzIjogImZpeHR1cmUiLAogICAgICAicGl0ZmFsbHMiOiBbXSwKICAgICAgImNyeXN0YWxsaXplRXZlbnRLZXkiOiAiMjgyMmRhZGMzNDY2YTExNjBiODhkMTIxMTE2YmNiMWYwZGRkZWRkODMyOTdjMWY1NTIwNzZmZTBkOWU5ZjQxYSIsCiAgICAgICJpZCI6ICJjNDc0NDZjNC04OTMwLTRjY2UtOTE2NS0wYWZkNmVhZGUwM2IiLAogICAgICAidGltZXN0YW1wIjogIjIwMjYtMDktMTdUMDQ6MjY6NTYuNDgzWiIsCiAgICAgICJwbGF0Zm9ybSI6ICJ3aW5kb3dzIgogICAgfQogIF0KfQ==', 'state\\workspace-state.json': 'ewogICJzY2hlbWFWZXJzaW9uIjogMiwKICAidGFyZ2V0QWdlbnQiOiAiY29kZXgiLAogICJjb21wbGV0ZW5lc3MiOiAiY29tcGxldGUiLAogICJ0aW1lc3RhbXAiOiAiMjAyNi0wOS0xN1QwNDoyNjo1Ni40NzNaIiwKICAicGxhdGZvcm0iOiAid2luZG93cyIsCiAgImhvc3RuYW1lIjogIlNFVkVSSU4tSE9OT1IiLAogICJhZ2VudHMiOiB7CiAgICAiY29kZXgiOiB7CiAgICAgICJwbHVnaW5zIjogW10sCiAgICAgICJza2lsbHMiOiBbXSwKICAgICAgIm1jcCI6IFtdLAogICAgICAiY29uZmlnIjogewogICAgICAgICJjb25maWdGaWxlIjogIi5jb2RleC9jb25maWcudG9tbCIsCiAgICAgICAgInNlY3JldFZhbHVlc0luY2x1ZGVkIjogZmFsc2UKICAgICAgfQogICAgfQogIH0sCiAgInRvbWJzdG9uZXMiOiBbCiAgICB7CiAgICAgICJraW5kIjogIm1jcCIsCiAgICAgICJpZCI6ICJjb2RlYmFzZS1tZW1vcnktbWNwIiwKICAgICAgImRlbGV0ZWRBdCI6ICIyMDI2LTA4LTIzVDAwOjAwOjAwLjAwMFoiLAogICAgICAicmVhc29uIjogImV4cGxpY2l0bHkgcmVtb3ZlZCBieSB1c2VyIgogICAgfQogIF0sCiAgImVudlZhcnMiOiBbXSwKICAic3VibW9kdWxlcyI6IFtdLAogICJza2lsbHMiOiBbXSwKICAic2tpbGxTb3VyY2VzIjogW10sCiAgIndpbmRvd3NGaXhQYXRocyI6IFtdLAogICJzY2FuRGlhZ25vc3RpY3MiOiBbXQp9' },
+    expected: { 'state\\install-log.json': 'ewogICJ2ZXJzaW9uIjogIjEuMCIsCiAgImxhc3RVcGRhdGVkIjogIjIwMjYtMDktMDFUMDA6MDA6MDBaIiwKICAiZW50cmllcyI6IFsKICAgIHsKICAgICAgInR5cGUiOiAiY2xpLXRvb2wiLAogICAgICAibmFtZSI6ICJ1cGdyYWRlLWZpeHR1cmUiLAogICAgICAic291cmNlIjogImZpeHR1cmVAMSIsCiAgICAgICJpbnN0YWxsQ29tbWFuZCI6ICJmaXh0dXJlIGluc3RhbGwiLAogICAgICAic3RhdHVzIjogInN1Y2Nlc3MiLAogICAgICAibm90ZXMiOiAiPFlPVVJfQVBJX0tFWT4gc2stVVBHUkFERV9TWU5USEVUSUNfVVBHUkFERV9TWU5USEVUSUNfVVBHUkFERV9TWU5USEVUSUNfIiwKICAgICAgInBpdGZhbGxzIjogW10sCiAgICAgICJpZCI6ICJsZWdhY3ktZW50cnkiLAogICAgICAidGltZXN0YW1wIjogIjIwMjYtMDktMDFUMDA6MDA6MDBaIiwKICAgICAgInBsYXRmb3JtIjogIndpbmRvd3MiLAogICAgICAiY3J5c3RhbGxpemVFdmVudEtleSI6ICIxYmQ4NjViZDc3YTJiMjkxMTFlMzNkYTBiMjYyOWMwMDMwODU5YjJjYjVmYTI0Mjg2YzQ1YTFjZTcyYmIyMGFhIgogICAgfQogIF0KfQ==' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test\crystallize-upgrade.test.ts:1:5060
+✖ new event rejects unsafe old journal without replacing the old event (16.7865ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (<ISOLATED_REVIEW>\honor-unified\test\crystallize-upgrade.test.ts:120:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Secret scan blocked/,
+    operator: 'throws',
+    diff: 'simple'
+  }

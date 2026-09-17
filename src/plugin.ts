@@ -26,7 +26,8 @@ import {
 } from "./sync.js";
 import { archiveUpdateReport, type UpdateComponent } from "./lib/update.js";
 import { DOTFILES_DIR } from "./lib/dotfiles.js";
-import { commitCrystallize } from "./lib/crystallize-commit.js";
+import { commitCrystallize, validateCrystallizePreflight } from "./lib/crystallize-commit.js";
+import { prepareCrystallize } from "./lib/crystallize.js";
 import { t } from "./i18n/index.js";
 import { defaultWorkspaceApplication } from "./application/default-workspace-application.js";
 import { formatPluginApplicationResult, formatVerifyText } from "./entrypoints/result-formatters.js";
@@ -508,36 +509,33 @@ Trigger with natural language: "crystallize this install" / "结晶这个安装"
           notes: z.string().optional().describe("Installation notes"),
           pitfalls: z.array(z.string()).optional().describe("Known issues or pitfalls encountered"),
           message: z.string().max(500).optional().describe("Git commit message"),
+          eventId: z.string().optional().describe("Stable installation event ID; reuse it on retries"),
+          resumeEntryId: z.string().optional().describe("Existing installation entry ID to resume without appending"),
           skipPush: z.boolean().optional().default(false).describe("If true, skip git push (only log + guide + export)"),
         },
         async execute(args) {
           const workspaceRoot = resolveWorkspaceRoot();
           const results: string[] = [];
 
-          const entry = appendInstallEntry(workspaceRoot, {
-            type: args.type, name: args.name, source: args.source,
-            installCommand: args.installCommand || `(manual) ${args.source}`,
-            status: "success", notes: args.notes || "", pitfalls: args.pitfalls || [],
-          });
-          results.push(`📝 Step 1: Recorded provenance — ${entry.type}/${entry.name}`);
-
-          const guidePath = generateSyncGuide(workspaceRoot, exportSystemState(workspaceRoot));
-          results.push(`📖 Step 2: Generated guide — ${guidePath}`);
-
-          const stateFile = path.join(workspaceRoot, DOTFILES_DIR, "state", "workspace-state.json");
-          const state = exportSystemState(workspaceRoot);
-          fs.writeFileSync(stateFile, JSON.stringify(state, null, 2));
-          results.push(`📦 Step 3: Exported state — ${state.submodules.length} submodules, ${state.skills.length} skills`);
-
-          const commitMsg = args.message || `Crystallize: ${args.name || "environment update"} ${new Date().toISOString().slice(0, 19)}`;
-          results.push(...commitCrystallize({
-            workspaceRoot,
-            dotfilesDir: DOTFILES_DIR,
-            commitMsg,
-            skipPush: args.skipPush,
-          }));
-
-          return text(["# ✨ Crystallized", "", ...results, "", `State: \`${stateFile}\``, `Guide: \`${guidePath}\``].join("\n"));
+          validateCrystallizePreflight({ workspaceRoot, dotfilesDir: DOTFILES_DIR });
+          try {
+            const prepared = prepareCrystallize({ workspaceRoot, targetAgent: "opencode", entry: {
+              type: args.type, name: args.name, source: args.source,
+              installCommand: args.installCommand || `(manual) ${args.source}`,
+              status: "success", notes: args.notes || "", pitfalls: args.pitfalls || [],
+            }, eventId: args.eventId, resumeEntryId: args.resumeEntryId });
+            results.push(`Step 1: installation entry ${prepared.entryId}${prepared.reused ? " (reused)" : ""}`);
+            results.push(`Step 2: guide ${prepared.guidePath}`);
+            results.push(`Step 3: state ${prepared.stateFile}`);
+            if (prepared.state.completeness === "partial") results.push("Warning: partial inventory; inspect scanDiagnostics and unresolved sources.");
+            if (prepared.state.scanDiagnostics) results.push(JSON.stringify(prepared.state.scanDiagnostics));
+            const delivery = commitCrystallize({ workspaceRoot, dotfilesDir: DOTFILES_DIR,
+              commitMsg: args.message || `Crystallize: ${args.name}`, artifactPaths: prepared.artifactPaths, skipPush: args.skipPush });
+            results.push(...delivery);
+            return text([delivery.some(line => line.includes("⚠️")) ? "# Crystallize incomplete: Git delivery failed" : prepared.state.completeness === "partial" ? "# Crystallized (partial inventory)" : "# ✨ Crystallized", "", ...results].join("\n"));
+          } catch (error) {
+            return text(`Crystallize incomplete: ${error instanceof Error ? error.message : String(error)}`);
+          }
         },
       }),
 

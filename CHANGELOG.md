@@ -1,6 +1,21 @@
+# 2.2.0 — unified candidate (2026-09-17)
+
+- Combines device profiles/identity/conflict protection with 2.1.2 target-aware, resumable crystallize.
+- Version rationale: minor release; adds device workflows within the existing cross-device backup/restore capability while retaining prior entrypoints. No capability is removed.
+- Candidate only: package tests do not certify host installation or completed migration.
+
 # Changelog
 
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
+
+## [2.1.2] - 2026-09-13
+
+### 修复
+
+- 结晶将目标 Agent 贯穿单次状态快照和恢复指南；Codex 指南不再使用 OpenCode 安装说明。
+- Skill 扫描逐条报告失效链接、消失条目和访问错误，保留正常条目与扫描不完整状态。
+- 结晶失败明确报告部分进度；相同安装事件重试复用记录和产物，Git 续推保留子仓库先于父仓库的顺序并保护无关改动。
+- 判级依据：恢复既有结晶目标、异常报告和失败恢复要求，属于 Bug 修复（Z）；不发布设备同步开发分支。
 
 ## [Unreleased]
 
