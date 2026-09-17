@@ -1,0 +1,71 @@
+{
+  "sourceCommit": "d6a4d937f9868526bb61373d349df7d399fe7044",
+  "handoffCommit": "9ade753b573e7110e4eda490b433935c4f5f0f68",
+  "version": "2.2.0",
+  "cacheGitCommit": "9ade753b573e7110e4eda490b433935c4f5f0f68",
+  "packageSha256": "abed3c0efc9496f659863d201bb717fc58e1f6a894f172ae3a7713082eac9b76",
+  "backupFiles": 5687,
+  "productionDependencies": 33,
+  "distFiles": 333,
+  "distMismatch": [],
+  "protectedFiles": [
+    {
+      "path": "config.toml",
+      "unchanged": false
+    },
+    {
+      "path": "AGENTS.md",
+      "unchanged": true
+    },
+    {
+      "path": "uagent-device.json",
+      "unchanged": true
+    }
+  ],
+  "configOnlyFourOldSkillDisableEntries": true,
+  "oldOfficial212CachePresent": false,
+  "trustBypass": false,
+  "fullMigration": false,
+  "notExecuted": [
+    "old full suite",
+    "7415 receive",
+    "marker roundtrip",
+    "real office restore",
+    "133 offline transfer - no actual removable/share destination",
+    "207 research integration - incomplete parent/child version",
+    "24 disabled component activation",
+    "paid/account-specific business API validation"
+  ],
+  "hostSkillsEnabled": 5,
+  "oldActiveDuplicatesDisabled": 4,
+  "device": {
+    "version": "2.2.0",
+    "installedDist": true,
+    "previewFiles": 2,
+    "pathMapping": true,
+    "identityPreserved": true,
+    "localPermissionsAndEnvPreserved": true,
+    "conflicts": 1,
+    "conflictTargetAndBaselineUnchanged": true,
+    "actualConfigCopy": {
+      "files": 1,
+      "residualPaths": 0,
+      "restoredDigests": true,
+      "realConfigUnchanged": true,
+      "copyUnchanged": true
+    },
+    "realOfficeRestore": false
+  },
+  "hookTrust": "untrusted",
+  "codexLogin": "ChatGPT",
+  "installedCrystallize": {
+    "exitCode": 0,
+    "tests": 5,
+    "passed": 5,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "durationMs": 12402.6634,
+    "realRemotePush": false
+  }
+}
