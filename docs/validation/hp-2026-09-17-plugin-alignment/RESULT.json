@@ -1,0 +1,54 @@
+{
+  "version": "2.0.1",
+  "sourceCommit": "ddc1dc26a64e47dba7531586417df331fc16d49c",
+  "honorReportedZipSha256": "e163526eb156ea495dbb1194352b272e7e5001d1dedb918a72fbce18c2fa23a1",
+  "honorZipReceived": false,
+  "installedFileCount": 243,
+  "payloadTreeSha256": "cca54eb14fbfc9691efc7384a20e672987fd045683cd05d68bdf7b2bef2fbb21",
+  "verification": {
+    "nodeTests": {
+      "passed": 9,
+      "exitCode": 0
+    },
+    "installedPackageGate": true,
+    "actualWindowsHookCommands": {
+      "passed": 1,
+      "exitCode": 0,
+      "hostTrusted": false
+    },
+    "pythonNonBrowser": {
+      "testsRun": 255,
+      "passed": 254,
+      "existingSkipped": 1
+    },
+    "htmlBrowserGroup": {
+      "testsNotExecuted": 6,
+      "status": "Edge launch failure before assertions; retained first failure and bounded retry"
+    },
+    "npmTest": "original command failed in isolated Store Python launcher; explicit version/TypeScript/Node/package gate commands succeeded; no claim original npm test passed"
+  },
+  "pythonUserDependenciesAdded": {
+    "jsonschema": "4.23.0",
+    "jsonschema-specifications": "2025.9.1",
+    "referencing": "0.37.0",
+    "rpds-py": "2026.6.3"
+  },
+  "remaining": [
+    "Honor original 2.0.1 ZIP not received; needs 243-entry manifest comparison against HP fixed ddc1dc26 payload",
+    "13 Hooks untrusted; user host review required",
+    "HTML browser acceptance blocked by Edge launch",
+    "C2C external checkout/CLI not found in examined PATH and 2_Business root; fixed source/version needed",
+    "Honor other-plugin inventory is stale 2026-09-14; current hashes/runtime comparison missing",
+    "133 offline / 207 research / 24 disabled unchanged"
+  ],
+  "fullMigration": false,
+  "enabledSkills": 17,
+  "hooks": 13,
+  "hookTrust": "untrusted",
+  "mcpVersion": "2.0.1",
+  "mcpTools": 3,
+  "panelReadable": true,
+  "protectedFilesUnchanged": true,
+  "backupFiles": 503,
+  "productionChanges": false
+}
