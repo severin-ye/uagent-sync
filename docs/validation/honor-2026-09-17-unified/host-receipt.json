@@ -1,0 +1,52 @@
+{
+  "version": "2.2.0",
+  "sourceCommit": "d6a4d937f9868526bb61373d349df7d399fe7044",
+  "distFiles": 333,
+  "distMismatch": [],
+  "protectedFilesUnchanged": {
+    "config.toml": true,
+    "AGENTS.md": true,
+    "uagent-device.json": true
+  },
+  "configChangedTopLevelKeys": [],
+  "old212FilesUnchanged": false,
+  "old212Files": 217,
+  "hostSkills": [
+    {
+      "name": "uagent-sync:uagent-sync-backup",
+      "path": "<HONOR_HOME>\\.codex\\plugins\\cache\\uagent-sync\\uagent-sync\\2.2.0\\skills\\uagent-sync-backup\\SKILL.md",
+      "enabled": true
+    },
+    {
+      "name": "uagent-sync:uagent-sync-crystallize",
+      "path": "<HONOR_HOME>\\.codex\\plugins\\cache\\uagent-sync\\uagent-sync\\2.2.0\\skills\\uagent-sync-crystallize\\SKILL.md",
+      "enabled": true
+    },
+    {
+      "name": "uagent-sync:uagent-sync-device",
+      "path": "<HONOR_HOME>\\.codex\\plugins\\cache\\uagent-sync\\uagent-sync\\2.2.0\\skills\\uagent-sync-device\\SKILL.md",
+      "enabled": true
+    },
+    {
+      "name": "uagent-sync:uagent-sync-restore",
+      "path": "<HONOR_HOME>\\.codex\\plugins\\cache\\uagent-sync\\uagent-sync\\2.2.0\\skills\\uagent-sync-restore\\SKILL.md",
+      "enabled": true
+    },
+    {
+      "name": "uagent-sync:uagent-sync-update",
+      "path": "<HONOR_HOME>\\.codex\\plugins\\cache\\uagent-sync\\uagent-sync\\2.2.0\\skills\\uagent-sync-update\\SKILL.md",
+      "enabled": true
+    }
+  ],
+  "hostDevice": {
+    "package": "2.2.0",
+    "restore": true,
+    "pathMapped": true,
+    "identityPreserved": true,
+    "conflictPreserved": true,
+    "realUserFilesTouched": false
+  },
+  "hostCrystallizeTests": 5,
+  "trustBypass": false,
+  "realOfficeRestore": false
+}

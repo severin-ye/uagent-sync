@@ -45,7 +45,16 @@
     "transportAvailable": false,
     "privateCommit": "24cc269b495d2996fec1f569874218b312d8c713"
   },
-  "hostInstall": "pending",
+  "hostInstall": {
+    "version": "2.2.0",
+    "skillsDiscoveredEnabled": 5,
+    "distFilesMatch": 333,
+    "installedCrystallize": 5,
+    "installedDeviceRestoreConflict": true,
+    "protectedConfigRulesIdentityUnchanged": true,
+    "oldCacheRemovedByHost": true,
+    "rollbackBackupRetained": true
+  },
   "independentReview": {
     "state": "DONE",
     "iteration": 2,
@@ -53,5 +62,7 @@
     "finding": "empty/partial legacy manifest fixed",
     "hostNotCertified": true
   },
-  "migrationComplete": false
+  "migrationComplete": false,
+  "sourceCommit": "d6a4d937f9868526bb61373d349df7d399fe7044",
+  "privateDeliveryCommit": "90ea56548a34f612a4959fa32bf76a99f8f3cc83"
 }
