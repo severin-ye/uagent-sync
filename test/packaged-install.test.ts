@@ -44,6 +44,12 @@ after(() => {
 });
 
 describe("real npm pack installation", () => {
+  it("ships the 2.2.1 package identity", () => {
+    const pkg = JSON.parse(fs.readFileSync(path.join(installedPackage, "package.json"), "utf-8"));
+    assert.equal(pkg.name, "uagent-sync");
+    assert.equal(pkg.version, "2.2.1");
+  });
+
   it("loads the installed plugin without dev dependencies or a host SDK ancestor", () => {
     const script = `const {OpencodeSyncPlugin}=await import('uagent-sync');const hooks=await OpencodeSyncPlugin({});const cfg={};await hooks.config(cfg);if(cfg.skills.paths.length!==1)throw Error('missing skills');console.log('plugin-ready');`;
     const output = execFileSync(process.execPath, ["--input-type=module", "-e", script], {

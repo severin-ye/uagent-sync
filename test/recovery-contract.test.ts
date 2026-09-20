@@ -229,4 +229,21 @@ describe("clean checkout and Codex plugin contract", () => {
     assert.ok(Array.isArray(manifest.interface?.defaultPrompt) && manifest.interface.defaultPrompt.length > 0);
     assert.ok(!("hooks" in manifest));
   });
+
+  it("keeps the 2.2.1 patch identity consistent across package and plugin metadata", () => {
+    const root = path.join(path.dirname(moduleFilePath(import.meta.url)), "..");
+    const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf-8"));
+    const lock = JSON.parse(fs.readFileSync(path.join(root, "package-lock.json"), "utf-8"));
+    const codex = JSON.parse(fs.readFileSync(path.join(root, ".codex-plugin", "plugin.json"), "utf-8"));
+    const marketplace = JSON.parse(fs.readFileSync(path.join(root, ".claude-plugin", "marketplace.json"), "utf-8"));
+    const dsh = JSON.parse(fs.readFileSync(path.join(root, "packages", "dsh", "package.json"), "utf-8"));
+
+    assert.equal(pkg.version, "2.2.1");
+    assert.equal(lock.version, pkg.version);
+    assert.equal(lock.packages[""].version, pkg.version);
+    assert.equal(codex.version, pkg.version);
+    assert.equal(marketplace.plugins[0].version, pkg.version);
+    assert.equal(dsh.version, pkg.version);
+    assert.equal(dsh.dependencies["uagent-sync"], pkg.version);
+  });
 });
