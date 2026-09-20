@@ -44,10 +44,10 @@ after(() => {
 });
 
 describe("real npm pack installation", () => {
-  it("ships the 2.2.1 package identity", () => {
+  it("ships the 2.2.2 package identity", () => {
     const pkg = JSON.parse(fs.readFileSync(path.join(installedPackage, "package.json"), "utf-8"));
     assert.equal(pkg.name, "uagent-sync");
-    assert.equal(pkg.version, "2.2.1");
+    assert.equal(pkg.version, "2.2.2");
   });
 
   it("loads the installed plugin without dev dependencies or a host SDK ancestor", () => {

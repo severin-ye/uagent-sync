@@ -122,7 +122,7 @@ describe("updateExtensions", () => {
     const cliEntry = path.join(npmBin, "node_modules", "uagent-sync", "dist", "cli.js");
     fs.mkdirSync(path.dirname(cliEntry), { recursive: true });
     fs.writeFileSync(path.join(npmBin, "uagent-sync.cmd"), "@echo off\r\nexit /b 97\r\n");
-    fs.writeFileSync(cliEntry, "process.stdout.write('2.2.1\\n');\n");
+    fs.writeFileSync(cliEntry, "process.stdout.write('2.2.2\\n');\n");
 
     const previousAppData = process.env.APPDATA;
     const previousPath = process.env.PATH;
@@ -131,7 +131,7 @@ describe("updateExtensions", () => {
     try {
       const result = await spawnArgsCommand("uagent-sync", ["--version"]);
       assert.equal(result.code, 0);
-      assert.equal(result.output.trim(), "2.2.1");
+      assert.equal(result.output.trim(), "2.2.2");
     } finally {
       if (previousAppData === undefined) delete process.env.APPDATA;
       else process.env.APPDATA = previousAppData;

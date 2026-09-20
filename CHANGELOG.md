@@ -8,6 +8,14 @@
 
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [2.2.2] - 2026-09-20
+
+### 修复
+
+- Windows 上更新已安装 Skills CLI 时，不再直接生成子进程执行 `skills` 或 `.cmd`；现在验证可信 npm shim 相邻的标准 Node 入口，并使用当前 Node、无 shell 执行 `skills update -g`。
+- Skills CLI 未安装时明确记为 `skipped`，更新流程不会自动安装缺失组件，也不会把未执行写成成功。
+- **判级依据**：`2.2.1 → 2.2.2`；本批恢复既有 Windows Skills 更新行为，不新增工作流或破坏兼容，按 Bug 修复升补丁位（Z）。
+
 ## [2.1.2] - 2026-09-13
 
 ### 修复
