@@ -3,7 +3,7 @@ import * as assert from "node:assert";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { updateExtensions, type UpdateCommandExecutor, type UpdateProgress } from "../dist/lib/update.js";
+import { spawnArgsCommand, updateExtensions, type UpdateCommandExecutor, type UpdateProgress } from "../dist/lib/update.js";
 import OpencodeSyncPlugin from "../dist/plugin.js";
 
 describe("updateExtensions", () => {
@@ -114,6 +114,30 @@ describe("updateExtensions", () => {
     assert.equal(report.steps[0]?.name, "skills");
     assert.equal(report.steps[0]?.status, "ok");
     assert.match(report.steps[0]?.detail ?? "", /updated installed skills/);
+  });
+
+  it("resolves the trusted Windows npm shim when verifying the installed uagent-sync CLI", { skip: process.platform !== "win32" }, async () => {
+    const appData = path.join(tmpRoot, "appdata");
+    const npmBin = path.join(appData, "npm");
+    const cliEntry = path.join(npmBin, "node_modules", "uagent-sync", "dist", "cli.js");
+    fs.mkdirSync(path.dirname(cliEntry), { recursive: true });
+    fs.writeFileSync(path.join(npmBin, "uagent-sync.cmd"), "@echo off\r\nexit /b 97\r\n");
+    fs.writeFileSync(cliEntry, "process.stdout.write('2.2.1\\n');\n");
+
+    const previousAppData = process.env.APPDATA;
+    const previousPath = process.env.PATH;
+    process.env.APPDATA = appData;
+    process.env.PATH = `${npmBin}${path.delimiter}${previousPath ?? ""}`;
+    try {
+      const result = await spawnArgsCommand("uagent-sync", ["--version"]);
+      assert.equal(result.code, 0);
+      assert.equal(result.output.trim(), "2.2.1");
+    } finally {
+      if (previousAppData === undefined) delete process.env.APPDATA;
+      else process.env.APPDATA = previousAppData;
+      if (previousPath === undefined) delete process.env.PATH;
+      else process.env.PATH = previousPath;
+    }
   });
 
   it("skips missing managed MCP and CLI tools without planning installation", async () => {

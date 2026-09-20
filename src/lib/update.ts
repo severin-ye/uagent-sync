@@ -253,7 +253,27 @@ function safeUpdateOutput(value: string, maxLength = 2000): string {
   return redactString(value).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, "").trim().slice(0, maxLength);
 }
 
-function spawnArgsCommand(file: string, args: string[], opts: { cwd?: string; timeoutMs?: number; onLine?: (line: string) => void } = {}): Promise<SpawnResult> {
+function resolveTrustedWindowsUagentSync(env: NodeJS.ProcessEnv): { executable: string; prefixArgs: string[] } | { error: string } {
+  const pathEntries = (env.PATH ?? env.Path ?? "").split(path.delimiter).filter(Boolean);
+  const candidates = [
+    env.UAGENT_SYNC_CLI_CMD,
+    env.APPDATA ? path.join(env.APPDATA, "npm", "uagent-sync.cmd") : undefined,
+    ...pathEntries.map((entry) => path.join(entry, "uagent-sync.cmd")),
+  ].filter((candidate): candidate is string => Boolean(candidate));
+
+  const shim = candidates.find((candidate) =>
+    path.isAbsolute(candidate)
+    && path.basename(candidate).toLowerCase() === "uagent-sync.cmd"
+    && !/[\\/]WindowsApps[\\/]/i.test(candidate)
+    && fs.existsSync(candidate));
+  if (!shim) return { error: "No trusted uagent-sync.cmd entry was found" };
+
+  const cliEntry = path.join(path.dirname(shim), "node_modules", "uagent-sync", "dist", "cli.js");
+  if (!fs.existsSync(cliEntry)) return { error: "Trusted uagent-sync.cmd has no verified Node CLI entry" };
+  return { executable: process.execPath, prefixArgs: [cliEntry] };
+}
+
+export function spawnArgsCommand(file: string, args: string[], opts: { cwd?: string; timeoutMs?: number; onLine?: (line: string) => void } = {}): Promise<SpawnResult> {
   if (file === "codex") {
     const result = executeTrustedCommand(file, args, { timeoutMs: opts.timeoutMs ?? COMMAND_TIMEOUT_MS });
     const diagnostics = result.code === 0 ? [] : [result.errorType ? `errorType=${result.errorType}` : "", result.resolvedPath ? `resolvedPath=${result.resolvedPath}` : ""];
@@ -265,7 +285,12 @@ function spawnArgsCommand(file: string, args: string[], opts: { cwd?: string; ti
 
   let executable = file;
   let finalArgs = args;
-  if (file === "npm") {
+  if (process.platform === "win32" && file === "uagent-sync") {
+    const resolved = resolveTrustedWindowsUagentSync(process.env);
+    if ("error" in resolved) return Promise.resolve({ code: 1, output: resolved.error });
+    executable = resolved.executable;
+    finalArgs = [...resolved.prefixArgs, ...args];
+  } else if (file === "npm") {
     const npmCli = path.join(path.dirname(process.execPath), "node_modules", "npm", "bin", "npm-cli.js");
     if (fs.existsSync(npmCli)) {
       executable = process.execPath;
