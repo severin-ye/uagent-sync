@@ -7,8 +7,7 @@ import { spawnArgsCommand, updateExtensions, type UpdateCommandExecutor, type Up
 import OpencodeSyncPlugin from "../dist/plugin.js";
 
 describe("updateExtensions", () => {
-  // skills 组件有两条路径：update 检查成功 → 单步 "skills"；失败（skills CLI 1.5.9 Windows 已知 bug）
-  // → 降级为逐个 "skills/add:<source>"。两个名字都算 skills 组件步骤。
+  // 保留旧报告中逐项 skills/add 步骤的兼容识别；当前更新路径只运行已安装的 Skills CLI。
   const isSkillStep = (s: { name: string }) => s.name === "skills" || s.name.startsWith("skills/add:");
   const writeCloneFixture = (args: string[]): string => {
     const checkout = args.at(-1);
@@ -19,7 +18,7 @@ describe("updateExtensions", () => {
   };
 
   let tmpRoot: string;
-  let env: { pluginCache: string; configDir: string; syncDir: string; installedUvTools?: string[]; installedOpencode?: boolean };
+  let env: { pluginCache: string; configDir: string; syncDir: string; installedUvTools?: string[]; installedOpencode?: boolean; installedSkills?: boolean };
   let oldWorkspaceEnv: string | undefined;
 
   /** 构造隔离环境：fake 插件缓存 / fake config 目录 / fake workspace（含 sync 仓库 package.json）。 */
@@ -31,6 +30,7 @@ describe("updateExtensions", () => {
       syncDir: path.join(tmpRoot, "ws", "2_Business", "uagent-sync"),
       installedUvTools: [],
       installedOpencode: true,
+      installedSkills: true,
     };
     fs.mkdirSync(path.join(env.pluginCache, "fake-plugin"), { recursive: true });
     fs.writeFileSync(path.join(env.pluginCache, "fake-plugin", "package.json"), JSON.stringify({ name: "fake-plugin", version: "1.0.0" }));
@@ -138,6 +138,68 @@ describe("updateExtensions", () => {
       if (previousPath === undefined) delete process.env.PATH;
       else process.env.PATH = previousPath;
     }
+  });
+
+  it("resolves the trusted Windows npm shim when updating installed skills", { skip: process.platform !== "win32" }, async () => {
+    const appData = path.join(tmpRoot, "appdata");
+    const npmBin = path.join(appData, "npm");
+    const cliEntry = path.join(npmBin, "node_modules", "skills", "bin", "cli.mjs");
+    fs.mkdirSync(path.dirname(cliEntry), { recursive: true });
+    fs.writeFileSync(path.join(npmBin, "skills.cmd"), "@echo off\r\nexit /b 97\r\n");
+    fs.writeFileSync(cliEntry, "process.stdout.write(process.argv.slice(2).join(' '));\n");
+
+    const previousAppData = process.env.APPDATA;
+    const previousPath = process.env.PATH;
+    process.env.APPDATA = appData;
+    process.env.PATH = `${npmBin}${path.delimiter}${previousPath ?? ""}`;
+    try {
+      const result = await spawnArgsCommand("skills", ["update", "-g"]);
+      assert.equal(result.code, 0);
+      assert.equal(result.output.trim(), "update -g");
+    } finally {
+      if (previousAppData === undefined) delete process.env.APPDATA;
+      else process.env.APPDATA = previousAppData;
+      if (previousPath === undefined) delete process.env.PATH;
+      else process.env.PATH = previousPath;
+    }
+  });
+
+  it("skips skills when the CLI is not installed and never attempts installation", async () => {
+    delete env.installedSkills;
+    const calls: Array<{ file: string; args: string[] }> = [];
+    const previousAppData = process.env.APPDATA;
+    const previousPath = process.env.PATH;
+    const previousSkillsCommand = process.env.SKILLS_CLI_CMD;
+    process.env.APPDATA = path.join(tmpRoot, "empty-appdata");
+    process.env.PATH = path.join(tmpRoot, "empty-bin");
+    delete process.env.SKILLS_CLI_CMD;
+    fs.mkdirSync(process.env.APPDATA, { recursive: true });
+    fs.mkdirSync(process.env.PATH, { recursive: true });
+    const report = await (async () => {
+      try {
+        return await updateExtensions({
+          components: ["skills"], env,
+          executeCommand: async (file, args) => {
+            calls.push({ file, args });
+            return { code: 0, output: "must not run" };
+          },
+        });
+      } finally {
+        if (previousAppData === undefined) delete process.env.APPDATA;
+        else process.env.APPDATA = previousAppData;
+        if (previousPath === undefined) delete process.env.PATH;
+        else process.env.PATH = previousPath;
+        if (previousSkillsCommand === undefined) delete process.env.SKILLS_CLI_CMD;
+        else process.env.SKILLS_CLI_CMD = previousSkillsCommand;
+      }
+    })();
+
+    assert.deepEqual(calls, []);
+    assert.equal(report.steps.length, 1);
+    assert.equal(report.steps[0]?.name, "skills");
+    assert.equal(report.steps[0]?.status, "skipped");
+    assert.match(report.steps[0]?.detail ?? "", /not installed|does not install/i);
+    assert.doesNotMatch(report.steps[0]?.command ?? "", /\binstall\b/i);
   });
 
   it("skips missing managed MCP and CLI tools without planning installation", async () => {

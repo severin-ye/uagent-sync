@@ -242,7 +242,7 @@ export interface UpdateOptions {
    * 默认取 ~/.cache/opencode/packages 与 ~/.config/opencode——在 CI/干净环境不可用，
    * 测试通过注入临时目录获得确定性。
    */
-  env?: { pluginCache?: string; configDir?: string; syncDir?: string; installedUvTools?: string[]; installedOpencode?: boolean };
+  env?: { pluginCache?: string; configDir?: string; syncDir?: string; installedUvTools?: string[]; installedOpencode?: boolean; installedSkills?: boolean };
 }
 
 function displayCommand(file: string, args: string[]): string {
@@ -253,24 +253,44 @@ function safeUpdateOutput(value: string, maxLength = 2000): string {
   return redactString(value).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, "").trim().slice(0, maxLength);
 }
 
-function resolveTrustedWindowsUagentSync(env: NodeJS.ProcessEnv): { executable: string; prefixArgs: string[] } | { error: string } {
+const WINDOWS_NPM_CLIS = {
+  "uagent-sync": { envVar: "UAGENT_SYNC_CLI_CMD", packageName: "uagent-sync", entry: ["dist", "cli.js"] },
+  skills: { envVar: "SKILLS_CLI_CMD", packageName: "skills", entry: ["bin", "cli.mjs"] },
+} as const;
+
+function resolveTrustedWindowsNpmCli(command: keyof typeof WINDOWS_NPM_CLIS, env: NodeJS.ProcessEnv): { executable: string; prefixArgs: string[] } | { error: string } {
+  const spec = WINDOWS_NPM_CLIS[command];
   const pathEntries = (env.PATH ?? env.Path ?? "").split(path.delimiter).filter(Boolean);
   const candidates = [
-    env.UAGENT_SYNC_CLI_CMD,
-    env.APPDATA ? path.join(env.APPDATA, "npm", "uagent-sync.cmd") : undefined,
-    ...pathEntries.map((entry) => path.join(entry, "uagent-sync.cmd")),
+    env[spec.envVar],
+    env.APPDATA ? path.join(env.APPDATA, "npm", `${command}.cmd`) : undefined,
+    ...pathEntries.map((entry) => path.join(entry, `${command}.cmd`)),
   ].filter((candidate): candidate is string => Boolean(candidate));
 
   const shim = candidates.find((candidate) =>
     path.isAbsolute(candidate)
-    && path.basename(candidate).toLowerCase() === "uagent-sync.cmd"
+    && path.basename(candidate).toLowerCase() === `${command}.cmd`
     && !/[\\/]WindowsApps[\\/]/i.test(candidate)
     && fs.existsSync(candidate));
-  if (!shim) return { error: "No trusted uagent-sync.cmd entry was found" };
+  if (!shim) return { error: `No trusted ${command}.cmd entry was found` };
 
-  const cliEntry = path.join(path.dirname(shim), "node_modules", "uagent-sync", "dist", "cli.js");
-  if (!fs.existsSync(cliEntry)) return { error: "Trusted uagent-sync.cmd has no verified Node CLI entry" };
+  const cliEntry = path.join(path.dirname(shim), "node_modules", spec.packageName, ...spec.entry);
+  if (!fs.existsSync(cliEntry)) return { error: `Trusted ${command}.cmd has no verified Node CLI entry` };
   return { executable: process.execPath, prefixArgs: [cliEntry] };
+}
+
+function isSkillsCliInstalled(env: NodeJS.ProcessEnv): boolean {
+  if (process.platform === "win32") return !("error" in resolveTrustedWindowsNpmCli("skills", env));
+  const pathEntries = (env.PATH ?? "").split(path.delimiter).filter(Boolean);
+  return pathEntries.some((entry) => {
+    const candidate = path.join(entry, "skills");
+    try {
+      fs.accessSync(candidate, fs.constants.X_OK);
+      return true;
+    } catch {
+      return false;
+    }
+  });
 }
 
 export function spawnArgsCommand(file: string, args: string[], opts: { cwd?: string; timeoutMs?: number; onLine?: (line: string) => void } = {}): Promise<SpawnResult> {
@@ -285,8 +305,8 @@ export function spawnArgsCommand(file: string, args: string[], opts: { cwd?: str
 
   let executable = file;
   let finalArgs = args;
-  if (process.platform === "win32" && file === "uagent-sync") {
-    const resolved = resolveTrustedWindowsUagentSync(process.env);
+  if (process.platform === "win32" && (file === "uagent-sync" || file === "skills")) {
+    const resolved = resolveTrustedWindowsNpmCli(file, process.env);
     if ("error" in resolved) return Promise.resolve({ code: 1, output: resolved.error });
     executable = resolved.executable;
     finalArgs = [...resolved.prefixArgs, ...args];
@@ -433,7 +453,9 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
     addSkipped("plugins", "bun add <installed-plugin>@latest --no-save", "OpenCode plugin cache is absent; update does not install missing plugins");
   }
   if (selected.has("skills")) {
-    addCommand("skills", "skills", ["update", "-g"], undefined, 120_000);
+    const installed = options.env?.installedSkills ?? isSkillsCliInstalled(process.env);
+    if (installed) addCommand("skills", "skills", ["update", "-g"], undefined, 120_000);
+    else addSkipped("skills", "skills update -g", "Skills CLI is not installed; update does not install missing components");
   }
   const uvInventory = options.env?.installedUvTools
     ? { installed: new Set(options.env.installedUvTools) }
