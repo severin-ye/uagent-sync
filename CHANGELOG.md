@@ -23,6 +23,11 @@
 
 - Add modular `device` registration, alias resolution, registry reconnect, workspace coverage and offline staging reports, Codex personal-file snapshots with protected restore, explicit private GitHub registry transport, and the U同步/Severin device-handoff workflow. Full Skill collection and real second-device acceptance remain pending; no release is claimed.
 
+### 修复
+
+- **更新只处理已安装受管组件**：Skill 更新不再在规划阶段先执行一次；缺失的 uv MCP/CLI 与没有可核验持久实例的 npx MCP 明确记为 `skipped`，不再自动 `install --force` 或填充缓存。选中组件的命令失败统一记为 `error` 并让 CLI 非零退出。
+- **自更新保护与版本核验**：只允许干净、跟踪 `origin/master` 的 `master` 快进更新，防止在开发分支直接拉取；安装后同时核验全局 CLI、Codex 插件与源码包版本，真实步骤使用各自配置的 timeout 文案。
+
 ### 新增
 
 - **迁移分析统一入口**：资产盘点、覆盖与缺口、功能重叠与去重、兼容性、迁移决策、执行与验证共用同一 Dashboard 服务和显式分析范围；未选范围不扫描、不显示比较计数。旧扩展写入接口已冻结为 `410 upgrade_required`。

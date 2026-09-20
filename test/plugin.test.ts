@@ -12,7 +12,7 @@ describe("updateExtensions", () => {
   const isSkillStep = (s: { name: string }) => s.name === "skills" || s.name.startsWith("skills/add:");
 
   let tmpRoot: string;
-  let env: { pluginCache: string; configDir: string; syncDir: string };
+  let env: { pluginCache: string; configDir: string; syncDir: string; installedUvTools?: string[]; installedOpencode?: boolean };
   let oldWorkspaceEnv: string | undefined;
 
   /** 构造隔离环境：fake 插件缓存 / fake config 目录 / fake workspace（含 sync 仓库 package.json）。 */
@@ -22,6 +22,8 @@ describe("updateExtensions", () => {
       pluginCache: path.join(tmpRoot, "packages"),
       configDir: path.join(tmpRoot, "config"),
       syncDir: path.join(tmpRoot, "ws", "2_Business", "uagent-sync"),
+      installedUvTools: [],
+      installedOpencode: true,
     };
     fs.mkdirSync(path.join(env.pluginCache, "fake-plugin"), { recursive: true });
     fs.writeFileSync(path.join(env.pluginCache, "fake-plugin", "package.json"), JSON.stringify({ name: "fake-plugin", version: "1.0.0" }));
@@ -90,6 +92,49 @@ describe("updateExtensions", () => {
     assert.ok(report.steps.every((s) => isSkillStep(s)), "only requested component");
   });
 
+  it("does not execute skills while planning and runs the real update exactly once", async () => {
+    const calls: Array<{ file: string; args: string[] }> = [];
+    const report = await updateExtensions({
+      components: ["skills"], env,
+      executeCommand: async (file, args) => {
+        calls.push({ file, args });
+        return { code: 0, output: "updated installed skills" };
+      },
+    });
+
+    assert.deepEqual(calls, [{ file: "skills", args: ["update", "-g"] }]);
+    assert.equal(report.steps.length, 1);
+    assert.equal(report.steps[0]?.name, "skills");
+    assert.equal(report.steps[0]?.status, "ok");
+    assert.match(report.steps[0]?.detail ?? "", /updated installed skills/);
+  });
+
+  it("skips missing managed MCP and CLI tools without planning installation", async () => {
+    const report = await updateExtensions({ components: ["mcp", "cli"], dryRun: true, env });
+
+    assert.ok(report.steps.length > 0);
+    assert.ok(report.steps.every((step) => step.status === "skipped"));
+    assert.ok(report.steps.every((step) => /not installed|no verifiable installed instance/i.test(step.detail)));
+    assert.ok(!report.steps.some((step) => /\binstall\b|npx\s+-y/i.test(step.command)), "update must never plan installation for missing tools");
+  });
+
+  it("marks a selected component command failure as an error, not a successful warning", async () => {
+    env.installedUvTools = ["paper-search-mcp"];
+    const report = await updateExtensions({
+      components: ["mcp"], env,
+      executeCommand: async (file, args) => {
+        if (file === "uv" && args.join(" ") === "tool list") return { code: 0, output: "paper-search-mcp v1.0.0" };
+        if (file === "uv" && args.join(" ") === "tool upgrade paper-search-mcp") return { code: 9, output: "upgrade failed" };
+        return { code: 0, output: "paper-search-mcp v1.0.0" };
+      },
+    });
+
+    assert.equal(report.steps.find((step) => step.name === "mcp(uv)/paper-search-mcp")?.status, "error");
+    assert.equal(report.summary.error, 1);
+    assert.equal(report.summary.warning, 0);
+    assert.ok(report.steps.filter((step) => step.status === "skipped").every((step) => /not installed|no verifiable installed instance/i.test(step.detail)));
+  });
+
   it("excludes opencode by default", async () => {
     const report = await updateExtensions({ dryRun: true, env });
     assert.ok(!report.steps.some((s) => s.name === "opencode"), "opencode opt-in only");
@@ -106,6 +151,7 @@ describe("updateExtensions", () => {
 
     assert.equal(report.targetAgent, "codex");
     for (const required of [
+      "sync/preflight",
       "sync/pull",
       "sync/install",
       "sync/test",
@@ -143,6 +189,9 @@ describe("updateExtensions", () => {
     const calls: Array<{ file: string; args: string[]; cwd?: string }> = [];
     const executeCommand: UpdateCommandExecutor = async (file, args, options) => {
       calls.push({ file, args, cwd: options?.cwd });
+      if (file === "git" && args.join(" ") === "branch --show-current") return { code: 0, output: "master\n" };
+      if (file === "git" && args.join(" ") === "status --porcelain") return { code: 0, output: "" };
+      if (file === "git" && args.join(" ") === "rev-parse --abbrev-ref --symbolic-full-name @{upstream}") return { code: 0, output: "origin/master\n" };
       if (file === "npm" && args[0] === "pack") {
         const destination = args[args.indexOf("--pack-destination") + 1];
         fs.writeFileSync(path.join(destination, "uagent-sync-2.1.1.tgz"), "fixture");
@@ -152,6 +201,7 @@ describe("updateExtensions", () => {
       if (file === "codex" && args.join(" ") === "plugin marketplace list --json") return { code: 0, output: JSON.stringify({ marketplaces: [{ name: "uagent-sync", root: marketplaceRoot }] }) };
       if (file === "codex" && args.join(" ") === "plugin list --json") return { code: 0, output: JSON.stringify({ installed: [{ name: "uagent-sync", installed: true, enabled: true, version: "2.1.1" }] }) };
       if (file === "codex" && args.join(" ") === "plugin add uagent-sync@uagent-sync") return { code: 1, output: "plugin is already installed" };
+      if (file === "uagent-sync" && args.join(" ") === "--version") return { code: 0, output: "2.1.1\n" };
       return { code: 0, output: "ok" };
     };
 
@@ -162,10 +212,74 @@ describe("updateExtensions", () => {
     assert.equal(report.steps.find((step) => step.name === "sync/plugin-verify")?.status, "ok");
   });
 
+  it("refuses to pull a self-update from a development branch", async () => {
+    const calls: Array<{ file: string; args: string[] }> = [];
+    const report = await updateExtensions({
+      components: ["sync"], targetAgent: "codex", env,
+      executeCommand: async (file, args) => {
+        calls.push({ file, args });
+        if (file === "git" && args.join(" ") === "branch --show-current") return { code: 0, output: "codex/feature\n" };
+        return { code: 0, output: "ok" };
+      },
+    });
+
+    assert.equal(report.steps.find((step) => step.name === "sync/preflight")?.status, "error");
+    assert.match(report.steps.find((step) => step.name === "sync/preflight")?.detail ?? "", /master/i);
+    assert.ok(!calls.some((call) => call.file === "git" && call.args[0] === "pull"));
+    assert.ok(report.steps.filter((step) => step.name.startsWith("sync/") && step.name !== "sync/preflight").every((step) => step.status === "skipped"));
+  });
+
+  it("fails verification when the installed CLI and Codex plugin versions differ", async () => {
+    const marketplaceRoot = path.join(tmpRoot, "marketplace-mismatch");
+    fs.mkdirSync(marketplaceRoot, { recursive: true });
+    const executeCommand: UpdateCommandExecutor = async (file, args) => {
+      const command = args.join(" ");
+      if (file === "git" && command === "branch --show-current") return { code: 0, output: "master\n" };
+      if (file === "git" && command === "status --porcelain") return { code: 0, output: "" };
+      if (file === "git" && command === "rev-parse --abbrev-ref --symbolic-full-name @{upstream}") return { code: 0, output: "origin/master\n" };
+      if (file === "npm" && args[0] === "pack") {
+        const destination = args[args.indexOf("--pack-destination") + 1];
+        fs.writeFileSync(path.join(destination, "uagent-sync-2.1.1.tgz"), "fixture");
+        return { code: 0, output: JSON.stringify({ filename: "uagent-sync-2.1.1.tgz" }) };
+      }
+      if (file === "git" && command === "remote get-url origin") return { code: 0, output: "https://github.com/severin-ye/uagent-sync.git\n" };
+      if (file === "codex" && command === "plugin marketplace list --json") return { code: 0, output: JSON.stringify({ marketplaces: [{ name: "uagent-sync", root: marketplaceRoot }] }) };
+      if (file === "codex" && command === "plugin list --json") return { code: 0, output: JSON.stringify({ installed: [{ name: "uagent-sync", installed: true, enabled: true, version: "2.1.0" }] }) };
+      if (file === "uagent-sync" && command === "--version") return { code: 0, output: "2.1.1\n" };
+      return { code: 0, output: "ok" };
+    };
+
+    const report = await updateExtensions({ components: ["sync"], targetAgent: "codex", env, executeCommand });
+    const verification = report.steps.find((step) => step.name === "sync/plugin-verify");
+    assert.equal(verification?.status, "error");
+    assert.match(verification?.detail ?? "", /CLI.*2\.1\.1.*plugin.*2\.1\.0|plugin.*2\.1\.0.*CLI.*2\.1\.1/i);
+    assert.equal(report.summary.error, 1);
+  });
+
+  it("reports the configured ten-minute timeout for the self-test step", async () => {
+    const report = await updateExtensions({
+      components: ["sync"], targetAgent: "codex", env,
+      executeCommand: async (file, args) => {
+        const command = args.join(" ");
+        if (file === "git" && command === "branch --show-current") return { code: 0, output: "master\n" };
+        if (file === "git" && command === "status --porcelain") return { code: 0, output: "" };
+        if (file === "git" && command === "rev-parse --abbrev-ref --symbolic-full-name @{upstream}") return { code: 0, output: "origin/master\n" };
+        if (file === "npm" && args[0] === "test") return { code: 124, output: "timed out" };
+        return { code: 0, output: "ok" };
+      },
+    });
+
+    assert.equal(report.steps.find((step) => step.name === "sync/test")?.status, "error");
+    assert.match(report.steps.find((step) => step.name === "sync/test")?.detail ?? "", /timeout after 600s/i);
+  });
+
   it("stops before replacing the installed CLI when the required self-test fails", async () => {
     const calls: Array<{ file: string; args: string[] }> = [];
     const executeCommand: UpdateCommandExecutor = async (file, args) => {
       calls.push({ file, args });
+      if (file === "git" && args.join(" ") === "branch --show-current") return { code: 0, output: "master\n" };
+      if (file === "git" && args.join(" ") === "status --porcelain") return { code: 0, output: "" };
+      if (file === "git" && args.join(" ") === "rev-parse --abbrev-ref --symbolic-full-name @{upstream}") return { code: 0, output: "origin/master\n" };
       if (file === "npm" && args.join(" ") === "test") return { code: 7, output: "regression suite failed" };
       return { code: 0, output: "ok" };
     };

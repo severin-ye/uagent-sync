@@ -134,8 +134,8 @@ function readPackageVersion(pkgDir: string, name: string): string | undefined {
   } catch { return undefined; }
 }
 
-async function readUvVersions(): Promise<Record<string, string>> {
-  const result = await spawnCommand("uv tool list");
+async function readUvVersions(executeCommand: UpdateCommandExecutor): Promise<Record<string, string>> {
+  const result = await executeCommand("uv", ["tool", "list"]);
   const versions: Record<string, string> = {};
   for (const line of result.output.split(/\r?\n/)) {
     const m = /^([\w.-]+) v([\d.]+)/.exec(line.trim());
@@ -160,14 +160,17 @@ async function resolveGithubToken(): Promise<string | undefined> {
 }
 
 /** 查询当前 uv tool 已安装的包集合（用于区分 upgrade vs install）。 */
-async function readInstalledUvTools(): Promise<Set<string>> {
-  const result = await spawnCommand("uv tool list");
+async function readInstalledUvTools(executeCommand: UpdateCommandExecutor): Promise<{ installed: Set<string>; inventoryError?: string }> {
+  const result = await executeCommand("uv", ["tool", "list"]);
   const set = new Set<string>();
   for (const line of result.output.split(/\r?\n/)) {
     const m = /^([\w.-]+) v[\d.]+/.exec(line.trim());
     if (m) set.add(m[1]);
   }
-  return set;
+  return {
+    installed: set,
+    inventoryError: result.code === 0 ? undefined : safeUpdateOutput(result.output || "uv tool list is unavailable"),
+  };
 }
 
 /** 带超时的 JSON 请求（变更证据收集用，失败静默）。 */
@@ -239,7 +242,7 @@ export interface UpdateOptions {
    * 默认取 ~/.cache/opencode/packages 与 ~/.config/opencode——在 CI/干净环境不可用，
    * 测试通过注入临时目录获得确定性。
    */
-  env?: { pluginCache?: string; configDir?: string; syncDir?: string };
+  env?: { pluginCache?: string; configDir?: string; syncDir?: string; installedUvTools?: string[]; installedOpencode?: boolean };
 }
 
 function displayCommand(file: string, args: string[]): string {
@@ -349,7 +352,6 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
   const configDir = options.env?.configDir ?? CONFIG_DIR;
   const timestamp = new Date().toISOString();
   const steps: UpdateStep[] = [];
-  const githubToken = await resolveGithubToken();
 
   const emit = (event: UpdateProgress) => onProgress(event);
   const endStep = (
@@ -366,8 +368,24 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
     emit({ type: "step-end", name: step.name, status, detail, versionBefore, versionAfter, durationMs: step.durationMs });
   };
 
-  // ── 计划（先列出将执行的所有步骤）──
-  const planned: { name: string; command: string; cwd?: string; scopeError?: string; run?: (onLine: (line: string) => void) => Promise<SpawnResult> }[] = [];
+  // ── 计划（只描述动作；任何写操作都留到下方执行阶段）──
+  const planned: {
+    name: string;
+    command: string;
+    cwd?: string;
+    file?: string;
+    args?: string[];
+    timeoutMs?: number;
+    scopeError?: string;
+    skipReason?: string;
+    run?: (onLine: (line: string) => void) => Promise<SpawnResult>;
+  }[] = [];
+  const addCommand = (name: string, file: string, args: string[], cwd?: string, timeoutMs = COMMAND_TIMEOUT_MS) => {
+    planned.push({ name, file, args, command: displayCommand(file, args), cwd, timeoutMs });
+  };
+  const addSkipped = (name: string, command: string, detail: string) => {
+    planned.push({ name, command, skipReason: detail });
+  };
 
   if (targetAgent === "codex" && selected.has("opencode")) {
     planned.push({ name: "scope/opencode", command: "blocked", scopeError: "OpenCode update is outside targetAgent=codex and was not executed" });
@@ -379,75 +397,66 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
     const dirs = fs.readdirSync(pluginCache)
       .filter((d) => isPluginPkgDir(d) && fs.statSync(path.join(pluginCache, d)).isDirectory());
     const pkgs = [...new Set(dirs.map((d) => d.replace(/@latest$/, "")))];
+    if (pkgs.length === 0) addSkipped("plugins", "bun add <installed-plugin>@latest --no-save", "no installed OpenCode plugin packages were recognized; nothing was installed");
     for (const pkg of pkgs) {
       const latest = path.join(pluginCache, `${pkg}@latest`);
       const target = fs.existsSync(latest) ? latest : path.join(pluginCache, pkg);
-      planned.push({ name: `plugins/${pkg}`, command: `bun add ${pkg}@latest --no-save`, cwd: target });
+      addCommand(`plugins/${pkg}`, "bun", ["add", `${pkg}@latest`, "--no-save"], target);
     }
+  } else if (targetAgent !== "codex" && selected.has("plugins")) {
+    addSkipped("plugins", "bun add <installed-plugin>@latest --no-save", "OpenCode plugin cache is absent; update does not install missing plugins");
   }
   if (selected.has("skills")) {
-    if (dryRun) {
-      planned.push({ name: "skills", command: "skills update -g" });
-    } else {
-    // skills CLI 1.5.9 在 Windows 上 update 子进程有 bug（手动等价命令正常），且部分失败时 exit code 仍为 0。
-    // 1.5.22 已修复（2026-08-07 实测 frontend-slides/slides 恢复正常更新）；降级分支仍保留作防御。
-    // 先跑 update 检查：成功（无 Failed）→ 记录单步；否则 → 从输出提取 source 列表，逐个 skills add 降级更新。
-    const check = await spawnCommand("skills update -g", { env: githubToken ? { GITHUB_TOKEN: githubToken } : undefined, timeoutMs: 120_000 });
-    const stripAnsi = (s: string) => s.replace(/\x1b\[[0-9;]*[A-Za-z]/g, "").replace(/\x1b\[K/g, "").trim();
-    const sources = [...new Set(
-      [...check.output.matchAll(/Checking skills from source:\s*([^\r\n]+)/g)].map((m) => stripAnsi(m[1])),
-    )].filter(Boolean);
-    const updateFailed = check.code !== 0 || /Failed to update/.test(check.output);
-    if (!updateFailed) {
-      planned.push({ name: "skills", command: "skills update -g" });
-    } else if (sources.length > 0) {
-      for (const src of sources) {
-        planned.push({ name: `skills/add:${src}`, command: `skills add "${src}" -g -y` });
-      }
-    } else {
-      // skills CLI 不可用且无法提取源（如 CI 环境未安装）——保留原命令步骤，执行阶段会如实报错
-      planned.push({ name: "skills", command: "skills update -g" });
-    }
-    }
+    addCommand("skills", "skills", ["update", "-g"], undefined, 120_000);
   }
+  const uvInventory = options.env?.installedUvTools
+    ? { installed: new Set(options.env.installedUvTools) }
+    : (selected.has("mcp") || selected.has("cli"))
+      ? await readInstalledUvTools(executeCommand)
+      : { installed: new Set<string>() };
+  const missingUvDetail = (toolName: string) => uvInventory.inventoryError
+    ? `${toolName} was skipped because the uv tool inventory is unavailable: ${uvInventory.inventoryError}`
+    : `${toolName} is not installed as a managed uv tool; update never installs missing components`;
   if (selected.has("mcp")) {
-    // uv 系：按工具拆分——已安装 → uv tool upgrade；未安装（uv tool run / uvx 临时模式）→ uv tool install --force（覆盖残留 exe）
-    const installed = await readInstalledUvTools();
+    // uv 系只更新已安装实例；缺失项是主动跳过，不会转成 install --force。
     for (const toolName of UV_MCP_TOOLS) {
-      const cmd = installed.has(toolName)
-        ? `uv tool upgrade ${toolName}`
-        : `uv tool install --force ${toolName}`;
-      planned.push({ name: `mcp(uv)/${toolName}`, command: cmd });
+      if (uvInventory.installed.has(toolName)) addCommand(`mcp(uv)/${toolName}`, "uv", ["tool", "upgrade", toolName]);
+      else addSkipped(`mcp(uv)/${toolName}`, `uv tool upgrade ${toolName}`, missingUvDetail(toolName));
     }
-    // npx 系：@latest 强制走 registry 拉最新版（--help 仅为触发下载，包更新即达成）
+    // npx 没有可验证的持久安装实例；执行 @latest 会隐式安装，因此更新流程主动跳过。
     for (const pkg of NPMX_MCP_TOOLS) {
-      planned.push({ name: `mcp(npx)/${pkg}`, command: `npx -y ${pkg}@latest --help` });
+      addSkipped(`mcp(npx)/${pkg}`, `npx ${pkg}`, `${pkg} has no verifiable installed instance; update does not populate the npx cache`);
     }
   }
   if (selected.has("cli")) {
-    // uv 管理的 CLI 工具：已安装 → upgrade；未安装 → install --force
-    const installed = await readInstalledUvTools();
+    // uv 管理的 CLI 工具：只升级已安装实例。
     for (const toolName of UV_CLI_TOOLS) {
-      const cmd = installed.has(toolName)
-        ? `uv tool upgrade ${toolName}`
-        : `uv tool install --force ${toolName}`;
-      planned.push({ name: `cli(uv)/${toolName}`, command: cmd });
+      if (uvInventory.installed.has(toolName)) addCommand(`cli(uv)/${toolName}`, "uv", ["tool", "upgrade", toolName]);
+      else addSkipped(`cli(uv)/${toolName}`, `uv tool upgrade ${toolName}`, missingUvDetail(toolName));
     }
   }
   if (selected.has("sync")) {
     const syncDir = options.env?.syncDir ?? path.join(resolveWorkspaceRoot(), "2_Business", "uagent-sync");
     if (fs.existsSync(path.join(syncDir, "package.json"))) {
+      planned.push({ name: "sync/preflight", command: "verify clean master branch tracking origin/master", cwd: syncDir, run: async (onLine) => {
+        const branch = await executeCommand("git", ["branch", "--show-current"], { cwd: syncDir, onLine });
+        if (branch.code !== 0) return branch;
+        if (branch.output.trim() !== "master") return { code: 1, output: `self-update requires the clean master branch; current branch is ${branch.output.trim() || "detached HEAD"}` };
+        const status = await executeCommand("git", ["status", "--porcelain"], { cwd: syncDir, onLine });
+        if (status.code !== 0) return status;
+        if (status.output.trim()) return { code: 1, output: "self-update requires a clean working tree; local changes were preserved" };
+        const upstream = await executeCommand("git", ["rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{upstream}"], { cwd: syncDir, onLine });
+        if (upstream.code !== 0) return upstream;
+        if (upstream.output.trim() !== "origin/master") return { code: 1, output: `self-update requires upstream origin/master; current upstream is ${upstream.output.trim() || "unset"}` };
+        return { code: 0, output: "clean master branch tracking origin/master" };
+      } });
       if (targetAgent === "codex") {
         let packedTarball: string | undefined;
         let packDirectory: string | undefined;
-        const add = (name: string, file: string, args: string[], cwd = syncDir) => planned.push({
-          name, command: displayCommand(file, args), cwd,
-          run: (onLine) => executeCommand(file, args, { cwd, onLine, timeoutMs: name === "sync/test" ? 600_000 : COMMAND_TIMEOUT_MS }),
-        });
-        add("sync/pull", "git", ["pull", "--ff-only", "origin", "master"]);
-        add("sync/install", "npm", ["ci", "--no-audit", "--no-fund"]);
-        add("sync/test", "npm", ["test"]);
-        planned.push({ name: "sync/pack", command: "npm pack --json --pack-destination <temporary-directory>", cwd: syncDir, run: async (onLine) => {
+        addCommand("sync/pull", "git", ["pull", "--ff-only", "origin", "master"], syncDir);
+        addCommand("sync/install", "npm", ["ci", "--no-audit", "--no-fund"], syncDir);
+        addCommand("sync/test", "npm", ["test"], syncDir, 600_000);
+        planned.push({ name: "sync/pack", command: "npm pack --json --pack-destination <temporary-directory>", cwd: syncDir, timeoutMs: 600_000, run: async (onLine) => {
           packDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "uagent-sync-pack-"));
           const result = await executeCommand("npm", ["pack", "--json", "--pack-destination", packDirectory], { cwd: syncDir, onLine, timeoutMs: 600_000 });
           if (result.code !== 0) return result;
@@ -460,7 +469,7 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
             return result;
           } catch (error) { return { code: 1, output: safeUpdateOutput(String(error)) }; }
         } });
-        planned.push({ name: "sync/install-global", command: "npm install --global <packed-tarball> --no-audit --no-fund", cwd: syncDir, run: async (onLine) => {
+        planned.push({ name: "sync/install-global", command: "npm install --global <packed-tarball> --no-audit --no-fund", cwd: syncDir, timeoutMs: 600_000, run: async (onLine) => {
           if (!packedTarball) return { code: 1, output: "packed tarball was not produced" };
           try { return await executeCommand("npm", ["install", "--global", packedTarball, "--no-audit", "--no-fund"], { cwd: syncDir, onLine, timeoutMs: 600_000 }); }
           finally { if (packDirectory) fs.rmSync(packDirectory, { recursive: true, force: true }); }
@@ -487,34 +496,49 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
           const installed = await executeCommand("codex", ["plugin", "add", "uagent-sync@uagent-sync"], { onLine });
           return installed.code !== 0 && /already (?:installed|exists)|is already/i.test(installed.output) ? { code: 0, output: installed.output } : installed;
         } });
-        planned.push({ name: "sync/plugin-verify", command: "codex plugin list --json (verify installed, enabled, and version)", cwd: syncDir, run: async (onLine) => {
+        planned.push({ name: "sync/plugin-verify", command: "uagent-sync --version; codex plugin list --json (verify matching installed versions)", cwd: syncDir, run: async (onLine) => {
+          const cliResult = await executeCommand("uagent-sync", ["--version"], { onLine });
+          if (cliResult.code !== 0) return cliResult;
           const listed = await executeCommand("codex", ["plugin", "list", "--json"], { onLine });
           if (listed.code !== 0) return listed;
           try {
             const expected = (JSON.parse(fs.readFileSync(path.join(syncDir, "package.json"), "utf-8")) as { version?: string }).version;
+            const cliVersion = cliResult.output.trim().match(/\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?/)?.[0];
             const payload = parseJsonOutput<{ installed?: Array<{ name?: string; installed?: boolean; enabled?: boolean; version?: string }> }>(listed.output);
-            const plugin = payload.installed?.find((item) => item.name === "uagent-sync" && item.installed === true && item.enabled === true && item.version === expected);
-            if (!plugin) throw new Error(`Uagent Sync plugin is not confirmed installed, enabled, and at version ${expected ?? "unknown"}`);
-            return { code: 0, output: `uagent-sync ${expected} installed and enabled` };
+            const plugin = payload.installed?.find((item) => item.name === "uagent-sync" && item.installed === true && item.enabled === true);
+            if (!expected || !cliVersion || !plugin?.version || cliVersion !== expected || plugin.version !== expected || cliVersion !== plugin.version) {
+              throw new Error(`Uagent Sync version mismatch: expected ${expected ?? "unknown"}, CLI ${cliVersion ?? "unknown"}, Codex plugin ${plugin?.version ?? "unknown"}`);
+            }
+            return { code: 0, output: `uagent-sync CLI and Codex plugin ${expected} installed, enabled, and aligned` };
           } catch (error) { return { code: 1, output: safeUpdateOutput(String(error)) }; }
         } });
       } else {
-        planned.push({ name: "sync/pull", command: "git pull --rebase", cwd: syncDir });
-        planned.push({ name: "sync/install", command: "npm install --no-audit --no-fund", cwd: syncDir });
-        planned.push({ name: "sync/build", command: "npm run build", cwd: syncDir });
+        addCommand("sync/pull", "git", ["pull", "--ff-only", "origin", "master"], syncDir);
+        addCommand("sync/install", "npm", ["install", "--no-audit", "--no-fund"], syncDir);
+        addCommand("sync/build", "npm", ["run", "build"], syncDir);
       }
+    } else {
+      addSkipped("sync", "git pull --ff-only origin master", "Uagent Sync source checkout is absent; self-update does not create or clone missing components");
     }
   }
   if (targetAgent !== "codex" && selected.has("config-deps") && fs.existsSync(path.join(configDir, "package.json"))) {
-    planned.push({ name: "config-deps", command: "npm install --no-audit --no-fund", cwd: configDir });
+    addCommand("config-deps", "npm", ["install", "--no-audit", "--no-fund"], configDir);
+  } else if (targetAgent !== "codex" && selected.has("config-deps")) {
+    addSkipped("config-deps", "npm install --no-audit --no-fund", "OpenCode config dependencies are absent; update does not create a missing package environment");
   }
-  if (targetAgent !== "codex" && selected.has("opencode")) planned.push({ name: "opencode", command: "npm update -g opencode-ai" });
+  if (targetAgent !== "codex" && selected.has("opencode")) {
+    const installed = options.env?.installedOpencode === true
+      || (options.env?.installedOpencode === undefined
+        && (await executeCommand("npm", ["list", "--global", "--depth=0", "opencode-ai", "--json"])).code === 0);
+    if (installed) addCommand("opencode", "npm", ["update", "-g", "opencode-ai"]);
+    else addSkipped("opencode", "npm update -g opencode-ai", "opencode-ai is not installed globally; update does not install it");
+  }
 
   emit({ type: "plan", steps: planned });
 
   // ── 执行 ──
   const total = planned.length;
-  let codexSelfUpdateBlocked = false;
+  let selfUpdateBlocked = false;
   for (const [index, p] of planned.entries()) {
     const startedAt = Date.now();
     const step: UpdateStep = {
@@ -528,12 +552,16 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
       endStep(step, startedAt, "error", p.scopeError);
       continue;
     }
+    if (p.skipReason) {
+      endStep(step, startedAt, "skipped", p.skipReason);
+      continue;
+    }
     if (dryRun) {
       endStep(step, startedAt, "skipped", `[dry-run] would run in ${p.cwd || "cwd"}`);
       continue;
     }
-    if (targetAgent === "codex" && p.name.startsWith("sync/") && codexSelfUpdateBlocked) {
-      endStep(step, startedAt, "skipped", "blocked by an earlier required Codex self-update failure");
+    if (p.name.startsWith("sync/") && selfUpdateBlocked) {
+      endStep(step, startedAt, "skipped", "blocked by an earlier required self-update failure");
       continue;
     }
 
@@ -543,17 +571,16 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
       versionBefore = readPackageVersion(p.cwd!, p.name.slice("plugins/".length));
     } else if (p.name.startsWith("mcp(uv)/") || p.name.startsWith("cli(uv)/")) {
       const toolName = p.name.slice(p.name.startsWith("mcp(uv)/") ? "mcp(uv)/".length : "cli(uv)/".length);
-      const before = await readUvVersions();
+      const before = await readUvVersions(executeCommand);
       versionBefore = `${toolName}=${before[toolName] ?? "?"}`;
     } else if (p.name.startsWith("sync/")) {
       versionBefore = await readGitHead(p.cwd!);
     }
 
-    // 执行（流式输出）；skills 步骤注入 GITHUB_TOKEN 避免 rate limit
-    const env = p.name === "skills" && githubToken ? { GITHUB_TOKEN: githubToken } : undefined;
+    // 执行（流式输出）。计划阶段不运行写命令；所有普通步骤都走可注入的 argv 执行器。
     const result = p.run
       ? await p.run((line) => emit({ type: "output", name: p.name, line }))
-      : await spawnCommand(p.command, { cwd: p.cwd, env, onLine: (line) => emit({ type: "output", name: p.name, line }) });
+      : await executeCommand(p.file!, p.args!, { cwd: p.cwd, timeoutMs: p.timeoutMs, onLine: (line) => emit({ type: "output", name: p.name, line }) });
     const detail = (result.output || "").trim().slice(0, 600) || "ok";
 
     // 捕获执行后版本
@@ -562,22 +589,19 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
       versionAfter = readPackageVersion(p.cwd!, p.name.slice("plugins/".length));
     } else if (p.name.startsWith("mcp(uv)/") || p.name.startsWith("cli(uv)/")) {
       const toolName = p.name.slice(p.name.startsWith("mcp(uv)/") ? "mcp(uv)/".length : "cli(uv)/".length);
-      const after = await readUvVersions();
+      const after = await readUvVersions(executeCommand);
       versionAfter = `${toolName}=${after[toolName] ?? "?"}`;
     } else if (p.name.startsWith("sync/")) {
       versionAfter = await readGitHead(p.cwd!);
     }
 
-    // 判定状态：命令失败且允许失败 → warning；否则 error；成功 → ok
-    const allowFail = (targetAgent !== "codex" && p.name.startsWith("sync/")) || p.name === "config-deps" || p.name === "opencode" || p.name.startsWith("mcp(uv)/") || p.name.startsWith("mcp(npx)/") || p.name.startsWith("cli(uv)/");
     const status: UpdateStep["status"] = result.code === 0 ? "ok"
-      : result.code === 124 ? "error"
-      : allowFail ? "warning" : "error";
+      : "error";
     const detailOut = result.code === 124
-      ? `timeout after ${COMMAND_TIMEOUT_MS / 1000}s (killed)`
+      ? `timeout after ${(p.timeoutMs ?? COMMAND_TIMEOUT_MS) / 1000}s (killed)`
       : detail;
     endStep(step, startedAt, status, detailOut, versionBefore, versionAfter);
-    if (targetAgent === "codex" && p.name.startsWith("sync/") && status === "error") codexSelfUpdateBlocked = true;
+    if (p.name.startsWith("sync/") && status === "error") selfUpdateBlocked = true;
 
     // 变更证据收集（尽力而为）：版本有变化且更新成功时
     if (status === "ok" && versionBefore && versionAfter && versionBefore !== versionAfter) {

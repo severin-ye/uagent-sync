@@ -237,7 +237,7 @@ UAGENT_SYNC_LANG=zh opencode-sync guide  # 中文引导文档
 | `guide` | 生成 `guide/SYNC-GUIDE.md` —— 恢复手册 |
 | `log` | 读写安装溯源日志 |
 | `crystallize` | 记录安装 + 重生成文档 + 导出状态 + 一键提交 |
-| `update` | 按 `targetAgent` 更新智能体生态；Codex 的 `sync` 会拉取 U同步源码、运行测试、真实打包并重装全局 CLI，再刷新 personal marketplace、安装并核验同版本插件 |
+| `update` | 只更新已安装、可识别且可核验的受管组件；缺失的 MCP/CLI 明确跳过，绝不补装。自更新只允许干净且跟踪 `origin/master` 的 `master`，随后测试、真实打包，并核验全局 CLI 与 Codex 插件同版本；任一选中步骤失败均以非零状态退出。 |
 | `changelog` | 从最新更新报告起草分类变更日志 |
 | `inventory` | 只读扫描 Codex/OpenCode/DeepSeek Harness 配置（不含密钥值） |
 | `dashboard` | 启动本地只读配置看板（默认监听 `127.0.0.1`） |
