@@ -5,7 +5,7 @@
  * - plugins   : opencode 自动安装的 npm 插件缓存 ~/.cache/opencode/packages/<name>，用 bun add <name>@latest 原位升级
  * - skills    : `skills update -g`（~/.agents/skills 用户级技能包）
  * - mcp       : uv tool 管理的学术 MCP（paper-search/semantic-scholar/zotero/arxiv）→ uv tool upgrade
- * - sync      : 自研 uagent-sync → git pull + npm install + npm run build
+ * - sync      : 自研 uagent-sync → 核验 origin，在隔离的 origin/master 临时 clone 中测试、打包与安装
  * - config-deps: ~/.config/opencode 的 package.json 依赖（superpowers 等）→ npm install
  * - opencode  : npm 全局 opencode-ai → npm update -g（默认不跑，显式指定才更新）
  *
@@ -378,6 +378,7 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
     timeoutMs?: number;
     scopeError?: string;
     skipReason?: string;
+    alwaysRun?: boolean;
     run?: (onLine: (line: string) => void) => Promise<SpawnResult>;
   }[] = [];
   const addCommand = (name: string, file: string, args: string[], cwd?: string, timeoutMs = COMMAND_TIMEOUT_MS) => {
@@ -438,27 +439,51 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
   if (selected.has("sync")) {
     const syncDir = options.env?.syncDir ?? path.join(resolveWorkspaceRoot(), "2_Business", "uagent-sync");
     if (fs.existsSync(path.join(syncDir, "package.json"))) {
-      planned.push({ name: "sync/preflight", command: "verify clean master branch tracking origin/master", cwd: syncDir, run: async (onLine) => {
-        const branch = await executeCommand("git", ["branch", "--show-current"], { cwd: syncDir, onLine });
-        if (branch.code !== 0) return branch;
-        if (branch.output.trim() !== "master") return { code: 1, output: `self-update requires the clean master branch; current branch is ${branch.output.trim() || "detached HEAD"}` };
-        const status = await executeCommand("git", ["status", "--porcelain"], { cwd: syncDir, onLine });
-        if (status.code !== 0) return status;
-        if (status.output.trim()) return { code: 1, output: "self-update requires a clean working tree; local changes were preserved" };
-        const upstream = await executeCommand("git", ["rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{upstream}"], { cwd: syncDir, onLine });
-        if (upstream.code !== 0) return upstream;
-        if (upstream.output.trim() !== "origin/master") return { code: 1, output: `self-update requires upstream origin/master; current upstream is ${upstream.output.trim() || "unset"}` };
-        return { code: 0, output: "clean master branch tracking origin/master" };
+      let checkoutRoot: string | undefined;
+      let checkoutDir: string | undefined;
+      let verifiedOrigin: string | undefined;
+      let packedTarball: string | undefined;
+      let packDirectory: string | undefined;
+      const temporaryCwd = "<isolated-origin-master-checkout>";
+      const addCheckoutCommand = (name: string, file: string, args: string[], timeoutMs = COMMAND_TIMEOUT_MS) => planned.push({
+        name, command: displayCommand(file, args), cwd: temporaryCwd, timeoutMs,
+        run: (onLine) => checkoutDir
+          ? executeCommand(file, args, { cwd: checkoutDir, onLine, timeoutMs })
+          : Promise.resolve({ code: 1, output: "isolated checkout was not prepared" }),
+      });
+
+      planned.push({ name: "sync/prepare-checkout", command: "git clone --branch master --single-branch --depth 1 <verified-origin> <temporary-directory>", cwd: syncDir, run: async (onLine) => {
+        try {
+          const sourceOrigin = await executeCommand("git", ["remote", "get-url", "origin"], { cwd: syncDir, onLine });
+          if (sourceOrigin.code !== 0) return sourceOrigin;
+          verifiedOrigin = sourceOrigin.output.trim().split(/\r?\n/).at(-1) ?? "";
+          const normalizedOrigin = normalizeExtensionSource(verifiedOrigin);
+          if (!normalizedOrigin?.startsWith("github:")) return { code: 1, output: "Uagent repository origin is not a trusted GitHub repository source" };
+          checkoutRoot = fs.mkdtempSync(path.join(os.tmpdir(), "uagent-sync-update-"));
+          checkoutDir = path.join(checkoutRoot, "source");
+          const cloned = await executeCommand("git", ["clone", "--branch", "master", "--single-branch", "--depth", "1", verifiedOrigin, checkoutDir], { onLine, timeoutMs: 600_000 });
+          if (cloned.code !== 0) return cloned;
+          const clonedOrigin = await executeCommand("git", ["remote", "get-url", "origin"], { cwd: checkoutDir, onLine });
+          if (clonedOrigin.code !== 0) return clonedOrigin;
+          if (normalizeExtensionSource(clonedOrigin.output.trim()) !== normalizedOrigin) return { code: 1, output: "isolated checkout origin does not match the verified Uagent repository source" };
+          const branch = await executeCommand("git", ["branch", "--show-current"], { cwd: checkoutDir, onLine });
+          if (branch.code !== 0) return branch;
+          if (branch.output.trim() !== "master") return { code: 1, output: `isolated checkout is not on master: ${branch.output.trim() || "detached HEAD"}` };
+          const status = await executeCommand("git", ["status", "--porcelain"], { cwd: checkoutDir, onLine });
+          if (status.code !== 0) return status;
+          if (status.output.trim()) return { code: 1, output: "isolated checkout is unexpectedly dirty" };
+          if (!fs.existsSync(path.join(checkoutDir, "package.json"))) return { code: 1, output: "isolated checkout does not contain package.json" };
+          return { code: 0, output: "isolated origin/master checkout prepared and verified" };
+        } catch (error) {
+          return { code: 1, output: safeUpdateOutput(String(error)) };
+        }
       } });
-      if (targetAgent === "codex") {
-        let packedTarball: string | undefined;
-        let packDirectory: string | undefined;
-        addCommand("sync/pull", "git", ["pull", "--ff-only", "origin", "master"], syncDir);
-        addCommand("sync/install", "npm", ["ci", "--no-audit", "--no-fund"], syncDir);
-        addCommand("sync/test", "npm", ["test"], syncDir, 600_000);
-        planned.push({ name: "sync/pack", command: "npm pack --json --pack-destination <temporary-directory>", cwd: syncDir, timeoutMs: 600_000, run: async (onLine) => {
+      addCheckoutCommand("sync/install", "npm", ["ci", "--no-audit", "--no-fund"]);
+      addCheckoutCommand("sync/test", "npm", ["test"], 600_000);
+      planned.push({ name: "sync/pack", command: "npm pack --json --pack-destination <temporary-directory>", cwd: temporaryCwd, timeoutMs: 600_000, run: async (onLine) => {
+          if (!checkoutDir) return { code: 1, output: "isolated checkout was not prepared" };
           packDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "uagent-sync-pack-"));
-          const result = await executeCommand("npm", ["pack", "--json", "--pack-destination", packDirectory], { cwd: syncDir, onLine, timeoutMs: 600_000 });
+          const result = await executeCommand("npm", ["pack", "--json", "--pack-destination", packDirectory], { cwd: checkoutDir, onLine, timeoutMs: 600_000 });
           if (result.code !== 0) return result;
           try {
             const payload = parseJsonOutput<unknown>(result.output);
@@ -468,18 +493,15 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
             if (!fs.existsSync(packedTarball)) throw new Error("npm pack artifact does not exist");
             return result;
           } catch (error) { return { code: 1, output: safeUpdateOutput(String(error)) }; }
-        } });
-        planned.push({ name: "sync/install-global", command: "npm install --global <packed-tarball> --no-audit --no-fund", cwd: syncDir, timeoutMs: 600_000, run: async (onLine) => {
+      } });
+      planned.push({ name: "sync/install-global", command: "npm install --global <packed-tarball> --no-audit --no-fund", cwd: temporaryCwd, timeoutMs: 600_000, run: async (onLine) => {
           if (!packedTarball) return { code: 1, output: "packed tarball was not produced" };
-          try { return await executeCommand("npm", ["install", "--global", packedTarball, "--no-audit", "--no-fund"], { cwd: syncDir, onLine, timeoutMs: 600_000 }); }
-          finally { if (packDirectory) fs.rmSync(packDirectory, { recursive: true, force: true }); }
-        } });
-        planned.push({ name: "sync/marketplace-refresh", command: "codex plugin marketplace add <origin>; verify origin; git pull --ff-only origin master", cwd: syncDir, run: async (onLine) => {
-          const originResult = await executeCommand("git", ["remote", "get-url", "origin"], { cwd: syncDir, onLine });
-          if (originResult.code !== 0) return originResult;
-          const origin = originResult.output.trim().split(/\r?\n/).at(-1) ?? "";
-          if (!normalizeExtensionSource(origin)?.startsWith("github:")) return { code: 1, output: "Uagent repository origin is not a trusted GitHub repository source" };
-          const registered = await executeCommand("codex", ["plugin", "marketplace", "add", origin], { onLine });
+          return executeCommand("npm", ["install", "--global", packedTarball, "--no-audit", "--no-fund"], { cwd: checkoutDir, onLine, timeoutMs: 600_000 });
+      } });
+      if (targetAgent === "codex") {
+        planned.push({ name: "sync/marketplace-refresh", command: "codex plugin marketplace add <verified-origin>; verify origin; git pull --ff-only origin master", cwd: temporaryCwd, run: async (onLine) => {
+          if (!verifiedOrigin) return { code: 1, output: "verified Uagent repository origin is unavailable" };
+          const registered = await executeCommand("codex", ["plugin", "marketplace", "add", verifiedOrigin], { onLine });
           if (registered.code !== 0 && !/already/i.test(registered.output)) return registered;
           const listed = await executeCommand("codex", ["plugin", "marketplace", "list", "--json"], { onLine });
           if (listed.code !== 0) return listed;
@@ -488,21 +510,22 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
             const marketplaceRoot = payload.marketplaces?.find((item) => item.name === "uagent-sync")?.root;
             if (!marketplaceRoot || !path.isAbsolute(marketplaceRoot)) throw new Error("Codex marketplace root could not be resolved");
             const marketplaceOrigin = await executeCommand("git", ["remote", "get-url", "origin"], { cwd: marketplaceRoot, onLine });
-            if (marketplaceOrigin.code !== 0 || normalizeExtensionSource(marketplaceOrigin.output.trim()) !== normalizeExtensionSource(origin)) throw new Error("Codex marketplace origin does not match the Uagent repository");
+            if (marketplaceOrigin.code !== 0 || normalizeExtensionSource(marketplaceOrigin.output.trim()) !== normalizeExtensionSource(verifiedOrigin)) throw new Error("Codex marketplace origin does not match the Uagent repository");
             return await executeCommand("git", ["pull", "--ff-only", "origin", "master"], { cwd: marketplaceRoot, onLine });
           } catch (error) { return { code: 1, output: safeUpdateOutput(String(error)) }; }
         } });
-        planned.push({ name: "sync/plugin-install", command: "codex plugin add uagent-sync@uagent-sync", cwd: syncDir, run: async (onLine) => {
+        planned.push({ name: "sync/plugin-install", command: "codex plugin add uagent-sync@uagent-sync", cwd: temporaryCwd, run: async (onLine) => {
           const installed = await executeCommand("codex", ["plugin", "add", "uagent-sync@uagent-sync"], { onLine });
           return installed.code !== 0 && /already (?:installed|exists)|is already/i.test(installed.output) ? { code: 0, output: installed.output } : installed;
         } });
-        planned.push({ name: "sync/plugin-verify", command: "uagent-sync --version; codex plugin list --json (verify matching installed versions)", cwd: syncDir, run: async (onLine) => {
+        planned.push({ name: "sync/plugin-verify", command: "uagent-sync --version; codex plugin list --json (verify matching installed versions)", cwd: temporaryCwd, run: async (onLine) => {
           const cliResult = await executeCommand("uagent-sync", ["--version"], { onLine });
           if (cliResult.code !== 0) return cliResult;
           const listed = await executeCommand("codex", ["plugin", "list", "--json"], { onLine });
           if (listed.code !== 0) return listed;
           try {
-            const expected = (JSON.parse(fs.readFileSync(path.join(syncDir, "package.json"), "utf-8")) as { version?: string }).version;
+            if (!checkoutDir) throw new Error("isolated checkout was not prepared");
+            const expected = (JSON.parse(fs.readFileSync(path.join(checkoutDir, "package.json"), "utf-8")) as { version?: string }).version;
             const cliVersion = cliResult.output.trim().match(/\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?/)?.[0];
             const payload = parseJsonOutput<{ installed?: Array<{ name?: string; installed?: boolean; enabled?: boolean; version?: string }> }>(listed.output);
             const plugin = payload.installed?.find((item) => item.name === "uagent-sync" && item.installed === true && item.enabled === true);
@@ -512,11 +535,16 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
             return { code: 0, output: `uagent-sync CLI and Codex plugin ${expected} installed, enabled, and aligned` };
           } catch (error) { return { code: 1, output: safeUpdateOutput(String(error)) }; }
         } });
-      } else {
-        addCommand("sync/pull", "git", ["pull", "--ff-only", "origin", "master"], syncDir);
-        addCommand("sync/install", "npm", ["install", "--no-audit", "--no-fund"], syncDir);
-        addCommand("sync/build", "npm", ["run", "build"], syncDir);
       }
+      planned.push({ name: "sync/cleanup", command: "remove isolated checkout and package staging directories", cwd: temporaryCwd, alwaysRun: true, run: async () => {
+        try {
+          if (packDirectory) fs.rmSync(packDirectory, { recursive: true, force: true });
+          if (checkoutRoot) fs.rmSync(checkoutRoot, { recursive: true, force: true });
+          return { code: 0, output: "temporary self-update directories removed" };
+        } catch (error) {
+          return { code: 1, output: safeUpdateOutput(`temporary cleanup failed: ${String(error)}`) };
+        }
+      } });
     } else {
       addSkipped("sync", "git pull --ff-only origin master", "Uagent Sync source checkout is absent; self-update does not create or clone missing components");
     }
@@ -560,7 +588,7 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
       endStep(step, startedAt, "skipped", `[dry-run] would run in ${p.cwd || "cwd"}`);
       continue;
     }
-    if (p.name.startsWith("sync/") && selfUpdateBlocked) {
+    if (p.name.startsWith("sync/") && selfUpdateBlocked && !p.alwaysRun) {
       endStep(step, startedAt, "skipped", "blocked by an earlier required self-update failure");
       continue;
     }
@@ -573,14 +601,17 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
       const toolName = p.name.slice(p.name.startsWith("mcp(uv)/") ? "mcp(uv)/".length : "cli(uv)/".length);
       const before = await readUvVersions(executeCommand);
       versionBefore = `${toolName}=${before[toolName] ?? "?"}`;
-    } else if (p.name.startsWith("sync/")) {
-      versionBefore = await readGitHead(p.cwd!);
     }
 
     // 执行（流式输出）。计划阶段不运行写命令；所有普通步骤都走可注入的 argv 执行器。
-    const result = p.run
-      ? await p.run((line) => emit({ type: "output", name: p.name, line }))
-      : await executeCommand(p.file!, p.args!, { cwd: p.cwd, timeoutMs: p.timeoutMs, onLine: (line) => emit({ type: "output", name: p.name, line }) });
+    let result: SpawnResult;
+    try {
+      result = p.run
+        ? await p.run((line) => emit({ type: "output", name: p.name, line }))
+        : await executeCommand(p.file!, p.args!, { cwd: p.cwd, timeoutMs: p.timeoutMs, onLine: (line) => emit({ type: "output", name: p.name, line }) });
+    } catch (error) {
+      result = { code: 1, output: safeUpdateOutput(error instanceof Error ? error.message : String(error)) };
+    }
     const detail = (result.output || "").trim().slice(0, 600) || "ok";
 
     // 捕获执行后版本
@@ -591,8 +622,6 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
       const toolName = p.name.slice(p.name.startsWith("mcp(uv)/") ? "mcp(uv)/".length : "cli(uv)/".length);
       const after = await readUvVersions(executeCommand);
       versionAfter = `${toolName}=${after[toolName] ?? "?"}`;
-    } else if (p.name.startsWith("sync/")) {
-      versionAfter = await readGitHead(p.cwd!);
     }
 
     const status: UpdateStep["status"] = result.code === 0 ? "ok"

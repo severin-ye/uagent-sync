@@ -10,6 +10,13 @@ describe("updateExtensions", () => {
   // skills 组件有两条路径：update 检查成功 → 单步 "skills"；失败（skills CLI 1.5.9 Windows 已知 bug）
   // → 降级为逐个 "skills/add:<source>"。两个名字都算 skills 组件步骤。
   const isSkillStep = (s: { name: string }) => s.name === "skills" || s.name.startsWith("skills/add:");
+  const writeCloneFixture = (args: string[]): string => {
+    const checkout = args.at(-1);
+    assert.ok(checkout, "git clone must include a destination");
+    fs.mkdirSync(checkout, { recursive: true });
+    fs.writeFileSync(path.join(checkout, "package.json"), JSON.stringify({ name: "uagent-sync", version: "2.1.1" }));
+    return checkout;
+  };
 
   let tmpRoot: string;
   let env: { pluginCache: string; configDir: string; syncDir: string; installedUvTools?: string[]; installedOpencode?: boolean };
@@ -151,8 +158,7 @@ describe("updateExtensions", () => {
 
     assert.equal(report.targetAgent, "codex");
     for (const required of [
-      "sync/preflight",
-      "sync/pull",
+      "sync/prepare-checkout",
       "sync/install",
       "sync/test",
       "sync/pack",
@@ -160,6 +166,7 @@ describe("updateExtensions", () => {
       "sync/marketplace-refresh",
       "sync/plugin-install",
       "sync/plugin-verify",
+      "sync/cleanup",
     ]) assert.ok(names.includes(required), `missing Codex self-update step: ${required}`);
 
     const serialized = JSON.stringify(report.steps).toLowerCase();
@@ -189,6 +196,7 @@ describe("updateExtensions", () => {
     const calls: Array<{ file: string; args: string[]; cwd?: string }> = [];
     const executeCommand: UpdateCommandExecutor = async (file, args, options) => {
       calls.push({ file, args, cwd: options?.cwd });
+      if (file === "git" && args[0] === "clone") { writeCloneFixture(args); return { code: 0, output: "cloned origin/master" }; }
       if (file === "git" && args.join(" ") === "branch --show-current") return { code: 0, output: "master\n" };
       if (file === "git" && args.join(" ") === "status --porcelain") return { code: 0, output: "" };
       if (file === "git" && args.join(" ") === "rev-parse --abbrev-ref --symbolic-full-name @{upstream}") return { code: 0, output: "origin/master\n" };
@@ -212,21 +220,65 @@ describe("updateExtensions", () => {
     assert.equal(report.steps.find((step) => step.name === "sync/plugin-verify")?.status, "ok");
   });
 
-  it("refuses to pull a self-update from a development branch", async () => {
-    const calls: Array<{ file: string; args: string[] }> = [];
+  it("updates from an isolated temporary checkout without touching a dirty development branch", async () => {
+    const marketplaceRoot = path.join(tmpRoot, "marketplace-isolated");
+    fs.mkdirSync(marketplaceRoot, { recursive: true });
+    const calls: Array<{ file: string; args: string[]; cwd?: string }> = [];
+    let checkoutDir: string | undefined;
     const report = await updateExtensions({
       components: ["sync"], targetAgent: "codex", env,
-      executeCommand: async (file, args) => {
-        calls.push({ file, args });
-        if (file === "git" && args.join(" ") === "branch --show-current") return { code: 0, output: "codex/feature\n" };
+      executeCommand: async (file, args, options) => {
+        calls.push({ file, args, cwd: options?.cwd });
+        const command = args.join(" ");
+        if (file === "git" && command === "remote get-url origin") return { code: 0, output: "https://github.com/severin-ye/uagent-sync.git\n" };
+        if (file === "git" && args[0] === "clone") {
+          checkoutDir = writeCloneFixture(args);
+          return { code: 0, output: "cloned origin/master" };
+        }
+        if (file === "git" && command === "branch --show-current") return { code: 0, output: "master\n" };
+        if (file === "git" && command === "status --porcelain") return { code: 0, output: "" };
+        if (file === "npm" && args[0] === "pack") {
+          assert.equal(options?.cwd, checkoutDir);
+          const destination = args[args.indexOf("--pack-destination") + 1];
+          fs.writeFileSync(path.join(destination, "uagent-sync-2.1.1.tgz"), "fixture");
+          return { code: 0, output: JSON.stringify({ filename: "uagent-sync-2.1.1.tgz" }) };
+        }
+        if (file === "codex" && command === "plugin marketplace list --json") return { code: 0, output: JSON.stringify({ marketplaces: [{ name: "uagent-sync", root: marketplaceRoot }] }) };
+        if (file === "codex" && command === "plugin list --json") return { code: 0, output: JSON.stringify({ installed: [{ name: "uagent-sync", installed: true, enabled: true, version: "2.1.1" }] }) };
+        if (file === "uagent-sync" && command === "--version") return { code: 0, output: "2.1.1\n" };
         return { code: 0, output: "ok" };
       },
     });
 
-    assert.equal(report.steps.find((step) => step.name === "sync/preflight")?.status, "error");
-    assert.match(report.steps.find((step) => step.name === "sync/preflight")?.detail ?? "", /master/i);
-    assert.ok(!calls.some((call) => call.file === "git" && call.args[0] === "pull"));
-    assert.ok(report.steps.filter((step) => step.name.startsWith("sync/") && step.name !== "sync/preflight").every((step) => step.status === "skipped"));
+    assert.equal(report.summary.error, 0);
+    assert.ok(checkoutDir);
+    assert.ok(calls.some((call) => call.file === "npm" && call.args[0] === "test" && call.cwd === checkoutDir));
+    assert.ok(!calls.some((call) => call.cwd === env.syncDir && ["branch", "status", "pull", "checkout", "switch"].includes(call.args[0] ?? "")));
+    assert.equal(fs.existsSync(checkoutDir!), false, "temporary checkout must be removed after success");
+  });
+
+  it("blocks later self-update steps and cleans up when the isolated clone fails", async () => {
+    const calls: Array<{ file: string; args: string[] }> = [];
+    let checkoutDir: string | undefined;
+    const report = await updateExtensions({
+      components: ["sync"], targetAgent: "codex", env,
+      executeCommand: async (file, args) => {
+        calls.push({ file, args });
+        const command = args.join(" ");
+        if (file === "git" && command === "remote get-url origin") return { code: 0, output: "https://github.com/severin-ye/uagent-sync.git\n" };
+        if (file === "git" && args[0] === "clone") {
+          checkoutDir = args.at(-1);
+          return { code: 128, output: "clone failed" };
+        }
+        return { code: 0, output: "unexpected" };
+      },
+    });
+
+    assert.equal(report.steps.find((step) => step.name === "sync/prepare-checkout")?.status, "error");
+    assert.ok(!calls.some((call) => call.file === "npm" || call.file === "codex" || call.file === "uagent-sync"));
+    assert.equal(report.steps.find((step) => step.name === "sync/cleanup")?.status, "ok");
+    assert.ok(checkoutDir);
+    assert.equal(fs.existsSync(path.dirname(checkoutDir!)), false, "temporary checkout root must be removed after clone failure");
   });
 
   it("fails verification when the installed CLI and Codex plugin versions differ", async () => {
@@ -234,6 +286,7 @@ describe("updateExtensions", () => {
     fs.mkdirSync(marketplaceRoot, { recursive: true });
     const executeCommand: UpdateCommandExecutor = async (file, args) => {
       const command = args.join(" ");
+      if (file === "git" && args[0] === "clone") { writeCloneFixture(args); return { code: 0, output: "cloned origin/master" }; }
       if (file === "git" && command === "branch --show-current") return { code: 0, output: "master\n" };
       if (file === "git" && command === "status --porcelain") return { code: 0, output: "" };
       if (file === "git" && command === "rev-parse --abbrev-ref --symbolic-full-name @{upstream}") return { code: 0, output: "origin/master\n" };
@@ -261,6 +314,8 @@ describe("updateExtensions", () => {
       components: ["sync"], targetAgent: "codex", env,
       executeCommand: async (file, args) => {
         const command = args.join(" ");
+        if (file === "git" && command === "remote get-url origin") return { code: 0, output: "https://github.com/severin-ye/uagent-sync.git\n" };
+        if (file === "git" && args[0] === "clone") { writeCloneFixture(args); return { code: 0, output: "cloned origin/master" }; }
         if (file === "git" && command === "branch --show-current") return { code: 0, output: "master\n" };
         if (file === "git" && command === "status --porcelain") return { code: 0, output: "" };
         if (file === "git" && command === "rev-parse --abbrev-ref --symbolic-full-name @{upstream}") return { code: 0, output: "origin/master\n" };
@@ -277,6 +332,8 @@ describe("updateExtensions", () => {
     const calls: Array<{ file: string; args: string[] }> = [];
     const executeCommand: UpdateCommandExecutor = async (file, args) => {
       calls.push({ file, args });
+      if (file === "git" && args.join(" ") === "remote get-url origin") return { code: 0, output: "https://github.com/severin-ye/uagent-sync.git\n" };
+      if (file === "git" && args[0] === "clone") { writeCloneFixture(args); return { code: 0, output: "cloned origin/master" }; }
       if (file === "git" && args.join(" ") === "branch --show-current") return { code: 0, output: "master\n" };
       if (file === "git" && args.join(" ") === "status --porcelain") return { code: 0, output: "" };
       if (file === "git" && args.join(" ") === "rev-parse --abbrev-ref --symbolic-full-name @{upstream}") return { code: 0, output: "origin/master\n" };
