@@ -3,7 +3,8 @@ import { describe, it } from "node:test";
 import * as assert from "node:assert";
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { execSync } from "node:child_process";
+import * as os from "node:os";
+import { execSync, execFileSync } from "node:child_process";
 
 const CLI = path.join(path.dirname(moduleFilePath(import.meta.url)), "..", "dist", "cli.js");
 
@@ -18,20 +19,25 @@ describe("CLI smoke tests", () => {
   });
 
   it("should export state without errors", () => {
-    // CI/非 workspace 目录：注入 fake workspace root（env 分支不需要 .gitmodules）
-    const fakeWs = path.join(path.dirname(moduleFilePath(import.meta.url)), "..", "test-fixture-ws");
+    // Keep both workspace and user state isolated. Export must not inspect a
+    // developer's real plugin cache or depend on its size to meet the timeout.
+    const fakeWs = fs.mkdtempSync(path.join(os.tmpdir(), "usync-smoke-"));
+    const home = path.join(fakeWs, "home");
     const tmp = path.join(fakeWs, "test-output.json");
-    fs.mkdirSync(fakeWs, { recursive: true });
+    fs.mkdirSync(path.join(home, ".codex"), { recursive: true });
+    fs.writeFileSync(path.join(home, ".codex", "config.toml"), 'model = "fixture"\n');
     try {
-      execSync(`node "${CLI}" export "${tmp}"`, {
+      execFileSync(process.execPath, [CLI, "export", tmp, "--target-agent", "codex"], {
         encoding: "utf-8", timeout: 15000,
-        env: { ...process.env, OPENCODE_SYNC_WORKSPACE_ROOT: fakeWs },
+        env: { ...process.env, OPENCODE_SYNC_WORKSPACE_ROOT: fakeWs, USERPROFILE: home, HOME: home, CODEX_HOME: path.join(home, ".codex") },
       });
       assert.ok(fs.existsSync(tmp), "Output file should exist");
       const data = JSON.parse(fs.readFileSync(tmp, "utf-8"));
       assert.ok(data.timestamp, "Should have timestamp");
       assert.ok(Array.isArray(data.submodules), "Should have submodules array");
       assert.ok(Array.isArray(data.skills), "Should have skills array");
+      assert.equal(data.targetAgent, "codex");
+      assert.deepEqual(data.agents.codex.plugins, []);
     } finally {
       if (fs.existsSync(tmp)) fs.unlinkSync(tmp);
       fs.rmSync(fakeWs, { recursive: true, force: true });

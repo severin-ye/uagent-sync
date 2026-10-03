@@ -6,7 +6,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { executeTrustedCommand, restoreCodexExtensions } from "../dist/lib/codex-restore.js";
+import { executeTrustedCommand, restoreCodexExtensions } from "../src/lib/codex-restore.js";
 
 const temporaryDirectories: string[] = [];
 
@@ -15,6 +15,17 @@ afterEach(() => {
 });
 
 describe("Codex extension restoration", () => {
+  it("enforces a selector tombstone without removing other marketplaces", () => {
+    let installed = true;
+    const removed: string[] = [];
+    const record = (market: string) => ({ pluginId: `demo@${market}`, name: "demo", marketplaceName: market, installed: true, version: "1.0.0", enabled: false, marketplaceSource: { sourceType: "git", source: "acme/catalog" } });
+    const result = restoreCodexExtensions({ targetAgent: "codex", selected: [], installed: [], tombstones: [{ kind: "plugin", id: "demo@market", deletedAt: "2026-10-03T00:00:00Z" }], execute: (_file, args) => {
+      if (args.includes("remove")) { removed.push(args.at(-1)!); installed = false; return { code: 0, stdout: "{}", stderr: "" }; }
+      return { code: 0, stdout: JSON.stringify({ installed: [...(installed ? [record("market")] : []), record("other")], available: [] }), stderr: "" };
+    } });
+    assert.equal(result.ok, true, JSON.stringify(result));
+    assert.deepEqual(removed, ["demo@market"]);
+  });
   it("restores only selected portable entries and treats an absent tombstone as already satisfied", () => {
     const commands: string[][] = [];
     const result = restoreCodexExtensions({
@@ -112,7 +123,7 @@ describe("Codex extension restoration", () => {
     assert.ok(result.restored.includes("deleted:mcp:codebase-memory-mcp"));
   });
 
-  it("recognizes the bootstrap-installed Uagent plugin as an existing equivalent source", () => {
+  it("does not accept an existing equivalent-source plugin without fresh installed evidence", () => {
     const commands: string[][] = [];
     const result = restoreCodexExtensions({
       targetAgent: "codex",
@@ -121,9 +132,9 @@ describe("Codex extension restoration", () => {
       tombstones: [],
       execute: (file, args) => { commands.push([file, ...args]); return { code: 0, stdout: "", stderr: "" }; },
     });
-    assert.equal(result.ok, true, JSON.stringify(result));
-    assert.ok(result.skipped.includes("existing:plugin:uagent-sync"));
-    assert.equal(commands.length, 0);
+    assert.equal(result.ok, false, JSON.stringify(result));
+    assert.ok(result.errors.some(item => item.includes("inventory")));
+    assert.equal(commands.length, 1);
   });
 
   it("reports a supply-chain conflict for genuinely different plugin repositories", () => {

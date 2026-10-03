@@ -7,6 +7,7 @@ import { classifyExtensions, normalizeExtensionSource } from "./recovery-manifes
 import { scanForSecrets } from "./secret-scan.js";
 import { mergePermanentTombstones } from "./tombstones.js";
 import { redactString } from "./redact.js";
+import { pluginIdentity, readCodexPluginInventory, restoreCodexPlugin, type CodexPluginProbe, type CodexPluginVerification } from "./codex-plugin-sync.js";
 
 export interface CommandResult { code: number; stdout: string; stderr: string; resolvedPath?: string; errorType?: string }
 export interface SkillAttemptSummary {
@@ -24,7 +25,7 @@ export interface SkillRecoveryOptions {
   maxAttempts?: number; baseDelayMs?: number; maxDelayMs?: number; timeoutMs?: number; totalTimeoutMs?: number; heartbeatIntervalMs?: number;
   sleep?: (milliseconds: number) => void; now?: () => number;
 }
-export interface CodexRestoreResult { ok: boolean; warnings: string[]; errors: string[]; skipped: string[]; targetAgent: TargetAgent; restored: string[]; sourceSummaries: SkillSourceSummary[] }
+export interface CodexRestoreResult { ok: boolean; warnings: string[]; errors: string[]; skipped: string[]; targetAgent: TargetAgent; restored: string[]; sourceSummaries: SkillSourceSummary[]; pluginSummaries?: CodexPluginVerification[] }
 
 function safePath(value: string, env: NodeJS.ProcessEnv): string {
   const homes = [env.USERPROFILE, os.homedir()].filter((item): item is string => Boolean(item));
@@ -58,22 +59,22 @@ function skillLastMeaningfulLine(...values: string[]): string {
   return (lines.at(-1) ?? "<empty>").slice(0, 300);
 }
 
-function trustedShim(file: "codex" | "npx", env: NodeJS.ProcessEnv, execPath: string): string | undefined {
-  const explicit = file === "codex" ? env.UAGENT_SYNC_CODEX_CMD : env.UAGENT_SYNC_NPX_CMD;
+function trustedShim(file: "codex" | "npx" | "npm", env: NodeJS.ProcessEnv, execPath: string): string | undefined {
+  const explicit = file === "codex" ? env.UAGENT_SYNC_CODEX_CMD : file === "npm" ? env.UAGENT_SYNC_NPM_CMD : env.UAGENT_SYNC_NPX_CMD;
   const candidates = [
     explicit,
     file === "codex" && env.APPDATA ? path.join(env.APPDATA, "npm", "codex.cmd") : undefined,
-    file === "npx" ? path.join(path.dirname(execPath), "npx.cmd") : undefined,
-    file === "npx" && env.APPDATA ? path.join(env.APPDATA, "npm", "npx.cmd") : undefined,
+    file !== "codex" ? path.join(path.dirname(execPath), `${file}.cmd`) : undefined,
+    file !== "codex" && env.APPDATA ? path.join(env.APPDATA, "npm", `${file}.cmd`) : undefined,
   ].filter((item): item is string => Boolean(item));
   return candidates.find((candidate) => path.isAbsolute(candidate) && /\.cmd$/i.test(candidate) && !/[\\/]WindowsApps[\\/]/i.test(candidate) && fs.existsSync(candidate));
 }
 
-function nodeCliForShim(file: "codex" | "npx", shim: string): string | undefined {
+function nodeCliForShim(file: "codex" | "npx" | "npm", shim: string): string | undefined {
   const bin = path.dirname(shim);
   const candidates = file === "codex"
     ? [path.join(bin, "node_modules", "@openai", "codex", "bin", "codex.js")]
-    : [path.join(bin, "node_modules", "npm", "bin", "npx-cli.js")];
+    : [path.join(bin, "node_modules", "npm", "bin", file === "npm" ? "npm-cli.js" : "npx-cli.js")];
   return candidates.find((candidate) => fs.existsSync(candidate));
 }
 
@@ -141,7 +142,7 @@ export function executeTrustedCommand(file: string, args: string[], options?: Tr
   let executable = file;
   let finalArgs = args;
   let resolvedPath: string | undefined;
-  if (platform === "win32" && (file === "codex" || file === "npx")) {
+  if (platform === "win32" && (file === "codex" || file === "npx" || file === "npm")) {
     const shim = trustedShim(file, env, execPath);
     if (!shim) return { code: 1, stdout: "", stderr: `No trusted ${file}.cmd entry was found`, errorType: "TRUSTED_SHIM_NOT_FOUND" };
     resolvedPath = safePath(shim, env);
@@ -161,7 +162,7 @@ function defaultExecute(file: string, args: string[], options?: TrustedCommandOp
   return executeTrustedCommand(file, args, options);
 }
 
-function key(item: Pick<ExtensionRef, "kind" | "id">): string { return `${item.kind}:${item.id.toLowerCase()}`; }
+function key(item: Pick<ExtensionRef, "kind" | "id" | "config">): string { return `${item.kind}:${(item.kind === "plugin" ? pluginIdentity(item as ExtensionRef) : item.id).toLowerCase()}`; }
 
 function bounded(value: number | undefined, fallback: number, minimum: number, maximum: number): number {
   return Math.min(maximum, Math.max(minimum, Number.isFinite(value) ? Math.floor(value as number) : fallback));
@@ -231,6 +232,8 @@ export function restoreCodexExtensions(input: {
   skillRecovery?: SkillRecoveryOptions;
   retry?: SkillRecoveryOptions;
   recoveryReportDirectory?: string;
+  homeDir?: string;
+  pluginProbe?: CodexPluginProbe;
 }): CodexRestoreResult {
   const result: CodexRestoreResult = { ok: true, warnings: [], errors: [], skipped: [], targetAgent: input.targetAgent, restored: [], sourceSummaries: [] };
   if (input.targetAgent !== "codex") { result.ok = false; result.errors.push(`Codex restorer cannot modify targetAgent=${input.targetAgent}`); return result; }
@@ -251,15 +254,27 @@ export function restoreCodexExtensions(input: {
 
   for (const tombstone of tombstones) {
     const tombstoneKey = key(tombstone);
+    if (tombstone.kind === "plugin") {
+      try {
+        const homeDir = input.homeDir ?? os.homedir();
+        const matching = readCodexPluginInventory(homeDir, execute).filter(item => (tombstone.id.includes("@") ? pluginIdentity(item) : item.id).toLowerCase() === tombstone.id.toLowerCase());
+        if (!matching.length) { result.skipped.push(`tombstone-satisfied:${tombstoneKey}`); continue; }
+        for (const item of matching) {
+          const removed = execute("codex", ["plugin", "remove", pluginIdentity(item)], { env: { ...process.env, CODEX_HOME: path.join(homeDir, ".codex") }, timeoutMs: 30_000 });
+          if (removed.code !== 0) { result.errors.push(`Could not enforce tombstone for ${key(item)}: ${safeError(removed.stderr)}`); continue; }
+          if (readCodexPluginInventory(homeDir, execute).some(current => key(current) === key(item))) result.errors.push(`Could not confirm tombstone removal for ${key(item)}`);
+          else result.restored.push(`deleted:${key(item)}`);
+        }
+      } catch (error) { result.errors.push(`Could not verify plugin tombstone ${tombstoneKey}: ${safeError(String(error))}`); }
+      continue;
+    }
     if (!initiallyInstalled.has(tombstoneKey)) {
       result.skipped.push(`tombstone-satisfied:${tombstoneKey}`);
       continue;
     }
     const removal: [string, string[]] = tombstone.kind === "mcp"
       ? ["codex", ["mcp", "remove", tombstone.id]]
-      : tombstone.kind === "plugin"
-        ? ["codex", ["plugin", "remove", tombstone.id]]
-        : ["npx", ["--yes", "skills", "remove", tombstone.id, "-g", "-y"]];
+      : ["npx", ["--yes", "skills", "remove", tombstone.id, "-g", "-y"]];
     const removed = execute(removal[0], removal[1]);
     if (removed.code !== 0 && !/not installed|not found|does not exist|unknown|no mcp server named/i.test(`${removed.stdout}\n${removed.stderr}`)) {
       result.errors.push(`Could not enforce tombstone for ${tombstoneKey}: ${safeError(removed.stderr) || "non-zero exit"}${removed.resolvedPath ? `; path=${removed.resolvedPath}` : ""}${removed.errorType ? `; type=${removed.errorType}` : ""}`);
@@ -270,7 +285,15 @@ export function restoreCodexExtensions(input: {
     else result.restored.push(`deleted:${tombstoneKey}`);
   }
 
-  result.skipped.push(...classified.existing.filter((item) => item.kind !== "skill").map((item) => `existing:${key(item)}`));
+  result.skipped.push(...classified.existing.filter((item) => item.kind === "mcp").map((item) => `existing:${key(item)}`));
+  for (const item of [...classified.existing, ...classified.restorable].filter(entry => entry.kind === "plugin")) {
+    const restored = restoreCodexPlugin(item, { homeDir: input.homeDir ?? os.homedir(), execute, probe: input.pluginProbe });
+    (result.pluginSummaries ??= []).push(restored);
+    result.warnings.push(...restored.warnings.map(warning => `${key(item)}: ${warning}`));
+    result.warnings.push(...restored.remaining.map(remaining => `${key(item)}: ${remaining}`));
+    if (restored.ok) result.restored.push(key(item));
+    else result.errors.push(...restored.errors.map(error => `${key(item)}: ${error}`));
+  }
   const groupedSkills = new Map<string, ExtensionRef[]>();
   const sourcesToRestore = new Set<string>();
   for (const item of classified.existing.filter((entry) => entry.kind === "skill")) {
@@ -399,16 +422,9 @@ export function restoreCodexExtensions(input: {
     emitProgress({ phase: failed.length ? "failed" : "succeeded", source, attempt: attempts.length, maxAttempts, elapsedMs: totalElapsedMs });
   }
 
-  for (const item of classified.restorable.filter((entry) => entry.kind !== "skill")) {
+  for (const item of classified.restorable.filter((entry) => entry.kind === "mcp")) {
     let command: [string, string[]] | undefined;
-    if (item.kind === "plugin") {
-      if (item.config?.managedBy === "codex-runtime") { result.skipped.push(`runtime-managed:${key(item)}`); continue; }
-      if (!item.source) { result.errors.push(`Missing marketplace source for ${key(item)}`); continue; }
-      const marketplace = typeof item.config?.marketplace === "string" ? item.config.marketplace : "uagent-sync";
-      const added = execute("codex", ["plugin", "marketplace", "add", item.source]);
-      if (added.code !== 0 && !/already/i.test(`${added.stdout}\n${added.stderr}`)) { result.errors.push(`Failed to register marketplace for ${key(item)}`); continue; }
-      command = ["codex", ["plugin", "add", `${item.id}@${marketplace}`]];
-    } else {
+    {
       if (scanForSecrets(JSON.stringify(item.config ?? {})).length) { result.errors.push(`Unsafe secret value in MCP recovery entry ${item.id}`); continue; }
       const config = item.config ?? {};
       if (config.managedBy === "codex-runtime") { result.skipped.push(`runtime-managed:${key(item)}`); continue; }

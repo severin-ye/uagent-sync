@@ -70,7 +70,7 @@ describe("targetAgent persistence and strict scope", () => {
   });
 
   it("Codex export contains a host-scoped manifest and no OpenCode config", () => {
-    const state = exportSystemState(WS, { targetAgent: "codex", homeDir: HOME } as never) as Record<string, unknown>;
+    const state = exportSystemState(WS, { targetAgent: "codex", homeDir: HOME, pluginInventory: [], capturePlugins: false } as never) as Record<string, unknown>;
     assert.equal(state.targetAgent, "codex");
     assert.ok(state.agents && typeof state.agents === "object");
     assert.ok(!("opencodeConfig" in state), "Codex-only state must not contain OpenCode configuration");
@@ -92,7 +92,7 @@ describe("targetAgent persistence and strict scope", () => {
         },
       },
     }));
-    const state = exportSystemState(WS, { targetAgent: "codex", homeDir: HOME });
+    const state = exportSystemState(WS, { targetAgent: "codex", homeDir: HOME, pluginInventory: [], capturePlugins: false });
     const skill = state.agents?.codex?.skills.find((item) => item.id === "portable-skill");
     assert.equal(skill?.source, "https://github.com/owner/repository.git");
     assert.equal(skill?.version, "0123456789abcdef");
@@ -163,7 +163,7 @@ describe("safe recovery protocol", () => {
   it("Codex export fails closed on a malformed tombstone file", () => {
     const tombstones = path.join(WS, "usync-dotfiles", "state", "extension-tombstones.json");
     fs.writeFileSync(tombstones, "{bad");
-    assert.throws(() => exportSystemState(WS, { targetAgent: "codex", homeDir: HOME }), /tombstone/i);
+    assert.throws(() => exportSystemState(WS, { targetAgent: "codex", homeDir: HOME, pluginInventory: [], capturePlugins: false }), /tombstone/i);
     fs.rmSync(tombstones, { force: true });
   });
 
@@ -173,7 +173,7 @@ describe("safe recovery protocol", () => {
       '[plugins."uagent-sync@uagent-sync"]', 'enabled = true',
       '[mcp_servers.example]', 'command = "npx"', 'args = ["-y", "example-mcp"]',
     ].join("\n"));
-    const state = exportSystemState(WS, { targetAgent: "codex", homeDir: HOME });
+    const state = exportSystemState(WS, { targetAgent: "codex", homeDir: HOME, pluginInventory: [], capturePlugins: false });
     assert.equal(state.agents?.codex?.plugins[0]?.id, "uagent-sync");
     assert.equal(state.agents?.codex?.plugins[0]?.config?.marketplace, "uagent-sync");
     assert.equal(state.agents?.codex?.mcp[0]?.config?.command, "npx");
@@ -184,9 +184,9 @@ describe("safe recovery protocol", () => {
     const { scanInstalledCodexExtensions } = await import("../dist/lib/state.js");
     fs.mkdirSync(path.join(HOME, ".codex"), { recursive: true });
     fs.writeFileSync(path.join(HOME, ".codex", "config.toml"), '[mcp_servers.codebase-memory-mcp]\ncommand = "npx"\nargs = ["-y", "codebase-memory-mcp"]\n');
-    const raw = scanInstalledCodexExtensions(HOME);
+    const raw = scanInstalledCodexExtensions(HOME, undefined, undefined, []);
     assert.ok(raw.some((item) => item.kind === "mcp" && item.id === "codebase-memory-mcp"));
-    const exported = exportSystemState(WS, { targetAgent: "codex", homeDir: HOME });
+    const exported = exportSystemState(WS, { targetAgent: "codex", homeDir: HOME, pluginInventory: [], capturePlugins: false });
     assert.ok(!exported.agents?.codex?.mcp.some((item) => item.id === "codebase-memory-mcp"));
   });
 
@@ -230,7 +230,7 @@ describe("clean checkout and Codex plugin contract", () => {
     assert.ok(!("hooks" in manifest));
   });
 
-  it("keeps the 2.2.2 patch identity consistent across package and plugin metadata", () => {
+  it("keeps the 2.3.0 feature identity consistent across package and plugin metadata", () => {
     const root = path.join(path.dirname(moduleFilePath(import.meta.url)), "..");
     const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf-8"));
     const lock = JSON.parse(fs.readFileSync(path.join(root, "package-lock.json"), "utf-8"));
@@ -238,7 +238,7 @@ describe("clean checkout and Codex plugin contract", () => {
     const marketplace = JSON.parse(fs.readFileSync(path.join(root, ".claude-plugin", "marketplace.json"), "utf-8"));
     const dsh = JSON.parse(fs.readFileSync(path.join(root, "packages", "dsh", "package.json"), "utf-8"));
 
-    assert.equal(pkg.version, "2.2.2");
+    assert.equal(pkg.version, "2.3.0");
     assert.equal(lock.version, pkg.version);
     assert.equal(lock.packages[""].version, pkg.version);
     assert.equal(codex.version, pkg.version);

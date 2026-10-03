@@ -160,7 +160,7 @@ describe("resilient Codex skill scanning", () => {
 
     const result = scanSkillDirectories(HOME, "codex", realSkillFs as never);
     assert.ok(result.skills.includes("codex-linked-skill"));
-    const state = exportSystemState(WS, { targetAgent: "codex", homeDir: HOME, fsApi: realSkillFs } as never);
+    const state = exportSystemState(WS, { targetAgent: "codex", homeDir: HOME, pluginInventory: [], fsApi: realSkillFs } as never);
     assert.ok(state.agents?.codex?.skills.some((item) => item.id === "codex-linked-skill"));
   });
 
@@ -172,6 +172,7 @@ describe("resilient Codex skill scanning", () => {
     const result = exportSystemState(WS, {
       targetAgent: "codex",
       homeDir: HOME,
+      pluginInventory: [],
       fsApi: fsFailingOn(disappearingPath, "ENOENT"),
     } as never);
     const diagnostic = result.scanDiagnostics?.find((item) => item.path === disappearingPath);
@@ -189,6 +190,7 @@ describe("resilient Codex skill scanning", () => {
       HOME,
       fsFailingOn(disappearingPath, "ENOENT"),
       (diagnostic) => diagnostics.push(diagnostic),
+      [],
     );
     assert.ok(Array.isArray(extensions));
     const diagnostic = diagnostics.find((item) => (item as { path?: string })?.path === disappearingPath) as { kind?: string } | undefined;
@@ -201,13 +203,13 @@ describe("resilient Codex skill scanning", () => {
     fs.writeFileSync(path.join(ioPath, "SKILL.md"), "# io codex skill\n");
 
     assert.throws(
-      () => exportSystemState(WS, { targetAgent: "codex", homeDir: HOME, fsApi: fsFailingOn(ioPath, "EIO") } as never),
+      () => exportSystemState(WS, { targetAgent: "codex", homeDir: HOME, pluginInventory: [], fsApi: fsFailingOn(ioPath, "EIO") } as never),
       /skill scan.*EIO|EIO.*skill scan/i,
     );
   });
 
   it("keeps scan internals at the top level of exported state", () => {
-    const state = exportSystemState(WS, { targetAgent: "codex", homeDir: HOME, fsApi: realSkillFs } as never);
+    const state = exportSystemState(WS, { targetAgent: "codex", homeDir: HOME, pluginInventory: [], fsApi: realSkillFs } as never);
     assert.ok(Array.isArray(state.scanDiagnostics));
     assert.ok(!state.agents?.codex || !("scanBlocking" in state.agents.codex));
     assert.ok(!state.agents?.codex || !("scanDiagnostics" in state.agents.codex));

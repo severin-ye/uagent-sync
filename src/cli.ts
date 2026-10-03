@@ -211,7 +211,7 @@ async function main() {
   // --lang 显式指定（最高优先级），其次环境变量/系统 locale，默认 en。
   if (typeof flags.get("lang") === "string") setLang(String(flags.get("lang")));
 
-  if (command === "--help" || command === "-h" || command === "help") {
+  if (command === "--help" || command === "-h" || command === "help" || flags.has("help") || flags.has("h")) {
     console.log(t("cli.usage"));
     process.exit(0);
   }

@@ -20,6 +20,7 @@ import { resolveGitExecutable, runGit, runWithFreshFixture } from "./support/fix
  */
 const CLI = path.join(path.dirname(moduleFilePath(import.meta.url)), "..", "dist", "cli.js");
 const TMP = path.join(os.tmpdir(), `crystallize-git-test-${Date.now()}`);
+const TEST_HOME = path.join(TMP, "isolated-home");
 
 const GIT = resolveGitExecutable();
 
@@ -81,7 +82,7 @@ function runCli(args: string[], workspaceRoot: string): { stdout: string; stderr
   try {
     const stdout = execFileSync(process.execPath, [CLI, ...args], {
       encoding: "utf-8", timeout: 60000,
-      env: { ...process.env, OPENCODE_SYNC_WORKSPACE_ROOT: workspaceRoot },
+      env: { ...process.env, HOME: TEST_HOME, USERPROFILE: TEST_HOME, CODEX_HOME: path.join(TEST_HOME, ".codex"), OPENCODE_SYNC_WORKSPACE_ROOT: workspaceRoot },
     });
     return { stdout, stderr: "", code: 0 };
   } catch (e: unknown) {
@@ -92,6 +93,7 @@ function runCli(args: string[], workspaceRoot: string): { stdout: string; stderr
 
 before(() => {
   fs.mkdirSync(TMP, { recursive: true });
+  fs.mkdirSync(TEST_HOME);
 });
 
 after(() => {

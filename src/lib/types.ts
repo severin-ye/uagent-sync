@@ -30,6 +30,7 @@ export interface ExtensionRef {
   commit?: string;
   enabled?: boolean;
   config?: Record<string, unknown>;
+  pluginSnapshot?: import("./codex-plugin-sync.js").CodexPluginSnapshot;
 }
 
 export interface ExtensionTombstone {

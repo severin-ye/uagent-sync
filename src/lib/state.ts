@@ -10,6 +10,9 @@ import type { WorkspaceState, SubmoduleState, ImportResult, TargetAgent, Extensi
 import { DOTFILES_DIR } from "./dotfiles.js";
 import { parse as parseToml } from "smol-toml";
 import { mergePermanentTombstones } from "./tombstones.js";
+import { captureCodexPluginSnapshot, pluginIdentity, readCodexPluginInventory } from "./codex-plugin-sync.js";
+import { isTombstoned } from "./recovery-manifest.js";
+import { redactString } from "./redact.js";
 
 export function stripJsonComments(content: string): string {
   let result = "";
@@ -286,7 +289,7 @@ function readTombstones(workspaceRoot: string): ExtensionTombstone[] {
   return mergePermanentTombstones(items);
 }
 
-function readCodexState(homeDir: string, fileSystem: SkillScanFileSystem = nativeSkillFileSystem): { plugins: ExtensionRef[]; skills: ExtensionRef[]; mcp: ExtensionRef[]; config: Record<string, unknown>; scanDiagnostics: SkillScanDiagnostic[]; scanBlocking: boolean } {
+function readCodexState(homeDir: string, fileSystem: SkillScanFileSystem = nativeSkillFileSystem, pluginInventory?: ExtensionRef[]): { plugins: ExtensionRef[]; skills: ExtensionRef[]; mcp: ExtensionRef[]; config: Record<string, unknown>; scanDiagnostics: SkillScanDiagnostic[]; scanBlocking: boolean } {
   const configPath = path.join(homeDir, ".codex", "config.toml");
   const configText = fs.existsSync(configPath) ? fs.readFileSync(configPath, "utf-8") : "";
   let parsed: Record<string, unknown> = {};
@@ -296,18 +299,31 @@ function readCodexState(homeDir: string, fileSystem: SkillScanFileSystem = nativ
   }
   const pluginTables = (parsed.plugins && typeof parsed.plugins === "object" ? parsed.plugins : {}) as Record<string, Record<string, unknown>>;
   const marketplaces = (parsed.marketplaces && typeof parsed.marketplaces === "object" ? parsed.marketplaces : {}) as Record<string, Record<string, unknown>>;
-  const plugins: ExtensionRef[] = Object.entries(pluginTables).map(([selector, config]) => {
+  let inventoryError: string | undefined;
+  let inventory = pluginInventory;
+  if (!inventory) {
+    // No configured plugins and no installed cache is a proved empty local
+    // scope; do not invoke plugin inventory for unrelated Skill/MCP recovery.
+    try { inventory = !Object.keys(pluginTables).length && !fs.existsSync(path.join(homeDir, ".codex", "plugins", "cache")) ? [] : readCodexPluginInventory(homeDir); }
+    catch (error) { inventory = []; inventoryError = redactString(error instanceof Error ? error.message : String(error)); }
+  }
+  const installedBySelector = new Map(inventory.map((item) => [pluginIdentity(item).toLowerCase(), item]));
+  const configured: ExtensionRef[] = Object.entries(pluginTables).map(([selector, config]) => {
     const separator = selector.lastIndexOf("@");
     const id = separator > 0 ? selector.slice(0, separator) : selector;
     const marketplace = separator > 0 ? selector.slice(separator + 1) : undefined;
     const marketplaceConfig = marketplace ? marketplaces[marketplace] : undefined;
-    const runtimeManaged = marketplaceConfig?.source_type === "local";
+    const runtimeSource = typeof marketplaceConfig?.source === "string" ? marketplaceConfig.source.replace(/\\/g, "/") : "";
+    const runtimeManaged = marketplaceConfig?.source_type === "local" && /\/plugins\/cache\/openai-(?:bundled|primary-runtime|curated-remote)(?:\/|$)/i.test(runtimeSource);
     const source = runtimeManaged ? `codex-runtime:${marketplace}` : typeof marketplaceConfig?.source === "string" ? marketplaceConfig.source : undefined;
     const restoreConfig: Record<string, unknown> = {};
     if (marketplace) restoreConfig.marketplace = marketplace;
     if (runtimeManaged) restoreConfig.managedBy = "codex-runtime";
-    return { kind: "plugin", id, source, version: typeof marketplaceConfig?.last_revision === "string" ? marketplaceConfig.last_revision : undefined, enabled: config?.enabled !== false, config: Object.keys(restoreConfig).length ? restoreConfig : undefined };
+    const installed = installedBySelector.get(selector.toLowerCase());
+    return { kind: "plugin", id, source, commit: typeof marketplaceConfig?.last_revision === "string" ? marketplaceConfig.last_revision : undefined, ...installed, enabled: installed?.enabled ?? config?.enabled !== false, config: { ...restoreConfig, ...installed?.config, installationVerified: !!installed } };
   });
+  const configuredKeys = new Set(configured.map((item) => pluginIdentity(item).toLowerCase()));
+  const plugins = [...configured, ...inventory.filter((item) => !configuredKeys.has(pluginIdentity(item).toLowerCase()))];
   const mcpTables = (parsed.mcp_servers && typeof parsed.mcp_servers === "object" ? parsed.mcp_servers : {}) as Record<string, Record<string, unknown>>;
   const mcp: ExtensionRef[] = Object.entries(mcpTables).map(([id, config]) => {
     const safeConfig: Record<string, unknown> = {};
@@ -345,7 +361,7 @@ function readCodexState(homeDir: string, fileSystem: SkillScanFileSystem = nativ
     plugins,
     skills,
     mcp,
-    config: { configFile: ".codex/config.toml", secretValuesIncluded: false },
+    config: { configFile: ".codex/config.toml", secretValuesIncluded: false, ...(inventoryError ? { inventoryError } : {}) },
     scanDiagnostics: skillScan.diagnostics,
     scanBlocking: skillScan.blocking,
   };
@@ -360,29 +376,39 @@ export function scanInstalledCodexExtensions(
   homeDir: string,
   fileSystem: SkillScanFileSystem = nativeSkillFileSystem,
   onDiagnostic: SkillScanDiagnosticSink = defaultSkillScanDiagnosticSink,
+  pluginInventory?: ExtensionRef[],
 ): ExtensionRef[] {
-  const codex = readCodexState(homeDir, fileSystem);
+  const codex = readCodexState(homeDir, fileSystem, pluginInventory);
   for (const diagnostic of codex.scanDiagnostics) onDiagnostic(diagnostic);
   assertSkillScanNotBlocked(codex.scanDiagnostics);
-  return [...codex.plugins, ...codex.skills, ...codex.mcp];
+  if (codex.config.inventoryError) throw new Error(String(codex.config.inventoryError));
+  return [...codex.plugins.filter((item) => item.config?.installationVerified === true), ...codex.skills, ...codex.mcp];
 }
 
-export function exportSystemState(workspaceRoot: string, options?: { targetAgent?: TargetAgent; homeDir?: string; fsApi?: SkillScanFileSystem }): WorkspaceState {
+export function exportSystemState(workspaceRoot: string, options?: { targetAgent?: TargetAgent; homeDir?: string; fsApi?: SkillScanFileSystem; pluginInventory?: ExtensionRef[]; capturePlugins?: boolean }): WorkspaceState {
   const targetAgent = options?.targetAgent;
   const fileSystem = options?.fsApi ?? nativeSkillFileSystem;
   if (targetAgent === "codex") {
     const tombstones = readTombstones(workspaceRoot);
-    const codex = readCodexState(options?.homeDir ?? os.homedir(), fileSystem);
+    const codex = readCodexState(options?.homeDir ?? os.homedir(), fileSystem, options?.pluginInventory);
     assertSkillScanNotBlocked(codex.scanDiagnostics);
     const { scanDiagnostics, scanBlocking: _scanBlocking, ...codexState } = codex;
-    const blocked = new Set(tombstones.map((item) => `${item.kind}:${item.id.toLowerCase()}`));
-    codexState.plugins = codexState.plugins.filter((item) => !blocked.has(`plugin:${item.id.toLowerCase()}`));
-    codexState.skills = codexState.skills.filter((item) => !blocked.has(`skill:${item.id.toLowerCase()}`));
-    codexState.mcp = codexState.mcp.filter((item) => !blocked.has(`mcp:${item.id.toLowerCase()}`));
+    codexState.plugins = codexState.plugins.filter((item) => !isTombstoned("plugin", pluginIdentity(item), tombstones)).map((item) => {
+      const copy = { ...item, config: { ...item.config } };
+      if (options?.capturePlugins !== false && item.config?.installationVerified === true && item.config?.managedBy !== "codex-runtime") {
+        try { copy.pluginSnapshot = captureCodexPluginSnapshot(item); }
+        catch (error) { copy.config.snapshotError = redactString(error instanceof Error ? error.message : String(error)); }
+      }
+      delete copy.config.installedPath;
+      delete copy.config.sourcePath;
+      return copy;
+    });
+    codexState.skills = codexState.skills.filter((item) => !isTombstoned("skill", item.id, tombstones));
+    codexState.mcp = codexState.mcp.filter((item) => !isTombstoned("mcp", item.id, tombstones));
     return {
       schemaVersion: 2,
       targetAgent,
-      completeness: scanDiagnostics.length > 0 || [...codexState.plugins, ...codexState.skills, ...codexState.mcp].some((item) => !item.source || (item.kind === "mcp" && Array.isArray(item.config?.envVars) && item.config.envVars.length > 0)) ? "partial" : "complete",
+      completeness: codexState.config.inventoryError || scanDiagnostics.length > 0 || [...codexState.plugins, ...codexState.skills, ...codexState.mcp].some((item) => (!item.source && !item.pluginSnapshot) || (item.kind === "plugin" && (item.config?.installationVerified !== true || item.config?.snapshotError || item.pluginSnapshot?.remaining.length)) || (item.kind === "mcp" && Array.isArray(item.config?.envVars) && item.config.envVars.length > 0)) ? "partial" : "complete",
       timestamp: new Date().toISOString(), platform: getPlatform(), hostname: os.hostname(),
       agents: { codex: codexState }, tombstones, envVars: readEnvVarNames(workspaceRoot),
       submodules: [], skills: codexState.skills.map((item) => item.id),
@@ -526,8 +552,8 @@ export function importSystemState(workspaceRoot: string, state: WorkspaceState):
   if (state.targetAgent === "codex") {
     const codex = state.agents?.codex;
     if (!codex) return { success: false, messages: ["Error: Codex restore manifest is missing"] };
-    const deleted = new Set(mergePermanentTombstones(state.tombstones ?? []).map((item) => `${item.kind}:${item.id.toLowerCase()}`));
-    const forbidden = [...codex.mcp, ...codex.plugins, ...codex.skills].filter((item) => deleted.has(`${item.kind}:${item.id.toLowerCase()}`));
+    const deleted = mergePermanentTombstones(state.tombstones ?? []);
+    const forbidden = [...codex.mcp, ...codex.plugins, ...codex.skills].filter((item) => isTombstoned(item.kind, item.kind === "plugin" ? pluginIdentity(item) : item.id, deleted));
     if (forbidden.length) return { success: false, messages: forbidden.map((item) => `Error: tombstoned extension present: ${item.kind}/${item.id}`) };
     messages.push("Codex-only manifest accepted; OpenCode configuration skipped (out of scope)");
     return { success: true, messages };

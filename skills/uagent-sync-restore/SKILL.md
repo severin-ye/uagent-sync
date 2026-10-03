@@ -21,6 +21,8 @@ description: Restore a workspace on a new machine (submodules, configs, skills, 
 
 ## Workflow
 
+For Codex, use the persisted Codex target or pass `--target-agent codex` explicitly to init/pull/setup/verify. Setup installs selected plugins from saved content when present, preserves disabled state, and verifies the real installed version/content and fresh Codex Skill discovery. Refuse unresolved target content conflicts; never silently overwrite local customization. Surface all warnings and remaining checks. Hook trust, MCP authentication and actual business behavior remain target-host checks; do not mark them passed from installation or Skill discovery. Old manifests without snapshots report that precise content was not verified. See [Codex content recovery](../../docs/DEVICE-SYNC-USAGE.md#codex-插件内容备份与恢复230).
+
 Run in order, from the new workspace root:
 
 1. **Init**:

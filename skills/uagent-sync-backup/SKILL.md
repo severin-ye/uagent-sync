@@ -21,6 +21,8 @@ description: Back up the current agent workspace (submodules, configs, skills, A
 
 ## Workflow
 
+For a Codex workspace, use `--target-agent codex` on init/export/push/setup/verify (or reuse the persisted Codex target). Export uses the real plugin inventory and captures bounded installed plugin content, with a separate source archive when available. Inspect `completeness`, `agents.codex.config.inventoryError` and per-plugin `snapshotError`; configuration alone is not installed evidence. Do not upload a partial state as proof of a complete migration. See [Codex content recovery](../../docs/DEVICE-SYNC-USAGE.md#codex-插件内容备份与恢复230). Personal `device snapshot` does not replace the workspace plugin-content export.
+
 Run these in order, from the workspace root:
 
 1. **Init** (first time only):

@@ -1,4 +1,5 @@
 import type { ExtensionRef, ExtensionTombstone } from "./types.js";
+import { pluginIdentity } from "./codex-plugin-sync.js";
 
 export interface ExtensionClassification {
   restorable: ExtensionRef[];
@@ -8,13 +9,17 @@ export interface ExtensionClassification {
   deleted: ExtensionTombstone[];
 }
 
-function key(item: Pick<ExtensionRef, "kind" | "id">): string {
-  return `${item.kind}:${item.id.trim().toLowerCase()}`;
+function key(item: Pick<ExtensionRef, "kind" | "id" | "config">): string {
+  return `${item.kind}:${(item.kind === "plugin" ? pluginIdentity(item) : item.id).trim().toLowerCase()}`;
 }
 
 export function normalizeExtensionSource(source?: string): string | undefined {
   if (!source?.trim()) return undefined;
   let value = source.trim().replace(/^git\+/, "");
+  if (/^(?:[a-z]:[\\/]|\\\\)/i.test(value)) {
+    value = value.replace(/^\\\\\?\\UNC\\/i, "\\\\").replace(/^\\\\\?\\/, "").replace(/\\/g, "/");
+    return `opaque:${value.replace(/\/$/, "").toLowerCase()}`;
+  }
   const ssh = value.match(/^git@github\.com:([^/]+)\/(.+)$/i) ?? value.match(/^ssh:\/\/git@github\.com\/([^/]+)\/(.+)$/i);
   if (ssh) value = `https://github.com/${ssh[1]}/${ssh[2]}`;
   const githubUrl = value.match(/^https?:\/\/(?:www\.)?github\.com\/([^/]+)\/([^/?#]+)(?:[/?#].*)?$/i);
@@ -56,15 +61,19 @@ export function classifyExtensions(input: {
 
   for (const item of selectedByKey.values()) {
     const itemKey = key(item);
-    if (deletedByKey.has(itemKey)) continue;
-    const installed = installedByKey.get(itemKey);
+    if (isTombstoned(item.kind, item.kind === "plugin" ? pluginIdentity(item) : item.id, input.tombstones)) continue;
+    const candidates = item.kind === "plugin" && !item.config?.marketplace
+      ? (input.installed ?? []).filter((p) => p.kind === "plugin" && p.id.toLowerCase() === item.id.toLowerCase())
+      : [];
+    if (candidates.length > 1) { conflicts.push(item); continue; }
+    const installed = installedByKey.get(itemKey) ?? candidates[0];
     if (installed) {
       const selectedSource = normalizeExtensionSource(item.source);
       const installedSource = normalizeExtensionSource(installed.source);
       if (selectedSource && installedSource && selectedSource !== installedSource) conflicts.push(item);
       else if (selectedSource === installedSource && /^\d+\.\d+\.\d+/.test(normalizeExtensionVersion(item.version) ?? "") && /^\d+\.\d+\.\d+/.test(normalizeExtensionVersion(installed.version) ?? "") && normalizeExtensionVersion(item.version) !== normalizeExtensionVersion(installed.version)) restorable.push(item);
       else existing.push(item);
-    } else if (!item.source) missingSource.push(item);
+    } else if (!item.source && !item.pluginSnapshot) missingSource.push(item);
     else restorable.push(item);
   }
 
@@ -72,5 +81,5 @@ export function classifyExtensions(input: {
 }
 
 export function isTombstoned(kind: ExtensionRef["kind"], id: string, tombstones: ExtensionTombstone[] = []): boolean {
-  return tombstones.some((item) => key(item) === key({ kind, id }));
+  return tombstones.some((item) => item.kind === kind && (item.id.toLowerCase() === id.toLowerCase() || (kind === "plugin" && !item.id.includes("@") && item.id.toLowerCase() === id.split("@")[0].toLowerCase())));
 }

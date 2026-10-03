@@ -3,6 +3,8 @@ import { mergePermanentTombstones } from "../lib/tombstones.js";
 import type { ExtensionRef, ExtensionTombstone, WorkspaceStateV3 } from "../lib/types.js";
 import { migrateWorkspaceStateV1ToV2 } from "./migrations/v1-to-v2.js";
 import { migrateWorkspaceStateV2ToV3 } from "./migrations/v2-to-v3.js";
+import { validateCodexPluginSnapshot } from "../lib/codex-plugin-sync.js";
+import { isTombstoned } from "../lib/recovery-manifest.js";
 
 export const CURRENT_WORKSPACE_STATE_SCHEMA_VERSION = 3 as const;
 
@@ -17,6 +19,10 @@ const extensionSchema = z.object({
   commit: z.string().optional(),
   enabled: z.boolean().optional(),
   config: jsonObjectSchema.optional(),
+  pluginSnapshot: z.unknown().superRefine((value, context) => {
+    try { validateCodexPluginSnapshot(value); }
+    catch { context.addIssue({ code: z.ZodIssueCode.custom, message: "Invalid plugin snapshot" }); }
+  }).optional(),
 }).passthrough();
 const tombstoneSchema = z.object({
   kind: extensionKindSchema,
@@ -138,7 +144,8 @@ function filterSelectedExtensions(input: JsonObject, tombstones: ExtensionTombst
         if (!Array.isArray(selected)) continue;
         filtered[kind] = selected.filter((item) => {
           if (!isObject(item) || item.kind !== expectedKind || typeof item.id !== "string") return true;
-          return !deleted.has(extensionKey({ kind: expectedKind, id: item.id }));
+          const marketplace = isObject(item.config) && typeof item.config.marketplace === "string" ? item.config.marketplace : undefined;
+          return !isTombstoned(expectedKind, expectedKind === "plugin" && marketplace ? `${item.id}@${marketplace}` : item.id, tombstones);
         });
       }
       agents[agentId] = filtered;

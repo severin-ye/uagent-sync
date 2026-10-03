@@ -12,6 +12,8 @@ import { DOTFILES_DIR } from "./dotfiles.js";
 import { restoreCodexExtensions, type SkillProgressEvent } from "./codex-restore.js";
 import { t } from "../i18n/index.js";
 import { scanMigrationAnalysis } from "./migration-analysis/index.js";
+import { pluginIdentity, readCodexPluginInventory, verifyCodexPlugin } from "./codex-plugin-sync.js";
+import { isTombstoned } from "./recovery-manifest.js";
 
 export function getSubmoduleStatus(workspaceRoot: string): SubmoduleStatusItem[] {
   const gitmodulesPath = path.join(workspaceRoot, ".gitmodules");
@@ -73,11 +75,9 @@ export function verifyEnvironment(workspaceRoot: string, options?: { targetAgent
     const skillsDir = path.join(homeDir, ".agents", "skills");
     const skillCount = fs.existsSync(skillsDir) ? fs.readdirSync(skillsDir, { withFileTypes: true }).filter((entry) => entry.isDirectory()).length : 0;
     results.push({ component: "Codex skills", status: skillCount ? "ok" : "warning", detail: `${skillCount} skill(s) installed` });
-    const pluginList = run("codex plugin list --json");
     let pluginEnabled = false;
     try {
-      const parsed = JSON.parse(pluginList.stdout) as { installed?: Array<{ name?: string; installed?: boolean; enabled?: boolean }> };
-      pluginEnabled = pluginList.code === 0 && !!parsed.installed?.some((item) => item.name === "uagent-sync" && item.installed === true && item.enabled === true);
+      pluginEnabled = readCodexPluginInventory(homeDir).some((item) => item.id === "uagent-sync" && item.enabled === true);
     } catch { pluginEnabled = false; }
     results.push({ component: "Uagent Sync Codex plugin", status: pluginEnabled ? "ok" : "error", detail: pluginEnabled ? "installed and enabled" : "not confirmed enabled by codex plugin list" });
     const statePath = path.join(workspaceRoot, DOTFILES_DIR, "state", "workspace-state.json");
@@ -87,6 +87,10 @@ export function verifyEnvironment(workspaceRoot: string, options?: { targetAgent
         const state = JSON.parse(fs.readFileSync(statePath, "utf-8")) as WorkspaceState;
         const selected = state.agents?.codex;
         if (state.targetAgent !== "codex" || !selected) throw new Error("Manifest is not scoped to Codex");
+        for (const plugin of selected.plugins.filter((item) => !isTombstoned("plugin", pluginIdentity(item), state.tombstones))) {
+          const check = verifyCodexPlugin(plugin, { homeDir });
+          results.push({ component: `Codex plugin ${check.selector}`, status: !check.ok ? "error" : check.remaining.length || check.warnings.length ? "warning" : "ok", detail: [...check.errors, ...check.warnings, ...check.remaining].join("; ") || "Installed version, enabled state, content and fresh process discovery verified" });
+        }
         const installedNames = new Set<string>();
         for (const root of [path.join(homeDir, ".agents", "skills"), path.join(homeDir, ".codex", "skills")]) {
           if (fs.existsSync(root)) for (const entry of fs.readdirSync(root, { withFileTypes: true })) if (entry.isDirectory()) installedNames.add(entry.name);
@@ -261,7 +265,7 @@ export function setupWorkspace(workspaceRoot: string, options?: {
       const homeDir = options.homeDir ?? os.homedir();
       const installed = scanInstalledCodexExtensions(homeDir);
       const restored = restoreCodexExtensions({
-        targetAgent: "codex", selected, installed, tombstones: state.tombstones ?? [],
+        targetAgent: "codex", homeDir, selected, installed, tombstones: state.tombstones ?? [],
         scanInstalled: () => scanInstalledCodexExtensions(homeDir),
         onProgress: options?.onProgress,
         recoveryReportDirectory: path.join(workspaceRoot, DOTFILES_DIR, "state", "recovery-reports"),
