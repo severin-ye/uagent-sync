@@ -48,5 +48,5 @@ Own `src/lib/state.ts`, `src/lib/recovery-manifest.ts`, `src/lib/codex-restore.t
 - [x] Run isolated two-home real Codex fixture install/load/content/disabled/return/conflict checks with retained logs; verify original host state unchanged.
 - [x] Review fixed branch independently, fix material findings with red tests and recheck affected scope.
 - [x] Pack and install a production consumer; update local formal U同步 using official installation commands with rollback evidence.
-- [ ] Run GitNexus detect_changes, inspect exact diff, commit task increments; integrate master without rewriting user's old checkout, push existing origin and compare remote SHA.
-- [ ] Save delivery evidence and update existing Board record. Report real HP verification as Not Run, without claiming full migration.
+- [x] Run GitNexus detect_changes, inspect exact diff, commit task increments; integrate master without rewriting user's old checkout, push existing origin and compare remote SHA.
+- [x] Save delivery evidence and submit the existing Board handoff receipt. The server acknowledged its queue; card writeback is pending, not claimed complete. Report real HP verification as Not Run, without claiming full migration.
