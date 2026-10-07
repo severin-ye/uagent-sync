@@ -13,7 +13,21 @@ import {
 import type { ExtensionRef } from "../src/lib/types.js";
 import { parse } from "smol-toml";
 import { createHash } from "node:crypto";
+import { brotliCompressSync } from "node:zlib";
 const roots: string[] = [];
+it('refuses ASCII credentials in both UTF-16 byte alignments of runtime binaries', () => {
+  const root = fixture();
+  const header = Buffer.from([0, 97, 115, 109, 1, 0, 0, 0]);
+  // A custom section starts with a zero-length name. Arbitrary font-like UTF-16
+  // words surround the ASCII credential; scanning must not depend on Unicode
+  // regular expressions accepting malformed surrogate sequences.
+  for (const offset of [0, 1]) {
+    const data = Buffer.concat([Buffer.from([0]), Buffer.alloc(offset, 255),
+      Buffer.from(' password="very-private-password"', 'utf16le'), Buffer.from([0, 216, 0, 220, 255, 255])]);
+    fs.writeFileSync(path.join(root, 'runtime.wasm'), Buffer.concat([header, Buffer.from([0, data.length]), data]));
+    assert.throws(() => captureCodexPluginSnapshot(plugin(root), 'runtime'), /Secret/);
+  }
+});
 afterEach(() =>
   roots
     .splice(0)
@@ -48,6 +62,41 @@ function plugin(root: string): ExtensionRef {
     },
   };
 }
+it("captures runtime wasm and compressed wasm and text above the former 8 MiB limit", () => {
+  const root = fixture();
+  const wasm = Buffer.from([0, 97, 115, 109, 1, 0, 0, 0]);
+  fs.writeFileSync(path.join(root, "runtime.wasm"), wasm);
+  fs.writeFileSync(path.join(root, "runtime.wasm.br"), brotliCompressSync(wasm));
+  fs.writeFileSync(path.join(root, "bundle.js"), "// ordinary runtime content\n".repeat(400000));
+  const snap = captureCodexPluginSnapshot(plugin(root));
+  validateCodexPluginSnapshot(snap);
+  assert.equal(snap.files.find(file => file.path === "bundle.js")!.base64.length > 8 * 1024 * 1024, true);
+  assert.deepEqual(Buffer.from(snap.files.find(file => file.path === "runtime.wasm")!.base64, "base64"), wasm);
+});
+it("rejects over 100 million bytes from stat before reading and keeps credential paths denied", () => {
+  const root = fixture();
+  const file = path.join(root, "oversized.js");
+  fs.closeSync(fs.openSync(file, "w"));
+  fs.truncateSync(file, 100_000_001);
+  assert.throws(() => captureCodexPluginSnapshot(plugin(root)), /size out of bounds/);
+  fs.rmSync(file);
+  fs.writeFileSync(path.join(root, "auth.json"), "{}");
+  assert.throws(() => captureCodexPluginSnapshot(plugin(root)), /Credential file refused/);
+});
+it("refuses credentials hidden in compressed runtime WASM and UTF-16 PE resources", () => {
+  const root = fixture();
+  const text = Buffer.from('password="very-private-password"');
+  const wasm = Buffer.concat([Buffer.from([0,97,115,109,1,0,0,0,0,text.length]), text]);
+  fs.writeFileSync(path.join(root, "runtime.wasm.br"), brotliCompressSync(wasm));
+  assert.throws(() => captureCodexPluginSnapshot(plugin(root)), /Secret content refused/);
+  fs.rmSync(path.join(root, "runtime.wasm.br"));
+  const pe = Buffer.alloc(512); pe.write("MZ"); pe.writeUInt32LE(64, 60); pe.write("PE\0\0", 64, "binary");
+  pe.writeUInt16LE(1, 70); pe.writeUInt16LE(112, 84); pe.writeUInt16LE(0x20b, 88);
+  pe.writeUInt32LE(64, 216); pe.writeUInt32LE(256, 220);
+  Buffer.from(text.toString(), "utf16le").copy(pe, 320);
+  fs.writeFileSync(path.join(root, "host.exe"), pe);
+  assert.throws(() => captureCodexPluginSnapshot(plugin(root)), /Secret content refused/);
+});
 it("captures and validates a large permitted text file without recursive base64 matching", () => {
   const root = fixture();
   const content = "ordinary document text\n".repeat(200000);
@@ -65,6 +114,27 @@ it("rejects malformed and noncanonical base64 even when its decoded hash matches
     snap.files.find(file => file.path === "small.txt")!.base64 = encoded;
     assert.throws(() => validateCodexPluginSnapshot(snap), /base64/);
   }
+});
+it("rechecks paths, canonical bytes, hashes and changed secret content after cached validation", () => {
+  const root = fixture();
+  fs.writeFileSync(path.join(root, 'cached.txt'), 'ordinary public text');
+  const original = captureCodexPluginSnapshot(plugin(root));
+  assert.doesNotThrow(() => validateCodexPluginSnapshot(original));
+  assert.doesNotThrow(() => validateCodexPluginSnapshot(original));
+  for (const mutate of [
+    (f: typeof original.files[number]) => { f.path = '../cached.txt'; },
+    (f: typeof original.files[number]) => { f.path = 'auth.json'; },
+    (f: typeof original.files[number]) => { f.base64 += '\n'; },
+    (f: typeof original.files[number]) => { f.sha256 = '0'.repeat(64); },
+  ]) {
+    const copy = structuredClone(original);
+    mutate(copy.files.find(f => f.path === 'cached.txt')!);
+    assert.throws(() => validateCodexPluginSnapshot(copy), /Unsafe|Credential|base64|hash/);
+  }
+  const copy = structuredClone(original), file = copy.files.find(f => f.path === 'cached.txt')!;
+  const bytes = Buffer.from('password="opaque-private-credential"');
+  file.base64 = bytes.toString('base64'); file.sha256 = createHash('sha256').update(bytes).digest('hex');
+  assert.throws(() => validateCodexPluginSnapshot(copy), /Secret/);
 });
 it("keeps binary and credential content checks active after large-file decoding", () => {
   const root = fixture();
@@ -97,6 +167,91 @@ it("keeps valid installed content when a separate source archive is blocked and 
   assert.ok(snap.remaining.some(item => item.includes("Source archive")));
   assert.ok(!JSON.stringify(snap).includes(Buffer.from("very-private-password").toString("base64")));
   assert.ok(snap.files.some(file => file.path === ".codex-plugin/plugin.json"));
+});
+
+it('runtime scope preserves required documents and public templates while declaring local credentials and development exclusions', () => {
+  const root = fixture();
+  fs.writeFileSync(path.join(root, '.env'), 'TOKEN=actual-local-secret');
+  fs.mkdirSync(path.join(root, 'tests')); fs.writeFileSync(path.join(root, 'tests/secret.test.js'), 'token="test-only-opaque-credential"');
+  fs.mkdirSync(path.join(root, 'docs')); fs.writeFileSync(path.join(root, 'docs/runtime.md'), 'Runtime documentation.');
+  fs.writeFileSync(path.join(root, 'docs/unneeded-plan.md'), 'token="test-only-opaque-credential"');
+  fs.appendFileSync(path.join(root, 'skills/hello/SKILL.md'), '\n[Required runtime documentation](../../docs/runtime.md)\n');
+  fs.writeFileSync(path.join(root, '.npmrc'), 'audit=false\nfund=false\nupdate-notifier=false\n');
+  fs.writeFileSync(path.join(root, '.env.example'), 'HF_TOKEN=hf_xxxxxxxxxxxxxxxxxxxx\n');
+  const snapshot = captureCodexPluginSnapshot(plugin(root), 'runtime');
+  validateCodexPluginSnapshot(snapshot);
+  assert.equal(snapshot.captureMode, 'runtime'); assert.equal(snapshot.remaining.length, 0);
+  assert(snapshot.files.some(f => f.path === 'docs/runtime.md'));
+  assert(snapshot.files.some(f => f.path === '.env.example')); assert(snapshot.files.some(f => f.path === '.npmrc'));
+  assert(!snapshot.files.some(f => f.path === '.env' || f.path.startsWith('tests/') || f.path === 'docs/unneeded-plan.md'));
+  assert(snapshot.exclusions.some(x => x.includes('.env') && x.includes('local')));
+  assert.equal(fs.readFileSync(path.join(root, '.env'), 'utf8'), 'TOKEN=actual-local-secret');
+  assert.equal(captureCodexPluginSnapshot(plugin(root), 'runtime').digest, snapshot.digest);
+  assert.throws(() => captureCodexPluginSnapshot(plugin(root)), /Credential/);
+  fs.writeFileSync(path.join(root, 'docs/runtime.md'), 'password="real-opaque-credential"');
+  assert.throws(() => captureCodexPluginSnapshot(plugin(root), 'runtime'), /Secret/);
+});
+
+it('public config validation rejects opaque credentials and npm authentication even in runtime scope', () => {
+  const root = fixture(), example = path.join(root, '.env.example'), npm = path.join(root, '.npmrc');
+  fs.writeFileSync(example, 'HF_TOKEN=hf_realOpaqueCredentialValue\n');
+  assert.throws(() => captureCodexPluginSnapshot(plugin(root), 'runtime'), /template|credential/i);
+  fs.writeFileSync(example, 'HF_TOKEN=<YOUR_TOKEN>\nPASSWORD=actualOpaqueCredential\n');
+  assert.throws(() => captureCodexPluginSnapshot(plugin(root), 'runtime'), /placeholder|credential/i);
+  fs.rmSync(example); fs.writeFileSync(npm, 'audit=false\n_auth=opaque-secret-value\n');
+  assert.throws(() => captureCodexPluginSnapshot(plugin(root), 'runtime'), /credential|unsupported/i);
+});
+it('keeps manifest entrypoint directories but excludes prose-linked history directories', () => {
+  const root = fixture();
+  fs.mkdirSync(path.join(root, 'docs/runtime'), { recursive: true });
+  fs.writeFileSync(path.join(root, 'docs/runtime/SKILL.md'), 'Required declared skill.');
+  fs.writeFileSync(path.join(root, '.codex-plugin/plugin.json'), JSON.stringify({ name: 'demo', version: '1.0.0', skills: './docs/runtime' }));
+  fs.mkdirSync(path.join(root, 'docs/history'));
+  fs.writeFileSync(path.join(root, 'docs/history/old.md'), 'password="old-private-test-value"');
+  fs.appendFileSync(path.join(root, 'skills/hello/SKILL.md'), '\n[Output directory](../../docs/history)\n');
+  const snapshot = captureCodexPluginSnapshot(plugin(root), 'runtime');
+  assert(snapshot.files.some(file => file.path === 'docs/runtime/SKILL.md'));
+  assert(!snapshot.files.some(file => file.path === 'docs/history/old.md'));
+});
+it('accepts public defaults but rejects credential-bearing URLs and neighboring real values', () => {
+  const root = fixture(), file = path.join(root, '.env.example');
+  fs.writeFileSync(file, 'HF_TOKEN=<YOUR_TOKEN>\nENDPOINT=https://api.example.test/v1\nRESOURCE_ROOT=/workspace/data\nMODEL_NAME=example-model\n');
+  assert.doesNotThrow(() => captureCodexPluginSnapshot(plugin(root), 'runtime'));
+  for (const value of ['https://user:private-value@api.example.test', 'https://api.example.test?token=opaqueCredentialValue']) {
+    fs.writeFileSync(file, `ENDPOINT=${value}\n`);
+    assert.throws(() => captureCodexPluginSnapshot(plugin(root), 'runtime'), /credential|placeholder|secret/i);
+  }
+});
+it('recognizes typed Markdown example expressions while preserving literals and prose scanning', () => {
+  const root = fixture(), file = path.join(root, 'skills/hello/SKILL.md');
+  fs.appendFileSync(file, '\n```python\nimport os\ntoken = os.environ["HF_TOKEN"]\nsecret="your-secret"\n```\n');
+  assert.doesNotThrow(() => captureCodexPluginSnapshot(plugin(root), 'runtime'));
+  fs.appendFileSync(file, '\n```python\njob={"script":\'\'\'import os\nclient = Client(token=os.environ["HF_TOKEN"])\n\'\'\'}\n```\n');
+  assert.doesNotThrow(() => captureCodexPluginSnapshot(plugin(root), 'runtime'));
+  fs.appendFileSync(file, '\n```python\ntoken="hf_abc123xyz..."\n```\n');
+  assert.doesNotThrow(() => captureCodexPluginSnapshot(plugin(root), 'runtime'));
+  fs.appendFileSync(file, '\n```python\nmodel.push_to_hub("example/model", token="hf_abc123...")\n```\n');
+  assert.doesNotThrow(() => captureCodexPluginSnapshot(plugin(root), 'runtime'));
+  fs.appendFileSync(file, '\n```python\ntoken = os.environ.get("HF_TOKEN") or os.environ.get("hfjob")\nmodel_name = "ordinary-public-model"\n```\n');
+  assert.doesNotThrow(() => captureCodexPluginSnapshot(plugin(root), 'runtime'));
+  fs.appendFileSync(file, '\nThe call `create_repo(token=self.args.hub_token)` uses a runtime reference.\n');
+  assert.doesNotThrow(() => captureCodexPluginSnapshot(plugin(root), 'runtime'));
+  for (const body of [
+    '```python\nsecret="opaque-real-credential"\n```',
+    ...['r"opaque-real-credential"', 'u"opaque-real-credential"', 'f"opaque-real-credential"', 'rf"opaque-real-credential{x}"', 'Rf"opaque-real-credential{x}"', 'fr"opaque-real-credential{x}"', '"""opaque-real-credential"""', "'''opaque-real-credential'''", 'r"opaque\\x2dreal-credential"'].map(value => `\`\`\`python\ntoken=getSecret(${value})\n\`\`\``),
+    ...['r"opaque-real-credential"', 'f"opaque-real-credential{x}"', 'rf"opaque-real-credential{x}"', '"""opaque-real-credential"""'].map(value => `\`\`\`python\ntoken=${value}\n\`\`\``),
+    '```python\ntoken=os.getenv("HF_TOKEN", "opaque-real-credential")\n```',
+    '```python\nsecret="your-secret"; password="opaque-real-credential"\n```',
+    '```python\ntoken=os.environ["HF_TOKEN"]\n# password=opaque-real-credential\n```',
+    'token=provider.accessToken',
+    'The call `create_repo(token="opaque-real-credential")` embeds a value.',
+    '```python\ntoken="hf_abc123xyzREAL"\n```',
+    '```\ntoken=provider.accessToken\n```',
+    '```python\njob={"script":\'\'\'import os\nclient=Client(token=os.environ["HF_TOKEN"])\npassword="opaque-real-credential"\n\'\'\'}\n```',
+  ]) {
+    fs.writeFileSync(file, `---\nname: hello\ndescription: fixture\n---\n${body}\n`);
+    assert.throws(() => captureCodexPluginSnapshot(plugin(root), 'runtime'), /Secret/);
+  }
 });
 it("never exempts credential assignments inside strings, templates, comments or regex literals", () => {
   const root = fixture();
@@ -137,6 +292,8 @@ it("distinguishes code references and ternary descriptions from literal property
     'const response = { token: sessionToken };',
     'const response = { "X-Uagent-Token": session.token };',
     'const response = { "token": sessionToken };',
+    'const token = crypto.randomBytes(24).toString("base64url");',
+    'const result = valid ? token : undefined;',
     'const description = yes ? "Personal Access Token" : key.includes("Y");',
   ]) {
     fs.writeFileSync(file, content);
@@ -146,6 +303,7 @@ it("distinguishes code references and ternary descriptions from literal property
     'const response = { token: "very_private_value.method()" };',
     'const response = { "X-Uagent-Token": "very_private_value" };',
     'const response = { "token": "very_private_value" };',
+    'const token = crypto.randomBytes(24).toString("very_private_value");',
     'const response = { "password=very_private_value.method()": sessionToken };',
     'const description = yes ? "token=very_private_value.method()" : key.includes("Y");',
   ]) {

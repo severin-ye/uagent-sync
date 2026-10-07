@@ -150,6 +150,26 @@ test('retains commit on push failure and resumes push on retry', async () => {
     assert.equal(r.projects[0].committed, false); assert.equal(r.projects[0].verified, true); assert.equal(git(f.repo, 'rev-parse', 'HEAD'), head);
   } finally { f.clean(); }
 });
+
+for (const detached of [false, true]) test(`verifies clean ${detached ? 'detached' : 'task-branch'} content on the existing origin without publishing a parallel branch`, async () => {
+  const f = fixture(); try {
+    git(f.remote, 'symbolic-ref', 'HEAD', 'refs/heads/main');
+    const head = git(f.repo, 'rev-parse', 'HEAD'), index = readFileSync(join(f.repo, '.git', 'index'));
+    if (detached) git(f.repo, 'checkout', '--detach');
+    else { git(f.repo, 'checkout', '-b', 'codex/already-delivered'); git(f.repo, 'branch', '--set-upstream-to=origin/main'); }
+    const branchBefore = git(f.repo, 'rev-parse', '--abbrev-ref', 'HEAD');
+    const r = await backupProjects({ workspaceRoot: f.root, repositoryPaths: ['project'] }, deps);
+    assert.deepEqual(r.errors, []); assert.equal(r.projects[0].verified, true);
+    assert.equal(r.projects[0].remoteHead, head); assert.equal(r.projects[0].committed, false); assert.equal(r.projects[0].pushed, false);
+    assert.equal(git(f.repo, 'rev-parse', '--abbrev-ref', 'HEAD'), branchBefore);
+    assert.deepEqual(readFileSync(join(f.repo, '.git', 'index')), index);
+    assert.equal(git(f.repo, 'ls-remote', '--heads', 'origin', 'refs/heads/codex/already-delivered'), '');
+    writeFileSync(join(f.repo, 'new.txt'), 'Must not publish from this checkout\n');
+    const blocked = await backupProjects({ workspaceRoot: f.root, repositoryPaths: ['project'] }, deps);
+    assert.equal(blocked.projects[0].status, 'failed'); assert.equal(git(f.remote, 'rev-parse', 'main'), head);
+    assert.equal(git(f.repo, 'rev-parse', 'HEAD'), head);
+  } finally { f.clean(); }
+});
 test('backs up child before parent and saves the updated submodule gitlink', async () => {
   const f = fixture(); const child = fixture(); try {
     git(f.repo, '-c', 'protocol.file.allow=always', 'submodule', 'add', '-b', 'main', child.remote, 'child');

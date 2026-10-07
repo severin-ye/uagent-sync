@@ -14,6 +14,7 @@ import { t } from "../i18n/index.js";
 import { scanMigrationAnalysis } from "./migration-analysis/index.js";
 import { pluginIdentity, readCodexPluginInventory, verifyCodexPlugin } from "./codex-plugin-sync.js";
 import { isTombstoned } from "./recovery-manifest.js";
+import { decodeWorkspaceStateStorage } from '../artifacts/workspace-state-codec.js';
 
 export function getSubmoduleStatus(workspaceRoot: string): SubmoduleStatusItem[] {
   const gitmodulesPath = path.join(workspaceRoot, ".gitmodules");
@@ -84,7 +85,7 @@ export function verifyEnvironment(workspaceRoot: string, options?: { targetAgent
     if (!fs.existsSync(statePath)) results.push({ component: "Codex recovery manifest", status: "error", detail: `Missing ${statePath}` });
     else {
       try {
-        const state = JSON.parse(fs.readFileSync(statePath, "utf-8")) as WorkspaceState;
+        const state = decodeWorkspaceStateStorage(fs.readFileSync(statePath, "utf-8")) as unknown as WorkspaceState;
         const selected = state.agents?.codex;
         if (state.targetAgent !== "codex" || !selected) throw new Error("Manifest is not scoped to Codex");
         for (const plugin of selected.plugins.filter((item) => !isTombstoned("plugin", pluginIdentity(item), state.tombstones))) {
@@ -259,7 +260,7 @@ export function setupWorkspace(workspaceRoot: string, options?: {
       return results;
     }
     try {
-      const state = JSON.parse(fs.readFileSync(statePath, "utf-8")) as WorkspaceState;
+      const state = decodeWorkspaceStateStorage(fs.readFileSync(statePath, "utf-8")) as unknown as WorkspaceState;
       if (state.targetAgent !== "codex" || !state.agents?.codex) throw new Error("Manifest targetAgent must be codex and include agents.codex");
       const selected: ExtensionRef[] = [...state.agents.codex.plugins, ...state.agents.codex.skills, ...state.agents.codex.mcp];
       const homeDir = options.homeDir ?? os.homedir();

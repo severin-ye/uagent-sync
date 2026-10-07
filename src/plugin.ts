@@ -1,4 +1,5 @@
 import { fileURLToPath as moduleFilePath } from "node:url";
+import { decodeWorkspaceStateStorage } from './artifacts/workspace-state-codec.js';
 /**
  * OpencodeSyncPlugin — opencode-sync 的 Plugin 形态。
  *
@@ -140,7 +141,7 @@ Shows: submodules with different commits, skills missing locally. Read-only — 
         },
         async execute(args) {
           const workspaceRoot = resolveWorkspaceRoot();
-          const diffs = diffState(exportSystemState(workspaceRoot), JSON.parse(fs.readFileSync(args.source, "utf-8")) as WorkspaceState);
+          const diffs = diffState(exportSystemState(workspaceRoot), decodeWorkspaceStateStorage(fs.readFileSync(args.source, "utf-8")) as unknown as WorkspaceState);
           return text(diffs.length > 0 ? `Differences found:\n${diffs.join("\n")}` : "No differences — workspace is in sync");
         },
       }),

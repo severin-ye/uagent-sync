@@ -106,8 +106,8 @@ export async function backupProjects(input: BackupProjectsInput, dependencies: B
         const markerPath = resolve(cwd, await git('rev-parse', '--git-path', marker));
         if (await fs.stat(markerPath).then(() => true, () => false)) throw new Error('Repository has an unfinished merge/rebase/cherry-pick');
       }
-      const branch = await optional('symbolic-ref', '--quiet', '--short', 'HEAD'); if (!branch) throw new Error('Detached HEAD is not supported'); result.branch = branch;
-      await git('check-ref-format', `refs/heads/${branch}`);
+      const branch = await optional('symbolic-ref', '--quiet', '--short', 'HEAD'); result.branch = branch || undefined;
+      if (branch) await git('check-ref-format', `refs/heads/${branch}`);
       const head = await git('rev-parse', 'HEAD'); result.head = head;
       const authorName = await optional('config', 'user.name'); const authorEmail = await optional('config', 'user.email');
       if (!authorName || !authorEmail) throw new Error('Git author identity is missing');
@@ -117,12 +117,33 @@ export async function backupProjects(input: BackupProjectsInput, dependencies: B
       if (urls.length !== 1 || pushUrls.length !== 1 || urls[0] !== pushUrls[0] || !(dependencies.allowRemote ?? githubRemote)(urls[0])) throw new Error('Origin must have one trusted GitHub fetch/push URL without credentials');
       result.remote = urls[0];
       const upstreamRemote = await optional('config', `branch.${branch}.remote`); const upstreamRef = await optional('config', `branch.${branch}.merge`);
-      if (upstreamRemote && (upstreamRemote !== 'origin' || upstreamRef !== `refs/heads/${branch}`)) throw new Error('Upstream does not match origin and current branch');
+      const differentUpstream = Boolean(upstreamRemote && (upstreamRemote !== 'origin' || upstreamRef !== `refs/heads/${branch}`));
       const pushRemote = await optional('config', `branch.${branch}.pushRemote`) || await optional('config', 'remote.pushDefault');
       if (pushRemote && pushRemote !== 'origin') throw new Error('Push remote does not match origin');
       if (await git('diff', '--cached', '--name-only') || await git('ls-files', '--unmerged')) throw new Error('Pre-existing staged changes or conflicts are protected');
       const raw = await run(cwd, ['status', '--porcelain=v1', '-z', '--untracked-files=all']);
       const records = raw.toString('utf8').split('\0').filter(Boolean); const changes: string[] = [];
+      // A clean detached/task checkout may already be delivered on its declared
+      // origin branch. Prove containment without creating a branch or pushing.
+      if (!branch || differentUpstream) {
+        if (records.some(record => !excluded.some(p => inside(p, resolve(cwd, record.slice(3)))))) throw new Error(!branch ? 'Detached HEAD with local changes is protected' : 'Upstream does not match origin and current branch; local changes are protected');
+        let ref = upstreamRemote === 'origin' ? upstreamRef : '';
+        if (!branch) {
+          const advertised = await git('ls-remote', '--symref', 'origin', 'HEAD');
+          ref = /^ref: (refs\/heads\/[^\s]+)\s+HEAD$/m.exec(advertised)?.[1] ?? '';
+        }
+        if (!ref || !ref.startsWith('refs/heads/')) throw new Error('No declared origin branch for existing-content verification');
+        await git('check-ref-format', ref);
+        const remoteHead = (await git('ls-remote', '--heads', 'origin', ref)).split(/\s/)[0];
+        if (!remoteHead) throw new Error('Declared origin branch is missing');
+        if (!input.dryRun) await git('fetch', '--no-tags', 'origin', ref);
+        if (await optional('merge-base', head, remoteHead) !== head) throw new Error('Local commit is not proven contained in the declared origin branch');
+        result.remoteHead = remoteHead;
+        const confirmed = (await git('ls-remote', '--heads', 'origin', ref)).split(/\s/)[0];
+        const residual = (await run(cwd, ['status', '--porcelain=v1', '-z', '--untracked-files=all'])).toString('utf8').split('\0').filter(Boolean);
+        if (confirmed !== remoteHead || await git('rev-parse', 'HEAD') !== head || await optional('symbolic-ref', '--quiet', '--short', 'HEAD') !== branch || residual.some(record => !excluded.some(p => inside(p, resolve(cwd, record.slice(3)))))) throw new Error('Concurrent change during existing-content verification');
+        result.status = input.dryRun ? 'planned' : 'complete'; result.verified = !input.dryRun; continue;
+      }
       for (let i = 0; i < records.length; i++) {
         const state = records[i].slice(0, 2); const name = records[i].slice(3);
         if (state[0] !== ' ' && state !== '??') throw new Error('Pre-existing staged changes or conflicts are protected');

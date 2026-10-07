@@ -215,7 +215,7 @@ Run any command as `node dist/cli.js <command>` (or `opencode-sync <command>` af
 | Command | What it does |
 |------|-------------|
 | `init` | Detect workspace, guide first-time setup. Only asks once. |
-| `backup --all` | Codex: commit and push projects to their existing GitHub repositories; publish settings, rules, Skills, memories and installed plugin content to the registered PRIVATE configuration registry. Use `--dry-run` to preview; omissions and failures remain explicit. See [scope and recovery](docs/DEVICE-SYNC-USAGE.md). |
+| `backup --all` | Codex: commit and push projects to their existing GitHub repositories; publish settings, rules, Skills, memories and installed plugin content to the registered PRIVATE configuration registry. Use `--dry-run` to preview; `--workspace-files git-only` explicitly defers non-Git workspace files and captures plugin runtime content. Omissions and failures remain explicit. See [scope and recovery](docs/DEVICE-SYNC-USAGE.md). |
 | `push` | Export state → commit → push to GitHub. One command. |
 | `pull` | Pull from GitHub → restore everything. One command. |
 | `export` | Export full workspace state as JSON |

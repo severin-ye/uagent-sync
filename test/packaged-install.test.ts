@@ -29,6 +29,8 @@ before(() => {
   const packed = Array.isArray(parsed) ? parsed[0] : Object.values(parsed)[0];
   assert.ok(packed);
   assert.ok(packed.files.some((item) => item.path === "scripts/bootstrap.ps1"));
+  assert.ok(packed.files.some((item) => item.path === "data/libeot/LICENSE"));
+  assert.ok(packed.files.some((item) => item.path === "data/libeot/source/eot-lzcomp.ts"));
   assert.ok(!packed.files.some((item) => /codebase-memory/i.test(item.path)), "deleted codebase-memory files must never ship");
   const tarball = path.join(tempRoot, packed.filename);
   const prefix = path.join(tempRoot, "install");
@@ -50,12 +52,13 @@ describe("real npm pack installation", () => {
     // attaches the matching source lock before rebuilding omitted dependencies.
     fs.copyFileSync(path.join(ROOT, "package-lock.json"), path.join(installedPackage, "package-lock.json"));
     const sync = await import(pathToFileURL(path.join(installedPackage, "dist", "lib", "codex-plugin-sync.js")).href);
-    const snapshot = sync.captureCodexPluginSnapshot({ kind: "plugin", id: "uagent-sync", version: SOURCE_VERSION, enabled: true, config: { marketplace: "uagent-sync", installedPath: installedPackage } });
+    const snapshot = sync.captureCodexPluginSnapshot({ kind: "plugin", id: "uagent-sync", version: SOURCE_VERSION, enabled: true, config: { marketplace: "uagent-sync", installedPath: installedPackage } }, "runtime");
     assert.equal(snapshot.version, SOURCE_VERSION);
     assert.equal(snapshot.selector, "uagent-sync@uagent-sync");
     assert.equal(snapshot.expectedSkills.length, 5);
     assert.ok(snapshot.files.some((file: { path: string }) => file.path === "package-lock.json"));
-    assert.ok(!snapshot.files.some((file: { path: string }) => /^(?:test|node_modules)\//.test(file.path)));
+    assert.equal(snapshot.captureMode, "runtime");
+    assert.ok(!snapshot.files.some((file: { path: string }) => /^(?:test|src|node_modules)\//.test(file.path)));
   });
   it("ships the current source package identity", () => {
     const pkg = JSON.parse(fs.readFileSync(path.join(installedPackage, "package.json"), "utf-8"));

@@ -21,6 +21,7 @@ test('backup help works without registration and describes the unified preview',
   assert.equal(r.status, 0, r.stderr);
   assert.match(r.stdout, /backup --all/);
   assert.match(r.stdout, /--dry-run/);
+  assert.match(r.stdout, /--workspace-files/);
   assert.deepEqual(fs.readdirSync(home), []);
 });
 test('unified dry-run selects the registered workspace without writing or uploading', t => {
@@ -44,7 +45,7 @@ test('unified dry-run selects the registered workspace without writing or upload
 test('unsupported agent and missing all flag fail without creating backup data', t => {
   const home = fs.mkdtempSync(path.join(os.tmpdir(), 'usync-backup-invalid-'));
   t.after(() => fs.rmSync(home, { recursive: true, force: true }));
-  for (const args of [['backup', '--all', '--target-agent', 'dsh'], ['backup'], ['backup', '--all', '--unknown']]) {
+  for (const args of [['backup', '--all', '--target-agent', 'dsh'], ['backup'], ['backup', '--all', '--unknown'], ['backup', '--all', '--workspace-files', 'invalid']]) {
     const r = invoke(args, home);
     assert.equal(r.status, 1);
     assert.deepEqual(fs.readdirSync(home), []);

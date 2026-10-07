@@ -58,6 +58,7 @@ async function main(args){
   // project protections, coverage gaps and the existing complete/partial result.
   const args=['--all','--json','--connection',options['--connection']];
   if(options['--workspace-id'])args.push('--workspace-id',options['--workspace-id']);
+  if(options['--workspace-files'])args.push('--workspace-files',options['--workspace-files']);
   const connection=readDeviceConnection(options['--connection']);
   if(git(['-C',connection.registryCheckout,'remote','get-url','--push','--all','origin']).toString('utf8').trim()!==connection.registryRemote)throw Error('Registry push destination differs from the registered remote');
   const lines=[],previous=console.log;let code;

@@ -385,7 +385,7 @@ export function scanInstalledCodexExtensions(
   return [...codex.plugins.filter((item) => item.config?.installationVerified === true), ...codex.skills, ...codex.mcp];
 }
 
-export function exportSystemState(workspaceRoot: string, options?: { targetAgent?: TargetAgent; homeDir?: string; fsApi?: SkillScanFileSystem; pluginInventory?: ExtensionRef[]; capturePlugins?: boolean }): WorkspaceState {
+export function exportSystemState(workspaceRoot: string, options?: { targetAgent?: TargetAgent; homeDir?: string; fsApi?: SkillScanFileSystem; pluginInventory?: ExtensionRef[]; capturePlugins?: boolean; pluginContent?: 'runtime' }): WorkspaceState {
   const targetAgent = options?.targetAgent;
   const fileSystem = options?.fsApi ?? nativeSkillFileSystem;
   if (targetAgent === "codex") {
@@ -396,7 +396,7 @@ export function exportSystemState(workspaceRoot: string, options?: { targetAgent
     codexState.plugins = codexState.plugins.filter((item) => !isTombstoned("plugin", pluginIdentity(item), tombstones)).map((item) => {
       const copy = { ...item, config: { ...item.config } };
       if (options?.capturePlugins !== false && item.config?.installationVerified === true && item.config?.managedBy !== "codex-runtime") {
-        try { copy.pluginSnapshot = captureCodexPluginSnapshot(item); }
+        try { copy.pluginSnapshot = captureCodexPluginSnapshot(item, options?.pluginContent); }
         catch (error) { copy.config.snapshotError = redactString(error instanceof Error ? error.message : String(error)); }
       }
       delete copy.config.installedPath;

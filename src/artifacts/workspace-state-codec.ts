@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { createHash } from 'node:crypto';
+import { gzipSync, gunzipSync } from 'node:zlib';
 import { mergePermanentTombstones } from "../lib/tombstones.js";
 import type { ExtensionRef, ExtensionTombstone, WorkspaceStateV3 } from "../lib/types.js";
 import { migrateWorkspaceStateV1ToV2 } from "./migrations/v1-to-v2.js";
@@ -66,6 +68,36 @@ export const workspaceStateV3Schema = z.object({
 }).passthrough();
 
 type JsonObject = Record<string, unknown>;
+const STORAGE_FILE_LIMIT = 100_000_000, STORAGE_DECODED_LIMIT = 512_000_000;
+/** A storage envelope only; the decoded state still passes the normal schema,
+ * tombstone and per-plugin content validators before restoration. */
+export function decodeWorkspaceStateStorage(input: unknown): JsonObject {
+  const value = asJsonObject(input);
+  if (value.artifactEncoding === undefined) return value;
+  try {
+    if (value.artifactEncoding !== 'workspace-state-gzip-v1' || Object.keys(value).some(k => !['artifactEncoding', 'bytes', 'sha256', 'base64'].includes(k))
+      || !Number.isSafeInteger(value.bytes) || (value.bytes as number) < 1 || (value.bytes as number) > STORAGE_DECODED_LIMIT
+      || typeof value.sha256 !== 'string' || !/^[a-f0-9]{64}$/.test(value.sha256)
+      || typeof value.base64 !== 'string' || value.base64.length > STORAGE_FILE_LIMIT || value.base64.length % 4 || /[^A-Za-z0-9+/=]/.test(value.base64)) throw Error();
+    const compressed = Buffer.from(value.base64, 'base64');
+    if (compressed.toString('base64') !== value.base64) throw Error();
+    const bytes = gunzipSync(compressed, { maxOutputLength: value.bytes as number });
+    if (bytes.length !== value.bytes || createHash('sha256').update(bytes).digest('hex') !== value.sha256) throw Error();
+    const decoded = asJsonObject(new TextDecoder('utf-8', { fatal: true }).decode(bytes));
+    if (decoded.artifactEncoding !== undefined) throw Error();
+    return decoded;
+  } catch { throw Error('Invalid or oversized compressed WorkspaceState storage'); }
+}
+/** Keep existing JSON byte layout unless a single Git file would exceed its cap. */
+export function serializeWorkspaceStateArtifact(input: unknown): string {
+  const serialized = JSON.stringify(input, null, 2) + '\n', bytes = Buffer.from(serialized);
+  if (bytes.length <= STORAGE_FILE_LIMIT) return serialized;
+  if (bytes.length > STORAGE_DECODED_LIMIT) throw Error('WorkspaceState storage decoded size exceeds its limit');
+  const envelope = { artifactEncoding: 'workspace-state-gzip-v1', bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex'), base64: gzipSync(bytes).toString('base64') };
+  const stored = JSON.stringify(envelope, null, 2) + '\n';
+  if (Buffer.byteLength(stored) > STORAGE_FILE_LIMIT) throw Error('Compressed WorkspaceState storage still exceeds the Git file limit');
+  return stored;
+}
 
 function asJsonObject(input: unknown): JsonObject {
   let parsed = input;
@@ -183,7 +215,7 @@ function applyTombstones(input: JsonObject): JsonObject {
 }
 
 export function parseWorkspaceStateArtifact(input: unknown): WorkspaceStateV3 {
-  const original = asJsonObject(input);
+  const original = decodeWorkspaceStateStorage(input);
   const version = schemaVersionOf(original);
   let migrated = original;
 

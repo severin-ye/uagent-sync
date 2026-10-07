@@ -3,6 +3,7 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import { spawn } from "node:child_process";
+import { decodeWorkspaceStateStorage } from './artifacts/workspace-state-codec.js';
 import {
   exportSystemState, diffState, resolveWorkspaceRoot, resolveWorkspaceRootForAgent, run,
   getSubmoduleStatus, detectWorkspaceInfo,
@@ -333,7 +334,7 @@ async function main() {
     case "diff": {
       const src = positionals[0] || stateFile;
       const current = exportSystemState(workspaceRoot);
-      const saved = JSON.parse(fs.readFileSync(src, "utf-8")) as WorkspaceState;
+      const saved = decodeWorkspaceStateStorage(fs.readFileSync(src, "utf-8")) as unknown as WorkspaceState;
       const diffs = diffState(current, saved);
       diffs.length === 0 ? log(t("cli.noDifferences")) : diffs.forEach(d => log(d));
       break;

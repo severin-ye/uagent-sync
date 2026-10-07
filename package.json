@@ -1,6 +1,6 @@
 {
   "name": "uagent-sync",
-  "version": "2.4.6",
+  "version": "2.5.0",
   "description": "Cross-device agent workspace sync for OpenCode, Codex, and DeepSeek Harness",
   "type": "module",
   "main": "dist/plugin.js",
@@ -18,6 +18,7 @@
     "scripts/bootstrap.ps1",
     "scripts/copy-offline-workspace.ps1",
     "scripts/verified-public-profile.mjs",
+    "scripts/build-libeot-source.mjs",
     "docs/DEVICE-SYNC-USAGE.md",
     "docs/CODEX-PLUGIN-SYNC-DESIGN.md",
     "README.md",
@@ -25,7 +26,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "rimraf dist && tsc && node scripts/generate-dashboard-i18n.mjs && node scripts/copy-dashboard.mjs",
+    "build": "node scripts/build-libeot-source.mjs && rimraf dist && tsc && node scripts/generate-dashboard-i18n.mjs && node scripts/copy-dashboard.mjs",
     "typecheck": "tsc --noEmit",
     "pretest": "npm run build",
     "prepack": "npm run build",
@@ -46,7 +47,8 @@
     "@lezer/python": "1.1.18",
     "@opencode-ai/plugin": "1.18.15",
     "smol-toml": "^1.8.0",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "typescript": "5.9.3"
   },
   "devDependencies": {
     "@deepseek-ai/dsh-tools": "0.1.0-rc.6",
@@ -54,7 +56,6 @@
     "@types/node": "^22.0.0",
     "playwright": "^1.62.1",
     "rimraf": "^5.0.0",
-    "tsx": "^4.19.0",
-    "typescript": "^5.7.0"
+    "tsx": "^4.19.0"
   }
 }

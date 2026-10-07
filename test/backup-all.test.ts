@@ -116,6 +116,31 @@ test('multiple workspaces require selection before creating a backup', async t =
   assert(r.errors.some(x => /workspace-id/.test(x)));
   assert(!fs.existsSync(path.join(f.registry, 'sync/profiles')));
 });
+test('git-only proves local Skill content from the profile and discloses host environment rebuilding', async t => {
+  const f = fixture(t), profile = createProfileOperations();
+  f.state.completeness = 'partial';
+  f.state.agents!.codex!.skills = [{ kind: 'skill', id: 'example' }];
+  f.state.agents!.codex!.mcp = [{ kind: 'mcp', id: 'host', source: 'codex-runtime', config: { managedBy: 'codex-runtime', envVars: ['HOST_PIPE'] } }];
+  const r = await backupAll({ connectionFile: f.connection, workspaceFiles: 'git-only' }, {
+    exportState: () => f.state, verifyRegistry: () => {},
+    profileOperations: { ...profile, publish: async () => ({ head: 'registry', pushed: true }) },
+    projects: async () => ({ projects: [], errors: [], remaining: [] }),
+  });
+  assert.equal(r.status, 'complete'); assert.equal(r.environmentComplete, false);
+  assert.ok(r.excluded.some(x => x.includes('HOST_PIPE')));
+});
+test('git-only still refuses missing local Skill content and unexplained partial states', async t => {
+  for (const missing of [false, true]) {
+    const f = fixture(t), profile = createProfileOperations(); f.state.completeness = 'partial';
+    if (missing) f.state.agents!.codex!.skills = [{ kind: 'skill', id: 'missing-skill' }];
+    const r = await backupAll({ connectionFile: f.connection, workspaceFiles: 'git-only' }, {
+      exportState: () => f.state, verifyRegistry: () => {},
+      profileOperations: { ...profile, publish: async () => ({ head: 'registry', pushed: true }) },
+      projects: async () => ({ projects: [], errors: [], remaining: [] }),
+    });
+    assert.equal(r.status, 'partial'); assert.ok(r.remaining.length);
+  }
+});
 
 test('registry HEAD verification failure cannot report success or push projects', async t => {
   const f = fixture(t); let called = false;
@@ -162,4 +187,87 @@ test('ordinary worktrees directories outside Git remain visible as missing files
     projects: async () => ({ projects: [], errors: [], remaining: [] }),
   });
   assert.equal(r.scopeComplete, false); assert(r.remaining.some(x => x.includes('worktrees/note.txt')));
+});
+
+test('Git-only scope excludes non-Git data explicitly while preserving plugin and project failures', async t => {
+  const f = fixture(t);
+  const profile = createProfileOperations();
+  const dependencies = {
+    exportState: () => f.state, verifyRegistry: () => {},
+    profileOperations: { ...profile, publish: async () => ({ head: 'registry', pushed: true }) },
+    projects: async () => ({ projects: [], errors: [], remaining: [] }),
+  };
+  const r = await backupAll({ connectionFile: f.connection, workspaceFiles: 'git-only' }, dependencies);
+  assert.equal(r.status, 'complete');
+  assert.equal(r.workspaceFilePolicy, 'git-only');
+  assert.equal(r.nonGitFilesExcluded?.files, 1);
+  assert(r.nonGitFilesExcluded?.examples.includes('outside-git.txt'));
+  assert(r.excluded.some(x => /Non-Git workspace files/.test(x)));
+  assert.equal(r.environmentComplete, false);
+  const blocked = await backupAll({ connectionFile: f.connection, workspaceFiles: 'git-only' }, {
+    ...dependencies,
+    exportState: () => ({ ...f.state, completeness: 'partial' as const }),
+    projects: async () => ({ projects: [], errors: ['Project origin could not be verified'], remaining: ['Uncommitted project code'] }),
+  });
+  assert.equal(blocked.status, 'partial');
+  assert(blocked.errors.includes('Project origin could not be verified'));
+  assert(blocked.remaining.includes('Uncommitted project code'));
+  assert(blocked.remaining.some(x => /Extension capture is partial/.test(x)));
+});
+
+test('Git-only scope still commits eligible code and leaves ignored model bytes untouched', async t => {
+  const f = fixture(t), remote = path.join(f.root, 'project.git');
+  const git = (cwd: string, ...args: string[]) => execFileSync('git', ['-C', cwd, ...args], { encoding: 'utf8', windowsHide: true }).trim();
+  git(f.root, 'init', '--bare', remote); git(f.workspace, 'init', '-b', 'main');
+  git(f.workspace, 'config', 'user.name', 'Fixture'); git(f.workspace, 'config', 'user.email', 'fixture@example.test');
+  fs.writeFileSync(path.join(f.workspace, '.gitignore'), 'model.bin\n');
+  git(f.workspace, 'add', '.'); git(f.workspace, 'commit', '-m', 'initial');
+  git(f.workspace, 'remote', 'add', 'origin', remote); git(f.workspace, 'push', '-u', 'origin', 'main');
+  fs.writeFileSync(path.join(f.workspace, 'new.ts'), 'export const answer = 42;\n');
+  const model = Buffer.from([0, 1, 2, 3]); fs.writeFileSync(path.join(f.workspace, 'model.bin'), model);
+  const profile = createProfileOperations();
+  const r = await backupAll({ connectionFile: f.connection, workspaceFiles: 'git-only' }, {
+    exportState: () => f.state, verifyRegistry: () => {},
+    profileOperations: { ...profile, publish: async () => ({ head: 'registry', pushed: true }) },
+    projects: input => backupProjects(input, { allowRemote: url => url === remote }),
+  });
+  assert.equal(r.status, 'complete'); assert.equal(r.projects[0].verified, true);
+  assert.equal(git(remote, 'show', 'main:new.ts'), 'export const answer = 42;');
+  assert.equal(git(f.workspace, 'ls-files', 'model.bin'), '');
+  assert.deepEqual(fs.readFileSync(path.join(f.workspace, 'model.bin')), model);
+  assert.equal(r.nonGitFilesExcluded?.files, 1);
+});
+
+test('invalid workspace policy fails before reading sources or creating a snapshot', async t => {
+  const f = fixture(t); let called = false;
+  const r = await backupAll({ connectionFile: f.connection, workspaceFiles: 'invalid' as any }, {
+    exportState: () => { called = true; return f.state; },
+  });
+  assert.equal(called, false); assert.equal(r.status, 'failed');
+  assert(r.errors.some(x => /workspace-files/.test(x)));
+  assert(!fs.existsSync(path.join(f.registry, 'sync/profiles')));
+});
+
+test('Git-only discovery excludes parent-ignored runtime clones but retains registered submodules', async t => {
+  const f = fixture(t);
+  const git = (cwd: string, ...args: string[]) => execFileSync('git', ['-C', cwd, ...args], { encoding: 'utf8', windowsHide: true }).trim();
+  git(f.workspace, 'init', '-b', 'main'); git(f.workspace, 'config', 'user.name', 'Fixture'); git(f.workspace, 'config', 'user.email', 'fixture@example.test');
+  fs.writeFileSync(path.join(f.workspace, '.gitignore'), '.runtime/\n');
+  git(f.workspace, 'add', '.'); git(f.workspace, 'commit', '-m', 'root');
+  const runtime = path.join(f.workspace, '.runtime/upstream'); fs.mkdirSync(runtime, { recursive: true }); git(runtime, 'init', '-b', 'main');
+  git(runtime, 'config', 'user.name', 'Fixture'); git(runtime, 'config', 'user.email', 'fixture@example.test');
+  fs.writeFileSync(path.join(runtime, 'upstream.txt'), 'runtime source'); git(runtime, 'add', '.'); git(runtime, 'commit', '-m', 'runtime');
+  const child = path.join(f.workspace, 'child'); fs.mkdirSync(child); git(child, 'init', '-b', 'main');
+  git(child, 'config', 'user.name', 'Fixture'); git(child, 'config', 'user.email', 'fixture@example.test');
+  fs.writeFileSync(path.join(child, 'code.txt'), 'source'); git(child, 'add', '.'); git(child, 'commit', '-m', 'child');
+  git(f.workspace, 'add', 'child'); git(f.workspace, 'commit', '-m', 'registered gitlink');
+  fs.writeFileSync(path.join(runtime, 'unfinished.txt'), 'Do not publish failed runtime checkout');
+  let selected: string[] = [];
+  const r = await backupAll({ connectionFile: f.connection, workspaceFiles: 'git-only', dryRun: true }, {
+    projects: async input => { selected = input.repositoryPaths.map(p => p.replaceAll('\\', '/')); return { projects: [], errors: [], remaining: [] }; },
+  });
+  assert(!selected.includes('.runtime/upstream')); assert(selected.includes('child'));
+  assert(r.excluded.some(x => x.replaceAll('\\', '/').includes('.runtime/upstream') && x.includes('ignore')));
+  assert(!r.remaining.some(x => x.includes('.runtime/upstream')));
+  assert.equal(fs.readFileSync(path.join(runtime, 'unfinished.txt'), 'utf8'), 'Do not publish failed runtime checkout');
 });

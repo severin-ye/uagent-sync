@@ -7,9 +7,11 @@ import type { ExtensionRef } from "./types.js";
 import { executeTrustedCommand, type CommandResult } from "./codex-restore.js";
 import { scanForSecrets } from "./secret-scan.js";
 import { parser as pythonParser } from "@lezer/python";
-import { parser as javascriptParser } from "@lezer/javascript";
+import { normalizePluginSource } from "./plugin-source-scan.js";
 import { redactString } from "./redact.js";
 import { normalizeExtensionSource } from "./recovery-manifest.js";
+import { pluginRuntimeScanBuffers, PLUGIN_MAX_FILE_BYTES, PLUGIN_MAX_TOTAL_BYTES } from "./plugin-runtime-content.js";
+import { validatePluginPublicConfig, runtimeDevelopmentExclusions } from "./plugin-capture-scope.js";
 
 export interface CodexPluginFile {
   path: string;
@@ -23,6 +25,7 @@ export interface CodexPluginSnapshot {
   files: CodexPluginFile[];
   digest: string;
   sourceFiles?: CodexPluginFile[];
+  captureMode?: 'runtime';
   expectedSkills: string[];
   hasHooks: boolean;
   hasMcp: boolean;
@@ -74,8 +77,8 @@ export interface CodexPluginOptions {
   stateDirectory?: string;
 }
 const MAX_FILES = 4000,
-  MAX_FILE_BYTES = 8 * 1024 * 1024,
-  MAX_TOTAL_BYTES = 32 * 1024 * 1024;
+  MAX_FILE_BYTES = PLUGIN_MAX_FILE_BYTES,
+  MAX_TOTAL_BYTES = PLUGIN_MAX_TOTAL_BYTES;
 const digest = (value: string | Buffer) =>
   createHash("sha256").update(value).digest("hex");
 const safe = (value: unknown) =>
@@ -199,9 +202,19 @@ function credentialPath(relative: string): boolean {
       ),
     );
 }
+const validatedContents = new Set<string>();
+function asciiUtf16(bytes: Buffer, offset: number): string {
+  // Credential syntax is ASCII. Preserve every ASCII code unit and replace
+  // other units with a nonword separator; never feed arbitrary font words or
+  // lone surrogates into V8's Unicode regexp path (Windows Node heap crash).
+  const text = Buffer.alloc(Math.max(0, Math.floor((bytes.length - offset) / 2)));
+  for (let i = offset, j = 0; i + 1 < bytes.length; i += 2, j++) {
+    if (bytes[i + 1] === 0 && bytes[i] < 128) text[j] = bytes[i];
+  }
+  return text.toString('latin1');
+}
 function checkedBytes(file: CodexPluginFile): Buffer {
   checkedPath(file.path);
-  if (credentialPath(file.path)) throw Error("Credential file refused");
   if (
     typeof file.base64 !== "string" ||
     file.base64.length > Math.ceil(MAX_FILE_BYTES / 3) * 4 ||
@@ -216,6 +229,27 @@ function checkedBytes(file: CodexPluginFile): Buffer {
     throw Error("Invalid snapshot base64");
   if (bytes.length > MAX_FILE_BYTES || digest(bytes) !== file.sha256)
     throw Error("Snapshot file hash mismatch");
+  const validationKey = `${file.path}\0${file.sha256}`;
+  if (validatedContents.has(validationKey)) return bytes;
+  const accepted = () => {
+    // Retain only bounded path/digest metadata, never file bytes or parsed ASTs.
+    if (validatedContents.size >= 4096) validatedContents.delete(validatedContents.values().next().value!);
+    validatedContents.add(validationKey); return bytes;
+  };
+  if (credentialPath(file.path) && !validatePluginPublicConfig(file.path, bytes)) throw Error("Credential file refused");
+  if (credentialPath(file.path)) return accepted();
+  const runtime = pluginRuntimeScanBuffers(file.path, bytes);
+  if (runtime) {
+    for (const input of runtime) {
+      // Scan byte-preserving text and UTF-16 strings commonly present in PE
+      // resources. Decoded compressed members receive the same scanner.
+      for (const text of [input.toString("latin1"), asciiUtf16(input, 0), asciiUtf16(input, 1)]) {
+        if (scanForSecrets(text).length || /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/.test(text))
+          throw Error("Secret content refused");
+      }
+    }
+    return accepted();
+  }
   let text: string;
   try {
     text = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
@@ -232,9 +266,50 @@ function checkedBytes(file: CodexPluginFile): Buffer {
     /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/.test(text)
   )
     throw Error("Secret content refused");
-  return bytes;
+  return accepted();
 }
-function secretScanText(relative: string, text: string): string {
+function secretScanText(relative: string, text: string, embeddedDepth = 0): string {
+  // Prefixes and triple delimiters must not hide a directly assigned Python
+  // credential from the raw scanner, including examples in Markdown. This
+  // check never executes or decodes source; placeholders remain nonopaque.
+  if (/\.(?:py|md)$/i.test(relative)) {
+    for (const match of text.matchAll(/\b(?:api[_-]?key|token|secret|password|authorization)["']?\s*[=:]\s*([rubf]{0,2})("""|'''|"|')([\s\S]*?)\2/gi)) {
+      if (!match[1] && match[2].length === 1) continue;
+      const value = match[3], opaque = /^[A-Za-z0-9._~+/=-]{8,}$/.test(value)
+        || value.includes('\\') && value.length >= 8
+        || /f/i.test(match[1]) && value.split(/\{[^}]*\}/).some(part => /[A-Za-z0-9._~+/=-]{8,}/.test(part));
+      if (opaque) throw Error(`Secret content refused: prefixed-credential-literal at ${relative}`);
+    }
+  }
+  if (/\.md$/i.test(relative)) {
+    // Only complete, explicitly typed example fences are source code. Prose,
+    // untyped/malformed fences and all other bytes remain under the raw scan.
+    const fenced = text.replace(/^(`{3,}|~{3,})(python|py|javascript|js|typescript|ts)[ \t]*\r?\n([\s\S]*?)^\1[ \t]*$/gim,
+      (whole, fence: string, language: string, body: string) => {
+        const extension = /^(python|py)$/i.test(language) ? 'py' : /^(typescript|ts)$/i.test(language) ? 'ts' : 'js';
+        // These explicit example sentinels are already accepted by the strict
+        // environment-template validator. Opaque defaults are never replaced.
+        const example = body.replace(/\b(api[_-]?key|token|secret|password|authorization)\s*=\s*(["'])your[-_](?:api[-_]key|token|secret|password|authorization)(?:[-_]key)?\2/gi, '$1="<YOUR_EXAMPLE>"')
+          // Exact truncated example verified against public Git blob
+          // 89d675d4e5ec5b369471d941e74f7009aee6c234; arbitrary hf_ literals stay scanned.
+          .replace(/\btoken\s*=\s*(["'])hf_abc123(?:xyz)?\.\.\.\1/g, 'token="<YOUR_EXAMPLE>"');
+        try {
+          const normalized = secretScanText(`example.${extension}`, example);
+          if (scanForSecrets(normalized).length) return whole;
+          return `${fence}${language}\n${normalized}${fence}`;
+        } catch { return whole; }
+      });
+    // Inline, complete call examples have a syntactic argument boundary too.
+    // Bare assignments, prose and untyped fenced bodies receive no exemption.
+    return fenced.replace(/(?<!`)`([^`\r\n]{1,4096})`(?!`)/g, (whole, body: string) => {
+      if (!/^[A-Za-z_][\w.]*\([\s\S]*\)$/.test(body) || !/\b(?:api[_-]?key|token|secret|password|authorization)\s*=/.test(body)) return whole;
+      try {
+        const normalized = secretScanText('inline.py', body);
+        return scanForSecrets(normalized).length ? whole : '`' + normalized + '`';
+      } catch { return whole; }
+    });
+  }
+  if (!/\.py$/i.test(relative)) return normalizePluginSource(relative, text);
   if (!/\.(?:[cm]?js|[cm]?ts|jsx|tsx|py)$/i.test(relative)) return text;
   // Parsing can only resolve assignment false positives. Keep the original
   // scanner result for every other file without constructing a syntax tree.
@@ -242,13 +317,12 @@ function secretScanText(relative: string, text: string): string {
   // Parse without executing plugin code. Every literal/comment remains under
   // scanning, including template strings and regex literals. A parse error
   // disables all exemptions rather than guessing whether text is executable.
-  const parser = /\.py$/i.test(relative)
-    ? pythonParser
-    : javascriptParser.configure({ dialect: "ts jsx" });
+  const parser = pythonParser;
   const code = new Uint8Array(text.length).fill(1);
   const edits: Array<{ from: number; to: number; value: string }> = [];
   let invalid = false;
-  parser.parse(text).iterate({ enter(node) {
+  const tree = parser.parse(text);
+  tree.iterate({ enter(node) {
     if (node.type.isError) {
       // Python's grammar requires a yield operand although Python permits
       // bare yield. Recognize only this empty missing-operand node, without
@@ -272,6 +346,21 @@ function secretScanText(relative: string, text: string): string {
           // Do not join a word at the end of a literal to a ternary/operator
           // outside it. Keep the literal itself untouched and fully scanned.
           edits.push({ from: node.to, to: node.to, value: "\0" });
+          const raw = text.slice(node.from, node.to), quote = /^("""|''')([\s\S]*)\1$/.exec(raw);
+          if (embeddedDepth < 2 && quote && quote[2].length <= 2 * 1024 * 1024 &&
+            /\b(?:api[_-]?key|token|secret|password|authorization)\s*=\s*(?:os\.(?:environ|getenv)|secrets\.(?:token_hex|token_urlsafe))\b/i.test(quote[2])) {
+            // Job examples carry complete Python source in triple-quoted
+            // strings. Only explicit environment/random-generation references
+            // establish this case; parseable credential-like data alone cannot.
+            const lines = quote[2].split('\n'), nonempty = lines.filter(line => line.trim());
+            const indent = Math.min(...nonempty.map(line => /^ */.exec(line)![0].length));
+            const body = lines.map(line => line.slice(indent)).join('\n');
+            try {
+              const normalized = secretScanText('embedded.py', body, embeddedDepth + 1);
+              if (!scanForSecrets(normalized).length && normalized !== body)
+                edits.push({ from: node.from, to: node.to, value: `${quote[1]}${normalized}${quote[1]}` });
+            } catch { /* Keep every rejected literal under the original scan. */ }
+          }
         }
       }
       return false;
@@ -281,8 +370,38 @@ function secretScanText(relative: string, text: string): string {
   const expressionPrefix = /\b(api[_-]?key|token|secret|password|authorization)["']?\s*([=:])\s*([A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*)*)/gi;
   for (const match of text.matchAll(expressionPrefix)) {
     const offset = match.index;
-    if (code.subarray(offset, offset + match[0].length).every(value => value === 1))
+    if (code.subarray(offset, offset + match[0].length).every(value => value === 1)) {
+      const valueFrom = offset + match[0].length - match[3].length;
+      let keyParent = tree.resolveInner(offset, 1).parent;
+      const assignmentParents = ['AssignStatement', 'AssignmentExpression', 'Property', 'ArgList', 'DictionaryExpression'];
+      while (keyParent?.parent && !assignmentParents.includes(keyParent.name)) keyParent = keyParent.parent;
+      if (!keyParent || !assignmentParents.includes(keyParent.name)) continue;
+      let rhs = tree.resolveInner(valueFrom, 1);
+      const sameParent = () => !!keyParent && rhs.parent?.name === keyParent.name && rhs.parent.from === keyParent.from && rhs.parent.to === keyParent.to;
+      while (rhs.parent && !sameParent()) rhs = rhs.parent;
+      if (!sameParent()) continue;
+      rhs.cursor().iterate(node => {
+        // A Lezer cursor may continue into following siblings. Only this RHS
+        // belongs to the exemption; unrelated later configuration is not it.
+        if (node.from < rhs.from || node.to > rhs.to) return false;
+        if (!/String/.test(node.name)) return;
+        const parent = node.node.parent;
+        const raw = text.slice(node.from, node.to);
+        const quoted = /^(?:[rubf]{0,2})("""|'''|"|')([\s\S]*)\1$/i.exec(raw);
+        if (!quoted) throw Error(`Secret content refused: unsupported-credential-string at ${relative}`);
+        const literal = quoted[2];
+        const environment = parent?.name === 'MemberExpression' && node.node.prevSibling?.name === '['
+          && /^[A-Z_][A-Z0-9_]*$/.test(literal) && /^os\.environ\s*\[/.test(text.slice(parent.from, parent.to))
+          || parent?.name === 'ArgList' && node.node.prevSibling?.name === '(' && /^[A-Z_][A-Z0-9_]*$/.test(literal)
+            && /^(?:os\.getenv|os\.environ\.get)\s*\(/.test(text.slice(parent.parent?.from ?? parent.from, parent.parent?.to ?? parent.to));
+        const structural = parent?.name === 'DictionaryExpression' && node.node.nextSibling?.name === ':';
+        if (!environment && !structural && (/^[A-Za-z0-9._~+/=-]{8,}$/.test(literal)
+          || literal.includes('\\') && literal.length >= 8
+          || /^[rubf]*f/i.test(raw) && literal.split(/\{[^}]*\}/).some(part => /[A-Za-z0-9._~+/=-]{8,}/.test(part))))
+          throw Error(`Secret content refused: nested-credential-literal at ${relative}:${text.slice(0, node.from).split('\n').length}`);
+      });
       edits.push({ from: offset, to: offset + match[0].length, value: `${match[1]}${match[2]}<hidden>` });
+    }
   }
   let result = "", cursor = 0;
   for (const edit of edits.sort((a, b) => a.from - b.from || a.to - b.to)) {
@@ -409,6 +528,7 @@ export function validateCodexPluginSnapshot(
   )
     throw Error("Invalid plugin snapshot");
   const snap = value as unknown as CodexPluginSnapshot;
+  if (snap.captureMode !== undefined && snap.captureMode !== 'runtime') throw Error('Invalid plugin capture mode');
   const { id } = identityParts(snap.selector);
   versionName(snap.version);
   validateFiles(snap.files);
@@ -441,7 +561,7 @@ export function validateCodexPluginSnapshot(
   )
     throw Error("Invalid snapshot limitations");
 }
-function readFiles(root: string): {
+function readFiles(root: string, mode?: 'runtime'): {
   files: CodexPluginFile[];
   exclusions: string[];
 } {
@@ -451,6 +571,7 @@ function readFiles(root: string): {
     throw Error("Plugin root link or invalid directory");
   const files: CodexPluginFile[] = [],
     exclusions: string[] = [];
+  const developmentExcluded = mode === 'runtime' ? runtimeDevelopmentExclusions(root) : () => false;
   let total = 0;
   const walk = (directory: string, relative: string) => {
     for (const entry of fs.readdirSync(directory).sort()) {
@@ -459,6 +580,10 @@ function readFiles(root: string): {
       const full = path.join(directory, entry),
         stat = fs.lstatSync(full);
       if (stat.isSymbolicLink()) throw Error("Plugin link refused");
+      if (developmentExcluded(rel)) { exclusions.push(`Development content outside runtime scope: ${rel}`); continue; }
+      if (mode === 'runtime' && credentialPath(rel) && !/(?:^|\/)\.(?:env\.(?:example|template)|npmrc)$/i.test(rel)) {
+        exclusions.push(`Credential file kept local: ${rel}`); continue;
+      }
       if (
         entry === ".git" ||
         entry === "node_modules" ||
@@ -496,10 +621,12 @@ function readFiles(root: string): {
 }
 export function captureCodexPluginSnapshot(
   plugin: ExtensionRef,
+  mode?: 'runtime',
 ): CodexPluginSnapshot {
+  if (mode !== undefined && mode !== 'runtime') throw Error('Invalid plugin capture mode');
   const installed = plugin.config?.installedPath;
   if (typeof installed !== "string") throw Error("No verified installed path");
-  const data = readFiles(installed);
+  const data = readFiles(installed, mode);
   const m = manifest(data.files);
   const snap: CodexPluginSnapshot = {
     schemaVersion: 1,
@@ -510,11 +637,14 @@ export function captureCodexPluginSnapshot(
     ...metadata(data.files),
     exclusions: data.exclusions,
     remaining: [],
+    ...(mode ? { captureMode: mode } : {}),
   };
   if (plugin.version && plugin.version !== snap.version)
     throw Error("Installed manifest version mismatch");
   const source = plugin.config?.sourcePath;
+  if (mode === 'runtime' && typeof source === 'string' && path.resolve(source) !== path.resolve(installed)) snap.exclusions.push('Separate development source archive excluded in runtime scope; restore uses captured installed runtime content.');
   if (
+    mode !== 'runtime' &&
     typeof source === "string" &&
     path.resolve(source) !== path.resolve(installed) &&
     fs.existsSync(source)
@@ -528,7 +658,7 @@ export function captureCodexPluginSnapshot(
     } catch (error) {
       snap.remaining.push(`Source archive unavailable: ${safe(error instanceof Error ? error.message : error)}`);
     }
-  } else if (typeof source === "string" && !fs.existsSync(source)) {
+  } else if (mode !== 'runtime' && typeof source === "string" && !fs.existsSync(source)) {
     snap.remaining.push("Source archive unavailable: source directory is not accessible");
   }
   validateCodexPluginSnapshot(snap);
@@ -829,7 +959,7 @@ export function verifyCodexPlugin(
       const snap = captureCodexPluginSnapshot({
         ...actual,
         config: { ...actual.config, sourcePath: undefined },
-      });
+      }, plugin.pluginSnapshot.captureMode);
       result.evidence.content = snap.digest === plugin.pluginSnapshot.digest;
       if (!result.evidence.content)
         result.errors.push("Installed plugin content digest mismatch");
@@ -860,7 +990,7 @@ export function verifyCodexPlugin(
         "MCP authentication and business behavior are not verified",
       );
     for (const dependency of runtimeDependencies(
-      readFiles(String(actual.config!.installedPath)).files,
+      readFiles(String(actual.config!.installedPath), plugin.pluginSnapshot?.captureMode).files,
     )) {
       if (
         !fs.existsSync(
@@ -1211,7 +1341,7 @@ export function restoreCodexPlugin(
       const current = captureCodexPluginSnapshot({
         ...existing,
         config: { ...existing.config, sourcePath: undefined },
-      });
+      }, snap.captureMode);
       needsInstall =
         current.digest !== snap.digest || existing.version !== snap.version;
       if (needsInstall && existing.version === snap.version) {

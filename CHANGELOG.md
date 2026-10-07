@@ -8,6 +8,16 @@
 
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [2.5.0] - 2026-10-07
+
+- Add `backup --all --workspace-files git-only`: back up eligible project Git content, personal configuration and installed plugin runtime content, while explicitly deferring non-Git models, sequence data and other local files. The default `report-all` retains its existing coverage checks. Project failures remain failures in either mode.
+- Runtime snapshots retain declared and referenced Skill/command dependencies and public placeholder templates; development-only content and local credential files are disclosed as exclusions. Required runtime files remain scanned and hashed; validation and restore use the same policy.
+- Raise the plugin file bound from 8 MiB to 100,000,000 bytes, with bounded format/decoded-content checks and a 512,000,000-byte collection bound. Base64, source recognition, compressed members and repeated validation remain bounded; real credentials and unknown binary formats are refused.
+- Clean detached checkouts and task branches may verify their exact HEAD already exists in the declared live origin branch without switching or pushing a parallel branch. Dirty, divergent, conflicted or staged checkouts remain protected.
+- Ship TypeScript as a locked production parser dependency; validate the actual packed installation and preserve existing snapshot compatibility.
+- Decode bounded Office font members (including compressed EOT and DOCX ODTTF) before content scanning. Oversized combined state uses a checksummed, bounded gzip storage envelope read by the existing import, setup, verification and diff paths; ordinary JSON remains compatible.
+- Version rationale: Y. Adds a user-selectable workflow within the existing backup capability; no new independent module or device migration claim. Installed backup and restore still require their own acceptance evidence.
+
 ## [2.4.6] - 2026-10-07
 
 - Fix project-source credential false positives when a Python condition ends in `token:` or `api_key:`. Only recognized assignments inspect initializer literals; unmatched text retains conservative scanning. Default profile scanning and literal credentials remain blocked.

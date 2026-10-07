@@ -224,7 +224,7 @@ UAGENT_SYNC_LANG=zh opencode-sync guide  # 中文引导文档
 | 命令 | 作用 |
 |------|------|
 | `init` | 检测工作区，引导首次设置。只问一次。 |
-| `backup --all` | Codex：项目提交并推送各自已有 GitHub 仓库；设置、规则、Skills、记忆和实际插件内容发布到已登记私人配置仓库。`--dry-run` 预览，漏项和失败明确报告。直接说“U同步，备份所有”。[范围与恢复](docs/DEVICE-SYNC-USAGE.md) |
+| `backup --all` | Codex：项目提交并推送各自已有 GitHub 仓库；设置、规则、Skills、记忆和实际插件内容发布到已登记私人配置仓库。`--dry-run` 预览；明确暂缓非Git文件时加 `--workspace-files git-only`，插件采集实际运行内容。漏项和失败明确报告。直接说“U同步，备份所有”。[范围与恢复](docs/DEVICE-SYNC-USAGE.md) |
 | `push` | 导出状态 → 提交 → 推送到 GitHub。一条命令。 |
 | `pull` | 从 GitHub 拉取 → 恢复一切。一条命令。 |
 | `export` | 导出完整工作区状态为 JSON |

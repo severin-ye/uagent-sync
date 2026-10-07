@@ -4,6 +4,21 @@
 
 ## 统一备份所有（2.4.0）
 
+### Git 范围备份（2.5.0）
+
+已明确要求“目前不能 Git 跟踪的先不备份”时，在同一个正式命令上加 `--workspace-files git-only`：
+
+```powershell
+uagent-sync backup --all --workspace-files git-only --dry-run --target-agent codex --lang zh
+uagent-sync backup --all --workspace-files git-only --target-agent codex --lang zh
+```
+
+该范围仍提交并推送符合检查的源码、文档和资料，并保存个人配置与扩展实际运行内容。模型、序列数据等仍在 Git 之外的工作区文件留在原处，不创建离线副本；报告用 `nonGitFilesExcluded` 列出数量、大小和示例。父仓库已忽略的嵌套运行克隆和关联 worktree 明确排除，正式登记的子模块仍备份。项目错误、缺失的扩展运行内容和扫描失败继续阻止 `complete`；`environmentComplete` 始终为 false。
+
+扩展运行文件单文件上限为 100,000,000 字节，每组内容上限为 512,000,000 字节，解码另有上限。支持的运行二进制检查实际格式和可解压内容；必要脚本、文档、声明入口及其引用保留，开发测试和未被运行入口引用的工程文档列为排除。`.env` 等本地凭据文件不上传；公开示例只接受经过内容检查的占位符。备份不会替换登录或宿主信任。旧严格范围的默认值仍为 `report-all`，不能因新选项把历史 partial 回执改成成功。
+
+可信公开 Skill 适配器也可追加 `--workspace-files git-only`，使用同一正式 CLI 和引擎。运行快照带 `captureMode: runtime`；恢复和内容核验沿用该范围，旧快照不带此字段时保留原严格行为。干净分离 HEAD 或当前任务分支若在声明的实时 origin 分支历史中，可只读证明已有备份；不切换本地版本，不创建平行远端分支。
+
 2.4.5 发布校验：对已通过扫描的明确快照路径使用 literal force-add，不让复制过来的 `.gitignore` 静默漏文件；暂存与提交后的 Git 对象摘要和数量必须与检查时的原始字节一致，范围外改动或属性转换导致的字节变化会停止发布。本机无改动且当前提交已是同一远端分支提交的祖先时，可只读核验既有备份并记录 `remoteHead`；保留本机版本，不自动合并、更新或推送。分叉、有本地改动、暂存与不匹配的上游继续阻止自动交付。
 
 2.4.1 修复大量遗漏项的报告栈溢出，并仅在项目源码中排除语法已识别的非字面量表达式误判。字面量、注释、混合密钥、无效语法与JSON/普通env内容仍检查；环境示例只接受完全由占位符组成的 `.env.example` 和 `.env.template`，不能据文件名跳过检查。
@@ -22,6 +37,8 @@ uagent-sync backup --all --target-agent codex --lang zh
 预览不采集个人或插件内容、不创建提交、不上传、不 fetch；会列出项目和工作区遗漏，内容采集仍未验收。执行后逐项核对远端 HEAD，保存本机 JSON 回执。`complete` 只表示命令声明的范围完成；有失败或剩余项则报告 `partial`/`failed` 并退出非零。忽略文件、超大文件、依赖、凭据、登录、会话数据库、自动化、宿主信任及链接都有明确边界，不能据此宣称整个办公环境可直接使用。当前只支持 Codex 的标准 `<userHome>/.codex`；已有暂存改动、冲突、远端领先或分叉会阻止相应项目自动处理，临时 Git worktree 不独立推送。
 
 恢复时先在目标机登记自己的身份并获取配置仓库，再用 `device restore --snapshot <快照目录>` 预览和 `--apply` 恢复个人文件。插件状态需要放到目标工作区的 `usync-dotfiles/state/workspace-state.json`，然后执行下方的 `setup --target-agent codex` 和 `verify --target-agent codex`；`import` 单独校验状态不等于已安装。项目从各自仓库获取，依赖、登录和宿主信任在目标机重建。失败后保留本地快照、项目提交和回执；项目下次执行可续推未上传提交，私人配置仓库存在待推提交或分叉时先核对并协调，命令不会自动 reset 或强推。
+
+超过100,000,000字节的完整插件状态会在同一 `workspace-state.json` 中使用 `workspace-state-gzip-v1` 存储封装。原始大小与SHA256随封装保存，压缩后的Git文件仍不得超过100,000,000字节，解码上限512,000,000字节。恢复这种快照要求U同步2.5.0及以后版本；原 `import/pull/setup/verify/diff` 流程统一读取封装，并保留插件内容验证，旧普通JSON快照仍可读取。不会把超限内容删掉来制造完整备份。
 
 ## 设备配置
 
