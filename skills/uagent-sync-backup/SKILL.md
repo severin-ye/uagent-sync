@@ -26,6 +26,8 @@ For an explicit request to back up **all**, use the installed `uagent-sync backu
 
 This command currently supports Codex only and requires the standard registered `<userHome>/.codex` location for plugin capture. A nonstandard location is refused before capture. Pre-existing project staged changes and conflicts are protected. It never changes origin or creates a repository, and skips linked worktrees rather than backing up temporary task branches.
 
+If profile collection is blocked by independently reviewed public Skill artifacts, the installed `scripts/verified-public-profile.mjs backup-all --connection <registered absolute connection> --cache <new absolute temporary directory> --report <new private JSON report>` host adapter can compose its shipped reviewed manifest with the same formal backup CLI and engine. This is not a second implementation or a scanner override. Only exact public bytes and logical paths in the application-owned manifest are accepted; never learn approval from inspected files, accept a user policy path, substitute standalone `snapshot`, or label a partial result complete. Inspect the installed manifest and public provenance first. Changed or unknown content remains blocked, and credential, Git, coverage and remote verification boundaries still apply.
+
 ## Existing workspace backup prerequisites
 
 - `uagent-sync` repo built: `npm install && npm run build` in its directory (CLI at `dist/cli.js`)

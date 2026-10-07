@@ -1,8 +1,10 @@
-import { backupAll } from '../application/backup-all.js';
+import { backupAll, type BackupAllDependencies } from '../application/backup-all.js';
 import { redactString } from '../lib/redact.js';
 
 const HELP = 'uagent-sync backup --all [--dry-run] [--connection <file>] [--workspace-id <id>] [--message <text>] [--target-agent codex] [--json] [--lang en|zh]\nCommit and push projects to their existing origins; publish personal settings, rules, Skills, memories and installed extension content to the registered PRIVATE GitHub registry.\nDry-run does not capture files, commit or upload. Ignored files, credentials, runtime state and unsupported items are reported, not silently backed up.';
-export async function runBackupCli(args: string[]): Promise<number> {
+/** Trusted host composition only; no CLI, environment or snapshot policy path. */
+export function createBackupCliHandler(dependencies: BackupAllDependencies = {}) {
+ return async function backupCliHandler(args: string[]): Promise<number> {
   if (args.some(x => ['--help', '-h', 'help'].includes(x))) { console.log(HELP); return 0; }
   try {
     const values = new Map<string, string | boolean>();
@@ -24,7 +26,7 @@ export async function runBackupCli(args: string[]): Promise<number> {
     if (values.get('all') !== true) throw new Error('Use backup --all to select projects, extensions and all supported personal components.');
     if (values.has('target-agent') && values.get('target-agent') !== 'codex') throw new Error('Unified backup currently supports --target-agent codex only.');
     if (values.has('lang') && !['en', 'zh'].includes(String(values.get('lang')))) throw new Error('--lang must be en or zh');
-    const report = await backupAll({ connectionFile: values.get('connection') as string | undefined, workspaceId: values.get('workspace-id') as string | undefined, message: values.get('message') as string | undefined, dryRun: values.get('dry-run') === true });
+    const report = await backupAll({ connectionFile: values.get('connection') as string | undefined, workspaceId: values.get('workspace-id') as string | undefined, message: values.get('message') as string | undefined, dryRun: values.get('dry-run') === true }, dependencies);
     if (values.get('json') === true) console.log(JSON.stringify(report, null, 2));
     else {
       const zh = values.get('lang') === 'zh' || process.env.UAGENT_SYNC_LANG === 'zh';
@@ -43,4 +45,8 @@ export async function runBackupCli(args: string[]): Promise<number> {
     console.error(JSON.stringify({ ok: false, status: 'failed', error: redactString(error instanceof Error ? error.message : String(error)) }));
     return 1;
   }
+ };
+}
+export async function runBackupCli(args: string[]): Promise<number> {
+  return createBackupCliHandler()(args);
 }

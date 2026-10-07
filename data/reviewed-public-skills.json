@@ -1,8 +1,78 @@
 {
   "schemaVersion": 1,
-  "reviewedAt": "2026-09-14",
+  "reviewedAt": "2026-10-07",
   "purpose": "Exact independently retrieved public Skill artifacts; no user file values",
   "files": [
+    {
+      "source": "agents/skills/claude-api/php/claude-api/README.md",
+      "repository": "https://github.com/anthropics/skills.git",
+      "blob": "8d8f7d5ca448675b0aac175fa3b81d25d40c7559",
+      "sha256": "32cc6bf534102b9b4514bcb619586430affce8313b6a45e4942dca66903956c8",
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/claude-api/php/managed-agents/README.md",
+      "repository": "https://github.com/anthropics/skills.git",
+      "blob": "fc63d9888525238f7dccf0eddefae4f0f7be648d",
+      "sha256": "45f40f6e2322cfab24f0e1c249b91ded7a1604f58487bdb6b648cbcdd4ab3773",
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/claude-api/python/claude-api/README.md",
+      "repository": "https://github.com/anthropics/skills.git",
+      "blob": "62c0f508661623c7af40a5068f6d6d68b00b4376",
+      "sha256": "44d1518721c5c5d2f4a3deb2095df55224d9b11cee3510176b3805bad4634281",
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/claude-api/python/managed-agents/README.md",
+      "repository": "https://github.com/anthropics/skills.git",
+      "blob": "cb97bfa4754aa4fe3dc12a61aacbf880c6a05dc1",
+      "sha256": "613568340ce4962fe82f5c1c16f40823cce0c6a0ff2cd7c945dc97f579259cf8",
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/claude-api/ruby/claude-api/README.md",
+      "repository": "https://github.com/anthropics/skills.git",
+      "blob": "2a0466854785521eb5d9cdcc24f9253716fcb98f",
+      "sha256": "cf874b7aa952e701bbf2ad2a253d826d6dd4a0f41a605c6996ee8253c1b4f217",
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/claude-api/ruby/managed-agents/README.md",
+      "repository": "https://github.com/anthropics/skills.git",
+      "blob": "4b58dc96d8f4ecc73a4685f36fcfe3876e431c57",
+      "sha256": "563c476e0516d0bb81bec209648780d1e64ed7ac18e76015b9146affe12b0ecd",
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/claude-api/shared/managed-agents-tools.md",
+      "repository": "https://github.com/anthropics/skills.git",
+      "blob": "d418e04d306073d73e26b8b4d0a240f29440c599",
+      "sha256": "c70a39c4575922059ff9b0a603547a8e16a3274e7c4b180a2b4521714132a6bc",
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/claude-api/typescript/claude-api/README.md",
+      "repository": "https://github.com/anthropics/skills.git",
+      "blob": "115d20d7aafd10d87c080d8ef36a292648158d57",
+      "sha256": "07c3a035a8c93e5e2bfd9ecf6cf824e8fd8df15cc393eec19a842f184615fe12",
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/claude-api/typescript/managed-agents/README.md",
+      "repository": "https://github.com/anthropics/skills.git",
+      "blob": "0431a816a32ba0516af6b7dcc83ffed8e966ba9b",
+      "sha256": "6f49f9d66640f8d266b79ac655746889b5ee5470d8749dbfcf58f0e7b8ce014f",
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/clinvar-database/scripts/clinvar_api.py",
+      "repository": "https://github.com/google-deepmind/science-skills.git",
+      "blob": "90fb20b1f21642aba19e23979ee1584493702b6e",
+      "sha256": "9459f2adde6f7e13db5a1da491c398a371eaa299f5981dd85a7a923c23c4ad86",
+      "lineEndings": "crlf"
+    },
     {
       "source": "agents/skills/gstack/.env.example",
       "repository": "https://github.com/garrytan/gstack.git",
@@ -13,8 +83,8 @@
     {
       "source": "agents/skills/gstack/bin/gstack-distill-free-text",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "fe75c45a409f7606165e8fd1db8b0af0c8c01807",
-      "sha256": "0aef0f18f98a0cb40064b923323bd8238b6b24d3fe3516d4497c338c64b15532",
+      "blob": "a7e997c0a5a55a3c96d146ffd819da3829a095e9",
+      "sha256": "46d193216cbef55b728d8e2172e5e2667e30fd47e0ae5c3eb6b4f504a210c547",
       "lineEndings": "original"
     },
     {
@@ -27,15 +97,15 @@
     {
       "source": "agents/skills/gstack/browse/src/browser-manager.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "60c478842f4aa4356f122ac70f7803a4385c8f8a",
-      "sha256": "994c5eb67685692ac82cbff8b175c4e153f19c9c024fafbea8f522505b3a91d8",
+      "blob": "b35a9d2d579b820806b9bd5b09b9d8b56f95bfbc",
+      "sha256": "82e844073b657358bd6ab7204aac244bc41e10f2e2063d6c1901c9c1aef595b0",
       "lineEndings": "original"
     },
     {
       "source": "agents/skills/gstack/browse/src/cli.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "55c69c6707607ad8cfa01940120910a2397457f4",
-      "sha256": "b24fd3d78ddad0fbb888704d8544db618670779ba25650f01201780c36cfe427",
+      "blob": "e367281897cc7f9ff002e7938f2f883cb2d90768",
+      "sha256": "001232da1d25b159dcbc40b30dcdc0f00e4e9961f7574e0ad4839467acd05118",
       "lineEndings": "original"
     },
     {
@@ -62,8 +132,8 @@
     {
       "source": "agents/skills/gstack/browse/src/server.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "47c2e2e4df82b2c0236a42a4d307f420f6900338",
-      "sha256": "f29a368e9ee2253ae261541d0fe02d6e0896b24c248e535fbd68c8cb61e43ed3",
+      "blob": "47f7249ef194ced221cc433660a5e05f31486476",
+      "sha256": "36c40852f6322feb5cd46c8105989936d1e965d3339e04b28016bfc6da09a39e",
       "lineEndings": "original"
     },
     {
@@ -111,8 +181,8 @@
     {
       "source": "agents/skills/gstack/browse/test/browser-skill-commands.test.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "c93a908e2ec86215fc9f5e7db59165b0c2fdd687",
-      "sha256": "6bd98729162e77b4b51f4583667f946c489a1da2fb57008ef29b2835f89636b6",
+      "blob": "9d200e10d1667552fc74865d6e7bd70422f45fdf",
+      "sha256": "ed873661224b278b14d1327a43df13bf061bc5ff6b17306ec0cced011742f927",
       "lineEndings": "original"
     },
     {
@@ -130,17 +200,24 @@
       "lineEndings": "original"
     },
     {
+      "source": "agents/skills/gstack/browse/test/chromium-profile-isolation.test.ts",
+      "repository": "https://github.com/garrytan/gstack.git",
+      "blob": "2330020fe4c4456e49fbe56f8d521dbd158ed5b5",
+      "sha256": "e7a94d92196ede04cf84c8cd87a8becd6490dc5158445adb890aee515bec7f76",
+      "lineEndings": "original"
+    },
+    {
       "source": "agents/skills/gstack/browse/test/commands.test.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "83ae4707cc8db7ddc8b2fe163a491d16a2ee51ab",
-      "sha256": "cd93f6f33495bcf72cc53cebe713e91758056a03ef86ea73ce05f5f1263928c4",
+      "blob": "543fb521ab5697a87b56ce5783139c1f957c1f16",
+      "sha256": "1e66e0bcf78190781db79a4ffe696fbc3a374eb8dd8638ce55fb1b5615269d34",
       "lineEndings": "original"
     },
     {
       "source": "agents/skills/gstack/browse/test/cookie-import-browser.test.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "5e9a5b441ea0d9b0dd236fde846ae4ff4f9596f0",
-      "sha256": "89417aa7e6bf29138b26af32353eaae84636d4d62dc84af8949aac261d5d974d",
+      "blob": "ccf8e88b1648e10abe990a40017691cf4cde665c",
+      "sha256": "8fe29918a60a64a77fd288bb31410a9b949669ed1a12da45ed9aa025822c5dc9",
       "lineEndings": "original"
     },
     {
@@ -167,15 +244,15 @@
     {
       "source": "agents/skills/gstack/browse/test/pair-agent-e2e.test.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "3891c3c118c9f77dde1061469ebe211a374395f1",
-      "sha256": "8cbb8d79a792c685ef9849332d4f44054a7a0996a63a2ccc6a17d4f6c0ac0dee",
+      "blob": "a9e978c985e851fc594db9aa8ebe20ae92373a60",
+      "sha256": "a01b66c286b2f10cb26f4d81f8085cb66fc6d3ba25e69d5a23b5e5da5059a643",
       "lineEndings": "original"
     },
     {
       "source": "agents/skills/gstack/browse/test/pair-agent-tunnel-eval.test.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "ffb432193e4f44a49d9f1948b8185e1df84828ba",
-      "sha256": "c5f41c5175da7e0855e99af545f60399efa26e45a29d1ecdc5a94adcabf4c7e7",
+      "blob": "f922afebeb0f06d966af6aa42229047d244cd6d6",
+      "sha256": "92c2840ea385636431316257060ebb1cf12365aacff080d46567f4ae12d8e8b6",
       "lineEndings": "original"
     },
     {
@@ -202,8 +279,8 @@
     {
       "source": "agents/skills/gstack/browse/test/server-factory.test.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "b6c1dc44d96a8cbfa950b860a8eced6f8cb8ecfa",
-      "sha256": "921167e6a4b171a05b90f6877d9aa4b9e9f2089be4febc6046e5836c054b9b78",
+      "blob": "bed2a70c8803f8aebb01b584bd822500938a0354",
+      "sha256": "02cff9b02cfd1e4d3af9632803a5e9fb8b122eb168123f2e43b788665e0299ed",
       "lineEndings": "original"
     },
     {
@@ -216,8 +293,8 @@
     {
       "source": "agents/skills/gstack/browse/test/stop-dead-daemon.test.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "b92a669d33afa465574434689dc65cdad747443e",
-      "sha256": "2751565cd1ad7928e35fba9d4249f3ba33b5f8727e873c2d692039cd99d5e611",
+      "blob": "e8ededa43e57419dac4f67780dfa81e3f99cadea",
+      "sha256": "4456f56581dc176e7c35010ea8d229e01710b80981956afc1471d5804f82b453",
       "lineEndings": "original"
     },
     {
@@ -230,8 +307,8 @@
     {
       "source": "agents/skills/gstack/browse/test/terminal-agent-owner-watchdog.test.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "e28502964d1653070ec31ef09455703af378f430",
-      "sha256": "d59faac5e6d1f0044cacef18e9c35798564d475399675be59b03519b86813b1b",
+      "blob": "386718d2cb3aec45da1ae52277ab172ccaa43426",
+      "sha256": "6013062398d55404ecd6a1ccf3562c634ce69c51778b3d549e42216e872449d8",
       "lineEndings": "original"
     },
     {
@@ -244,8 +321,8 @@
     {
       "source": "agents/skills/gstack/browse/test/tunnel-revoke-cli.test.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "251c128808b49c3dbbf5b1f4aa812cce33dbb365",
-      "sha256": "0a3e5f0a18725d7299012484a19ce196082ae851c20180ef43d3f7083ec8aa2a",
+      "blob": "2f1016db9d1a549afa67582eb3ec9acc9d9ce3e6",
+      "sha256": "5841a6376b8fe29fb0930fd7f9c11cc4fc67281521ab2613077d9bd9ce5d123b",
       "lineEndings": "original"
     },
     {
@@ -300,22 +377,22 @@
     {
       "source": "agents/skills/gstack/design/src/memory.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "513e25d5bee0a0034852fc9feab3476d1d367593",
-      "sha256": "f62270394f6f2aa30639977b26327bce972fc05ef34170ff5dd0fe33aa4d8cda",
+      "blob": "378e55348d33dc2b8201d8b183e0ff3b18fcd499",
+      "sha256": "f27566367d93e24be37cd8456709e407c4472a15284ed58a5a3f783256588b14",
       "lineEndings": "original"
     },
     {
       "source": "agents/skills/gstack/design/src/variants.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "f532823673713f4286099df4ea98ac4391f0c115",
-      "sha256": "ababf04f6ea1d11da0deed2b126411d3dccbf7bf4e1a01915bee9d927aef7749",
+      "blob": "d75cf30b63cab7f8f4322399e8c56e82637839de",
+      "sha256": "65679add6cac9aa835329af68f08676f8d014dbbc53d7ced4298d86fda69edbd",
       "lineEndings": "original"
     },
     {
       "source": "agents/skills/gstack/docs/REMOTE_BROWSER_ACCESS.md",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "950d23b86a5411b3a5b2dcfc18a35db1d27782a4",
-      "sha256": "b356712c9eee1cbc1e996cf51dc0bc0f7594ad26a56571cae8374e9881f9c297",
+      "blob": "c5565ba0e15d1b09db5de08965342b89de6126f7",
+      "sha256": "74c42a7d2548b3de5b1142d8be030dd45cf4b9642ca64dc1477171388f987a95",
       "lineEndings": "original"
     },
     {
@@ -349,15 +426,15 @@
     {
       "source": "agents/skills/gstack/ios-qa/daemon/test/daemon-integration.test.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "9073b18d42606cdf47a8a1eeeaddeffca122c409",
-      "sha256": "56d1efecce56bd8baa3abcd677555330cdd65ed8ccc3b3fddc0858acb79e9f71",
+      "blob": "58ee1f56691c8c23f5999fe138c88a7f903875de",
+      "sha256": "35aab3b21875b38b654ce62bad11eb06fb6fa67cbd2120f7c456d78c2f445b43",
       "lineEndings": "original"
     },
     {
       "source": "agents/skills/gstack/ios-qa/scripts/gen-accessors.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "738e08364542c075e6cb9d2c4300a00d425c8165",
-      "sha256": "e2bb83279cb439f97927ae0a66db6efe7b20573dbf6e35482c96ab8e16f50487",
+      "blob": "315f2bde615e8b6254cc439cdc651264190ab504",
+      "sha256": "332e9b1f4f7fd7f4c563ed45eddf2f40a1e396572956695dffea266b85b270de",
       "lineEndings": "original"
     },
     {
@@ -375,17 +452,59 @@
       "lineEndings": "original"
     },
     {
+      "source": "agents/skills/gstack/lib/cso/admission.ts",
+      "repository": "https://github.com/garrytan/gstack.git",
+      "blob": "5c1a891e94ba9c24fb075a1abb4e521c576e94da",
+      "sha256": "8b9aee211433bd260c3fdd4e2baa451e495648c58a610e811110afe6f6852c3b",
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/lib/cso/images/run-postgresql",
+      "repository": "https://github.com/garrytan/gstack.git",
+      "blob": "4fc252411bb97846dc841726c2f616ecb4fe159b",
+      "sha256": "c65ea9327802164809487be147537f5cee262ca89b40d6dad3ba8c703da49a65",
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/gstack/lib/cso/preparation.ts",
+      "repository": "https://github.com/garrytan/gstack.git",
+      "blob": "a9bdef21c6dec99609a837cb4f181bf12c340213",
+      "sha256": "f9b9f27ca4cbfead787b3912e4712f1ca6ea50f7962f7b1080893b355e50cd27",
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/lib/cso/state.ts",
+      "repository": "https://github.com/garrytan/gstack.git",
+      "blob": "0a2d53c26f361713c6b4bc4e11831b35571b709e",
+      "sha256": "1b76446eb776142fb18edff7d7b9b5780272740cbdda7ead54e7df5406293e3f",
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/lib/cso/watchdog.c",
+      "repository": "https://github.com/garrytan/gstack.git",
+      "blob": "62931448242aadb1f5bb0e609a255bf15966493d",
+      "sha256": "e2bb695cf2d39474fd040597c8ed6b1559e0125b364c4c12f0caaebd05227ff3",
+      "lineEndings": "crlf"
+    },
+    {
       "source": "agents/skills/gstack/lib/diagram-render/dist/diagram-render.html",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "25de82b9f52976f346d0c5ed05f7942646171899",
-      "sha256": "da9c363071afbe79e06807bd1e67dbacc1123187db7b99e2608dd4a1a9567e94",
+      "blob": "212a7ac0e1e9961eb0fe5ad1d81be827a591ead7",
+      "sha256": "46ed274ca8b6bc763308c87fea05fa9ad940d7f6bcfbd1bc0abbf56c6c0c705d",
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/lib/review-evidence.ts",
+      "repository": "https://github.com/garrytan/gstack.git",
+      "blob": "1f4d8a34ead4f755dc7942b4d7ee17a371cbd7b7",
+      "sha256": "db2b46eb033dd160a172ef362fa26c07bb10d73f27430be06a55f16737682fc0",
       "lineEndings": "original"
     },
     {
       "source": "agents/skills/gstack/test/brain-sync.test.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "47d8b5931ae3186bf0c874ebdc2f4cb57755884e",
-      "sha256": "f38f1509ee3c057de3473a9d884d36da002afea1ba2c4d8f02f9beb3e5728695",
+      "blob": "96e50d01c06002bbc0e19bc7891314cdf0edaa00",
+      "sha256": "4dea4d1fb678542f0a0769b95b93d639da711a553b96dc44efe842600ec2035a",
       "lineEndings": "original"
     },
     {
@@ -398,15 +517,85 @@
     {
       "source": "agents/skills/gstack/test/code-intelligence.test.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "8d9705f32c52bd2f37817b46b1154c7822cd2a83",
-      "sha256": "b5da785b5b7aef439549622617b2498c0b6891ba1c577161caa5c64b6aab10f4",
+      "blob": "a0adb51dc0558bffa7f4ec37d20af8b861297733",
+      "sha256": "0f3c5a0eee9c5ef83c3186bd9c5ca4ee39c1bd47005d473f6df3b9c82637050d",
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/context-bill.test.ts",
+      "repository": "https://github.com/garrytan/gstack.git",
+      "blob": "82afda6d9f26c7cc283f2ce0828e3ac4e1eb15ff",
+      "sha256": "1af0435e8373a15b2195be4a69f90ef377136d97dd75cfc489799eec78970bab",
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/cso-cache.test.ts",
+      "repository": "https://github.com/garrytan/gstack.git",
+      "blob": "b3449d6068f7ed6b8488fb25ae6f3539e47ab59c",
+      "sha256": "e26a6a520b44ad50eb701c2909dd3be0e7e7b8215096793619579569652744ec",
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/cso-contracts.test.ts",
+      "repository": "https://github.com/garrytan/gstack.git",
+      "blob": "666c01588cd5467b47a1203fa62df6f5cb214b21",
+      "sha256": "374399d1bf729938f5685f6215defc0abe7abb11aedc26bab187a9e910bab38f",
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/cso-snapshot-identity.test.ts",
+      "repository": "https://github.com/garrytan/gstack.git",
+      "blob": "685006aa64503730614019274f2a200e5d8b7f92",
+      "sha256": "e23acc38388f9c0f432b77ebf0d518ad98e54c92038e48a27870a122d87e2290",
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/cso-snapshot-state.test.ts",
+      "repository": "https://github.com/garrytan/gstack.git",
+      "blob": "90d2b5a2e9f4dd8edf3db7e4234be407a528a0e3",
+      "sha256": "cc2a8d0c6f1055eef84c9b29d14fc43519e3b88c3faa76153128071e25224ab6",
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/dom-dump-hygiene.test.ts",
+      "repository": "https://github.com/garrytan/gstack.git",
+      "blob": "a496db3ce92f55fee94808638ff4889a246c5343",
+      "sha256": "4c748dc7ed886b7645f9824ccc5adb1add3a14d5b204c75b8927a3d21de957e6",
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/fixtures/arm-benchmark/bugfix-decoys/src/config.js",
+      "repository": "https://github.com/garrytan/gstack.git",
+      "blob": "574dee808bdcba26ddfb7edfa7d903ac6b51c9a5",
+      "sha256": "cd7ffbff55107d5f82d3a04e06a81b1836d85feb73c1209ed9d6fcebba96aaae",
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/fixtures/cso-eval/materialize.ts",
+      "repository": "https://github.com/garrytan/gstack.git",
+      "blob": "53b8be23a57ff47d85a0b44e828441d76eab5035",
+      "sha256": "6f784205c872b4453b83217ed9adfcaff2a18b388059f6b2f615fff600898026",
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/fixtures/eng-blocking-baseline-at.md",
+      "repository": "https://github.com/garrytan/gstack.git",
+      "blob": "26dfd73d9b1221492349fc1bdede0064e14f84c7",
+      "sha256": "0b1c69727fc89ae972bc023cc5677b90708507356084c65dc18b979906521d98",
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/fixtures/eng-devex-s-first-calls.json",
+      "repository": "https://github.com/garrytan/gstack.git",
+      "blob": "9034f84c68b2df14460ef6358dec1e9f580dca62",
+      "sha256": "94eecbba5a393846f861563c9f140afbbd5754a286e5355dca92b50638a84928",
       "lineEndings": "original"
     },
     {
       "source": "agents/skills/gstack/test/free-tests-workflow-wiring.test.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "736b391b9dc0b4da75fa4e5e7849e880830df3b0",
-      "sha256": "7de4184782743370a3abb8c070d8089695a047c17230da55a7ef1845e22f5e17",
+      "blob": "30e774ef9fadf47eb4d5675a2768718a4b0d4e59",
+      "sha256": "25a761019c62bb661e228039a07b6dce5476cb05eb719a7e968675a7de91697d",
       "lineEndings": "original"
     },
     {
@@ -417,17 +606,31 @@
       "lineEndings": "original"
     },
     {
+      "source": "agents/skills/gstack/test/gstack-design-detect.test.ts",
+      "repository": "https://github.com/garrytan/gstack.git",
+      "blob": "aa17e85c98530c44f7a4123c45634a494afc638a",
+      "sha256": "99efc3c533e25e9383e7e93a7b7e1c1aaee0a18255725aa9b06854fdb23faebe",
+      "lineEndings": "original"
+    },
+    {
       "source": "agents/skills/gstack/test/gstack-memory-ingest.test.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "26289afe6492dabfc1fb06079930284106579786",
-      "sha256": "2712cfe6f82da314155502932e9f18a7229a916e11a49d2fb979bbbe022b2e1c",
+      "blob": "a0220e2799b492323ae8f7173271f4e225a77330",
+      "sha256": "cec000a49ab4a36c589f197779340c0fa10fe009a7a9bb58739becb3f57eb243",
       "lineEndings": "original"
     },
     {
       "source": "agents/skills/gstack/test/helpers/benchmark-judge.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "944d81168cd11e720da49d20bebc9f697648ddf4",
-      "sha256": "0863dda65de08f60f165b234be7e072d36aa8eda733c02e69845dba151394258",
+      "blob": "f08c30e9dfd8517cc8afceab725731f3a3e59fa7",
+      "sha256": "517a9cf56ed9cfbbac63e92f016c84e3b5be4f4b287d9ea68efe464c8d90ea12",
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/helpers/coverage-audit-evidence.ts",
+      "repository": "https://github.com/garrytan/gstack.git",
+      "blob": "bdcbe857b8c5f59a215ce658b53facc24412f85d",
+      "sha256": "b810154fb588bfc234f3b67975f28ed1edf4eb8a32be80e4e39dec89cdbb69f7",
       "lineEndings": "original"
     },
     {
@@ -440,36 +643,57 @@
     {
       "source": "agents/skills/gstack/test/helpers/hermetic-env.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "4fb17e734f522202026e2f5415795bc55384643f",
-      "sha256": "2ab8be06ba009701b6731fa39a7beab2c70cfe29b7e0f9adba9f21dcf702efff",
+      "blob": "5658a7650e162735775231781ad247d46cf4b58d",
+      "sha256": "67f52c8f574c28d5b436e63fecb489a4e47a7807bf8e23ea19bf2997f2fa1178",
       "lineEndings": "original"
     },
     {
       "source": "agents/skills/gstack/test/helpers/touchfiles-data.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "667495ba9617362184f15e5c7589925c550824f7",
-      "sha256": "5d1a419486e9eb1964a09621e56ca7ad65e6705128be44e94376a9f160f380f8",
+      "blob": "4df9b970d2b9e900b481345fb5fe00eba9a740c0",
+      "sha256": "3452e7eafea2bc2e971e368ea0a4d10a83943d57848d2a1ddf2593e729911ef6",
       "lineEndings": "original"
     },
     {
       "source": "agents/skills/gstack/test/hermetic-skills-seeding.test.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "43b294db96ca9c76f4c7d2717c3989c6bf1a0d67",
-      "sha256": "d51d4c62e15cb70df7c5d098bd8f15059a8ee8133665cb689c8716fd197a3d9e",
+      "blob": "9036baebf4af120f80fb86d14ea0c8f68edbc7bd",
+      "sha256": "1d2eb7b30cc968096f356bbcbb9bef2f36a4aa8d1f86104a672dca0edf4a9e84",
       "lineEndings": "original"
     },
     {
       "source": "agents/skills/gstack/test/redact-engine.test.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "0201715256be7491d561000575d4658d24f0bda8",
-      "sha256": "f827834a90820fb0110b15169579755e60b70644fd39cffd715980444edcbb75",
+      "blob": "48ee9316f522436d73381d667c721d3550d8c440",
+      "sha256": "eb398586ff41e21073376652df2cca6d218eea222e93e1cb247bbab05a9867bb",
       "lineEndings": "original"
     },
     {
       "source": "agents/skills/gstack/test/regression-issue2091-bsd-mktemp.test.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "4b858dbdf6d7412a8ba33812970192ff80c4397d",
-      "sha256": "c06aa08f95ab5bbb620b9f14594633b56eef25515575d053a1d9ea8df3481623",
+      "blob": "d25e2e93f45f6f85828e849c95d6d8e6d8f65d28",
+      "sha256": "ae03f1a40ead5de1cbe980dd047ef9780931bf41fb85b3c2fbd06f6836160007",
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/review-log.test.ts",
+      "repository": "https://github.com/garrytan/gstack.git",
+      "blob": "e5d1303e0524e0be27230cd84556713f0dc71b1b",
+      "sha256": "8f689bd10b7bd546b13bb1738839d091f11b03d6be8bb1256ed015d6ecb83053",
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/setup-gbrain-path4-caller.test.ts",
+      "repository": "https://github.com/garrytan/gstack.git",
+      "blob": "d158c100357f3250b87fbd0501808bedaee3cf47",
+      "sha256": "cee20e6d0e22be080edbae6517a0e632cdf8855c6515d19d083e3bc28ca0c5a5",
+      "lineEndings": "original"
+    },
+    {
+      "source": "agents/skills/gstack/test/skill-browse-state-extraction.test.ts",
+      "repository": "https://github.com/garrytan/gstack.git",
+      "blob": "597e2a5fd27dceeab7d1dadbecd870b419dc2574",
+      "sha256": "764a5c1120a0d3e18846e1bbebe586209bde5c44c27ed98d22cd5287fae7d232",
       "lineEndings": "original"
     },
     {
@@ -480,81 +704,18 @@
       "lineEndings": "original"
     },
     {
-      "source": "agents/skills/gstack/test/telemetry.test.ts",
+      "source": "agents/skills/gstack/test/skill-e2e-docsync-spawned.test.ts",
       "repository": "https://github.com/garrytan/gstack.git",
-      "blob": "66834948173a2328a418215e6c6232b3fd006a6b",
-      "sha256": "eddbd8f82f3d82526deebe273078f8d6054c3b80ce009f24f974b5692c844d39",
+      "blob": "ae52775a1b93fcbdab42a66c4c4384f599defc1f",
+      "sha256": "8b3ce68e45d4a0256b8152a9a2ff4d4d2573a20bab8fcecd94abc88de62bb2fc",
       "lineEndings": "original"
     },
     {
-      "source": "agents/skills/claude-api/php/managed-agents/README.md",
-      "repository": "https://github.com/anthropics/skills.git",
-      "blob": "fc63d9888525238f7dccf0eddefae4f0f7be648d",
-      "sha256": "45f40f6e2322cfab24f0e1c249b91ded7a1604f58487bdb6b648cbcdd4ab3773",
-      "lineEndings": "crlf"
-    },
-    {
-      "source": "agents/skills/claude-api/python/claude-api/README.md",
-      "repository": "https://github.com/anthropics/skills.git",
-      "blob": "62c0f508661623c7af40a5068f6d6d68b00b4376",
-      "sha256": "44d1518721c5c5d2f4a3deb2095df55224d9b11cee3510176b3805bad4634281",
-      "lineEndings": "crlf"
-    },
-    {
-      "source": "agents/skills/claude-api/python/managed-agents/README.md",
-      "repository": "https://github.com/anthropics/skills.git",
-      "blob": "cb97bfa4754aa4fe3dc12a61aacbf880c6a05dc1",
-      "sha256": "613568340ce4962fe82f5c1c16f40823cce0c6a0ff2cd7c945dc97f579259cf8",
-      "lineEndings": "crlf"
-    },
-    {
-      "source": "agents/skills/claude-api/ruby/claude-api/README.md",
-      "repository": "https://github.com/anthropics/skills.git",
-      "blob": "2a0466854785521eb5d9cdcc24f9253716fcb98f",
-      "sha256": "cf874b7aa952e701bbf2ad2a253d826d6dd4a0f41a605c6996ee8253c1b4f217",
-      "lineEndings": "crlf"
-    },
-    {
-      "source": "agents/skills/claude-api/ruby/managed-agents/README.md",
-      "repository": "https://github.com/anthropics/skills.git",
-      "blob": "4b58dc96d8f4ecc73a4685f36fcfe3876e431c57",
-      "sha256": "563c476e0516d0bb81bec209648780d1e64ed7ac18e76015b9146affe12b0ecd",
-      "lineEndings": "crlf"
-    },
-    {
-      "source": "agents/skills/claude-api/shared/managed-agents-tools.md",
-      "repository": "https://github.com/anthropics/skills.git",
-      "blob": "150b19d4849b63bab45f62a26dc79c3fc38e5fc5",
-      "sha256": "dbe6506e49c9f58a2f744d633058366e3eb529f2453db6971cb45911edf21980",
-      "lineEndings": "crlf"
-    },
-    {
-      "source": "agents/skills/claude-api/typescript/claude-api/README.md",
-      "repository": "https://github.com/anthropics/skills.git",
-      "blob": "115d20d7aafd10d87c080d8ef36a292648158d57",
-      "sha256": "07c3a035a8c93e5e2bfd9ecf6cf824e8fd8df15cc393eec19a842f184615fe12",
-      "lineEndings": "crlf"
-    },
-    {
-      "source": "agents/skills/claude-api/typescript/managed-agents/README.md",
-      "repository": "https://github.com/anthropics/skills.git",
-      "blob": "0431a816a32ba0516af6b7dcc83ffed8e966ba9b",
-      "sha256": "6f49f9d66640f8d266b79ac655746889b5ee5470d8749dbfcf58f0e7b8ce014f",
-      "lineEndings": "crlf"
-    },
-    {
-      "source": "agents/skills/pdf/SKILL.md",
-      "repository": "https://github.com/anthropics/skills.git",
-      "blob": "d3e046a5ae107a6cb23cfb16c219837094ab35d3",
-      "sha256": "067401220db5745f719ff8c048d545d5edc8545e809668a3a6f9e2892fa51d48",
-      "lineEndings": "crlf"
-    },
-    {
-      "source": "agents/skills/pdf/reference.md",
-      "repository": "https://github.com/anthropics/skills.git",
-      "blob": "41400bf4fc67f15fb062d43695ec92f078226023",
-      "sha256": "16fbf406156feb08e2951403c03b1bfd76be5f2bc6bed1eed0d70c25954ab562",
-      "lineEndings": "crlf"
+      "source": "agents/skills/gstack/test/telemetry.test.ts",
+      "repository": "https://github.com/garrytan/gstack.git",
+      "blob": "fa7c6974dd619cbfd6078b5d3834a2e1a8084bf7",
+      "sha256": "79b7206b1c75962c27c566bd5bbd9c031f658d24f7065ed88cd8ed1571ebfd60",
+      "lineEndings": "original"
     },
     {
       "source": "agents/skills/literature-search-openalex/scripts/openalex_cli.py",
@@ -573,9 +734,107 @@
     {
       "source": "agents/skills/openfda-database/scripts/openfda_query.py",
       "repository": "https://github.com/google-deepmind/science-skills.git",
-      "blob": "9dd0f23d5ad5b0dc3733bff72f4dc0f1c545643f",
-      "sha256": "f16aa90b65dc17e5fbc59bf267fdd9f09ad07cb32cacb58ccbb18c8ddbca8a76",
+      "blob": "4b99bc209e19d8fa7295c1af5c4261e726c1a7e6",
+      "sha256": "8750f97a8e04048f59970aadb48e62e2c9fe76819fe4fbf9135ed8ef5230542d",
       "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/pdf/SKILL.md",
+      "repository": "https://github.com/anthropics/skills.git",
+      "blob": "d3e046a5ae107a6cb23cfb16c219837094ab35d3",
+      "sha256": "067401220db5745f719ff8c048d545d5edc8545e809668a3a6f9e2892fa51d48",
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "agents/skills/pdf/reference.md",
+      "repository": "https://github.com/anthropics/skills.git",
+      "blob": "41400bf4fc67f15fb062d43695ec92f078226023",
+      "sha256": "16fbf406156feb08e2951403c03b1bfd76be5f2bc6bed1eed0d70c25954ab562",
+      "lineEndings": "crlf"
+    },
+    {
+      "source": "codex/skills/remotion-best-practices/remotion-docs/REFERENCE.md",
+      "repository": "https://github.com/remotion-dev/codex-plugin.git",
+      "blob": "94b23339c7a04ccf5cb9238477c0a12f9b6cff42",
+      "sha256": "aa0d9dfcb77e2521d89fcab18afad032784f44c1864f87b82017e88e55fe8bd9",
+      "lineEndings": "original"
+    },
+    {
+      "source": "codex/skills/remotion-best-practices/remotion-maps/techniques/maptiler/assets/MapTilerVectorElement.ts",
+      "repository": "https://github.com/remotion-dev/skills.git",
+      "blob": "9d91691a266a49dd9f19dd133b7e4f054664597d",
+      "sha256": "c8137792824323b9db997a88c3b923e8072cf2886cd90c38d84fdbbaad8258ed",
+      "lineEndings": "original"
+    },
+    {
+      "source": "codex/skills/remotion-best-practices/remotion-maps/techniques/maptiler/assets/RiverReveal.tsx",
+      "repository": "https://github.com/remotion-dev/skills.git",
+      "blob": "a0ade54a174a026c9e62c187b7c3aab574003630",
+      "sha256": "c3091e23dfd80178788d05c0bc43b17aee12aa4236d658f1a97c5acfb29a0f92",
+      "lineEndings": "original"
+    },
+    {
+      "source": "codex/skills/remotion-best-practices/remotion-markup/remotion-maps/techniques/maptiler/assets/MapTilerVectorElement.ts",
+      "repository": "https://github.com/remotion-dev/skills.git",
+      "blob": "9d91691a266a49dd9f19dd133b7e4f054664597d",
+      "sha256": "c8137792824323b9db997a88c3b923e8072cf2886cd90c38d84fdbbaad8258ed",
+      "lineEndings": "original"
+    },
+    {
+      "source": "codex/skills/remotion-best-practices/remotion-markup/remotion-maps/techniques/maptiler/assets/RiverReveal.tsx",
+      "repository": "https://github.com/remotion-dev/skills.git",
+      "blob": "a0ade54a174a026c9e62c187b7c3aab574003630",
+      "sha256": "c3091e23dfd80178788d05c0bc43b17aee12aa4236d658f1a97c5acfb29a0f92",
+      "lineEndings": "original"
+    },
+    {
+      "source": "codex/skills/remotion-best-practices/remotion-markup/voiceover.md",
+      "repository": "https://github.com/remotion-dev/codex-plugin.git",
+      "blob": "f4b022c37177ce94eeae43443c5d939d22baff67",
+      "sha256": "28350a793939b6170c535a219b2c4702378346ea8485540f980da5ccc5fa19fc",
+      "lineEndings": "original"
+    },
+    {
+      "source": "codex/skills/remotion-docs/SKILL.md",
+      "repository": "https://github.com/remotion-dev/codex-plugin.git",
+      "blob": "084d159ea7d81c4a1e1d833a943fc0b4980a3911",
+      "sha256": "138b73d9f790d2536b2ff075bd7992b3edec31a1044f5d23789bcc283dcff808",
+      "lineEndings": "original"
+    },
+    {
+      "source": "codex/skills/remotion-maps/techniques/maptiler/assets/MapTilerVectorElement.ts",
+      "repository": "https://github.com/remotion-dev/skills.git",
+      "blob": "9d91691a266a49dd9f19dd133b7e4f054664597d",
+      "sha256": "c8137792824323b9db997a88c3b923e8072cf2886cd90c38d84fdbbaad8258ed",
+      "lineEndings": "original"
+    },
+    {
+      "source": "codex/skills/remotion-maps/techniques/maptiler/assets/RiverReveal.tsx",
+      "repository": "https://github.com/remotion-dev/skills.git",
+      "blob": "a0ade54a174a026c9e62c187b7c3aab574003630",
+      "sha256": "c3091e23dfd80178788d05c0bc43b17aee12aa4236d658f1a97c5acfb29a0f92",
+      "lineEndings": "original"
+    },
+    {
+      "source": "codex/skills/remotion-markup/remotion-maps/techniques/maptiler/assets/MapTilerVectorElement.ts",
+      "repository": "https://github.com/remotion-dev/skills.git",
+      "blob": "9d91691a266a49dd9f19dd133b7e4f054664597d",
+      "sha256": "c8137792824323b9db997a88c3b923e8072cf2886cd90c38d84fdbbaad8258ed",
+      "lineEndings": "original"
+    },
+    {
+      "source": "codex/skills/remotion-markup/remotion-maps/techniques/maptiler/assets/RiverReveal.tsx",
+      "repository": "https://github.com/remotion-dev/skills.git",
+      "blob": "a0ade54a174a026c9e62c187b7c3aab574003630",
+      "sha256": "c3091e23dfd80178788d05c0bc43b17aee12aa4236d658f1a97c5acfb29a0f92",
+      "lineEndings": "original"
+    },
+    {
+      "source": "codex/skills/remotion-markup/voiceover.md",
+      "repository": "https://github.com/remotion-dev/agent-plugin.git",
+      "blob": "d9462f337588d5ef505dceed15b6be2fe96db304",
+      "sha256": "c5689cf3a106e115fc2e7e36c94ca0a193a8a1592a0817c6ee5b3e5b13ac55dc",
+      "lineEndings": "original"
     }
   ]
 }
