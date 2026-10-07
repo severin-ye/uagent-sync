@@ -13,7 +13,7 @@ export interface BackupProjectsInput {
   message?: string;
 }
 export interface ProjectBackupResult {
-  path: string; remote?: string; branch?: string; head?: string;
+  path: string; remote?: string; branch?: string; head?: string; remoteHead?: string;
   committed: boolean; pushed: boolean; verified: boolean;
   status: 'planned' | 'complete' | 'failed' | 'skipped'; changes?: string[]; error?: string;
 }
@@ -142,7 +142,20 @@ export async function backupProjects(input: BackupProjectsInput, dependencies: B
       if (remoteHead) {
         if (!input.dryRun) { await git('fetch', '--no-tags', 'origin', `refs/heads/${branch}`); remoteHead = await git('rev-parse', 'FETCH_HEAD'); }
         const ancestor = await optional('merge-base', head, remoteHead);
-        if (ancestor !== remoteHead) throw new Error('Remote is ahead or diverged; no automatic merge is allowed');
+        if (ancestor !== remoteHead) {
+          if (ancestor !== head || changes.length) throw new Error('Remote is ahead or diverged; no automatic merge is allowed');
+          // A clean checkout's exact commit is already reachable in the same
+          // remote branch. Preserve its local version; no merge or push is needed.
+          result.remoteHead = remoteHead;
+          if (input.dryRun) { result.status = 'planned'; continue; }
+          const confirmed = (await git('ls-remote', '--heads', 'origin', `refs/heads/${branch}`)).split(/\s/)[0];
+          if (confirmed !== remoteHead || await git('rev-parse', 'HEAD') !== head || await git('symbolic-ref', '--short', 'HEAD') !== branch)
+            throw new Error('Concurrent local or remote change during existing backup verification');
+          const residual = (await run(cwd, ['status', '--porcelain=v1', '-z', '--untracked-files=all'])).toString('utf8').split('\0').filter(Boolean);
+          if (residual.some(record => !excluded.some(p => inside(p, resolve(cwd, record.slice(3))))))
+            throw new Error('Local changes appeared during existing backup verification');
+          result.verified = true; result.status = 'complete'; continue;
+        }
       }
       const scanTree = async (treeish: string, env?: NodeJS.ProcessEnv) => {
         const entries = (await run(cwd, ['ls-tree', '-r', '-z', treeish], env)).toString('utf8').split('\0').filter(Boolean);

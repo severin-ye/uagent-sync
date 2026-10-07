@@ -24,7 +24,12 @@ for(const action of ['create','restore','publish'] as const)for(const changed of
   if(command==='gh'&&args.join(' ')==='repo view example/private --json visibility')return {status:0,stdout:'{"visibility":"PRIVATE"}'};
   if(command!=='git'||args[0]!=='-C'||args[1]!==fs.realpathSync(dir))throw Error('Unknown external call');
   const op=args.slice(2).join(' ');const replies:Record<string,string>={'remote get-url origin':'https://github.com/example/private','diff --cached --name-only':'','fetch origin':'','rev-parse --abbrev-ref --symbolic-full-name @{upstream}':'origin/main','rev-list --left-right --count HEAD...origin/main':'0 0','rev-parse HEAD':'synthetic-head'};
-  if(op.startsWith('add -- sync/profiles/'))return {status:0,stdout:''};
+  if(op.startsWith('--literal-pathspecs add --force -- sync/profiles/'))return {status:0,stdout:''};
+  if(op.startsWith('--literal-pathspecs ls-files --stage -z -- sync/profiles/')){
+   const names=['sync/profiles/device/snapshot/manifest.json','sync/profiles/device/snapshot/files/'+source];
+   return {status:0,stdout:names.map(name=>{const bytes=fs.readFileSync(dir+'/'+name);const oid=createHash('sha1').update(Buffer.from(`blob ${bytes.length}\0`)).update(bytes).digest('hex');return `100644 ${oid} 0\t${name}\0`;}).join('')};
+  }
+  if(op==='diff --cached --name-only -z')return {status:0,stdout:''};
   if(!(op in replies))throw Error('Unknown Git operation '+op);return {status:0,stdout:replies[op]};
  }) as typeof childProcess.spawnSync);syncBuiltinESMExports();t.after(()=>{t.mock.restoreAll();syncBuiltinESMExports();});
  const run=()=>action==='create'?ops.create({source:device,snapshotDir,components:['skills']}):action==='restore'?ops.restore({target:device,snapshotDir,preferSource:true}):ops.publish(dir,'https://github.com/example/private',['sync/profiles/device/snapshot']);

@@ -94,6 +94,25 @@ test('rejects divergence instead of merging', async () => {
     assert.match(r.errors.join(), /ahead|diverg/i); assert.equal(git(f.repo, 'rev-parse', 'HEAD'), head);
   } finally { f.clean(); }
 });
+test('verifies a clean behind checkout is already remote without changing its head or index', async () => {
+  const f = fixture(); try {
+    const head = git(f.repo, 'rev-parse', 'HEAD'); const index = readFileSync(join(f.repo, '.git', 'index'));
+    const other = join(f.root, 'other'); git(f.root, 'clone', '-b', 'main', f.remote, other);
+    git(other, 'config', 'user.name', 'Other'); git(other, 'config', 'user.email', 'other@example.invalid');
+    writeFileSync(join(other, 'code.txt'), 'remote update\n'); git(other, 'commit', '-am', 'remote update'); git(other, 'push');
+    const remoteHead = git(f.remote, 'rev-parse', 'main');
+    const r = await backupProjects({ workspaceRoot: f.root, repositoryPaths: ['project'] }, deps);
+    assert.deepEqual(r.errors, []); assert.equal(r.projects[0].verified, true); assert.equal(r.projects[0].status, 'complete');
+    assert.equal(r.projects[0].pushed, false); assert.equal(r.projects[0].committed, false);
+    assert.equal(r.projects[0].head, head); assert.equal(r.projects[0].remoteHead, remoteHead);
+    assert.equal(git(f.repo, 'rev-parse', 'HEAD'), head); assert.deepEqual(readFileSync(join(f.repo, '.git', 'index')), index);
+    assert.equal(git(f.repo, 'status', '--porcelain'), '');
+    writeFileSync(join(f.repo, 'code.txt'), 'local edit\n');
+    const blocked = await backupProjects({ workspaceRoot: f.root, repositoryPaths: ['project'] }, deps);
+    assert.equal(blocked.projects[0].status, 'failed'); assert.match(blocked.errors.join(), /ahead|diverg/i);
+    assert.equal(git(f.repo, 'rev-parse', 'HEAD'), head); assert.equal(git(f.remote, 'rev-parse', 'main'), remoteHead);
+  } finally { f.clean(); }
+});
 test('retains commit on push failure and resumes push on retry', async () => {
   const f = fixture(); try {
     writeFileSync(join(f.remote, 'hooks', 'pre-receive'), '#!/bin/sh\nexit 1\n'); writeFileSync(join(f.repo, 'code.txt'), 'saved\n');
