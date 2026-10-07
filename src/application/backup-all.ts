@@ -116,7 +116,7 @@ export async function backupAll(input: BackupAllInput, dependencies: BackupAllDe
     report.coverage = coverage;
     if (coverage.errors.length) throw new Error('Workspace audit is incomplete: ' + coverage.errors.join('; '));
     const linked = coverage.repositories.filter(x => linkedCheckout(source.workspaceRoot, x.path)).map(x => x.path);
-    report.excluded.push(...linked.map(p => `Linked Git worktree excluded: ${p}`));
+    for (const p of linked) report.excluded.push(`Linked Git worktree excluded: ${p}`);
     const projectOptions: BackupProjectsInput = {
       workspaceRoot: source.workspaceRoot,
       repositoryPaths: coverage.repositories.map(x => x.path).filter(p => !linked.includes(p)),
@@ -125,8 +125,10 @@ export async function backupAll(input: BackupAllInput, dependencies: BackupAllDe
     if (input.dryRun) {
       const planned = await projects(projectOptions);
       report.projects = planned.projects;
-      report.errors.push(...planned.errors);
-      report.remaining.push(...planned.remaining, ...workspaceGaps(coverage, connection.registryCheckout, linked), 'Preview only: profile and installed extension contents have not been captured or validated; no commits or uploads were made.');
+      for (const error of planned.errors) report.errors.push(error);
+      for (const item of planned.remaining) report.remaining.push(item);
+      for (const item of workspaceGaps(coverage, connection.registryCheckout, linked)) report.remaining.push(item);
+      report.remaining.push('Preview only: profile and installed extension contents have not been captured or validated; no commits or uploads were made.');
       report.ok = !report.errors.length;
       report.status = 'planned';
       return report;
@@ -140,8 +142,8 @@ export async function backupAll(input: BackupAllInput, dependencies: BackupAllDe
     report.snapshotDir = snapshotDir;
     report.extensionStatePath = path.join(snapshotDir, 'workspace-state.json');
     fs.writeFileSync(report.extensionStatePath, serialized, { flag: 'wx', mode: 0o600 });
-    report.excluded.push(...manifest.excluded);
-    report.remaining.push(...extensionGaps(state));
+    for (const item of manifest.excluded) report.excluded.push(item);
+    for (const item of extensionGaps(state)) report.remaining.push(item);
     for (const [root, relative] of [['codex', 'config.toml'], ['codex', 'AGENTS.md'], ['codex', 'rules'], ['codex', 'memories'], ['codex', 'skills'], ['agents', 'skills']] as const) {
       if (!manifest.files.some(f => f.root === root && (f.path === relative || f.path.startsWith(relative + '/')))) report.excluded.push(`${root}/${relative}: no collected files; absent or empty in the source.`);
     }
@@ -158,11 +160,11 @@ export async function backupAll(input: BackupAllInput, dependencies: BackupAllDe
     report.registry.verified = true;
     const delivered = await projects(projectOptions);
     report.projects = delivered.projects;
-    report.errors.push(...delivered.errors);
-    report.remaining.push(...delivered.remaining);
+    for (const error of delivered.errors) report.errors.push(error);
+    for (const item of delivered.remaining) report.remaining.push(item);
     // Reinspect after project commits: newly tracked files are no longer incorrectly reported as missing.
     report.coverage = auditDeviceWorkspace(source.workspaceRoot);
-    report.remaining.push(...workspaceGaps(report.coverage, connection.registryCheckout, linked));
+    for (const item of workspaceGaps(report.coverage, connection.registryCheckout, linked)) report.remaining.push(item);
     report.scopeComplete = !report.errors.length && !report.remaining.length;
     report.ok = report.scopeComplete;
     report.status = report.scopeComplete ? 'complete' : 'partial';

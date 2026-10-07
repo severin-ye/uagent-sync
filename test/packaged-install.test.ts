@@ -8,6 +8,7 @@ import { execFileSync } from "node:child_process";
 import { createRequire } from "node:module";
 
 const ROOT = path.join(path.dirname(moduleFilePath(import.meta.url)), "..");
+const SOURCE_VERSION = JSON.parse(fs.readFileSync(path.join(ROOT, "package.json"), "utf-8")).version;
 let tempRoot = "";
 let installedPackage = "";
 
@@ -49,17 +50,17 @@ describe("real npm pack installation", () => {
     // attaches the matching source lock before rebuilding omitted dependencies.
     fs.copyFileSync(path.join(ROOT, "package-lock.json"), path.join(installedPackage, "package-lock.json"));
     const sync = await import(pathToFileURL(path.join(installedPackage, "dist", "lib", "codex-plugin-sync.js")).href);
-    const snapshot = sync.captureCodexPluginSnapshot({ kind: "plugin", id: "uagent-sync", version: "2.4.0", enabled: true, config: { marketplace: "uagent-sync", installedPath: installedPackage } });
-    assert.equal(snapshot.version, "2.4.0");
+    const snapshot = sync.captureCodexPluginSnapshot({ kind: "plugin", id: "uagent-sync", version: SOURCE_VERSION, enabled: true, config: { marketplace: "uagent-sync", installedPath: installedPackage } });
+    assert.equal(snapshot.version, SOURCE_VERSION);
     assert.equal(snapshot.selector, "uagent-sync@uagent-sync");
     assert.equal(snapshot.expectedSkills.length, 5);
     assert.ok(snapshot.files.some((file: { path: string }) => file.path === "package-lock.json"));
     assert.ok(!snapshot.files.some((file: { path: string }) => /^(?:test|node_modules)\//.test(file.path)));
   });
-  it("ships the 2.4.0 package identity", () => {
+  it("ships the current source package identity", () => {
     const pkg = JSON.parse(fs.readFileSync(path.join(installedPackage, "package.json"), "utf-8"));
     assert.equal(pkg.name, "uagent-sync");
-    assert.equal(pkg.version, "2.4.0");
+    assert.equal(pkg.version, SOURCE_VERSION);
   });
 
   it("loads the installed plugin without dev dependencies or a host SDK ancestor", () => {

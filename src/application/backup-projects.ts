@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 import { promises as fs } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { isAbsolute, join, relative, resolve, sep } from 'node:path';
-import { assertNoSecrets } from '../lib/secret-scan.js';
+import { assertNoSecrets, assertNoProjectSecrets, assertPlaceholderEnvTemplate } from '../lib/secret-scan.js';
 
 export interface BackupProjectsInput {
   workspaceRoot: string;
@@ -28,7 +28,12 @@ export interface BackupProjectsDependencies {
 const MAX_FILE = 100 * 1024 * 1024;
 const credentialName = /^(?:\.env(?:\..*)?|\.npmrc|\.netrc|\.git-credentials|auth\.json|credentials?(?:\..*)?|secrets?(?:\..*)?|id_(?:rsa|dsa|ecdsa|ed25519)(?:\.pub)?|API\.md|.*\.(?:pem|p12|pfx|key))$/i;
 function checkName(name: string): void {
-  if (name.split('/').some(p => credentialName.test(p))) throw new Error(`Credential filename blocked: ${name}`);
+  const parts = name.split('/');
+  if (parts.some((p, i) => credentialName.test(p) && !(i === parts.length - 1 && /^\.env\.(?:example|template)$/i.test(p)))) throw new Error(`Credential filename blocked: ${name}`);
+}
+function scanProjectFile(content: string, name: string): void {
+  if (/(?:^|\/)\.env\.(?:example|template)$/i.test(name)) assertPlaceholderEnvTemplate(content, name);
+  else assertNoProjectSecrets(content, name);
 }
 function inside(root: string, path: string): boolean { const rel = relative(root, path); return !isAbsolute(rel) && rel !== '..' && !rel.startsWith(`..${sep}`); }
 async function noLinks(root: string, path: string): Promise<void> {
@@ -129,7 +134,7 @@ export async function backupProjects(input: BackupProjectsInput, dependencies: B
         if (stat?.isSymbolicLink()) throw new Error(`Linked file blocked: ${name}`);
         if (stat && stat.isFile()) {
           await noLinks(cwd, absolute); if (stat.size > MAX_FILE) throw new Error(`File exceeds 100 MiB: ${name}`);
-          assertNoSecrets((await fs.readFile(absolute)).toString('utf8'), name);
+          scanProjectFile((await fs.readFile(absolute)).toString('utf8'), name);
         }
       }
       result.changes = changes;
@@ -146,7 +151,7 @@ export async function backupProjects(input: BackupProjectsInput, dependencies: B
           if (type === 'commit') continue;
           checkName(name); if (mode === '120000') throw new Error(`Committed linked file blocked: ${name}`);
           const size = Number((await run(cwd, ['cat-file', '-s', oid], env)).toString()); if (size > MAX_FILE) throw new Error(`Committed file exceeds 100 MiB: ${name}`);
-          assertNoSecrets((await run(cwd, ['cat-file', 'blob', oid], env)).toString('utf8'), name);
+          scanProjectFile((await run(cwd, ['cat-file', 'blob', oid], env)).toString('utf8'), name);
         }
       };
       const unpushed = await git('rev-list', head, ...(remoteHead ? ['--not', remoteHead] : []));

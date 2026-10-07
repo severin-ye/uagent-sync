@@ -18,6 +18,23 @@ function fixture() {
 }
 const deps = { allowRemote: (url: string) => !url.includes('://') && !url.includes('@') };
 
+test('project backup accepts validated dotenv examples and source expressions but blocks mixed real credentials', async () => {
+  const f = fixture(); try {
+    writeFileSync(join(f.repo, '.env.example'), 'TOKEN=<YOUR_TOKEN>\nPASSWORD=your-password-here\n');
+    writeFileSync(join(f.repo, 'source.mjs'), "const token=randomBytes(24).toString('hex');\n");
+    const plan = await backupProjects({ workspaceRoot: f.root, repositoryPaths: ['project'], dryRun: true }, deps);
+    assert.equal(plan.projects[0].status, 'planned', JSON.stringify(plan.errors));
+    const saved = await backupProjects({ workspaceRoot: f.root, repositoryPaths: ['project'] }, deps);
+    assert.equal(saved.projects[0].verified, true, JSON.stringify(saved.errors));
+    assert.equal(git(f.remote, 'show', 'main:.env.example'), 'TOKEN=<YOUR_TOKEN>\nPASSWORD=your-password-here');
+    writeFileSync(join(f.repo, '.env.example'), 'TOKEN=<YOUR_TOKEN>\nPASSWORD=actualOpaqueCredential\n');
+    const blocked = await backupProjects({ workspaceRoot: f.root, repositoryPaths: ['project'] }, deps);
+    assert.equal(blocked.projects[0].status, 'failed');
+    assert.match(blocked.errors.join(), /non-placeholder/);
+    assert(!JSON.stringify(blocked).includes('actualOpaqueCredential'));
+  } finally { f.clean(); }
+});
+
 test('tracked edits made during push remain reported as incomplete', async () => {
   const f = fixture(); try {
     writeFileSync(join(f.repo, 'code.txt'), 'captured\n');

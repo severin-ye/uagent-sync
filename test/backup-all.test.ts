@@ -28,6 +28,20 @@ function fixture(t: any) {
   const state: WorkspaceState = { schemaVersion: 2, targetAgent: 'codex', completeness: 'complete', timestamp: 'fixture', platform: 'windows', hostname: 'fixture', agents: { codex: { plugins: [], skills: [], mcp: [], config: {} } }, envVars: [], submodules: [], skills: [], skillSources: [], windowsFixPaths: [] };
   return { root, home, codex, registry, workspace, connection, state };
 }
+
+test('large preview reports preserve every remaining item without argument-stack overflow', async t => {
+  const f = fixture(t);
+  const remaining = Array.from({ length: 150_000 }, (_, i) => `Missing project file ${i}`);
+  const r = await backupAll({ connectionFile: f.connection, dryRun: true }, {
+    projects: async () => ({ projects: [], errors: [], remaining }),
+  });
+  assert.equal(r.status, 'planned');
+  assert.deepEqual(r.errors, []);
+  assert.equal(r.remaining.length, 150_002);
+  assert.equal(r.remaining[0], 'Missing project file 0');
+  assert.equal(r.remaining[149_999], 'Missing project file 149999');
+  assert(r.remaining.some(x => x.includes('outside-git.txt')));
+});
 test('unified backup stores recoverable personal files and extension state in one existing registry snapshot', async t => {
   const f = fixture(t);
   let published: string[] = [];
