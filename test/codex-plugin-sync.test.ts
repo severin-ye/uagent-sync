@@ -48,6 +48,32 @@ function plugin(root: string): ExtensionRef {
     },
   };
 }
+it("captures and validates a large permitted text file without recursive base64 matching", () => {
+  const root = fixture();
+  const content = "ordinary document text\n".repeat(200000);
+  fs.writeFileSync(path.join(root, "large.txt"), content);
+  const snap = captureCodexPluginSnapshot(plugin(root));
+  assert.doesNotThrow(() => validateCodexPluginSnapshot(snap));
+  const stored = snap.files.find(file => file.path === "large.txt")!;
+  assert.equal(Buffer.from(stored.base64, "base64").toString("utf8"), content);
+});
+it("rejects malformed and noncanonical base64 even when its decoded hash matches", () => {
+  const root = fixture();
+  fs.writeFileSync(path.join(root, "small.txt"), "a");
+  for (const encoded of ["YR==", "YQ", "YQ===", "YQ==\n", "Y=Q=", "!!!!"]) {
+    const snap = captureCodexPluginSnapshot(plugin(root));
+    snap.files.find(file => file.path === "small.txt")!.base64 = encoded;
+    assert.throws(() => validateCodexPluginSnapshot(snap), /base64/);
+  }
+});
+it("keeps binary and credential content checks active after large-file decoding", () => {
+  const root = fixture();
+  const file = path.join(root, "large.txt");
+  fs.writeFileSync(file, "ordinary document text\n".repeat(200000) + '\npassword = "very-private-password"\n');
+  assert.throws(() => captureCodexPluginSnapshot(plugin(root)), /Secret content refused/);
+  fs.writeFileSync(file, Buffer.alloc(4 * 1024 * 1024));
+  assert.throws(() => captureCodexPluginSnapshot(plugin(root)), /Unknown binary/);
+});
 it("distinguishes code generator calls from literal credentials without suppressing same-line secrets", () => {
   const root = fixture();
   const file = path.join(root, "generator.py");

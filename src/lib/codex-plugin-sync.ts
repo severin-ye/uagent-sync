@@ -205,12 +205,15 @@ function checkedBytes(file: CodexPluginFile): Buffer {
   if (
     typeof file.base64 !== "string" ||
     file.base64.length > Math.ceil(MAX_FILE_BYTES / 3) * 4 ||
-    !/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(
-      file.base64,
-    )
+    file.base64.length % 4 !== 0 ||
+    /[^A-Za-z0-9+/=]/.test(file.base64)
   )
     throw Error("Invalid snapshot base64");
   const bytes = Buffer.from(file.base64, "base64");
+  // Buffer's decoder is permissive. A canonical round trip validates padding
+  // and pad bits without a repeated regex group that overflows on large files.
+  if (bytes.toString("base64") !== file.base64)
+    throw Error("Invalid snapshot base64");
   if (bytes.length > MAX_FILE_BYTES || digest(bytes) !== file.sha256)
     throw Error("Snapshot file hash mismatch");
   let text: string;
