@@ -8,6 +8,12 @@
 
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [2.4.6] - 2026-10-07
+
+- Fix project-source credential false positives when a Python condition ends in `token:` or `api_key:`. Only recognized assignments inspect initializer literals; unmatched text retains conservative scanning. Default profile scanning and literal credentials remain blocked.
+- Add a regression for both conditions, adjacent literals/comments, and the unchanged default scanner.
+- Reuse exact path/mode/blob tuples in the confirmed target remote tree instead of treating existing remote fixtures or public-key files as new uploads. Changed files, new paths and unpublished credential history remain scanned; unavailable remote-tree evidence grants no exemption.
+
 ## [2.4.5] - 2026-10-07
 
 ### 修复

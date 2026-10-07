@@ -96,6 +96,10 @@ export function assertNoProjectSecrets(content: string, source: string): void {
     const declaration = typeOnly && annotation.parent?.name === 'VariableDeclaration' ? annotation.parent : null;
     if (declaration) assignment = declaration;
     else if (!typeOnly) while (assignment.parent && !['VariableDeclaration', 'AssignmentExpression', 'AssignStatement', 'Property'].includes(assignment.name)) assignment = assignment.parent;
+    // A condition's ':' may be followed by an identifier on the next line.
+    // It is not an assignment: never widen its literal search to the script,
+    // and leave any unmatched text under the original conservative scanner.
+    if (!typeOnly && !['VariableDeclaration', 'AssignmentExpression', 'AssignStatement', 'Property'].includes(assignment.name)) continue;
     for (const literal of strings) {
       if (typeOnly && !declaration || literal.from < valueFrom || literal.to > assignment.to || literal.environmentKey || literal.structuralKey) continue;
       const value = content.slice(literal.from + 1, literal.to - 1);

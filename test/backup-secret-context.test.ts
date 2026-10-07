@@ -87,3 +87,21 @@ test('TypeScript token annotations do not scan unrelated method strings as crede
   assert.throws(() => projectScan('const token: LicenseToken = decryptCredential("actualOpaqueCredential");', 'fakeServer.ts'));
   assert.throws(() => projectScan(source + '\nconst password="actualOpaqueCredential";', 'fakeServer.ts'));
 });
+
+test('Python condition colons do not turn following statements into credential initializers', () => {
+  const source = `def verify(amendment, graph_token, settings):
+    token = amendment['runtime_signature']
+    if amendment['runtime_signature'] != graph_token or not token:
+        raise RuntimeError('SIGNATURE_MISMATCH')
+    self.api_key = settings.deepseek_api_key
+    if not self.api_key:
+        raise RuntimeError('MISSING_CONFIGURATION')
+`;
+  assert.doesNotThrow(() => projectScan(source, 'verify.py'));
+  for (const credential of [
+    "\npassword = 'actualOpaqueCredential'\n",
+    "\npassword = decodeCredential('actualOpaqueCredential')\n",
+    "\n# token=actualOpaqueCredential\n",
+  ]) assert.throws(() => projectScan(source + credential, 'verify.py'));
+  assert.throws(() => scan.assertNoSecrets(source, 'verify.py'));
+});

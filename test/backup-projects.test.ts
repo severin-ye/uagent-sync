@@ -65,6 +65,34 @@ test('pushes existing unpushed commit with clean worktree', async () => {
     assert.equal(r.projects[0].committed, false); assert.equal(r.projects[0].pushed, true); assert.equal(r.projects[0].verified, true);
   } finally { f.clean(); }
 });
+
+test('existing exact remote fixtures do not block unrelated changes but new credential bytes and paths stay blocked', async () => {
+  const f = fixture(); try {
+    const fixtureText = 'const password="actualOpaqueCredential";\n';
+    writeFileSync(join(f.repo, 'security.test.js'), fixtureText);
+    writeFileSync(join(f.repo, 'license-public.pem'), 'already remote public fixture\n');
+    git(f.repo, 'add', 'security.test.js', 'license-public.pem'); git(f.repo, 'commit', '-m', 'existing remote fixtures'); git(f.repo, 'push');
+    writeFileSync(join(f.repo, 'code.txt'), 'unrelated edit\n');
+    let r = await backupProjects({ workspaceRoot: f.root, repositoryPaths: ['project'] }, deps);
+    assert.equal(r.projects[0].verified, true, JSON.stringify(r.errors));
+    assert.equal(git(f.remote, 'show', 'main:security.test.js'), fixtureText.trim());
+    assert.equal(git(f.remote, 'show', 'main:license-public.pem'), 'already remote public fixture');
+    const remoteHead = git(f.remote, 'rev-parse', 'main');
+    writeFileSync(join(f.repo, 'new.js'), fixtureText);
+    r = await backupProjects({ workspaceRoot: f.root, repositoryPaths: ['project'] }, deps);
+    assert.equal(r.projects[0].status, 'failed'); assert.match(r.errors.join(), /Secret scan blocked/);
+    rmSync(join(f.repo, 'new.js'));
+    writeFileSync(join(f.repo, 'license-public.pem'), 'changed credential file\n');
+    r = await backupProjects({ workspaceRoot: f.root, repositoryPaths: ['project'] }, deps);
+    assert.equal(r.projects[0].status, 'failed'); assert.match(r.errors.join(), /Credential filename/);
+    writeFileSync(join(f.repo, 'license-public.pem'), 'already remote public fixture\n');
+    writeFileSync(join(f.repo, 'security.test.js'), 'const password="differentOpaqueCredential";\n');
+    git(f.repo, 'commit', '-am', 'unpublished change');
+    r = await backupProjects({ workspaceRoot: f.root, repositoryPaths: ['project'] }, deps);
+    assert.equal(r.projects[0].status, 'failed'); assert.match(r.errors.join(), /Secret scan blocked/);
+    assert.equal(git(f.remote, 'rev-parse', 'main'), remoteHead);
+  } finally { f.clean(); }
+});
 test('dry-run changes neither local index/head nor remote', async () => {
   const f = fixture(); try {
     writeFileSync(join(f.repo, 'new.txt'), 'new\n'); const head = git(f.repo, 'rev-parse', 'HEAD'); const index = readFileSync(join(f.repo, '.git', 'index'));

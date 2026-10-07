@@ -157,9 +157,16 @@ export async function backupProjects(input: BackupProjectsInput, dependencies: B
           result.verified = true; result.status = 'complete'; continue;
         }
       }
+      // Exact path/mode/object tuples in the confirmed remote tree are already
+      // backed up. They are not new upload content. An unavailable local remote
+      // tree (possible in a read-only preview) grants no exemption.
+      const remoteEntries = new Set(remoteHead
+        ? (await optional('ls-tree', '-r', '-z', remoteHead)).split('\0').filter(Boolean)
+        : []);
       const scanTree = async (treeish: string, env?: NodeJS.ProcessEnv) => {
         const entries = (await run(cwd, ['ls-tree', '-r', '-z', treeish], env)).toString('utf8').split('\0').filter(Boolean);
         for (const entry of entries) {
+          if (remoteEntries.has(entry)) continue;
           const tab = entry.indexOf('\t'); const [mode, type, oid] = entry.slice(0, tab).split(' '); const name = entry.slice(tab + 1);
           if (type === 'commit') continue;
           checkName(name); if (mode === '120000') throw new Error(`Committed linked file blocked: ${name}`);
