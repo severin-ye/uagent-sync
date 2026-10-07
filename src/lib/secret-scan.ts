@@ -40,16 +40,24 @@ export function assertNoProjectSecrets(content: string, source: string): void {
   // Parse data without executing it. Literals/comments/regexes keep every byte
   // under scanning; invalid syntax never grants a source-code exception.
   const python = /\.py$/i.test(source);
-  const parser = python ? pythonParser : javascriptParser.configure({ dialect: 'ts jsx' });
+  const dialect = /\.[cm]?ts$/i.test(source) ? 'ts' : /\.tsx$/i.test(source) ? 'ts jsx' : /\.jsx$/i.test(source) ? 'jsx' : '';
+  const parser = python ? pythonParser : javascriptParser.configure({ dialect });
   const code = new Uint8Array(content.length).fill(1);
   let invalid = false;
-  const strings: Array<{ from: number; to: number; environmentKey: boolean }> = [];
+  const strings: Array<{ from: number; to: number; environmentKey: boolean; structuralKey: boolean }> = [];
   const tree = parser.parse(content);
   tree.iterate({ enter(node) {
     if (node.type.isError) {
       const bareYield = python && node.from === node.to && node.node.parent?.name === 'YieldStatement'
         && content.slice(node.node.parent.from, node.node.parent.to).trim() === 'yield';
-      if (!bareYield) invalid = true;
+      // Lezer misparses this valid JS array-element swap as a member access.
+      // Accept only the exact, literal-free swap shape and its single '=' error;
+      // any other parse error still disables all source recognition.
+      const statement = node.node.parent?.parent;
+      const arraySwap = !python && node.node.parent?.name === 'MemberExpression' && statement?.name === 'ExpressionStatement'
+        && content.slice(node.from, node.to) === '='
+        && /^\[\s*([A-Za-z_$][\w$]*)\[\s*([A-Za-z_$][\w$]*)\s*\]\s*,\s*\1\[\s*([A-Za-z_$][\w$]*)\s*\]\s*\]\s*=\s*\[\s*\1\[\s*\3\s*\]\s*,\s*\1\[\s*\2\s*\]\s*\]\s*;?$/.test(content.slice(statement.from, statement.to));
+      if (!bareYield && !arraySwap) invalid = true;
     }
     if (/String|Comment|RegExp/.test(node.name)) {
       if (/String/.test(node.name)) {
@@ -58,7 +66,10 @@ export function assertNoProjectSecrets(content: string, source: string): void {
         const literal = content.slice(node.from + 1, node.to - 1);
         const environmentKey = node.node.prevSibling?.name === '(' && /^[A-Z_][A-Z0-9_]*$/.test(literal)
           && /^(?:os\.getenv|os\.environ\.get)\s*\(/.test(context);
-        strings.push({ from: node.from, to: node.to, environmentKey });
+        const structuralKey = parent?.name === 'Property' && parent.firstChild?.from === node.from
+          || parent?.name === 'DictionaryExpression' && node.node.nextSibling?.name === ':'
+          || parent?.name === 'MemberExpression' && node.node.prevSibling?.name === '[' && node.node.nextSibling?.name === ']';
+        strings.push({ from: node.from, to: node.to, environmentKey, structuralKey });
       }
       code.fill(0, node.from, node.to);
       const parent = node.node.parent;
@@ -77,9 +88,16 @@ export function assertNoProjectSecrets(content: string, source: string): void {
     // and other assignments remain visible with their original line numbers.
     const valueFrom = to - match[1].length;
     let assignment = tree.resolveInner(valueFrom, 1);
-    while (assignment.parent && !['VariableDeclaration', 'AssignmentExpression', 'AssignStatement', 'Property'].includes(assignment.name)) assignment = assignment.parent;
+    let annotation = assignment;
+    while (annotation.parent && annotation.name !== 'TypeAnnotation') annotation = annotation.parent;
+    const typeOnly = annotation.name === 'TypeAnnotation';
+    // A return/interface property type has no runtime initializer. A typed
+    // variable still scans its real declaration, including string defaults.
+    const declaration = typeOnly && annotation.parent?.name === 'VariableDeclaration' ? annotation.parent : null;
+    if (declaration) assignment = declaration;
+    else if (!typeOnly) while (assignment.parent && !['VariableDeclaration', 'AssignmentExpression', 'AssignStatement', 'Property'].includes(assignment.name)) assignment = assignment.parent;
     for (const literal of strings) {
-      if (literal.from < valueFrom || literal.to > assignment.to || literal.environmentKey) continue;
+      if (typeOnly && !declaration || literal.from < valueFrom || literal.to > assignment.to || literal.environmentKey || literal.structuralKey) continue;
       const value = content.slice(literal.from + 1, literal.to - 1);
       if (/^[A-Za-z0-9._~+/=-]{8,}$/.test(value)) {
         throw new Error(`Secret scan blocked ${source}: nested-credential-literal`);
@@ -91,7 +109,7 @@ export function assertNoProjectSecrets(content: string, source: string): void {
   assertNoSecrets(normalized.join(''), source);
 }
 
-/** Only explicitly named, wholly placeholder-valued dotenv templates qualify. */
+/** Credential values stay placeholders; noncredential defaults may be numeric or boolean. */
 export function assertPlaceholderEnvTemplate(content: string, source: string): void {
   if (!/(?:^|\/)\.env\.(?:example|template)$/i.test(source)) throw new Error(`Credential filename blocked: ${source}`);
   // Prefix/bearer credentials must be blocked even beside a valid placeholder.
@@ -102,11 +120,14 @@ export function assertPlaceholderEnvTemplate(content: string, source: string): v
     if (!line || line.startsWith('#')) {
       assertNoSecrets(raw, source); continue;
     }
-    const assignment = /^(?:export\s+)?[A-Za-z_][A-Za-z0-9_]*\s*=\s*(.*)$/.exec(line);
+    const assignment = /^(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)$/.exec(line);
     if (!assignment) throw new Error(`Credential template blocked ${source}: unsupported-line@${index + 1}`);
-    let value = assignment[1].trim();
+    const key = assignment[1];
+    let value = assignment[2].trim();
     if (/^(["']).*\1$/.test(value)) value = value.slice(1, -1);
-    if (value && !/^(?:<(?:YOUR_[A-Z0-9_]+|hidden)>|\$\{[A-Z_][A-Z0-9_]*\}|your[-_][A-Za-z0-9_-]+|replace[-_]me|changeme)$/i.test(value)) {
+    const credentialKey = /key|token|secret|pass|authorization|credential|private|session|signature|(?:^|_)pin(?:_|$)/i.test(key);
+    const publicScalar = !credentialKey && /^(?:true|false|[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?)$/i.test(value);
+    if (value && !publicScalar && !/^(?:<(?:YOUR_[A-Z0-9_]+|hidden)>|\$\{[A-Z_][A-Z0-9_]*\}|your[-_][A-Za-z0-9_-]+|replace[-_]me|changeme)$/i.test(value)) {
       throw new Error(`Credential template blocked ${source}: non-placeholder@${index + 1}`);
     }
   }

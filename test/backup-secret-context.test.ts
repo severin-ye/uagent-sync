@@ -46,3 +46,44 @@ test('dotenv templates require placeholder-only content and never exempt mixed c
   ]) assert.throws(() => scan.assertPlaceholderEnvTemplate(content, '.env.example'));
   assert.throws(() => scan.assertPlaceholderEnvTemplate('TOKEN=<YOUR_TOKEN>', '.env.production'));
 });
+
+test('credential-free numeric and boolean template defaults remain configuration', () => {
+  assert.doesNotThrow(() => scan.assertPlaceholderEnvTemplate('DEEPSEEK_API_KEY=\nTOEFL_STUDIO_USD_CNY_RATE=7.20\nTOEFL_STUDIO_PAID_GENERATION_ENABLED=false\nPORT=3000\n', '.env.example'));
+  for (const content of ['TOKEN=1234567890', 'API_KEY=false', 'PASSWORD=7.20', 'SESSION_SIGNATURE=12345', 'PIN=123456', 'OTHER=actualOpaqueCredential', 'DATABASE_URL=postgresql://user:password@localhost/db']) {
+    assert.throws(() => scan.assertPlaceholderEnvTemplate(content, '.env.example'), content);
+  }
+});
+
+test('ordinary JavaScript array-element swap does not invalidate unrelated runtime token assignments', () => {
+  const source = `function reorder(ids, from, to) {
+    [ids[from], ids[to]] = [ids[to], ids[from]];
+  }
+  async function refreshSessionToken() {
+    const session = await readResponse(await fetch('/api/session'));
+    app.token = session.token;
+  }`;
+  assert.doesNotThrow(() => projectScan(source, 'app.js'));
+  assert.throws(() => projectScan(source + '\nconst password="actualOpaqueCredential";', 'app.js'));
+  assert.throws(() => projectScan('const token=session.token; [ids[from], ids[to]] @ [ids[to], ids[from]];', 'app.js'));
+});
+
+test('Python structural dictionary and indexing keys are not embedded credential values', () => {
+  assert.doesNotThrow(() => projectScan("token = amendment['runtime_signature']\n", 'audit.py'));
+  assert.doesNotThrow(() => projectScan("token = {'runtime_signature': runtime_signature}\n", 'audit.py'));
+  assert.throws(() => projectScan("token = amendment.get('runtime_signature', 'actualOpaqueCredential')\n", 'audit.py'));
+  assert.throws(() => projectScan("token = amendment['runtime_signature']\npassword = 'actualOpaqueCredential'\n", 'audit.py'));
+});
+
+test('TypeScript token annotations do not scan unrelated method strings as credential initializers', () => {
+  const source = `class FakeServer {
+    issueToken(): { token: LicenseToken; signature: string } {
+      const token: LicenseToken = { schema_version: 1, license_id: this.license.id };
+      return { token, signature: signObject(token) };
+    }
+    failure() { return 'LICENSE_NOT_FOUND'; }
+  }`;
+  assert.doesNotThrow(() => projectScan(source, 'fakeServer.ts'));
+  assert.throws(() => projectScan('const token: LicenseToken = "actualOpaqueCredential";', 'fakeServer.ts'));
+  assert.throws(() => projectScan('const token: LicenseToken = decryptCredential("actualOpaqueCredential");', 'fakeServer.ts'));
+  assert.throws(() => projectScan(source + '\nconst password="actualOpaqueCredential";', 'fakeServer.ts'));
+});
