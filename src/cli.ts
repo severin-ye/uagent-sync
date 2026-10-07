@@ -25,6 +25,7 @@ import { preflightImportWorkspace } from "./application/import-workspace.js";
 import { preflightWorkspaceOperation, type WorkspaceOperation } from "./application/workspace-operation-capabilities.js";
 import { formatApplicationJson, formatVerifyJson, formatVerifyText } from "./entrypoints/result-formatters.js";
 import { runDeviceCli } from "./entrypoints/device-cli.js";
+import { runBackupCli } from "./entrypoints/backup-cli.js";
 
 function log(msg: string) { console.error(`[opencode-sync] ${msg}`); }
 
@@ -205,6 +206,7 @@ function readPackageVersion(): string {
 async function main() {
   const command = process.argv[2];
   const args = process.argv.slice(3);
+  if (command === "backup") { process.exitCode = await runBackupCli(args); return; }
   if (command === "device") { process.exitCode = await runDeviceCli(args); return; }
   const { flags, positionals } = parseArgs(args);
 

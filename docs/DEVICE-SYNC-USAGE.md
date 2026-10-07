@@ -2,6 +2,21 @@
 
 本文保留历史设备验收范围；本次 2.3.0 在既有设备和工作区流程中加入 Codex 插件固定内容恢复与实际安装验收。各机须分别确认实际安装来源与 CLI 版本，不能由源码版本推定已经升级。源码运行时执行 `npm run build`，以下 `uagent-sync` 用 `node <源码绝对路径>/dist/cli.js` 代替。
 
+## 统一备份所有（2.4.0）
+
+直接说“U同步，备份所有”，或使用以下命令。复用本机已登记的设备、工作区和私人配置仓库；多个工作区时追加 `--workspace-id <已登记ID>`。
+
+```powershell
+uagent-sync backup --all --dry-run --target-agent codex --lang zh
+uagent-sync backup --all --target-agent codex --lang zh
+```
+
+项目代码、文档和已经纳入 Git 的资料提交并推送到各自现有 GitHub origin，先处理子仓库，再处理父仓库指针；符合检查的普通未跟踪文件会纳入项目提交。设置、规则、本地 Skills、记忆和实际安装的 Codex 插件内容保存在既有私人配置仓库的同一个 `sync/profiles/<设备ID>/<快照ID>/`，包含个人文件 `manifest.json` 和插件 `workspace-state.json`。命令不新建仓库、不更换 origin。
+
+预览不采集个人或插件内容、不创建提交、不上传、不 fetch；会列出项目和工作区遗漏，内容采集仍未验收。执行后逐项核对远端 HEAD，保存本机 JSON 回执。`complete` 只表示命令声明的范围完成；有失败或剩余项则报告 `partial`/`failed` 并退出非零。忽略文件、超大文件、依赖、凭据、登录、会话数据库、自动化、宿主信任及链接都有明确边界，不能据此宣称整个办公环境可直接使用。当前只支持 Codex 的标准 `<userHome>/.codex`；已有暂存改动、冲突、远端领先或分叉会阻止相应项目自动处理，临时 Git worktree 不独立推送。
+
+恢复时先在目标机登记自己的身份并获取配置仓库，再用 `device restore --snapshot <快照目录>` 预览和 `--apply` 恢复个人文件。插件状态需要放到目标工作区的 `usync-dotfiles/state/workspace-state.json`，然后执行下方的 `setup --target-agent codex` 和 `verify --target-agent codex`；`import` 单独校验状态不等于已安装。项目从各自仓库获取，依赖、登录和宿主信任在目标机重建。失败后保留本地快照、项目提交和回执；项目下次执行可续推未上传提交，私人配置仓库存在待推提交或分叉时先核对并协调，命令不会自动 reset 或强推。
+
 ## 设备配置
 
 设备资料独立保存在指定配置仓库 `sync/devices/<id>.json`；本机连接默认是 `~/.codex/uagent-device.json`。该连接不进入快照，避免覆盖另一台的身份。配置仓库应是本机已有 checkout，支持复用私有 dotfiles 仓库。

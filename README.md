@@ -117,7 +117,7 @@ codex plugin marketplace add severin-ye/uagent-sync
 
 - **3 skills**: `uagent-sync-backup` (backup workflow), `uagent-sync-restore` (new-device restore), `uagent-sync-update` (ecosystem update) — loaded on demand, guiding the agent to use the CLI
 - **SessionStart hook**: injects CLI usage hints at session start (`PLUGIN_ROOT` resolves the plugin root; on Windows it goes through a Git-bash wrapper)
-- **CLI (the single execution channel)**: `node <plugin>/dist/cli.js <command>` — 18 commands shared with the opencode plugin
+- **CLI (the single execution channel)**: `node <plugin>/dist/cli.js <command>` — workspace commands shared with the opencode plugin
 
 ### How it works
 
@@ -128,7 +128,7 @@ uagent-sync/
 ├── skills/                     # 3 SKILL.md files — shared by opencode and Codex
 ├── src/plugin.ts               # opencode plugin (config hook auto-registers the skills dir)
 ├── packages/dsh/               # DeepSeek Harness bundle (16 sync_* tools → CLI bridge)
-└── src/cli.ts                  # 18-command CLI — the single execution channel for all three
+└── src/cli.ts                  # shared CLI — the single execution channel for all three
 ```
 
 ---
@@ -208,13 +208,14 @@ opencode-sync api-keys detect --lang zh  # Chinese
 UAGENT_SYNC_LANG=zh opencode-sync guide  # Chinese guide
 ```
 
-## CLI (18 commands)
+## CLI commands
 
 Run any command as `node dist/cli.js <command>` (or `opencode-sync <command>` after `npm link`).
 
 | Command | What it does |
 |------|-------------|
 | `init` | Detect workspace, guide first-time setup. Only asks once. |
+| `backup --all` | Codex: commit and push projects to their existing GitHub repositories; publish settings, rules, Skills, memories and installed plugin content to the registered PRIVATE configuration registry. Use `--dry-run` to preview; omissions and failures remain explicit. See [scope and recovery](docs/DEVICE-SYNC-USAGE.md). |
 | `push` | Export state → commit → push to GitHub. One command. |
 | `pull` | Pull from GitHub → restore everything. One command. |
 | `export` | Export full workspace state as JSON |

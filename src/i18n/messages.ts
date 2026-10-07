@@ -33,6 +33,7 @@ export const messages: Record<Lang, Messages> = {
     "cli.usage": `Usage: node dist/cli.js <command> [options]
 
 Commands:
+  backup --all [--dry-run]  Back up project Git repos, Codex extensions and personal settings
   export [path]           Export workspace state to JSON
   import <path> [--dry-run]  Restore from JSON (or URL)
   diff <path>             Compare current vs saved state
@@ -673,6 +674,7 @@ Commands:
     "cli.usage": `用法: node dist/cli.js <command> [options]
 
 命令:
+  backup --all [--dry-run]  统一备份项目仓库、Codex 扩展、设置、规则、Skills 和记忆
   export [path]           导出工作区状态为 JSON
   import <path> [--dry-run]  从 JSON（或 URL）恢复
   diff <path>             对比当前与已保存状态

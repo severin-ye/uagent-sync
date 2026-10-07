@@ -21,6 +21,8 @@
 
 | 语音命令 | 含义 | 执行 |
 |---------|------|------|
+| "U同步，备份所有" / "优同步，备份全部" | 项目推送各自 GitHub 仓库，设置和插件内容发布至已登记私人配置仓库 | `uagent-sync backup --all --target-agent codex --lang zh` |
+| "U同步，先预览备份所有" | 只读预览，未采集个人或插件内容 | `uagent-sync backup --all --dry-run --target-agent codex --lang zh` |
 | "U同步，更新所有扩展" / "优同步，升级扩展" | 更新全部默认组件（plugins/skills/mcp/cli/sync/config-deps） | `opencode_sync_update` 或 `node dist/cli.js update` |
 | "U同步，先预览更新" | dry-run 预览更新计划 | `opencode_sync_update dryRun=true` |
 | "U同步，只更新 MCP" | 只更新 MCP（不自动安装或更新 codebase-memory-mcp） | `opencode_sync_update components=mcp` |

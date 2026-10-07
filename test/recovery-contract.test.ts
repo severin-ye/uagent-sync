@@ -230,7 +230,7 @@ describe("clean checkout and Codex plugin contract", () => {
     assert.ok(!("hooks" in manifest));
   });
 
-  it("keeps the 2.3.0 feature identity consistent across package and plugin metadata", () => {
+  it("keeps the 2.4.0 feature identity consistent across package and plugin metadata", () => {
     const root = path.join(path.dirname(moduleFilePath(import.meta.url)), "..");
     const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf-8"));
     const lock = JSON.parse(fs.readFileSync(path.join(root, "package-lock.json"), "utf-8"));
@@ -238,7 +238,7 @@ describe("clean checkout and Codex plugin contract", () => {
     const marketplace = JSON.parse(fs.readFileSync(path.join(root, ".claude-plugin", "marketplace.json"), "utf-8"));
     const dsh = JSON.parse(fs.readFileSync(path.join(root, "packages", "dsh", "package.json"), "utf-8"));
 
-    assert.equal(pkg.version, "2.3.0");
+    assert.equal(pkg.version, "2.4.0");
     assert.equal(lock.version, pkg.version);
     assert.equal(lock.packages[""].version, pkg.version);
     assert.equal(codex.version, pkg.version);

@@ -8,6 +8,14 @@
 
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [2.4.0] - 2026-10-07
+
+### 新增
+
+- `uagent-sync backup --all` 与“U同步，备份所有”：统一采集 Codex 扩展实际内容、设置、规则、本地 Skills 和记忆到已有私有配置仓库，再逐项目提交并推送到各自已有 GitHub 远端，子仓库先于父仓库，核对远端 HEAD。
+- `--dry-run` 展示注册工作区和项目计划，不生成快照、提交或上传。保留既有暂存区、冲突、分叉、凭据扫描和链接边界，失败保留本地产物与待推送提交；统一报告区分 complete/partial/failed，列出未覆盖文件和排除范围。
+- 判级依据：在已有备份功能内增加用户可见的统一工作流，旧 push/device 入口保持兼容，按次版本从 2.3.0 升至 2.4.0。此版本不表示用户资料已执行备份或另一台设备已恢复。
+
 ## [2.3.0] - 2026-10-03
 
 ### 新增
