@@ -167,10 +167,21 @@ export async function backupAll(input: BackupAllInput, dependencies: BackupAllDe
     recordExcludedFiles(coverage);
     for (const p of linked) report.excluded.push(`Linked Git worktree excluded: ${p}`);
     for (const p of ignored) report.excluded.push(`Nested repository excluded by its parent Git ignore rules in git-only scope: ${p}`);
+    // The registry publishes separately, but its tracked gitlink must still be
+    // committed by its parent after publication. Never expose an untracked
+    // registry directory to the parent's ordinary file staging.
+    const owner = spawnSync('git', ['-C', path.dirname(connection.registryCheckout), 'rev-parse', '--show-toplevel'], { encoding: 'utf8', windowsHide: true, timeout: 30000 });
+    const parentRoot = !owner.error && owner.status === 0 ? owner.stdout.trim() : '';
+    const registryRelative = parentRoot ? path.relative(parentRoot, connection.registryCheckout).replaceAll('\\', '/') : '';
+    const tracked = parentRoot && registryRelative && within(parentRoot, source.workspaceRoot) && within(connection.registryCheckout, parentRoot)
+      ? spawnSync('git', ['-C', parentRoot, 'ls-files', '--stage', '-z', '--', `:(literal)${registryRelative}`], { encoding: 'utf8', windowsHide: true, timeout: 30000 }) : undefined;
+    const registeredGitlink = tracked && !tracked.error && tracked.status === 0
+      && /^160000 [0-9a-f]+ 0\t/.test(tracked.stdout)
+      && tracked.stdout.split('\t')[1] === `${registryRelative}\0`;
     const projectOptions: BackupProjectsInput = {
       workspaceRoot: source.workspaceRoot,
-      repositoryPaths: coverage.repositories.map(x => x.path).filter(p => !omitted.includes(p)),
-      excludePaths: [connection.registryCheckout, ...omitted.map(p => path.resolve(source.workspaceRoot, p))], dryRun: input.dryRun, message: input.message,
+      repositoryPaths: coverage.repositories.map(x => x.path).filter(p => !omitted.includes(p) && !within(path.resolve(source.workspaceRoot, p), connection.registryCheckout)),
+      excludePaths: [...(registeredGitlink ? [] : [connection.registryCheckout]), ...omitted.map(p => path.resolve(source.workspaceRoot, p))], dryRun: input.dryRun, message: input.message,
     };
     if (input.dryRun) {
       const planned = await projects(projectOptions);

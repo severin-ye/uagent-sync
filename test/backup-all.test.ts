@@ -10,11 +10,11 @@ import { backupAll } from '../src/application/backup-all.js';
 import { backupProjects } from '../src/application/backup-projects.js';
 import type { WorkspaceState } from '../src/lib/types.js';
 
-function fixture(t: any) {
+function fixture(t: any, nestedRegistry = false) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'usync-backup-all-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
-  const home = path.join(root, 'home'), registry = path.join(root, 'registry'), workspace = path.join(root, 'workspace');
-  for (const dir of [home, registry, workspace]) fs.mkdirSync(dir);
+  const home = path.join(root, 'home'), workspace = path.join(root, 'workspace'), registry = path.join(nestedRegistry ? workspace : root, nestedRegistry ? 'usync-dotfiles' : 'registry');
+  for (const dir of [home, workspace, registry]) fs.mkdirSync(dir);
   const codex = path.join(home, '.codex');
   fs.mkdirSync(path.join(codex, 'memories'), { recursive: true });
   fs.mkdirSync(path.join(home, '.agents/skills/example'), { recursive: true });
@@ -175,6 +175,52 @@ test('unified orchestration commits and verifies a real project remote without m
   assert.equal(git(remote, 'show', 'main:worktrees/new.txt'), 'New project content.');
   assert.equal(git(f.workspace, 'status', '--porcelain'), '');
   assert(!r.remaining.some(x => x.includes('new.txt')));
+});
+
+test('private registry publishes once while its registered gitlink is delivered in the parent', async t => {
+  const f = fixture(t, true), registry = f.registry;
+  const git = (cwd: string, ...args: string[]) => execFileSync('git', ['-C', cwd, ...args], { encoding: 'utf8', windowsHide: true }).trim();
+  const parentRemote = path.join(f.root, 'parent.git'), registryRemote = path.join(f.root, 'private.git');
+  for (const remote of [parentRemote, registryRemote]) git(f.root, 'init', '--bare', remote);
+  for (const repo of [registry, f.workspace]) {
+    git(repo, 'init', '-b', 'main'); git(repo, 'config', 'user.name', 'Fixture'); git(repo, 'config', 'user.email', 'fixture@example.test');
+  }
+  git(registry, 'add', '.'); git(registry, 'commit', '-m', 'registry'); git(registry, 'remote', 'add', 'origin', registryRemote); git(registry, 'push', '-u', 'origin', 'main');
+  git(f.workspace, '-c', 'protocol.file.allow=always', 'submodule', 'add', registryRemote, 'usync-dotfiles');
+  git(f.workspace, 'add', '.'); git(f.workspace, 'commit', '-m', 'parent'); git(f.workspace, 'remote', 'add', 'origin', parentRemote); git(f.workspace, 'push', '-u', 'origin', 'main');
+  const profile = createProfileOperations(); let published = 0;
+  const r = await backupAll({ connectionFile: f.connection, workspaceFiles: 'git-only' }, {
+    exportState: () => f.state, verifyRegistry: () => {},
+    profileOperations: { ...profile, publish: async (_repo, _remote, paths) => {
+      published++; git(registry, 'add', '--', ...paths); git(registry, 'commit', '-m', 'snapshot'); git(registry, 'push', 'origin', 'main');
+      return { head: git(registry, 'rev-parse', 'HEAD'), pushed: true };
+    } },
+    projects: input => backupProjects(input, { allowRemote: url => url === parentRemote }),
+  });
+  assert.equal(r.status, 'complete', JSON.stringify({ errors: r.errors, remaining: r.remaining }));
+  assert.equal(published, 1); assert.equal(r.projects.length, 1); assert.equal(r.projects[0].verified, true);
+  assert.equal(git(f.workspace, 'status', '--porcelain'), '');
+  assert.equal(git(parentRemote, 'ls-tree', 'main', 'usync-dotfiles').split(/\s/)[2], r.registry.head);
+});
+
+test('unregistered registry directories remain excluded from parent file staging', async t => {
+  for (const ordinaryTrackedFile of [false, true]) {
+    const f = fixture(t, true);
+    const git = (...args: string[]) => execFileSync('git', ['-C', f.workspace, ...args], { encoding: 'utf8', windowsHide: true });
+    git('init', '-b', 'main');
+    git('config', 'user.name', 'Fixture'); git('config', 'user.email', 'fixture@example.test');
+    git('add', 'outside-git.txt');
+    if (ordinaryTrackedFile) git('add', 'usync-dotfiles');
+    git('commit', '-m', 'initial');
+    const r = await backupAll({ connectionFile: f.connection, dryRun: true, workspaceFiles: 'git-only' }, {
+      projects: async input => {
+        assert.ok(input.excludePaths?.includes(f.registry));
+        assert.ok(!input.repositoryPaths.some(p => path.resolve(f.workspace, p) === f.registry));
+        return { projects: [], errors: [], remaining: [] };
+      },
+    });
+    assert.equal(r.status, 'planned', JSON.stringify(r.errors)); assert.deepEqual(r.errors, []);
+  }
 });
 
 test('ordinary worktrees directories outside Git remain visible as missing files', async t => {

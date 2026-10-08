@@ -8,6 +8,13 @@
 
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [2.5.1] - 2026-10-08
+
+- Deliver the private registry's tracked gitlink through its parent after the separately verified snapshot publication. Exclude the registry checkout and descendants from project publication so the private snapshot is published once.
+- Keep unregistered registry directories and ordinary tracked registry files excluded from parent staging; only an exact stage-zero Gitlink allows pointer delivery.
+- Add a real two-remote regression proving snapshot publication, parent pointer delivery, clean parent state and remote equality, plus unregistered-directory exclusion coverage.
+- Version rationale: Z. Repairs the existing child-before-parent backup promise; no scope, credential, remote or device-trust boundary changes.
+
 ## [2.5.0] - 2026-10-07
 
 - Add `backup --all --workspace-files git-only`: back up eligible project Git content, personal configuration and installed plugin runtime content, while explicitly deferring non-Git models, sequence data and other local files. The default `report-all` retains its existing coverage checks. Project failures remain failures in either mode.
