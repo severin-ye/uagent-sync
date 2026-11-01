@@ -49,10 +49,10 @@ dsh plugin --profile <name> add uagent-sync-dsh
 **方式二：从 GitHub 安装（本仓库 monorepo 子包）**
 
 ```sh
-dsh plugin --profile <name> add "github:severin-ye/uagent-sync#master&path:packages/dsh"
+dsh plugin --profile <name> add "github:severin-ye/uagent-sync#3a81c8abdfdff24852098a354ed36c4b65669a1a&path:packages/dsh"
 ```
 
-> 本包是纯 JavaScript，无需 `prepare` 构建授权（pnpm ≥10 的 allowBuilds 步骤不会出现）。
+> 固定到已发布且已核验的3.0.0提交；该子包依赖可从npm获取的精确CLI3.0.0。`master`目前包含未发布的3.1.0候选，不能代替可安装的发布基线；待3.1正式发布并通过registry/安装器验收后再更新固定提交。本包是纯JavaScript，无需`prepare`构建授权（pnpm ≥10的allowBuilds步骤不会出现）。
 
 **方式三：本地 checkout 安装**
 

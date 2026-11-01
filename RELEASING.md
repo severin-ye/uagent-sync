@@ -61,3 +61,5 @@ dsh plugin --profile <disposable-profile> add uagent-sync-dsh@<version>
 ## 3.1.0 候选
 
 实际发布基线已是双包3.0.0。新增OpenCode v2入口保留默认v1入口，按Y判级；根包、DSH、锁与插件清单同步为3.1.0。候选尚未发布；完整迁移和固定产物验收通过前不创建正式Release或覆盖已发布3.0.0。
+
+源码主分支可以包含未发布候选，不能因此把它作为可独立安装的DSH分发入口。当前GitHub安装示例固定到已发布3.0.0提交`3a81c8abdfdff24852098a354ed36c4b65669a1a`；更新该提交前，先确认对应精确CLI已发布，再完成固定子包的registry与宿主安装器验收。默认npm安装继续使用实际已发布版本，不以本地file覆盖或源码link替代正式分发证据。
