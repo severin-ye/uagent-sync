@@ -11,8 +11,7 @@ import { decodeWorkspaceStateStorage } from './artifacts/workspace-state-codec.j
  *
  * 构建产物: dist/plugin.js（opencode.json 的 plugin 数组引用）
  */
-import type { Plugin } from "@opencode-ai/plugin";
-import { tool } from "@opencode-ai/plugin";
+import { tool, type Plugin } from "./entrypoints/opencode-tool.js";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import * as os from "node:os";
@@ -44,7 +43,7 @@ export const OpencodeSyncPlugin: Plugin = async (_ctx) => {
   return {
     // 注册内置 skills 目录（skills/uagent-sync-*），双端共享：opencode 无需手动配置即可加载。
     // 与 Codex 侧（.codex-plugin/plugin.json 的 skills 字段）指向同一份目录。
-    config: async (cfg) => {
+    config: async (cfg: { skills?: { paths?: string[] } }) => {
       const skillsDir = path.join(path.dirname(moduleFilePath(import.meta.url)), "..", "skills");
       const loose = cfg as unknown as { skills?: { paths?: string[] } };
       loose.skills = loose.skills ?? {};

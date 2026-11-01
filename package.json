@@ -1,6 +1,6 @@
 {
   "name": "uagent-sync",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Cross-device agent workspace sync for OpenCode, Codex, and DeepSeek Harness",
   "type": "module",
   "main": "dist/plugin.js",
@@ -45,9 +45,8 @@
   "dependencies": {
     "@lezer/javascript": "1.5.6",
     "@lezer/python": "1.1.18",
-    "@opencode-ai/plugin": "1.18.15",
-    "smol-toml": "^1.8.0",
-    "zod": "^3.23.8",
+    "smol-toml": "1.9.1",
+    "zod": "4.6.6",
     "typescript": "5.9.3"
   },
   "devDependencies": {
@@ -57,5 +56,10 @@
     "playwright": "^1.62.1",
     "rimraf": "^5.0.0",
     "tsx": "^4.19.0"
+  },
+  "exports": {
+    ".": "./dist/plugin.js",
+    "./v2": "./dist/plugin-v2/index.js",
+    "./*": "./*"
   }
 }

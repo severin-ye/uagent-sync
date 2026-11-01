@@ -10,7 +10,7 @@ import { isTombstoned } from "../lib/recovery-manifest.js";
 
 export const CURRENT_WORKSPACE_STATE_SCHEMA_VERSION = 3 as const;
 
-const jsonObjectSchema = z.record(z.unknown());
+const jsonObjectSchema = z.record(z.string(), z.unknown());
 const extensionKindSchema = z.enum(["plugin", "skill", "mcp"]);
 const extensionSchema = z.object({
   kind: extensionKindSchema,
@@ -193,16 +193,20 @@ function filterSelectedExtensions(input: JsonObject, tombstones: ExtensionTombst
   return { ...input, agents, opencodeConfig, skills, tombstones };
 }
 
-function safeIssuePath(path: Array<string | number>): string {
+function safeIssuePath(path: PropertyKey[]): string {
   if (path.length === 0) return "root";
   return path.map((part) => {
     if (typeof part === "number") return String(part);
-    return /^[a-z][a-z0-9_-]*$/i.test(part) ? part : "field";
+    return typeof part === "string" && /^[a-z][a-z0-9_-]*$/i.test(part) ? part : "field";
   }).join(".");
 }
 
 function formatValidationIssues(error: z.ZodError): string {
-  return error.issues.map((issue) => `[${issue.code}] at ${safeIssuePath(issue.path)}`).join("; ");
+  // Retain the public sanitized v3 error codes while using patched Zod 4.
+  return error.issues.map((issue) => {
+    const code = issue.code === "invalid_value" ? (issue.values.length === 1 ? "invalid_literal" : "invalid_enum_value") : issue.code;
+    return `[${code}] at ${safeIssuePath(issue.path)}`;
+  }).join("; ");
 }
 
 function applyTombstones(input: JsonObject): JsonObject {

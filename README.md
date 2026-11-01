@@ -1,4 +1,4 @@
-> **Node compatibility:** 3.0.0 requires `^22.22.2 || ^24.15.0 || >=26.0.0`, matching its locked production dependencies. Node 18 results are historical and do not establish supported installation. See [the exact compatibility boundary](docs/NODE-COMPATIBILITY.md).
+> **Node compatibility:** 3.1.0 requires `^22.22.2 || ^24.15.0 || >=26.0.0`, matching its locked production dependencies. Node 18 results are historical and do not establish supported installation. See [the exact compatibility boundary](docs/NODE-COMPATIBILITY.md).
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/severin-ye/uagent-sync/master/assets/uagent-sync-readme-hero-banner.png" alt="uagent-sync" width="100%">
@@ -65,11 +65,19 @@ npm install -g uagent-sync        # global CLI (commands: uagent-sync / opencode
 npx uagent-sync <cmd>
 ```
 
-Then add to your opencode config (`config/opencode.json`) and restart:
+For OpenCode V1, keep the existing file entry in `config/opencode.json`:
 
 ```json
 { "plugin": ["file:///absolute/path/to/uagent-sync/dist/plugin.js"] }
 ```
+
+For OpenCode V2, use its native entry instead:
+
+```json
+{ "plugins": ["uagent-sync/v2"] }
+```
+
+A local checkout can use the **directory** `/absolute/path/to/uagent-sync/dist/plugin-v2` after building. V2 skips configured JavaScript file paths. The V2 entry registers the same 16 tools and packaged skills, sharing their validation and business logic with V1; it does not perform a backup or update merely by loading. Existing V1 configuration and the default package export remain supported.
 
 ### Codex
 

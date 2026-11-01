@@ -1,4 +1,4 @@
-> **Node兼容：** 3.0.0 的严格安装范围为 `^22.22.2 || ^24.15.0 || >=26.0.0`，与锁定运行依赖一致；Node18 的历史运行记录不代表受支持安装。见 [Node兼容边界](docs/NODE-COMPATIBILITY.md)。
+> **Node兼容：** 3.1.0 的严格安装范围为 `^22.22.2 || ^24.15.0 || >=26.0.0`，与锁定运行依赖一致；Node18 的历史运行记录不代表受支持安装。见 [Node兼容边界](docs/NODE-COMPATIBILITY.md)。
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/severin-ye/uagent-sync/master/assets/uagent-sync-readme-hero-banner.png" alt="uagent-sync" width="100%">
@@ -65,11 +65,19 @@ npm install -g uagent-sync        # 全局 CLI（命令名：uagent-sync / openc
 npx uagent-sync <命令>
 ```
 
-然后把它加进 opencode 配置（`config/opencode.json`）并重启：
+OpenCode V1 继续使用原有文件入口（`config/opencode.json`）：
 
 ```json
 { "plugin": ["file:///绝对路径/uagent-sync/dist/plugin.js"] }
 ```
+
+OpenCode V2 改用原生入口：
+
+```json
+{ "plugins": ["uagent-sync/v2"] }
+```
+
+本地源码构建后可填写**目录** `/绝对路径/uagent-sync/dist/plugin-v2`；V2 会跳过直接指向 JavaScript 文件的配置。V2 入口注册同样的 16 个工具和包内技能，与 V1 共享参数校验和业务逻辑；加载本身不会执行备份或更新。V1 配置和包的默认导出继续保留。
 
 ### Codex
 
