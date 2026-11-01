@@ -1,4 +1,4 @@
-> **Node兼容：** 3.0.0 的严格安装范围为 `^22.22.2 || ^24.15.0 || >=26.0.0`，与锁定运行依赖一致；Node18 的历史运行记录不代表受支持安装。见 [Node兼容边界](docs/NODE-COMPATIBILITY.md)。
+> **Node兼容：** 3.1.0 的严格安装范围为 `^22.22.2 || ^24.15.0 || >=26.0.0`，与锁定运行依赖一致；Node18 的历史运行记录不代表受支持安装。见 [Node兼容边界](docs/NODE-COMPATIBILITY.md)。
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/severin-ye/uagent-sync/master/assets/uagent-sync-readme-hero-banner.png" alt="uagent-sync" width="100%">

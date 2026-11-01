@@ -1,6 +1,6 @@
 {
   "name": "uagent-sync",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Cross-device agent workspace sync for OpenCode, Codex, and DeepSeek Harness",
   "type": "module",
   "main": "dist/plugin.js",

@@ -57,3 +57,7 @@ dsh plugin --profile <disposable-profile> add uagent-sync-dsh@<version>
 先保存隔离 Profile 配置及原版本身份，再使用宿主 `plugin remove`，核验 dependency、bundle、patch 与运行注册均已移除。回退使用精确旧包版本重新安装，核验实际加载和 CLI 身份；正式用户配置/注册表/备份仓库不用于测试，也不清空。npm 旧版本保留；不为回退删除历史 Release 或篡改已发布产物。
 
 源码回退通过常规 revert 和新提交交付，不强推。发布及 registry 验收尚未完成时，报告包已准备与剩余步骤，不称正式发布完成。
+
+## 3.1.0 候选
+
+实际发布基线已是双包3.0.0。新增OpenCode v2入口保留默认v1入口，按Y判级；根包、DSH、锁与插件清单同步为3.1.0。候选尚未发布；完整迁移和固定产物验收通过前不创建正式Release或覆盖已发布3.0.0。

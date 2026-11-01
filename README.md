@@ -1,4 +1,4 @@
-> **Node compatibility:** 3.0.0 requires `^22.22.2 || ^24.15.0 || >=26.0.0`, matching its locked production dependencies. Node 18 results are historical and do not establish supported installation. See [the exact compatibility boundary](docs/NODE-COMPATIBILITY.md).
+> **Node compatibility:** 3.1.0 requires `^22.22.2 || ^24.15.0 || >=26.0.0`, matching its locked production dependencies. Node 18 results are historical and do not establish supported installation. See [the exact compatibility boundary](docs/NODE-COMPATIBILITY.md).
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/severin-ye/uagent-sync/master/assets/uagent-sync-readme-hero-banner.png" alt="uagent-sync" width="100%">

@@ -44,7 +44,7 @@ uagent-sync 的 DeepSeek Harness bundle 形态。注册 16 个 `sync_*` 工具�
 dsh plugin --profile <name> add uagent-sync-dsh
 ```
 
-> 3.0.0 发布时应安装 `uagent-sync-dsh@3.0.0`（依赖精确的 `uagent-sync@3.0.0`）。插件声明依赖 `uagent-sync`（npm 包内含 `dist/cli.js` 与 `skills/`），安装后 CLI 自动随依赖带入，独立可安装。
+> 3.1.0 候选正式发布后应安装 `uagent-sync-dsh@3.1.0`（依赖精确的 `uagent-sync@3.1.0`）；当前已发布版本仍为3.0.0。插件声明依赖 `uagent-sync`（npm 包内含 `dist/cli.js` 与 `skills/`），安装后 CLI 自动随依赖带入，独立可安装。
 
 **方式二：从 GitHub 安装（本仓库 monorepo 子包）**
 

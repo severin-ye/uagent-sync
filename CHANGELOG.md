@@ -8,6 +8,13 @@
 
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.1.0] - Unreleased candidate
+
+- Add the explicit `uagent-sync/v2` OpenCode v2 plugin entry, registering the existing sixteen tools and five packaged Skills. The default OpenCode v1 entry and business behavior remain available.
+- Make the v2 tool regression fixture independent of the caller's HOME and working directory.
+- Keep CLI, DSH bundle, plugin manifests and exact DSH CLI dependency aligned. DSH admission and production migration require their own acceptance; this candidate is not evidence of release or complete OpenCode migration.
+- **Version rationale (Y):** compared with the actually published 3.0.0, this adds a supported-host entry within existing workspace synchronization. It retains the v1 entry, Node range and responsibility boundaries; it adds no independent sync capability or required data migration.
+
 ## [3.0.0] - 2026-11-01
 
 - Publish the CLI and DSH bundle at the same version, with the bundle depending on the exact published CLI. Historical source-only 2.2.x–2.5.1 entries are retained; they are not evidence of npm releases.
