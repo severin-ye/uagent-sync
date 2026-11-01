@@ -18,6 +18,25 @@ function fixture() {
 }
 const deps = { allowRemote: (url: string) => !url.includes('://') && !url.includes('@') };
 
+test('accepts the same Windows repository root when Git reports different drive casing', { skip: process.platform !== 'win32' }, async () => {
+  const f = fixture(); try {
+    const result = await backupProjects({ workspaceRoot: f.root, repositoryPaths: ['project'], dryRun: true }, {
+      ...deps,
+      runGit: async (cwd, args, env) => {
+        const bytes = execFileSync('git', args, { cwd, windowsHide: true, env: { ...process.env, ...env } });
+        if (args[0] === 'rev-parse' && args[1] === '--show-toplevel') {
+          const output = bytes.toString('utf8');
+          const drive = output[0] === output[0].toLowerCase() ? output[0].toUpperCase() : output[0].toLowerCase();
+          return Buffer.from(drive + output.slice(1));
+        }
+        return bytes;
+      },
+    });
+    assert.equal(result.projects[0].status, 'planned', JSON.stringify(result.errors));
+    assert.equal(git(f.repo, 'status', '--porcelain'), '');
+  } finally { f.clean(); }
+});
+
 test('project backup accepts validated dotenv examples and source expressions but blocks mixed real credentials', async () => {
   const f = fixture(); try {
     writeFileSync(join(f.repo, '.env.example'), 'TOKEN=<YOUR_TOKEN>\nPASSWORD=your-password-here\n');
