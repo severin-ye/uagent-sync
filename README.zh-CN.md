@@ -1,4 +1,4 @@
-> **Node兼容范围：** 锁定运行依赖的要求比根`>=18`字段更严格。Node18.20.8通过过已记录测试，但不代表支持engine-strict安装；24.16.0/24.19.0同时有测试证据且满足依赖声明。详见[精确兼容边界](docs/NODE-COMPATIBILITY.md)。
+> **Node兼容：** 3.0.0 的严格安装范围为 `^22.22.2 || ^24.15.0 || >=26.0.0`，与锁定运行依赖一致；Node18 的历史运行记录不代表受支持安装。见 [Node兼容边界](docs/NODE-COMPATIBILITY.md)。
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/severin-ye/uagent-sync/master/assets/uagent-sync-readme-hero-banner.png" alt="uagent-sync" width="100%">
@@ -115,7 +115,7 @@ codex plugin marketplace add severin-ye/uagent-sync
 
 ### 安装后获得什么
 
-- **3 个技能**：`uagent-sync-backup`（备份流程）、`uagent-sync-restore`（新设备恢复）、`uagent-sync-update`（生态更新）——按需加载，指导智能体调用 CLI
+- **5 个技能**：`uagent-sync-backup`（备份流程）、`uagent-sync-restore`（新设备恢复）、`uagent-sync-update`（生态更新）、`uagent-sync-device`（设备配置）、`uagent-sync-crystallize`（安装溯源）——按需加载，指导智能体调用 CLI
 - **会话启动钩子**：会话开始时注入 CLI 使用提示（`PLUGIN_ROOT` 环境变量定位插件根，Windows 经 Git bash 包装）
 - **CLI（唯一执行通道）**：`node <插件目录>/dist/cli.js <命令>`，工作区命令与 opencode 插件共享同一套 CLI
 
@@ -125,7 +125,7 @@ codex plugin marketplace add severin-ye/uagent-sync
 uagent-sync/
 ├── .codex-plugin/plugin.json   # Codex 插件清单（skills + hooks，预留 mcpServers 扩展位）
 ├── hooks/                      # hooks-codex.json + run-hook.cmd + session-start
-├── skills/                     # 3 个 SKILL.md —— opencode 与 Codex 共享同一份
+├── skills/                     # 5 个 SKILL.md —— opencode 与 Codex 共享同一份
 ├── src/plugin.ts               # opencode 插件（config 钩子自动注册技能目录）
 └── src/cli.ts                  # 共享 CLI —— 三端唯一执行通道
 ```
@@ -260,8 +260,8 @@ uagent-sync/                  # ← 本仓库（纯代码，运行时永不修�
 │   ├── lib/                   # 现有领域实现与兼容模块
 │   ├── sync.ts                # 公共兼容与架构汇总导出
 │   ├── plugin.ts              # OpenCode 插件入口
-│   └── cli.ts                 # 独立 18 命令入口
-├── skills/                    # 3 个共享技能（opencode + Codex + DSH）
+│   └── cli.ts                 # 包含设备与统一备份命令的独立 CLI
+├── skills/                    # 5 个共享技能（OpenCode/Codex；DSH 桥接备份/恢复/更新）
 ├── hooks/                     # Codex 会话启动钩子
 ├── .codex-plugin/             # Codex 插件清单 + marketplace
 ├── packages/dsh/              # DeepSeek Harness bundle（16 个 sync_* 工具）
@@ -299,13 +299,13 @@ npx playwright install chromium  # 首次安装浏览器
 npm run test:e2e     # 真实 Dashboard 浏览器流程
 ```
 
-CI 门禁（GitHub Actions，Windows，Node 20/22）：构建、单元测试和 Playwright 浏览器 E2E 全部通过才能合并。
+CI 门禁（GitHub Actions，Windows，Node 22.22.2/24.19.0）：构建、单元测试和 Playwright 浏览器 E2E 全部通过才能合并。
 
 ---
 
 ## 发布
 
-见 [`RELEASING.md`](./RELEASING.md)。流程：更新 CHANGELOG → `npm run release:patch|minor|major`（版本号 + tag + 推送）→ GitHub Actions 自动构建、测试并创建 Release（附带 tarball）。
+见 [`RELEASING.md`](./RELEASING.md)。从实际已发布基线判级，同步双包版本、检查并构建两个 tarball，再先发布 CLI、后发布 DSH bundle。发布后独立核验 registry 安装与固定分发物的宿主生命周期。
 
 ---
 
