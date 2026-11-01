@@ -1,4 +1,4 @@
-> **Node compatibility:** the locked runtime dependencies have stricter engine requirements than the root `>=18` field. Node18.20.8 passed the recorded tests, but is not an engine-strict installation target. Node24.16.0/24.19.0 satisfy the declared ranges and have recorded test coverage. See [the exact compatibility boundary](docs/NODE-COMPATIBILITY.md).
+> **Node compatibility:** 3.0.0 requires `^22.22.2 || ^24.15.0 || >=26.0.0`, matching its locked production dependencies. Node 18 results are historical and do not establish supported installation. See [the exact compatibility boundary](docs/NODE-COMPATIBILITY.md).
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/severin-ye/uagent-sync/master/assets/uagent-sync-readme-hero-banner.png" alt="uagent-sync" width="100%">
@@ -115,7 +115,7 @@ codex plugin marketplace add severin-ye/uagent-sync
 
 ### What you get after installing
 
-- **3 skills**: `uagent-sync-backup` (backup workflow), `uagent-sync-restore` (new-device restore), `uagent-sync-update` (ecosystem update) — loaded on demand, guiding the agent to use the CLI
+- **5 skills**: `uagent-sync-backup` (backup workflow), `uagent-sync-restore` (new-device restore), `uagent-sync-update` (ecosystem update), `uagent-sync-device` (device profiles), `uagent-sync-crystallize` (installation provenance) — loaded on demand, guiding the agent to use the CLI
 - **SessionStart hook**: injects CLI usage hints at session start (`PLUGIN_ROOT` resolves the plugin root; on Windows it goes through a Git-bash wrapper)
 - **CLI (the single execution channel)**: `node <plugin>/dist/cli.js <command>` — workspace commands shared with the opencode plugin
 
@@ -251,8 +251,8 @@ uagent-sync/                  # ← This repo (code only, never modified at runt
 │   ├── lib/                   # Existing domain implementation and compatibility modules
 │   ├── sync.ts                # Public compatibility + architecture barrel
 │   ├── plugin.ts              # OpenCode plugin entrypoint
-│   └── cli.ts                 # Standalone 18-command entrypoint
-├── skills/                    # 3 shared skills (opencode + Codex)
+│   └── cli.ts                 # Standalone CLI with device and unified backup commands
+├── skills/                    # 5 shared skills (OpenCode + Codex; DSH bridges backup/restore/update)
 ├── hooks/                     # Codex SessionStart hook
 ├── .codex-plugin/             # Codex plugin manifest + marketplace
 ├── test/                      # node:test suites (run `npm test`)
@@ -289,13 +289,13 @@ npx playwright install chromium  # one-time browser setup
 npm run test:e2e     # real dashboard browser workflow
 ```
 
-CI gate (GitHub Actions, Windows, Node 20/22): build, unit tests, and the Playwright browser E2E must all pass before merge.
+CI gate (GitHub Actions, Windows, Node 22.22.2/24.19.0): build, unit tests, and the Playwright browser E2E must all pass before merge.
 
 ---
 
 ## Release
 
-See [`RELEASING.md`](./RELEASING.md). Flow: update CHANGELOG → `npm run release:patch|minor|major` (version + tag + push) → GitHub Actions builds, tests, and creates a Release with the tarball attached.
+See [`RELEASING.md`](./RELEASING.md). Compare the actual published baseline, synchronize both package versions, verify and pack both tarballs, then publish the CLI before the DSH bundle. Registry installation and fixed-artifact host lifecycle checks follow publication.
 
 ---
 
@@ -326,4 +326,4 @@ MIT © 2026 uagent-sync contributors
 [**简体中文**](./README.zh-CN.md) | **English**
 # Multi-device handoff (source development)
 
-The new `device` command provides configurable device registration, workspace coverage reports, personal Codex profile snapshots, conflict-aware restore, and explicit private-registry transport. See [current usage and limitations](docs/DEVICE-SYNC-USAGE.md). This is not yet a complete workspace replication or plugin-installation flow; existing published versions may not contain it.
+The new `device` command provides configurable device registration, workspace coverage reports, personal Codex profile snapshots, conflict-aware restore, and explicit private-registry transport. See [current usage and limitations](docs/DEVICE-SYNC-USAGE.md). The 3.0.0 distribution includes these commands; completed private backup or second-device restore still requires its own acceptance evidence.

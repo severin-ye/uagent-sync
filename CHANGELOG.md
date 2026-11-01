@@ -8,6 +8,15 @@
 
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.0.0] - 2026-11-01
+
+- Publish the CLI and DSH bundle at the same version, with the bundle depending on the exact published CLI. Historical source-only 2.2.x–2.5.1 entries are retained; they are not evidence of npm releases.
+- Include the current device registry/profile workflow, protected Codex plugin-content restore, unified project/private-profile backup, migration decisions, and isolated self-update fixes accumulated since the actual npm 2.1.0 baseline. Device migration and private backups still require their own destination acceptance.
+- Restore Windows short/long path equivalence in project delivery, preserve child-before-parent ordering and source/target protection, and register DSH runtime Skills with explicit provenance.
+- **Version rationale (X):** the actual npm 2.1.0 tarball advertised Node >=18; the locked production runtime now requires ^22.22.2 || ^24.15.0 || >=26.0.0. Removing the old supported installation range independently meets the release contract's X criterion. The batch also changes migration write-confirmation and backup delivery responsibilities. Therefore release 3.0.0 once rather than treating unpublished source 2.5.1 as the last release or issuing 2.5.2. Existing entrypoints and compatible state readers are preserved.
+- The GitHub release workflow now attaches both package tarballs and SHA256SUMS rather than only the root CLI.
+- Exact DSH compatibility remains unknown pending fixed-artifact lifecycle evidence and the separate store supply-chain/permission review. Local source tests do not establish registry distribution or store admission.
+
 ## [2.5.1] - 2026-10-08
 
 - Deliver the private registry's tracked gitlink through its parent after the separately verified snapshot publication. Exclude the registry checkout and descendants from project publication so the private snapshot is published once.

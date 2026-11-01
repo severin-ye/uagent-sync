@@ -44,7 +44,7 @@ uagent-sync 的 DeepSeek Harness bundle 形态。注册 16 个 `sync_*` 工具�
 dsh plugin --profile <name> add uagent-sync-dsh
 ```
 
-> 需要 uagent-sync-dsh ≥ 2.1.0（已发布到 npm registry）。插件声明依赖 `uagent-sync`（npm 包内含 `dist/cli.js` 与 `skills/`），安装后 CLI 自动随依赖带入，独立可安装。
+> 3.0.0 发布时应安装 `uagent-sync-dsh@3.0.0`（依赖精确的 `uagent-sync@3.0.0`）。插件声明依赖 `uagent-sync`（npm 包内含 `dist/cli.js` 与 `skills/`），安装后 CLI 自动随依赖带入，独立可安装。
 
 **方式二：从 GitHub 安装（本仓库 monorepo 子包）**
 
@@ -73,7 +73,7 @@ dsh plugin --profile <name> add ./packages/dsh
 
 2026-11-01 在一次性 DSH 0.2.1-rc.5 Profile 中，本地 checkout 的安装、启动帮助入口和配置组合通过；真实 Cordis 服务注册了 16 个工具与 3 个共享 Skills，卸载后均无残留。该检查没有调用模型或备份私人数据。共享 Skills 显式声明 `source: runtime`，符合当前 Skill 注册接口。
 
-这仍是本地源码的部分证据：本子包依赖的 `uagent-sync@2.5.1` 当日从官方 npm registry 查询返回 E404，不能据本地 link 安装声称 GitHub/npm 分发已可独立安装。恢复商城可安装状态前，必须完成正式 CLI 依赖发布、固定分发物的安装/启动/卸载/回退验收，以及商城要求的供应链和权限审核。不得用旧提交或本地依赖替代这几项证据。
+这仍是本地源码的部分证据：旧源码候选所依赖的 `uagent-sync@2.5.1` 当日从官方 npm registry 查询返回 E404；本次统一改为 3.0.0，正式发布及 registry 验收独立记录于 [发布验收](../../docs/validation/release-3.0.0.md)，不能据本地 link 安装声称 GitHub/npm 分发已可独立安装。恢复商城可安装状态前，必须完成正式 CLI 依赖发布、固定分发物的安装/启动/卸载/回退验收，以及商城要求的供应链和权限审核。不得用旧提交或本地依赖替代这几项证据。
 
 - **桥接层测试**：`test/dsh-plugin.test.ts` 覆盖 CLI 定位/参数映射/spawn/渲染（`packages/dsh/lib/cli.js`，纯 JS 零依赖）。
 - **schema 契约守卫**：`test/dsh-plugin-schema.test.ts` 直接加载 `index.js` 执行 `apply()`，对根 devDependencies 锁定的 `@deepseek-ai/dsh-tools@0.1.0-rc.6` 注册全部 16 工具——dsh-tools 的 author-schema 校验（如 `required must be true when present`）破坏会在 CI 直接红。

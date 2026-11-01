@@ -28,11 +28,26 @@ jobs:
       - name: Run tests
         run: npm test
 
-      - name: Package tarball
-        run: npm pack
+      - name: Package both published entrypoints
+        shell: pwsh
+        run: |
+          $artifactDir = Join-Path $env:RUNNER_TEMP 'uagent-sync-release'
+          New-Item -ItemType Directory -Path $artifactDir -Force | Out-Null
+          npm pack --pack-destination $artifactDir
+          if ($LASTEXITCODE -ne 0) { throw 'CLI packaging failed' }
+          Push-Location packages/dsh
+          try {
+            npm pack --pack-destination $artifactDir
+            if ($LASTEXITCODE -ne 0) { throw 'DSH bundle packaging failed' }
+          } finally { Pop-Location }
+          Get-ChildItem $artifactDir -Filter '*.tgz' | Sort-Object Name | ForEach-Object {
+            $digest = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+            '{0} *{1}' -f $digest, $_.Name
+          } | Set-Content -LiteralPath (Join-Path $artifactDir 'SHA256SUMS') -Encoding utf8
 
       - name: Create GitHub Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create "${{ github.ref_name }}" --generate-notes --title "opencode-sync ${{ github.ref_name }}" (Get-ChildItem *.tgz | ForEach-Object { $_.Name })
+          $artifactDir = Join-Path $env:RUNNER_TEMP 'uagent-sync-release'
+          gh release create "${{ github.ref_name }}" --generate-notes --title "uagent-sync ${{ github.ref_name }}" (Get-ChildItem $artifactDir -File | ForEach-Object { $_.FullName })
