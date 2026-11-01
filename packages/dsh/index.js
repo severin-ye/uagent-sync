@@ -77,6 +77,7 @@ export function apply(ctx, config) {
           ctx.skills.register({
             name: parsed.name,
             description: parsed.description,
+            source: 'runtime',
             content: parsed.content.replaceAll('<uagent-sync>', checkoutRoot),
           })
         } catch { /* 重名时 first-wins，注册方无操作 */ }

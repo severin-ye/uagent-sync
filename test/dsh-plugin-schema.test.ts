@@ -1,6 +1,7 @@
 import { describe, it } from "node:test";
 import * as assert from "node:assert";
 import { apply } from "../packages/dsh/index.js";
+import { fileURLToPath } from 'node:url';
 
 /**
  * DSH 插件 schema 契约守卫（2026-08-15 补）。
@@ -19,6 +20,16 @@ import { apply } from "../packages/dsh/index.js";
  * 遮蔽根 devDeps 的版本——本测试在解析链上直接依赖这个约定。
  */
 describe("dsh plugin schema contract (dsh-tools)", () => {
+  it("registers shared skills with explicit runtime provenance", () => {
+    const skills: Array<{ name: string; source?: string }> = [];
+    apply({
+      tools: { register: () => () => {} },
+      skills: { register: (skill: { name: string; source?: string }) => { skills.push(skill); return () => {}; } },
+    } as never, { cliPath: fileURLToPath(new URL('../dist/cli.js', import.meta.url)) });
+    assert.equal(skills.length, 3);
+    for (const skill of skills) assert.equal(skill.source, 'runtime', skill.name);
+  });
+
   it("apply() registers all 16 sync_* tools against the pinned dsh-tools contract", () => {
     const defs: Array<{ name: string; output?: { render?: unknown; schema?: unknown } }> = [];
     const ctx = {

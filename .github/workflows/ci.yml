@@ -14,8 +14,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Node 18 的 test runner 不支持 glob 且无 --import 选项（测试命令需 Node 20.6+）
-        node: [20, 22]
+        # Keep installation targets inside the locked runtime engine range.
+        node: [22.22.2, 24.19.0]
     steps:
       - uses: actions/checkout@v4
 

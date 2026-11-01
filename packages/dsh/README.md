@@ -67,6 +67,14 @@ dsh plugin --profile <name> add ./packages/dsh
 
 ## 测试与契约守卫
 
+### 固定源码与商城兼容状态
+
+`engines.node` 与主 CLI 的锁定运行依赖声明保持一致；`engines.dsh` 列出当前契约检查的运行时目标。精确 `dsh.compatibility.dshReleases` 记录保留为 `unknown`，范围匹配不代表已满足商城安装条件。
+
+2026-11-01 在一次性 DSH 0.2.1-rc.5 Profile 中，本地 checkout 的安装、启动帮助入口和配置组合通过；真实 Cordis 服务注册了 16 个工具与 3 个共享 Skills，卸载后均无残留。该检查没有调用模型或备份私人数据。共享 Skills 显式声明 `source: runtime`，符合当前 Skill 注册接口。
+
+这仍是本地源码的部分证据：本子包依赖的 `uagent-sync@2.5.1` 当日从官方 npm registry 查询返回 E404，不能据本地 link 安装声称 GitHub/npm 分发已可独立安装。恢复商城可安装状态前，必须完成正式 CLI 依赖发布、固定分发物的安装/启动/卸载/回退验收，以及商城要求的供应链和权限审核。不得用旧提交或本地依赖替代这几项证据。
+
 - **桥接层测试**：`test/dsh-plugin.test.ts` 覆盖 CLI 定位/参数映射/spawn/渲染（`packages/dsh/lib/cli.js`，纯 JS 零依赖）。
 - **schema 契约守卫**：`test/dsh-plugin-schema.test.ts` 直接加载 `index.js` 执行 `apply()`，对根 devDependencies 锁定的 `@deepseek-ai/dsh-tools@0.1.0-rc.6` 注册全部 16 工具——dsh-tools 的 author-schema 校验（如 `required must be true when present`）破坏会在 CI 直接红。
 - **版本解析约定**：`packages/dsh/node_modules` 不应存在（gitignored 陈旧副本会遮蔽根 devDeps 的 dsh-tools 版本）。全新机器在仓库根 `npm install` 即可满足插件解析。

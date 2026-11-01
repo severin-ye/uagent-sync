@@ -20,3 +20,21 @@ test("root manifest and lockfile advertise the supported runtime intersection", 
   assert.equal(lockfile.packages?.[""]?.engines?.node, EXPECTED_RUNTIME_ENGINE);
   assert.ok(manifest.files?.includes("scripts/verified-public-profile.mjs"));
 });
+
+test("CI runs supported Node 22 and 24 releases instead of unsupported Node 20", () => {
+  const workflow = fs.readFileSync(path.join(ROOT, ".github/workflows/ci.yml"), "utf8");
+  const matrix = workflow.match(/^\s+node: \[([^\]]+)\]/m)?.[1].split(",").map(v => v.trim());
+  assert.deepEqual(matrix, ["22.22.2", "24.19.0"]);
+});
+
+test("DSH manifest declares runtime targets without promoting local checks to installable compatibility", () => {
+  const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, "packages/dsh/package.json"), "utf8"));
+  assert.equal(manifest.engines?.node, EXPECTED_RUNTIME_ENGINE);
+  assert.equal(manifest.engines?.dsh, "0.1.0-rc.6 || 0.2.1-rc.5");
+  assert.deepEqual(manifest.dsh?.compatibility?.dshReleases, {
+    "0.1.0-rc.6": "unknown",
+    "0.2.1-rc.4": "unknown",
+    "0.2.2-alpha.2": "unknown",
+    "0.2.1-rc.5": "unknown",
+  });
+});

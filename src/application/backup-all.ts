@@ -117,12 +117,13 @@ function workspaceGaps(coverage: WorkspaceCoverage, registry: string, linked: st
   return result;
 }
 function ignoredNestedCheckout(root: string, relative: string): boolean {
-  const checkout = path.resolve(root, relative);
-  if (checkout === path.resolve(root)) return false;
+  const checkout = fs.realpathSync.native(path.resolve(root, relative));
+  const workspaceRoot = fs.realpathSync.native(root);
+  if (checkout === workspaceRoot) return false;
   const owner = spawnSync('git', ['-C', path.dirname(checkout), 'rev-parse', '--show-toplevel'], { encoding: 'utf8', windowsHide: true, timeout: 30000 });
   if (owner.error || owner.status !== 0) return false;
-  const parentRoot = owner.stdout.trim();
-  if (!within(parentRoot, root) || !within(checkout, parentRoot) || checkout === path.resolve(parentRoot)) return false;
+  const parentRoot = fs.realpathSync.native(owner.stdout.trim());
+  if (!within(parentRoot, workspaceRoot) || !within(checkout, parentRoot) || checkout === parentRoot) return false;
   // Tracked submodule paths are not ignored by Git's default check-ignore.
   const ignored = spawnSync('git', ['-C', parentRoot, 'check-ignore', '--quiet', '--', path.relative(parentRoot, checkout).replaceAll('\\', '/')], { windowsHide: true, timeout: 30000 });
   return !ignored.error && ignored.status === 0;
@@ -171,9 +172,10 @@ export async function backupAll(input: BackupAllInput, dependencies: BackupAllDe
     // committed by its parent after publication. Never expose an untracked
     // registry directory to the parent's ordinary file staging.
     const owner = spawnSync('git', ['-C', path.dirname(connection.registryCheckout), 'rev-parse', '--show-toplevel'], { encoding: 'utf8', windowsHide: true, timeout: 30000 });
-    const parentRoot = !owner.error && owner.status === 0 ? owner.stdout.trim() : '';
-    const registryRelative = parentRoot ? path.relative(parentRoot, connection.registryCheckout).replaceAll('\\', '/') : '';
-    const tracked = parentRoot && registryRelative && within(parentRoot, source.workspaceRoot) && within(connection.registryCheckout, parentRoot)
+    const parentRoot = !owner.error && owner.status === 0 ? fs.realpathSync.native(owner.stdout.trim()) : '';
+    const registryCheckout = fs.realpathSync.native(connection.registryCheckout);
+    const registryRelative = parentRoot ? path.relative(parentRoot, registryCheckout).replaceAll('\\', '/') : '';
+    const tracked = parentRoot && registryRelative && within(parentRoot, fs.realpathSync.native(source.workspaceRoot)) && within(registryCheckout, parentRoot)
       ? spawnSync('git', ['-C', parentRoot, 'ls-files', '--stage', '-z', '--', `:(literal)${registryRelative}`], { encoding: 'utf8', windowsHide: true, timeout: 30000 }) : undefined;
     const registeredGitlink = tracked && !tracked.error && tracked.status === 0
       && /^160000 [0-9a-f]+ 0\t/.test(tracked.stdout)

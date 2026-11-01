@@ -4,6 +4,10 @@
   "description": "U同步 / Uagent Sync — cross-device workspace sync for DeepSeek Harness: backup, restore, and ecosystem update via the uagent-sync CLI.",
   "type": "module",
   "main": "index.js",
+  "engines": {
+    "node": "^22.22.2 || ^24.15.0 || >=26.0.0",
+    "dsh": "0.1.0-rc.6 || 0.2.1-rc.5"
+  },
   "files": [
     "index.js",
     "lib/cli.js",
@@ -13,6 +17,14 @@
   "dsh": {
     "bundle": {
       "patch": "./cordis.patch.yml"
+    },
+    "compatibility": {
+      "dshReleases": {
+        "0.1.0-rc.6": "unknown",
+        "0.2.1-rc.4": "unknown",
+        "0.2.2-alpha.2": "unknown",
+        "0.2.1-rc.5": "unknown"
+      }
     }
   },
   "keywords": [

@@ -97,11 +97,14 @@ export async function backupProjects(input: BackupProjectsInput, dependencies: B
       await noLinks(root, cwd);
       if (excluded.some((p) => inside(p, cwd))) { result.status = 'skipped'; continue; }
       if (projects.some((p) => p !== result && p.status === 'failed' && inside(cwd, resolve(root, p.path)))) throw new Error('Child repository backup failed; parent backup blocked');
-      if (resolve(await git('rev-parse', '--show-toplevel')) !== cwd) throw new Error('Path is not a repository root');
-      const gitDir = resolve(cwd, await git('rev-parse', '--git-dir'));
-      const commonDir = resolve(cwd, await git('rev-parse', '--git-common-dir'));
+      // Git expands Windows 8.3 paths (for example RUNNER~1 in TEMP). Resolve
+      // both spellings only after noLinks has rejected linked input paths.
+      if (await fs.realpath(resolve(await git('rev-parse', '--show-toplevel'))) !== await fs.realpath(cwd)) throw new Error('Path is not a repository root');
+      const canonicalCwd = await fs.realpath(cwd);
+      const gitDir = resolve(canonicalCwd, await git('rev-parse', '--git-dir'));
+      const commonDir = resolve(canonicalCwd, await git('rev-parse', '--git-common-dir'));
       if (gitDir !== commonDir) throw new Error('Linked Git worktree excluded; back up the registered project checkout instead');
-      await noLinks(root, gitDir);
+      await noLinks(await fs.realpath(root), gitDir);
       for (const marker of ['MERGE_HEAD', 'CHERRY_PICK_HEAD', 'REVERT_HEAD', 'rebase-merge', 'rebase-apply', 'sequencer']) {
         const markerPath = resolve(cwd, await git('rev-parse', '--git-path', marker));
         if (await fs.stat(markerPath).then(() => true, () => false)) throw new Error('Repository has an unfinished merge/rebase/cherry-pick');
