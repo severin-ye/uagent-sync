@@ -2,7 +2,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
-import { tool, type ToolContext } from "@opencode-ai/plugin";
+import { tool, type ToolContext, type ToolDefinition } from "../entrypoints/opencode-tool.js";
 import legacyPlugin from "../plugin.js";
 
 interface Editor<T> { add(value: T): void }
@@ -21,7 +21,8 @@ const plugin = {
   async setup(ctx: V2Context) {
     // The legacy factory only constructs definitions; it does not execute tools.
     const legacy = await legacyPlugin({} as Parameters<typeof legacyPlugin>[0]);
-    const definitions = Object.entries(legacy.tool ?? {}).map(([name, definition]) => {
+    const entries: Array<[string, ToolDefinition]> = Object.entries(legacy.tool ?? {});
+    const definitions = entries.map(([name, definition]) => {
       const schema = tool.schema.object(definition.args);
       return {
         name,

@@ -10,6 +10,8 @@
 
 ## [3.1.0] - Unreleased candidate
 
+- Remove the obsolete OpenCode SDK runtime closure and use patched Zod 4.6.6 and smol-toml 1.9.1 directly. Retain the v1 tool/context/config contract, v2 validation, state passthrough, optional/default fields and sanitized validation errors.
+
 - Add the explicit `uagent-sync/v2` OpenCode v2 plugin entry, registering the existing sixteen tools and five packaged Skills. The default OpenCode v1 entry and business behavior remain available.
 - Make the v2 tool regression fixture independent of the caller's HOME and working directory.
 - Keep CLI, DSH bundle, plugin manifests and exact DSH CLI dependency aligned. DSH admission and production migration require their own acceptance; this candidate is not evidence of release or complete OpenCode migration.

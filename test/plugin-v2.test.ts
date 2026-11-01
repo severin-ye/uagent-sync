@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { tool } from "@opencode-ai/plugin";
+import { tool } from "../dist/entrypoints/opencode-tool.js";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
