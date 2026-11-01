@@ -65,11 +65,19 @@ npm install -g uagent-sync        # global CLI (commands: uagent-sync / opencode
 npx uagent-sync <cmd>
 ```
 
-Then add to your opencode config (`config/opencode.json`) and restart:
+For OpenCode V1, keep the existing file entry in `config/opencode.json`:
 
 ```json
 { "plugin": ["file:///absolute/path/to/uagent-sync/dist/plugin.js"] }
 ```
+
+For OpenCode V2, use its native entry instead:
+
+```json
+{ "plugins": ["uagent-sync/v2"] }
+```
+
+A local checkout can use the **directory** `/absolute/path/to/uagent-sync/dist/plugin-v2` after building. V2 skips configured JavaScript file paths. The V2 entry registers the same 16 tools and packaged skills, sharing their validation and business logic with V1; it does not perform a backup or update merely by loading. Existing V1 configuration and the default package export remain supported.
 
 ### Codex
 

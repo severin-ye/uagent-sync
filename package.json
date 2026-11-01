@@ -57,5 +57,10 @@
     "playwright": "^1.62.1",
     "rimraf": "^5.0.0",
     "tsx": "^4.19.0"
+  },
+  "exports": {
+    ".": "./dist/plugin.js",
+    "./v2": "./dist/plugin-v2/index.js",
+    "./*": "./*"
   }
 }
