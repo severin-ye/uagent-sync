@@ -1,18 +1,24 @@
 ---
 name: uagent-sync-update
-description: Update installed, uagent-sync-managed coding-agent components (opencode/Codex plugins, skills packages, uv MCP/CLI tools, the sync repo, and config dependencies) using the uagent-sync CLI. 中文名：U同步 / 优同步。Use when the user asks to 更新/升级 all extensions or 扩展更新, or says "U同步，更新所有扩展" / "U同步，升级扩展" / "U同步，只更新MCP".
+description: "Update installed, uagent-sync-managed coding-agent components (opencode/Codex plugins, skills packages, uv MCP/CLI tools, the sync repo, and config dependencies) using the uagent-sync CLI. 中文名：U同步 / 优同步。Use when the user asks to 更新/升级 all extensions or 扩展更新, or says \"U同步，更新所有扩展\" / \"U同步，升级扩展\" / \"U同步，只更新MCP\". Also use for read-only update explanations: \"U同步，讲讲这次更新\" / \"U同步，整理更新说明\" / \"U同步，这次更新了什么\", or asks which Skills changed and what was added, changed or fixed; route these to explanation before any update workflow."
 ---
 
 # uagent-sync: Update ecosystem
 
 ## When to use
 
-User asks to update/upgrade opencode or Codex extensions, skills, MCP tools, or the sync repo itself.
+User asks to update/upgrade opencode or Codex extensions, skills, MCP tools, or the sync repo itself; or asks to explain a completed update.
+
+## Route intent first
+
+- **Explain only:** for “讲讲这次更新 / 整理更新说明 / 这次更新了什么” and equivalent questions, load [update explanation](references/update-explanation.md) and follow it. Skip the update Workflow below, including its dry-run. Read existing evidence and write the requested explanation only; do not update, reinstall or stop services to manufacture evidence.
+- **Update:** only an actual update request enters the Workflow below. If the user also requests an explanation, explain the resulting recorded batch afterward. This remains one existing Skill, with no new CLI command or independent module.
 
 ## Voice commands (中文名: U同步 / 优同步)
 
 | 用户语音 | 执行 |
 |---------|------|
+| "U同步，讲讲这次更新" / "U同步，整理更新说明" / "U同步，这次更新了什么" | Read-only explanation: [reference](references/update-explanation.md); do not call update |
 | "U同步，更新所有扩展" / "优同步，升级扩展" | `node <uagent-sync>/dist/cli.js update --target-agent codex`（检查全部默认类别，只更新已安装且可核验的受管组件） |
 | "U同步，先预览更新" | `node <uagent-sync>/dist/cli.js update --target-agent codex --dry-run` |
 | "U同步，只更新 MCP" | `node <uagent-sync>/dist/cli.js update --target-agent codex --components mcp` |
@@ -46,9 +52,9 @@ User asks to update/upgrade opencode or Codex extensions, skills, MCP tools, or 
 
 4. **Changelog evidence** (optional):
    ```
-   node <uagent-sync>/dist/cli.js changelog
+   node <uagent-sync>/dist/cli.js changelog --target-agent codex --report-path <absolute-report-path>
    ```
-   Prints version transitions and change evidence for drafting a changelog.
+   Prints version transitions and evidence pointers only; it is not a per-Skill semantic explanation. For a requested explanation, use the reference above and compare the actual old/new sources.
 
 ## Post-update
 

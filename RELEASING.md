@@ -72,3 +72,8 @@ dsh plugin --profile <disposable-profile> add uagent-sync-dsh@<version>
 Codex 源码市场安装与 npm CLI 安装分别验收。`update --components sync --target-agent codex` 从测试通过的固定根 tarball 准备生产依赖，核对安装器返回的插件缓存路径与 manifest 身份；已有发布文件的任何字节差异或链接路径均拒绝覆盖。缺失的发布文件和依赖准备后，直接执行缓存内 `dist/cli.js --version` 与 `--help`，失败恢复原依赖并删除本次新增文件。自更新仍不赋予 Hook 信任，不把市场源码路径当作安装缓存，不以版本号一致代替运行验证。手工安装候选也必须执行相同的缓存运行检查。
 
 已有依赖替换前移入 `CODEX_HOME/uagent-sync/self-update-backups/runtime-*/node_modules`（默认 `~/.codex`），位置在插件缓存树之外，不进入插件内容快照。成功后报告并保留，直到安装验收及回退保留期结束由该次升级负责人处置；失败时自动移回。不把旧依赖目录当作可随临时打包目录删除的缓存。
+
+
+### 更新说明口令的候选验收
+
+“U同步，讲讲这次更新”复用现有 update Skill，随当前未发布 3.1.0 候选交付，不单独升号或公开 npm 发布。此批只改 Skill 与文档：检查链接、打包内容及意图路由；解释请求必须先走条件 reference，不能调用 update（包括 dry-run）、重装或停止服务。行为验收应覆盖最新报告是 dry-run、同批多报告/手工 Skills 收据、同名不同来源、聚合包计数、同版本内容无变/有变、缺旧原件的官方区间日志与未知结论，并检查逐项报告的旧新来源及业务未验证边界。无运行代码、依赖或环境变化时复用已有适用 npm test 证据；Skill 打包、安装可发现与实际业务验收分别记录。

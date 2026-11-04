@@ -10,6 +10,8 @@
 
 ## [3.1.0] - Unreleased candidate
 
+- Add “U同步，讲讲这次更新” and explanation aliases to the existing update Skill. The read-only branch compares recorded old/new Skills and plugin evidence and produces an itemized user-facing report, separating semantic changes, documentation/version edits, unchanged refreshes and unknowns. No new CLI command, independent Skill, version bump or npm release.
+
 - Include installed Codex remote plugins in the existing plugins update component. Preserve original remote IDs across duplicate names, skip disabled/local/host-managed entries, retain safe local rollback bytes, and verify identity, versions, bundled Skills and fresh-process discovery. An explicit cache-backup busy error permits at most one recovery/retry of a strictly attributable idle Windows MCP tree; uncertain or active processes remain errors. Same-version reinstalls report current/refreshed. Dry-run never installs or stops processes. This remains the unreleased 3.1.0 candidate.
 
 - Repair Codex self-update runtime preparation: deploy the tested tarball and production dependencies to the verified plugin cache, reject existing file differences and linked destinations, and execute the plugin CLI version/help. Matching manifest versions alone no longer count as installation acceptance. Failed runtime preparation restores previous dependencies and removes newly added files.

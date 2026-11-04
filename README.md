@@ -92,6 +92,10 @@ Migration analysis is the single Dashboard module for coverage/gaps, compatibili
 
 The V1 audit ledger `usync-dotfiles/agents/codex/policies/extension-conflicts.json` is never changed by scans. New confirmed decisions use `usync-dotfiles/policies/capability-decisions.json`; creation/import happens inside the first write transaction. Codex changes require a staged decision, exact byte-preserving config/ledger diff, and a second confirmation with a one-use token. Timestamped backups are created; restart Codex after applying. OpenCode and DeepSeek are always read-only, and no extension is uninstalled or deleted. The legacy extension write endpoint is disabled; `/extension-conflicts` is a compatibility alias for the unified Dashboard.
 
+### Explain the last update
+
+Say **“U同步，讲讲这次更新”** (also “U同步，整理更新说明” / “U同步，这次更新了什么”). The existing [update Skill](skills/uagent-sync-update/SKILL.md) reads recorded update evidence and compares old/new Skill and plugin sources, then gives a concise summary and a complete itemized report with source paths. This explanation does not run an update or reinstall. Version-only, documentation-only, unchanged refreshes, failures and unknowns stay separate; missing old sources are disclosed. See the [evidence workflow](skills/uagent-sync-update/references/update-explanation.md). This is an agent instruction, not a new CLI subcommand.
+
 ### First backup
 
 ```sh

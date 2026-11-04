@@ -92,6 +92,10 @@ codex plugin marketplace add severin-ye/uagent-sync
 
 V1 审计账本 `usync-dotfiles/agents/codex/policies/extension-conflicts.json` 只读保留。首次确认写入时才在事务内创建/导入 V2 账本 `usync-dotfiles/policies/capability-decisions.json`。Codex 写入必须经过暂存、精确配置/账本 diff 和一次性二次确认；OpenCode、DeepSeek 永远只读，不卸载或删除扩展。旧 `/extension-conflicts` 仅作为统一 Dashboard 的兼容入口。
 
+### 讲讲这次更新
+
+说 **“U同步，讲讲这次更新”** 即可，也支持“U同步，整理更新说明”“U同步，这次更新了什么”。既有 [update Skill](skills/uagent-sync-update/SKILL.md) 会找到最近一次真实更新的证据，比较旧新 Skills 与插件，给出简短摘要和带来源路径的完整逐项报告。此口令只整理说明，不再次更新或重装；功能变化、修复、文档/版本变化、内容未变的刷新及失败/未知分别说明，缺旧版证据如实标注。详见[证据与整理流程](skills/uagent-sync-update/references/update-explanation.md)。这是给 Agent 的指令入口，不是新 CLI 子命令。
+
 ### 首次备份
 
 ```sh

@@ -24,6 +24,7 @@
 | "U同步，备份所有" / "优同步，备份全部" | 项目推送各自 GitHub 仓库，设置和插件内容发布至已登记私人配置仓库 | `uagent-sync backup --all --target-agent codex --lang zh` |
 | "U同步，先预览备份所有" | 只读预览，未采集个人或插件内容 | `uagent-sync backup --all --dry-run --target-agent codex --lang zh` |
 | "U同步，更新所有扩展" / "优同步，升级扩展" | 更新全部默认组件（plugins/skills/mcp/cli/sync/config-deps） | `opencode_sync_update` 或 `node dist/cli.js update` |
+| "U同步，讲讲这次更新" / "U同步，整理更新说明" / "U同步，这次更新了什么" | 只读解释最近真实更新的 Skills 与插件变化 | 先走既有 [update Skill](skills/uagent-sync-update/SKILL.md) 的说明分支；不调用 update，按[证据流程](skills/uagent-sync-update/references/update-explanation.md)整理 |
 | "U同步，先预览更新" | dry-run 预览更新计划 | `opencode_sync_update dryRun=true` |
 | "U同步，只更新 MCP" | 只更新 MCP（不自动安装或更新 codebase-memory-mcp） | `opencode_sync_update components=mcp` |
 | "U同步，备份" / "U同步，上传" / "U同步，推送到 GitHub" | 备份流程 | `opencode_sync_init initType=backup` → … → `opencode_sync_push` |
