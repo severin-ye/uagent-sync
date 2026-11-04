@@ -237,7 +237,7 @@ Run any command as `node dist/cli.js <command>` (or `opencode-sync <command>` af
 | `guide` | Generate `guide/SYNC-GUIDE.md` — the restore playbook |
 | `log` | Read/write install provenance log |
 | `crystallize` | Record install + regenerate docs + export state + commit in one shot |
-| `update` | Update installed, recognized managed components only. Missing MCP/CLI tools are reported as skipped, never installed. Self-update validates the current checkout's origin, then tests/packages an isolated temporary `origin/master` clone without changing the user's branch or files; it cleans up the clone and verifies matching global CLI and Codex plugin versions. Any selected-step failure exits non-zero. |
+| `update` | Update installed, recognized managed components only. Codex remote plugins use their original remote identity, so duplicate names cannot select another plugin. Local/host-managed and disabled plugins are skipped. Each remote install retains a local rollback copy, verifies bundled Skills with a fresh app-server, and can retry an explicitly busy cache once after strictly checking an idle MCP process tree. Equal versions report current/refreshed. Missing MCP/CLI tools are skipped. Self-update tests/packages an isolated temporary `origin/master` clone without changing the user's branch or files, then verifies global CLI and Codex plugin runtime. Required failures exit non-zero. |
 | `changelog` | Draft categorized changelog from the latest update report |
 | `inventory` | Inspect Codex/OpenCode/DeepSeek Harness configuration (read-only, secrets excluded) |
 | `dashboard` | Start a local read-only configuration dashboard (`127.0.0.1` by default) |

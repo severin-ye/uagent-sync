@@ -246,7 +246,7 @@ UAGENT_SYNC_LANG=zh opencode-sync guide  # 中文引导文档
 | `guide` | 生成 `guide/SYNC-GUIDE.md` —— 恢复手册 |
 | `log` | 读写安装溯源日志 |
 | `crystallize` | 记录安装 + 重生成文档 + 导出状态 + 一键提交 |
-| `update` | 只更新已安装、可识别且可核验的受管组件；缺失的 MCP/CLI 明确跳过，绝不补装。自更新只从当前 checkout 读取并核验 origin，在独立临时 `origin/master` clone 中测试、真实打包和安装，不改用户分支或文件，成功失败都会清理；随后核验全局 CLI 与 Codex 插件同版本，任一选中步骤失败均以非零状态退出。 |
+| `update` | 只更新已安装、可识别且可核验的受管组件。Codex 远程插件沿用原远程 ID，避免同名替换；禁用、本地及宿主管理项明确跳过。每次安装前保留本机回退副本，安装后由新 app-server 核验附带 Skills；只有明确缓存占用且进程归属、命令、创建身份和无业务子任务均通过检查时，才停止相应 MCP 服务并重试一次。同版本报告 current/refreshed，不冒称升级。缺失 MCP/CLI 不补装。自更新在独立临时 `origin/master` clone 中测试、打包和安装，不改用户源码；必要验收失败以非零状态退出。 |
 | `changelog` | 从最新更新报告起草分类变更日志 |
 | `inventory` | 只读扫描 Codex/OpenCode/DeepSeek Harness 配置（不含密钥值） |
 | `dashboard` | 启动本地只读配置看板（默认监听 `127.0.0.1`） |

@@ -512,23 +512,26 @@ describe("updateExtensions", () => {
     assert.equal(report.summary.error, 1);
   });
 
-  it("reports the configured ten-minute timeout for the self-test step", async () => {
+  it("allows a twenty-minute full suite and reports the configured self-test timeout", async () => {
     const report = await updateExtensions({
       components: ["sync"], targetAgent: "codex", env,
-      executeCommand: async (file, args) => {
+      executeCommand: async (file, args, options) => {
         const command = args.join(" ");
         if (file === "git" && command === "remote get-url origin") return { code: 0, output: "https://github.com/severin-ye/uagent-sync.git\n" };
         if (file === "git" && args[0] === "clone") { writeCloneFixture(args); return { code: 0, output: "cloned origin/master" }; }
         if (file === "git" && command === "branch --show-current") return { code: 0, output: "master\n" };
         if (file === "git" && command === "status --porcelain") return { code: 0, output: "" };
         if (file === "git" && command === "rev-parse --abbrev-ref --symbolic-full-name @{upstream}") return { code: 0, output: "origin/master\n" };
-        if (file === "npm" && args[0] === "test") return { code: 124, output: "timed out" };
+        if (file === "npm" && args[0] === "test") {
+          assert.equal(options?.timeoutMs, 1_200_000);
+          return { code: 124, output: "timed out" };
+        }
         return { code: 0, output: "ok" };
       },
     });
 
     assert.equal(report.steps.find((step) => step.name === "sync/test")?.status, "error");
-    assert.match(report.steps.find((step) => step.name === "sync/test")?.detail ?? "", /timeout after 600s/i);
+    assert.match(report.steps.find((step) => step.name === "sync/test")?.detail ?? "", /timeout after 1200s/i);
   });
 
   it("stops before replacing the installed CLI when the required self-test fails", async () => {

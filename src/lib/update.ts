@@ -24,6 +24,7 @@ import { executeTrustedCommand } from "./codex-restore.js";
 import { normalizeExtensionSource } from "./recovery-manifest.js";
 import { redactString } from "./redact.js";
 import type { TargetAgent } from "./types.js";
+import { createPluginRpc, planRemotePluginUpdates, recoverIdlePluginCache, updateRemotePlugin, type PluginRpc, type PluginRpcFactory, type RemoteUpdateResult } from "./codex-remote-update.js";
 
 export type UpdateComponent =
   | "opencode"
@@ -237,6 +238,8 @@ export interface UpdateOptions {
   targetAgent?: TargetAgent;
   onProgress?: (event: UpdateProgress) => void;
   executeCommand?: UpdateCommandExecutor;
+  /** Injectable protocol adapter; never starts a real server in fixture tests. */
+  pluginRpcFactory?: PluginRpcFactory;
   /**
    * 环境注入（测试用）：覆盖插件缓存目录与 config 目录。
    * 默认取 ~/.cache/opencode/packages 与 ~/.config/opencode——在 CI/干净环境不可用，
@@ -494,6 +497,7 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
     skipReason?: string;
     alwaysRun?: boolean;
     run?: (onLine: (line: string) => void) => Promise<SpawnResult>;
+    remoteResult?: RemoteUpdateResult;
   }[] = [];
   const addCommand = (name: string, file: string, args: string[], cwd?: string, timeoutMs = COMMAND_TIMEOUT_MS) => {
     planned.push({ name, file, args, command: displayCommand(file, args), cwd, timeoutMs });
@@ -504,6 +508,32 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
 
   if (targetAgent === "codex" && selected.has("opencode")) {
     planned.push({ name: "scope/opencode", command: "blocked", scopeError: "OpenCode update is outside targetAgent=codex and was not executed" });
+  }
+
+  if (targetAgent === "codex" && selected.has("plugins")) {
+    const inventory = await executeCommand("codex", ["plugin", "list", "--json"]).catch(() => ({ code: 1, output: "" }));
+    if (inventory.code !== 0) planned.push({ name: "codex-plugins/inventory", command: "codex plugin list --json", scopeError: "Codex plugin inventory failed; nothing installed" });
+    else {
+      try {
+        const entries = planRemotePluginUpdates(JSON.parse(inventory.output));
+        const codexHome = options.env?.codexHome ?? process.env.CODEX_HOME ?? path.join(os.homedir(), ".codex");
+        const factory = options.pluginRpcFactory ?? createPluginRpc;
+        let session: PluginRpc | undefined;
+        if (!entries.length) addSkipped("codex-plugins/inventory", "plugin/install <original-remote-id>", "no installed Codex plugins");
+        for (const entry of entries) {
+          const name = `codex-plugins/${entry.name}@${entry.marketplace || "host"}`;
+          if (entry.skipReason) { addSkipped(name, "preserve existing plugin", entry.skipReason); continue; }
+          const p: (typeof planned)[number] = { name, command: `plugin/read; plugin/install remote-id=${entry.remoteId}; fresh skills/list`, run: async () => {
+            session ??= await factory(codexHome);
+            const result = await updateRemotePlugin(entry, { codexHome, rpc: session, freshRpc: factory, recoverCacheLock: root => recoverIdlePluginCache(codexHome, root) });
+            p.remoteResult = result;
+            return result;
+          } };
+          planned.push(p);
+        }
+        if (entries.some(e => !e.skipReason)) planned.push({ name: "codex-plugins/session-close", command: "close update app-server", alwaysRun: true, run: async () => { await session?.close(); return { code: 0, output: "update protocol session closed" }; } });
+      } catch (error) { planned.push({ name: "codex-plugins/inventory", command: "codex plugin list --json", scopeError: safeUpdateOutput(error instanceof Error ? error.message : "Invalid Codex inventory") }); }
+    }
   }
 
   if (targetAgent !== "codex" && selected.has("plugins") && fs.existsSync(pluginCache)) {
@@ -596,7 +626,8 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
         }
       } });
       addCheckoutCommand("sync/install", "npm", ["ci", "--no-audit", "--no-fund"]);
-      addCheckoutCommand("sync/test", "npm", ["test"], 600_000);
+      // The complete Windows suite takes 13–15 minutes; retain a bounded gate with headroom.
+      addCheckoutCommand("sync/test", "npm", ["test"], 1_200_000);
       planned.push({ name: "sync/pack", command: "npm pack --json --pack-destination <temporary-directory>", cwd: temporaryCwd, timeoutMs: 600_000, run: async (onLine) => {
           if (!checkoutDir) return { code: 1, output: "isolated checkout was not prepared" };
           packDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "uagent-sync-pack-"));
@@ -759,6 +790,7 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
       versionAfter = `${toolName}=${after[toolName] ?? "?"}`;
     }
 
+    if (p.remoteResult) { versionBefore = p.remoteResult.versionBefore; versionAfter = p.remoteResult.versionAfter; }
     const status: UpdateStep["status"] = result.code === 0 ? "ok"
       : "error";
     const detailOut = result.code === 124

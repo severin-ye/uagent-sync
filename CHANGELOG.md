@@ -10,6 +10,8 @@
 
 ## [3.1.0] - Unreleased candidate
 
+- Include installed Codex remote plugins in the existing plugins update component. Preserve original remote IDs across duplicate names, skip disabled/local/host-managed entries, retain safe local rollback bytes, and verify identity, versions, bundled Skills and fresh-process discovery. An explicit cache-backup busy error permits at most one recovery/retry of a strictly attributable idle Windows MCP tree; uncertain or active processes remain errors. Same-version reinstalls report current/refreshed. Dry-run never installs or stops processes. This remains the unreleased 3.1.0 candidate.
+
 - Repair Codex self-update runtime preparation: deploy the tested tarball and production dependencies to the verified plugin cache, reject existing file differences and linked destinations, and execute the plugin CLI version/help. Matching manifest versions alone no longer count as installation acceptance. Failed runtime preparation restores previous dependencies and removes newly added files.
 
 - Remove the obsolete OpenCode SDK runtime closure and use patched Zod 4.6.6 and smol-toml 1.9.1 directly. Retain the v1 tool/context/config contract, v2 validation, state passthrough, optional/default fields and sanitized validation errors.
