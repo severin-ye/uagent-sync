@@ -10,6 +10,8 @@
 
 ## [3.1.0] - Unreleased candidate
 
+- Repair Codex self-update runtime preparation: deploy the tested tarball and production dependencies to the verified plugin cache, reject existing file differences and linked destinations, and execute the plugin CLI version/help. Matching manifest versions alone no longer count as installation acceptance. Failed runtime preparation restores previous dependencies and removes newly added files.
+
 - Remove the obsolete OpenCode SDK runtime closure and use patched Zod 4.6.6 and smol-toml 1.9.1 directly. Retain the v1 tool/context/config contract, v2 validation, state passthrough, optional/default fields and sanitized validation errors.
 
 - Add the explicit `uagent-sync/v2` OpenCode v2 plugin entry, registering the existing sixteen tools and five packaged Skills. The default OpenCode v1 entry and business behavior remain available.

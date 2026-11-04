@@ -3,7 +3,7 @@ import * as assert from "node:assert";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { spawnArgsCommand, updateExtensions, type UpdateCommandExecutor, type UpdateProgress } from "../dist/lib/update.js";
+import { prepareCodexSelfUpdateRuntime, spawnArgsCommand, updateExtensions, type UpdateCommandExecutor, type UpdateProgress } from "../dist/lib/update.js";
 import OpencodeSyncPlugin from "../dist/plugin.js";
 
 describe("updateExtensions", () => {
@@ -18,14 +18,27 @@ describe("updateExtensions", () => {
   };
 
   let tmpRoot: string;
-  let env: { pluginCache: string; configDir: string; syncDir: string; installedUvTools?: string[]; installedOpencode?: boolean; installedSkills?: boolean };
+  let env: { pluginCache: string; configDir: string; syncDir: string; codexHome?: string; installedUvTools?: string[]; installedOpencode?: boolean; installedSkills?: boolean };
   let oldWorkspaceEnv: string | undefined;
+
+  const runtimeFixture = (file: string, args: string[]) => {
+    if (file === "npm" && args.includes("--prefix")) {
+      const root = path.join(args[args.indexOf("--prefix") + 1], "node_modules", "uagent-sync");
+      fs.mkdirSync(path.join(root, "dist"), { recursive: true });
+      fs.writeFileSync(path.join(root, "package.json"), JSON.stringify({ name: "uagent-sync", version: "2.1.1" }));
+      fs.writeFileSync(path.join(root, "dist", "cli.js"), "// packed runtime");
+      return { code: 0, output: "installed fixed tarball" };
+    }
+    if (file === process.execPath) return { code: 0, output: args.at(-1) === "--version" ? "2.1.1" : "Usage: uagent-sync" };
+    return undefined;
+  };
 
   /** 构造隔离环境：fake 插件缓存 / fake config 目录 / fake workspace（含 sync 仓库 package.json）。 */
   beforeEach(() => {
     tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), "update-test-"));
     env = {
       pluginCache: path.join(tmpRoot, "packages"),
+      codexHome: path.join(tmpRoot, "codex"),
       configDir: path.join(tmpRoot, "config"),
       syncDir: path.join(tmpRoot, "ws", "2_Business", "uagent-sync"),
       installedUvTools: [],
@@ -42,6 +55,9 @@ describe("updateExtensions", () => {
     fs.mkdirSync(path.join(ws, "2_Business", "uagent-sync"), { recursive: true });
     fs.writeFileSync(path.join(ws, "2_Business", "uagent-sync", "package.json"), JSON.stringify({ name: "uagent-sync", version: "2.1.1" }));
     fs.writeFileSync(path.join(ws, ".gitmodules"), "x");
+    const pluginRoot = path.join(env.codexHome!, "plugins", "cache", "uagent-sync", "uagent-sync", "2.1.1");
+    fs.mkdirSync(path.join(pluginRoot, ".codex-plugin"), { recursive: true });
+    fs.writeFileSync(path.join(pluginRoot, ".codex-plugin", "plugin.json"), JSON.stringify({ name: "uagent-sync", version: "2.1.1" }));
     oldWorkspaceEnv = process.env.OPENCODE_SYNC_WORKSPACE_ROOT;
     process.env.OPENCODE_SYNC_WORKSPACE_ROOT = ws;
   });
@@ -281,6 +297,7 @@ describe("updateExtensions", () => {
     fs.mkdirSync(marketplaceRoot, { recursive: true });
     const calls: Array<{ file: string; args: string[]; cwd?: string }> = [];
     const executeCommand: UpdateCommandExecutor = async (file, args, options) => {
+      const runtime = runtimeFixture(file, args); if (runtime) return runtime;
       calls.push({ file, args, cwd: options?.cwd });
       if (file === "git" && args[0] === "clone") { writeCloneFixture(args); return { code: 0, output: "cloned origin/master" }; }
       if (file === "git" && args.join(" ") === "branch --show-current") return { code: 0, output: "master\n" };
@@ -294,7 +311,7 @@ describe("updateExtensions", () => {
       if (file === "git" && args.join(" ") === "remote get-url origin") return { code: 0, output: "https://github.com/severin-ye/uagent-sync.git\n" };
       if (file === "codex" && args.join(" ") === "plugin marketplace list --json") return { code: 0, output: JSON.stringify({ marketplaces: [{ name: "uagent-sync", root: marketplaceRoot }] }) };
       if (file === "codex" && args.join(" ") === "plugin list --json") return { code: 0, output: JSON.stringify({ installed: [{ name: "uagent-sync", installed: true, enabled: true, version: "2.1.1" }] }) };
-      if (file === "codex" && args.join(" ") === "plugin add uagent-sync@uagent-sync") return { code: 1, output: "plugin is already installed" };
+      if (file === "codex" && args.join(" ") === "plugin add uagent-sync@uagent-sync --json") return { code: 1, output: "plugin is already installed" };
       if (file === "uagent-sync" && args.join(" ") === "--version") return { code: 0, output: "2.1.1\n" };
       return { code: 0, output: "ok" };
     };
@@ -302,8 +319,106 @@ describe("updateExtensions", () => {
     const report = await updateExtensions({ components: ["sync"], targetAgent: "codex", env, executeCommand });
     assert.equal(report.summary.error, 0);
     assert.ok(calls.some((call) => call.file === "npm" && call.args[0] === "install" && call.args[1] === "--global" && call.args[2].endsWith(".tgz")));
-    assert.ok(calls.some((call) => call.file === "codex" && call.args.join(" ") === "plugin add uagent-sync@uagent-sync"));
+    assert.ok(calls.some((call) => call.file === "codex" && call.args.join(" ") === "plugin add uagent-sync@uagent-sync --json"));
     assert.equal(report.steps.find((step) => step.name === "sync/plugin-verify")?.status, "ok");
+  });
+
+  it("does not accept matching versions when the installed plugin CLI cannot run", async () => {
+    const pluginRoot = path.join(env.codexHome!, "plugins", "cache", "uagent-sync", "uagent-sync", "2.1.1");
+    const marketplaceRoot = path.join(tmpRoot, "marketplace-runtime");
+    fs.mkdirSync(pluginRoot, { recursive: true });
+    fs.mkdirSync(marketplaceRoot, { recursive: true });
+    const report = await updateExtensions({ components: ["sync"], targetAgent: "codex", env,
+      executeCommand: async (file, args) => {
+        const command = args.join(" ");
+        if (file === "npm" && args.includes("--prefix")) return runtimeFixture(file, args)!;
+        if (file === "git" && args[0] === "clone") { writeCloneFixture(args); return { code: 0, output: "cloned" }; }
+        if (file === "git" && command === "remote get-url origin") return { code: 0, output: "https://github.com/severin-ye/uagent-sync.git" };
+        if (file === "git" && command === "branch --show-current") return { code: 0, output: "master" };
+        if (file === "git" && command === "status --porcelain") return { code: 0, output: "" };
+        if (file === "npm" && args[0] === "pack") {
+          fs.writeFileSync(path.join(args[args.indexOf("--pack-destination") + 1], "uagent-sync-2.1.1.tgz"), "fixture");
+          return { code: 0, output: JSON.stringify({ filename: "uagent-sync-2.1.1.tgz" }) };
+        }
+        if (file === "codex" && command === "plugin marketplace list --json") return { code: 0, output: JSON.stringify({ marketplaces: [{ name: "uagent-sync", root: marketplaceRoot }] }) };
+        if (file === "codex" && args[1] === "add") return { code: 0, output: JSON.stringify({ pluginId: "uagent-sync@uagent-sync", installedPath: pluginRoot }) };
+        if (file === "codex" && command === "plugin list --json") return { code: 0, output: JSON.stringify({ installed: [{ name: "uagent-sync", installed: true, enabled: true, version: "2.1.1" }] }) };
+        if (file === "uagent-sync") return { code: 0, output: "2.1.1" };
+        if (file === process.execPath) return { code: 1, output: "runtime dependency unavailable" };
+        return { code: 0, output: "ok" };
+      },
+    });
+    assert.ok(report.summary.error > 0, "matching metadata must not certify an unusable plugin runtime");
+    assert.match(report.steps.find(step => step.name === "sync/plugin-install")!.detail, /runtime.*failed.*dependency unavailable/);
+    assert.equal(fs.existsSync(path.join(pluginRoot, "dist", "cli.js")), false, "failed runtime deployment is rolled back");
+  });
+
+  it("preserves local plugin changes and existing dependencies when runtime files differ", async () => {
+    const root = path.join(env.codexHome!, "plugins", "cache", "uagent-sync", "uagent-sync", "2.1.1");
+    fs.mkdirSync(path.join(root, "dist"), { recursive: true });
+    fs.mkdirSync(path.join(root, "node_modules"), { recursive: true });
+    fs.writeFileSync(path.join(root, "dist", "cli.js"), "local customized runtime");
+    fs.writeFileSync(path.join(root, "node_modules", "keep.txt"), "original dependencies");
+    const result = await prepareCodexSelfUpdateRuntime(root, "fixed.tgz", path.join(tmpRoot, "stage"), "2.1.1",
+      async (file, args) => runtimeFixture(file, args) ?? { code: 1, output: "unexpected command" }, () => {});
+    assert.equal(result.code, 1);
+    assert.match(result.output, /local differences/);
+    assert.equal(fs.readFileSync(path.join(root, "dist", "cli.js"), "utf8"), "local customized runtime");
+    assert.equal(fs.readFileSync(path.join(root, "node_modules", "keep.txt"), "utf8"), "original dependencies");
+  });
+
+  it("restores previous dependencies when the prepared plugin CLI fails", async () => {
+    const root = path.join(env.codexHome!, "plugins", "cache", "uagent-sync", "uagent-sync", "2.1.1");
+    fs.mkdirSync(path.join(root, "node_modules"), { recursive: true });
+    fs.writeFileSync(path.join(root, "node_modules", "keep.txt"), "original dependencies");
+    const result = await prepareCodexSelfUpdateRuntime(root, "fixed.tgz", path.join(tmpRoot, "stage"), "2.1.1",
+      async (file, args) => file === process.execPath ? { code: 1, output: "dependency failure" } : runtimeFixture(file, args)!, () => {}, path.join(tmpRoot, "rollback"));
+    assert.equal(result.code, 1);
+    assert.match(result.output, /runtime.*failed/);
+    assert.equal(fs.existsSync(path.join(root, "dist", "cli.js")), false);
+    assert.equal(fs.readFileSync(path.join(root, "node_modules", "keep.txt"), "utf8"), "original dependencies");
+  });
+
+  it("retains previous dependencies outside the plugin snapshot tree after successful preparation", async () => {
+    const root = path.join(env.codexHome!, "plugins", "cache", "uagent-sync", "uagent-sync", "2.1.1");
+    const backups = path.join(tmpRoot, "persistent-runtime-backups");
+    fs.mkdirSync(path.join(root, "node_modules"), { recursive: true });
+    fs.writeFileSync(path.join(root, "node_modules", "local.txt"), "local dependency customization");
+    const result = await prepareCodexSelfUpdateRuntime(root, "fixed.tgz", path.join(tmpRoot, "stage"), "2.1.1",
+      async (file, args) => runtimeFixture(file, args)!, () => {}, backups);
+    assert.equal(result.code, 0, result.output);
+    const saved = path.join(backups, fs.readdirSync(backups)[0], "node_modules", "local.txt");
+    assert.equal(fs.readFileSync(saved, "utf8"), "local dependency customization");
+    assert.match(result.output, /previous dependencies retained/);
+    assert.equal(fs.existsSync(path.join(root, "dist", "cli.js")), true);
+  });
+
+  it("rejects a linked plugin runtime directory without writing through it", async () => {
+    const outside = path.join(tmpRoot, "outside"), link = path.join(tmpRoot, "linked-plugin");
+    fs.mkdirSync(outside);
+    fs.symlinkSync(outside, link, process.platform === "win32" ? "junction" : "dir");
+    let executed = false;
+    const result = await prepareCodexSelfUpdateRuntime(link, "fixed.tgz", path.join(tmpRoot, "stage"), "2.1.1",
+      async () => { executed = true; return { code: 0, output: "unexpected" }; }, () => {});
+    assert.equal(result.code, 1);
+    assert.match(result.output, /linked plugin runtime/);
+    assert.equal(executed, false);
+    assert.deepEqual(fs.readdirSync(outside), []);
+  });
+
+  it("rejects dangling node_modules links before staging or modifying the plugin", async () => {
+    const root = path.join(env.codexHome!, "plugins", "cache", "uagent-sync", "uagent-sync", "2.1.1");
+    const link = path.join(root, "node_modules");
+    fs.symlinkSync(path.join(tmpRoot, "missing-dependency-target"), link, process.platform === "win32" ? "junction" : "dir");
+    assert.equal(fs.existsSync(link), false);
+    let executed = false;
+    const result = await prepareCodexSelfUpdateRuntime(root, "fixed.tgz", path.join(tmpRoot, "stage"), "2.1.1",
+      async () => { executed = true; return { code: 0, output: "unexpected" }; }, () => {});
+    assert.equal(result.code, 1);
+    assert.match(result.output, /linked plugin dependencies/);
+    assert.equal(executed, false);
+    assert.equal(fs.lstatSync(link).isSymbolicLink(), true);
+    assert.equal(fs.existsSync(path.join(tmpRoot, "stage")), false);
   });
 
   it("updates from an isolated temporary checkout without touching a dirty development branch", async () => {
@@ -314,6 +429,7 @@ describe("updateExtensions", () => {
     const report = await updateExtensions({
       components: ["sync"], targetAgent: "codex", env,
       executeCommand: async (file, args, options) => {
+        const runtime = runtimeFixture(file, args); if (runtime) return runtime;
         calls.push({ file, args, cwd: options?.cwd });
         const command = args.join(" ");
         if (file === "git" && command === "remote get-url origin") return { code: 0, output: "https://github.com/severin-ye/uagent-sync.git\n" };
@@ -371,6 +487,7 @@ describe("updateExtensions", () => {
     const marketplaceRoot = path.join(tmpRoot, "marketplace-mismatch");
     fs.mkdirSync(marketplaceRoot, { recursive: true });
     const executeCommand: UpdateCommandExecutor = async (file, args) => {
+      const runtime = runtimeFixture(file, args); if (runtime) return runtime;
       const command = args.join(" ");
       if (file === "git" && args[0] === "clone") { writeCloneFixture(args); return { code: 0, output: "cloned origin/master" }; }
       if (file === "git" && command === "branch --show-current") return { code: 0, output: "master\n" };
@@ -417,6 +534,7 @@ describe("updateExtensions", () => {
   it("stops before replacing the installed CLI when the required self-test fails", async () => {
     const calls: Array<{ file: string; args: string[] }> = [];
     const executeCommand: UpdateCommandExecutor = async (file, args) => {
+      const runtime = runtimeFixture(file, args); if (runtime) return runtime;
       calls.push({ file, args });
       if (file === "git" && args.join(" ") === "remote get-url origin") return { code: 0, output: "https://github.com/severin-ye/uagent-sync.git\n" };
       if (file === "git" && args[0] === "clone") { writeCloneFixture(args); return { code: 0, output: "cloned origin/master" }; }

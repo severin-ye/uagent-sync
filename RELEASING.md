@@ -63,3 +63,8 @@ dsh plugin --profile <disposable-profile> add uagent-sync-dsh@<version>
 实际发布基线已是双包3.0.0。新增OpenCode v2入口保留默认v1入口，按Y判级；根包、DSH、锁与插件清单同步为3.1.0。候选尚未发布；完整迁移和固定产物验收通过前不创建正式Release或覆盖已发布3.0.0。
 
 源码主分支可以包含未发布候选，不能因此把它作为可独立安装的DSH分发入口。当前GitHub安装示例固定到已发布3.0.0提交`3a81c8abdfdff24852098a354ed36c4b65669a1a`；更新该提交前，先确认对应精确CLI已发布，再完成固定子包的registry与宿主安装器验收。默认npm安装继续使用实际已发布版本，不以本地file覆盖或源码link替代正式分发证据。
+
+
+Codex 源码市场安装与 npm CLI 安装分别验收。`update --components sync --target-agent codex` 从测试通过的固定根 tarball 准备生产依赖，核对安装器返回的插件缓存路径与 manifest 身份；已有发布文件的任何字节差异或链接路径均拒绝覆盖。缺失的发布文件和依赖准备后，直接执行缓存内 `dist/cli.js --version` 与 `--help`，失败恢复原依赖并删除本次新增文件。自更新仍不赋予 Hook 信任，不把市场源码路径当作安装缓存，不以版本号一致代替运行验证。手工安装候选也必须执行相同的缓存运行检查。
+
+已有依赖替换前移入 `CODEX_HOME/uagent-sync/self-update-backups/runtime-*/node_modules`（默认 `~/.codex`），位置在插件缓存树之外，不进入插件内容快照。成功后报告并保留，直到安装验收及回退保留期结束由该次升级负责人处置；失败时自动移回。不把旧依赖目录当作可随临时打包目录删除的缓存。

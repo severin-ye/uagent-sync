@@ -242,7 +242,7 @@ export interface UpdateOptions {
    * 默认取 ~/.cache/opencode/packages 与 ~/.config/opencode——在 CI/干净环境不可用，
    * 测试通过注入临时目录获得确定性。
    */
-  env?: { pluginCache?: string; configDir?: string; syncDir?: string; installedUvTools?: string[]; installedOpencode?: boolean; installedSkills?: boolean };
+  env?: { pluginCache?: string; configDir?: string; syncDir?: string; codexHome?: string; installedUvTools?: string[]; installedOpencode?: boolean; installedSkills?: boolean };
 }
 
 function displayCommand(file: string, args: string[]): string {
@@ -385,6 +385,75 @@ function resolvePackFilename(payload: unknown): string | undefined {
   return undefined;
 }
 
+/** Prepare only a verified package's runtime; preserve source/Skills and reject local differences. */
+export async function prepareCodexSelfUpdateRuntime(
+  pluginRoot: string, tarball: string, stagingRoot: string, version: string,
+  execute: UpdateCommandExecutor, onLine: (line: string) => void,
+  backupDirectory = path.join(process.env.CODEX_HOME ?? path.join(os.homedir(), ".codex"), "uagent-sync", "self-update-backups"),
+): Promise<SpawnResult> {
+  const created: string[] = [];
+  let previousModules: string | undefined;
+  let deployedModules = false;
+  try {
+    for (let current = path.resolve(pluginRoot); ; current = path.dirname(current)) {
+      if (fs.lstatSync(current, { throwIfNoEntry: false })?.isSymbolicLink()) throw new Error("linked plugin runtime paths are not supported");
+      if (path.dirname(current) === current) break;
+    }
+    if (fs.lstatSync(path.join(pluginRoot, "node_modules"), { throwIfNoEntry: false })?.isSymbolicLink()) throw new Error("linked plugin dependencies are not supported");
+    const identity = JSON.parse(fs.readFileSync(path.join(pluginRoot, ".codex-plugin", "plugin.json"), "utf8"));
+    if (identity.name !== "uagent-sync" || identity.version !== version) throw new Error("installed plugin manifest identity mismatch");
+    const prefix = path.join(stagingRoot, "plugin-runtime");
+    fs.mkdirSync(prefix, { recursive: true });
+    fs.writeFileSync(path.join(prefix, "package.json"), JSON.stringify({ name: "uagent-sync-runtime-staging", private: true }));
+    const installed = await execute("npm", ["install", "--prefix", prefix, "--omit=dev", "--ignore-scripts", "--no-audit", "--no-fund", "--package-lock=false", tarball], { cwd: prefix, onLine, timeoutMs: 600_000 });
+    if (installed.code !== 0) return installed;
+    const packageRoot = path.join(prefix, "node_modules", "uagent-sync");
+    const pkg = JSON.parse(fs.readFileSync(path.join(packageRoot, "package.json"), "utf8"));
+    if (pkg.name !== "uagent-sync" || pkg.version !== version || !fs.existsSync(path.join(packageRoot, "dist", "cli.js"))) throw new Error("packed plugin runtime is incomplete");
+    const missing: Array<{ from: string; to: string }> = [];
+    const inspect = (directory: string, relative = "") => {
+      for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+        if (!relative && entry.name === "node_modules") continue;
+        const rel = path.join(relative, entry.name), from = path.join(directory, entry.name), to = path.join(pluginRoot, rel);
+        if (entry.isSymbolicLink() || fs.lstatSync(to, { throwIfNoEntry: false })?.isSymbolicLink()) throw new Error("linked plugin package paths are not supported");
+        if (entry.isDirectory()) { inspect(from, rel); continue; }
+        if (fs.existsSync(to)) {
+          if (!fs.statSync(to).isFile() || !fs.readFileSync(to).equals(fs.readFileSync(from))) throw new Error(`installed plugin has local differences: ${rel}`);
+        } else missing.push({ from, to });
+      }
+    };
+    inspect(packageRoot);
+    const modules = path.join(pluginRoot, "node_modules");
+    if (fs.existsSync(modules)) {
+      if (fs.lstatSync(modules).isSymbolicLink()) throw new Error("linked plugin dependencies are not supported");
+      fs.mkdirSync(backupDirectory, { recursive: true });
+      const backup = path.join(fs.mkdtempSync(path.join(backupDirectory, "runtime-")), "node_modules");
+      fs.renameSync(modules, backup);
+      previousModules = backup;
+    }
+    deployedModules = true;
+    fs.cpSync(path.join(prefix, "node_modules"), modules, { recursive: true });
+    for (const item of missing) {
+      fs.mkdirSync(path.dirname(item.to), { recursive: true });
+      fs.copyFileSync(item.from, item.to, fs.constants.COPYFILE_EXCL);
+      created.push(item.to);
+    }
+    for (const flag of ["--version", "--help"]) {
+      const result = await execute(process.execPath, [path.join(pluginRoot, "dist", "cli.js"), flag], { cwd: pluginRoot, onLine });
+      if (result.code !== 0 || (flag === "--version" && result.output.trim() !== version)) throw new Error(`installed plugin runtime ${flag} failed: ${result.output}`);
+    }
+    return { code: 0, output: `verified tarball runtime and production dependencies installed; plugin CLI version/help passed${previousModules ? `; previous dependencies retained at ${previousModules}` : ""}` };
+  } catch (error) {
+    for (const file of created.reverse()) fs.rmSync(file, { force: true });
+    if (deployedModules) fs.rmSync(path.join(pluginRoot, "node_modules"), { recursive: true, force: true });
+    if (previousModules) {
+      fs.renameSync(previousModules, path.join(pluginRoot, "node_modules"));
+      fs.rmdirSync(path.dirname(previousModules));
+    }
+    return { code: 1, output: safeUpdateOutput(String(error)) };
+  }
+}
+
 export async function updateExtensions(options: UpdateOptions = {}): Promise<UpdateReport> {
   const dryRun = options.dryRun === true;
   const targetAgent = options.targetAgent ?? "opencode";
@@ -491,6 +560,7 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
       let verifiedOrigin: string | undefined;
       let packedTarball: string | undefined;
       let packDirectory: string | undefined;
+      let installedPluginRoot: string | undefined;
       const temporaryCwd = "<isolated-origin-master-checkout>";
       const addCheckoutCommand = (name: string, file: string, args: string[], timeoutMs = COMMAND_TIMEOUT_MS) => planned.push({
         name, command: displayCommand(file, args), cwd: temporaryCwd, timeoutMs,
@@ -561,9 +631,21 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
             return await executeCommand("git", ["pull", "--ff-only", "origin", "master"], { cwd: marketplaceRoot, onLine });
           } catch (error) { return { code: 1, output: safeUpdateOutput(String(error)) }; }
         } });
-        planned.push({ name: "sync/plugin-install", command: "codex plugin add uagent-sync@uagent-sync", cwd: temporaryCwd, run: async (onLine) => {
-          const installed = await executeCommand("codex", ["plugin", "add", "uagent-sync@uagent-sync"], { onLine });
-          return installed.code !== 0 && /already (?:installed|exists)|is already/i.test(installed.output) ? { code: 0, output: installed.output } : installed;
+        planned.push({ name: "sync/plugin-install", command: "codex plugin add uagent-sync@uagent-sync --json; install verified plugin runtime", cwd: temporaryCwd, run: async (onLine) => {
+          const installed = await executeCommand("codex", ["plugin", "add", "uagent-sync@uagent-sync", "--json"], { onLine });
+          if (installed.code !== 0 && !/already (?:installed|exists)|is already/i.test(installed.output)) return installed;
+          try {
+            if (!checkoutDir || !packedTarball || !packDirectory) throw new Error("verified package is unavailable");
+            const expected = JSON.parse(fs.readFileSync(path.join(checkoutDir, "package.json"), "utf8")).version;
+            if (!/^[0-9]+\.[0-9]+\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$/.test(expected)) throw new Error("invalid package version");
+            const codexHome = options.env?.codexHome ?? process.env.CODEX_HOME ?? path.join(os.homedir(), ".codex");
+            const expectedRoot = path.resolve(codexHome, "plugins", "cache", "uagent-sync", "uagent-sync", expected);
+            let reported: { pluginId?: string; installedPath?: string } | undefined;
+            try { reported = parseJsonOutput(installed.output); } catch { /* old hosts may only report already-installed */ }
+            if (reported?.installedPath && (reported.pluginId !== "uagent-sync@uagent-sync" || path.resolve(reported.installedPath) !== expectedRoot)) throw new Error("Codex plugin installation path or identity mismatch");
+            installedPluginRoot = expectedRoot;
+            return await prepareCodexSelfUpdateRuntime(expectedRoot, packedTarball, packDirectory, expected, executeCommand, onLine, path.join(codexHome, "uagent-sync", "self-update-backups"));
+          } catch (error) { return { code: 1, output: safeUpdateOutput(String(error)) }; }
         } });
         planned.push({ name: "sync/plugin-verify", command: "uagent-sync --version; codex plugin list --json (verify matching installed versions)", cwd: temporaryCwd, run: async (onLine) => {
           const cliResult = await executeCommand("uagent-sync", ["--version"], { onLine });
@@ -579,7 +661,13 @@ export async function updateExtensions(options: UpdateOptions = {}): Promise<Upd
             if (!expected || !cliVersion || !plugin?.version || cliVersion !== expected || plugin.version !== expected || cliVersion !== plugin.version) {
               throw new Error(`Uagent Sync version mismatch: expected ${expected ?? "unknown"}, CLI ${cliVersion ?? "unknown"}, Codex plugin ${plugin?.version ?? "unknown"}`);
             }
-            return { code: 0, output: `uagent-sync CLI and Codex plugin ${expected} installed, enabled, and aligned` };
+            if (!installedPluginRoot) throw new Error("Codex plugin runtime was not prepared");
+            for (const flag of ["--version", "--help"]) {
+              const runtime = await executeCommand(process.execPath, [path.join(installedPluginRoot, "dist", "cli.js"), flag], { cwd: installedPluginRoot, onLine });
+              if (runtime.code !== 0) throw new Error(`Codex plugin CLI ${flag} failed: ${runtime.output}`);
+              if (flag === "--version" && runtime.output.trim() !== expected) throw new Error("Codex plugin CLI runtime version mismatch");
+            }
+            return { code: 0, output: `uagent-sync CLI and Codex plugin ${expected} installed, enabled, aligned, and executable` };
           } catch (error) { return { code: 1, output: safeUpdateOutput(String(error)) }; }
         } });
       }
