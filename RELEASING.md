@@ -77,3 +77,7 @@ Codex 源码市场安装与 npm CLI 安装分别验收。`update --components sy
 ### 更新说明口令的候选验收
 
 “U同步，讲讲这次更新”复用现有 update Skill，随当前未发布 3.1.0 候选交付，不单独升号或公开 npm 发布。此批只改 Skill 与文档：检查链接、打包内容及意图路由；解释请求必须先走条件 reference，不能调用 update（包括 dry-run）、重装或停止服务。行为验收应覆盖最新报告是 dry-run、同批多报告/手工 Skills 收据、同名不同来源、聚合包计数、同版本内容无变/有变、缺旧原件的官方区间日志与未知结论，并检查逐项报告的旧新来源及业务未验证边界。无运行代码、依赖或环境变化时复用已有适用 npm test 证据；Skill 打包、安装可发现与实际业务验收分别记录。
+
+## 本地打包入口
+
+`npm run pack` 的命名生命周期先执行 `prepack`（现有 build 内部清理 dist），再执行 `npm pack --ignore-scripts`，内层不重复触发 prepack。直接 `npm pack` 仍正常执行一次 prepack。保留 pretest，因为测试依赖 dist；本次不改 CI、生产发布及协作分支未知成果。通过无依赖真实npm夹具验证两入口各构建一次，构建失败阻断打包；这不替代真实源码构建和安装验收。
